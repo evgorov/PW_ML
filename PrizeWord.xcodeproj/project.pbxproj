@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
+		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
+		F295023B165E036800DACFBA /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = F295023A165E036800DACFBA /* Event.m */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -25,6 +27,10 @@
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
+		F2950236165E016400DACFBA /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventManager.h; path = EventSystem/EventManager.h; sourceTree = "<group>"; };
+		F2950237165E016400DACFBA /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventManager.m; path = EventSystem/EventManager.m; sourceTree = "<group>"; };
+		F2950239165E036800DACFBA /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = EventSystem/Event.h; sourceTree = "<group>"; };
+		F295023A165E036800DACFBA /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = EventSystem/Event.m; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -57,6 +63,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F2950235165E011000DACFBA /* EventSystem */ = {
+			isa = PBXGroup;
+			children = (
+				F2950236165E016400DACFBA /* EventManager.h */,
+				F2950237165E016400DACFBA /* EventManager.m */,
+				F2950239165E036800DACFBA /* Event.h */,
+				F295023A165E036800DACFBA /* Event.m */,
+			);
+			name = EventSystem;
+			sourceTree = "<group>";
+		};
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +105,7 @@
 		F2D62705165DF80900EF6E8A /* PrizeWord */ = {
 			isa = PBXGroup;
 			children = (
+				F2950235165E011000DACFBA /* EventSystem */,
 				F2D62719165DF89000EF6E8A /* ViewControllers */,
 				F2D6270E165DF80900EF6E8A /* AppDelegate.h */,
 				F2D6270F165DF80900EF6E8A /* AppDelegate.m */,
@@ -189,6 +207,8 @@
 				F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */,
 				F2D6271D165DF8FE00EF6E8A /* RootViewController.m in Sources */,
 				F2950232165DFF7900DACFBA /* GameViewController.m in Sources */,
+				F2950238165E016400DACFBA /* EventManager.m in Sources */,
+				F295023B165E036800DACFBA /* Event.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
