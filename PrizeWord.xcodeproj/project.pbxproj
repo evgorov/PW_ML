@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
+		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -20,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
+		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
+		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -109,6 +114,9 @@
 				F2D6271A165DF8FE00EF6E8A /* RootViewController.h */,
 				F2D6271B165DF8FE00EF6E8A /* RootViewController.m */,
 				F2D6271C165DF8FE00EF6E8A /* RootViewController.xib */,
+				F295022F165DFF7900DACFBA /* GameViewController.h */,
+				F2950230165DFF7900DACFBA /* GameViewController.m */,
+				F2950231165DFF7900DACFBA /* GameViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -165,6 +173,7 @@
 			files = (
 				F2D6270A165DF80900EF6E8A /* InfoPlist.strings in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
+				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +188,7 @@
 				F2D62710165DF80900EF6E8A /* AppDelegate.m in Sources */,
 				F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */,
 				F2D6271D165DF8FE00EF6E8A /* RootViewController.m in Sources */,
+				F2950232165DFF7900DACFBA /* GameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +296,7 @@
 				F2D62718165DF80900EF6E8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
