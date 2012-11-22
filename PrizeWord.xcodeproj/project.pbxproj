@@ -31,6 +31,7 @@
 		F2950237165E016400DACFBA /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventManager.m; path = EventSystem/EventManager.m; sourceTree = "<group>"; };
 		F2950239165E036800DACFBA /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = EventSystem/Event.h; sourceTree = "<group>"; };
 		F295023A165E036800DACFBA /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = EventSystem/Event.m; sourceTree = "<group>"; };
+		F295023D165EAA0C00DACFBA /* EventListenerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListenerDelegate.h; path = EventSystem/EventListenerDelegate.h; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -70,6 +71,7 @@
 				F2950237165E016400DACFBA /* EventManager.m */,
 				F2950239165E036800DACFBA /* Event.h */,
 				F295023A165E036800DACFBA /* Event.m */,
+				F295023D165EAA0C00DACFBA /* EventListenerDelegate.h */,
 			);
 			name = EventSystem;
 			sourceTree = "<group>";

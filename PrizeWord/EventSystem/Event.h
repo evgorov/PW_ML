@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 
 typedef enum EventType {
-    EVENT_GAME_REQUEST_START,
+    EVENT_FIRST = 0,
+    EVENT_GAME_REQUEST_START = 0,
+    
+    EVENTS_COUNT
 } EventType;
 
 @interface Event : NSObject

@@ -7,13 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Event.h"
+#import "EventListenerDelegate.h"
 
 @interface EventManager : NSObject
 {
-    
+    NSMutableSet * listeners[EVENTS_COUNT];
 }
 
-+ (EventManager *) sharedManager;
++(EventManager *)sharedManager;
 
+-(void)registerListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type;
+-(void)unregisterListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type;
 
 @end
