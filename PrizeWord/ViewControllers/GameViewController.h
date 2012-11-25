@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface GameViewController : UIViewController
+{
+    NSMutableArray * tiles;
+    IBOutlet UIScrollView *scrollView;
+}
 
 @end

@@ -12,6 +12,8 @@
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
 		F295023B165E036800DACFBA /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = F295023A165E036800DACFBA /* Event.m */; };
 		F2950241165EADC500DACFBA /* GameLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950240165EADC500DACFBA /* GameLogic.m */; };
+		F2950248166203B100DACFBA /* GameTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950247166203B100DACFBA /* GameTileView.m */; };
+		F295024C166206E600DACFBA /* tile_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295024B166206E600DACFBA /* tile_empty@2x.png */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -35,6 +37,9 @@
 		F295023D165EAA0C00DACFBA /* EventListenerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListenerDelegate.h; path = EventSystem/EventListenerDelegate.h; sourceTree = "<group>"; };
 		F295023F165EADC500DACFBA /* GameLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLogic.h; path = GameLogic/GameLogic.h; sourceTree = "<group>"; };
 		F2950240165EADC500DACFBA /* GameLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameLogic.m; path = GameLogic/GameLogic.m; sourceTree = "<group>"; };
+		F2950246166203B100DACFBA /* GameTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameTileView.h; path = Views/GameTileView.h; sourceTree = "<group>"; };
+		F2950247166203B100DACFBA /* GameTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameTileView.m; path = Views/GameTileView.m; sourceTree = "<group>"; };
+		F295024B166206E600DACFBA /* tile_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_empty@2x.png"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -88,9 +93,36 @@
 			name = GameLogic;
 			sourceTree = "<group>";
 		};
+		F29502451662036E00DACFBA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F2950246166203B100DACFBA /* GameTileView.h */,
+				F2950247166203B100DACFBA /* GameTileView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		F2950249166206CD00DACFBA /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				F295024A166206E600DACFBA /* gamefield */,
+			);
+			name = assets;
+			sourceTree = "<group>";
+		};
+		F295024A166206E600DACFBA /* gamefield */ = {
+			isa = PBXGroup;
+			children = (
+				F295024B166206E600DACFBA /* tile_empty@2x.png */,
+			);
+			name = gamefield;
+			path = PrizeWord/assets/gamefield;
+			sourceTree = "<group>";
+		};
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F2950249166206CD00DACFBA /* assets */,
 				F2D62705165DF80900EF6E8A /* PrizeWord */,
 				F2D626FC165DF80900EF6E8A /* Frameworks */,
 				F2D626FA165DF80900EF6E8A /* Products */,
@@ -119,6 +151,7 @@
 		F2D62705165DF80900EF6E8A /* PrizeWord */ = {
 			isa = PBXGroup;
 			children = (
+				F29502451662036E00DACFBA /* Views */,
 				F295023E165EAD7300DACFBA /* GameLogic */,
 				F2950235165E011000DACFBA /* EventSystem */,
 				F2D62719165DF89000EF6E8A /* ViewControllers */,
@@ -207,6 +240,7 @@
 				F2D6270A165DF80900EF6E8A /* InfoPlist.strings in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
+				F295024C166206E600DACFBA /* tile_empty@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +259,7 @@
 				F2950238165E016400DACFBA /* EventManager.m in Sources */,
 				F295023B165E036800DACFBA /* Event.m in Sources */,
 				F2950241165EADC500DACFBA /* GameLogic.m in Sources */,
+				F2950248166203B100DACFBA /* GameTileView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
