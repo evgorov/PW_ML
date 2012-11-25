@@ -17,6 +17,19 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
+static AppDelegate * currentInstance = nil;
+static GameLogic * sharedGameLogic = nil;
+
++ (AppDelegate *)currentDelegate
+{
+    return currentInstance;
+}
+
++ (GameLogic *)gameLogic
+{
+    return sharedGameLogic;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setStatusBarHidden:YES];
@@ -26,6 +39,9 @@
     self.window.rootViewController = _navController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+
+    currentInstance = self;
+    sharedGameLogic = [GameLogic sharedLogic];
     return YES;
 }
 

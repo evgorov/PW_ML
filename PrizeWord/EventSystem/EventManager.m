@@ -42,5 +42,11 @@
     [listeners[type] removeObject:listener];
 }
 
+-(void)dispatchEventWithType:(Event *)event
+{
+    for (id<EventListenerDelegate> listener in listeners[event.type]) {
+        [listener handleEvent:event];
+    }
+}
 
 @end

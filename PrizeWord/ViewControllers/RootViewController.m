@@ -8,6 +8,7 @@
 
 #import "RootViewController.h"
 #import "GameViewController.h"
+#import "EventManager.h"
 
 @interface RootViewController ()
 
@@ -42,7 +43,7 @@
 
 - (IBAction)handleStartGameClick:(UIButton *)sender
 {
-    [self.navigationController pushViewController:[GameViewController new] animated:YES];
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START]];
 }
 
 @end
