@@ -7,7 +7,7 @@
 //
 
 #import "GameViewController.h"
-#import "GameTileView.h"
+#import "GameFieldView.h"
 
 @interface GameViewController ()
 
@@ -27,25 +27,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    tiles = [[NSMutableArray alloc] initWithCapacity:100];
-    for (int i = 0; i != 100; ++i) {
-        GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(63 * (i % 10), 62 * (i / 10), 63, 62)];
-        [tiles addObject:tile];
-        [scrollView addSubview:tile];
-    }
-    scrollView.contentSize = CGSizeMake(630, 620);
-    scrollView.bounces = NO;
+    gameFieldView = (GameFieldView *)self.view;
+    [gameFieldView setHorTiles:10 andVertTiles:10];
 }
 
 - (void)viewDidUnload
 {
-    for (GameTileView * tile in tiles) {
-        [tile removeFromSuperview];
-    }
-    [tiles removeAllObjects];
-    tiles = nil;
-    
-    scrollView = nil;
+    gameFieldView = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

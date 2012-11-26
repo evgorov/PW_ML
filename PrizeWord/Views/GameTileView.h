@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define kTileWidth 63
+#define kTileHeight 62
+
 @interface GameTileView : UIView
 {
     UIImageView * background;

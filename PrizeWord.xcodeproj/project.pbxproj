@@ -14,6 +14,8 @@
 		F2950241165EADC500DACFBA /* GameLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950240165EADC500DACFBA /* GameLogic.m */; };
 		F2950248166203B100DACFBA /* GameTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950247166203B100DACFBA /* GameTileView.m */; };
 		F295024C166206E600DACFBA /* tile_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295024B166206E600DACFBA /* tile_empty@2x.png */; };
+		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
+		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -40,6 +42,11 @@
 		F2950246166203B100DACFBA /* GameTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameTileView.h; path = Views/GameTileView.h; sourceTree = "<group>"; };
 		F2950247166203B100DACFBA /* GameTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameTileView.m; path = Views/GameTileView.m; sourceTree = "<group>"; };
 		F295024B166206E600DACFBA /* tile_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_empty@2x.png"; sourceTree = "<group>"; };
+		F295024D16620B5700DACFBA /* GameField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameField.h; path = GameLogic/GameField.h; sourceTree = "<group>"; };
+		F295024E16620B5700DACFBA /* GameField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameField.m; path = GameLogic/GameField.m; sourceTree = "<group>"; };
+		F29502501663143300DACFBA /* TileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TileState.h; path = GameLogic/TileState.h; sourceTree = "<group>"; };
+		F2950251166316AD00DACFBA /* GameFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameFieldView.h; path = Views/GameFieldView.h; sourceTree = "<group>"; };
+		F2950252166316AD00DACFBA /* GameFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameFieldView.m; path = Views/GameFieldView.m; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -89,6 +96,9 @@
 			children = (
 				F295023F165EADC500DACFBA /* GameLogic.h */,
 				F2950240165EADC500DACFBA /* GameLogic.m */,
+				F295024D16620B5700DACFBA /* GameField.h */,
+				F295024E16620B5700DACFBA /* GameField.m */,
+				F29502501663143300DACFBA /* TileState.h */,
 			);
 			name = GameLogic;
 			sourceTree = "<group>";
@@ -98,6 +108,8 @@
 			children = (
 				F2950246166203B100DACFBA /* GameTileView.h */,
 				F2950247166203B100DACFBA /* GameTileView.m */,
+				F2950251166316AD00DACFBA /* GameFieldView.h */,
+				F2950252166316AD00DACFBA /* GameFieldView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -260,6 +272,8 @@
 				F295023B165E036800DACFBA /* Event.m in Sources */,
 				F2950241165EADC500DACFBA /* GameLogic.m in Sources */,
 				F2950248166203B100DACFBA /* GameTileView.m in Sources */,
+				F295024F16620B5700DACFBA /* GameField.m in Sources */,
+				F2950253166316AD00DACFBA /* GameFieldView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

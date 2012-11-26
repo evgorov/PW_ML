@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class GameFieldView;
+
 @interface GameViewController : UIViewController
 {
-    NSMutableArray * tiles;
-    IBOutlet UIScrollView *scrollView;
+    GameFieldView * gameFieldView;
 }
 
 @end
