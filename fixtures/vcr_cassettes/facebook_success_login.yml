@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://graph.facebook.com/oauth/access_token?client_id=390010757745933&client_secret=650d73bdb360c1e06719468b8e5eeddd&code=AQALG4kdgy528xTY0KlG-WlKG9vzMyOZ3TGUhquw_yWMVYa0E7o0dyBvSd9uNFigtbhQaIMX7i33pL2G9DhIhIBk1LgEUfwALggMCXnT7ZFW-B7iS0_0giZEGllyJQgvpJPyLAXykWGMXt3S2l-Cm7AyEA9DsbmB646QhZVtIiKL-cGH9aS7omfCMgRpKZewJkbLvjdR7pfG5k6YT1iYAth6&redirect_uri=http://example.org/facebook/authorize
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/plain; charset=UTF-8
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - "677653"
+      X-Fb-Debug:
+      - 1yTPG0L71vJeSVbIdcpg1bhsqHmoHP7VZpukgTex9Ic=
+      Date:
+      - Sat, 24 Nov 2012 15:48:58 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "137"
+    body:
+      encoding: US-ASCII
+      string: access_token=LKJLJdkslfjsdfk2423032384fsjdkalf--fdsfdsklfjsklFVSAGFDG&expires=5183917
+    http_version:
+  recorded_at: Sat, 24 Nov 2012 15:48:58 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=LKJLJdkslfjsdfk2423032384fsjdkalf--fdsfdsklfjsklFVSAGFDG
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - "\"7fc668e642827d4880d49beb046e767c2982603a\""
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Last-Modified:
+      - 2012-11-22T21:24:14+0000
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - "677653"
+      X-Fb-Debug:
+      - hUCgNN4I2YMizhlF8iA3TLrjPKL2HeMr2kO6HjAzEhs=
+      Date:
+      - Sat, 24 Nov 2012 15:48:58 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "398"
+    body:
+      encoding: US-ASCII
+      string: "{\"id\":\"123456789\",\"name\":\"Sherlock Holmes\",\"first_name\":\"Sherlock\",\"last_name\":\"Holmes\",\"link\":\"http:\\/\\/www.facebook.com\\/sherlock\",\"username\":\"sherlock\",\"birthday\":\"11\\/12\\/1873\",\"hometown\":{\"id\":\"115085015172389\",\"name\":\"London, UK\"},\"bio\":\"Elementary!\",\"gender\":\"male\",\"email\":\"sherlock@example.org\",\"timezone\":4,\"locale\":\"en_US\",\"verified\":true,\"updated_time\":\"2012-11-22T21:24:14+0000\"}"
+    http_version:
+  recorded_at: Sat, 24 Nov 2012 15:48:58 GMT
+recorded_with: VCR 2.3.0
