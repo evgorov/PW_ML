@@ -8,6 +8,7 @@
 
 #import "GameViewController.h"
 #import "GameFieldView.h"
+#import "GameField.h"
 
 @interface GameViewController ()
 
@@ -15,11 +16,12 @@
 
 @implementation GameViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)initWithGameField:(GameField *)gameField_
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    self = [super init];
+    if (self)
+    {
+        gameField = gameField_;
     }
     return self;
 }
@@ -28,7 +30,7 @@
 {
     [super viewDidLoad];
     gameFieldView = (GameFieldView *)self.view;
-    [gameFieldView setHorTiles:10 andVertTiles:10];
+    [gameFieldView setHorTiles:gameField.tilesPerRow andVertTiles:gameField.tilesPerCol];
 }
 
 - (void)viewDidUnload

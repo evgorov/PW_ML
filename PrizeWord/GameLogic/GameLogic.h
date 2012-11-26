@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "EventListenerDelegate.h"
 
+@class GameField;
+
 @interface GameLogic : NSObject<EventListenerDelegate>
 {
-    
+    GameField * currentGameField;
 }
 
 +(GameLogic *)sharedLogic;

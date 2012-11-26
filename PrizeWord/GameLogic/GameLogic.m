@@ -10,6 +10,13 @@
 #import "AppDelegate.h"
 #import "GameViewController.h"
 #import "EventManager.h"
+#import "GameField.h"
+
+@interface GameLogic ()
+
+-(void)initGameField;
+
+@end
 
 @implementation GameLogic
 
@@ -18,6 +25,7 @@
     self = [super init];
     if (self)
     {
+        currentGameField = nil;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_START];
     }
     return self;
@@ -38,7 +46,8 @@
     switch (event.type)
     {
         case EVENT_GAME_REQUEST_START:
-            [[AppDelegate currentDelegate].navController pushViewController:[GameViewController new] animated:YES];
+            [self initGameField];
+            [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
 
             break;
             
@@ -46,6 +55,11 @@
         default:
             break;
     }
+}
+
+-(void)initGameField
+{
+    currentGameField = [[GameField alloc] initWithTilesPerRow:10 andTilesPerCol:10];
 }
 
 @end

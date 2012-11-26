@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @class GameFieldView;
+@class GameField;
 
 @interface GameViewController : UIViewController
 {
     GameFieldView * gameFieldView;
+    GameField * gameField;
 }
+
+-(id)initWithGameField:(GameField *)gameField;
 
 @end

@@ -9,5 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface GameField : NSObject
+{
+    NSMutableArray * tiles;
+}
+
+@property (readonly) uint tilesPerRow;
+@property (readonly) uint tilesPerCol;
+
+-(id)initWithTilesPerRow:(uint)width andTilesPerCol:(uint)height;
 
 @end
