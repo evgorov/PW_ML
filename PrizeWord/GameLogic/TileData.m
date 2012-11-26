@@ -36,4 +36,18 @@
     return self;
 }
 
+-(id)copy
+{
+    TileData * newData = [TileData new];
+    newData.x = _x;
+    newData.y = _y;
+    newData.state = _state;
+    newData.word = _word;
+    newData.currentLetter= _currentLetter;
+    newData.targetLetter = _targetLetter;
+    newData.imagePath = _imagePath;
+    newData.imagePart = _imagePart;
+    return newData;
+}
+
 @end

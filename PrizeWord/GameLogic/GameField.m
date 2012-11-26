@@ -8,6 +8,7 @@
 
 #import "GameField.h"
 #import "TileData.h"
+#import "EventManager.h"
 
 @implementation GameField
 
@@ -29,14 +30,43 @@
                 [tiles addObject:[[TileData alloc] initWithPositionX:i y:j]];
             }
         }
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_TAP];
     }
     return self;
 }
 
+-(TileData *)dataForPositionX:(uint)x y:(uint)y
+{
+    return [tiles objectAtIndex:(x + y * _tilesPerRow)];
+}
+
 -(void)dealloc
 {
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_TAP];
     [tiles removeAllObjects];
     tiles = nil;
+}
+
+-(void)handleEvent:(Event *)event
+{
+    switch (event.type) {
+        case EVENT_TILE_TAP:
+        {
+            TileData * data = (TileData *)event.data;
+            data = [tiles objectAtIndex:(data.x + data.y * _tilesPerRow)];
+            if (data.state == TILE_INACTIVE)
+            {
+                TileData * newData = [data copy];
+                newData.state = TILE_LETTER_READY_TO_INPUT;
+                [tiles replaceObjectAtIndex:(data.x + data.y * _tilesPerRow) withObject:newData];
+                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:newData]];
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 @end

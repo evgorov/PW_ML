@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EventListenerDelegate.h"
 
-@interface GameField : NSObject
+@class TileData;
+
+@interface GameField : NSObject<EventListenerDelegate>
 {
     NSMutableArray * tiles;
 }
@@ -17,5 +20,6 @@
 @property (readonly) uint tilesPerCol;
 
 -(id)initWithTilesPerRow:(uint)width andTilesPerCol:(uint)height;
+-(TileData *)dataForPositionX:(uint)x y:(uint)y;
 
 @end

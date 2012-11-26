@@ -11,6 +11,8 @@
 typedef enum EventType {
     EVENT_FIRST = 0,
     EVENT_GAME_REQUEST_START = 0,
+    EVENT_TILE_CHANGE,
+    EVENT_TILE_TAP,
     
     EVENTS_COUNT
 } EventType;

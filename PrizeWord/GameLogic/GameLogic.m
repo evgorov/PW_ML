@@ -51,7 +51,6 @@
 
             break;
             
-        case EVENTS_COUNT:
         default:
             break;
     }
@@ -59,7 +58,7 @@
 
 -(void)initGameField
 {
-    currentGameField = [[GameField alloc] initWithTilesPerRow:10 andTilesPerCol:10];
+    currentGameField = [[GameField alloc] initWithTilesPerRow:5 andTilesPerCol:10];
 }
 
 @end

@@ -13,10 +13,11 @@
 		F295023B165E036800DACFBA /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = F295023A165E036800DACFBA /* Event.m */; };
 		F2950241165EADC500DACFBA /* GameLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950240165EADC500DACFBA /* GameLogic.m */; };
 		F2950248166203B100DACFBA /* GameTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950247166203B100DACFBA /* GameTileView.m */; };
-		F295024C166206E600DACFBA /* tile_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295024B166206E600DACFBA /* tile_empty@2x.png */; };
 		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
 		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F295025616631F6500DACFBA /* TileData.m in Sources */ = {isa = PBXBuildFile; fileRef = F295025516631F6400DACFBA /* TileData.m */; };
+		F295025916632D0500DACFBA /* tile_letter_fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */; };
+		F295025A16632D0500DACFBA /* tile_ready_to_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -42,7 +43,6 @@
 		F2950240165EADC500DACFBA /* GameLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameLogic.m; path = GameLogic/GameLogic.m; sourceTree = "<group>"; };
 		F2950246166203B100DACFBA /* GameTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameTileView.h; path = Views/GameTileView.h; sourceTree = "<group>"; };
 		F2950247166203B100DACFBA /* GameTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameTileView.m; path = Views/GameTileView.m; sourceTree = "<group>"; };
-		F295024B166206E600DACFBA /* tile_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_empty@2x.png"; sourceTree = "<group>"; };
 		F295024D16620B5700DACFBA /* GameField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameField.h; path = GameLogic/GameField.h; sourceTree = "<group>"; };
 		F295024E16620B5700DACFBA /* GameField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameField.m; path = GameLogic/GameField.m; sourceTree = "<group>"; };
 		F29502501663143300DACFBA /* TileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TileState.h; path = GameLogic/TileState.h; sourceTree = "<group>"; };
@@ -50,6 +50,8 @@
 		F2950252166316AD00DACFBA /* GameFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameFieldView.m; path = Views/GameFieldView.m; sourceTree = "<group>"; };
 		F295025416631F6400DACFBA /* TileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileData.h; path = GameLogic/TileData.h; sourceTree = "<group>"; };
 		F295025516631F6400DACFBA /* TileData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileData.m; path = GameLogic/TileData.m; sourceTree = "<group>"; };
+		F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_fixed@2x.png"; sourceTree = "<group>"; };
+		F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_ready_to_input@2x.png"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -125,12 +127,14 @@
 				F295024A166206E600DACFBA /* gamefield */,
 			);
 			name = assets;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
-				F295024B166206E600DACFBA /* tile_empty@2x.png */,
+				F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */,
+				F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */,
 			);
 			name = gamefield;
 			path = PrizeWord/assets/gamefield;
@@ -139,7 +143,6 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
-				F2950249166206CD00DACFBA /* assets */,
 				F2D62705165DF80900EF6E8A /* PrizeWord */,
 				F2D626FC165DF80900EF6E8A /* Frameworks */,
 				F2D626FA165DF80900EF6E8A /* Products */,
@@ -168,6 +171,7 @@
 		F2D62705165DF80900EF6E8A /* PrizeWord */ = {
 			isa = PBXGroup;
 			children = (
+				F2950249166206CD00DACFBA /* assets */,
 				F29502451662036E00DACFBA /* Views */,
 				F295023E165EAD7300DACFBA /* GameLogic */,
 				F2950235165E011000DACFBA /* EventSystem */,
@@ -257,7 +261,8 @@
 				F2D6270A165DF80900EF6E8A /* InfoPlist.strings in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
-				F295024C166206E600DACFBA /* tile_empty@2x.png in Resources */,
+				F295025916632D0500DACFBA /* tile_letter_fixed@2x.png in Resources */,
+				F295025A16632D0500DACFBA /* tile_ready_to_input@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

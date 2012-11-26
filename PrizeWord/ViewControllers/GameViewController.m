@@ -30,7 +30,7 @@
 {
     [super viewDidLoad];
     gameFieldView = (GameFieldView *)self.view;
-    [gameFieldView setHorTiles:gameField.tilesPerRow andVertTiles:gameField.tilesPerCol];
+    [gameFieldView setGameField:gameField];
 }
 
 - (void)viewDidUnload

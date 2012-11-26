@@ -7,13 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventListenerDelegate.h"
 
 #define kTileWidth 63
-#define kTileHeight 62
+#define kTileHeight 63
 
-@interface GameTileView : UIView
+@class TileData;
+
+@interface GameTileView : UIView<EventListenerDelegate>
 {
+    TileData * tileData;
     UIImageView * background;
 }
+
+- (id)initWithFrame:(CGRect)frame andData:(TileData *)data;
 
 @end

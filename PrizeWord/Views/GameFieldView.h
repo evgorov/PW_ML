@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class GameField;
+
 @interface GameFieldView : UIView
 {
     UIScrollView * scrollView;
@@ -16,6 +18,6 @@
     uint tilesPerCol;
 }
 
--(void)setHorTiles:(uint)width andVertTiles:(uint)height;
+-(void)setGameField:(GameField *)gameField;
 
 @end

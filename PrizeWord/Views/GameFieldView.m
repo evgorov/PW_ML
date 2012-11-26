@@ -8,6 +8,7 @@
 
 #import "GameFieldView.h"
 #import "GameTileView.h"
+#import "GameField.h"
 
 @implementation GameFieldView
 
@@ -35,27 +36,28 @@
         scrollView.bounces = NO;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
+        self.userInteractionEnabled = YES;
     }
     return self;
 }
 
--(void)setHorTiles:(uint)width andVertTiles:(uint)height
+-(void)setGameField:(GameField *)gameField;
 {
-    tilesPerRow = width;
-    tilesPerCol = height;
+    tilesPerRow = gameField.tilesPerRow;
+    tilesPerCol = gameField.tilesPerCol;
         
     for (GameTileView * tile in tiles) {
         [tile removeFromSuperview];
     }
     [tiles removeAllObjects];
     for (uint j = 0; j != tilesPerCol; ++j) {
-        for (uint i = 0; i != tilesPerCol; ++i) {
-            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i, kTileHeight * j, kTileWidth, kTileHeight)];
+        for (uint i = 0; i != tilesPerRow; ++i) {
+            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i, kTileHeight * j, kTileWidth, kTileHeight) andData:[gameField dataForPositionX:i y:j]];
             [tiles addObject:tile];
             [scrollView addSubview:tile];
         }
     }
-    scrollView.contentSize = CGSizeMake(width * kTileWidth, height * kTileHeight);
+    scrollView.contentSize = CGSizeMake(tilesPerRow * kTileWidth, tilesPerCol * kTileHeight);
 }
 
 -(void)dealloc
