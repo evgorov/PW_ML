@@ -13,11 +13,9 @@
 @synthesize x = _x;
 @synthesize y = _y;
 @synthesize state = _state;
-@synthesize word = _word;
+@synthesize question = _question;
 @synthesize currentLetter = _currentLetter;
 @synthesize targetLetter = _targetLetter;
-@synthesize imagePath = _imagePath;
-@synthesize imagePart = _imagePart;
 
 -(id)initWithPositionX:(uint)x y:(uint)y
 {
@@ -26,12 +24,10 @@
     {
         _x = x;
         _y = y;
-        _state = TILE_INACTIVE;
-        _word = @"";
+        _state = TILE_LETTER_EMPTY;
+        _question = @"";
         _currentLetter = @"";
         _targetLetter = @"";
-        _imagePath = @"";
-        _imagePart = CGRectMake(0, 0, 0, 0);
     }
     return self;
 }
@@ -42,11 +38,9 @@
     newData.x = _x;
     newData.y = _y;
     newData.state = _state;
-    newData.word = _word;
+    newData.question = _question;
     newData.currentLetter= _currentLetter;
     newData.targetLetter = _targetLetter;
-    newData.imagePath = _imagePath;
-    newData.imagePart = _imagePart;
     return newData;
 }
 

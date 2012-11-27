@@ -18,6 +18,7 @@
 {
     TileData * tileData;
     UIImageView * background;
+    UILabel * questionLabel;
 }
 
 - (id)initWithFrame:(CGRect)frame andData:(TileData *)data;

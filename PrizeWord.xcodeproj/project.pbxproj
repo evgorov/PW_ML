@@ -16,13 +16,21 @@
 		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
 		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F295025616631F6500DACFBA /* TileData.m in Sources */ = {isa = PBXBuildFile; fileRef = F295025516631F6400DACFBA /* TileData.m */; };
-		F295025916632D0500DACFBA /* tile_letter_fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */; };
-		F295025A16632D0500DACFBA /* tile_ready_to_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */; };
+		F2A22DE41664853100CF7859 /* tile_letter_correct_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */; };
+		F2A22DE51664853100CF7859 /* tile_letter_correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */; };
+		F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */; };
+		F2A22DE71664853100CF7859 /* tile_letter_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */; };
+		F2A22DE81664853100CF7859 /* tile_letter_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */; };
+		F2A22DE91664853100CF7859 /* tile_letter_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE01664853100CF7859 /* tile_letter_wrong@2x.png */; };
+		F2A22DEA1664853100CF7859 /* tile_question_correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE11664853100CF7859 /* tile_question_correct@2x.png */; };
+		F2A22DEB1664853100CF7859 /* tile_question_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE21664853100CF7859 /* tile_question_new@2x.png */; };
+		F2A22DEC1664853100CF7859 /* tile_question_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */; };
+		F2A22DF0166487C400CF7859 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DEF166487C400CF7859 /* Default-568h@2x.png */; };
+		F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2A22DF116648AAA00CF7859 /* QuartzCore.framework */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
 		F2D62704165DF80900EF6E8A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62703165DF80900EF6E8A /* CoreData.framework */; };
-		F2D6270A165DF80900EF6E8A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F2D62708165DF80900EF6E8A /* InfoPlist.strings */; };
 		F2D6270C165DF80900EF6E8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F2D6270B165DF80900EF6E8A /* main.m */; };
 		F2D62710165DF80900EF6E8A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F2D6270F165DF80900EF6E8A /* AppDelegate.m */; };
 		F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2D62711165DF80900EF6E8A /* PrizeWord.xcdatamodeld */; };
@@ -50,15 +58,23 @@
 		F2950252166316AD00DACFBA /* GameFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameFieldView.m; path = Views/GameFieldView.m; sourceTree = "<group>"; };
 		F295025416631F6400DACFBA /* TileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileData.h; path = GameLogic/TileData.h; sourceTree = "<group>"; };
 		F295025516631F6400DACFBA /* TileData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileData.m; path = GameLogic/TileData.m; sourceTree = "<group>"; };
-		F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_fixed@2x.png"; sourceTree = "<group>"; };
-		F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_ready_to_input@2x.png"; sourceTree = "<group>"; };
+		F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_correct_input@2x.png"; sourceTree = "<group>"; };
+		F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_correct@2x.png"; sourceTree = "<group>"; };
+		F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty_input@2x.png"; sourceTree = "<group>"; };
+		F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty@2x.png"; sourceTree = "<group>"; };
+		F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_input@2x.png"; sourceTree = "<group>"; };
+		F2A22DE01664853100CF7859 /* tile_letter_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_wrong@2x.png"; sourceTree = "<group>"; };
+		F2A22DE11664853100CF7859 /* tile_question_correct@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_correct@2x.png"; sourceTree = "<group>"; };
+		F2A22DE21664853100CF7859 /* tile_question_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_new@2x.png"; sourceTree = "<group>"; };
+		F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_wrong@2x.png"; sourceTree = "<group>"; };
+		F2A22DEF166487C400CF7859 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		F2A22DF116648AAA00CF7859 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F2D62701165DF80900EF6E8A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F2D62703165DF80900EF6E8A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F2D62707165DF80900EF6E8A /* PrizeWord-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PrizeWord-Info.plist"; sourceTree = "<group>"; };
-		F2D62709165DF80900EF6E8A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F2D6270B165DF80900EF6E8A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F2D6270D165DF80900EF6E8A /* PrizeWord-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PrizeWord-Prefix.pch"; sourceTree = "<group>"; };
 		F2D6270E165DF80900EF6E8A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -74,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */,
 				F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */,
 				F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */,
 				F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */,
@@ -133,8 +150,15 @@
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
-				F295025716632D0500DACFBA /* tile_letter_fixed@2x.png */,
-				F295025816632D0500DACFBA /* tile_ready_to_input@2x.png */,
+				F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */,
+				F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */,
+				F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */,
+				F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */,
+				F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */,
+				F2A22DE01664853100CF7859 /* tile_letter_wrong@2x.png */,
+				F2A22DE11664853100CF7859 /* tile_question_correct@2x.png */,
+				F2A22DE21664853100CF7859 /* tile_question_new@2x.png */,
+				F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */,
 			);
 			name = gamefield;
 			path = PrizeWord/assets/gamefield;
@@ -143,6 +167,7 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F2A22DEF166487C400CF7859 /* Default-568h@2x.png */,
 				F2D62705165DF80900EF6E8A /* PrizeWord */,
 				F2D626FC165DF80900EF6E8A /* Frameworks */,
 				F2D626FA165DF80900EF6E8A /* Products */,
@@ -160,6 +185,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F2A22DF116648AAA00CF7859 /* QuartzCore.framework */,
 				F2D626FD165DF80900EF6E8A /* UIKit.framework */,
 				F2D626FF165DF80900EF6E8A /* Foundation.framework */,
 				F2D62701165DF80900EF6E8A /* CoreGraphics.framework */,
@@ -188,7 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				F2D62707165DF80900EF6E8A /* PrizeWord-Info.plist */,
-				F2D62708165DF80900EF6E8A /* InfoPlist.strings */,
 				F2D6270B165DF80900EF6E8A /* main.m */,
 				F2D6270D165DF80900EF6E8A /* PrizeWord-Prefix.pch */,
 			);
@@ -258,11 +283,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2D6270A165DF80900EF6E8A /* InfoPlist.strings in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
-				F295025916632D0500DACFBA /* tile_letter_fixed@2x.png in Resources */,
-				F295025A16632D0500DACFBA /* tile_ready_to_input@2x.png in Resources */,
+				F2A22DE41664853100CF7859 /* tile_letter_correct_input@2x.png in Resources */,
+				F2A22DE51664853100CF7859 /* tile_letter_correct@2x.png in Resources */,
+				F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */,
+				F2A22DE71664853100CF7859 /* tile_letter_empty@2x.png in Resources */,
+				F2A22DE81664853100CF7859 /* tile_letter_input@2x.png in Resources */,
+				F2A22DE91664853100CF7859 /* tile_letter_wrong@2x.png in Resources */,
+				F2A22DEA1664853100CF7859 /* tile_question_correct@2x.png in Resources */,
+				F2A22DEB1664853100CF7859 /* tile_question_new@2x.png in Resources */,
+				F2A22DEC1664853100CF7859 /* tile_question_wrong@2x.png in Resources */,
+				F2A22DF0166487C400CF7859 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,17 +322,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		F2D62708165DF80900EF6E8A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F2D62709165DF80900EF6E8A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		F2D62714165DF80900EF6E8A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -308,6 +329,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -322,7 +344,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -334,6 +357,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -341,8 +365,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -352,11 +377,13 @@
 		F2D62717165DF80900EF6E8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -364,11 +391,13 @@
 		F2D62718165DF80900EF6E8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -54,10 +54,17 @@
         {
             TileData * data = (TileData *)event.data;
             data = [tiles objectAtIndex:(data.x + data.y * _tilesPerRow)];
-            if (data.state == TILE_INACTIVE)
+            if (data.state == TILE_LETTER_EMPTY)
             {
                 TileData * newData = [data copy];
-                newData.state = TILE_LETTER_READY_TO_INPUT;
+                newData.state = TILE_LETTER_EMPTY_INPUT;
+                [tiles replaceObjectAtIndex:(data.x + data.y * _tilesPerRow) withObject:newData];
+                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:newData]];
+            }
+            else if (data.state == TILE_LETTER_EMPTY_INPUT)
+            {
+                TileData * newData = [data copy];
+                newData.state = TILE_LETTER_CORRECT;
                 [tiles replaceObjectAtIndex:(data.x + data.y * _tilesPerRow) withObject:newData];
                 [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:newData]];
             }

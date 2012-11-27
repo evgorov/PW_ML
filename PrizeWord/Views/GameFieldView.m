@@ -14,7 +14,6 @@
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
-    NSLog(@"Init GameFieldView with coder");
     self = [super initWithCoder:aDecoder];
     if (self)
     {
@@ -28,7 +27,6 @@
 
 -(id)initWithFrame:(CGRect)frame
 {
-    NSLog(@"Init GameFieldView with frame");
     self = [super initWithFrame:frame];
     if (self)
     {
@@ -36,7 +34,6 @@
         scrollView.bounces = NO;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
-        self.userInteractionEnabled = YES;
     }
     return self;
 }

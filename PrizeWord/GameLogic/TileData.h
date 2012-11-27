@@ -14,11 +14,9 @@
 @property () uint x;
 @property () uint y;
 @property () TileState state;
-@property (nonatomic) NSString * word;
+@property (nonatomic) NSString * question;
 @property (nonatomic) NSString * currentLetter;
 @property (nonatomic) NSString * targetLetter;
-@property (nonatomic) NSString * imagePath;
-@property (nonatomic) CGRect imagePart;
 
 -(id)initWithPositionX:(uint)x y:(uint)y;
 
