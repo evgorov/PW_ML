@@ -11,6 +11,8 @@
 #import "GameViewController.h"
 #import "EventManager.h"
 #import "GameField.h"
+#import "PuzzleData.h"
+#import "HintData.h"
 
 @interface GameLogic ()
 
@@ -58,7 +60,60 @@
 
 -(void)initGameField
 {
-    currentGameField = [[GameField alloc] initWithTilesPerRow:5 andTilesPerCol:10];
+    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+    
+    [request setEntity:puzzleEntity];
+    [request setFetchLimit:1];
+    
+    NSError *error = nil;
+    NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
+    
+    PuzzleData * puzzle;
+    if (puzzles == nil || puzzles.count == 0)
+    {
+        puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+        [puzzle setWidth:[NSNumber numberWithUnsignedInt:10]];
+        [puzzle setHeight:[NSNumber numberWithUnsignedInt:10]];
+        [puzzle setIssuedAt:[NSDate date]];
+        [puzzle setBase_score:[NSNumber numberWithUnsignedInt:1000]];
+        [puzzle setName:@"Сканворд 1"];
+        [puzzle setPuzzle_id:@"puzzle_1"];
+        [puzzle setSet_id:@"puzzle_set_1"];
+        [puzzle setTime_given:[NSNumber numberWithUnsignedInt:10000]];
+        
+        HintData * hint;
+
+        hint = (HintData *)[NSEntityDescription insertNewObjectForEntityForName:@"Hint" inManagedObjectContext:managedObjectContext];
+        [hint setAnswer:@"обор"];
+        [hint setAnswer_position:@"west:bottom"];
+        [hint setHint_text:@"Дорого-\nвизна,\nно иначе"];
+        [hint setColumn:[NSNumber numberWithUnsignedInt:1]];
+        [hint setRow:[NSNumber numberWithUnsignedInt:0]];
+        [puzzle addHintsObject:hint];
+
+        hint = (HintData *)[NSEntityDescription insertNewObjectForEntityForName:@"Hint" inManagedObjectContext:managedObjectContext];
+        [hint setAnswer:@"бакалавр"];
+        [hint setAnswer_position:@"north-west:right"];
+        [hint setHint_text:@"Недотя-\nнувший\nдо ма-\nгистра"];
+        [hint setColumn:[NSNumber numberWithUnsignedInt:1]];
+        [hint setRow:[NSNumber numberWithUnsignedInt:2]];
+        [puzzle addHintsObject:hint];
+        
+        [managedObjectContext save:&error];
+        if (error != nil)
+        {
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }
+    else
+    {
+        puzzle = [puzzles objectAtIndex:0];
+    }
+    
+    currentGameField = [[GameField alloc] initWithData:puzzle];
 }
 
 @end

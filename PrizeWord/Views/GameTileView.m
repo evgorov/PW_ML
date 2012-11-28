@@ -96,6 +96,10 @@
             [background setImage:[UIImage imageNamed:@"tile_question_wrong"]];
             break;
             
+        case TILE_QUESTION_INPUT:
+            [background setImage:[UIImage imageNamed:@"tile_question_input"]];
+            break;
+            
         case TILE_LETTER_EMPTY:
             [background setImage:[UIImage imageNamed:@"tile_letter_empty"]];
             break;
@@ -122,6 +126,16 @@
             
         default:
             break;
+    }
+    if (tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_CORRECT || tileData.state == TILE_QUESTION_WRONG || tileData.state == TILE_QUESTION_INPUT)
+    {
+        questionLabel.text = tileData.question;
+        questionLabel.hidden = NO;
+    }
+    else
+    {
+        questionLabel.text = @"";
+        questionLabel.hidden = YES;
     }
 }
 

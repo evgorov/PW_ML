@@ -8,6 +8,8 @@
 
 #import "GameField.h"
 #import "TileData.h"
+#import "PuzzleData.h"
+#import "HintData.h"
 #import "EventManager.h"
 
 @implementation GameField
@@ -35,6 +37,22 @@
     return self;
 }
 
+-(id)initWithData:(PuzzleData *)puzzleData
+{
+    self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] andTilesPerCol:[puzzleData.height unsignedIntValue]];
+    
+    if (self)
+    {
+        for (HintData * hint in puzzleData.hints) {
+            TileData * tile = [tiles objectAtIndex:([hint.column unsignedIntValue] + [hint.row unsignedIntValue] * _tilesPerRow)];
+            tile.question = hint.hint_text;
+            tile.state = TILE_QUESTION_NEW;
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
+        }
+    }
+    return self;
+}
+
 -(TileData *)dataForPositionX:(uint)x y:(uint)y
 {
     return [tiles objectAtIndex:(x + y * _tilesPerRow)];
@@ -54,20 +72,28 @@
         {
             TileData * data = (TileData *)event.data;
             data = [tiles objectAtIndex:(data.x + data.y * _tilesPerRow)];
-            if (data.state == TILE_LETTER_EMPTY)
-            {
-                TileData * newData = [data copy];
-                newData.state = TILE_LETTER_EMPTY_INPUT;
-                [tiles replaceObjectAtIndex:(data.x + data.y * _tilesPerRow) withObject:newData];
-                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:newData]];
+            switch (data.state) {
+                case TILE_LETTER_EMPTY:
+                    data.state = TILE_LETTER_EMPTY_INPUT;
+                    break;
+                    
+                case TILE_LETTER_EMPTY_INPUT:
+                    data.state = TILE_LETTER_CORRECT;
+                    break;
+                    
+                case TILE_QUESTION_NEW:
+                case TILE_QUESTION_WRONG:
+                    data.state = TILE_QUESTION_INPUT;
+                    break;
+                    
+                case TILE_QUESTION_INPUT:
+                    data.state = TILE_QUESTION_NEW;
+                    break;
+                    
+                default:
+                    return;
             }
-            else if (data.state == TILE_LETTER_EMPTY_INPUT)
-            {
-                TileData * newData = [data copy];
-                newData.state = TILE_LETTER_CORRECT;
-                [tiles replaceObjectAtIndex:(data.x + data.y * _tilesPerRow) withObject:newData];
-                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:newData]];
-            }
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:data]];
         }
             break;
             

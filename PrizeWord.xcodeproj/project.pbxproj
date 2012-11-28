@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7B166685D6003F0686 /* PuzzleData.m */; };
 		F2868C7F166685D7003F0686 /* HintData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7E166685D7003F0686 /* HintData.m */; };
+		F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C801666A48B003F0686 /* tile_question_input@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -45,6 +46,7 @@
 		F2868C7B166685D6003F0686 /* PuzzleData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleData.m; path = PrizeWord/DataModels/PuzzleData.m; sourceTree = "<group>"; };
 		F2868C7D166685D7003F0686 /* HintData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintData.h; path = PrizeWord/DataModels/HintData.h; sourceTree = "<group>"; };
 		F2868C7E166685D7003F0686 /* HintData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintData.m; path = PrizeWord/DataModels/HintData.m; sourceTree = "<group>"; };
+		F2868C801666A48B003F0686 /* tile_question_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_input@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
+				F2868C801666A48B003F0686 /* tile_question_input@2x.png */,
 				F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */,
 				F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */,
 				F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */,
@@ -314,6 +317,7 @@
 				F2A22DEB1664853100CF7859 /* tile_question_new@2x.png in Resources */,
 				F2A22DEC1664853100CF7859 /* tile_question_wrong@2x.png in Resources */,
 				F2A22DF0166487C400CF7859 /* Default-568h@2x.png in Resources */,
+				F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
