@@ -15,6 +15,8 @@
 @interface GameField : NSObject<EventListenerDelegate>
 {
     NSMutableArray * tiles;
+    NSMutableArray * currentWord;
+    TileData * currentQuestion;
 }
 
 @property (readonly) uint tilesPerRow;

@@ -14,7 +14,12 @@
 @property () uint x;
 @property () uint y;
 @property () TileState state;
+// for questions and start letters
+@property () uint answerPosition;
+// for questions only
 @property (nonatomic) NSString * question;
+@property (nonatomic) NSString * answer;
+// for letters only
 @property (nonatomic) NSString * currentLetter;
 @property (nonatomic) NSString * targetLetter;
 
