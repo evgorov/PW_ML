@@ -9,6 +9,7 @@
 #import "GameViewController.h"
 #import "GameFieldView.h"
 #import "GameField.h"
+#import "EventManager.h"
 
 @interface GameViewController ()
 
@@ -31,10 +32,21 @@
     [super viewDidLoad];
     gameFieldView = (GameFieldView *)self.view;
     [gameFieldView setGameField:gameField];
+    textField = [UITextField new];
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.hidden = YES;
+    textField.delegate = self;
+    [self.view addSubview:textField];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
 }
 
 - (void)viewDidUnload
 {
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_BEGIN_INPUT];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
+    [textField removeFromSuperview];
+    textField = nil;
     gameFieldView = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -44,6 +56,37 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+// EventListenerDelegate
+-(void)handleEvent:(Event *)event
+{
+    if (event.type == EVENT_BEGIN_INPUT) {
+        textField.text = @"";
+        [textField becomeFirstResponder];
+    }
+    else if (event.type == EVENT_FINISH_INPUT) {
+        [textField resignFirstResponder];
+    }
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (range.length == 1 && string.length == 0)
+    {
+        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_POP_LETTER]];
+    }
+    else
+    {
+        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:string]];
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
+    return YES;
 }
 
 @end

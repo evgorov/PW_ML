@@ -39,8 +39,18 @@
         questionLabel.layer.shadowRadius = 0.5;
         questionLabel.layer.shadowOpacity = 1;
         questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
-        [questionLabel setText:@"Новый\nвопрос\nо\nчем-то\nеще"];
+        questionLabel.hidden = YES;
         [self addSubview:questionLabel];
+        
+        letterLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        letterLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:24];
+        letterLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        letterLabel.textAlignment = NSTextAlignmentCenter;
+        letterLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
+        letterLabel.backgroundColor = [UIColor clearColor];
+        letterLabel.hidden = YES;
+        [self addSubview:letterLabel];
+        
         tileData = data;
         [self initParts];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
@@ -59,6 +69,7 @@
     tileData = nil;
     background = nil;
     questionLabel = nil;
+    letterLabel = nil;
 }
 
 -(void)handleEvent:(Event *)event
@@ -130,12 +141,30 @@
     if (tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_CORRECT || tileData.state == TILE_QUESTION_WRONG || tileData.state == TILE_QUESTION_INPUT)
     {
         questionLabel.text = tileData.question;
+        if (tileData.state == TILE_QUESTION_CORRECT)
+        {
+            questionLabel.textColor = [UIColor colorWithRed:0.667 green:0.678 blue:0.71 alpha:1];
+        }
+        else
+        {
+            questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
+        }
         questionLabel.hidden = NO;
     }
     else
     {
         questionLabel.text = @"";
         questionLabel.hidden = YES;
+    }
+    if (tileData.state == TILE_LETTER_CORRECT || tileData.state == TILE_LETTER_CORRECT_INPUT || tileData.state == TILE_LETTER_INPUT || tileData.state == TILE_LETTER_WRONG)
+    {
+        letterLabel.text = [tileData.currentLetter uppercaseString];
+        letterLabel.hidden = NO;
+    }
+    else
+    {
+        letterLabel.text = @"";
+        letterLabel.hidden = YES;
     }
 }
 

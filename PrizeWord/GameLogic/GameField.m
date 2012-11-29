@@ -48,6 +48,8 @@
             }
         }
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_TAP];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUSH_LETTER];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_POP_LETTER];
     }
     return self;
 }
@@ -78,6 +80,8 @@
 -(void)dealloc
 {
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_TAP];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUSH_LETTER];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_POP_LETTER];
     [tiles removeAllObjects];
     tiles = nil;
     currentQuestion = nil;
@@ -100,7 +104,7 @@
                     break;
                     
                 case TILE_QUESTION_INPUT:
-//                    data.state = TILE_QUESTION_NEW;
+                    return;
                     break;
                     
                 default:
@@ -109,7 +113,50 @@
             [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:data]];
         }
             break;
-            
+
+        case EVENT_PUSH_LETTER:
+        {
+            TileData * letter = [currentWord objectAtIndex:currentLetterIdx];
+            letter.state = TILE_LETTER_INPUT;
+            letter.currentLetter = (NSString *)event.data;
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+            for (++currentLetterIdx; currentLetterIdx < currentWord.count; ++currentLetterIdx) {
+                letter = [currentWord objectAtIndex:currentLetterIdx];
+                if (letter.state == TILE_LETTER_EMPTY_INPUT)
+                {
+                    break;
+                }
+            }
+            if (currentLetterIdx >= currentWord.count)
+            {
+                [self checkQuestion];
+            }
+        }
+            break;
+
+        case EVENT_POP_LETTER:
+        {
+            TileData * letter;
+            for (--currentLetterIdx; currentLetterIdx > 0; --currentLetterIdx) {
+                letter = [currentWord objectAtIndex:currentLetterIdx];
+                if (letter.state == TILE_LETTER_INPUT)
+                {
+                    break;
+                }
+            }
+
+            letter = [currentWord objectAtIndex:currentLetterIdx];
+            if (letter.state != TILE_LETTER_INPUT)
+            {
+                [self dropQuestion];
+                return;
+            }
+            letter.currentLetter = (NSString *)event.data;
+            letter.state = TILE_LETTER_EMPTY_INPUT;
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+        }
+            break;
+
         default:
             break;
     }
@@ -119,7 +166,7 @@
 {
     currentQuestion = question;
     currentQuestion.state = TILE_QUESTION_INPUT;
-    
+
     int letterX = currentQuestion.x;
     int letterY = currentQuestion.y;
     int offsetX = 0;
@@ -144,13 +191,13 @@
     for (uint i = 0; i != len; ++i, letterX += offsetX, letterY += offsetY) {
         TileData * letter = [tiles objectAtIndex:(letterX + letterY * _tilesPerRow)];
         [currentWord addObject:letter];
-        letter.targetLetter = [currentQuestion.question substringWithRange:NSMakeRange(i, 1)];
+        letter.targetLetter = [currentQuestion.answer substringWithRange:NSMakeRange(i, 1)];
         if (letter.state == TILE_LETTER_EMPTY)
         {
             letter.currentLetter = @"";
             letter.state = TILE_LETTER_EMPTY_INPUT;
         }
-        else if (letter.state == TILE_QUESTION_CORRECT)
+        else if (letter.state == TILE_LETTER_CORRECT)
         {
             letter.state = TILE_LETTER_CORRECT_INPUT;
         }
@@ -165,6 +212,15 @@
         }
         [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
+    currentLetterIdx = 0;
+    for (TileData * letter in currentWord) {
+        if (letter.state == TILE_LETTER_EMPTY_INPUT)
+        {
+            break;
+        }
+        ++currentLetterIdx;
+    }
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_BEGIN_INPUT]];
 }
 
 // unselect current question tile and all corresponding letters tiles
@@ -201,6 +257,7 @@
         [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
     [currentWord removeAllObjects];
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
 }
 
 // check current question tile and all corresponding letters tiles
@@ -216,7 +273,7 @@
     BOOL correct = YES;
     for (TileData * letter in currentWord)
     {
-        if (letter.currentLetter != letter.targetLetter)
+        if ([letter.currentLetter caseInsensitiveCompare:letter.targetLetter] != NSOrderedSame)
         {
             correct = NO;
             break;
@@ -224,7 +281,7 @@
     }
     for (TileData * letter in currentWord)
     {
-        if (letter.state = TILE_LETTER_EMPTY_INPUT)
+        if (letter.state == TILE_LETTER_EMPTY_INPUT)
         {
             letter.state = TILE_LETTER_EMPTY;
         }
@@ -247,6 +304,7 @@
     currentQuestion.state = correct ? TILE_QUESTION_CORRECT : TILE_QUESTION_WRONG;
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
     return correct;
 }
 

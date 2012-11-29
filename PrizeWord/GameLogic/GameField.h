@@ -16,6 +16,7 @@
 {
     NSMutableArray * tiles;
     NSMutableArray * currentWord;
+    uint currentLetterIdx;
     TileData * currentQuestion;
 }
 

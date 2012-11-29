@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventListenerDelegate.h"
 
 @class GameFieldView;
 @class GameField;
 
-@interface GameViewController : UIViewController
+@interface GameViewController : UIViewController<EventListenerDelegate, UITextFieldDelegate>
 {
     GameFieldView * gameFieldView;
     GameField * gameField;
+    UITextField * textField;
 }
 
 -(id)initWithGameField:(GameField *)gameField;
