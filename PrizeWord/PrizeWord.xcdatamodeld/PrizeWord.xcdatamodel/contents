@@ -2,10 +2,10 @@
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Hint" representedClassName="HintData" syncable="YES">
         <attribute name="answer" attributeType="String" syncable="YES"/>
-        <attribute name="answer_position" attributeType="String" valueTransformerName="position" syncable="YES"/>
+        <attribute name="answer_position" attributeType="Integer 32" valueTransformerName="position" minValueString="17" defaultValueString="17" syncable="YES"/>
         <attribute name="column" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="hint_text" attributeType="String" syncable="YES"/>
-        <attribute name="row" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="row" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="hints" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <entity name="Puzzle" representedClassName="PuzzleData" syncable="YES">
@@ -20,7 +20,7 @@
         <relationship name="hints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Hint" inverseName="puzzle" inverseEntity="Hint" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Puzzle" positionX="-6120" positionY="-16032" width="128" height="180"/>
         <element name="Hint" positionX="-6120" positionY="-15822" width="128" height="135"/>
+        <element name="Puzzle" positionX="-6120" positionY="-16032" width="128" height="180"/>
     </elements>
 </model>

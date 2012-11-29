@@ -88,7 +88,7 @@
 
         hint = (HintData *)[NSEntityDescription insertNewObjectForEntityForName:@"Hint" inManagedObjectContext:managedObjectContext];
         [hint setAnswer:@"обор"];
-        [hint setAnswer_position:@"west:bottom"];
+        [hint setAnswer_positionAsString:@"west:bottom"];
         [hint setHint_text:@"Дорого-\nвизна,\nно иначе"];
         [hint setColumn:[NSNumber numberWithUnsignedInt:1]];
         [hint setRow:[NSNumber numberWithUnsignedInt:0]];
@@ -96,7 +96,7 @@
 
         hint = (HintData *)[NSEntityDescription insertNewObjectForEntityForName:@"Hint" inManagedObjectContext:managedObjectContext];
         [hint setAnswer:@"бакалавр"];
-        [hint setAnswer_position:@"north-west:right"];
+        [hint setAnswer_positionAsString:@"north-west:right"];
         [hint setHint_text:@"Недотя-\nнувший\nдо ма-\nгистра"];
         [hint setColumn:[NSNumber numberWithUnsignedInt:1]];
         [hint setRow:[NSNumber numberWithUnsignedInt:2]];
