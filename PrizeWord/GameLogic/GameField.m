@@ -131,6 +131,11 @@
             {
                 [self checkQuestion];
             }
+            else
+            {
+                letter = [currentWord objectAtIndex:currentLetterIdx];
+                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
+            }
         }
             break;
 
@@ -154,6 +159,7 @@
             letter.currentLetter = (NSString *)event.data;
             letter.state = TILE_LETTER_EMPTY_INPUT;
             [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
         }
             break;
 
@@ -221,6 +227,8 @@
         ++currentLetterIdx;
     }
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_BEGIN_INPUT]];
+    TileData * selectedLetter = [currentWord objectAtIndex:currentLetterIdx];
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:selectedLetter]];
 }
 
 // unselect current question tile and all corresponding letters tiles
@@ -303,8 +311,9 @@
 
     currentQuestion.state = correct ? TILE_QUESTION_CORRECT : TILE_QUESTION_WRONG;
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
-    currentQuestion = nil;
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
+    currentQuestion = nil;
     return correct;
 }
 

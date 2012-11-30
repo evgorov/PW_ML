@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventListenerDelegate.h"
 
 @class GameField;
+@class TileData;
 
-@interface GameFieldView : UIView
+@interface GameFieldView : UIView<EventListenerDelegate>
 {
     UIScrollView * scrollView;
     UIImageView * borderTopLeft;
@@ -18,6 +20,7 @@
     UIImageView * borderTopRight;
     UIImageView * borderBottomRight;
     NSMutableArray * tiles;
+    TileData * focusedTile;
     uint tilesPerRow;
     uint tilesPerCol;
 }

@@ -9,6 +9,8 @@
 #import "GameFieldView.h"
 #import "GameTileView.h"
 #import "GameField.h"
+#import "TileData.h"
+#import "EventManager.h"
 
 #define kTileOffset 20
 
@@ -36,6 +38,9 @@
         [scrollView addSubview:borderTopRight];
         [scrollView addSubview:borderBottomLeft];
         [scrollView addSubview:borderBottomRight];
+        focusedTile = nil;
+        
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
     }
     return self;
 }
@@ -67,6 +72,7 @@
 
 -(void)dealloc
 {
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FOCUS_CHANGE];
     for (GameTileView * tile in tiles) {
         [tile removeFromSuperview];
     }
@@ -83,13 +89,23 @@
     borderBottomRight = nil;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+// EventListener
+-(void)handleEvent:(Event *)event
 {
-    // Drawing code
+    if (event.type == EVENT_FOCUS_CHANGE)
+    {
+        focusedTile = event.data;
+        int offsetX = kTileOffset + focusedTile.x * kTileWidth + kTileWidth / 2 - scrollView.frame.size.width / 2;
+        int offsetY = kTileOffset + focusedTile.y * kTileHeight + kTileHeight / 2 - scrollView.frame.size.height / 2;
+        if (offsetX < 0)
+            offsetX = 0;
+        if (offsetY < 0)
+            offsetY = 0;
+        if (offsetX > scrollView.contentSize.width - scrollView.frame.size.width)
+            offsetX = scrollView.contentSize.width - scrollView.frame.size.width;
+        if (offsetY > scrollView.contentSize.height - scrollView.frame.size.height)
+            offsetY = scrollView.contentSize.height - scrollView.frame.size.height;
+        [scrollView setContentOffset:CGPointMake(offsetX, offsetY) animated:YES];
+    }
 }
-*/
-
 @end
