@@ -13,6 +13,10 @@
 @interface GameFieldView : UIView
 {
     UIScrollView * scrollView;
+    UIImageView * borderTopLeft;
+    UIImageView * borderBottomLeft;
+    UIImageView * borderTopRight;
+    UIImageView * borderBottomRight;
     NSMutableArray * tiles;
     uint tilesPerRow;
     uint tilesPerCol;

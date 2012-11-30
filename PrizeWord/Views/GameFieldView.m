@@ -10,6 +10,8 @@
 #import "GameTileView.h"
 #import "GameField.h"
 
+#define kTileOffset 20
+
 @implementation GameFieldView
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -21,19 +23,19 @@
         scrollView.bounces = NO;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
-    }
-    return self;
-}
-
--(id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        scrollView = [[UIScrollView alloc] initWithFrame:frame];
-        scrollView.bounces = NO;
-        [self addSubview:scrollView];
-        tiles = [NSMutableArray new];
+        scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_tiling"]];
+        UIImage * stretchableBorder = [[UIImage imageNamed:@"bg_border"] stretchableImageWithLeftCapWidth:40 topCapHeight:40];
+        borderTopLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
+        borderBottomLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
+        borderBottomLeft.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        borderTopRight = [[UIImageView alloc] initWithImage:stretchableBorder];
+        borderTopRight.transform = CGAffineTransformMakeRotation(M_PI_2);
+        borderBottomRight = [[UIImageView alloc] initWithImage:stretchableBorder];
+        borderBottomRight.transform = CGAffineTransformMakeRotation(M_PI);
+        [scrollView addSubview:borderTopLeft];
+        [scrollView addSubview:borderTopRight];
+        [scrollView addSubview:borderBottomLeft];
+        [scrollView addSubview:borderBottomRight];
     }
     return self;
 }
@@ -49,12 +51,18 @@
     [tiles removeAllObjects];
     for (uint j = 0; j != tilesPerCol; ++j) {
         for (uint i = 0; i != tilesPerRow; ++i) {
-            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i, kTileHeight * j, kTileWidth, kTileHeight) andData:[gameField dataForPositionX:i y:j]];
+            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i + kTileOffset, kTileHeight * j + kTileOffset, kTileWidth, kTileHeight) andData:[gameField dataForPositionX:i y:j]];
             [tiles addObject:tile];
-            [scrollView addSubview:tile];
+            [scrollView insertSubview:tile atIndex:0];
         }
     }
-    scrollView.contentSize = CGSizeMake(tilesPerRow * kTileWidth, tilesPerCol * kTileHeight);
+    int width = tilesPerRow * kTileWidth + 2 * kTileOffset;
+    int height = tilesPerCol * kTileHeight + 2 * kTileOffset;
+    scrollView.contentSize = CGSizeMake(width, height);
+    borderTopLeft.frame = CGRectMake(0, 0, width / 2, height / 2);
+    borderTopRight.frame = CGRectMake(width / 2, 0, width - width / 2, height / 2);
+    borderBottomLeft.frame = CGRectMake(0, height / 2, width / 2, height - height / 2);
+    borderBottomRight.frame = CGRectMake(width / 2, height / 2, width - width / 2, height - height / 2);
 }
 
 -(void)dealloc
@@ -65,6 +73,14 @@
     tiles = nil;
     [scrollView removeFromSuperview];
     scrollView = nil;
+    [borderTopLeft removeFromSuperview];
+    [borderTopRight removeFromSuperview];
+    [borderBottomLeft removeFromSuperview];
+    [borderBottomRight removeFromSuperview];
+    borderTopLeft = nil;
+    borderTopRight = nil;
+    borderBottomLeft = nil;
+    borderBottomRight = nil;
 }
 
 /*
