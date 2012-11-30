@@ -53,9 +53,14 @@
     // e.g. self.myOutlet = nil;
 }
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return (UIInterfaceOrientationPortrait | UIInterfaceOrientationPortraitUpsideDown);
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 // EventListenerDelegate
