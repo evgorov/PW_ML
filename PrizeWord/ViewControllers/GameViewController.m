@@ -30,7 +30,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    gameFieldView = (GameFieldView *)self.view;
+
+    [lblTime setFont:[UIFont fontWithName:@"DINPro-Black" size:22]];
+    [btnHint.titleLabel setFont:[UIFont fontWithName:@"DINPro-Black" size:18]];
+
     [gameFieldView setGameField:gameField];
     textField = [UITextField new];
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -48,6 +51,11 @@
     [textField removeFromSuperview];
     textField = nil;
     gameFieldView = nil;
+    btnPause = nil;
+    lblTime = nil;
+    btnPlay = nil;
+    gameFieldView = nil;
+    btnHint = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

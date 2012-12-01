@@ -21,7 +21,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        scrollView = [[UIScrollView alloc] initWithFrame:self.frame];
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         scrollView.bounces = NO;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
@@ -97,14 +97,14 @@
         focusedTile = event.data;
         int offsetX = kTileOffset + focusedTile.x * kTileWidth + kTileWidth / 2 - scrollView.frame.size.width / 2;
         int offsetY = kTileOffset + focusedTile.y * kTileHeight + kTileHeight / 2 - scrollView.frame.size.height / 2;
-        if (offsetX < 0)
-            offsetX = 0;
-        if (offsetY < 0)
-            offsetY = 0;
         if (offsetX > scrollView.contentSize.width - scrollView.frame.size.width)
             offsetX = scrollView.contentSize.width - scrollView.frame.size.width;
         if (offsetY > scrollView.contentSize.height - scrollView.frame.size.height)
             offsetY = scrollView.contentSize.height - scrollView.frame.size.height;
+        if (offsetX < 0)
+            offsetX = 0;
+        if (offsetY < 0)
+            offsetY = 0;
         [scrollView setContentOffset:CGPointMake(offsetX, offsetY) animated:YES];
     }
 }

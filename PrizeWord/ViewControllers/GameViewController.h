@@ -14,9 +14,13 @@
 
 @interface GameViewController : UIViewController<EventListenerDelegate, UITextFieldDelegate>
 {
-    GameFieldView * gameFieldView;
     GameField * gameField;
     UITextField * textField;
+    IBOutlet GameFieldView * gameFieldView;
+    IBOutlet UIButton * btnPause;
+    IBOutlet UIButton * btnPlay;
+    IBOutlet UIButton * btnHint;
+    IBOutlet UILabel * lblTime;
 }
 
 -(id)initWithGameField:(GameField *)gameField;
