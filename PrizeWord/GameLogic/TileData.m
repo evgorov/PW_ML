@@ -37,6 +37,16 @@
     return self;
 }
 
+-(int)currentLetterIdx
+{
+    int index = [ALPHABET rangeOfString:_currentLetter].location;
+    if (index == NSNotFound)
+    {
+        index = 33;
+    }
+    return index;
+}
+
 -(id)copy
 {
     TileData * newData = [TileData new];

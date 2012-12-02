@@ -34,6 +34,13 @@
 		F2868CB1166A22CE003F0686 /* header_pause_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CA9166A22CE003F0686 /* header_pause_btn@2x~ipad.png */; };
 		F2868CB2166A22CE003F0686 /* header_play_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CAA166A22CE003F0686 /* header_play_btn_down@2x~ipad.png */; };
 		F2868CB3166A22CE003F0686 /* header_play_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CAB166A22CE003F0686 /* header_play_btn@2x~ipad.png */; };
+		F2868CBA166A6CC8003F0686 /* tile_letters_correct_brilliant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB4166A6CC0003F0686 /* tile_letters_correct_brilliant@2x.png */; };
+		F2868CBB166A6CC8003F0686 /* tile_letters_correct_free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB5166A6CC0003F0686 /* tile_letters_correct_free@2x.png */; };
+		F2868CBC166A6CC8003F0686 /* tile_letters_correct_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB6166A6CC1003F0686 /* tile_letters_correct_gold@2x.png */; };
+		F2868CBD166A6CC8003F0686 /* tile_letters_correct_silver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB7166A6CC2003F0686 /* tile_letters_correct_silver@2x.png */; };
+		F2868CBE166A6CC8003F0686 /* tile_letters_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB8166A6CC4003F0686 /* tile_letters_input@2x.png */; };
+		F2868CBF166A6CC8003F0686 /* tile_letters_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */; };
+		F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC1166B6964003F0686 /* TileImageHelper.m */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -43,8 +50,6 @@
 		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
 		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F295025616631F6500DACFBA /* TileData.m in Sources */ = {isa = PBXBuildFile; fileRef = F295025516631F6400DACFBA /* TileData.m */; };
-		F2A22DE41664853100CF7859 /* tile_letter_correct_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */; };
-		F2A22DE51664853100CF7859 /* tile_letter_correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */; };
 		F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */; };
 		F2A22DE71664853100CF7859 /* tile_letter_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */; };
 		F2A22DE81664853100CF7859 /* tile_letter_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */; };
@@ -95,6 +100,14 @@
 		F2868CA9166A22CE003F0686 /* header_pause_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_pause_btn@2x~ipad.png"; sourceTree = "<group>"; };
 		F2868CAA166A22CE003F0686 /* header_play_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_play_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
 		F2868CAB166A22CE003F0686 /* header_play_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_play_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F2868CB4166A6CC0003F0686 /* tile_letters_correct_brilliant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_correct_brilliant@2x.png"; sourceTree = "<group>"; };
+		F2868CB5166A6CC0003F0686 /* tile_letters_correct_free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_correct_free@2x.png"; sourceTree = "<group>"; };
+		F2868CB6166A6CC1003F0686 /* tile_letters_correct_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_correct_gold@2x.png"; sourceTree = "<group>"; };
+		F2868CB7166A6CC2003F0686 /* tile_letters_correct_silver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_correct_silver@2x.png"; sourceTree = "<group>"; };
+		F2868CB8166A6CC4003F0686 /* tile_letters_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_input@2x.png"; sourceTree = "<group>"; };
+		F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_wrong@2x.png"; sourceTree = "<group>"; };
+		F2868CC0166B6964003F0686 /* TileImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileImageHelper.h; path = Views/TileImageHelper.h; sourceTree = "<group>"; };
+		F2868CC1166B6964003F0686 /* TileImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileImageHelper.m; path = Views/TileImageHelper.m; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -109,13 +122,10 @@
 		F2950247166203B100DACFBA /* GameTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameTileView.m; path = Views/GameTileView.m; sourceTree = "<group>"; };
 		F295024D16620B5700DACFBA /* GameField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameField.h; path = GameLogic/GameField.h; sourceTree = "<group>"; };
 		F295024E16620B5700DACFBA /* GameField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameField.m; path = GameLogic/GameField.m; sourceTree = "<group>"; };
-		F29502501663143300DACFBA /* TileState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TileState.h; path = GameLogic/TileState.h; sourceTree = "<group>"; };
 		F2950251166316AD00DACFBA /* GameFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameFieldView.h; path = Views/GameFieldView.h; sourceTree = "<group>"; };
 		F2950252166316AD00DACFBA /* GameFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameFieldView.m; path = Views/GameFieldView.m; sourceTree = "<group>"; };
 		F295025416631F6400DACFBA /* TileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileData.h; path = GameLogic/TileData.h; sourceTree = "<group>"; };
 		F295025516631F6400DACFBA /* TileData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileData.m; path = GameLogic/TileData.m; sourceTree = "<group>"; };
-		F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_correct_input@2x.png"; sourceTree = "<group>"; };
-		F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_correct@2x.png"; sourceTree = "<group>"; };
 		F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty_input@2x.png"; sourceTree = "<group>"; };
 		F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty@2x.png"; sourceTree = "<group>"; };
 		F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_input@2x.png"; sourceTree = "<group>"; };
@@ -224,7 +234,6 @@
 				F2950240165EADC500DACFBA /* GameLogic.m */,
 				F295024D16620B5700DACFBA /* GameField.h */,
 				F295024E16620B5700DACFBA /* GameField.m */,
-				F29502501663143300DACFBA /* TileState.h */,
 				F295025416631F6400DACFBA /* TileData.h */,
 				F295025516631F6400DACFBA /* TileData.m */,
 			);
@@ -238,6 +247,8 @@
 				F2950247166203B100DACFBA /* GameTileView.m */,
 				F2950251166316AD00DACFBA /* GameFieldView.h */,
 				F2950252166316AD00DACFBA /* GameFieldView.m */,
+				F2868CC0166B6964003F0686 /* TileImageHelper.h */,
+				F2868CC1166B6964003F0686 /* TileImageHelper.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -256,11 +267,15 @@
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
+				F2868CB4166A6CC0003F0686 /* tile_letters_correct_brilliant@2x.png */,
+				F2868CB5166A6CC0003F0686 /* tile_letters_correct_free@2x.png */,
+				F2868CB6166A6CC1003F0686 /* tile_letters_correct_gold@2x.png */,
+				F2868CB7166A6CC2003F0686 /* tile_letters_correct_silver@2x.png */,
+				F2868CB8166A6CC4003F0686 /* tile_letters_input@2x.png */,
+				F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */,
 				F2868C8216688ED3003F0686 /* bg_border@2x.png */,
 				F2868C8316688ED3003F0686 /* bg_tiling@2x.png */,
 				F2868C801666A48B003F0686 /* tile_question_input@2x.png */,
-				F2A22DDB1664853100CF7859 /* tile_letter_correct_input@2x.png */,
-				F2A22DDC1664853100CF7859 /* tile_letter_correct@2x.png */,
 				F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */,
 				F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */,
 				F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */,
@@ -397,8 +412,6 @@
 			files = (
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
-				F2A22DE41664853100CF7859 /* tile_letter_correct_input@2x.png in Resources */,
-				F2A22DE51664853100CF7859 /* tile_letter_correct@2x.png in Resources */,
 				F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */,
 				F2A22DE71664853100CF7859 /* tile_letter_empty@2x.png in Resources */,
 				F2A22DE81664853100CF7859 /* tile_letter_input@2x.png in Resources */,
@@ -432,6 +445,12 @@
 				F2868CB1166A22CE003F0686 /* header_pause_btn@2x~ipad.png in Resources */,
 				F2868CB2166A22CE003F0686 /* header_play_btn_down@2x~ipad.png in Resources */,
 				F2868CB3166A22CE003F0686 /* header_play_btn@2x~ipad.png in Resources */,
+				F2868CBA166A6CC8003F0686 /* tile_letters_correct_brilliant@2x.png in Resources */,
+				F2868CBB166A6CC8003F0686 /* tile_letters_correct_free@2x.png in Resources */,
+				F2868CBC166A6CC8003F0686 /* tile_letters_correct_gold@2x.png in Resources */,
+				F2868CBD166A6CC8003F0686 /* tile_letters_correct_silver@2x.png in Resources */,
+				F2868CBE166A6CC8003F0686 /* tile_letters_input@2x.png in Resources */,
+				F2868CBF166A6CC8003F0686 /* tile_letters_wrong@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +475,7 @@
 				F295025616631F6500DACFBA /* TileData.m in Sources */,
 				F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */,
 				F2868C7F166685D7003F0686 /* HintData.m in Sources */,
+				F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

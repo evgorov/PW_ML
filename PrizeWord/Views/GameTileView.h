@@ -19,7 +19,6 @@
     TileData * tileData;
     UIImageView * background;
     UILabel * questionLabel;
-    UILabel * letterLabel;
 }
 
 - (id)initWithFrame:(CGRect)frame andData:(TileData *)data;

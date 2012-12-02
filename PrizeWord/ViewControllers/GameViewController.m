@@ -91,7 +91,7 @@
     }
     else
     {
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:string]];
+        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:string.lowercaseString]];
     }
     return YES;
 }

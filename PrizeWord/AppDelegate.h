@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GameLogic.h"
+
+@class GameLogic;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

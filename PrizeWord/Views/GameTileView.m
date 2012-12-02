@@ -9,6 +9,7 @@
 #import "GameTileView.h"
 #import "EventManager.h"
 #import "TileData.h"
+#import "TileImageHelper.h"
 
 #import <QuartzCore/CALayer.h>
 
@@ -26,6 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tile_letter_empty"]];
+        background.contentMode = UIViewContentModeScaleToFill;
         [self addSubview:background];
         questionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         questionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:8];
@@ -41,15 +43,6 @@
         questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
         questionLabel.hidden = YES;
         [self addSubview:questionLabel];
-        
-        letterLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        letterLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:24];
-        letterLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        letterLabel.textAlignment = NSTextAlignmentCenter;
-        letterLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
-        letterLabel.backgroundColor = [UIColor clearColor];
-        letterLabel.hidden = YES;
-        [self addSubview:letterLabel];
         
         tileData = data;
         [self initParts];
@@ -69,7 +62,6 @@
     tileData = nil;
     background = nil;
     questionLabel = nil;
-    letterLabel = nil;
 }
 
 -(void)handleEvent:(Event *)event
@@ -115,24 +107,25 @@
             [background setImage:[UIImage imageNamed:@"tile_letter_empty"]];
             break;
             
+        case TILE_LETTER_CORRECT_INPUT:
         case TILE_LETTER_CORRECT:
-            [background setImage:[UIImage imageNamed:@"tile_letter_correct"]];
+        {
+            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_BRILLIANT andIndex:tileData.currentLetterIdx]];
+        }
             break;
             
         case TILE_LETTER_WRONG:
-            [background setImage:[UIImage imageNamed:@"tile_letter_wrong"]];
+            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_WRONG andIndex:tileData.currentLetterIdx]];
             break;
             
         case TILE_LETTER_EMPTY_INPUT:
             [background setImage:[UIImage imageNamed:@"tile_letter_empty_input"]];
             break;
             
-        case TILE_LETTER_CORRECT_INPUT:
-            [background setImage:[UIImage imageNamed:@"tile_letter_correct_input"]];
-            break;
-            
         case TILE_LETTER_INPUT:
-            [background setImage:[UIImage imageNamed:@"tile_letter_input"]];
+        {
+            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_INPUT andIndex:tileData.currentLetterIdx]];
+        }
             break;
             
         default:
@@ -155,16 +148,6 @@
     {
         questionLabel.text = @"";
         questionLabel.hidden = YES;
-    }
-    if (tileData.state == TILE_LETTER_CORRECT || tileData.state == TILE_LETTER_CORRECT_INPUT || tileData.state == TILE_LETTER_INPUT || tileData.state == TILE_LETTER_WRONG)
-    {
-        letterLabel.text = [tileData.currentLetter uppercaseString];
-        letterLabel.hidden = NO;
-    }
-    else
-    {
-        letterLabel.text = @"";
-        letterLabel.hidden = YES;
     }
 }
 

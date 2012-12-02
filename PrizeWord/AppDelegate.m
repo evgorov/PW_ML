@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "GameLogic.h"
+#import "TileImageHelper.h"
 
 @implementation AppDelegate
 
@@ -42,6 +44,7 @@ static GameLogic * sharedGameLogic = nil;
 
     currentInstance = self;
     sharedGameLogic = [GameLogic sharedLogic];
+    [TileImageHelper initHelper];
     return YES;
 }
 
@@ -71,6 +74,7 @@ static GameLogic * sharedGameLogic = nil;
 {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+    [TileImageHelper uninitHelper];
 }
 
 - (void)saveContext
