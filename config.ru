@@ -8,6 +8,7 @@ require 'middleware/redis_middleware'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
+require 'middleware/password_reset'
 require 'middleware/users'
 require 'middleware/admin'
 
@@ -44,6 +45,7 @@ vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkont
 use Middleware::OauthProviderAuthorization, vkontakte_provider
 
 use Middleware::BasicRegistration
+use Middleware::PasswordReset
 
 use Middleware::Users
 

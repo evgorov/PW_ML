@@ -234,11 +234,11 @@
 
 <p><em>Response:</em></p>
 
-<p>404 code if token is not found, 403 if token is already used and 200 for valid token.</p>
+<p>404 code if token is not found or if token is already used and 200 for valid token.</p>
 
 <p><strong><code>POST /password_reset</code></strong></p>
 
-<p>This post request will be triggered by password reset form. It will actually change user password.</p>
+<p>This post request will be triggered by password reset form. It will change user password.</p>
 
 <p><em>Request:</em></p>
 
@@ -249,7 +249,7 @@
 
 <p><em>Response:</em></p>
 
-<p>404 code if token is not found, 403 if token is already used and 200 for valid token.</p>
+<p>404 code if token is not found or if token is already used, 403 if <code>password</code> field is empty and 200 for valid token.</p>
 
 <p><strong><code>GET /me</code></strong></p>
 
@@ -624,7 +624,7 @@
 
 <p><strong><code>DELETE /service_message</code></strong></p>
 
-<h2>Puzzle data formate</h2>
+<h2>Puzzle data format</h2>
 
 <p>Puzzle data is stored as json object. It has following properties:</p>
 
@@ -635,7 +635,7 @@
 <li><code>issuedAt</code>: Date of the issue</li>
 <li><code>base_score</code>: Score for solving puzzle without time bonuses.</li>
 <li><code>time_given</code>: Time in seconds to solve this puzzle</li>
-<li><code>length</code>: length of the field in cells</li>
+<li><code>height</code>: height of the field in cells</li>
 <li><code>width</code>: width of the field in cells</li>
 <li><code>hints</code>: array of <code>hint</code> objects</li>
 </ul>
@@ -645,8 +645,6 @@
 <ul>
 <li><code>column</code>: column number for hint cell</li>
 <li><code>row</code>: row number for hint cell</li>
-<li><code>width</code>: width of the cell</li>
-<li><code>height</code>: height of the cell</li>
 <li><code>hint_text</code>: text of the hint</li>
 <li><code>answer</code>: answer to the question, lower case.</li>
 <li><code>answer_position</code>: position of answer relative to cell, can be one of the following:

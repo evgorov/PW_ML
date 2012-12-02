@@ -213,11 +213,11 @@ Html page for password reset. Link to it will be mailed in within `POST /forgot_
 
 *Response:*
 
-404 code if token is not found, 403 if token is already used and 200 for valid token.
+404 code if token is not found or if token is already used and 200 for valid token.
 
 **`POST /password_reset`**
 
-This post request will be triggered by password reset form. It will actually change user password.
+This post request will be triggered by password reset form. It will change user password.
 
 *Request:*
 
@@ -226,7 +226,7 @@ This post request will be triggered by password reset form. It will actually cha
 
 *Response:*
 
-404 code if token is not found, 403 if token is already used and 200 for valid token.
+404 code if token is not found or if token is already used, 403 if `password` field is empty and 200 for valid token.
 
 **`GET /me`**
 
@@ -582,7 +582,7 @@ Add points to users score. This endpoint can be used score for activities other 
 
 **`DELETE /service_message`**
 
-## Puzzle data formate
+## Puzzle data format
 
 Puzzle data is stored as json object. It has following properties:
 
@@ -592,7 +592,7 @@ Puzzle data is stored as json object. It has following properties:
 - `issuedAt`: Date of the issue
 - `base_score`: Score for solving puzzle without time bonuses.
 - `time_given`: Time in seconds to solve this puzzle
-- `length`: length of the field in cells
+- `height`: height of the field in cells
 - `width`: width of the field in cells
 - `hints`: array of `hint` objects
 
@@ -600,8 +600,6 @@ Each `hint` can have one of following properties:
 
 - `column`: column number for hint cell
 - `row`: row number for hint cell
-- `width`: width of the cell
-- `height`: height of the cell
 - `hint_text`: text of the hint
 - `answer`: answer to the question, lower case.
 - `answer_position`: position of answer relative to cell, can be one of the following:

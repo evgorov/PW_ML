@@ -9,6 +9,7 @@ group :app do
   gem 'redis-namespace'
   gem 'unicode_utils'
   gem 'bcrypt-ruby', require: 'bcrypt'
+  gem 'pony'
 end
 
 group :test do

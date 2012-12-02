@@ -68,6 +68,9 @@ describe 'Integration spec' do
       Middleware::BasicRegistration.settings.environment = :test
       use Middleware::BasicRegistration
 
+      Middleware::PasswordReset.settings.environment = :test
+      use Middleware::PasswordReset
+
       Middleware::Users.settings.environment = :test
       use Middleware::Users
 
@@ -259,6 +262,34 @@ describe 'Integration spec' do
     response_data['year'].should == Time.now.year
     response_data['month'].should == Time.now.month
     response_data['user_id'].should == user_id
+  end
+
+  it 'reset password cannot use same token twice' do
+    post '/signup', valid_user_data
+    last_response.status.should == 200
+    last_response_should_be_json
+
+    token = nil
+    Pony.should_receive(:mail) { |h| h[:html_body] =~ /token=([a-zA-Z0-9-]+)/; token = $1 }
+    post '/forgot_password', email: valid_user_data['email']
+    last_response.status.should == 200
+    last_response_should_be_json
+    last_response.body.should_not =~ /#{token}/ # developer sanity check
+
+    get '/password_reset', token: token
+    last_response.status.should == 200
+
+    post '/password_reset', token: token, password: 'new_password'
+    last_response.status.should == 200
+
+    post '/password_reset', token: token, password: 'bad_new_password'
+    last_response.status.should == 404
+
+    post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+    last_response.status.should == 403
+
+    post '/login', email: valid_user_data['email'], password: 'new_password'
+    last_response.status.should == 200
   end
 
 end
