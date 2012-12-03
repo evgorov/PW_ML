@@ -42,6 +42,10 @@
 		F2868CBF166A6CC8003F0686 /* tile_letters_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */; };
 		F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC1166B6964003F0686 /* TileImageHelper.m */; };
 		F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */; };
+		F2868CC9166CB15B003F0686 /* ReleaseNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC7166CB15A003F0686 /* ReleaseNotesViewController.m */; };
+		F2868CCA166CB15C003F0686 /* ReleaseNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */; };
+		F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = F2868CCB166CB362003F0686 /* ReleaseNotes.txt */; };
+		F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -111,6 +115,11 @@
 		F2868CC1166B6964003F0686 /* TileImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileImageHelper.m; path = Views/TileImageHelper.m; sourceTree = "<group>"; };
 		F2868CC3166C9CDE003F0686 /* PuzzleSetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetData.h; path = PrizeWord/DataModels/PuzzleSetData.h; sourceTree = "<group>"; };
 		F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetData.m; path = PrizeWord/DataModels/PuzzleSetData.m; sourceTree = "<group>"; };
+		F2868CC6166CB159003F0686 /* ReleaseNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReleaseNotesViewController.h; path = ViewControllers/ReleaseNotesViewController.h; sourceTree = "<group>"; };
+		F2868CC7166CB15A003F0686 /* ReleaseNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReleaseNotesViewController.m; path = ViewControllers/ReleaseNotesViewController.m; sourceTree = "<group>"; };
+		F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ReleaseNotesViewController.xib; path = ViewControllers/ReleaseNotesViewController.xib; sourceTree = "<group>"; };
+		F2868CCB166CB362003F0686 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
+		F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ReleaseNotesViewController~ipad.xib"; path = "ViewControllers/ReleaseNotesViewController~ipad.xib"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -346,6 +355,7 @@
 				F2D62707165DF80900EF6E8A /* PrizeWord-Info.plist */,
 				F2D6270B165DF80900EF6E8A /* main.m */,
 				F2D6270D165DF80900EF6E8A /* PrizeWord-Prefix.pch */,
+				F2868CCB166CB362003F0686 /* ReleaseNotes.txt */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -361,6 +371,10 @@
 				F295022F165DFF7900DACFBA /* GameViewController.h */,
 				F2950230165DFF7900DACFBA /* GameViewController.m */,
 				F2950231165DFF7900DACFBA /* GameViewController.xib */,
+				F2868CC6166CB159003F0686 /* ReleaseNotesViewController.h */,
+				F2868CC7166CB15A003F0686 /* ReleaseNotesViewController.m */,
+				F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */,
+				F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -456,6 +470,9 @@
 				F2868CBD166A6CC8003F0686 /* tile_letters_correct_silver@2x.png in Resources */,
 				F2868CBE166A6CC8003F0686 /* tile_letters_input@2x.png in Resources */,
 				F2868CBF166A6CC8003F0686 /* tile_letters_wrong@2x.png in Resources */,
+				F2868CCA166CB15C003F0686 /* ReleaseNotesViewController.xib in Resources */,
+				F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */,
+				F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +499,7 @@
 				F2868C7F166685D7003F0686 /* QuestionData.m in Sources */,
 				F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */,
 				F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */,
+				F2868CC9166CB15B003F0686 /* ReleaseNotesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
