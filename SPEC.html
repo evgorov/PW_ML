@@ -490,35 +490,13 @@
 
 <p>Three dots (...) in documentation mean that part of payload was skipped to keep clarity.</p>
 
-<p><strong><code>POST /puzzles/:id/progress</code></strong></p>
+<p><strong><code>GET /puzzles/:id</code></strong></p>
 
-<p>Update information about puzzle progress.</p>
+<p><strong><code>PUT /puzzles/:id</code></strong></p>
 
-<p><em>Request:</em></p>
+<p><strong><code>GET /sets_available</code></strong></p>
 
-<ul>
-<li><code>session_token</code>: Session token.</li>
-<li><code>id</code>: Id of puzzle</li>
-<li><code>[progress]</code>: Percent of puzzle completion</li>
-<li><code>[score]</code>: Current score for puzzle</li>
-<li><code>[time_left]</code>: Time left to solve puzzle</li>
-</ul>
-
-<p><em>Response:</em></p>
-
-<pre><code>{
-  &quot;name&quot;: &quot;Puzzle name&quot;,
-  &quot;issuedAt&quot;: &quot;2012-23-04&quot;,
-  &quot;set_id&quot;: &quot;23&quot;,
-  &quot;progress&quot;: 10,
-  &quot;base_score&quot;: 100,
-  &quot;time_given&quot;: 60000,
-  &quot;time_left&quot;: 30001,
-  &quot;data&quot;: {...},
-  &quot;score&quot;: 1000,
-  &quot;solved&quot;: false
-}
-</code></pre>
+<p>Sets available sets for buying (shows this month only)</p>
 
 <p><strong><code>POST /sets/:id/buy</code></strong></p>
 
@@ -526,64 +504,38 @@
 
 <p><strong><code>POST /hints</code></strong></p>
 
-<p>Buy hint for url.</p>
-
-<p><strong><code>POST /sets/:id/progress</code></strong></p>
-
-<p>Update information about set&#39;s progress and score.</p>
+<p>Add or removes hints from user.</p>
 
 <p><em>Request:</em></p>
 
 <ul>
 <li><code>session_token</code>: Session token.</li>
-<li><code>id</code>: Id of set</li>
-<li><code>[score]</code>: Current score for set</li>
+<li><code>[hints_change]</code>: amount to change.</li>
 </ul>
 
 <p><em>Response:</em></p>
 
 <pre><code>{
-  &quot;id&quot;: &quot;23&quot;,
-  &quot;name&quot;: &quot;1rst Golden Set&quot;,
-  &quot;bought&quot;: true,
-  &quot;type&quot;: &quot;golden&quot;,
-  &quot;solved&quot;: 3,
-  &quot;total&quot;: 12,
-  &quot;percent&quot;: 20,
-  &quot;score&quot;: 23000,
-  &quot;puzzles&quot;: [
-    {
-      &quot;name&quot;: &quot;A Study in Scarlet&quot;,
-      &quot;issuedAt&quot;: &quot;2012-03-05&quot;,
-      &quot;set_id&quot;: &quot;23&quot;,
-      &quot;progress&quot;: 100,
-      &quot;base_score&quot;: 100,
-      &quot;time_given&quot;: 60000,
-      &quot;time_left&quot;: 30001,
-      &quot;data&quot;: {...},
-      &quot;score&quot;: 1000,
-      &quot;solved&quot;: true
-    },
-    {
-      &quot;name&quot;: &quot;The Adventure of the Greek Interpreter&quot;,
-      &quot;issuedAt&quot;: &quot;2012-23-04&quot;,
-      &quot;set_id&quot;: &quot;23&quot;,
-      &quot;progress&quot;: 100,
-      &quot;base_score&quot;: 150,
-      &quot;time_given&quot;: 60080,
-      &quot;time_left&quot;: 30001,
-      &quot;data&quot;: {...},
-      &quot;score&quot;: 1100,
-      &quot;solved&quot;: true
-    },
-    ...
-  ]
+  &quot;me&quot;: {
+    &quot;name&quot;: &quot;Sherlock&quot;,
+    &quot;surname&quot;: &quot;Holmes&quot;,
+    &quot;userpic&quot;: null,
+    &quot;email&quot;: &quot;sherlock@example.com&quot;,
+    &quot;birthdate&quot;: null,
+    &quot;city&quot;: &quot;London&quot;,
+    &quot;solved&quot;: 120,
+    &quot;position&quot;: 2,
+    &quot;month_score&quot;: 1124,
+    &quot;high_score&quot;: 10124,
+    &quot;dynamics&quot;: 1,
+    &quot;hints&quot;: 8
+  }
 }
 </code></pre>
 
 <p><strong><code>POST /score</code></strong></p>
 
-<p>Add points to users score. This endpoint can be used score for activities other than puzzle solving (inviting friends, achivements, ect.)</p>
+<p>Add or removes points from user score. This endpoint can be used score for activities other than puzzle solving (inviting friends, achivements, ect.)</p>
 
 <p><em>Request:</em></p>
 
@@ -614,9 +566,15 @@
 
 <h2>Admin endpoints</h2>
 
+<p><strong><code>GET /sets</code></strong></p>
+
 <p><strong><code>POST /sets</code></strong></p>
 
 <p><strong><code>PUT /sets/:id</code></strong></p>
+
+<p><strong><code>PUT /sets/:id/publish</code></strong></p>
+
+<p><strong><code>PUT /sets/:id/unpublish</code></strong></p>
 
 <p><strong><code>DELETE /sets/:id</code></strong></p>
 
@@ -637,15 +595,15 @@
 <li><code>time_given</code>: Time in seconds to solve this puzzle</li>
 <li><code>height</code>: height of the field in cells</li>
 <li><code>width</code>: width of the field in cells</li>
-<li><code>hints</code>: array of <code>hint</code> objects</li>
+<li><code>questions</code>: array of <code>question</code> objects</li>
 </ul>
 
-<p>Each <code>hint</code> can have one of following properties:</p>
+<p>Each <code>question</code> can have one of following properties:</p>
 
 <ul>
-<li><code>column</code>: column number for hint cell</li>
-<li><code>row</code>: row number for hint cell</li>
-<li><code>hint_text</code>: text of the hint</li>
+<li><code>column</code>: column number for question cell</li>
+<li><code>row</code>: row number for question cell</li>
+<li><code>question_text</code>: text of the question</li>
 <li><code>answer</code>: answer to the question, lower case.</li>
 <li><code>answer_position</code>: position of answer relative to cell, can be one of the following:
 <code>north:left</code>, <code>north:top</code>, <code>north:right</code>, <code>north-east:left</code>, <code>north-east:top</code>, <code>north-east:right</code>,
@@ -666,13 +624,13 @@
   &quot;time_given&quot;: 60000,
   &quot;height&quot;: 3,
   &quot;width&quot;: 9,
-  &quot;hints&quot;: [
+  &quot;questions&quot;: [
     {
       &quot;column&quot;: 1,
       &quot;row&quot;: 1,
       &quot;width&quot;: 1,
       &quot;height&quot;: 1,
-      &quot;hint_text&quot;: &quot;Inference in which the conclusion is of no greater generality than the premises&quot;,
+      &quot;question_text&quot;: &quot;Inference in which the conclusion is of no greater generality than the premises&quot;,
       &quot;answer&quot;: &quot;deduction&quot;,
       &quot;answer_position&quot;: &quot;east:right&quot;
     },
@@ -681,7 +639,7 @@
       &quot;row&quot;: 2,
       &quot;width&quot;: 1,
       &quot;height&quot;: 1,
-      &quot;hint_text&quot;: &quot;A small weapon&quot;,
+      &quot;question_text&quot;: &quot;A small weapon&quot;,
       &quot;answer&quot;: &quot;knive&quot;,
       &quot;answer_position&quot;: &quot;south:right&quot;
     }

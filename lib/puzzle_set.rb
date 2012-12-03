@@ -34,8 +34,8 @@ class PuzzleSet < BasicModel
     }.save
   end
 
-  def published_for(year, month)
-    keys = @storage.srange("PuzzleSets:#{year}##{month}")
+  def published_for(year = Time.now.year, month = Time.now.month)
+    keys = @storage.smembers("PuzzleSets:#{year}##{month}")
     keys.map{ |id| self.storage(@storage).load(id) }
   end
 end

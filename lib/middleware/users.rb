@@ -33,6 +33,24 @@ module Middleware
       { me: user }.to_json
     end
 
+    post '/hints' do
+      env['token_auth'].authorize!
+      user = env['token_auth'].user
+      user['hints'] += params['hints_change'].to_i
+      user.save
+      { me: user }.to_json
+    end
+
+    get '/sets_available' do
+      args = []
+      if params['year'] && params['month']
+        args << params['year'].to_i
+        args << params['month'].to_i
+      end
+
+      PuzzleSet.storage(env['redis']).published_for(*args).to_json
+    end
+
     get '/users' do
       result = {}
       result['users'] = RegisteredUser.storage(env['redis']).users_by_rating(params['page'].to_i)
@@ -57,6 +75,22 @@ module Middleware
         args << params['month'].to_i
       end
       UserPuzzles.storage(env['redis']).puzzles_for(*args).to_json
+    end
+
+    get '/puzzles/:id' do
+      env['token_auth'].authorize!
+      env['token_auth'].user["puzzles.#{params[:id]}"].to_json
+    end
+
+    put '/puzzles/:id' do
+      begin
+        JSON.parse(params['puzzle_data'])
+      rescue JSON::ParserError
+        halt(403, { 'message' => 'invalid json data'}.to_json)
+      end
+
+      env['token_auth'].authorize!
+      env['token_auth'].user["puzzles.#{params[:id]}"] = params['puzzle_data']
     end
   end
 end

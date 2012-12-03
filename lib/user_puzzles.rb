@@ -29,14 +29,13 @@ class UserPuzzles < BasicModel
   end
 
   def validate!
-    %w[score year month user_id sets].each do |field|
+    %w[year month user_id sets].each do |field|
       raise InvalidState.new("Missing required field: #{field}") unless self[field]
     end
     self
   end
 
   def set_defaults!
-    self['score'] = 0
     self['sets'] = []
   end
 end

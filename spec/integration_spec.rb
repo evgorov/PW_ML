@@ -236,11 +236,17 @@ describe 'Integration spec' do
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    set_id = response_data['id']
+    admin_set_id = response_data['id']
 
-    post("/sets/#{set_id}/publish", { session_key: session_key })
+    post("/sets/#{admin_set_id}/publish", { session_key: session_key })
     last_response.status.should == 200
     last_response_should_be_json
+
+    get('/sets_available')
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    set_id = response_data[0]['id']
 
     post '/signup', valid_user_data
     last_response.status.should == 200
@@ -262,6 +268,8 @@ describe 'Integration spec' do
     response_data['year'].should == Time.now.year
     response_data['month'].should == Time.now.month
     response_data['user_id'].should == user_id
+    response_data['user_id'].should == user_id
+    response_data['sets'][0]['id'].should == set_id
   end
 
   it 'reset password cannot use same token twice' do

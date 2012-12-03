@@ -456,32 +456,13 @@ List puzzles for given month and their status, if month is not present, show inf
 
 Three dots (...) in documentation mean that part of payload was skipped to keep clarity.
 
-**`POST /puzzles/:id/progress`**
+**`GET /puzzles/:id`**
 
-Update information about puzzle progress.
+**`PUT /puzzles/:id`**
 
-*Request:*
+**`GET /sets_available`**
 
-- `session_token`: Session token.
-- `id`: Id of puzzle
-- `[progress]`: Percent of puzzle completion
-- `[score]`: Current score for puzzle
-- `[time_left]`: Time left to solve puzzle
-
-*Response:*
-
-    {
-      "name": "Puzzle name",
-      "issuedAt": "2012-23-04",
-      "set_id": "23",
-      "progress": 10,
-      "base_score": 100,
-      "time_given": 60000,
-      "time_left": 30001,
-      "data": {...},
-      "score": 1000,
-      "solved": false
-    }
+Sets available sets for buying (shows this month only)
 
 **`POST /sets/:id/buy`**
 
@@ -489,62 +470,36 @@ Buy set.
 
 **`POST /hints`**
 
-Buy hint for url.
+Add or removes hints from user.
 
-**`POST /sets/:id/progress`**
-
-Update information about set's progress and score.
 
 *Request:*
 
 - `session_token`: Session token.
-- `id`: Id of set
-- `[score]`: Current score for set
+- `[hints_change]`: amount to change.
 
 *Response:*
 
     {
-      "id": "23",
-      "name": "1rst Golden Set",
-      "bought": true,
-      "type": "golden",
-      "solved": 3,
-      "total": 12,
-      "percent": 20,
-      "score": 23000,
-      "puzzles": [
-        {
-          "name": "A Study in Scarlet",
-          "issuedAt": "2012-03-05",
-          "set_id": "23",
-          "progress": 100,
-          "base_score": 100,
-          "time_given": 60000,
-          "time_left": 30001,
-          "data": {...},
-          "score": 1000,
-          "solved": true
-        },
-        {
-          "name": "The Adventure of the Greek Interpreter",
-          "issuedAt": "2012-23-04",
-          "set_id": "23",
-          "progress": 100,
-          "base_score": 150,
-          "time_given": 60080,
-          "time_left": 30001,
-          "data": {...},
-          "score": 1100,
-          "solved": true
-        },
-        ...
-      ]
+      "me": {
+        "name": "Sherlock",
+        "surname": "Holmes",
+        "userpic": null,
+        "email": "sherlock@example.com",
+        "birthdate": null,
+        "city": "London",
+        "solved": 120,
+        "position": 2,
+        "month_score": 1124,
+        "high_score": 10124,
+        "dynamics": 1,
+        "hints": 8
+      }
     }
-
 
 **`POST /score`**
 
-Add points to users score. This endpoint can be used score for activities other than puzzle solving (inviting friends, achivements, ect.)
+Add or removes points from user score. This endpoint can be used score for activities other than puzzle solving (inviting friends, achivements, ect.)
 
 *Request:*
 
@@ -572,9 +527,15 @@ Add points to users score. This endpoint can be used score for activities other 
 
 ## Admin endpoints
 
+**`GET /sets`**
+
 **`POST /sets`**
 
 **`PUT /sets/:id`**
+
+**`PUT /sets/:id/publish`**
+
+**`PUT /sets/:id/unpublish`**
 
 **`DELETE /sets/:id`**
 
@@ -594,13 +555,13 @@ Puzzle data is stored as json object. It has following properties:
 - `time_given`: Time in seconds to solve this puzzle
 - `height`: height of the field in cells
 - `width`: width of the field in cells
-- `hints`: array of `hint` objects
+- `questions`: array of `question` objects
 
-Each `hint` can have one of following properties:
+Each `question` can have one of following properties:
 
-- `column`: column number for hint cell
-- `row`: row number for hint cell
-- `hint_text`: text of the hint
+- `column`: column number for question cell
+- `row`: row number for question cell
+- `question_text`: text of the question
 - `answer`: answer to the question, lower case.
 - `answer_position`: position of answer relative to cell, can be one of the following:
   `north:left`, `north:top`, `north:right`, `north-east:left`, `north-east:top`, `north-east:right`,
@@ -620,13 +581,13 @@ Example:
       "time_given": 60000,
       "height": 3,
       "width": 9,
-      "hints": [
+      "questions": [
         {
           "column": 1,
           "row": 1,
           "width": 1,
           "height": 1,
-          "hint_text": "Inference in which the conclusion is of no greater generality than the premises",
+          "question_text": "Inference in which the conclusion is of no greater generality than the premises",
           "answer": "deduction",
           "answer_position": "east:right"
         },
@@ -635,7 +596,7 @@ Example:
           "row": 2,
           "width": 1,
           "height": 1,
-          "hint_text": "A small weapon",
+          "question_text": "A small weapon",
           "answer": "knive",
           "answer_position": "south:right"
         }
