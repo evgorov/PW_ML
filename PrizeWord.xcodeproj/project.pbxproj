@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7B166685D6003F0686 /* PuzzleData.m */; };
-		F2868C7F166685D7003F0686 /* HintData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7E166685D7003F0686 /* HintData.m */; };
+		F2868C7F166685D7003F0686 /* QuestionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7E166685D7003F0686 /* QuestionData.m */; };
 		F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C801666A48B003F0686 /* tile_question_input@2x.png */; };
 		F2868C8416688ED3003F0686 /* bg_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8216688ED3003F0686 /* bg_border@2x.png */; };
 		F2868C8516688ED3003F0686 /* bg_tiling@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8316688ED3003F0686 /* bg_tiling@2x.png */; };
@@ -41,6 +41,7 @@
 		F2868CBE166A6CC8003F0686 /* tile_letters_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB8166A6CC4003F0686 /* tile_letters_input@2x.png */; };
 		F2868CBF166A6CC8003F0686 /* tile_letters_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */; };
 		F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC1166B6964003F0686 /* TileImageHelper.m */; };
+		F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -73,8 +74,8 @@
 /* Begin PBXFileReference section */
 		F2868C7A166685D6003F0686 /* PuzzleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleData.h; path = PrizeWord/DataModels/PuzzleData.h; sourceTree = "<group>"; };
 		F2868C7B166685D6003F0686 /* PuzzleData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleData.m; path = PrizeWord/DataModels/PuzzleData.m; sourceTree = "<group>"; };
-		F2868C7D166685D7003F0686 /* HintData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintData.h; path = PrizeWord/DataModels/HintData.h; sourceTree = "<group>"; };
-		F2868C7E166685D7003F0686 /* HintData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintData.m; path = PrizeWord/DataModels/HintData.m; sourceTree = "<group>"; };
+		F2868C7D166685D7003F0686 /* QuestionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionData.h; path = PrizeWord/DataModels/QuestionData.h; sourceTree = "<group>"; };
+		F2868C7E166685D7003F0686 /* QuestionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QuestionData.m; path = PrizeWord/DataModels/QuestionData.m; sourceTree = "<group>"; };
 		F2868C801666A48B003F0686 /* tile_question_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_input@2x.png"; sourceTree = "<group>"; };
 		F2868C8216688ED3003F0686 /* bg_border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_border@2x.png"; sourceTree = "<group>"; };
 		F2868C8316688ED3003F0686 /* bg_tiling@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_tiling@2x.png"; sourceTree = "<group>"; };
@@ -108,6 +109,8 @@
 		F2868CB9166A6CC4003F0686 /* tile_letters_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_wrong@2x.png"; sourceTree = "<group>"; };
 		F2868CC0166B6964003F0686 /* TileImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileImageHelper.h; path = Views/TileImageHelper.h; sourceTree = "<group>"; };
 		F2868CC1166B6964003F0686 /* TileImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileImageHelper.m; path = Views/TileImageHelper.m; sourceTree = "<group>"; };
+		F2868CC3166C9CDE003F0686 /* PuzzleSetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetData.h; path = PrizeWord/DataModels/PuzzleSetData.h; sourceTree = "<group>"; };
+		F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetData.m; path = PrizeWord/DataModels/PuzzleSetData.m; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -170,10 +173,12 @@
 		F2868C79166683C8003F0686 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
-				F2868C7D166685D7003F0686 /* HintData.h */,
-				F2868C7E166685D7003F0686 /* HintData.m */,
+				F2868C7D166685D7003F0686 /* QuestionData.h */,
+				F2868C7E166685D7003F0686 /* QuestionData.m */,
 				F2868C7A166685D6003F0686 /* PuzzleData.h */,
 				F2868C7B166685D6003F0686 /* PuzzleData.m */,
+				F2868CC3166C9CDE003F0686 /* PuzzleSetData.h */,
+				F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */,
 			);
 			name = DataModels;
 			path = ..;
@@ -474,8 +479,9 @@
 				F2950253166316AD00DACFBA /* GameFieldView.m in Sources */,
 				F295025616631F6500DACFBA /* TileData.m in Sources */,
 				F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */,
-				F2868C7F166685D7003F0686 /* HintData.m in Sources */,
+				F2868C7F166685D7003F0686 /* QuestionData.m in Sources */,
 				F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */,
+				F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

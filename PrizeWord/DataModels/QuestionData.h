@@ -1,5 +1,5 @@
 //
-//  HintData.h
+//  QuestionData.h
 //  PrizeWord
 //
 //  Created by Pavel Skorynin on 11/28/12.
@@ -20,12 +20,12 @@
 #define kAnswerPositionLeft     64
 #define kAnswerPositionRight    128
 
-@interface HintData : NSManagedObject
+@interface QuestionData : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * column;
 @property (nonatomic, retain) NSNumber * row;
 @property (nonatomic, retain) NSNumber * answer_position;
-@property (nonatomic, retain) NSString * hint_text;
+@property (nonatomic, retain) NSString * question_text;
 @property (nonatomic, retain) NSString * answer;
 @property (nonatomic, retain) PuzzleData *puzzle;
 

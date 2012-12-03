@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #import "GameViewController.h"
 #import "EventManager.h"
+#import "TileData.h"
 
 @interface RootViewController ()
 
@@ -27,12 +28,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [btnStartGame setTitle:NSLocalizedString(@"Start Game", @"") forState:UIControlStateNormal];
 }
 
 - (void)viewDidUnload
 {
-    btnStartGame = nil;
     [super viewDidUnload];
 }
 
@@ -41,9 +40,23 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (IBAction)handleStartGameClick:(UIButton *)sender
+- (IBAction)handleBrilliantClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START]];
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_BRILLIANT]]];
 }
 
+- (IBAction)handleGoldClick:(UIButton *)sender
+{
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_GOLD]]];
+}
+
+- (IBAction)handleSilverClick:(UIButton *)sender
+{
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_SILVER]]];
+}
+
+- (IBAction)handleFreeClick:(UIButton *)sender
+{
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_FREE]]];
+}
 @end

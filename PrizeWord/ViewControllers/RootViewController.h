@@ -10,7 +10,6 @@
 
 @interface RootViewController : UIViewController
 {
-    IBOutlet UIButton *btnStartGame;
 }
 
 @end

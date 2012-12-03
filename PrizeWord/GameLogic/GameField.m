@@ -9,8 +9,9 @@
 #import "GameField.h"
 #import "TileData.h"
 #import "PuzzleData.h"
-#import "HintData.h"
 #import "EventManager.h"
+#import "QuestionData.h"
+#import "PuzzleSetData.h"
 
 @interface GameField (private)
 
@@ -30,7 +31,7 @@
 @synthesize tilesPerRow = _tilesPerRow;
 @synthesize tilesPerCol = _tilesPerCol;
 
--(id)initWithTilesPerRow:(uint)width andTilesPerCol:(uint)height
+-(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type
 {
     self = [super init];
     
@@ -44,7 +45,9 @@
         tiles = [[NSMutableArray alloc] initWithCapacity:_tilesPerCol * _tilesPerRow];
         for (uint j = 0; j != _tilesPerCol; ++j) {
             for (uint i = 0; i != _tilesPerRow; ++i) {
-                [tiles addObject:[[TileData alloc] initWithPositionX:i y:j]];
+                TileData * tile = [[TileData alloc] initWithPositionX:i y:j];
+                tile.letterType = type;
+                [tiles addObject:tile];
             }
         }
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_TAP];
@@ -56,16 +59,17 @@
 
 -(id)initWithData:(PuzzleData *)puzzleData
 {
-    self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] andTilesPerCol:[puzzleData.height unsignedIntValue]];
+    self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] tilesPerCol:[puzzleData.height unsignedIntValue] andType:[puzzleData.puzzleSet.type intValue]];
     
     if (self)
     {
-        for (HintData * hint in puzzleData.hints) {
-            TileData * tile = [tiles objectAtIndex:([hint.column unsignedIntValue] + [hint.row unsignedIntValue] * _tilesPerRow)];
-            tile.question = hint.hint_text;
-            tile.answer = hint.answer;
-            tile.answerPosition = hint.answer_positionAsUint;
+        for (QuestionData * question in puzzleData.questions) {
+            TileData * tile = [tiles objectAtIndex:([question.column unsignedIntValue] + [question.row unsignedIntValue] * _tilesPerRow)];
+            tile.question = question.question_text;
+            tile.answer = question.answer;
+            tile.answerPosition = question.answer_positionAsUint;
             tile.state = TILE_QUESTION_NEW;
+            ;
             [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
         }
     }

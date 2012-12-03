@@ -46,6 +46,7 @@ typedef enum LetterType {
 // for letters only
 @property (nonatomic) NSString * currentLetter;
 @property (nonatomic) NSString * targetLetter;
+@property () LetterType letterType;
 
 -(id)initWithPositionX:(uint)x y:(uint)y;
 -(int)currentLetterIdx;

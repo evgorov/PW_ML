@@ -17,8 +17,8 @@
 
 +(EventManager *)sharedManager;
 
--(void)registerListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type;
--(void)unregisterListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type;
+-(void)registerListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type;
+-(void)unregisterListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type;
 -(void)dispatchEventWithType:(Event *)event;
 
 @end

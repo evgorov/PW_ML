@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "EventListenerDelegate.h"
+#import "TileData.h"
 
-@class TileData;
 @class PuzzleData;
 
 @interface GameField : NSObject<EventListenerDelegate>
@@ -24,7 +24,7 @@
 @property (readonly) uint tilesPerCol;
 
 -(id)initWithData:(PuzzleData *)puzzleData;
--(id)initWithTilesPerRow:(uint)width andTilesPerCol:(uint)height;
+-(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type;
 -(TileData *)dataForPositionX:(uint)x y:(uint)y;
 
 @end

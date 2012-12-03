@@ -7,7 +7,7 @@
 //
 
 #import "TileData.h"
-#import "HintData.h"
+#import "QuestionData.h"
 
 @implementation TileData
 
@@ -19,6 +19,7 @@
 @synthesize answerPosition = _answerPosition;
 @synthesize currentLetter = _currentLetter;
 @synthesize targetLetter = _targetLetter;
+@synthesize letterType = _letterType;
 
 -(id)initWithPositionX:(uint)x y:(uint)y
 {
@@ -33,13 +34,14 @@
         _answerPosition = (kAnswerPositionNorth | kAnswerPositionTop);
         _currentLetter = @"";
         _targetLetter = @"";
+        _letterType = LETTER_FREE;
     }
     return self;
 }
 
 -(int)currentLetterIdx
 {
-    int index = [ALPHABET rangeOfString:_currentLetter].location;
+    int index = [ALPHABET rangeOfString:[_currentLetter lowercaseString]].location;
     if (index == NSNotFound)
     {
         index = 33;
@@ -58,6 +60,7 @@
     newData.answerPosition = _answerPosition;
     newData.currentLetter= _currentLetter;
     newData.targetLetter = _targetLetter;
+    newData.letterType = _letterType;
     return newData;
 }
 

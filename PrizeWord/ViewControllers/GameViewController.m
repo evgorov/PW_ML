@@ -27,13 +27,18 @@
     return self;
 }
 
-- (void)viewDidLoad
+-(void)dealloc
 {
-    [super viewDidLoad];
+    NSLog(@"GameViewController dealloc");
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 
     [lblTime setFont:[UIFont fontWithName:@"DINPro-Black" size:22]];
     [btnHint.titleLabel setFont:[UIFont fontWithName:@"DINPro-Black" size:18]];
-
+    
     [gameFieldView setGameField:gameField];
     textField = [UITextField new];
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -42,12 +47,16 @@
     [self.view addSubview:textField];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
 }
 
-- (void)viewDidUnload
+-(void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
+
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
     [textField removeFromSuperview];
     textField = nil;
     gameFieldView = nil;
@@ -56,9 +65,6 @@
     btnPlay = nil;
     gameFieldView = nil;
     btnHint = nil;
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -81,6 +87,9 @@
     else if (event.type == EVENT_FINISH_INPUT) {
         [textField resignFirstResponder];
     }
+    else if (event.type == EVENT_GAME_REQUEST_PAUSE) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -100,6 +109,11 @@
 {
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
     return YES;
+}
+
+- (IBAction)handlePauseClick:(UIButton *)sender
+{
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
 }
 
 @end

@@ -57,7 +57,6 @@
 
 -(void)dealloc
 {
-    NSLog(@"TileView dealloc");
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_CHANGE];
     tileData = nil;
     background = nil;
@@ -72,7 +71,6 @@
             TileData * newData = (TileData *)event.data;
             if (tileData.x == newData.x && tileData.y == newData.y)
             {
-                // TODO :: play animation
                 tileData = newData;
                 [self initParts];
             }
@@ -110,7 +108,7 @@
         case TILE_LETTER_CORRECT_INPUT:
         case TILE_LETTER_CORRECT:
         {
-            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_BRILLIANT andIndex:tileData.currentLetterIdx]];
+            [background setImage:[[TileImageHelper sharedHelper] letterForType:tileData.letterType andIndex:tileData.currentLetterIdx]];
         }
             break;
             

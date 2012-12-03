@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Hint" representedClassName="HintData" syncable="YES">
-        <attribute name="answer" attributeType="String" syncable="YES"/>
-        <attribute name="answer_position" attributeType="Integer 32" valueTransformerName="position" minValueString="17" defaultValueString="17" syncable="YES"/>
-        <attribute name="column" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="hint_text" attributeType="String" syncable="YES"/>
-        <attribute name="row" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="hints" inverseEntity="Puzzle" syncable="YES"/>
-    </entity>
     <entity name="Puzzle" representedClassName="PuzzleData" syncable="YES">
         <attribute name="base_score" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="height" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <attribute name="issuedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="puzzle_id" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="set_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="time_given" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="width" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
-        <relationship name="hints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Hint" inverseName="puzzle" inverseEntity="Hint" syncable="YES"/>
+        <relationship name="puzzleSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PuzzleSet" inverseName="puzzles" inverseEntity="PuzzleSet" syncable="YES"/>
+        <relationship name="questions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Question" inverseName="puzzle" inverseEntity="Question" syncable="YES"/>
+    </entity>
+    <entity name="PuzzleSet" representedClassName="PuzzleSet" syncable="YES">
+        <attribute name="bought" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="set_id" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
+        <relationship name="puzzles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="puzzleSet" inverseEntity="Puzzle" syncable="YES"/>
+    </entity>
+    <entity name="Question" representedClassName="QuestionData" syncable="YES">
+        <attribute name="answer" attributeType="String" syncable="YES"/>
+        <attribute name="answer_position" attributeType="Integer 32" valueTransformerName="position" minValueString="17" defaultValueString="17" syncable="YES"/>
+        <attribute name="column" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="question_text" attributeType="String" syncable="YES"/>
+        <attribute name="row" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Hint" positionX="-6120" positionY="-15822" width="128" height="135"/>
+        <element name="Question" positionX="-6120" positionY="-15822" width="128" height="135"/>
         <element name="Puzzle" positionX="-6120" positionY="-16032" width="128" height="180"/>
+        <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="120"/>
     </elements>
 </model>

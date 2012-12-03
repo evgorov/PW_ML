@@ -32,20 +32,20 @@
     return self;
 }
 
--(void)registerListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type
+-(void)registerListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type
 {
-    [listeners[type] addObject:listener];
+    [listeners[type] addObject:[NSValue valueWithNonretainedObject:listener]];
 }
 
--(void)unregisterListener:(id<EventListenerDelegate>)listener forEventType:(EventType)type
+-(void)unregisterListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type
 {
-    [listeners[type] removeObject:listener];
+    [listeners[type] removeObject:[NSValue valueWithNonretainedObject:listener]];
 }
 
 -(void)dispatchEventWithType:(Event *)event
 {
-    for (id<EventListenerDelegate> listener in listeners[event.type]) {
-        [listener handleEvent:event];
+    for (NSValue * listenerValue in listeners[event.type]) {
+        [[listenerValue nonretainedObjectValue] handleEvent:event];
     }
 }
 

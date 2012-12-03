@@ -1,21 +1,21 @@
 //
-//  HintData.m
+//  QuestionData.m
 //  PrizeWord
 //
 //  Created by Pavel Skorynin on 11/28/12.
 //
 //
 
-#import "HintData.h"
+#import "QuestionData.h"
 #import "PuzzleData.h"
 
 
-@implementation HintData
+@implementation QuestionData
 
 @dynamic column;
 @dynamic row;
 @dynamic answer_position;
-@dynamic hint_text;
+@dynamic question_text;
 @dynamic answer;
 @dynamic puzzle;
 
