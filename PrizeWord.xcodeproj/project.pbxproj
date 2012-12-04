@@ -46,6 +46,9 @@
 		F2868CCA166CB15C003F0686 /* ReleaseNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */; };
 		F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = F2868CCB166CB362003F0686 /* ReleaseNotes.txt */; };
 		F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */; };
+		F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */; };
+		F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */; };
+		F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -120,6 +123,9 @@
 		F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ReleaseNotesViewController.xib; path = ViewControllers/ReleaseNotesViewController.xib; sourceTree = "<group>"; };
 		F2868CCB166CB362003F0686 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
 		F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ReleaseNotesViewController~ipad.xib"; path = "ViewControllers/ReleaseNotesViewController~ipad.xib"; sourceTree = "<group>"; };
+		F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_left@2x.png"; sourceTree = "<group>"; };
+		F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_up@2x.png"; sourceTree = "<group>"; };
+		F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northwest_right@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -281,6 +287,9 @@
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
+				F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */,
+				F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */,
+				F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */,
 				F2868CB4166A6CC0003F0686 /* tile_letters_correct_brilliant@2x.png */,
 				F2868CB5166A6CC0003F0686 /* tile_letters_correct_free@2x.png */,
 				F2868CB6166A6CC1003F0686 /* tile_letters_correct_gold@2x.png */,
@@ -473,6 +482,9 @@
 				F2868CCA166CB15C003F0686 /* ReleaseNotesViewController.xib in Resources */,
 				F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */,
 				F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */,
+				F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */,
+				F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */,
+				F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

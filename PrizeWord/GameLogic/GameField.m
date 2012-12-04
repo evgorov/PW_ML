@@ -81,6 +81,11 @@
     return [tiles objectAtIndex:(x + y * _tilesPerRow)];
 }
 
+-(TileData *)activeQuestion
+{
+    return currentQuestion;
+}
+
 -(void)dealloc
 {
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_TAP];

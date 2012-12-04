@@ -27,4 +27,6 @@
 -(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type;
 -(TileData *)dataForPositionX:(uint)x y:(uint)y;
 
+-(TileData *)activeQuestion;
+
 @end

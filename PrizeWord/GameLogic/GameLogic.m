@@ -45,6 +45,11 @@
     return _sharedLogic;
 }
 
+-(GameField *)gameField
+{
+    return currentGameField;
+}
+
 -(void)handleEvent:(Event *)event
 {
     switch (event.type)

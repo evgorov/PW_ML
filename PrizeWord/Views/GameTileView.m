@@ -10,6 +10,9 @@
 #import "EventManager.h"
 #import "TileData.h"
 #import "TileImageHelper.h"
+#import "QuestionData.h"
+#import "GameLogic.h"
+#import "GameField.h"
 
 #import <QuartzCore/CALayer.h>
 
@@ -17,6 +20,7 @@
 
 -(void)onTap;
 -(void)initParts;
+-(void)showArrow;
 
 @end
 
@@ -43,6 +47,9 @@
         questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
         questionLabel.hidden = YES;
         [self addSubview:questionLabel];
+        
+        arrow = nil;
+        self.clipsToBounds = YES;
         
         tileData = data;
         [self initParts];
@@ -141,12 +148,135 @@
             questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
         }
         questionLabel.hidden = NO;
+        
+        if ((tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_WRONG) && tileData != [GameLogic sharedLogic].gameField.activeQuestion)
+        {
+            [self showArrow];
+        }
+        else
+        {
+            if (arrow != nil)
+            {
+                [arrow removeFromSuperview];
+                arrow = nil;
+            }
+        }
     }
     else
     {
         questionLabel.text = @"";
         questionLabel.hidden = YES;
+        if (arrow != nil)
+        {
+            [arrow removeFromSuperview];
+            arrow = nil;
+        }
     }
+}
+
+-(void)showArrow
+{
+    [self.superview bringSubviewToFront:self];
+    self.clipsToBounds = NO;
+    if (arrow == nil)
+    {
+        arrow = [UIImageView new];
+        [self addSubview: arrow];
+    }
+    
+    switch (tileData.answerPosition)
+    {
+        case kAnswerPositionNorth | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionBottom:
+        case kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionEast | kAnswerPositionRight:
+            arrow.image = [UIImage imageNamed:@"tile_arrow_north_up"];
+            break;
+            
+        case kAnswerPositionNorth | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionLeft:
+        case kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionRight:
+        case kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionEast | kAnswerPositionBottom:
+            arrow.image = [UIImage imageNamed:@"tile_arrow_north_left"];
+            break;
+            
+        default:
+            arrow.image = [UIImage imageNamed:@"tile_arrow_northwest_right"];
+            break;
+    }
+    
+    int offsetX = 0;
+    int offsetY = 0;
+    if ((tileData.answerPosition & kAnswerPositionNorth) != 0)
+    {
+        offsetY = -self.frame.size.height;
+    }
+    if ((tileData.answerPosition & kAnswerPositionSouth) != 0)
+    {
+        offsetY = self.frame.size.height;
+    }
+    if ((tileData.answerPosition & kAnswerPositionWest) != 0)
+    {
+        offsetX = -self.frame.size.width;
+    }
+    if ((tileData.answerPosition & kAnswerPositionEast) != 0)
+    {
+        offsetX = self.frame.size.width;
+    }
+    arrow.frame = CGRectMake(offsetX, offsetY, self.frame.size.width, self.frame.size.height);
+    
+    float rotation = 0;
+    float scaleX = 1;
+    float scaleY = 1;
+    
+    switch (tileData.answerPosition)
+    {
+        case kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
+            rotation = -M_PI_2;
+            break;
+
+        case kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
+            rotation = M_PI_2;
+            break;
+            
+        case kAnswerPositionSouth | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionRight:
+            rotation = M_PI;
+            break;
+        default:
+            break;
+    }
+    
+    switch (tileData.answerPosition)
+    {
+        case kAnswerPositionNorth | kAnswerPositionRight:
+        case kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionLeft:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionRight:
+            scaleX = -1;
+            break;
+    }
+
+    arrow.transform = CGAffineTransformConcat(CGAffineTransformMakeRotation(rotation), CGAffineTransformMakeScale(scaleX, scaleY));
 }
 
 -(void)onTap

@@ -17,5 +17,6 @@
 }
 
 +(GameLogic *)sharedLogic;
+-(GameField *)gameField;
 
 @end
