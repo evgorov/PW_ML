@@ -111,6 +111,33 @@
                     return;
                     break;
                     
+                case TILE_LETTER_INPUT:
+                case TILE_LETTER_EMPTY_INPUT:
+                    for (int idx = 0; idx < currentWord.count; ++idx) {
+                        TileData * letter = [currentWord objectAtIndex:idx];
+                        if (data.x == letter.x && data.y == letter.y)
+                        {
+                            if (currentLetterIdx != idx && currentLetterIdx < currentWord.count)
+                            {
+                                letter = [currentWord objectAtIndex:currentLetterIdx];
+                                if (letter.currentLetter.length != 0)
+                                {
+                                    letter.state = TILE_LETTER_INPUT;
+                                    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+                                }
+                            }
+                            currentLetterIdx = idx;
+                            break;
+                        }
+                    }
+                    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
+                    if (data.state == TILE_LETTER_EMPTY_INPUT)
+                    {
+                        return;
+                    }
+                    data.state = TILE_LETTER_EMPTY_INPUT;
+                    break;
+                    
                 default:
                     return;
             }
@@ -120,6 +147,10 @@
 
         case EVENT_PUSH_LETTER:
         {
+            if (currentLetterIdx >= currentWord.count)
+            {
+                break;
+            }
             TileData * letter = [currentWord objectAtIndex:currentLetterIdx];
             letter.state = TILE_LETTER_INPUT;
             letter.currentLetter = (NSString *)event.data;
@@ -202,7 +233,7 @@
         TileData * letter = [tiles objectAtIndex:(letterX + letterY * _tilesPerRow)];
         [currentWord addObject:letter];
         letter.targetLetter = [currentQuestion.answer substringWithRange:NSMakeRange(i, 1)];
-        if (letter.state == TILE_LETTER_EMPTY)
+        if (letter.state == TILE_LETTER_EMPTY || letter.state == TILE_LETTER_WRONG)
         {
             letter.currentLetter = @"";
             letter.state = TILE_LETTER_EMPTY_INPUT;
@@ -210,11 +241,6 @@
         else if (letter.state == TILE_LETTER_CORRECT)
         {
             letter.state = TILE_LETTER_CORRECT_INPUT;
-        }
-        else if (letter.state == TILE_LETTER_WRONG)
-        {
-            letter.currentLetter = @"";
-            letter.state = TILE_LETTER_EMPTY_INPUT;
         }
         else
         {
@@ -259,8 +285,7 @@
         }
         else if (letter.state == TILE_LETTER_INPUT)
         {
-            letter.state = TILE_LETTER_EMPTY;
-            letter.currentLetter = @"";
+            letter.state = TILE_LETTER_WRONG;
         }
         else
         {
@@ -282,13 +307,13 @@
         return NO;
     }
 
-    BOOL correct = YES;
     for (TileData * letter in currentWord)
     {
         if ([letter.currentLetter caseInsensitiveCompare:letter.targetLetter] != NSOrderedSame)
         {
-            correct = NO;
-            break;
+            currentQuestion.state = TILE_QUESTION_WRONG;
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+            return NO;
         }
     }
     for (TileData * letter in currentWord)
@@ -303,7 +328,7 @@
         }
         else if (letter.state == TILE_LETTER_INPUT)
         {
-            letter.state = correct ? TILE_LETTER_CORRECT : TILE_LETTER_WRONG;
+            letter.state = TILE_LETTER_CORRECT;
         }
         else
         {
@@ -313,12 +338,12 @@
     }
     [currentWord removeAllObjects];
 
-    currentQuestion.state = correct ? TILE_QUESTION_CORRECT : TILE_QUESTION_WRONG;
+    currentQuestion.state = TILE_QUESTION_CORRECT;
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
-    return correct;
+    return YES;
 }
 
 
