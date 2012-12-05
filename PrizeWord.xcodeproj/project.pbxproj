@@ -49,6 +49,12 @@
 		F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */; };
 		F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */; };
 		F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */; };
+		F2868CDA166EF4E4003F0686 /* PrizeWordNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868CD9166EF4E4003F0686 /* PrizeWordNavigationController.xib */; };
+		F2868CDD166EF7C7003F0686 /* PrizeWordNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CDC166EF7C6003F0686 /* PrizeWordNavigationBar.m */; };
+		F2868CE2166F047C003F0686 /* PrizeWordNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868CE1166F047C003F0686 /* PrizeWordNavigationController.m */; };
+		F2868CE7166FBEF5003F0686 /* nav_back_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CE4166FBEF5003F0686 /* nav_back_btn@2x.png */; };
+		F2868CE8166FBEF5003F0686 /* nav_back_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CE5166FBEF5003F0686 /* nav_back_btn_down@2x.png */; };
+		F2868CE9166FBEF5003F0686 /* navigationbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -67,6 +73,17 @@
 		F2A22DEC1664853100CF7859 /* tile_question_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */; };
 		F2A22DF0166487C400CF7859 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DEF166487C400CF7859 /* Default-568h@2x.png */; };
 		F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2A22DF116648AAA00CF7859 /* QuartzCore.framework */; };
+		F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */; };
+		F2B83ADB166FDA00007C4596 /* LoginMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */; };
+		F2B83AE6166FDA75007C4596 /* login_enter_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */; };
+		F2B83AE7166FDA75007C4596 /* login_enter_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */; };
+		F2B83AE8166FDA75007C4596 /* login_facebook_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */; };
+		F2B83AE9166FDA75007C4596 /* login_facebook_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */; };
+		F2B83AEA166FDA75007C4596 /* login_main_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */; };
+		F2B83AEB166FDA75007C4596 /* login_register_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */; };
+		F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */; };
+		F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */; };
+		F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -126,6 +143,14 @@
 		F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_left@2x.png"; sourceTree = "<group>"; };
 		F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_up@2x.png"; sourceTree = "<group>"; };
 		F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northwest_right@2x.png"; sourceTree = "<group>"; };
+		F2868CD9166EF4E4003F0686 /* PrizeWordNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PrizeWordNavigationController.xib; path = ViewControllers/PrizeWordNavigationController.xib; sourceTree = "<group>"; };
+		F2868CDB166EF7C6003F0686 /* PrizeWordNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordNavigationBar.h; path = ViewControllers/PrizeWordNavigationBar.h; sourceTree = "<group>"; };
+		F2868CDC166EF7C6003F0686 /* PrizeWordNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordNavigationBar.m; path = ViewControllers/PrizeWordNavigationBar.m; sourceTree = "<group>"; };
+		F2868CE0166F047B003F0686 /* PrizeWordNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordNavigationController.h; path = ViewControllers/PrizeWordNavigationController.h; sourceTree = "<group>"; };
+		F2868CE1166F047C003F0686 /* PrizeWordNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordNavigationController.m; path = ViewControllers/PrizeWordNavigationController.m; sourceTree = "<group>"; };
+		F2868CE4166FBEF5003F0686 /* nav_back_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_back_btn@2x.png"; sourceTree = "<group>"; };
+		F2868CE5166FBEF5003F0686 /* nav_back_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_back_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_bg@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -153,6 +178,18 @@
 		F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_wrong@2x.png"; sourceTree = "<group>"; };
 		F2A22DEF166487C400CF7859 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F2A22DF116648AAA00CF7859 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginMainViewController.h; path = ViewControllers/LoginMainViewController.h; sourceTree = "<group>"; };
+		F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginMainViewController.m; path = ViewControllers/LoginMainViewController.m; sourceTree = "<group>"; };
+		F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginMainViewController.xib; path = ViewControllers/LoginMainViewController.xib; sourceTree = "<group>"; };
+		F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_main_bg@2x.jpg"; sourceTree = "<group>"; };
+		F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn_down@2x.png"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -235,6 +272,17 @@
 			path = PrizeWord/assets/fonts;
 			sourceTree = "<group>";
 		};
+		F2868CE3166FBEF4003F0686 /* navigationbar */ = {
+			isa = PBXGroup;
+			children = (
+				F2868CE4166FBEF5003F0686 /* nav_back_btn@2x.png */,
+				F2868CE5166FBEF5003F0686 /* nav_back_btn_down@2x.png */,
+				F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */,
+			);
+			name = navigationbar;
+			path = PrizeWord/assets/navigationbar;
+			sourceTree = "<group>";
+		};
 		F2950235165E011000DACFBA /* EventSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +324,8 @@
 		F2950249166206CD00DACFBA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				F2B83ADC166FDA74007C4596 /* login */,
+				F2868CE3166FBEF4003F0686 /* navigationbar */,
 				F2868C991669FD21003F0686 /* fonts */,
 				F2868C8A1669F992003F0686 /* gamescreen */,
 				F295024A166206E600DACFBA /* gamefield */,
@@ -309,6 +359,23 @@
 			);
 			name = gamefield;
 			path = PrizeWord/assets/gamefield;
+			sourceTree = "<group>";
+		};
+		F2B83ADC166FDA74007C4596 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */,
+				F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */,
+				F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */,
+				F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */,
+				F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */,
+				F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */,
+				F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */,
+				F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */,
+				F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */,
+			);
+			name = login;
+			path = PrizeWord/assets/login;
 			sourceTree = "<group>";
 		};
 		F2D626EE165DF80800EF6E8A = {
@@ -384,6 +451,14 @@
 				F2868CC7166CB15A003F0686 /* ReleaseNotesViewController.m */,
 				F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */,
 				F2868CCD166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib */,
+				F2868CDB166EF7C6003F0686 /* PrizeWordNavigationBar.h */,
+				F2868CDC166EF7C6003F0686 /* PrizeWordNavigationBar.m */,
+				F2868CE0166F047B003F0686 /* PrizeWordNavigationController.h */,
+				F2868CE1166F047C003F0686 /* PrizeWordNavigationController.m */,
+				F2868CD9166EF4E4003F0686 /* PrizeWordNavigationController.xib */,
+				F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */,
+				F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */,
+				F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -485,6 +560,20 @@
 				F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */,
 				F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */,
 				F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */,
+				F2868CDA166EF4E4003F0686 /* PrizeWordNavigationController.xib in Resources */,
+				F2868CE7166FBEF5003F0686 /* nav_back_btn@2x.png in Resources */,
+				F2868CE8166FBEF5003F0686 /* nav_back_btn_down@2x.png in Resources */,
+				F2868CE9166FBEF5003F0686 /* navigationbar_bg@2x.png in Resources */,
+				F2B83ADB166FDA00007C4596 /* LoginMainViewController.xib in Resources */,
+				F2B83AE6166FDA75007C4596 /* login_enter_btn@2x.png in Resources */,
+				F2B83AE7166FDA75007C4596 /* login_enter_btn_down@2x.png in Resources */,
+				F2B83AE8166FDA75007C4596 /* login_facebook_btn@2x.png in Resources */,
+				F2B83AE9166FDA75007C4596 /* login_facebook_btn_down@2x.png in Resources */,
+				F2B83AEA166FDA75007C4596 /* login_main_bg@2x.jpg in Resources */,
+				F2B83AEB166FDA75007C4596 /* login_register_btn@2x.png in Resources */,
+				F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */,
+				F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */,
+				F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +601,9 @@
 				F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */,
 				F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */,
 				F2868CC9166CB15B003F0686 /* ReleaseNotesViewController.m in Sources */,
+				F2868CDD166EF7C7003F0686 /* PrizeWordNavigationBar.m in Sources */,
+				F2868CE2166F047C003F0686 /* PrizeWordNavigationController.m in Sources */,
+				F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

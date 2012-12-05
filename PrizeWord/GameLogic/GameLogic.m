@@ -14,6 +14,7 @@
 #import "PuzzleData.h"
 #import "QuestionData.h"
 #import "PuzzleSetData.h"
+#import "PrizeWordNavigationController.h"
 
 @interface GameLogic ()
 

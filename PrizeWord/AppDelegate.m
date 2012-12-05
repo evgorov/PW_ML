@@ -7,9 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "RootViewController.h"
 #import "GameLogic.h"
 #import "TileImageHelper.h"
+#import "PrizeWordNavigationController.h"
+#import "LoginMainViewController.h"
 
 @implementation AppDelegate
 
@@ -36,8 +37,8 @@ static GameLogic * sharedGameLogic = nil;
 {
     [application setStatusBarHidden:YES];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.navController = [[UINavigationController alloc] initWithRootViewController:[RootViewController new]];
-    [_navController setNavigationBarHidden:YES];
+    _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
+    _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
     self.window.rootViewController = _navController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
