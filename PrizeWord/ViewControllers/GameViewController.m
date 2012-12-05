@@ -45,6 +45,12 @@
     textField.hidden = YES;
     textField.delegate = self;
     [self.view addSubview:textField];
+    
+    UIBarButtonItem * pauseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnPause];
+    [self.navigationItem setLeftBarButtonItem:pauseButtonItem animated:animated];
+    UIBarButtonItem * hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnHint];
+    [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
+    
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];

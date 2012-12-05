@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface PrizeWordNavigationController : UINavigationController
+{
+    UIBarButtonItem * backButtonItem;
+}
 
 @end

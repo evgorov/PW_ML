@@ -84,6 +84,8 @@
 		F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */; };
 		F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */; };
 		F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */; };
+		F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */; };
+		F2B83AF4166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -190,6 +192,8 @@
 		F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn_down@2x.png"; sourceTree = "<group>"; };
 		F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn@2x.png"; sourceTree = "<group>"; };
 		F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PrizeWordNavigationController~ipad.xib"; path = "ViewControllers/PrizeWordNavigationController~ipad.xib"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -275,6 +279,7 @@
 		F2868CE3166FBEF4003F0686 /* navigationbar */ = {
 			isa = PBXGroup;
 			children = (
+				F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */,
 				F2868CE4166FBEF5003F0686 /* nav_back_btn@2x.png */,
 				F2868CE5166FBEF5003F0686 /* nav_back_btn_down@2x.png */,
 				F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */,
@@ -439,14 +444,14 @@
 		F2D62719165DF89000EF6E8A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F2868C861668946F003F0686 /* GameViewController~ipad.xib */,
-				F2868C871668946F003F0686 /* RootViewController~ipad.xib */,
 				F2D6271A165DF8FE00EF6E8A /* RootViewController.h */,
 				F2D6271B165DF8FE00EF6E8A /* RootViewController.m */,
 				F2D6271C165DF8FE00EF6E8A /* RootViewController.xib */,
+				F2868C871668946F003F0686 /* RootViewController~ipad.xib */,
 				F295022F165DFF7900DACFBA /* GameViewController.h */,
 				F2950230165DFF7900DACFBA /* GameViewController.m */,
 				F2950231165DFF7900DACFBA /* GameViewController.xib */,
+				F2868C861668946F003F0686 /* GameViewController~ipad.xib */,
 				F2868CC6166CB159003F0686 /* ReleaseNotesViewController.h */,
 				F2868CC7166CB15A003F0686 /* ReleaseNotesViewController.m */,
 				F2868CC8166CB15B003F0686 /* ReleaseNotesViewController.xib */,
@@ -456,6 +461,7 @@
 				F2868CE0166F047B003F0686 /* PrizeWordNavigationController.h */,
 				F2868CE1166F047C003F0686 /* PrizeWordNavigationController.m */,
 				F2868CD9166EF4E4003F0686 /* PrizeWordNavigationController.xib */,
+				F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */,
 				F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */,
 				F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */,
 				F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */,
@@ -574,6 +580,8 @@
 				F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */,
 				F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */,
 				F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */,
+				F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */,
+				F2B83AF4166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

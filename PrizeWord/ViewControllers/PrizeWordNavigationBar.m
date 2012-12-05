@@ -34,12 +34,12 @@
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
-    return CGSizeMake(self.frame.size.width, backgroundImage.size.height * 116 / 123);
+    return CGSizeMake(backgroundImage.size.width, backgroundImage.size.height * 116 / 123);
 }
 
 - (void)drawRect:(CGRect)rect
 {
-    [backgroundImage drawInRect:CGRectMake(0, 0, self.frame.size.width, backgroundImage.size.height)];
+    [backgroundImage drawInRect:CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height)];
 }
 
 @end
