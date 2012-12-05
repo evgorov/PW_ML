@@ -56,8 +56,6 @@
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [super pushViewController:viewController animated:animated];
-    UIBarButtonItem * prevItem = self.topViewController.navigationItem.leftBarButtonItem;
-    NSLog(@"prev: %@", prevItem);
     if (self.topViewController.navigationItem.leftBarButtonItem == nil) {
         [self.topViewController.navigationItem setLeftBarButtonItem:backButtonItem animated:animated];
     }

@@ -36,35 +36,34 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIImageView" id="1064035613">
+					<object class="IBUIImageView" id="9373449">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 480}</string>
+						<string key="NSFrameSize">{768, 1024}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="797086114"/>
+						<reference key="NSNextKeyView" ref="355397562"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<int key="IBUIContentMode">1</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">login_main_bg@2x.jpg</string>
+							<string key="NSResourceName">login_main_bg@2x~ipad.jpg</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="797086114">
+					<object class="IBUIButton" id="355397562">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{28, 211}, {120, 67}}</string>
+						<string key="NSFrame">{{199, 471}, {167, 93}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="553798445"/>
+						<reference key="NSNextKeyView" ref="639784549"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<object class="NSColor" key="IBUIHighlightedTitleColor" id="5686989">
+						<object class="NSColor" key="IBUIHighlightedTitleColor" id="15155811">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
@@ -72,7 +71,7 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
-						<object class="NSColor" key="IBUINormalTitleShadowColor" id="985553813">
+						<object class="NSColor" key="IBUINormalTitleShadowColor" id="457381605">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
@@ -84,34 +83,34 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_facebook_btn@2x.png</string>
 						</object>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="115488913">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="808136910">
 							<int key="type">2</int>
 							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="19541501">
+						<object class="NSFont" key="IBUIFont" id="738201520">
 							<string key="NSName">Helvetica-Bold</string>
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIButton" id="553798445">
+					<object class="IBUIButton" id="639784549">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{172, 211}, {120, 67}}</string>
+						<string key="NSFrame">{{403, 471}, {167, 93}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="3370703"/>
+						<reference key="NSNextKeyView" ref="1053939582"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="5686989"/>
+						<reference key="IBUIHighlightedTitleColor" ref="15155811"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="985553813"/>
+						<reference key="IBUINormalTitleShadowColor" ref="457381605"/>
 						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_vk_btn_down@2x.png</string>
@@ -120,27 +119,27 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_vk_btn@2x.png</string>
 						</object>
-						<reference key="IBUIFontDescription" ref="115488913"/>
-						<reference key="IBUIFont" ref="19541501"/>
+						<reference key="IBUIFontDescription" ref="808136910"/>
+						<reference key="IBUIFont" ref="738201520"/>
 					</object>
-					<object class="IBUIButton" id="3370703">
+					<object class="IBUIButton" id="1053939582">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{26, 339}, {269, 53}}</string>
+						<string key="NSFrame">{{199, 686}, {371, 77}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="280728965"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="5686989"/>
+						<reference key="IBUIHighlightedTitleColor" ref="15155811"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="985553813"/>
+						<reference key="IBUINormalTitleShadowColor" ref="457381605"/>
 						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_enter_btn_down@2x.png</string>
@@ -149,26 +148,27 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_enter_btn@2x.png</string>
 						</object>
-						<reference key="IBUIFontDescription" ref="115488913"/>
-						<reference key="IBUIFont" ref="19541501"/>
+						<reference key="IBUIFontDescription" ref="808136910"/>
+						<reference key="IBUIFont" ref="738201520"/>
 					</object>
-					<object class="IBUIButton" id="75856381">
+					<object class="IBUIButton" id="280728965">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{26, 395}, {269, 53}}</string>
+						<string key="NSFrame">{{199, 773}, {371, 77}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="5686989"/>
+						<reference key="IBUIHighlightedTitleColor" ref="15155811"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="985553813"/>
+						<reference key="IBUINormalTitleShadowColor" ref="457381605"/>
 						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_register_btn_down@2x.png</string>
@@ -177,14 +177,14 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">login_register_btn@2x.png</string>
 						</object>
-						<reference key="IBUIFontDescription" ref="115488913"/>
-						<reference key="IBUIFont" ref="19541501"/>
+						<reference key="IBUIFontDescription" ref="808136910"/>
+						<reference key="IBUIFont" ref="738201520"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 480}</string>
+				<string key="NSFrameSize">{768, 1024}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="1064035613"/>
+				<reference key="NSNextKeyView" ref="9373449"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -192,24 +192,9 @@
 						<int key="NSID">2</int>
 					</object>
 				</object>
-				<bool key="IBUIAutoresizesSubviews">NO</bool>
-				<int key="IBUIContentMode">5</int>
-				<object class="IBUIScreenMetrics" key="IBUISimulatedDestinationMetrics">
-					<string key="IBUISimulatedSizeMetricsClass">IBUIScreenMetrics</string>
-					<object class="NSMutableDictionary" key="IBUINormalizedOrientationToSizeMap">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<array key="dict.sortedKeys">
-							<integer value="1"/>
-							<integer value="3"/>
-						</array>
-						<array key="dict.values">
-							<string>{320, 480}</string>
-							<string>{480, 320}</string>
-						</array>
-					</object>
-					<string key="IBUITargetRuntime">IBCocoaTouchFramework</string>
-					<string key="IBUIDisplayName">Retina 3.5 Full Screen</string>
-					<int key="IBUIType">0</int>
+				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
+					<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
+					<string key="IBUIDisplayName">Freeform</string>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -227,7 +212,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleFacebookClick:</string>
-						<reference key="source" ref="797086114"/>
+						<reference key="source" ref="355397562"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -236,7 +221,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleVKClick:</string>
-						<reference key="source" ref="553798445"/>
+						<reference key="source" ref="639784549"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -245,7 +230,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleEnterClick:</string>
-						<reference key="source" ref="3370703"/>
+						<reference key="source" ref="1053939582"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -254,7 +239,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleRegisterClick:</string>
-						<reference key="source" ref="75856381"/>
+						<reference key="source" ref="280728965"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -273,11 +258,11 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="1064035613"/>
-							<reference ref="797086114"/>
-							<reference ref="553798445"/>
-							<reference ref="75856381"/>
-							<reference ref="3370703"/>
+							<reference ref="9373449"/>
+							<reference ref="1053939582"/>
+							<reference ref="280728965"/>
+							<reference ref="639784549"/>
+							<reference ref="355397562"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -294,27 +279,27 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
-						<reference key="object" ref="1064035613"/>
+						<reference key="object" ref="9373449"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="797086114"/>
+						<reference key="object" ref="355397562"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="553798445"/>
+						<reference key="object" ref="639784549"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
-						<reference key="object" ref="3370703"/>
+						<reference key="object" ref="1053939582"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
-						<reference key="object" ref="75856381"/>
+						<reference key="object" ref="280728965"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -386,7 +371,7 @@
 			<string key="login_enter_btn_down@2x.png">{538, 106}</string>
 			<string key="login_facebook_btn@2x.png">{240, 134}</string>
 			<string key="login_facebook_btn_down@2x.png">{240, 134}</string>
-			<string key="login_main_bg@2x.jpg">{640, 960}</string>
+			<string key="login_main_bg@2x~ipad.jpg">{1536, 2048}</string>
 			<string key="login_register_btn@2x.png">{538, 106}</string>
 			<string key="login_register_btn_down@2x.png">{538, 106}</string>
 			<string key="login_vk_btn@2x.png">{240, 134}</string>

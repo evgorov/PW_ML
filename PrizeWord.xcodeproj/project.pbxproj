@@ -75,17 +75,27 @@
 		F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2A22DF116648AAA00CF7859 /* QuartzCore.framework */; };
 		F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */; };
 		F2B83ADB166FDA00007C4596 /* LoginMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */; };
-		F2B83AE6166FDA75007C4596 /* login_enter_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */; };
-		F2B83AE7166FDA75007C4596 /* login_enter_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */; };
-		F2B83AE8166FDA75007C4596 /* login_facebook_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */; };
-		F2B83AE9166FDA75007C4596 /* login_facebook_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */; };
-		F2B83AEA166FDA75007C4596 /* login_main_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */; };
-		F2B83AEB166FDA75007C4596 /* login_register_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */; };
-		F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */; };
-		F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */; };
-		F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */; };
 		F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */; };
 		F2B83AF4166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */; };
+		F2B83B07166FEF55007C4596 /* login_enter_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF5166FEF55007C4596 /* login_enter_btn_down@2x.png */; };
+		F2B83B08166FEF55007C4596 /* login_enter_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF6166FEF55007C4596 /* login_enter_btn_down@2x~ipad.png */; };
+		F2B83B09166FEF55007C4596 /* login_enter_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF7166FEF55007C4596 /* login_enter_btn@2x.png */; };
+		F2B83B0A166FEF55007C4596 /* login_enter_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF8166FEF55007C4596 /* login_enter_btn@2x~ipad.png */; };
+		F2B83B0B166FEF55007C4596 /* login_facebook_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AF9166FEF55007C4596 /* login_facebook_btn_down@2x.png */; };
+		F2B83B0C166FEF55007C4596 /* login_facebook_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFA166FEF55007C4596 /* login_facebook_btn_down@2x~ipad.png */; };
+		F2B83B0D166FEF55007C4596 /* login_facebook_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFB166FEF55007C4596 /* login_facebook_btn@2x.png */; };
+		F2B83B0E166FEF55007C4596 /* login_facebook_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFC166FEF55007C4596 /* login_facebook_btn@2x~ipad.png */; };
+		F2B83B0F166FEF55007C4596 /* login_main_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFD166FEF55007C4596 /* login_main_bg@2x.jpg */; };
+		F2B83B10166FEF55007C4596 /* login_main_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFE166FEF55007C4596 /* login_main_bg@2x~ipad.jpg */; };
+		F2B83B11166FEF55007C4596 /* login_register_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AFF166FEF55007C4596 /* login_register_btn_down@2x.png */; };
+		F2B83B12166FEF55007C4596 /* login_register_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B00166FEF55007C4596 /* login_register_btn_down@2x~ipad.png */; };
+		F2B83B13166FEF55007C4596 /* login_register_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B01166FEF55007C4596 /* login_register_btn@2x.png */; };
+		F2B83B14166FEF55007C4596 /* login_register_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B02166FEF55007C4596 /* login_register_btn@2x~ipad.png */; };
+		F2B83B15166FEF55007C4596 /* login_vk_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B03166FEF55007C4596 /* login_vk_btn_down@2x.png */; };
+		F2B83B16166FEF55007C4596 /* login_vk_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B04166FEF55007C4596 /* login_vk_btn_down@2x~ipad.png */; };
+		F2B83B17166FEF55007C4596 /* login_vk_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B05166FEF55007C4596 /* login_vk_btn@2x.png */; };
+		F2B83B18166FEF55007C4596 /* login_vk_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B06166FEF55007C4596 /* login_vk_btn@2x~ipad.png */; };
+		F2B83B1A166FEFA7007C4596 /* LoginMainViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B19166FEFA7007C4596 /* LoginMainViewController~ipad.xib */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -183,17 +193,27 @@
 		F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginMainViewController.h; path = ViewControllers/LoginMainViewController.h; sourceTree = "<group>"; };
 		F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginMainViewController.m; path = ViewControllers/LoginMainViewController.m; sourceTree = "<group>"; };
 		F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginMainViewController.xib; path = ViewControllers/LoginMainViewController.xib; sourceTree = "<group>"; };
-		F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn@2x.png"; sourceTree = "<group>"; };
-		F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn_down@2x.png"; sourceTree = "<group>"; };
-		F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn@2x.png"; sourceTree = "<group>"; };
-		F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn_down@2x.png"; sourceTree = "<group>"; };
-		F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_main_bg@2x.jpg"; sourceTree = "<group>"; };
-		F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn@2x.png"; sourceTree = "<group>"; };
-		F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn_down@2x.png"; sourceTree = "<group>"; };
-		F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn@2x.png"; sourceTree = "<group>"; };
-		F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn_down@2x.png"; sourceTree = "<group>"; };
 		F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PrizeWordNavigationController~ipad.xib"; path = "ViewControllers/PrizeWordNavigationController~ipad.xib"; sourceTree = "<group>"; };
+		F2B83AF5166FEF55007C4596 /* login_enter_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83AF6166FEF55007C4596 /* login_enter_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83AF7166FEF55007C4596 /* login_enter_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83AF8166FEF55007C4596 /* login_enter_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83AF9166FEF55007C4596 /* login_facebook_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83AFA166FEF55007C4596 /* login_facebook_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83AFB166FEF55007C4596 /* login_facebook_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83AFC166FEF55007C4596 /* login_facebook_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_facebook_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83AFD166FEF55007C4596 /* login_main_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_main_bg@2x.jpg"; sourceTree = "<group>"; };
+		F2B83AFE166FEF55007C4596 /* login_main_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_main_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F2B83AFF166FEF55007C4596 /* login_register_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83B00166FEF55007C4596 /* login_register_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83B01166FEF55007C4596 /* login_register_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83B02166FEF55007C4596 /* login_register_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83B03166FEF55007C4596 /* login_vk_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83B04166FEF55007C4596 /* login_vk_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83B05166FEF55007C4596 /* login_vk_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83B06166FEF55007C4596 /* login_vk_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_vk_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F2B83B19166FEFA7007C4596 /* LoginMainViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoginMainViewController~ipad.xib"; path = "ViewControllers/LoginMainViewController~ipad.xib"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -369,15 +389,24 @@
 		F2B83ADC166FDA74007C4596 /* login */ = {
 			isa = PBXGroup;
 			children = (
-				F2B83ADD166FDA74007C4596 /* login_enter_btn@2x.png */,
-				F2B83ADE166FDA74007C4596 /* login_enter_btn_down@2x.png */,
-				F2B83ADF166FDA74007C4596 /* login_facebook_btn@2x.png */,
-				F2B83AE0166FDA74007C4596 /* login_facebook_btn_down@2x.png */,
-				F2B83AE1166FDA74007C4596 /* login_main_bg@2x.jpg */,
-				F2B83AE2166FDA74007C4596 /* login_register_btn@2x.png */,
-				F2B83AE3166FDA74007C4596 /* login_register_btn_down@2x.png */,
-				F2B83AE4166FDA74007C4596 /* login_vk_btn@2x.png */,
-				F2B83AE5166FDA74007C4596 /* login_vk_btn_down@2x.png */,
+				F2B83AF5166FEF55007C4596 /* login_enter_btn_down@2x.png */,
+				F2B83AF6166FEF55007C4596 /* login_enter_btn_down@2x~ipad.png */,
+				F2B83AF7166FEF55007C4596 /* login_enter_btn@2x.png */,
+				F2B83AF8166FEF55007C4596 /* login_enter_btn@2x~ipad.png */,
+				F2B83AF9166FEF55007C4596 /* login_facebook_btn_down@2x.png */,
+				F2B83AFA166FEF55007C4596 /* login_facebook_btn_down@2x~ipad.png */,
+				F2B83AFB166FEF55007C4596 /* login_facebook_btn@2x.png */,
+				F2B83AFC166FEF55007C4596 /* login_facebook_btn@2x~ipad.png */,
+				F2B83AFD166FEF55007C4596 /* login_main_bg@2x.jpg */,
+				F2B83AFE166FEF55007C4596 /* login_main_bg@2x~ipad.jpg */,
+				F2B83AFF166FEF55007C4596 /* login_register_btn_down@2x.png */,
+				F2B83B00166FEF55007C4596 /* login_register_btn_down@2x~ipad.png */,
+				F2B83B01166FEF55007C4596 /* login_register_btn@2x.png */,
+				F2B83B02166FEF55007C4596 /* login_register_btn@2x~ipad.png */,
+				F2B83B03166FEF55007C4596 /* login_vk_btn_down@2x.png */,
+				F2B83B04166FEF55007C4596 /* login_vk_btn_down@2x~ipad.png */,
+				F2B83B05166FEF55007C4596 /* login_vk_btn@2x.png */,
+				F2B83B06166FEF55007C4596 /* login_vk_btn@2x~ipad.png */,
 			);
 			name = login;
 			path = PrizeWord/assets/login;
@@ -465,6 +494,7 @@
 				F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */,
 				F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */,
 				F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */,
+				F2B83B19166FEFA7007C4596 /* LoginMainViewController~ipad.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -571,17 +601,27 @@
 				F2868CE8166FBEF5003F0686 /* nav_back_btn_down@2x.png in Resources */,
 				F2868CE9166FBEF5003F0686 /* navigationbar_bg@2x.png in Resources */,
 				F2B83ADB166FDA00007C4596 /* LoginMainViewController.xib in Resources */,
-				F2B83AE6166FDA75007C4596 /* login_enter_btn@2x.png in Resources */,
-				F2B83AE7166FDA75007C4596 /* login_enter_btn_down@2x.png in Resources */,
-				F2B83AE8166FDA75007C4596 /* login_facebook_btn@2x.png in Resources */,
-				F2B83AE9166FDA75007C4596 /* login_facebook_btn_down@2x.png in Resources */,
-				F2B83AEA166FDA75007C4596 /* login_main_bg@2x.jpg in Resources */,
-				F2B83AEB166FDA75007C4596 /* login_register_btn@2x.png in Resources */,
-				F2B83AEC166FDA75007C4596 /* login_register_btn_down@2x.png in Resources */,
-				F2B83AED166FDA75007C4596 /* login_vk_btn@2x.png in Resources */,
-				F2B83AEE166FDA75007C4596 /* login_vk_btn_down@2x.png in Resources */,
 				F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */,
 				F2B83AF4166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib in Resources */,
+				F2B83B07166FEF55007C4596 /* login_enter_btn_down@2x.png in Resources */,
+				F2B83B08166FEF55007C4596 /* login_enter_btn_down@2x~ipad.png in Resources */,
+				F2B83B09166FEF55007C4596 /* login_enter_btn@2x.png in Resources */,
+				F2B83B0A166FEF55007C4596 /* login_enter_btn@2x~ipad.png in Resources */,
+				F2B83B0B166FEF55007C4596 /* login_facebook_btn_down@2x.png in Resources */,
+				F2B83B0C166FEF55007C4596 /* login_facebook_btn_down@2x~ipad.png in Resources */,
+				F2B83B0D166FEF55007C4596 /* login_facebook_btn@2x.png in Resources */,
+				F2B83B0E166FEF55007C4596 /* login_facebook_btn@2x~ipad.png in Resources */,
+				F2B83B0F166FEF55007C4596 /* login_main_bg@2x.jpg in Resources */,
+				F2B83B10166FEF55007C4596 /* login_main_bg@2x~ipad.jpg in Resources */,
+				F2B83B11166FEF55007C4596 /* login_register_btn_down@2x.png in Resources */,
+				F2B83B12166FEF55007C4596 /* login_register_btn_down@2x~ipad.png in Resources */,
+				F2B83B13166FEF55007C4596 /* login_register_btn@2x.png in Resources */,
+				F2B83B14166FEF55007C4596 /* login_register_btn@2x~ipad.png in Resources */,
+				F2B83B15166FEF55007C4596 /* login_vk_btn_down@2x.png in Resources */,
+				F2B83B16166FEF55007C4596 /* login_vk_btn_down@2x~ipad.png in Resources */,
+				F2B83B17166FEF55007C4596 /* login_vk_btn@2x.png in Resources */,
+				F2B83B18166FEF55007C4596 /* login_vk_btn@2x~ipad.png in Resources */,
+				F2B83B1A166FEFA7007C4596 /* LoginMainViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
