@@ -106,7 +106,12 @@
     }
     else
     {
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:string.lowercaseString]];
+        NSString * letter = string.lowercaseString;
+        if ([letter compare:@"ё"] == NSOrderedSame)
+        {
+            letter = @"е";
+        }
+        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:letter]];
     }
     return YES;
 }
