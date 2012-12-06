@@ -8,6 +8,7 @@
 
 #import "LoginMainViewController.h"
 #import "RootViewController.h"
+#import "LoginRegisterViewController.h"
 
 @interface LoginMainViewController ()
 
@@ -49,7 +50,8 @@
 
 - (IBAction)handleRegisterClick:(UIButton *)sender
 {
-    [self.navigationController pushViewController:[RootViewController new] animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController pushViewController:[LoginRegisterViewController new] animated:YES];
 }
 
 - (IBAction)handleFacebookClick:(UIButton *)sender
