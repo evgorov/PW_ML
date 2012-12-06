@@ -11,9 +11,31 @@
 
 @interface LoginMainViewController ()
 
+-(void)gotoRoot:(id)sender;
+
 @end
 
 @implementation LoginMainViewController
+
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        activityIndicator.hidesWhenStopped = YES;
+        activityIndicator.userInteractionEnabled = NO;
+        activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+        [self.view addSubview:activityIndicator];
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [activityIndicator removeFromSuperview];
+    activityIndicator = nil;
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -32,11 +54,22 @@
 
 - (IBAction)handleFacebookClick:(UIButton *)sender
 {
-    [self.navigationController pushViewController:[RootViewController new] animated:YES];
+    self.view.userInteractionEnabled = NO;
+    [activityIndicator startAnimating];
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
 }
 
 - (IBAction)handleVKClick:(UIButton *)sender
 {
+    self.view.userInteractionEnabled = NO;
+    [activityIndicator startAnimating];
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
+}
+
+-(void)gotoRoot:(id)sender
+{
+    [activityIndicator stopAnimating];
+    self.view.userInteractionEnabled = YES;
     [self.navigationController pushViewController:[RootViewController new] animated:YES];
 }
 
