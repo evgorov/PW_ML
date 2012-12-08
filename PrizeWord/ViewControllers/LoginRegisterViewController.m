@@ -86,6 +86,10 @@
     [super viewDidUnload];
 }
 
+- (IBAction)handleAvaClick:(id)sender
+{
+}
+
 - (IBAction)handleBirthdayClick:(id)sender
 {
     if (datePickerView.hidden)
