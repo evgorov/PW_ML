@@ -40,7 +40,7 @@ static GameLogic * sharedGameLogic = nil;
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
     _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
     self.window.rootViewController = _navController;
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
 
     currentInstance = self;

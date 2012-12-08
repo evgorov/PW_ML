@@ -100,6 +100,12 @@
 		F2B83B1E167141BA007C4596 /* login_register_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B1C167141BA007C4596 /* login_register_bg@2x~ipad.jpg */; };
 		F2B83B22167141F0007C4596 /* LoginRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2B83B20167141EF007C4596 /* LoginRegisterViewController.m */; };
 		F2B83B23167141F0007C4596 /* LoginRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B21167141F0007C4596 /* LoginRegisterViewController.xib */; };
+		F2B83B28167371C4007C4596 /* login_register_date_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B24167371C4007C4596 /* login_register_date_btn@2x.png */; };
+		F2B83B29167371C4007C4596 /* login_register_datepicker_done_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B25167371C4007C4596 /* login_register_datepicker_done_btn_down@2x.png */; };
+		F2B83B2A167371C4007C4596 /* login_register_datepicker_done_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B26167371C4007C4596 /* login_register_datepicker_done_btn@2x.png */; };
+		F2B83B2B167371C4007C4596 /* login_register_datepicker_pane_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B27167371C4007C4596 /* login_register_datepicker_pane_bg@2x.png */; };
+		F2B83B2E16738C84007C4596 /* login_register_register_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B2C16738C83007C4596 /* login_register_register_btn_down@2x.png */; };
+		F2B83B2F16738C84007C4596 /* login_register_register_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83B2D16738C83007C4596 /* login_register_register_btn@2x.png */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -223,6 +229,12 @@
 		F2B83B1F167141EF007C4596 /* LoginRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginRegisterViewController.h; path = ViewControllers/LoginRegisterViewController.h; sourceTree = "<group>"; };
 		F2B83B20167141EF007C4596 /* LoginRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginRegisterViewController.m; path = ViewControllers/LoginRegisterViewController.m; sourceTree = "<group>"; };
 		F2B83B21167141F0007C4596 /* LoginRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginRegisterViewController.xib; path = ViewControllers/LoginRegisterViewController.xib; sourceTree = "<group>"; };
+		F2B83B24167371C4007C4596 /* login_register_date_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_date_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83B25167371C4007C4596 /* login_register_datepicker_done_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_datepicker_done_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83B26167371C4007C4596 /* login_register_datepicker_done_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_datepicker_done_btn@2x.png"; sourceTree = "<group>"; };
+		F2B83B27167371C4007C4596 /* login_register_datepicker_pane_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_datepicker_pane_bg@2x.png"; sourceTree = "<group>"; };
+		F2B83B2C16738C83007C4596 /* login_register_register_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_register_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2B83B2D16738C83007C4596 /* login_register_register_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_register_btn@2x.png"; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -418,6 +430,12 @@
 				F2B83B06166FEF55007C4596 /* login_vk_btn@2x~ipad.png */,
 				F2B83B1B167141BA007C4596 /* login_register_bg@2x.jpg */,
 				F2B83B1C167141BA007C4596 /* login_register_bg@2x~ipad.jpg */,
+				F2B83B24167371C4007C4596 /* login_register_date_btn@2x.png */,
+				F2B83B25167371C4007C4596 /* login_register_datepicker_done_btn_down@2x.png */,
+				F2B83B26167371C4007C4596 /* login_register_datepicker_done_btn@2x.png */,
+				F2B83B27167371C4007C4596 /* login_register_datepicker_pane_bg@2x.png */,
+				F2B83B2C16738C83007C4596 /* login_register_register_btn_down@2x.png */,
+				F2B83B2D16738C83007C4596 /* login_register_register_btn@2x.png */,
 			);
 			name = login;
 			path = PrizeWord/assets/login;
@@ -639,6 +657,12 @@
 				F2B83B1D167141BA007C4596 /* login_register_bg@2x.jpg in Resources */,
 				F2B83B1E167141BA007C4596 /* login_register_bg@2x~ipad.jpg in Resources */,
 				F2B83B23167141F0007C4596 /* LoginRegisterViewController.xib in Resources */,
+				F2B83B28167371C4007C4596 /* login_register_date_btn@2x.png in Resources */,
+				F2B83B29167371C4007C4596 /* login_register_datepicker_done_btn_down@2x.png in Resources */,
+				F2B83B2A167371C4007C4596 /* login_register_datepicker_done_btn@2x.png in Resources */,
+				F2B83B2B167371C4007C4596 /* login_register_datepicker_pane_bg@2x.png in Resources */,
+				F2B83B2E16738C84007C4596 /* login_register_register_btn_down@2x.png in Resources */,
+				F2B83B2F16738C84007C4596 /* login_register_register_btn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

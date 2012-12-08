@@ -10,16 +10,21 @@
 
 @interface LoginRegisterViewController : UIViewController<UITextFieldDelegate>
 {
-    IBOutlet UIScrollView *scrollView;
-    IBOutlet UIImageView *imgBackground;
-    IBOutlet UITextField *tfName;
-    IBOutlet UITextField *tfSurname;
-    IBOutlet UITextField *tfEmail;
-    IBOutlet UITextField *tfPassword;
-    IBOutlet UITextField *tfPasswordRepeat;
-    IBOutlet UITextField *tfCity;
+    IBOutlet UIScrollView * scrollView;
+    IBOutlet UIImageView * imgBackground;
+    IBOutlet UITextField * tfName;
+    IBOutlet UITextField * tfSurname;
+    IBOutlet UITextField * tfEmail;
+    IBOutlet UITextField * tfPassword;
+    IBOutlet UITextField * tfPasswordRepeat;
+    IBOutlet UITextField * tfCity;
     
-    IBOutlet UIDatePicker *datePicker;
+    IBOutlet UIDatePicker * datePicker;
+    IBOutlet UIView * datePickerView;
+    IBOutlet UIButton * btnBirthday;
+    
+    UIView * activeResponder;
+    UIActivityIndicatorView * activityIndicator;
 }
 
 @end

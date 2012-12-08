@@ -45,6 +45,7 @@
 
 - (IBAction)handleEnterClick:(UIButton *)sender
 {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController pushViewController:[RootViewController new] animated:YES];
 }
 
@@ -72,6 +73,7 @@
 {
     [activityIndicator stopAnimating];
     self.view.userInteractionEnabled = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController pushViewController:[RootViewController new] animated:YES];
 }
 
