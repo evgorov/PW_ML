@@ -14,6 +14,12 @@
 
 #define kTileOffset 20
 
+@interface GameFieldView (private)
+
+-(void)switchFocusToTile:(TileData *)tile;
+
+@end
+
 @implementation GameFieldView
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -94,7 +100,25 @@
 {
     if (event.type == EVENT_FOCUS_CHANGE)
     {
-        focusedTile = event.data;
+        [self switchFocusToTile:event.data];
+    }
+}
+
+-(void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
+    if (focusedTile != nil)
+    {
+        [self switchFocusToTile:focusedTile];
+    }
+}
+
+-(void)switchFocusToTile:(TileData *)tile
+{
+    focusedTile = tile;
+    if (focusedTile != nil) {
         int offsetX = kTileOffset + focusedTile.x * kTileWidth + kTileWidth / 2 - scrollView.frame.size.width / 2;
         int offsetY = kTileOffset + focusedTile.y * kTileHeight + kTileHeight / 2 - scrollView.frame.size.height / 2;
         if (offsetX > scrollView.contentSize.width - scrollView.frame.size.width)
@@ -105,7 +129,9 @@
             offsetX = 0;
         if (offsetY < 0)
             offsetY = 0;
+        [scrollView setContentOffset:scrollView.contentOffset animated:NO];
         [scrollView setContentOffset:CGPointMake(offsetX, offsetY) animated:YES];
     }
 }
+
 @end

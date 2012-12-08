@@ -11,7 +11,10 @@
 #import "GameField.h"
 #import "EventManager.h"
 
-@interface GameViewController ()
+@interface GameViewController (private)
+
+-(void)handleKeyboardWillShow:(NSNotification *)aNotification;
+-(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 
 @end
 
@@ -54,11 +57,17 @@
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
@@ -81,6 +90,33 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
+-(void)handleKeyboardWillShow:(NSNotification *)aNotification
+{
+    NSDictionary * userInfo = aNotification.userInfo;
+    CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView setAnimationCurve:animationCurve];
+    [UIView animateWithDuration:animationDuration animations:^{
+        gameFieldView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - endFrame.size.height);
+    }];
+}
+
+-(void)handleKeyboardWillHide:(NSNotification *)aNotification
+{
+    NSDictionary * userInfo = aNotification.userInfo;
+        
+    UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+    [UIView setAnimationCurve:animationCurve];
+    [UIView animateWithDuration:animationDuration animations:^{
+        gameFieldView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }];
 }
 
 // EventListenerDelegate
@@ -118,6 +154,7 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:nil]];
     [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
     return YES;
 }

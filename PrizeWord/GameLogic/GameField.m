@@ -135,9 +135,9 @@
                             break;
                         }
                     }
-                    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
                     if (data.state == TILE_LETTER_EMPTY_INPUT)
                     {
+                        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
                         return;
                     }
                     data.state = TILE_LETTER_EMPTY_INPUT;
@@ -146,6 +146,7 @@
                 default:
                     return;
             }
+            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
             [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:data]];
         }
             break;
