@@ -15,11 +15,11 @@ class BasicModel
     def guuid?; !!@use_guuid; end
   end
 
-  def initialize
-    @hash = {}
-    @storage = DummyStorage.new
+  def initialize(hash = {}, storage = DummyStorage.new)
+    @hash, @storage = {}, storage
     set_defaults!
-    super
+    self.merge!(hash)
+    self.old_id = self.id unless hash.empty?
   end
 
   def []=(key, value)
@@ -41,7 +41,15 @@ class BasicModel
     self
   end
 
-  def id; raise NotImplementedError; end
+  def id
+    if self.class.guuid?
+      self['id']
+    else
+      raise NotImplementedError
+    end
+  end
+
+
   def validate!; self; end
   def set_defaults!; self; end
 
@@ -49,6 +57,17 @@ class BasicModel
   def storage(storage)
     @storage = storage.namespace(self.class.name)
     self
+  end
+
+  def all(page)
+    page = 1 if page == 0
+    per_page = 10
+    # this should be done with by: 'nosort' but buggix is not in all versions of redis
+    ids = @storage.zrevrange('all', (page - 1) * per_page, page * per_page)
+    data_list = @storage.mget(*ids)
+    data_list.map do |data|
+      self.class.new(JSON.parse(data), @storage)
+    end
   end
 
   def save(skip_validation = false)
@@ -60,16 +79,14 @@ class BasicModel
     validate! unless skip_validation
     @storage.set(id, {}.merge(self).to_json)
     @storage.del(@old_id) if @old_id && @old_id != id
+    @storage.zadd("all", Time.now.to_i, id)
     self
   end
 
   def load(id)
-    @old_id = id
     response = @storage.get(id)
     raise NotFound unless response
-    hash = JSON.parse(response)
-    self.merge!(hash)
-    self
+    self.class.new(JSON.parse(response), @storage)
   end
 
   def delete
@@ -77,7 +94,6 @@ class BasicModel
     @storage.del(self['id'])
     self
   end
-
 
   def inspect
     "<#{self.class.name}: #{@hash.inspect}>"
@@ -89,5 +105,11 @@ class BasicModel
 
   def to_json(*a)
     self.to_hash.to_json(*a)
+  end
+
+  protected
+
+  def old_id=(id)
+    @old_id = id
   end
 end

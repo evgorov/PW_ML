@@ -300,4 +300,11 @@ describe 'Integration spec' do
     last_response.status.should == 200
   end
 
+  xit 'admin' do
+    write_proper_spec_for_admin_routes
+  end
+
+  it 'invte users'
+
+  it 'service messages'
 end

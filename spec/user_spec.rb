@@ -24,11 +24,9 @@ describe User do
     end
 
     it '#save' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       subject.merge!(user_in_storage)
       storage.should_receive(:set).with(user_in_storage_key, {}.merge(subject).to_json)
-      storage.should_receive(:zadd)
       storage.should_receive(:get).with(user_in_storage_key).and_return(nil)
       subject.storage(storage).save
     end
@@ -50,8 +48,11 @@ describe User do
       storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
       storage.should_receive(:del).with(user_in_storage_key)
-      data = {}.merge(subject).merge('email' => 'g@fbi.gov', 'id' => 'registered#g@fbi.gov').to_json
-      storage.should_receive(:set).with('registered#g@fbi.gov', data)
+      expected_data =
+      storage.should_receive(:set).with do |key, data|
+        key.should == 'registered#g@fbi.gov'
+        JSON.parse(data).should == {}.merge(subject).merge('email' => 'g@fbi.gov', 'id' => 'registered#g@fbi.gov')
+      end
       storage.should_receive(:get).and_return(nil)
 
       u = RegisteredUser.storage(storage).load_by_key(user_in_storage['email'])
@@ -115,8 +116,7 @@ describe User do
     end
 
     it '.load_by_provider_and_key' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
       u = User.load_by_provider_and_key(storage, 'registered', user_in_storage['email'])
       u.is_a?(User).should be_true
@@ -124,8 +124,7 @@ describe User do
     end
 
     it '#load' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
       u = RegisteredUser.storage(storage).load("registered##{user_in_storage['email']}")
       u.is_a?(User).should be_true
@@ -133,8 +132,7 @@ describe User do
     end
 
     it '#load not found' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(nil)
       lambda { RegisteredUser.storage(storage).load_by_key(user_in_storage['email']) }.should raise_error(User::NotFound)
     end
@@ -146,8 +144,10 @@ describe User do
         should_receive(:zrevrange).
         with('rating', 0, 10).
         and_return(['registered#g@interpol.co.uk', 'facebook#1234'])
-      storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
-      storage.should_receive(:get).with(user2_in_storage_key).and_return(user2_in_storage.to_json)
+      storage.should_receive(:mget).
+        with(user_in_storage_key, user2_in_storage_key).
+        and_return([user_in_storage.to_json, user2_in_storage.to_json])
+
       users = subject.storage(storage).users_by_rating
       users[0].to_hash.should == user_in_storage
       users[1].to_hash.should == user2_in_storage
@@ -169,8 +169,7 @@ describe User do
     end
 
     it '#authenticate' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).exactly(2).and_return(user_in_storage.to_json)
       u = RegisteredUser.storage(storage).authenticate(user_in_storage['email'], user_in_storage_password)
       u.to_hash.should == user_in_storage
@@ -187,8 +186,7 @@ describe User do
     end
 
     it '#save cannot create user when email is taken' do
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       subject.merge!(user_in_storage)
       storage.should_not_receive(:set).with(user_in_storage_key, {}.merge(subject).to_json)
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
@@ -198,9 +196,7 @@ describe User do
 
     it '#save cannot change email to already registered email adress' do
       subject.merge!(user_in_storage)
-
-      storage = mock(:storage)
-      storage.stub(namespace: storage)
+      storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
       storage.should_receive(:get).with('registered#already_taken@fbi.gov').and_return(user_in_storage.to_json)
       storage.should_not_receive(:set).with('registered#already_taken@fbi.gov', anything)

@@ -13,7 +13,7 @@ class User < BasicModel
 
   class << self
 
-    def new
+    def new(*)
       return super unless self.name == 'User'
       raise NotImplementedError.new("This class is an abstract class, "+
                                     "you must use it's children.")
@@ -28,6 +28,9 @@ class User < BasicModel
       @providers[provider].storage(storage).load_by_key(key)
     end
 
+    def new_for_provider(provider, *args)
+      @providers[provider].new(*args)
+    end
   end
 
   def []=(key, value)
@@ -62,7 +65,7 @@ class User < BasicModel
   end
 
   def validate!
-    %w[email name surname position solved role
+    %w[email provider name surname position solved role
        month_score high_score dynamics hints].each do |field|
       raise InvalidState.new("Missing required field: #{field}") unless self[field]
     end
@@ -72,9 +75,11 @@ class User < BasicModel
     page = 1 if page == 0
     per_page = 10
     ids = @storage.zrevrange('rating', (page - 1) * per_page, page * per_page)
-    ids.map do |o|
-      provider, key = o.split('#', 2)
-      User.load_by_provider_and_key(@storage, provider, key)
+    data_list = @storage.mget(*ids)
+    data_list.map do |data|
+      data = JSON.parse(data)
+      provider = data['provider']
+      User.new_for_provider(provider, data).storage(@storage)
     end
   end
 
@@ -87,10 +92,6 @@ class User < BasicModel
     super(*a)
     @storage.zadd('rating', self['month_score'].to_i, self.id)
     self
-  end
-
-  def id
-    raise NotImplementedError
   end
 
   def provider_name
