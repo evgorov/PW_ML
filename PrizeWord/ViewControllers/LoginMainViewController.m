@@ -9,6 +9,7 @@
 #import "LoginMainViewController.h"
 #import "RootViewController.h"
 #import "LoginRegisterViewController.h"
+#import "LoginEnterViewController.h"
 
 @interface LoginMainViewController ()
 
@@ -46,7 +47,7 @@
 - (IBAction)handleEnterClick:(UIButton *)sender
 {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController pushViewController:[RootViewController new] animated:YES];
+    [self.navigationController pushViewController:[LoginEnterViewController new] animated:YES];
 }
 
 - (IBAction)handleRegisterClick:(UIButton *)sender

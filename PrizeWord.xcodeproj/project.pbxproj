@@ -54,6 +54,19 @@
 		F2868CE9166FBEF5003F0686 /* navigationbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */; };
 		F286E2BC1675144D00FF5E83 /* header_timer_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2BA1675144D00FF5E83 /* header_timer_bg@2x.png */; };
 		F286E2BD1675144D00FF5E83 /* header_timer_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2BB1675144D00FF5E83 /* header_timer_bg@2x~ipad.png */; };
+		F286E2C21675186A00FF5E83 /* LoginEnterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E2C01675186A00FF5E83 /* LoginEnterViewController.m */; };
+		F286E2C31675186A00FF5E83 /* LoginEnterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C11675186A00FF5E83 /* LoginEnterViewController.xib */; };
+		F286E2CE167518E600FF5E83 /* login_forget_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C4167518E600FF5E83 /* login_forget_btn_down@2x.png */; };
+		F286E2CF167518E600FF5E83 /* login_forget_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C5167518E600FF5E83 /* login_forget_btn@2x.png */; };
+		F286E2D0167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C6167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png */; };
+		F286E2D1167518E600FF5E83 /* login_forget_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C7167518E600FF5E83 /* login_forget_btn@2x~ipad.png */; };
+		F286E2D2167518E600FF5E83 /* login_enter_enter_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C8167518E600FF5E83 /* login_enter_enter_btn_down@2x.png */; };
+		F286E2D3167518E600FF5E83 /* login_enter_enter_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2C9167518E600FF5E83 /* login_enter_enter_btn@2x.png */; };
+		F286E2D4167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CA167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png */; };
+		F286E2D5167518E600FF5E83 /* login_enter_enter_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CB167518E600FF5E83 /* login_enter_enter_btn@2x~ipad.png */; };
+		F286E2D6167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CC167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg */; };
+		F286E2D7167518E600FF5E83 /* login_enter_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CD167518E600FF5E83 /* login_enter_bg@2x.jpg */; };
+		F286E2D916751ADB00FF5E83 /* LoginEnterViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -184,6 +197,20 @@
 		F2868CE6166FBEF5003F0686 /* navigationbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar_bg@2x.png"; sourceTree = "<group>"; };
 		F286E2BA1675144D00FF5E83 /* header_timer_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_timer_bg@2x.png"; sourceTree = "<group>"; };
 		F286E2BB1675144D00FF5E83 /* header_timer_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_timer_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2BF1675186A00FF5E83 /* LoginEnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginEnterViewController.h; path = ViewControllers/LoginEnterViewController.h; sourceTree = "<group>"; };
+		F286E2C01675186A00FF5E83 /* LoginEnterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginEnterViewController.m; path = ViewControllers/LoginEnterViewController.m; sourceTree = "<group>"; };
+		F286E2C11675186A00FF5E83 /* LoginEnterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginEnterViewController.xib; path = ViewControllers/LoginEnterViewController.xib; sourceTree = "<group>"; };
+		F286E2C4167518E600FF5E83 /* login_forget_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_forget_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E2C5167518E600FF5E83 /* login_forget_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_forget_btn@2x.png"; sourceTree = "<group>"; };
+		F286E2C6167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_forget_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2C7167518E600FF5E83 /* login_forget_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_forget_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2C8167518E600FF5E83 /* login_enter_enter_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_enter_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E2C9167518E600FF5E83 /* login_enter_enter_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_enter_btn@2x.png"; sourceTree = "<group>"; };
+		F286E2CA167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_enter_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2CB167518E600FF5E83 /* login_enter_enter_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_enter_enter_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2CC167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_enter_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F286E2CD167518E600FF5E83 /* login_enter_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_enter_bg@2x.jpg"; sourceTree = "<group>"; };
+		F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoginEnterViewController~ipad.xib"; path = "ViewControllers/LoginEnterViewController~ipad.xib"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -433,6 +460,16 @@
 		F2B83ADC166FDA74007C4596 /* login */ = {
 			isa = PBXGroup;
 			children = (
+				F286E2C4167518E600FF5E83 /* login_forget_btn_down@2x.png */,
+				F286E2C5167518E600FF5E83 /* login_forget_btn@2x.png */,
+				F286E2C6167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png */,
+				F286E2C7167518E600FF5E83 /* login_forget_btn@2x~ipad.png */,
+				F286E2C8167518E600FF5E83 /* login_enter_enter_btn_down@2x.png */,
+				F286E2C9167518E600FF5E83 /* login_enter_enter_btn@2x.png */,
+				F286E2CA167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png */,
+				F286E2CB167518E600FF5E83 /* login_enter_enter_btn@2x~ipad.png */,
+				F286E2CC167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg */,
+				F286E2CD167518E600FF5E83 /* login_enter_bg@2x.jpg */,
 				F2B83B301673945B007C4596 /* login_enter_btn_down@2x.png */,
 				F2B83B311673945B007C4596 /* login_enter_btn_down@2x~ipad.png */,
 				F2B83B321673945B007C4596 /* login_enter_btn@2x.png */,
@@ -563,6 +600,10 @@
 				F2B83B20167141EF007C4596 /* LoginRegisterViewController.m */,
 				F2B83B21167141F0007C4596 /* LoginRegisterViewController.xib */,
 				F2B83B761673958B007C4596 /* LoginRegisterViewController~ipad.xib */,
+				F286E2BF1675186A00FF5E83 /* LoginEnterViewController.h */,
+				F286E2C01675186A00FF5E83 /* LoginEnterViewController.m */,
+				F286E2C11675186A00FF5E83 /* LoginEnterViewController.xib */,
+				F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -711,6 +752,18 @@
 				F2B83B7D167399E0007C4596 /* login_register_datepicker_pane_bg@2x~ipad.png in Resources */,
 				F286E2BC1675144D00FF5E83 /* header_timer_bg@2x.png in Resources */,
 				F286E2BD1675144D00FF5E83 /* header_timer_bg@2x~ipad.png in Resources */,
+				F286E2C31675186A00FF5E83 /* LoginEnterViewController.xib in Resources */,
+				F286E2CE167518E600FF5E83 /* login_forget_btn_down@2x.png in Resources */,
+				F286E2CF167518E600FF5E83 /* login_forget_btn@2x.png in Resources */,
+				F286E2D0167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png in Resources */,
+				F286E2D1167518E600FF5E83 /* login_forget_btn@2x~ipad.png in Resources */,
+				F286E2D2167518E600FF5E83 /* login_enter_enter_btn_down@2x.png in Resources */,
+				F286E2D3167518E600FF5E83 /* login_enter_enter_btn@2x.png in Resources */,
+				F286E2D4167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png in Resources */,
+				F286E2D5167518E600FF5E83 /* login_enter_enter_btn@2x~ipad.png in Resources */,
+				F286E2D6167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg in Resources */,
+				F286E2D7167518E600FF5E83 /* login_enter_bg@2x.jpg in Resources */,
+				F286E2D916751ADB00FF5E83 /* LoginEnterViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +795,7 @@
 				F2868CE2166F047C003F0686 /* PrizeWordNavigationController.m in Sources */,
 				F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */,
 				F2B83B22167141F0007C4596 /* LoginRegisterViewController.m in Sources */,
+				F286E2C21675186A00FF5E83 /* LoginEnterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
