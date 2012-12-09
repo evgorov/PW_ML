@@ -19,6 +19,6 @@
 
 -(void)registerListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type;
 -(void)unregisterListener:(id<EventListenerDelegate> __unsafe_unretained)listener forEventType:(EventType)type;
--(void)dispatchEventWithType:(Event *)event;
+-(void)dispatchEvent:(Event *)event;
 
 @end

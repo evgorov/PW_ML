@@ -25,22 +25,22 @@
 
 - (IBAction)handleBrilliantClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_BRILLIANT]]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_BRILLIANT]]];
 }
 
 - (IBAction)handleGoldClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_GOLD]]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_GOLD]]];
 }
 
 - (IBAction)handleSilverClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_SILVER]]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_SILVER]]];
 }
 
 - (IBAction)handleFreeClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_FREE]]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_FREE]]];
 }
 
 - (IBAction)handleReleaseNotesClick:(UIButton *)sender

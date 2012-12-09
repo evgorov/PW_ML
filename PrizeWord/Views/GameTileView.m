@@ -281,7 +281,7 @@
 
 -(void)onTap
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_TAP andData:tileData]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_TAP andData:tileData]];
 }
 
 /*

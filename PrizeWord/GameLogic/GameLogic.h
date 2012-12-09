@@ -11,10 +11,21 @@
 
 @class GameField;
 
+typedef enum GameState {
+    GAMESTATE_NOT_STARTED,
+    GAMESTATE_PLAYING,
+    GAMESTATE_PAUSED,
+    GAMESTATE_FINISHED
+} GameState;
+
 @interface GameLogic : NSObject<EventListenerDelegate>
 {
     GameField * currentGameField;
+    NSTimer * gameTimer;
+    GameState gameState;
 }
+
+@property (readonly) double gameTime;
 
 +(GameLogic *)sharedLogic;
 -(GameField *)gameField;

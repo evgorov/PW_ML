@@ -70,7 +70,7 @@
             tile.answerPosition = question.answer_positionAsUint;
             tile.state = TILE_QUESTION_NEW;
             ;
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
         }
     }
     return self;
@@ -128,7 +128,7 @@
                                 if (letter.currentLetter.length != 0)
                                 {
                                     letter.state = TILE_LETTER_INPUT;
-                                    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+                                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
                                 }
                             }
                             currentLetterIdx = idx;
@@ -137,7 +137,7 @@
                     }
                     if (data.state == TILE_LETTER_EMPTY_INPUT)
                     {
-                        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
+                        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
                         return;
                     }
                     data.state = TILE_LETTER_EMPTY_INPUT;
@@ -146,8 +146,8 @@
                 default:
                     return;
             }
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:data]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:data]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:data]];
         }
             break;
 
@@ -160,7 +160,7 @@
             TileData * letter = [currentWord objectAtIndex:currentLetterIdx];
             letter.state = TILE_LETTER_INPUT;
             letter.currentLetter = (NSString *)event.data;
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
             for (++currentLetterIdx; currentLetterIdx < currentWord.count; ++currentLetterIdx) {
                 letter = [currentWord objectAtIndex:currentLetterIdx];
                 if (letter.state == TILE_LETTER_EMPTY_INPUT)
@@ -175,7 +175,7 @@
             else
             {
                 letter = [currentWord objectAtIndex:currentLetterIdx];
-                [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
             }
         }
             break;
@@ -199,8 +199,8 @@
             }
             letter.currentLetter = (NSString *)event.data;
             letter.state = TILE_LETTER_EMPTY_INPUT;
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
         }
             break;
 
@@ -252,7 +252,7 @@
         {
             continue;
         }
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
     currentLetterIdx = 0;
     for (TileData * letter in currentWord) {
@@ -262,9 +262,9 @@
         }
         ++currentLetterIdx;
     }
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_BEGIN_INPUT]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_BEGIN_INPUT]];
     TileData * selectedLetter = [currentWord objectAtIndex:currentLetterIdx];
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:selectedLetter]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:selectedLetter]];
 }
 
 // unselect current question tile and all corresponding letters tiles
@@ -276,7 +276,7 @@
     }
     
     currentQuestion.state = TILE_QUESTION_NEW;
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
 
     for (TileData * letter in currentWord)
@@ -297,10 +297,10 @@
         {
             continue;
         }
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
     [currentWord removeAllObjects];
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
 }
 
 // check current question tile and all corresponding letters tiles
@@ -318,7 +318,7 @@
         if ([letter.currentLetter caseInsensitiveCompare:letter.targetLetter] != NSOrderedSame)
         {
             currentQuestion.state = TILE_QUESTION_WRONG;
-            [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
             return NO;
         }
     }
@@ -340,14 +340,14 @@
         {
             continue;
         }
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
     [currentWord removeAllObjects];
 
     currentQuestion.state = TILE_QUESTION_CORRECT;
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
     return YES;
 }

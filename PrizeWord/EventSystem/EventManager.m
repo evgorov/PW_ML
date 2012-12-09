@@ -42,7 +42,7 @@
     [listeners[type] removeObject:[NSValue valueWithNonretainedObject:listener]];
 }
 
--(void)dispatchEventWithType:(Event *)event
+-(void)dispatchEvent:(Event *)event
 {
     for (NSValue * listenerValue in listeners[event.type]) {
         [[listenerValue nonretainedObjectValue] handleEvent:event];

@@ -16,13 +16,16 @@
 #import "PuzzleSetData.h"
 #import "PrizeWordNavigationController.h"
 
-@interface GameLogic ()
+@interface GameLogic (private)
 
 -(void)initGameFieldWithType:(LetterType)type;
+-(void)handleTimer:(id)userInfo;
 
 @end
 
 @implementation GameLogic
+
+@synthesize gameTime = _gameTime;
 
 -(id)init
 {
@@ -30,10 +33,19 @@
     if (self)
     {
         currentGameField = nil;
+        gameTimer = [NSTimer scheduledTimerWithTimeInterval:(1/4.0) target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
+        _gameTime = 0;
+        gameState = GAMESTATE_NOT_STARTED;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_START];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
     }
     return self;
+}
+
+-(void)dealloc
+{
+    [gameTimer invalidate];
+    gameTimer = nil;
 }
 
 +(GameLogic *)sharedLogic
@@ -60,11 +72,14 @@
             LetterType type = (LetterType)([(NSNumber *)event.data intValue]);
             [self initGameFieldWithType:type];
             [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
+            gameState = GAMESTATE_PLAYING;
+            _gameTime = 0;
         }
             break;
 
         case EVENT_GAME_REQUEST_PAUSE:
         {
+            gameState = GAMESTATE_PAUSED;
             currentGameField = nil;
         }
             break;
@@ -138,6 +153,15 @@
     }
     
     currentGameField = [[GameField alloc] initWithData:puzzle];
+}
+
+-(void)handleTimer:(id)userInfo
+{
+    if (gameState == GAMESTATE_PLAYING)
+    {
+        _gameTime += gameTimer.timeInterval;
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_TIME_CHANGED]];
+    }
 }
 
 @end

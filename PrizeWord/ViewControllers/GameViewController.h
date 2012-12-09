@@ -21,6 +21,7 @@
     IBOutlet UIButton * btnPlay;
     IBOutlet UIButton * btnHint;
     IBOutlet UILabel * lblTime;
+    IBOutlet UIView * viewTime;
 }
 
 -(id)initWithGameField:(GameField *)gameField;

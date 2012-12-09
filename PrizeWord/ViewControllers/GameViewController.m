@@ -9,6 +9,7 @@
 #import "GameViewController.h"
 #import "GameFieldView.h"
 #import "GameField.h"
+#import "GameLogic.h"
 #import "EventManager.h"
 
 @interface GameViewController (private)
@@ -49,14 +50,20 @@
     textField.delegate = self;
     [self.view addSubview:textField];
     
-    UIBarButtonItem * pauseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnPause];
-    [self.navigationItem setLeftBarButtonItem:pauseButtonItem animated:animated];
+    UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
+    [playPauseView addSubview:btnPlay];
+    [playPauseView addSubview:btnPause];
+    UIBarButtonItem * playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:playPauseView];
+    [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
     UIBarButtonItem * hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnHint];
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
+    [self.navigationItem setTitleView:viewTime];
+    
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -72,6 +79,7 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     [textField removeFromSuperview];
     textField = nil;
     gameFieldView = nil;
@@ -122,15 +130,23 @@
 // EventListenerDelegate
 -(void)handleEvent:(Event *)event
 {
-    if (event.type == EVENT_BEGIN_INPUT) {
+    if (event.type == EVENT_BEGIN_INPUT)
+    {
         textField.text = @"";
         [textField becomeFirstResponder];
     }
-    else if (event.type == EVENT_FINISH_INPUT) {
+    else if (event.type == EVENT_FINISH_INPUT)
+    {
         [textField resignFirstResponder];
     }
-    else if (event.type == EVENT_GAME_REQUEST_PAUSE) {
+    else if (event.type == EVENT_GAME_REQUEST_PAUSE)
+    {
         [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (event.type == EVENT_GAME_TIME_CHANGED)
+    {
+        int gameTime = [GameLogic sharedLogic].gameTime;
+        lblTime.text = [NSString stringWithFormat:@"%02d:%02d", gameTime / 60, gameTime % 60];
     }
 }
 
@@ -138,7 +154,7 @@
 {
     if (range.length == 1 && string.length == 0)
     {
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_POP_LETTER]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_POP_LETTER]];
     }
     else
     {
@@ -147,21 +163,25 @@
         {
             letter = @"е";
         }
-        [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_PUSH_LETTER andData:letter]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUSH_LETTER andData:letter]];
     }
     return YES;
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FOCUS_CHANGE andData:nil]];
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_FINISH_INPUT]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:nil]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     return YES;
 }
 
 - (IBAction)handlePauseClick:(UIButton *)sender
 {
-    [[EventManager sharedManager] dispatchEventWithType:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
 }
 
+- (void)viewDidUnload {
+    viewTime = nil;
+    [super viewDidUnload];
+}
 @end
