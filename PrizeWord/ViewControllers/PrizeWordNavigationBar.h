@@ -10,7 +10,8 @@
 
 @interface PrizeWordNavigationBar : UINavigationBar
 {
-    UIImage * backgroundImage;
 }
+
++(UIView *)containerWithView:(UIView *)innerView;
 
 @end

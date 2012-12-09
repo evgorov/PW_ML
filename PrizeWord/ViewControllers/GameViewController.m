@@ -11,6 +11,7 @@
 #import "GameField.h"
 #import "GameLogic.h"
 #import "EventManager.h"
+#import "PrizeWordNavigationBar.h"
 
 @interface GameViewController (private)
 
@@ -53,11 +54,12 @@
     UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
     [playPauseView addSubview:btnPlay];
     [playPauseView addSubview:btnPause];
-    UIBarButtonItem * playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:playPauseView];
+    UIBarButtonItem * playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
+                                       [PrizeWordNavigationBar containerWithView:playPauseView]];
     [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
-    UIBarButtonItem * hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnHint];
+    UIBarButtonItem * hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
-    [self.navigationItem setTitleView:viewTime];
+    [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];

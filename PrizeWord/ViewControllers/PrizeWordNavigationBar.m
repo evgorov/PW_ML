@@ -10,11 +10,25 @@
 
 @implementation PrizeWordNavigationBar
 
+static UIImage * backgroundImage = nil;
+
++(UIView *)containerWithView:(UIView *)innerView
+{
+    UIView * container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, innerView.frame.size.width, backgroundImage.size.height)];
+    // TODO :: ATTENTION - HACK
+    innerView.frame = CGRectMake(0, (backgroundImage.size.height - innerView.frame.size.height) / 4, innerView.frame.size.width, innerView.frame.size.height);
+    [container addSubview:innerView];
+    return container;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+        if (backgroundImage == nil)
+        {
+            backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+        }
         self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
         self.clipsToBounds = NO;
     }
@@ -25,7 +39,10 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+        if (backgroundImage == nil)
+        {
+            backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+        }
         self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
         self.clipsToBounds = NO;
     }

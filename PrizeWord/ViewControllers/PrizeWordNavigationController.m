@@ -7,6 +7,7 @@
 //
 
 #import "PrizeWordNavigationController.h"
+#import "PrizeWordNavigationBar.h"
 
 @interface PrizeWordNavigationController ()
 
@@ -45,7 +46,7 @@
     [backButton setBackgroundImage:backButtonBg forState:UIControlStateNormal];
     [backButton setBackgroundImage:backButtonDownBg forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(handleBackTap:) forControlEvents:UIControlEventTouchUpInside];
-    backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:backButton]];
 }
 
 -(void)dealloc
