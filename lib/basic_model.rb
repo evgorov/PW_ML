@@ -59,11 +59,15 @@ class BasicModel
     self
   end
 
-  def all(page)
+  def all(page = 1)
+    self.collection_for_key('all', page)
+  end
+
+  def collection_for_key(key, page = 1)
     page = 1 if page == 0
     per_page = 10
     # this should be done with by: 'nosort' but buggix is not in all versions of redis
-    ids = @storage.zrevrange('all', (page - 1) * per_page, page * per_page)
+    ids = @storage.zrevrange(key, (page - 1) * per_page, page * per_page)
     data_list = @storage.mget(*ids)
     data_list.map do |data|
       self.class.new(JSON.parse(data), @storage)

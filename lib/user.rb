@@ -13,23 +13,27 @@ class User < BasicModel
 
   class << self
 
-    def new(*)
-      return super unless self.name == 'User'
-      raise NotImplementedError.new("This class is an abstract class, "+
-                                    "you must use it's children.")
+    def new(*a)
+
+
+      case
+      when self.name == 'User' && a.first.is_a?(Hash) && !a.first.empty?
+        @@providers[a.first['provider']].new(*a)
+      when self.name == 'User'
+        raise NotImplementedError.new("This class is an abstract class, "+
+                                      "you must use it's children.")
+      else
+        super(*a)
+      end
     end
 
     def inherited(subclass)
-      @providers ||= {}
-      @providers[subclass.new.provider_name] = subclass
+      @@providers ||= {}
+      @@providers[subclass.new.provider_name] = subclass
     end
 
     def load_by_provider_and_key(storage, provider, key)
-      @providers[provider].storage(storage).load_by_key(key)
-    end
-
-    def new_for_provider(provider, *args)
-      @providers[provider].new(*args)
+      @@providers[provider].storage(storage).load_by_key(key)
     end
   end
 
@@ -72,15 +76,7 @@ class User < BasicModel
   end
 
   def users_by_rating(page=1)
-    page = 1 if page == 0
-    per_page = 10
-    ids = @storage.zrevrange('rating', (page - 1) * per_page, page * per_page)
-    data_list = @storage.mget(*ids)
-    data_list.map do |data|
-      data = JSON.parse(data)
-      provider = data['provider']
-      User.new_for_provider(provider, data).storage(@storage)
-    end
+    self.collection_for_key('rating', page)
   end
 
   def load_by_key(key)
