@@ -12,7 +12,12 @@ require 'middleware/password_reset'
 require 'middleware/users'
 require 'middleware/admin'
 
-use Middleware::RedisMiddleware
+if ENV["REDISTOGO_URL"]
+  use Middleware::RedisMiddleware
+else
+  uri = URI.parse(ENV["REDISTOGO_URL"])
+  use Middleware::RedisMiddleware, { :host => uri.host, :port => uri.port, :password => uri.password }
+end
 
 Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
 Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
