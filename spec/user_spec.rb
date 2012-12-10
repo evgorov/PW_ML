@@ -60,6 +60,13 @@ describe User do
       u.storage(storage).save
     end
 
+    it '#delete' do
+      storage = mock(:storage).as_null_object
+      storage.should_receive(:zrem).with('rating', user_in_storage['id'])
+      subject.merge!(user_in_storage)
+      subject.storage(storage).delete
+    end
+
     it 'raises exception when trying to #save without storage' do
       subject.merge!(data)
       lambda { subject.save }.should raise_error(StorageNotSet)

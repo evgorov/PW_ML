@@ -15,6 +15,11 @@ module Middleware
       end
     end
 
+    get '/sets' do
+      authorize!
+      { 'sets' => PuzzleSet.storage(env['redis']).all(params[:page].to_i) }.to_json
+    end
+
     post '/sets' do
       authorize!
       PuzzleSet.new.storage(env['redis']).tap { |o|
@@ -34,6 +39,12 @@ module Middleware
     post '/sets/:id/unpublish' do
       authorize!
       PuzzleSet.storage(env['redis']).load(params['id']).tap{ |o| o.unpublish }.to_json
+    end
+
+    delete '/sets/:id' do
+      authorize!
+      PuzzleSet.storage(env['redis']).load(params['id']).delete
+      { 'message' => "Puzzle set deleted"}
     end
 
   end

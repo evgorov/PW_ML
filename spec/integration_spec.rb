@@ -301,7 +301,68 @@ describe 'Integration spec' do
   end
 
   xit 'admin' do
-    write_proper_spec_for_admin_routes
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+
+    post('/sets',
+         {
+           year: 2012,
+           month: 10,
+           name: 'Cool set',
+           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
+           type: 'golden',
+           session_key: session_key
+         })
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    admin_set_id1 = response_data['id']
+
+    post("/sets/#{admin_set_id1}/publish", { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+
+    post('/sets',
+         {
+           year: 2012,
+           month: 10,
+           name: 'Cool set2',
+           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
+           type: 'silver',
+           session_key: session_key
+         })
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    admin_set_id2 = response_data['id']
+
+    post("/sets/#{admin_set_id2}/publish", { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+
+    get('/sets', { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['sets'].size.should == 2
+
+    delete("/sets/#{admin_set_id2}", { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+
+    get('/sets', { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['sets'].size.should == 1
+    response_data['sets'][0]['published'].should == true
   end
 
   it 'invte users'

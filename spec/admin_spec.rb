@@ -85,4 +85,29 @@ describe Middleware::Admin do
          { 'token_auth' => token_auth })
     last_response.status.should == 200
   end
+
+  it 'GET /sets' do
+    token_auth = mock(:token_auth).as_null_object
+    puzzle_set = mock(:puzzle_set).as_null_object
+    puzzle_set.should_receive(:all).with(0).and_return([{ 'k' => 'v' }])
+    PuzzleSet.should_receive(:storage).and_return(puzzle_set)
+    get('/sets',
+         { session_key: 'valid_session_key' },
+         { 'token_auth' => token_auth })
+    last_response.status.should == 200
+  end
+
+
+  it 'DELETE /sets/:id' do
+    token_auth = mock(:token_auth).as_null_object
+    puzzle_set = mock(:puzzle_set).as_null_object
+    puzzle_set.should_receive(:load).with('1234').and_return(puzzle_set)
+    puzzle_set.should_receive(:delete)
+    PuzzleSet.should_receive(:storage).and_return(puzzle_set)
+
+    delete('/sets/1234',
+         { session_key: 'valid_session_key' },
+         { 'token_auth' => token_auth })
+    last_response.status.should == 200
+  end
 end

@@ -76,4 +76,14 @@ describe BasicModel do
 
     subject.class.storage(storage).all(3).size.should == 3
   end
+
+
+  it '#delete' do
+    storage = mock(:storage).as_null_object
+    storage.should_receive(:del).with("key_value")
+    storage.should_receive(:zrem).with('all', 'key_value')
+    subject.merge!(data)
+    subject.storage(storage).delete
+  end
+
 end

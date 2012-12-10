@@ -94,8 +94,9 @@ class BasicModel
   end
 
   def delete
-    return unless self['id']
-    @storage.del(self['id'])
+    return unless self.id
+    @storage.del(self.id)
+    @storage.zrem('all', self.id)
     self
   end
 

@@ -90,6 +90,11 @@ class User < BasicModel
     self
   end
 
+  def delete(*a)
+    @storage.zrem('rating', self.id)
+    super(*a)
+  end
+
   def provider_name
     raise NotImplementedError if self.class.name == 'User'
     self.class.name.chomp('User').downcase
