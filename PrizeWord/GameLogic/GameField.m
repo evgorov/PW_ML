@@ -53,6 +53,7 @@
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_TAP];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUSH_LETTER];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_POP_LETTER];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_REQUEST_FINISH_INPUT];
     }
     return self;
 }
@@ -91,6 +92,7 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_TAP];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUSH_LETTER];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_POP_LETTER];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_REQUEST_FINISH_INPUT];
     [tiles removeAllObjects];
     tiles = nil;
     currentQuestion = nil;
@@ -202,6 +204,10 @@
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:letter]];
         }
+            break;
+            
+        case EVENT_REQUEST_FINISH_INPUT:
+            [self dropQuestion];
             break;
 
         default:

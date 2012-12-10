@@ -161,6 +161,7 @@
     }
     else
     {
+        [self.superview sendSubviewToBack:self];
         questionLabel.text = @"";
         questionLabel.hidden = YES;
         [self hideArrow];
