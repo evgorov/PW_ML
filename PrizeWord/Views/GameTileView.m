@@ -21,6 +21,7 @@
 -(void)onTap;
 -(void)initParts;
 -(void)showArrow;
+-(void)hideArrow;
 
 @end
 
@@ -149,28 +150,20 @@
         }
         questionLabel.hidden = NO;
         
-        if ((tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_WRONG) && tileData != [GameLogic sharedLogic].gameField.activeQuestion)
+        if (tileData.state != TILE_QUESTION_CORRECT && tileData != [GameLogic sharedLogic].gameField.activeQuestion)
         {
             [self showArrow];
         }
         else
         {
-            if (arrow != nil)
-            {
-                [arrow removeFromSuperview];
-                arrow = nil;
-            }
+            [self hideArrow];
         }
     }
     else
     {
         questionLabel.text = @"";
         questionLabel.hidden = YES;
-        if (arrow != nil)
-        {
-            [arrow removeFromSuperview];
-            arrow = nil;
-        }
+        [self hideArrow];
     }
 }
 
@@ -277,6 +270,15 @@
     }
 
     arrow.transform = CGAffineTransformConcat(CGAffineTransformMakeRotation(rotation), CGAffineTransformMakeScale(scaleX, scaleY));
+}
+
+-(void)hideArrow
+{
+    if (arrow != nil)
+    {
+        [arrow removeFromSuperview];
+        arrow = nil;
+    }
 }
 
 -(void)onTap

@@ -276,8 +276,9 @@
     }
     
     currentQuestion.state = TILE_QUESTION_NEW;
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+    TileData * prevQuestion = currentQuestion;
     currentQuestion = nil;
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:prevQuestion]];
 
     for (TileData * letter in currentWord)
     {
