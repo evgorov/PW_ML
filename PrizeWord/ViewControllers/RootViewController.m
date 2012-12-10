@@ -8,7 +8,6 @@
 
 #import "RootViewController.h"
 #import "GameViewController.h"
-#import "ReleaseNotesViewController.h"
 #import "EventManager.h"
 #import "TileData.h"
 
@@ -43,8 +42,4 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:LETTER_FREE]]];
 }
 
-- (IBAction)handleReleaseNotesClick:(UIButton *)sender
-{
-    [self.navigationController pushViewController:[[ReleaseNotesViewController alloc] init] animated:YES];
-}
 @end

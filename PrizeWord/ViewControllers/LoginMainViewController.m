@@ -10,6 +10,7 @@
 #import "RootViewController.h"
 #import "LoginRegisterViewController.h"
 #import "LoginEnterViewController.h"
+#import "ReleaseNotesViewController.h"
 
 @interface LoginMainViewController ()
 
@@ -68,6 +69,12 @@
     self.view.userInteractionEnabled = NO;
     [activityIndicator startAnimating];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
+}
+
+- (IBAction)handleReleaseNotesClick:(UIButton *)sender
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController pushViewController:[ReleaseNotesViewController new] animated:YES];
 }
 
 -(void)gotoRoot:(id)sender
