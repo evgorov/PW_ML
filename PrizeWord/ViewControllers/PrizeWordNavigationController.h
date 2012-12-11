@@ -10,7 +10,6 @@
 
 @interface PrizeWordNavigationController : UINavigationController
 {
-    UIBarButtonItem * backButtonItem;
 }
 
 @end

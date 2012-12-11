@@ -67,6 +67,16 @@
 		F286E2D6167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CC167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg */; };
 		F286E2D7167518E600FF5E83 /* login_enter_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2CD167518E600FF5E83 /* login_enter_bg@2x.jpg */; };
 		F286E2D916751ADB00FF5E83 /* LoginEnterViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */; };
+		F286E2DD16779E1900FF5E83 /* LoginRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E2DB16779E1800FF5E83 /* LoginRemindViewController.m */; };
+		F286E2DE16779E1900FF5E83 /* LoginRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2DC16779E1900FF5E83 /* LoginRemindViewController.xib */; };
+		F286E2E516779E9800FF5E83 /* login_remind_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2DF16779E9800FF5E83 /* login_remind_bg@2x.jpg */; };
+		F286E2E616779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E016779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg */; };
+		F286E2E716779E9800FF5E83 /* login_remind_send_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E116779E9800FF5E83 /* login_remind_send_btn_down@2x.png */; };
+		F286E2E816779E9800FF5E83 /* login_remind_send_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E216779E9800FF5E83 /* login_remind_send_btn_down@2x~ipad.png */; };
+		F286E2E916779E9800FF5E83 /* login_remind_send_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E316779E9800FF5E83 /* login_remind_send_btn@2x.png */; };
+		F286E2EA16779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E416779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png */; };
+		F286E2ED1677AD0200FF5E83 /* PrizeWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E2EC1677AD0100FF5E83 /* PrizeWordViewController.m */; };
+		F286E2EF1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2EE1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -211,6 +221,18 @@
 		F286E2CC167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_enter_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
 		F286E2CD167518E600FF5E83 /* login_enter_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_enter_bg@2x.jpg"; sourceTree = "<group>"; };
 		F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoginEnterViewController~ipad.xib"; path = "ViewControllers/LoginEnterViewController~ipad.xib"; sourceTree = "<group>"; };
+		F286E2DA16779E1700FF5E83 /* LoginRemindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginRemindViewController.h; path = ViewControllers/LoginRemindViewController.h; sourceTree = "<group>"; };
+		F286E2DB16779E1800FF5E83 /* LoginRemindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginRemindViewController.m; path = ViewControllers/LoginRemindViewController.m; sourceTree = "<group>"; };
+		F286E2DC16779E1900FF5E83 /* LoginRemindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginRemindViewController.xib; path = ViewControllers/LoginRemindViewController.xib; sourceTree = "<group>"; };
+		F286E2DF16779E9800FF5E83 /* login_remind_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_remind_bg@2x.jpg"; sourceTree = "<group>"; };
+		F286E2E016779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_remind_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F286E2E116779E9800FF5E83 /* login_remind_send_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_send_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E2E216779E9800FF5E83 /* login_remind_send_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_send_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2E316779E9800FF5E83 /* login_remind_send_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_send_btn@2x.png"; sourceTree = "<group>"; };
+		F286E2E416779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_send_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2EB1677AD0000FF5E83 /* PrizeWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordViewController.h; path = ViewControllers/PrizeWordViewController.h; sourceTree = "<group>"; };
+		F286E2EC1677AD0100FF5E83 /* PrizeWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordViewController.m; path = ViewControllers/PrizeWordViewController.m; sourceTree = "<group>"; };
+		F286E2EE1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoginRemindViewController~ipad.xib"; path = "ViewControllers/LoginRemindViewController~ipad.xib"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -460,6 +482,12 @@
 		F2B83ADC166FDA74007C4596 /* login */ = {
 			isa = PBXGroup;
 			children = (
+				F286E2DF16779E9800FF5E83 /* login_remind_bg@2x.jpg */,
+				F286E2E016779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg */,
+				F286E2E116779E9800FF5E83 /* login_remind_send_btn_down@2x.png */,
+				F286E2E216779E9800FF5E83 /* login_remind_send_btn_down@2x~ipad.png */,
+				F286E2E316779E9800FF5E83 /* login_remind_send_btn@2x.png */,
+				F286E2E416779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png */,
 				F286E2C4167518E600FF5E83 /* login_forget_btn_down@2x.png */,
 				F286E2C5167518E600FF5E83 /* login_forget_btn@2x.png */,
 				F286E2C6167518E600FF5E83 /* login_forget_btn_down@2x~ipad.png */,
@@ -604,6 +632,12 @@
 				F286E2C01675186A00FF5E83 /* LoginEnterViewController.m */,
 				F286E2C11675186A00FF5E83 /* LoginEnterViewController.xib */,
 				F286E2D816751ADB00FF5E83 /* LoginEnterViewController~ipad.xib */,
+				F286E2DA16779E1700FF5E83 /* LoginRemindViewController.h */,
+				F286E2DB16779E1800FF5E83 /* LoginRemindViewController.m */,
+				F286E2DC16779E1900FF5E83 /* LoginRemindViewController.xib */,
+				F286E2EE1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib */,
+				F286E2EB1677AD0000FF5E83 /* PrizeWordViewController.h */,
+				F286E2EC1677AD0100FF5E83 /* PrizeWordViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -764,6 +798,14 @@
 				F286E2D6167518E600FF5E83 /* login_enter_bg@2x~ipad.jpg in Resources */,
 				F286E2D7167518E600FF5E83 /* login_enter_bg@2x.jpg in Resources */,
 				F286E2D916751ADB00FF5E83 /* LoginEnterViewController~ipad.xib in Resources */,
+				F286E2DE16779E1900FF5E83 /* LoginRemindViewController.xib in Resources */,
+				F286E2E516779E9800FF5E83 /* login_remind_bg@2x.jpg in Resources */,
+				F286E2E616779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg in Resources */,
+				F286E2E716779E9800FF5E83 /* login_remind_send_btn_down@2x.png in Resources */,
+				F286E2E816779E9800FF5E83 /* login_remind_send_btn_down@2x~ipad.png in Resources */,
+				F286E2E916779E9800FF5E83 /* login_remind_send_btn@2x.png in Resources */,
+				F286E2EA16779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png in Resources */,
+				F286E2EF1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -796,6 +838,8 @@
 				F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */,
 				F2B83B22167141F0007C4596 /* LoginRegisterViewController.m in Sources */,
 				F286E2C21675186A00FF5E83 /* LoginEnterViewController.m in Sources */,
+				F286E2DD16779E1900FF5E83 /* LoginRemindViewController.m in Sources */,
+				F286E2ED1677AD0200FF5E83 /* PrizeWordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

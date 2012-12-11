@@ -19,26 +19,6 @@
 
 @implementation LoginRegisterViewController
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activityIndicator.hidesWhenStopped = YES;
-        activityIndicator.userInteractionEnabled = NO;
-        activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [self.view addSubview:activityIndicator];
-    }
-    return self;
-}
-
--(void)dealloc
-{
-    [activityIndicator removeFromSuperview];
-    activityIndicator = nil;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -137,8 +117,7 @@
 {
     [activeResponder resignFirstResponder];
     [self handleDatePickerDoneClick:self];
-    self.view.userInteractionEnabled = NO;
-    [activityIndicator startAnimating];
+    [self showActivityIndicator];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
 }
 
@@ -231,8 +210,7 @@
 
 -(void)gotoRoot:(id)sender
 {
-    [activityIndicator stopAnimating];
-    self.view.userInteractionEnabled = YES;
+    [self hideActivityIndicator];
     UINavigationController * navController = self.navigationController;
     [navController popViewControllerAnimated:NO];
     [navController pushViewController:[RootViewController new] animated:YES];

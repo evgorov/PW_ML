@@ -59,15 +59,13 @@
 
 - (IBAction)handleFacebookClick:(UIButton *)sender
 {
-    self.view.userInteractionEnabled = NO;
-    [activityIndicator startAnimating];
+    [self showActivityIndicator];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
 }
 
 - (IBAction)handleVKClick:(UIButton *)sender
 {
-    self.view.userInteractionEnabled = NO;
-    [activityIndicator startAnimating];
+    [self showActivityIndicator];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
 }
 
@@ -79,8 +77,7 @@
 
 -(void)gotoRoot:(id)sender
 {
-    [activityIndicator stopAnimating];
-    self.view.userInteractionEnabled = YES;
+    [self hideActivityIndicator];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController pushViewController:[RootViewController new] animated:YES];
 }

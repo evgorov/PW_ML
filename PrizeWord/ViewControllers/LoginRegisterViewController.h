@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PrizeWordViewController.h"
 
-@interface LoginRegisterViewController : UIViewController<UITextFieldDelegate>
+@interface LoginRegisterViewController : PrizeWordViewController<UITextFieldDelegate>
 {
     IBOutlet UIScrollView * scrollView;
     IBOutlet UIImageView * imgBackground;
@@ -24,7 +25,6 @@
     IBOutlet UIButton * btnBirthday;
     
     UIView * activeResponder;
-    UIActivityIndicatorView * activityIndicator;
 }
 
 @end

@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PrizeWordViewController.h"
 
-@interface LoginEnterViewController : UIViewController<UITextFieldDelegate>
+@interface LoginEnterViewController : PrizeWordViewController<UITextFieldDelegate>
 {
     IBOutlet UITextField *txtEmail;
     IBOutlet UITextField *txtPassword;
-    
-    UIActivityIndicatorView * activityIndicator;
 }
 
 @end

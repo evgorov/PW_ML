@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PrizeWordViewController.h"
 
-@interface LoginMainViewController : UIViewController
+@interface LoginMainViewController : PrizeWordViewController
 {
-    UIActivityIndicatorView * activityIndicator;
 }
 
 @end
