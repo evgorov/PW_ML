@@ -7,6 +7,7 @@
 //
 
 #import "LoginRemindViewController.h"
+#import "PrizeWordNavigationController.h"
 
 @interface LoginRemindViewController (private)
 
@@ -39,6 +40,7 @@
 
 - (IBAction)handleSendClick:(id)sender
 {
+    [txtEmail resignFirstResponder];
     [self showActivityIndicator];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(handleSent:) userInfo:nil repeats:NO];
 }
@@ -46,6 +48,12 @@
 -(void)handleSent:(id)sender
 {
     [self hideActivityIndicator];
+    [(PrizeWordNavigationController *)self.navigationController showOverlay:doneOverlay];
+}
+
+- (IBAction)handleDoneClick:(id)sender
+{
+    [(PrizeWordNavigationController *)self.navigationController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -81,6 +89,7 @@
 - (void)viewDidUnload {
     scrollView = nil;
     txtEmail = nil;
+    doneOverlay = nil;
     [super viewDidUnload];
 }
 @end

@@ -10,6 +10,14 @@
 
 @interface PrizeWordNavigationController : UINavigationController
 {
+    UIView * currentOverlay;
+    UIBarButtonItem * currentLeftButton;
+    UIBarButtonItem * currentRightButton;
+    UIView * currentTitleView;
+    IBOutlet UIView *overlayContainer;
 }
+
+-(void)showOverlay:(UIView *)overlayView;
+-(void)hideOverlay;
 
 @end

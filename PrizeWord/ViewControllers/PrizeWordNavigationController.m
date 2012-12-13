@@ -18,6 +18,16 @@
 
 @implementation PrizeWordNavigationController
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        currentOverlay = nil;
+    }
+    return self;
+}
+
 -(UIBarButtonItem *)backButtonItem
 {
     UIImage * backButtonBg = [UIImage imageNamed:@"nav_back_btn"];
@@ -40,6 +50,59 @@
 -(void)handleBackTap:(UIButton *)sender
 {
     [self popViewControllerAnimated:YES];
+}
+
+-(void)showOverlay:(UIView *)overlayView
+{
+    if (currentOverlay != nil)
+    {
+        return;
+    }
+    currentLeftButton = self.topViewController.navigationItem.leftBarButtonItem;
+    currentRightButton = self.topViewController.navigationItem.rightBarButtonItem;
+    currentTitleView = self.topViewController.navigationItem.titleView;
+    
+    [self.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]] animated:YES];
+    [self.topViewController.navigationItem setRightBarButtonItem:nil animated:YES];
+    [self.topViewController.navigationItem setTitleView:nil];
+    
+    overlayContainer.alpha = 0;
+    overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+    [self.view addSubview:overlayContainer];
+    overlayContainer.clipsToBounds = YES;
+    
+    currentOverlay = overlayView;
+    [overlayContainer addSubview:currentOverlay];
+    currentOverlay.frame = CGRectMake(0, -currentOverlay.frame.size.height, currentOverlay.frame.size.width, currentOverlay.frame.size.height);
+    [UIView animateWithDuration:0.5 animations:^{
+        currentOverlay.frame = CGRectMake(0, 0, currentOverlay.frame.size.width, currentOverlay.frame.size.height);
+        overlayContainer.alpha = 1;
+    }];
+}
+
+-(void)hideOverlay
+{
+    if (currentOverlay == nil)
+    {
+        return;
+    }
+    
+    [self.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton animated:YES];
+    [self.topViewController.navigationItem setRightBarButtonItem:currentRightButton animated:YES];
+    [self.topViewController.navigationItem setTitleView:currentTitleView];
+
+    currentLeftButton = nil;
+    currentRightButton = nil;
+    currentTitleView = nil;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        currentOverlay.frame = CGRectMake(0, -currentOverlay.frame.size.height, currentOverlay.frame.size.width, currentOverlay.frame.size.height);
+        overlayContainer.alpha = 0;
+    } completion:^(BOOL finished) {
+        [currentOverlay removeFromSuperview];
+        [overlayContainer removeFromSuperview];
+        currentOverlay = nil;
+    }];
 }
 
 @end

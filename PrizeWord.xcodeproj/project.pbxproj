@@ -77,6 +77,12 @@
 		F286E2EA16779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2E416779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png */; };
 		F286E2ED1677AD0200FF5E83 /* PrizeWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E2EC1677AD0100FF5E83 /* PrizeWordViewController.m */; };
 		F286E2EF1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E2EE1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib */; };
+		F286E2F81679B28A00FF5E83 /* login_remind_sent_done_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F21679B28900FF5E83 /* login_remind_sent_done_btn@2x~ipad.png */; };
+		F286E2F91679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F31679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x~ipad.png */; };
+		F286E2FA1679B28A00FF5E83 /* login_remind_sent_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F41679B28A00FF5E83 /* login_remind_sent_bg@2x~ipad.png */; };
+		F286E2FB1679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F51679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x.png */; };
+		F286E2FC1679B28A00FF5E83 /* login_remind_sent_done_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F61679B28A00FF5E83 /* login_remind_sent_done_btn@2x.png */; };
+		F286E2FD1679B28A00FF5E83 /* login_remind_sent_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E2F71679B28A00FF5E83 /* login_remind_sent_bg@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -233,6 +239,13 @@
 		F286E2EB1677AD0000FF5E83 /* PrizeWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordViewController.h; path = ViewControllers/PrizeWordViewController.h; sourceTree = "<group>"; };
 		F286E2EC1677AD0100FF5E83 /* PrizeWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordViewController.m; path = ViewControllers/PrizeWordViewController.m; sourceTree = "<group>"; };
 		F286E2EE1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoginRemindViewController~ipad.xib"; path = "ViewControllers/LoginRemindViewController~ipad.xib"; sourceTree = "<group>"; };
+		F286E2F01677B95D00FF5E83 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		F286E2F21679B28900FF5E83 /* login_remind_sent_done_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_done_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2F31679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_done_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2F41679B28A00FF5E83 /* login_remind_sent_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F286E2F51679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_done_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E2F61679B28A00FF5E83 /* login_remind_sent_done_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_done_btn@2x.png"; sourceTree = "<group>"; };
+		F286E2F71679B28A00FF5E83 /* login_remind_sent_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_remind_sent_bg@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -536,6 +549,12 @@
 				F2B83B78167399E0007C4596 /* login_register_datepicker_done_btn_down@2x~ipad.png */,
 				F2B83B79167399E0007C4596 /* login_register_datepicker_done_btn@2x~ipad.png */,
 				F2B83B7A167399E0007C4596 /* login_register_datepicker_pane_bg@2x~ipad.png */,
+				F286E2F21679B28900FF5E83 /* login_remind_sent_done_btn@2x~ipad.png */,
+				F286E2F31679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x~ipad.png */,
+				F286E2F41679B28A00FF5E83 /* login_remind_sent_bg@2x~ipad.png */,
+				F286E2F51679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x.png */,
+				F286E2F61679B28A00FF5E83 /* login_remind_sent_done_btn@2x.png */,
+				F286E2F71679B28A00FF5E83 /* login_remind_sent_bg@2x.png */,
 			);
 			name = login;
 			path = PrizeWord/assets/login;
@@ -544,6 +563,7 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F286E2F01677B95D00FF5E83 /* CoreImage.framework */,
 				F2A22DEF166487C400CF7859 /* Default-568h@2x.png */,
 				F2D62705165DF80900EF6E8A /* PrizeWord */,
 				F2D626FC165DF80900EF6E8A /* Frameworks */,
@@ -806,6 +826,12 @@
 				F286E2E916779E9800FF5E83 /* login_remind_send_btn@2x.png in Resources */,
 				F286E2EA16779E9800FF5E83 /* login_remind_send_btn@2x~ipad.png in Resources */,
 				F286E2EF1677B28C00FF5E83 /* LoginRemindViewController~ipad.xib in Resources */,
+				F286E2F81679B28A00FF5E83 /* login_remind_sent_done_btn@2x~ipad.png in Resources */,
+				F286E2F91679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x~ipad.png in Resources */,
+				F286E2FA1679B28A00FF5E83 /* login_remind_sent_bg@2x~ipad.png in Resources */,
+				F286E2FB1679B28A00FF5E83 /* login_remind_sent_done_btn_down@2x.png in Resources */,
+				F286E2FC1679B28A00FF5E83 /* login_remind_sent_done_btn@2x.png in Resources */,
+				F286E2FD1679B28A00FF5E83 /* login_remind_sent_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

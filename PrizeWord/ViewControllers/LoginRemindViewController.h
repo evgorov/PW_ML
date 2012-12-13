@@ -13,6 +13,7 @@
 {
     IBOutlet UIScrollView *scrollView;
     IBOutlet UITextField *txtEmail;
+    IBOutlet UIView *doneOverlay;
 }
 
 @end
