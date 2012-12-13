@@ -38,6 +38,7 @@
         gameState = GAMESTATE_NOT_STARTED;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_START];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     }
     return self;
 }
@@ -80,7 +81,12 @@
         case EVENT_GAME_REQUEST_PAUSE:
         {
             gameState = GAMESTATE_PAUSED;
-            currentGameField = nil;
+        }
+            break;
+
+        case EVENT_GAME_REQUEST_RESUME:
+        {
+            gameState = GAMESTATE_PLAYING;
         }
             break;
             

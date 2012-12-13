@@ -22,6 +22,15 @@
     IBOutlet UIButton * btnHint;
     IBOutlet UILabel * lblTime;
     IBOutlet UIView * viewTime;
+    IBOutlet UIView *pauseOverlay;
+    IBOutlet UISwitch *pauseSwtMusic;
+    IBOutlet UISwitch *pauseSwtSound;
+    IBOutlet UIImageView *pauseImgProgressbar;
+    IBOutlet UILabel *pauseTxtProgress;
+    float pauseMaxProgress;
+    
+    UIBarButtonItem * playPauseItem;
+    UIBarButtonItem * hintButtonItem;
 }
 
 -(id)initWithGameField:(GameField *)gameField;

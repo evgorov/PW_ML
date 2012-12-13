@@ -12,6 +12,7 @@
 #import "GameLogic.h"
 #import "EventManager.h"
 #import "PrizeWordNavigationBar.h"
+#import "PrizeWordNavigationController.h"
 
 @interface GameViewController (private)
 
@@ -30,6 +31,23 @@
         gameField = gameField_;
     }
     return self;
+}
+
+-(void)viewDidLoad
+{
+    pauseMaxProgress = pauseImgProgressbar.frame.size.width;
+    UIImage * imgProgress = pauseImgProgressbar.image;
+    if ([imgProgress respondsToSelector:@selector(resizableImageWithCapInsets:)])
+    {
+        imgProgress = [imgProgress resizableImageWithCapInsets:UIEdgeInsetsMake(imgProgress.size.height / 2 - 1, imgProgress.size.width / 2 - 1, imgProgress.size.height / 2, imgProgress.size.width / 2)];
+    }
+    else
+    {
+        imgProgress = [imgProgress stretchableImageWithLeftCapWidth:(imgProgress.size.width / 2) topCapHeight:(imgProgress.size.height / 2)];
+    }
+    pauseImgProgressbar.image = imgProgress;
+    pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress, pauseImgProgressbar.frame.size.height);
+    [pauseTxtProgress setText:@"100%"];
 }
 
 -(void)dealloc
@@ -54,10 +72,10 @@
     UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
     [playPauseView addSubview:btnPlay];
     [playPauseView addSubview:btnPause];
-    UIBarButtonItem * playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
+    playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
                                        [PrizeWordNavigationBar containerWithView:playPauseView]];
     [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
-    UIBarButtonItem * hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
+    hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
     [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     
@@ -65,6 +83,7 @@
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -81,6 +100,7 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     [textField removeFromSuperview];
     textField = nil;
@@ -90,6 +110,8 @@
     btnPlay = nil;
     gameFieldView = nil;
     btnHint = nil;
+    playPauseItem = nil;
+    hintButtonItem = nil;
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -100,6 +122,27 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
+- (IBAction)handlePauseClick:(UIButton *)sender
+{
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+}
+
+- (IBAction)handlePlayClick:(id)sender
+{
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+}
+
+- (IBAction)handlePauseNext:(id)sender
+{
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+}
+
+- (IBAction)handlePauseMenu:(id)sender
+{
+    [(PrizeWordNavigationController *)self.navigationController hideOverlay];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
@@ -141,14 +184,28 @@
     {
         [textField resignFirstResponder];
     }
-    else if (event.type == EVENT_GAME_REQUEST_PAUSE)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
     else if (event.type == EVENT_GAME_TIME_CHANGED)
     {
         int gameTime = [GameLogic sharedLogic].gameTime;
         lblTime.text = [NSString stringWithFormat:@"%02d:%02d", gameTime / 60, gameTime % 60];
+    }
+    else if (event.type == EVENT_GAME_REQUEST_PAUSE)
+    {
+        btnPause.hidden = YES;
+        btnPlay.hidden = NO;
+        [(PrizeWordNavigationController *)self.navigationController showOverlay:pauseOverlay];
+        [self.navigationItem setLeftBarButtonItem:playPauseItem];
+        [self.navigationItem setRightBarButtonItem:hintButtonItem];
+        [self.navigationItem setTitleView:viewTime];
+    }
+    else if (event.type == EVENT_GAME_REQUEST_RESUME)
+    {
+        btnPause.hidden = NO;
+        btnPlay.hidden = YES;
+        [(PrizeWordNavigationController *)self.navigationController hideOverlay];
+        [self.navigationItem setLeftBarButtonItem:playPauseItem];
+        [self.navigationItem setRightBarButtonItem:hintButtonItem];
+        [self.navigationItem setTitleView:viewTime];
     }
 }
 
@@ -177,13 +234,13 @@
     return YES;
 }
 
-- (IBAction)handlePauseClick:(UIButton *)sender
-{
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
-}
-
 - (void)viewDidUnload {
     viewTime = nil;
+    pauseOverlay = nil;
+    pauseSwtMusic = nil;
+    pauseSwtSound = nil;
+    pauseImgProgressbar = nil;
+    pauseTxtProgress = nil;
     [super viewDidUnload];
 }
 @end

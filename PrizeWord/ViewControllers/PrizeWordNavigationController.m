@@ -62,8 +62,8 @@
     currentRightButton = self.topViewController.navigationItem.rightBarButtonItem;
     currentTitleView = self.topViewController.navigationItem.titleView;
     
-    [self.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]] animated:YES];
-    [self.topViewController.navigationItem setRightBarButtonItem:nil animated:YES];
+    [self.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]]];
+    [self.topViewController.navigationItem setRightBarButtonItem:nil];
     [self.topViewController.navigationItem setTitleView:nil];
     
     overlayContainer.alpha = 0;
@@ -87,8 +87,8 @@
         return;
     }
     
-    [self.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton animated:YES];
-    [self.topViewController.navigationItem setRightBarButtonItem:currentRightButton animated:YES];
+    [self.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton];
+    [self.topViewController.navigationItem setRightBarButtonItem:currentRightButton];
     [self.topViewController.navigationItem setTitleView:currentTitleView];
 
     currentLeftButton = nil;
