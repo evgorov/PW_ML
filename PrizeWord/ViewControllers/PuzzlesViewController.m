@@ -7,8 +7,13 @@
 //
 
 #import "PuzzlesViewController.h"
+#import "BadgeView.h"
+#import "EventManager.h"
+#import "TileData.h"
 
 @interface PuzzlesViewController ()
+
+-(void)handleBadgeClick:(id)sender;
 
 @end
 
@@ -41,6 +46,27 @@
     currentPuzzlesView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
     currentPuzzlesBorder.image = border;
     scrollView.contentSize = contentView.frame.size;
+    
+    currentGoldBadges = [NSMutableArray new];
+    for (int i = 0; i != 4; ++i)
+    {
+        BadgeView * badgeView = [BadgeView badgeWithType:BADGE_GOLD andNumber:(i + 1) andPercent:((i + 1) * 25 / 100.0f)];
+        badgeView.frame = CGRectMake(18 + (i % 4) * 70, 273 + (i / 4) * 105, badgeView.frame.size.width, badgeView.frame.size.height);
+        [currentPuzzlesView addSubview:badgeView];
+        [currentGoldBadges addObject:badgeView];
+        [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    currentSilverBadges = [NSMutableArray new];
+    for (int i = 0; i != 4; ++i)
+    {
+        BadgeView * badgeView = [BadgeView badgeWithType:BADGE_SILVER andNumber:(i + 5) andPercent:(i * 25 / 100.0f)];
+        badgeView.frame = CGRectMake(18 + (i % 4) * 70, 479 + (i / 4) * 105, badgeView.frame.size.width, badgeView.frame.size.height);
+        [currentPuzzlesView addSubview:badgeView];
+        [currentSilverBadges addObject:badgeView];
+        [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,8 +81,28 @@
     newsView = nil;
     currentPuzzlesView = nil;
     currentPuzzlesBorder = nil;
+    for (UIImageView * badge in currentGoldBadges) {
+        [badge removeFromSuperview];
+    }
+    for (UIImageView * badge in currentSilverBadges) {
+        [badge removeFromSuperview];
+    }
+    [currentGoldBadges removeAllObjects];
+    [currentSilverBadges removeAllObjects];
+    currentGoldBadges = nil;
+    currentSilverBadges = nil;
     [super viewDidUnload];
 }
-- (IBAction)handleNewsCloseClick:(id)sender {
+
+- (IBAction)handleNewsCloseClick:(id)sender
+{
+}
+
+-(void)handleBadgeClick:(id)sender
+{
+    BadgeView * badge = (BadgeView *)sender;
+    
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:(LetterType)badge.badgeType]]];
+    
 }
 @end

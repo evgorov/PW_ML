@@ -16,6 +16,9 @@
     IBOutlet UIView *newsView;
     IBOutlet UIView *currentPuzzlesView;
     IBOutlet UIImageView *currentPuzzlesBorder;
+    
+    NSMutableArray * currentGoldBadges;
+    NSMutableArray * currentSilverBadges;
 }
 
 @end

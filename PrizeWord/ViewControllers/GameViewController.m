@@ -127,6 +127,7 @@
 
 - (IBAction)handlePauseClick:(UIButton *)sender
 {
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
 }
 
