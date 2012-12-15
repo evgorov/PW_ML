@@ -19,8 +19,10 @@ typedef enum BadgeType
 @interface BadgeView : UIButton
 
 -(id)initWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
+-(id)initWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;
 
 + (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
++ (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;
 
 @property (readonly) BadgeType badgeType;
 

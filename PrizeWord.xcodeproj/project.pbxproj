@@ -116,6 +116,25 @@
 		F286E34E167CA3D400FF5E83 /* puzzles_badges_silver.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E34A167CA3D400FF5E83 /* puzzles_badges_silver.png */; };
 		F286E350167CA6E800FF5E83 /* puzzles_badge_progress.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E34F167CA6E800FF5E83 /* puzzles_badge_progress.png */; };
 		F286E353167CA90000FF5E83 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E352167CA90000FF5E83 /* BadgeView.m */; };
+		F286E356167CB3F600FF5E83 /* puzzles_buy_hint_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E354167CB3F600FF5E83 /* puzzles_buy_hint_btn@2x.png */; };
+		F286E357167CB3F600FF5E83 /* puzzles_hints_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E355167CB3F600FF5E83 /* puzzles_hints_bg@2x.png */; };
+		F286E36A167CD70400FF5E83 /* puzzles_badge_progress_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E358167CD6FC00FF5E83 /* puzzles_badge_progress_bg.png */; };
+		F286E36B167CD70400FF5E83 /* puzzles_badge_progress_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E359167CD6FD00FF5E83 /* puzzles_badge_progress_bg@2x.png */; };
+		F286E36C167CD70400FF5E83 /* puzzles_badge_done_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35A167CD6FD00FF5E83 /* puzzles_badge_done_bg@2x.png */; };
+		F286E36D167CD70400FF5E83 /* puzzles_badge_star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35B167CD6FD00FF5E83 /* puzzles_badge_star@2x.png */; };
+		F286E36E167CD70400FF5E83 /* puzzles_badges_done_brilliant.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35C167CD6FE00FF5E83 /* puzzles_badges_done_brilliant.png */; };
+		F286E36F167CD70400FF5E83 /* puzzles_badges_done_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35D167CD6FE00FF5E83 /* puzzles_badges_done_gold.png */; };
+		F286E370167CD70400FF5E83 /* puzzles_badges_done_silver.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35E167CD6FF00FF5E83 /* puzzles_badges_done_silver.png */; };
+		F286E371167CD70400FF5E83 /* puzzles_badges_done_free.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E35F167CD6FF00FF5E83 /* puzzles_badges_done_free.png */; };
+		F286E372167CD70400FF5E83 /* puzzles_badges_done_free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E360167CD6FF00FF5E83 /* puzzles_badges_done_free@2x.png */; };
+		F286E373167CD70400FF5E83 /* puzzles_badges_done_silver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E361167CD6FF00FF5E83 /* puzzles_badges_done_silver@2x.png */; };
+		F286E374167CD70400FF5E83 /* puzzles_badges_done_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E362167CD70000FF5E83 /* puzzles_badges_done_gold@2x.png */; };
+		F286E375167CD70400FF5E83 /* puzzles_badges_done_brilliant@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E363167CD70000FF5E83 /* puzzles_badges_done_brilliant@2x.png */; };
+		F286E376167CD70400FF5E83 /* puzzles_buy_hint_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E364167CD70000FF5E83 /* puzzles_buy_hint_btn_down@2x.png */; };
+		F286E378167CD70400FF5E83 /* puzzles_news_close_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E366167CD70300FF5E83 /* puzzles_news_close_btn_down@2x.png */; };
+		F286E379167CD70400FF5E83 /* puzzles_archive_showmore_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E367167CD70300FF5E83 /* puzzles_archive_showmore_btn_down@2x.png */; };
+		F286E37A167CD70400FF5E83 /* puzzles_archive_showmore_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E368167CD70300FF5E83 /* puzzles_archive_showmore_btn@2x.png */; };
+		F286E37B167CD70400FF5E83 /* puzzles_archive_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E369167CD70300FF5E83 /* puzzles_archive_bg@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -314,6 +333,25 @@
 		F286E34F167CA6E800FF5E83 /* puzzles_badge_progress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badge_progress.png; sourceTree = "<group>"; };
 		F286E351167CA90000FF5E83 /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BadgeView.h; path = Views/BadgeView.h; sourceTree = "<group>"; };
 		F286E352167CA90000FF5E83 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BadgeView.m; path = Views/BadgeView.m; sourceTree = "<group>"; };
+		F286E354167CB3F600FF5E83 /* puzzles_buy_hint_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_buy_hint_btn@2x.png"; sourceTree = "<group>"; };
+		F286E355167CB3F600FF5E83 /* puzzles_hints_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_hints_bg@2x.png"; sourceTree = "<group>"; };
+		F286E358167CD6FC00FF5E83 /* puzzles_badge_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badge_progress_bg.png; sourceTree = "<group>"; };
+		F286E359167CD6FD00FF5E83 /* puzzles_badge_progress_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badge_progress_bg@2x.png"; sourceTree = "<group>"; };
+		F286E35A167CD6FD00FF5E83 /* puzzles_badge_done_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badge_done_bg@2x.png"; sourceTree = "<group>"; };
+		F286E35B167CD6FD00FF5E83 /* puzzles_badge_star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badge_star@2x.png"; sourceTree = "<group>"; };
+		F286E35C167CD6FE00FF5E83 /* puzzles_badges_done_brilliant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badges_done_brilliant.png; sourceTree = "<group>"; };
+		F286E35D167CD6FE00FF5E83 /* puzzles_badges_done_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badges_done_gold.png; sourceTree = "<group>"; };
+		F286E35E167CD6FF00FF5E83 /* puzzles_badges_done_silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badges_done_silver.png; sourceTree = "<group>"; };
+		F286E35F167CD6FF00FF5E83 /* puzzles_badges_done_free.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_badges_done_free.png; sourceTree = "<group>"; };
+		F286E360167CD6FF00FF5E83 /* puzzles_badges_done_free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badges_done_free@2x.png"; sourceTree = "<group>"; };
+		F286E361167CD6FF00FF5E83 /* puzzles_badges_done_silver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badges_done_silver@2x.png"; sourceTree = "<group>"; };
+		F286E362167CD70000FF5E83 /* puzzles_badges_done_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badges_done_gold@2x.png"; sourceTree = "<group>"; };
+		F286E363167CD70000FF5E83 /* puzzles_badges_done_brilliant@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_badges_done_brilliant@2x.png"; sourceTree = "<group>"; };
+		F286E364167CD70000FF5E83 /* puzzles_buy_hint_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_buy_hint_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E366167CD70300FF5E83 /* puzzles_news_close_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_close_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E367167CD70300FF5E83 /* puzzles_archive_showmore_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_showmore_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E368167CD70300FF5E83 /* puzzles_archive_showmore_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_showmore_btn@2x.png"; sourceTree = "<group>"; };
+		F286E369167CD70300FF5E83 /* puzzles_archive_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_bg@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -497,6 +535,25 @@
 		F286E31D167C6B9400FF5E83 /* puzzles */ = {
 			isa = PBXGroup;
 			children = (
+				F286E358167CD6FC00FF5E83 /* puzzles_badge_progress_bg.png */,
+				F286E359167CD6FD00FF5E83 /* puzzles_badge_progress_bg@2x.png */,
+				F286E35A167CD6FD00FF5E83 /* puzzles_badge_done_bg@2x.png */,
+				F286E35B167CD6FD00FF5E83 /* puzzles_badge_star@2x.png */,
+				F286E35C167CD6FE00FF5E83 /* puzzles_badges_done_brilliant.png */,
+				F286E35D167CD6FE00FF5E83 /* puzzles_badges_done_gold.png */,
+				F286E35E167CD6FF00FF5E83 /* puzzles_badges_done_silver.png */,
+				F286E35F167CD6FF00FF5E83 /* puzzles_badges_done_free.png */,
+				F286E360167CD6FF00FF5E83 /* puzzles_badges_done_free@2x.png */,
+				F286E361167CD6FF00FF5E83 /* puzzles_badges_done_silver@2x.png */,
+				F286E362167CD70000FF5E83 /* puzzles_badges_done_gold@2x.png */,
+				F286E363167CD70000FF5E83 /* puzzles_badges_done_brilliant@2x.png */,
+				F286E364167CD70000FF5E83 /* puzzles_buy_hint_btn_down@2x.png */,
+				F286E366167CD70300FF5E83 /* puzzles_news_close_btn_down@2x.png */,
+				F286E367167CD70300FF5E83 /* puzzles_archive_showmore_btn_down@2x.png */,
+				F286E368167CD70300FF5E83 /* puzzles_archive_showmore_btn@2x.png */,
+				F286E369167CD70300FF5E83 /* puzzles_archive_bg@2x.png */,
+				F286E354167CB3F600FF5E83 /* puzzles_buy_hint_btn@2x.png */,
+				F286E355167CB3F600FF5E83 /* puzzles_hints_bg@2x.png */,
 				F286E34F167CA6E800FF5E83 /* puzzles_badge_progress.png */,
 				F286E347167CA3D400FF5E83 /* puzzles_badges_brilliant.png */,
 				F286E348167CA3D400FF5E83 /* puzzles_badges_free.png */,
@@ -984,6 +1041,25 @@
 				F286E34D167CA3D400FF5E83 /* puzzles_badges_gold.png in Resources */,
 				F286E34E167CA3D400FF5E83 /* puzzles_badges_silver.png in Resources */,
 				F286E350167CA6E800FF5E83 /* puzzles_badge_progress.png in Resources */,
+				F286E356167CB3F600FF5E83 /* puzzles_buy_hint_btn@2x.png in Resources */,
+				F286E357167CB3F600FF5E83 /* puzzles_hints_bg@2x.png in Resources */,
+				F286E36A167CD70400FF5E83 /* puzzles_badge_progress_bg.png in Resources */,
+				F286E36B167CD70400FF5E83 /* puzzles_badge_progress_bg@2x.png in Resources */,
+				F286E36C167CD70400FF5E83 /* puzzles_badge_done_bg@2x.png in Resources */,
+				F286E36D167CD70400FF5E83 /* puzzles_badge_star@2x.png in Resources */,
+				F286E36E167CD70400FF5E83 /* puzzles_badges_done_brilliant.png in Resources */,
+				F286E36F167CD70400FF5E83 /* puzzles_badges_done_gold.png in Resources */,
+				F286E370167CD70400FF5E83 /* puzzles_badges_done_silver.png in Resources */,
+				F286E371167CD70400FF5E83 /* puzzles_badges_done_free.png in Resources */,
+				F286E372167CD70400FF5E83 /* puzzles_badges_done_free@2x.png in Resources */,
+				F286E373167CD70400FF5E83 /* puzzles_badges_done_silver@2x.png in Resources */,
+				F286E374167CD70400FF5E83 /* puzzles_badges_done_gold@2x.png in Resources */,
+				F286E375167CD70400FF5E83 /* puzzles_badges_done_brilliant@2x.png in Resources */,
+				F286E376167CD70400FF5E83 /* puzzles_buy_hint_btn_down@2x.png in Resources */,
+				F286E378167CD70400FF5E83 /* puzzles_news_close_btn_down@2x.png in Resources */,
+				F286E379167CD70400FF5E83 /* puzzles_archive_showmore_btn_down@2x.png in Resources */,
+				F286E37A167CD70400FF5E83 /* puzzles_archive_showmore_btn@2x.png in Resources */,
+				F286E37B167CD70400FF5E83 /* puzzles_archive_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
