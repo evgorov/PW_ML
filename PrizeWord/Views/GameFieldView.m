@@ -31,7 +31,7 @@
         scrollView.bounces = NO;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
-        scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_tiling"]];
+        scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
         UIImage * stretchableBorder = [[UIImage imageNamed:@"bg_border"] stretchableImageWithLeftCapWidth:40 topCapHeight:40];
         borderTopLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomLeft = [[UIImageView alloc] initWithImage:stretchableBorder];

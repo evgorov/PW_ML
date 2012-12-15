@@ -7,7 +7,7 @@
 //
 
 #import "LoginMainViewController.h"
-#import "RootViewController.h"
+#import "PuzzlesViewController.h"
 #import "LoginRegisterViewController.h"
 #import "LoginEnterViewController.h"
 #import "ReleaseNotesViewController.h"
@@ -79,7 +79,7 @@
 {
     [self hideActivityIndicator];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController pushViewController:[RootViewController new] animated:YES];
+    [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
 @end
