@@ -42,7 +42,7 @@ JSON object, representing containing session token and user information:
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -85,7 +85,7 @@ If user has valid access token, then it will return list of friends:
           "invite_sent": true,
           "invite_used": true,
           "invited_at": "2004-12-21",
-          "userpic": "http://example.com/irene.png"
+          "userpic_url": "http://example.com/irene.png"
         },
         {
           "provider": "facebook",
@@ -95,7 +95,7 @@ If user has valid access token, then it will return list of friends:
           "invite_sent": false,
           "invite_used": false,
           "invited_at": "2004-12-21",
-          "userpic": "http://example.com/hudson.png"
+          "userpic_url": "http://example.com/hudson.png"
         },
         {
           "provider": "facebook",
@@ -105,7 +105,7 @@ If user has valid access token, then it will return list of friends:
           "invite_sent": false,
           "invite_used": false,
           "invited_at": "2004-12-21",
-          "userpic": "http://example.com/lestrade.png"
+          "userpic_url": "http://example.com/lestrade.png"
         }
       ]
     }
@@ -130,6 +130,8 @@ This is straight forward registration flow. User can register in application usi
 
 **`POST /signup`**
 
+If userpic is included in request, then whole request should be encoded with `multipart/form-data`.
+
 *Request:*
 
 - `email`: Email address
@@ -137,7 +139,7 @@ This is straight forward registration flow. User can register in application usi
 - `surname`: Surname
 - `password`: Password 4 to 16 symbols
 - `[birthdate]`: Birthdate in ISO 8601 format
-- `[userpic]`: Base64 encoded userpic
+- `[userpic]`: image data
 - `[city]`: city
 
 *Response:*
@@ -149,7 +151,7 @@ JSON object, representing containing session token and user information:
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -176,7 +178,7 @@ JSON object, representing containing session token and user information:
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -242,7 +244,7 @@ Get basic info for logged in user.
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -257,7 +259,7 @@ Get basic info for logged in user.
 
 **`POST /me`**
 
-Update basic information
+Update basic information. If userpic is included in request, then whole request should be encoded with `multipart/form-data`.
 
 *Request:*
 
@@ -276,7 +278,7 @@ Update basic information
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -306,7 +308,7 @@ Set of routes describing information about users.
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -321,7 +323,7 @@ Set of routes describing information about users.
         {
           "name": "James",
           "surname": "Moriarty",
-          "userpic": "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==",
+          "userpic_url": "http://example.org/userpic.png",
           "email": "james@example.com",
           "birthdate": "1860-11-03",
           "city": "London",
@@ -334,7 +336,7 @@ Set of routes describing information about users.
         {
           "name": "Sherlock",
           "surname": "Holmes",
-          "userpic": null,
+          "userpic_url": null,
           "email": "sherlock@example.com",
           "birthdate": null,
           "city": "London",
@@ -347,7 +349,7 @@ Set of routes describing information about users.
         {
           "name": "John",
           "surname": "Watson",
-          "userpic": null,
+          "userpic_url": null,
           "email": "john@example.com",
           "birthdate": "1867-04-01",
           "city": "London",
@@ -456,17 +458,145 @@ List puzzles for given month and their status, if month is not present, show inf
 
 Three dots (...) in documentation mean that part of payload was skipped to keep clarity.
 
+**`PUT /puzzles/:id`**
+
+Method for storing arbitrary data, about given puzzle.
+
+*Request:*
+
+- `id`: Id of the puzzle
+-  all post data for this request will be saved.
+
+*Response:*
+
+    { "message": "ok" }
+
 **`GET /puzzles/:id`**
 
-**`PUT /puzzles/:id`**
+Method for retrieving data stored with `PUT /puzzles/"id`.
+
+*Request:*
+
+- `id`: Id of the puzzle
+
+*Response:*
+
+Data stored with `PUT /puzzles/"id`.
 
 **`GET /sets_available`**
 
 Sets available sets for buying (shows this month only)
 
+*Request:*
+
+No parameters available.
+
+*Response:*
+
+    [
+      {
+       "id":"7e4e7bc7-a484-4b67-8c4c-1727f041047a",
+        "puzzles":[{"name":"puzzle1"},{"name":"puzzle2"}],
+        "month":12,
+        "year":2012,
+        "moth":10,
+        "name":"Cool set",
+        "type":"golden"
+      }
+    ]
+
 **`POST /sets/:id/buy`**
 
 Buy set.
+
+*Request:*
+
+- `id`: Id of set to buy
+- `receipt-data`: receipt data from itunes
+
+*Response:*
+
+    {
+      "score": 23180,
+      "sets": [
+        {
+          "id": "23",
+          "name": "1rst Golden Set",
+          "bought": true,
+          "type": "golden",
+          "solved": 3,
+          "total": 12,
+          "percent": 20,
+          "score": 23000,
+          "puzzles": [
+            {
+              "name": "A Study in Scarlet",
+              "issuedAt": "2012-03-05",
+              "set_id": "23",
+              "progress": 100,
+              "base_score": 100,
+              "time_given": 60000,
+              "time_left": 30001,
+              "data": {...},
+              "score": 1000,
+              "solved": true
+            },
+            {
+              "name": "The Adventure of the Greek Interpreter",
+              "issuedAt": "2012-23-04",
+              "set_id": "23",
+              "progress": 100,
+              "base_score": 150,
+              "time_given": 60080,
+              "time_left": 30001,
+              "data": {...},
+              "score": 1100,
+              "solved": true
+            },
+            ...
+          ]
+        },
+        {
+          "id": 2233,
+          "name": "Free set",
+          "type": "free",
+          "bought": true,
+          "solved": 7,
+          "total": 7,
+          "percent": 100,
+          "score": 80,
+          "puzzles": [
+            {
+              "name": "The Sign of the Four",
+              "issuedAt": "2012-03-05",
+              "set_id": "2233",
+              "progress": 100,
+              "base_score": 100,
+              "time_given": 60000,
+              "time_left": 30001,
+              "data": {...},
+              "score": 1000,
+              "solved": true
+            },
+            {
+              "name": "The Adventure of the Crooked Man",
+              "issuedAt": "2012-23-04",
+              "set_id": "2233",
+              "progress": 100,
+              "base_score": 150,
+              "time_given": 60080,
+              "time_left": 30001,
+              "data": {...},
+              "score": 1100,
+              "solved": true
+            },
+            ...
+          ]
+        }
+      ]
+    }
+
+Three dots (...) in documentation mean that part of payload was skipped to keep clarity.
 
 **`POST /hints`**
 
@@ -484,7 +614,7 @@ Add or removes hints from user.
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",
@@ -505,6 +635,7 @@ Add or removes points from user score. This endpoint can be used score for activ
 
 - `session_token`: Session token.
 - `[score]`: Amount to change score.
+- `[solved]`: Amount to change puzzles solved.
 
 *Response:*
 
@@ -512,7 +643,7 @@ Add or removes points from user score. This endpoint can be used score for activ
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
-        "userpic": null,
+        "userpic_url": null,
         "email": "sherlock@example.com",
         "birthdate": null,
         "city": "London",

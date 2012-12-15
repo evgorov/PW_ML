@@ -46,7 +46,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -93,7 +93,7 @@
       &quot;invite_sent&quot;: true,
       &quot;invite_used&quot;: true,
       &quot;invited_at&quot;: &quot;2004-12-21&quot;,
-      &quot;userpic&quot;: &quot;http://example.com/irene.png&quot;
+      &quot;userpic_url&quot;: &quot;http://example.com/irene.png&quot;
     },
     {
       &quot;provider&quot;: &quot;facebook&quot;,
@@ -103,7 +103,7 @@
       &quot;invite_sent&quot;: false,
       &quot;invite_used&quot;: false,
       &quot;invited_at&quot;: &quot;2004-12-21&quot;,
-      &quot;userpic&quot;: &quot;http://example.com/hudson.png&quot;
+      &quot;userpic_url&quot;: &quot;http://example.com/hudson.png&quot;
     },
     {
       &quot;provider&quot;: &quot;facebook&quot;,
@@ -113,7 +113,7 @@
       &quot;invite_sent&quot;: false,
       &quot;invite_used&quot;: false,
       &quot;invited_at&quot;: &quot;2004-12-21&quot;,
-      &quot;userpic&quot;: &quot;http://example.com/lestrade.png&quot;
+      &quot;userpic_url&quot;: &quot;http://example.com/lestrade.png&quot;
     }
   ]
 }
@@ -141,6 +141,8 @@
 
 <p><strong><code>POST /signup</code></strong></p>
 
+<p>If userpic is included in request, then whole request should be encoded with <code>multipart/form-data</code>.</p>
+
 <p><em>Request:</em></p>
 
 <ul>
@@ -149,7 +151,7 @@
 <li><code>surname</code>: Surname</li>
 <li><code>password</code>: Password 4 to 16 symbols</li>
 <li><code>[birthdate]</code>: Birthdate in ISO 8601 format</li>
-<li><code>[userpic]</code>: Base64 encoded userpic</li>
+<li><code>[userpic]</code>: image data</li>
 <li><code>[city]</code>: city</li>
 </ul>
 
@@ -162,7 +164,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -192,7 +194,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -267,7 +269,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -283,7 +285,7 @@
 
 <p><strong><code>POST /me</code></strong></p>
 
-<p>Update basic information</p>
+<p>Update basic information. If userpic is included in request, then whole request should be encoded with <code>multipart/form-data</code>.</p>
 
 <p><em>Request:</em></p>
 
@@ -304,7 +306,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -337,7 +339,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -352,7 +354,7 @@
     {
       &quot;name&quot;: &quot;James&quot;,
       &quot;surname&quot;: &quot;Moriarty&quot;,
-      &quot;userpic&quot;: &quot;data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&quot;,
+      &quot;userpic_url&quot;: &quot;http://example.org/userpic.png&quot;,
       &quot;email&quot;: &quot;james@example.com&quot;,
       &quot;birthdate&quot;: &quot;1860-11-03&quot;,
       &quot;city&quot;: &quot;London&quot;,
@@ -365,7 +367,7 @@
     {
       &quot;name&quot;: &quot;Sherlock&quot;,
       &quot;surname&quot;: &quot;Holmes&quot;,
-      &quot;userpic&quot;: null,
+      &quot;userpic_url&quot;: null,
       &quot;email&quot;: &quot;sherlock@example.com&quot;,
       &quot;birthdate&quot;: null,
       &quot;city&quot;: &quot;London&quot;,
@@ -378,7 +380,7 @@
     {
       &quot;name&quot;: &quot;John&quot;,
       &quot;surname&quot;: &quot;Watson&quot;,
-      &quot;userpic&quot;: null,
+      &quot;userpic_url&quot;: null,
       &quot;email&quot;: &quot;john@example.com&quot;,
       &quot;birthdate&quot;: &quot;1867-04-01&quot;,
       &quot;city&quot;: &quot;London&quot;,
@@ -490,17 +492,154 @@
 
 <p>Three dots (...) in documentation mean that part of payload was skipped to keep clarity.</p>
 
+<p><strong><code>PUT /puzzles/:id</code></strong></p>
+
+<p>Method for storing arbitrary data, about given puzzle.</p>
+
+<p><em>Request:</em></p>
+
+<ul>
+<li><code>id</code>: Id of the puzzle</li>
+<li> all post data for this request will be saved.</li>
+</ul>
+
+<p><em>Response:</em></p>
+
+<pre><code>{ &quot;message&quot;: &quot;ok&quot; }
+</code></pre>
+
 <p><strong><code>GET /puzzles/:id</code></strong></p>
 
-<p><strong><code>PUT /puzzles/:id</code></strong></p>
+<p>Method for retrieving data stored with <code>PUT /puzzles/&quot;id</code>.</p>
+
+<p><em>Request:</em></p>
+
+<ul>
+<li><code>id</code>: Id of the puzzle</li>
+</ul>
+
+<p><em>Response:</em></p>
+
+<p>Data stored with <code>PUT /puzzles/&quot;id</code>.</p>
 
 <p><strong><code>GET /sets_available</code></strong></p>
 
 <p>Sets available sets for buying (shows this month only)</p>
 
+<p><em>Request:</em></p>
+
+<p>No parameters available.</p>
+
+<p><em>Response:</em></p>
+
+<pre><code>[
+  {
+   &quot;id&quot;:&quot;7e4e7bc7-a484-4b67-8c4c-1727f041047a&quot;,
+    &quot;puzzles&quot;:[{&quot;name&quot;:&quot;puzzle1&quot;},{&quot;name&quot;:&quot;puzzle2&quot;}],
+    &quot;month&quot;:12,
+    &quot;year&quot;:2012,
+    &quot;moth&quot;:10,
+    &quot;name&quot;:&quot;Cool set&quot;,
+    &quot;type&quot;:&quot;golden&quot;
+  }
+]
+</code></pre>
+
 <p><strong><code>POST /sets/:id/buy</code></strong></p>
 
 <p>Buy set.</p>
+
+<p><em>Request:</em></p>
+
+<ul>
+<li><code>id</code>: Id of set to buy</li>
+<li><code>receipt-data</code>: receipt data from itunes</li>
+</ul>
+
+<p><em>Response:</em></p>
+
+<pre><code>{
+  &quot;score&quot;: 23180,
+  &quot;sets&quot;: [
+    {
+      &quot;id&quot;: &quot;23&quot;,
+      &quot;name&quot;: &quot;1rst Golden Set&quot;,
+      &quot;bought&quot;: true,
+      &quot;type&quot;: &quot;golden&quot;,
+      &quot;solved&quot;: 3,
+      &quot;total&quot;: 12,
+      &quot;percent&quot;: 20,
+      &quot;score&quot;: 23000,
+      &quot;puzzles&quot;: [
+        {
+          &quot;name&quot;: &quot;A Study in Scarlet&quot;,
+          &quot;issuedAt&quot;: &quot;2012-03-05&quot;,
+          &quot;set_id&quot;: &quot;23&quot;,
+          &quot;progress&quot;: 100,
+          &quot;base_score&quot;: 100,
+          &quot;time_given&quot;: 60000,
+          &quot;time_left&quot;: 30001,
+          &quot;data&quot;: {...},
+          &quot;score&quot;: 1000,
+          &quot;solved&quot;: true
+        },
+        {
+          &quot;name&quot;: &quot;The Adventure of the Greek Interpreter&quot;,
+          &quot;issuedAt&quot;: &quot;2012-23-04&quot;,
+          &quot;set_id&quot;: &quot;23&quot;,
+          &quot;progress&quot;: 100,
+          &quot;base_score&quot;: 150,
+          &quot;time_given&quot;: 60080,
+          &quot;time_left&quot;: 30001,
+          &quot;data&quot;: {...},
+          &quot;score&quot;: 1100,
+          &quot;solved&quot;: true
+        },
+        ...
+      ]
+    },
+    {
+      &quot;id&quot;: 2233,
+      &quot;name&quot;: &quot;Free set&quot;,
+      &quot;type&quot;: &quot;free&quot;,
+      &quot;bought&quot;: true,
+      &quot;solved&quot;: 7,
+      &quot;total&quot;: 7,
+      &quot;percent&quot;: 100,
+      &quot;score&quot;: 80,
+      &quot;puzzles&quot;: [
+        {
+          &quot;name&quot;: &quot;The Sign of the Four&quot;,
+          &quot;issuedAt&quot;: &quot;2012-03-05&quot;,
+          &quot;set_id&quot;: &quot;2233&quot;,
+          &quot;progress&quot;: 100,
+          &quot;base_score&quot;: 100,
+          &quot;time_given&quot;: 60000,
+          &quot;time_left&quot;: 30001,
+          &quot;data&quot;: {...},
+          &quot;score&quot;: 1000,
+          &quot;solved&quot;: true
+        },
+        {
+          &quot;name&quot;: &quot;The Adventure of the Crooked Man&quot;,
+          &quot;issuedAt&quot;: &quot;2012-23-04&quot;,
+          &quot;set_id&quot;: &quot;2233&quot;,
+          &quot;progress&quot;: 100,
+          &quot;base_score&quot;: 150,
+          &quot;time_given&quot;: 60080,
+          &quot;time_left&quot;: 30001,
+          &quot;data&quot;: {...},
+          &quot;score&quot;: 1100,
+          &quot;solved&quot;: true
+        },
+        ...
+      ]
+    }
+  ]
+}
+</code></pre>
+
+<p>Three dots (...) in documentation mean that part of payload was skipped to keep clarity.</p>
 
 <p><strong><code>POST /hints</code></strong></p>
 
@@ -519,7 +658,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
@@ -542,6 +681,7 @@
 <ul>
 <li><code>session_token</code>: Session token.</li>
 <li><code>[score]</code>: Amount to change score.</li>
+<li><code>[solved]</code>: Amount to change puzzles solved.</li>
 </ul>
 
 <p><em>Response:</em></p>
@@ -550,7 +690,7 @@
   &quot;me&quot;: {
     &quot;name&quot;: &quot;Sherlock&quot;,
     &quot;surname&quot;: &quot;Holmes&quot;,
-    &quot;userpic&quot;: null,
+    &quot;userpic_url&quot;: null,
     &quot;email&quot;: &quot;sherlock@example.com&quot;,
     &quot;birthdate&quot;: null,
     &quot;city&quot;: &quot;London&quot;,
