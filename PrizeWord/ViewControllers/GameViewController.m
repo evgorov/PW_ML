@@ -36,14 +36,15 @@
 -(void)viewDidLoad
 {
     pauseMaxProgress = pauseImgProgressbar.frame.size.width;
-    UIImage * imgProgress = pauseImgProgressbar.image;
+    UIImage * imgProgress = [UIImage imageNamed:@"pause_progressbar"];
+    CGSize imageSize = imgProgress.size;
     if ([imgProgress respondsToSelector:@selector(resizableImageWithCapInsets:)])
     {
-        imgProgress = [imgProgress resizableImageWithCapInsets:UIEdgeInsetsMake(imgProgress.size.height / 2 - 1, imgProgress.size.width / 2 - 1, imgProgress.size.height / 2, imgProgress.size.width / 2)];
+        imgProgress = [imgProgress resizableImageWithCapInsets:UIEdgeInsetsMake(imageSize.height / 2 - 1, imageSize.width / 2 - 1, imageSize.height / 2, imageSize.width / 2)];
     }
     else
     {
-        imgProgress = [imgProgress stretchableImageWithLeftCapWidth:(imgProgress.size.width / 2) topCapHeight:(imgProgress.size.height / 2)];
+        imgProgress = [imgProgress stretchableImageWithLeftCapWidth:(imageSize.width / 2) topCapHeight:(imageSize.height / 2)];
     }
     pauseImgProgressbar.image = imgProgress;
     pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress, pauseImgProgressbar.frame.size.height);
