@@ -12,7 +12,8 @@
 #import "GameLogic.h"
 #import "EventManager.h"
 #import "PrizeWordNavigationBar.h"
-#import "PrizeWordNavigationController.h"
+#import "RootViewController.h"
+#import "AppDelegate.h"
 
 @interface GameViewController (private)
 
@@ -143,7 +144,7 @@
 
 - (IBAction)handlePauseMenu:(id)sender
 {
-    [(PrizeWordNavigationController *)self.navigationController hideOverlay];
+    [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -195,7 +196,7 @@
     {
         btnPause.hidden = YES;
         btnPlay.hidden = NO;
-        [(PrizeWordNavigationController *)self.navigationController showOverlay:pauseOverlay];
+        [[AppDelegate currentDelegate].rootViewController showOverlay:pauseOverlay];
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
         [self.navigationItem setTitleView:viewTime];
@@ -204,7 +205,7 @@
     {
         btnPause.hidden = NO;
         btnPlay.hidden = YES;
-        [(PrizeWordNavigationController *)self.navigationController hideOverlay];
+        [[AppDelegate currentDelegate].rootViewController hideOverlay];
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
         [self.navigationItem setTitleView:viewTime];

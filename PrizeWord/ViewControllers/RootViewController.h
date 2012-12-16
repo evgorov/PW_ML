@@ -8,20 +8,33 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController
+@class PrizeWordNavigationController;
+
+@interface RootViewController : UIViewController<UIScrollViewDelegate>
 {
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;
     IBOutlet UIButton *btnScore;
     IBOutlet UIButton *btnRating;
-    
-    UINavigationController * navController;
+    IBOutlet UIView *rulesView;
+
+    PrizeWordNavigationController * navController;
+    UIScrollView * rulesScrollView;
+
+    UIBarButtonItem * currentLeftButton;
+    UIBarButtonItem * currentRightButton;
+    UIView * currentTitleView;
+    IBOutlet UIView *overlayContainer;
 }
 
 @property (readonly) BOOL isMenuHidden;
+@property (readonly, nonatomic) UIView * currentOverlay;
 
--(id)initWithNavigationController:(UINavigationController *)navigationController;
+-(id)initWithNavigationController:(PrizeWordNavigationController *)navigationController;
 -(void)showMenuAnimated:(BOOL)animated;
 -(void)hideMenuAnimated:(BOOL)animated;
+
+-(void)showOverlay:(UIView *)overlayView;
+-(void)hideOverlay;
 
 @end

@@ -9,15 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface PrizeWordNavigationController : UINavigationController<UINavigationControllerDelegate>
-{
-    UIView * currentOverlay;
-    UIBarButtonItem * currentLeftButton;
-    UIBarButtonItem * currentRightButton;
-    UIView * currentTitleView;
-    IBOutlet UIView *overlayContainer;
-}
-
--(void)showOverlay:(UIView *)overlayView;
--(void)hideOverlay;
 
 @end

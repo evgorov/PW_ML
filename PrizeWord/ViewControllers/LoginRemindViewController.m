@@ -7,7 +7,8 @@
 //
 
 #import "LoginRemindViewController.h"
-#import "PrizeWordNavigationController.h"
+#import "AppDelegate.h"
+#import "RootViewController.h"
 
 @interface LoginRemindViewController (private)
 
@@ -50,12 +51,12 @@
 -(void)handleSent:(id)sender
 {
     [self hideActivityIndicator];
-    [(PrizeWordNavigationController *)self.navigationController showOverlay:doneOverlay];
+    [[AppDelegate currentDelegate].rootViewController showOverlay:doneOverlay];
 }
 
 - (IBAction)handleDoneClick:(id)sender
 {
-    [(PrizeWordNavigationController *)self.navigationController hideOverlay];
+    [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

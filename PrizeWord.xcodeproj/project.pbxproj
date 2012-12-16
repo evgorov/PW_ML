@@ -166,6 +166,10 @@
 		F286E3BF167DCCDE00FF5E83 /* invite_vk_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3BA167DCCDE00FF5E83 /* invite_vk_bg@2x.png */; };
 		F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E3C1167DCD0500FF5E83 /* InviteViewController.m */; };
 		F286E3C4167DCD1700FF5E83 /* InviteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */; };
+		F286E3CA167DD7BC00FF5E83 /* rules_page_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C6167DD7BC00FF5E83 /* rules_page_1@2x.png */; };
+		F286E3CB167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C7167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png */; };
+		F286E3CC167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C8167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png */; };
+		F286E3CD167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C9167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -417,6 +421,10 @@
 		F286E3C0167DCD0400FF5E83 /* InviteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteViewController.h; path = ViewControllers/InviteViewController.h; sourceTree = "<group>"; };
 		F286E3C1167DCD0500FF5E83 /* InviteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteViewController.m; path = ViewControllers/InviteViewController.m; sourceTree = "<group>"; };
 		F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InviteViewController.xib; path = ViewControllers/InviteViewController.xib; sourceTree = "<group>"; };
+		F286E3C6167DD7BC00FF5E83 /* rules_page_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_page_1@2x.png"; sourceTree = "<group>"; };
+		F286E3C7167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_bg@2x.png"; sourceTree = "<group>"; };
+		F286E3C8167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_empty@2x.png"; sourceTree = "<group>"; };
+		F286E3C9167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_full@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -701,6 +709,18 @@
 			path = PrizeWord/assets/invite;
 			sourceTree = "<group>";
 		};
+		F286E3C5167DD7BC00FF5E83 /* rules */ = {
+			isa = PBXGroup;
+			children = (
+				F286E3C6167DD7BC00FF5E83 /* rules_page_1@2x.png */,
+				F286E3C7167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png */,
+				F286E3C8167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png */,
+				F286E3C9167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png */,
+			);
+			name = rules;
+			path = PrizeWord/assets/rules;
+			sourceTree = "<group>";
+		};
 		F2950235165E011000DACFBA /* EventSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -744,6 +764,7 @@
 		F2950249166206CD00DACFBA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				F286E3C5167DD7BC00FF5E83 /* rules */,
 				F286E3B5167DCCDE00FF5E83 /* invite */,
 				F286E3A4167DB2D200FF5E83 /* score */,
 				F286E37C167CEBAD00FF5E83 /* menu */,
@@ -933,6 +954,8 @@
 				F2868CE1166F047C003F0686 /* PrizeWordNavigationController.m */,
 				F2868CD9166EF4E4003F0686 /* PrizeWordNavigationController.xib */,
 				F2B83AF3166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib */,
+				F286E3B2167DC06500FF5E83 /* BlockedViewController.h */,
+				F286E3B3167DC06600FF5E83 /* BlockedViewController.m */,
 				F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */,
 				F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */,
 				F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */,
@@ -957,8 +980,6 @@
 				F286E3AD167DB30700FF5E83 /* ScoreViewController.h */,
 				F286E3AE167DB30800FF5E83 /* ScoreViewController.m */,
 				F286E3AF167DB30900FF5E83 /* ScoreViewController.xib */,
-				F286E3B2167DC06500FF5E83 /* BlockedViewController.h */,
-				F286E3B3167DC06600FF5E83 /* BlockedViewController.m */,
 				F286E3C0167DCD0400FF5E83 /* InviteViewController.h */,
 				F286E3C1167DCD0500FF5E83 /* InviteViewController.m */,
 				F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */,
@@ -1214,6 +1235,10 @@
 				F286E3BE167DCCDE00FF5E83 /* invite_fb_bg@2x.png in Resources */,
 				F286E3BF167DCCDE00FF5E83 /* invite_vk_bg@2x.png in Resources */,
 				F286E3C4167DCD1700FF5E83 /* InviteViewController.xib in Resources */,
+				F286E3CA167DD7BC00FF5E83 /* rules_page_1@2x.png in Resources */,
+				F286E3CB167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png in Resources */,
+				F286E3CC167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png in Resources */,
+				F286E3CD167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

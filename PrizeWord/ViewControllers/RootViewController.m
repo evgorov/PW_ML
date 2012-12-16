@@ -11,16 +11,23 @@
 #import "PuzzlesViewController.h"
 #import "ScoreViewController.h"
 #import "InviteViewController.h"
+#import "PrizeWordNavigationController.h"
+#import "PrizeWordNavigationBar.h"
 
-@interface RootViewController ()
+@interface RootViewController (private)
+
+-(void)handlePageButtonClick:(id)sender;
+-(void)handleRulesMenuClick:(id)sender;
 
 @end
 
 @implementation RootViewController
 
+@synthesize currentOverlay = _currentOverlay;
+
 @synthesize isMenuHidden = _isMenuHidden;
 
--(id)initWithNavigationController:(UINavigationController *)navigationController
+-(id)initWithNavigationController:(PrizeWordNavigationController *)navigationController
 {
     self = [super init];
     if (self)
@@ -101,7 +108,23 @@
     btnRating = nil;
     mainMenuView = nil;
     mainMenuBg = nil;
+    rulesView = nil;
     [super viewDidUnload];
+}
+
+-(void)didReceiveMemoryWarning
+{
+    if (_currentOverlay != rulesView)
+    {
+        [rulesScrollView removeFromSuperview];
+        rulesScrollView = nil;
+        
+        NSArray * subviews = [rulesView subviews];
+        for (UIView * subview in subviews)
+        {
+            [subview removeFromSuperview];
+        }
+    }
 }
 
 -(void)showMenuAnimated:(BOOL)animated
@@ -138,6 +161,59 @@
         mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
         navController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     }
+}
+
+-(void)showOverlay:(UIView *)overlayView
+{
+    if (_currentOverlay != nil)
+    {
+        return;
+    }
+    currentLeftButton = navController.topViewController.navigationItem.leftBarButtonItem;
+    currentRightButton = navController.topViewController.navigationItem.rightBarButtonItem;
+    currentTitleView = navController.topViewController.navigationItem.titleView;
+    
+    [navController.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]]];
+    [navController.topViewController.navigationItem setRightBarButtonItem:nil];
+    [navController.topViewController.navigationItem setTitleView:nil];
+    
+    overlayContainer.alpha = 0;
+    overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+    [self.view addSubview:overlayContainer];
+    overlayContainer.clipsToBounds = YES;
+    
+    _currentOverlay = overlayView;
+    [overlayContainer addSubview:_currentOverlay];
+    _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+    [UIView animateWithDuration:0.5 animations:^{
+        _currentOverlay.frame = CGRectMake(0, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        overlayContainer.alpha = 1;
+    }];
+}
+
+-(void)hideOverlay
+{
+    if (_currentOverlay == nil)
+    {
+        return;
+    }
+    
+    [navController.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton];
+    [navController.topViewController.navigationItem setRightBarButtonItem:currentRightButton];
+    [navController.topViewController.navigationItem setTitleView:currentTitleView];
+    
+    currentLeftButton = nil;
+    currentRightButton = nil;
+    currentTitleView = nil;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        overlayContainer.alpha = 0;
+    } completion:^(BOOL finished) {
+        [_currentOverlay removeFromSuperview];
+        [overlayContainer removeFromSuperview];
+        _currentOverlay = nil;
+    }];
 }
 
 - (IBAction)handleMyPuzzlesClick:(id)sender
@@ -182,6 +258,67 @@
 
 - (IBAction)handleRulesClick:(id)sender
 {
+    if (rulesScrollView == nil)
+    {
+        UIImage * paginatorEmptyImage = [UIImage imageNamed:@"rules_pagecontrol_empty"];
+        UIImage * paginatorFullImage = [UIImage imageNamed:@"rules_pagecontrol_full"];
+        UIImage * pagecontrolBgImage = [UIImage imageNamed:@"rules_pagecontrol_bg"];
+
+        int pages = 5;
+        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
+        rulesScrollView.delegate = self;
+        rulesScrollView.backgroundColor = [UIColor clearColor];
+        rulesScrollView.scrollEnabled = YES;
+        rulesScrollView.showsHorizontalScrollIndicator = YES;
+        rulesScrollView.showsVerticalScrollIndicator = NO;
+        rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
+        [rulesView addSubview:rulesScrollView];
+
+        if ([pagecontrolBgImage respondsToSelector:@selector(resizableImageWithCapInsets:)])
+        {
+            pagecontrolBgImage = [pagecontrolBgImage resizableImageWithCapInsets:UIEdgeInsetsMake(pagecontrolBgImage.size.height / 2 - 1, pagecontrolBgImage.size.width / 2 - 1, pagecontrolBgImage.size.height / 2, pagecontrolBgImage.size.width / 2)];
+        }
+        else
+        {
+            pagecontrolBgImage = [pagecontrolBgImage stretchableImageWithLeftCapWidth:(pagecontrolBgImage.size.width / 2 - 1) topCapHeight:(pagecontrolBgImage.size.height / 2 - 1)];
+        }
+        UIImageView * pagecontrol = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
+        float pageControlDefaultWidth = pagecontrol.frame.size.width;
+        float pagecontrolWidth = 1.5f * pages * paginatorEmptyImage.size.width + pageControlDefaultWidth;
+        pagecontrol.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - pagecontrol.frame.size.height, pagecontrolWidth, pagecontrol.frame.size.height);
+        pagecontrol.userInteractionEnabled = YES;
+        [rulesView addSubview:pagecontrol];
+        for (int i = 0; i != pages; ++i)
+        {
+            UIButton * pageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            pageButton.selected = (i == 0);
+            pageButton.adjustsImageWhenHighlighted = NO;
+            pageButton.enabled = YES;
+            pageButton.userInteractionEnabled = YES;
+            [pageButton setBackgroundImage:paginatorEmptyImage forState:UIControlStateNormal];
+            [pageButton setBackgroundImage:paginatorFullImage forState:UIControlStateSelected];
+            [pageButton addTarget:self action:@selector(handlePageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            pageButton.frame = CGRectMake(pageControlDefaultWidth / 2 + paginatorEmptyImage.size.width / 4 + 1.5f * i * paginatorEmptyImage.size.width, (pagecontrol.frame.size.height - paginatorEmptyImage.size.height) / 2, paginatorEmptyImage.size.width, paginatorEmptyImage.size.height);
+            pageButton.tag = i;
+            [pagecontrol addSubview:pageButton];
+            
+            UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
+            pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
+            [rulesScrollView addSubview:pageView];
+        }
+    }
+    [self hideMenuAnimated:YES];
+    [self showOverlay:rulesView];
+    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
+    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
+    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
+    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
+    [menuButton addTarget:self action:@selector(handleRulesMenuClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem * menuItem = [[UIBarButtonItem alloc] initWithCustomView:
+                [PrizeWordNavigationBar containerWithView:menuButton]];
+    [navController.topViewController.navigationItem setLeftBarButtonItem:menuItem animated:YES];
+    
 }
 
 - (IBAction)handleRestoreClick:(id)sender
@@ -198,6 +335,80 @@
 
 - (IBAction)handleNotificationSwitchChange:(id)sender
 {
+    
+}
+
+-(void)handleRulesMenuClick:(id)sender
+{
+    [self hideOverlay];
+}
+
+-(void)handlePageButtonClick:(id)sender
+{
+    NSArray * pageButtons = nil;
+    for (UIView * subview in rulesView.subviews)
+    {
+        if ([subview isKindOfClass:[UIImageView class]])
+        {
+            pageButtons = subview.subviews;
+            break;
+        }
+    }
+    
+    if (pageButtons == nil)
+    {
+        return;
+    }
+    
+    UIButton * selectedButton = (UIButton *)sender;
+    for (UIButton * pageButton in pageButtons)
+    {
+        pageButton.selected = (pageButton == sender);
+    }
+    [rulesScrollView setContentOffset:CGPointMake(selectedButton.tag * rulesScrollView.frame.size.width, 0) animated:YES];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    int page = scrollView.contentOffset.x / scrollView.frame.size.width + 0.5f;
+    
+    NSArray * pageButtons = nil;
+    for (UIView * subview in rulesView.subviews)
+    {
+        if ([subview isKindOfClass:[UIImageView class]])
+        {
+            pageButtons = subview.subviews;
+            break;
+        }
+    }
+    
+    if (pageButtons == nil)
+    {
+        return;
+    }
+    if (page >= pageButtons.count)
+    {
+        page = pageButtons.count - 1;
+    }
+    if (page < 0)
+    {
+        page = 0;
+    }
+    
+    for (UIButton * pageButton in pageButtons)
+    {
+        pageButton.selected = (page == pageButton.tag);
+    }
+    if (decelerate)
+    {
+        [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
+    }
+    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
+}
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
 }
 
 @end
