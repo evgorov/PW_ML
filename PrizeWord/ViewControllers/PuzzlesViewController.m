@@ -17,7 +17,6 @@
 @interface PuzzlesViewController ()
 
 -(void)handleBadgeClick:(id)sender;
--(void)handleMenuClick:(id)sender;
 
 @end
 
@@ -26,25 +25,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIImage * border = [UIImage imageNamed:@"frame_border"];
-    if ([border respondsToSelector:@selector(resizableImageWithCapInsets:)])
-    {
-        border = [border resizableImageWithCapInsets:UIEdgeInsetsMake(border.size.height / 2 - 1, border.size.width / 2 - 1, border.size.height / 2, border.size.width / 2)];
-    }
-    else
-    {
-        border = [border stretchableImageWithLeftCapWidth:(border.size.width / 2 - 1) topCapHeight:(border.size.height / 2 - 1)];
-    }
-    
-    contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
-    currentPuzzlesView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
-    hintsView.backgroundColor = currentPuzzlesView.backgroundColor;
-    archiveView.backgroundColor = currentPuzzlesView.backgroundColor;
-    currentPuzzlesBorder.image = border;
-    hintsBorder.image = border;
-    archiveBorder.image = border;
-    scrollView.contentSize = contentView.frame.size;
+
+    [self addSimpleView:newsView];
+    [self addFramedView:currentPuzzlesView];
+    [self addFramedView:hintsView];
+    [self addFramedView:archiveView];
     
     currentGoldBadges = [NSMutableArray new];
     for (int i = 0; i != 4; ++i)
@@ -90,11 +75,8 @@
 
 - (void)viewDidUnload
 {
-    scrollView = nil;
-    contentView = nil;
     newsView = nil;
     currentPuzzlesView = nil;
-    currentPuzzlesBorder = nil;
     for (UIImageView * badge in currentGoldBadges)
     {
         [badge removeFromSuperview];
@@ -114,28 +96,8 @@
     currentSilverBadges = nil;
     archiveBadges = nil;
     hintsView = nil;
-    hintsBorder = nil;
     archiveView = nil;
-    archiveBorder = nil;
     [super viewDidUnload];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
-    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
-    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
-    [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];
-    menuItem = [[UIBarButtonItem alloc] initWithCustomView:
-                [PrizeWordNavigationBar containerWithView:menuButton]];
-    [self.navigationItem setLeftBarButtonItem:menuItem animated:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    menuItem = nil;
 }
 
 - (IBAction)handleNewsCloseClick:(id)sender
@@ -147,20 +109,6 @@
     BadgeView * badge = (BadgeView *)sender;
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:(LetterType)badge.badgeType]]];
-    
-}
-
--(void)handleMenuClick:(id)sender
-{
-    RootViewController * rootViewController = [AppDelegate currentDelegate].rootViewController;
-    if (rootViewController.isMenuHidden)
-    {
-        [rootViewController showMenuAnimated:YES];
-    }
-    else
-    {
-        [rootViewController hideMenuAnimated:YES];
-    }
 }
 
 @end

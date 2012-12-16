@@ -10,6 +10,7 @@
 #import "GameViewController.h"
 #import "PuzzlesViewController.h"
 #import "ScoreViewController.h"
+#import "InviteViewController.h"
 
 @interface RootViewController ()
 
@@ -151,6 +152,8 @@
 
 - (IBAction)handleSwitchUserClick:(id)sender
 {
+    [navController popToRootViewControllerAnimated:YES];
+    [self hideMenuAnimated:YES];
 }
 
 - (IBAction)handleScoreClick:(id)sender
@@ -169,6 +172,12 @@
 
 - (IBAction)handleInviteClick:(id)sender
 {
+    if (![navController.topViewController isKindOfClass:[InviteViewController class]])
+    {
+        [navController popViewControllerAnimated:NO];
+        [navController pushViewController:[InviteViewController new] animated:YES];
+    }
+    [self hideMenuAnimated:YES];
 }
 
 - (IBAction)handleRulesClick:(id)sender

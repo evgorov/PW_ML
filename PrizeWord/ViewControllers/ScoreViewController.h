@@ -7,22 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BlockedViewController.h"
 
-@interface ScoreViewController : UIViewController
+@interface ScoreViewController : BlockedViewController
 {
-    IBOutlet UIScrollView *scrollView;
-    IBOutlet UIView *contentView;
-    
     IBOutlet UIView *puzzlesView;
-    IBOutlet UIImageView *puzzlesBorder;
     
     IBOutlet UIView *invitesView;
-    IBOutlet UIImageView *invitesBorder;
     IBOutlet UIButton *btnInvite;
     
     NSMutableArray * badges;
-    
-    UIBarButtonItem * menuItem;
 }
 
 @end

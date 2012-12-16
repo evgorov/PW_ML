@@ -11,6 +11,7 @@
 #import "PrizeWordNavigationBar.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "InviteViewController.h"
 
 @interface ScoreViewController (private)
 
@@ -20,33 +21,11 @@
 
 @implementation ScoreViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 -(void)viewDidLoad
 {
-    UIImage * border = [UIImage imageNamed:@"frame_border"];
-    if ([border respondsToSelector:@selector(resizableImageWithCapInsets:)])
-    {
-        border = [border resizableImageWithCapInsets:UIEdgeInsetsMake(border.size.height / 2 - 1, border.size.width / 2 - 1, border.size.height / 2, border.size.width / 2)];
-    }
-    else
-    {
-        border = [border stretchableImageWithLeftCapWidth:(border.size.width / 2 - 1) topCapHeight:(border.size.height / 2 - 1)];
-    }
-    
-    contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
-    puzzlesView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
-    invitesView.backgroundColor = puzzlesView.backgroundColor;
-    puzzlesBorder.image = border;
-    invitesBorder.image = border;
-    scrollView.contentSize = contentView.frame.size;
+    [super viewDidLoad];
+    [self addFramedView:puzzlesView];
+    [self addFramedView:invitesView];
     
     badges = [NSMutableArray new];
     for (int i = 0; i != 8; ++i)
@@ -76,55 +55,18 @@
 
 - (void)viewDidUnload
 {
-    scrollView = nil;
-    contentView = nil;
     puzzlesView = nil;
-    puzzlesBorder = nil;
     invitesView = nil;
-    invitesBorder = nil;
     btnInvite = nil;
-    for (UIImageView * badge in badges)
-    {
-        [badge removeFromSuperview];
-    }
-    [badges removeAllObjects];
     badges = nil;
     [super viewDidUnload];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
-    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
-    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
-    [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];
-    menuItem = [[UIBarButtonItem alloc] initWithCustomView:
-                [PrizeWordNavigationBar containerWithView:menuButton]];
-    [self.navigationItem setLeftBarButtonItem:menuItem animated:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    menuItem = nil;
-}
-
--(void)handleMenuClick:(id)sender
-{
-    RootViewController * rootViewController = [AppDelegate currentDelegate].rootViewController;
-    if (rootViewController.isMenuHidden)
-    {
-        [rootViewController showMenuAnimated:YES];
-    }
-    else
-    {
-        [rootViewController hideMenuAnimated:YES];
-    }
-}
-
 - (IBAction)handleInviteClick:(id)sender
 {
+    UINavigationController * navController = self.navigationController;
+    [navController popViewControllerAnimated:NO];
+    [navController pushViewController:[InviteViewController new] animated:YES];
 }
 
 @end

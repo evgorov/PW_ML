@@ -61,6 +61,22 @@
     return popped;
 }
 
+-(NSArray *)popToRootViewControllerAnimated:(BOOL)animated
+{
+    NSArray * popped = [super popToRootViewControllerAnimated:animated];
+    UIViewController * top = popped.count > 0 ? [popped objectAtIndex:0] : nil;
+    
+    if (top != nil)
+    {
+        [top viewWillDisappear:animated];
+    }
+    if (self.topViewController.navigationItem.leftBarButtonItem == nil)
+    {
+        [self.topViewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];
+    }
+    return popped;
+}
+
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [viewController viewDidAppear:animated];

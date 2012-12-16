@@ -7,27 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BlockedViewController.h"
 
-@interface PuzzlesViewController : UIViewController
+@interface PuzzlesViewController : BlockedViewController
 {
-    IBOutlet UIScrollView *scrollView;
-    IBOutlet UIView *contentView;
-    
     IBOutlet UIView *newsView;
     IBOutlet UIView *currentPuzzlesView;
-    IBOutlet UIImageView *currentPuzzlesBorder;
-    
     IBOutlet UIView *hintsView;
-    IBOutlet UIImageView *hintsBorder;
-    
     IBOutlet UIView *archiveView;
-    IBOutlet UIImageView *archiveBorder;
     
     NSMutableArray * currentGoldBadges;
     NSMutableArray * currentSilverBadges;
     NSMutableArray * archiveBadges;
-    
-    UIBarButtonItem * menuItem;
 }
 
 @end

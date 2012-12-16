@@ -20,26 +20,6 @@
 
 @implementation LoginMainViewController
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activityIndicator.hidesWhenStopped = YES;
-        activityIndicator.userInteractionEnabled = NO;
-        activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [self.view addSubview:activityIndicator];
-    }
-    return self;
-}
-
--(void)dealloc
-{
-    [activityIndicator removeFromSuperview];
-    activityIndicator = nil;
-}
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
