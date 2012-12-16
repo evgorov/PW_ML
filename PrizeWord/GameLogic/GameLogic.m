@@ -39,6 +39,7 @@
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_START];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     }
     return self;
 }
@@ -79,17 +80,17 @@
             break;
 
         case EVENT_GAME_REQUEST_PAUSE:
-        {
             gameState = GAMESTATE_PAUSED;
-        }
             break;
 
         case EVENT_GAME_REQUEST_RESUME:
-        {
             gameState = GAMESTATE_PLAYING;
-        }
             break;
-            
+
+        case EVENT_GAME_REQUEST_COMPLETE:
+            gameState = GAMESTATE_FINISHED;
+            break;
+
         default:
             break;
     }

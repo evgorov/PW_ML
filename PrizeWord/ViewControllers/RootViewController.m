@@ -11,6 +11,7 @@
 #import "PuzzlesViewController.h"
 #import "ScoreViewController.h"
 #import "InviteViewController.h"
+#import "RatingViewController.h"
 #import "PrizeWordNavigationController.h"
 #import "PrizeWordNavigationBar.h"
 
@@ -109,6 +110,7 @@
     mainMenuView = nil;
     mainMenuBg = nil;
     rulesView = nil;
+    fullscreenOverlayContainer = nil;
     [super viewDidUnload];
 }
 
@@ -191,6 +193,28 @@
     }];
 }
 
+-(void)showFullscreenOverlay:(UIView *)overlayView
+{
+    if (_currentOverlay != nil)
+    {
+        return;
+    }
+    
+    fullscreenOverlayContainer.alpha = 0;
+    fullscreenOverlayContainer.frame = CGRectMake(0, 0, fullscreenOverlayContainer.frame.size.width, fullscreenOverlayContainer.frame.size.height);
+    [self.view addSubview:fullscreenOverlayContainer];
+    fullscreenOverlayContainer.clipsToBounds = YES;
+    
+    _currentOverlay = overlayView;
+    [fullscreenOverlayContainer addSubview:_currentOverlay];
+    _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+    [UIView animateWithDuration:0.5 animations:^{
+        _currentOverlay.frame = CGRectMake(0, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        fullscreenOverlayContainer.alpha = 1;
+    }];
+    
+}
+
 -(void)hideOverlay
 {
     if (_currentOverlay == nil)
@@ -198,13 +222,16 @@
         return;
     }
     
-    [navController.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton];
-    [navController.topViewController.navigationItem setRightBarButtonItem:currentRightButton];
-    [navController.topViewController.navigationItem setTitleView:currentTitleView];
-    
-    currentLeftButton = nil;
-    currentRightButton = nil;
-    currentTitleView = nil;
+    if (overlayContainer.superview != nil)
+    {
+        [navController.topViewController.navigationItem setLeftBarButtonItem:currentLeftButton];
+        [navController.topViewController.navigationItem setRightBarButtonItem:currentRightButton];
+        [navController.topViewController.navigationItem setTitleView:currentTitleView];
+        
+        currentLeftButton = nil;
+        currentRightButton = nil;
+        currentTitleView = nil;
+    }
     
     [UIView animateWithDuration:0.5 animations:^{
         _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
@@ -212,6 +239,7 @@
     } completion:^(BOOL finished) {
         [_currentOverlay removeFromSuperview];
         [overlayContainer removeFromSuperview];
+        [fullscreenOverlayContainer removeFromSuperview];
         _currentOverlay = nil;
     }];
 }
@@ -244,6 +272,12 @@
 
 - (IBAction)handleRatingClick:(id)sender
 {
+    if (![navController.topViewController isKindOfClass:[RatingViewController class]])
+    {
+        [navController popViewControllerAnimated:NO];
+        [navController pushViewController:[RatingViewController new] animated:YES];
+    }
+    [self hideMenuAnimated:YES];
 }
 
 - (IBAction)handleInviteClick:(id)sender

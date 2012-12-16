@@ -25,6 +25,7 @@
     UIBarButtonItem * currentRightButton;
     UIView * currentTitleView;
     IBOutlet UIView *overlayContainer;
+    IBOutlet UIView *fullscreenOverlayContainer;
 }
 
 @property (readonly) BOOL isMenuHidden;
@@ -35,6 +36,7 @@
 -(void)hideMenuAnimated:(BOOL)animated;
 
 -(void)showOverlay:(UIView *)overlayView;
+-(void)showFullscreenOverlay:(UIView *)overlayView;
 -(void)hideOverlay;
 
 @end

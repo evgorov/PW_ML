@@ -28,7 +28,9 @@
     IBOutlet UIImageView *pauseImgProgressbar;
     IBOutlet UILabel *pauseTxtProgress;
     float pauseMaxProgress;
-    
+
+    IBOutlet UIView *finalOverlay;
+
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;
 }

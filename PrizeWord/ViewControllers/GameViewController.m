@@ -86,6 +86,7 @@
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -103,6 +104,7 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FINISH_INPUT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_TIME_CHANGED];
     [textField removeFromSuperview];
     textField = nil;
@@ -146,6 +148,14 @@
 {
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)handleFBClick:(id)sender
+{
+}
+
+- (IBAction)handleVKClick:(id)sender
+{
 }
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
@@ -210,6 +220,10 @@
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
         [self.navigationItem setTitleView:viewTime];
     }
+    else if (event.type == EVENT_GAME_REQUEST_COMPLETE)
+    {
+        [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
+    }
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -244,6 +258,9 @@
     pauseSwtSound = nil;
     pauseImgProgressbar = nil;
     pauseTxtProgress = nil;
+    finalOverlay = nil;
     [super viewDidUnload];
 }
+
+
 @end

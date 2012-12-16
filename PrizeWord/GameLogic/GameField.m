@@ -64,6 +64,8 @@
     
     if (self)
     {
+        totalQuestions = puzzleData.questions.count;
+        completeQuestions = 0;
         for (QuestionData * question in puzzleData.questions) {
             TileData * tile = [tiles objectAtIndex:([question.column unsignedIntValue] + [question.row unsignedIntValue] * _tilesPerRow)];
             tile.question = question.question_text;
@@ -356,6 +358,11 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
+    completeQuestions++;
+    if (completeQuestions == totalQuestions)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
+    }
     return YES;
 }
 

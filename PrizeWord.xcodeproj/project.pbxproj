@@ -170,6 +170,18 @@
 		F286E3CB167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C7167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png */; };
 		F286E3CC167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C8167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png */; };
 		F286E3CD167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C9167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png */; };
+		F286E3DC167E374000FF5E83 /* final_next_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D3167E374000FF5E83 /* final_next_btn_down@2x.png */; };
+		F286E3DD167E374000FF5E83 /* final_next_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D4167E374000FF5E83 /* final_next_btn@2x.png */; };
+		F286E3DE167E374000FF5E83 /* final_menu_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D5167E374000FF5E83 /* final_menu_btn_down@2x.png */; };
+		F286E3DF167E374000FF5E83 /* final_menu_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D6167E374000FF5E83 /* final_menu_btn@2x.png */; };
+		F286E3E0167E374000FF5E83 /* final_vk_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D7167E374000FF5E83 /* final_vk_btn_down@2x.png */; };
+		F286E3E1167E374000FF5E83 /* final_fb_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D8167E374000FF5E83 /* final_fb_btn_down@2x.png */; };
+		F286E3E2167E374000FF5E83 /* final_fb_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3D9167E374000FF5E83 /* final_fb_btn@2x.png */; };
+		F286E3E3167E374000FF5E83 /* final_vk_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3DA167E374000FF5E83 /* final_vk_btn@2x.png */; };
+		F286E3E4167E374000FF5E83 /* final_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3DB167E374000FF5E83 /* final_bg@2x.png */; };
+		F286E3E7167E374800FF5E83 /* rating_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3E6167E374800FF5E83 /* rating_bg@2x.png */; };
+		F286E3EB167E378700FF5E83 /* RatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E3E9167E377200FF5E83 /* RatingViewController.m */; };
+		F286E3EC167E378700FF5E83 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E3EA167E377700FF5E83 /* RatingViewController.xib */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -425,6 +437,19 @@
 		F286E3C7167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_bg@2x.png"; sourceTree = "<group>"; };
 		F286E3C8167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_empty@2x.png"; sourceTree = "<group>"; };
 		F286E3C9167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_full@2x.png"; sourceTree = "<group>"; };
+		F286E3D3167E374000FF5E83 /* final_next_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_next_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3D4167E374000FF5E83 /* final_next_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_next_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3D5167E374000FF5E83 /* final_menu_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_menu_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3D6167E374000FF5E83 /* final_menu_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_menu_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3D7167E374000FF5E83 /* final_vk_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_vk_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3D8167E374000FF5E83 /* final_fb_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_fb_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3D9167E374000FF5E83 /* final_fb_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_fb_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3DA167E374000FF5E83 /* final_vk_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_vk_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3DB167E374000FF5E83 /* final_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_bg@2x.png"; sourceTree = "<group>"; };
+		F286E3E6167E374800FF5E83 /* rating_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating_bg@2x.png"; sourceTree = "<group>"; };
+		F286E3E8167E376C00FF5E83 /* RatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RatingViewController.h; path = ViewControllers/RatingViewController.h; sourceTree = "<group>"; };
+		F286E3E9167E377200FF5E83 /* RatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RatingViewController.m; path = ViewControllers/RatingViewController.m; sourceTree = "<group>"; };
+		F286E3EA167E377700FF5E83 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RatingViewController.xib; path = ViewControllers/RatingViewController.xib; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -549,6 +574,15 @@
 		F2868C8A1669F992003F0686 /* gamescreen */ = {
 			isa = PBXGroup;
 			children = (
+				F286E3D3167E374000FF5E83 /* final_next_btn_down@2x.png */,
+				F286E3D4167E374000FF5E83 /* final_next_btn@2x.png */,
+				F286E3D5167E374000FF5E83 /* final_menu_btn_down@2x.png */,
+				F286E3D6167E374000FF5E83 /* final_menu_btn@2x.png */,
+				F286E3D7167E374000FF5E83 /* final_vk_btn_down@2x.png */,
+				F286E3D8167E374000FF5E83 /* final_fb_btn_down@2x.png */,
+				F286E3D9167E374000FF5E83 /* final_fb_btn@2x.png */,
+				F286E3DA167E374000FF5E83 /* final_vk_btn@2x.png */,
+				F286E3DB167E374000FF5E83 /* final_bg@2x.png */,
 				F286E30A1679C81200FF5E83 /* pause_menu_btn_down@2x~ipad.png */,
 				F286E30B1679C81200FF5E83 /* pause_menu_btn@2x~ipad.png */,
 				F286E30C1679C81200FF5E83 /* pause_next_btn_down@2x~ipad.png */,
@@ -721,6 +755,15 @@
 			path = PrizeWord/assets/rules;
 			sourceTree = "<group>";
 		};
+		F286E3E5167E374800FF5E83 /* rating */ = {
+			isa = PBXGroup;
+			children = (
+				F286E3E6167E374800FF5E83 /* rating_bg@2x.png */,
+			);
+			name = rating;
+			path = PrizeWord/assets/rating;
+			sourceTree = "<group>";
+		};
 		F2950235165E011000DACFBA /* EventSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,6 +807,7 @@
 		F2950249166206CD00DACFBA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				F286E3E5167E374800FF5E83 /* rating */,
 				F286E3C5167DD7BC00FF5E83 /* rules */,
 				F286E3B5167DCCDE00FF5E83 /* invite */,
 				F286E3A4167DB2D200FF5E83 /* score */,
@@ -983,6 +1027,9 @@
 				F286E3C0167DCD0400FF5E83 /* InviteViewController.h */,
 				F286E3C1167DCD0500FF5E83 /* InviteViewController.m */,
 				F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */,
+				F286E3E8167E376C00FF5E83 /* RatingViewController.h */,
+				F286E3E9167E377200FF5E83 /* RatingViewController.m */,
+				F286E3EA167E377700FF5E83 /* RatingViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1239,6 +1286,17 @@
 				F286E3CB167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png in Resources */,
 				F286E3CC167DD7BC00FF5E83 /* rules_pagecontrol_empty@2x.png in Resources */,
 				F286E3CD167DD7BC00FF5E83 /* rules_pagecontrol_full@2x.png in Resources */,
+				F286E3DC167E374000FF5E83 /* final_next_btn_down@2x.png in Resources */,
+				F286E3DD167E374000FF5E83 /* final_next_btn@2x.png in Resources */,
+				F286E3DE167E374000FF5E83 /* final_menu_btn_down@2x.png in Resources */,
+				F286E3DF167E374000FF5E83 /* final_menu_btn@2x.png in Resources */,
+				F286E3E0167E374000FF5E83 /* final_vk_btn_down@2x.png in Resources */,
+				F286E3E1167E374000FF5E83 /* final_fb_btn_down@2x.png in Resources */,
+				F286E3E2167E374000FF5E83 /* final_fb_btn@2x.png in Resources */,
+				F286E3E3167E374000FF5E83 /* final_vk_btn@2x.png in Resources */,
+				F286E3E4167E374000FF5E83 /* final_bg@2x.png in Resources */,
+				F286E3E7167E374800FF5E83 /* rating_bg@2x.png in Resources */,
+				F286E3EC167E378700FF5E83 /* RatingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,6 +1336,7 @@
 				F286E3B0167DB30D00FF5E83 /* ScoreViewController.m in Sources */,
 				F286E3B4167DC06800FF5E83 /* BlockedViewController.m in Sources */,
 				F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */,
+				F286E3EB167E378700FF5E83 /* RatingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
