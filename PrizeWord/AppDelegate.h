@@ -10,11 +10,13 @@
 
 @class GameLogic;
 @class PrizeWordNavigationController;
+@class RootViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) PrizeWordNavigationController *navController;
+@property (readonly, strong, nonatomic) PrizeWordNavigationController *navController;
+@property (readonly, strong, nonatomic) RootViewController *rootViewController;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

@@ -7,7 +7,7 @@
 //
 
 #import "LoginRegisterViewController.h"
-#import "RootViewController.h"
+#import "PuzzlesViewController.h"
 
 @interface LoginRegisterViewController ()
 
@@ -36,13 +36,15 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     activeResponder = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
--(void)viewDidDisappear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [activeResponder resignFirstResponder];
     activeResponder = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -213,7 +215,7 @@
     [self hideActivityIndicator];
     UINavigationController * navController = self.navigationController;
     [navController popViewControllerAnimated:NO];
-    [navController pushViewController:[RootViewController new] animated:YES];
+    [navController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
 @end

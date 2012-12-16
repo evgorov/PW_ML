@@ -26,6 +26,8 @@
     NSMutableArray * currentGoldBadges;
     NSMutableArray * currentSilverBadges;
     NSMutableArray * archiveBadges;
+    
+    UIBarButtonItem * menuItem;
 }
 
 @end

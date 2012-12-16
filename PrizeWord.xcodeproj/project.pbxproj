@@ -135,6 +135,23 @@
 		F286E379167CD70400FF5E83 /* puzzles_archive_showmore_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E367167CD70300FF5E83 /* puzzles_archive_showmore_btn_down@2x.png */; };
 		F286E37A167CD70400FF5E83 /* puzzles_archive_showmore_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E368167CD70300FF5E83 /* puzzles_archive_showmore_btn@2x.png */; };
 		F286E37B167CD70400FF5E83 /* puzzles_archive_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E369167CD70300FF5E83 /* puzzles_archive_bg@2x.png */; };
+		F286E38C167CEBAE00FF5E83 /* menu_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E37D167CEBAE00FF5E83 /* menu_bg@2x.jpg */; };
+		F286E38D167CEBAE00FF5E83 /* menu_invite_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E37E167CEBAE00FF5E83 /* menu_invite_btn@2x.png */; };
+		F286E38E167CEBAE00FF5E83 /* menu_invite_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E37F167CEBAE00FF5E83 /* menu_invite_btn_down@2x.png */; };
+		F286E38F167CEBAE00FF5E83 /* menu_my_puzzles_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E380167CEBAE00FF5E83 /* menu_my_puzzles_btn@2x.png */; };
+		F286E390167CEBAE00FF5E83 /* menu_my_puzzles_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E381167CEBAE00FF5E83 /* menu_my_puzzles_btn_down@2x.png */; };
+		F286E391167CEBAE00FF5E83 /* menu_rating_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E382167CEBAE00FF5E83 /* menu_rating_btn@2x.png */; };
+		F286E392167CEBAE00FF5E83 /* menu_rating_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E383167CEBAE00FF5E83 /* menu_rating_btn_down@2x.png */; };
+		F286E393167CEBAE00FF5E83 /* menu_restore_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E384167CEBAE00FF5E83 /* menu_restore_btn@2x.png */; };
+		F286E394167CEBAE00FF5E83 /* menu_restore_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E385167CEBAE00FF5E83 /* menu_restore_btn_down@2x.png */; };
+		F286E395167CEBAE00FF5E83 /* menu_rules_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E386167CEBAE00FF5E83 /* menu_rules_btn@2x.png */; };
+		F286E396167CEBAE00FF5E83 /* menu_rules_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E387167CEBAE00FF5E83 /* menu_rules_btn_down@2x.png */; };
+		F286E397167CEBAE00FF5E83 /* menu_score_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E388167CEBAE00FF5E83 /* menu_score_btn@2x.png */; };
+		F286E398167CEBAE00FF5E83 /* menu_score_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E389167CEBAE00FF5E83 /* menu_score_btn_down@2x.png */; };
+		F286E399167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E38A167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png */; };
+		F286E39A167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E38B167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png */; };
+		F286E3A1167DA3DC00FF5E83 /* menu_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E39F167DA3DC00FF5E83 /* menu_btn_down@2x.png */; };
+		F286E3A2167DA3DC00FF5E83 /* menu_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A0167DA3DC00FF5E83 /* menu_btn@2x.png */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -352,6 +369,23 @@
 		F286E367167CD70300FF5E83 /* puzzles_archive_showmore_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_showmore_btn_down@2x.png"; sourceTree = "<group>"; };
 		F286E368167CD70300FF5E83 /* puzzles_archive_showmore_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_showmore_btn@2x.png"; sourceTree = "<group>"; };
 		F286E369167CD70300FF5E83 /* puzzles_archive_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_archive_bg@2x.png"; sourceTree = "<group>"; };
+		F286E37D167CEBAE00FF5E83 /* menu_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "menu_bg@2x.jpg"; sourceTree = "<group>"; };
+		F286E37E167CEBAE00FF5E83 /* menu_invite_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_invite_btn@2x.png"; sourceTree = "<group>"; };
+		F286E37F167CEBAE00FF5E83 /* menu_invite_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_invite_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E380167CEBAE00FF5E83 /* menu_my_puzzles_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_my_puzzles_btn@2x.png"; sourceTree = "<group>"; };
+		F286E381167CEBAE00FF5E83 /* menu_my_puzzles_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_my_puzzles_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E382167CEBAE00FF5E83 /* menu_rating_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_rating_btn@2x.png"; sourceTree = "<group>"; };
+		F286E383167CEBAE00FF5E83 /* menu_rating_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_rating_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E384167CEBAE00FF5E83 /* menu_restore_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_restore_btn@2x.png"; sourceTree = "<group>"; };
+		F286E385167CEBAE00FF5E83 /* menu_restore_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_restore_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E386167CEBAE00FF5E83 /* menu_rules_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_rules_btn@2x.png"; sourceTree = "<group>"; };
+		F286E387167CEBAE00FF5E83 /* menu_rules_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_rules_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E388167CEBAE00FF5E83 /* menu_score_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_score_btn@2x.png"; sourceTree = "<group>"; };
+		F286E389167CEBAE00FF5E83 /* menu_score_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_score_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E38A167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_switch_user_btn@2x.png"; sourceTree = "<group>"; };
+		F286E38B167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_switch_user_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E39F167DA3DC00FF5E83 /* menu_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3A0167DA3DC00FF5E83 /* menu_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_btn@2x.png"; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -578,12 +612,37 @@
 		F286E320167C6B9500FF5E83 /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				F286E39F167DA3DC00FF5E83 /* menu_btn_down@2x.png */,
+				F286E3A0167DA3DC00FF5E83 /* menu_btn@2x.png */,
 				F286E321167C6B9500FF5E83 /* bg_dark_tile@2x.jpg */,
 				F286E322167C6B9500FF5E83 /* bg_sand_tile@2x.jpg */,
 				F286E323167C6B9500FF5E83 /* frame_border@2x.png */,
 			);
 			name = shared;
 			path = PrizeWord/assets/shared;
+			sourceTree = "<group>";
+		};
+		F286E37C167CEBAD00FF5E83 /* menu */ = {
+			isa = PBXGroup;
+			children = (
+				F286E37D167CEBAE00FF5E83 /* menu_bg@2x.jpg */,
+				F286E37E167CEBAE00FF5E83 /* menu_invite_btn@2x.png */,
+				F286E37F167CEBAE00FF5E83 /* menu_invite_btn_down@2x.png */,
+				F286E380167CEBAE00FF5E83 /* menu_my_puzzles_btn@2x.png */,
+				F286E381167CEBAE00FF5E83 /* menu_my_puzzles_btn_down@2x.png */,
+				F286E382167CEBAE00FF5E83 /* menu_rating_btn@2x.png */,
+				F286E383167CEBAE00FF5E83 /* menu_rating_btn_down@2x.png */,
+				F286E384167CEBAE00FF5E83 /* menu_restore_btn@2x.png */,
+				F286E385167CEBAE00FF5E83 /* menu_restore_btn_down@2x.png */,
+				F286E386167CEBAE00FF5E83 /* menu_rules_btn@2x.png */,
+				F286E387167CEBAE00FF5E83 /* menu_rules_btn_down@2x.png */,
+				F286E388167CEBAE00FF5E83 /* menu_score_btn@2x.png */,
+				F286E389167CEBAE00FF5E83 /* menu_score_btn_down@2x.png */,
+				F286E38A167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png */,
+				F286E38B167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png */,
+			);
+			name = menu;
+			path = PrizeWord/assets/menu;
 			sourceTree = "<group>";
 		};
 		F2950235165E011000DACFBA /* EventSystem */ = {
@@ -629,6 +688,7 @@
 		F2950249166206CD00DACFBA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				F286E37C167CEBAD00FF5E83 /* menu */,
 				F286E31D167C6B9400FF5E83 /* puzzles */,
 				F286E320167C6B9500FF5E83 /* shared */,
 				F2B83ADC166FDA74007C4596 /* login */,
@@ -1060,6 +1120,23 @@
 				F286E379167CD70400FF5E83 /* puzzles_archive_showmore_btn_down@2x.png in Resources */,
 				F286E37A167CD70400FF5E83 /* puzzles_archive_showmore_btn@2x.png in Resources */,
 				F286E37B167CD70400FF5E83 /* puzzles_archive_bg@2x.png in Resources */,
+				F286E38C167CEBAE00FF5E83 /* menu_bg@2x.jpg in Resources */,
+				F286E38D167CEBAE00FF5E83 /* menu_invite_btn@2x.png in Resources */,
+				F286E38E167CEBAE00FF5E83 /* menu_invite_btn_down@2x.png in Resources */,
+				F286E38F167CEBAE00FF5E83 /* menu_my_puzzles_btn@2x.png in Resources */,
+				F286E390167CEBAE00FF5E83 /* menu_my_puzzles_btn_down@2x.png in Resources */,
+				F286E391167CEBAE00FF5E83 /* menu_rating_btn@2x.png in Resources */,
+				F286E392167CEBAE00FF5E83 /* menu_rating_btn_down@2x.png in Resources */,
+				F286E393167CEBAE00FF5E83 /* menu_restore_btn@2x.png in Resources */,
+				F286E394167CEBAE00FF5E83 /* menu_restore_btn_down@2x.png in Resources */,
+				F286E395167CEBAE00FF5E83 /* menu_rules_btn@2x.png in Resources */,
+				F286E396167CEBAE00FF5E83 /* menu_rules_btn_down@2x.png in Resources */,
+				F286E397167CEBAE00FF5E83 /* menu_score_btn@2x.png in Resources */,
+				F286E398167CEBAE00FF5E83 /* menu_score_btn_down@2x.png in Resources */,
+				F286E399167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png in Resources */,
+				F286E39A167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png in Resources */,
+				F286E3A1167DA3DC00FF5E83 /* menu_btn_down@2x.png in Resources */,
+				F286E3A2167DA3DC00FF5E83 /* menu_btn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

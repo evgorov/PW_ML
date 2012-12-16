@@ -10,6 +10,18 @@
 
 @interface RootViewController : UIViewController
 {
+    IBOutlet UIScrollView *mainMenuView;
+    IBOutlet UIImageView *mainMenuBg;
+    IBOutlet UIButton *btnScore;
+    IBOutlet UIButton *btnRating;
+    
+    UINavigationController * navController;
 }
+
+@property (readonly) BOOL isMenuHidden;
+
+-(id)initWithNavigationController:(UINavigationController *)navigationController;
+-(void)showMenuAnimated:(BOOL)animated;
+-(void)hideMenuAnimated:(BOOL)animated;
 
 @end

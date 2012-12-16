@@ -10,23 +10,18 @@
 #import "BadgeView.h"
 #import "EventManager.h"
 #import "TileData.h"
+#import "PrizeWordNavigationBar.h"
+#import "RootViewController.h"
+#import "AppDelegate.h"
 
 @interface PuzzlesViewController ()
 
 -(void)handleBadgeClick:(id)sender;
+-(void)handleMenuClick:(id)sender;
 
 @end
 
 @implementation PuzzlesViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -93,25 +88,23 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewDidUnload
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload {
     scrollView = nil;
     contentView = nil;
     newsView = nil;
     currentPuzzlesView = nil;
     currentPuzzlesBorder = nil;
-    for (UIImageView * badge in currentGoldBadges) {
+    for (UIImageView * badge in currentGoldBadges)
+    {
         [badge removeFromSuperview];
     }
-    for (UIImageView * badge in currentSilverBadges) {
+    for (UIImageView * badge in currentSilverBadges)
+    {
         [badge removeFromSuperview];
     }
-    for (UIImageView * badge in archiveBadges) {
+    for (UIImageView * badge in archiveBadges)
+    {
         [badge removeFromSuperview];
     }
     [currentGoldBadges removeAllObjects];
@@ -127,6 +120,24 @@
     [super viewDidUnload];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
+    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
+    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
+    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
+    [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];
+    menuItem = [[UIBarButtonItem alloc] initWithCustomView:
+                [PrizeWordNavigationBar containerWithView:menuButton]];
+    [self.navigationItem setLeftBarButtonItem:menuItem animated:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    menuItem = nil;
+}
+
 - (IBAction)handleNewsCloseClick:(id)sender
 {
 }
@@ -138,4 +149,18 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:(LetterType)badge.badgeType]]];
     
 }
+
+-(void)handleMenuClick:(id)sender
+{
+    RootViewController * rootViewController = [AppDelegate currentDelegate].rootViewController;
+    if (rootViewController.isMenuHidden)
+    {
+        [rootViewController showMenuAnimated:YES];
+    }
+    else
+    {
+        [rootViewController hideMenuAnimated:YES];
+    }
+}
+
 @end

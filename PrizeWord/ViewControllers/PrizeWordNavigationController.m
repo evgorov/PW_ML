@@ -24,6 +24,7 @@
     if (self)
     {
         currentOverlay = nil;
+        self.delegate = self;
     }
     return self;
 }
@@ -41,10 +42,35 @@
 
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    UIViewController * prevViewController = self.topViewController;
+    [prevViewController viewWillDisappear:animated];
     [super pushViewController:viewController animated:animated];
     if (viewController.navigationItem.leftBarButtonItem == nil) {
         [viewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];
     }
+}
+
+-(UIViewController *)popViewControllerAnimated:(BOOL)animated
+{
+    UIViewController * popped = [super popViewControllerAnimated:animated];
+    [popped viewWillDisappear:animated];
+    if (self.topViewController.navigationItem.leftBarButtonItem == nil)
+    {
+        [self.topViewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];
+    }
+    return popped;
+}
+
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSLog(@"didShowViewController");
+    [viewController viewDidAppear:animated];
+}
+
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    NSLog(@"willShowViewController");
+    [viewController viewWillAppear:animated];
 }
 
 -(void)handleBackTap:(UIButton *)sender

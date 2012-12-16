@@ -7,7 +7,7 @@
 //
 
 #import "LoginEnterViewController.h"
-#import "RootViewController.h"
+#import "PuzzlesViewController.h"
 #import "LoginRemindViewController.h"
 
 @interface LoginEnterViewController (private)
@@ -57,7 +57,7 @@
     [self hideActivityIndicator];
     UINavigationController * navController = self.navigationController;
     [navController popViewControllerAnimated:NO];
-    [navController pushViewController:[RootViewController new] animated:YES];
+    [navController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
 @end

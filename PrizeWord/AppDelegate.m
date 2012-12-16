@@ -11,11 +11,13 @@
 #import "TileImageHelper.h"
 #import "PrizeWordNavigationController.h"
 #import "LoginMainViewController.h"
+#import "RootViewController.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize navController = _navController;
+@synthesize rootViewController = _rootViewController;
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
@@ -39,7 +41,8 @@ static GameLogic * sharedGameLogic = nil;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
     _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
-    self.window.rootViewController = _navController;
+    _rootViewController = [[RootViewController alloc] initWithNavigationController:_navController];
+    self.window.rootViewController = _rootViewController;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
 

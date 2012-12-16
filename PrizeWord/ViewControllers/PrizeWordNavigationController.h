@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PrizeWordNavigationController : UINavigationController
+@interface PrizeWordNavigationController : UINavigationController<UINavigationControllerDelegate>
 {
     UIView * currentOverlay;
     UIBarButtonItem * currentLeftButton;
