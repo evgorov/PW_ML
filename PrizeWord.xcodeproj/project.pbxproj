@@ -12,7 +12,6 @@
 		F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C801666A48B003F0686 /* tile_question_input@2x.png */; };
 		F2868C8416688ED3003F0686 /* bg_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8216688ED3003F0686 /* bg_border@2x.png */; };
 		F2868C881668946F003F0686 /* GameViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868C861668946F003F0686 /* GameViewController~ipad.xib */; };
-		F2868C891668946F003F0686 /* RootViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2868C871668946F003F0686 /* RootViewController~ipad.xib */; };
 		F2868C931669F992003F0686 /* header_hint_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8C1669F992003F0686 /* header_hint_btn@2x.png */; };
 		F2868C941669F992003F0686 /* header_hint_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8D1669F992003F0686 /* header_hint_btn_down@2x.png */; };
 		F2868C951669F992003F0686 /* header_pause_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C8E1669F992003F0686 /* header_pause_btn@2x.png */; };
@@ -265,7 +264,6 @@
 		F2868C801666A48B003F0686 /* tile_question_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_input@2x.png"; sourceTree = "<group>"; };
 		F2868C8216688ED3003F0686 /* bg_border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_border@2x.png"; sourceTree = "<group>"; };
 		F2868C861668946F003F0686 /* GameViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "GameViewController~ipad.xib"; path = "ViewControllers/GameViewController~ipad.xib"; sourceTree = "<group>"; };
-		F2868C871668946F003F0686 /* RootViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "RootViewController~ipad.xib"; path = "ViewControllers/RootViewController~ipad.xib"; sourceTree = "<group>"; };
 		F2868C8C1669F992003F0686 /* header_hint_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_hint_btn@2x.png"; sourceTree = "<group>"; };
 		F2868C8D1669F992003F0686 /* header_hint_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_hint_btn_down@2x.png"; sourceTree = "<group>"; };
 		F2868C8E1669F992003F0686 /* header_pause_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header_pause_btn@2x.png"; sourceTree = "<group>"; };
@@ -983,7 +981,6 @@
 				F2D6271A165DF8FE00EF6E8A /* RootViewController.h */,
 				F2D6271B165DF8FE00EF6E8A /* RootViewController.m */,
 				F2D6271C165DF8FE00EF6E8A /* RootViewController.xib */,
-				F2868C871668946F003F0686 /* RootViewController~ipad.xib */,
 				F295022F165DFF7900DACFBA /* GameViewController.h */,
 				F2950230165DFF7900DACFBA /* GameViewController.m */,
 				F2950231165DFF7900DACFBA /* GameViewController.xib */,
@@ -1097,7 +1094,6 @@
 				F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */,
 				F2868C8416688ED3003F0686 /* bg_border@2x.png in Resources */,
 				F2868C881668946F003F0686 /* GameViewController~ipad.xib in Resources */,
-				F2868C891668946F003F0686 /* RootViewController~ipad.xib in Resources */,
 				F2868C931669F992003F0686 /* header_hint_btn@2x.png in Resources */,
 				F2868C941669F992003F0686 /* header_hint_btn_down@2x.png in Resources */,
 				F2868C951669F992003F0686 /* header_pause_btn@2x.png in Resources */,
