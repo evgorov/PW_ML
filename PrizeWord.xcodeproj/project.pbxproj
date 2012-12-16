@@ -152,6 +152,12 @@
 		F286E39A167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E38B167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png */; };
 		F286E3A1167DA3DC00FF5E83 /* menu_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E39F167DA3DC00FF5E83 /* menu_btn_down@2x.png */; };
 		F286E3A2167DA3DC00FF5E83 /* menu_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A0167DA3DC00FF5E83 /* menu_btn@2x.png */; };
+		F286E3A9167DB2D200FF5E83 /* score_invite_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A5167DB2D200FF5E83 /* score_invite_btn@2x.png */; };
+		F286E3AA167DB2D200FF5E83 /* score_invite_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A6167DB2D200FF5E83 /* score_invite_btn_down@2x.png */; };
+		F286E3AB167DB2D200FF5E83 /* score_invites_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A7167DB2D200FF5E83 /* score_invites_bg@2x.png */; };
+		F286E3AC167DB2D200FF5E83 /* score_puzzles_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3A8167DB2D200FF5E83 /* score_puzzles_bg@2x.png */; };
+		F286E3B0167DB30D00FF5E83 /* ScoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E3AE167DB30800FF5E83 /* ScoreViewController.m */; };
+		F286E3B1167DB30D00FF5E83 /* ScoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E3AF167DB30900FF5E83 /* ScoreViewController.xib */; };
 		F2950232165DFF7900DACFBA /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950230165DFF7900DACFBA /* GameViewController.m */; };
 		F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2950231165DFF7900DACFBA /* GameViewController.xib */; };
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
@@ -386,6 +392,13 @@
 		F286E38B167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_switch_user_btn_down@2x.png"; sourceTree = "<group>"; };
 		F286E39F167DA3DC00FF5E83 /* menu_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_btn_down@2x.png"; sourceTree = "<group>"; };
 		F286E3A0167DA3DC00FF5E83 /* menu_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3A5167DB2D200FF5E83 /* score_invite_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invite_btn@2x.png"; sourceTree = "<group>"; };
+		F286E3A6167DB2D200FF5E83 /* score_invite_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invite_btn_down@2x.png"; sourceTree = "<group>"; };
+		F286E3A7167DB2D200FF5E83 /* score_invites_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invites_bg@2x.png"; sourceTree = "<group>"; };
+		F286E3A8167DB2D200FF5E83 /* score_puzzles_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_puzzles_bg@2x.png"; sourceTree = "<group>"; };
+		F286E3AD167DB30700FF5E83 /* ScoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreViewController.h; path = ViewControllers/ScoreViewController.h; sourceTree = "<group>"; };
+		F286E3AE167DB30800FF5E83 /* ScoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoreViewController.m; path = ViewControllers/ScoreViewController.m; sourceTree = "<group>"; };
+		F286E3AF167DB30900FF5E83 /* ScoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreViewController.xib; path = ViewControllers/ScoreViewController.xib; sourceTree = "<group>"; };
 		F295022F165DFF7900DACFBA /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameViewController.h; path = ViewControllers/GameViewController.h; sourceTree = "<group>"; };
 		F2950230165DFF7900DACFBA /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameViewController.m; path = ViewControllers/GameViewController.m; sourceTree = "<group>"; };
 		F2950231165DFF7900DACFBA /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GameViewController.xib; path = ViewControllers/GameViewController.xib; sourceTree = "<group>"; };
@@ -645,6 +658,18 @@
 			path = PrizeWord/assets/menu;
 			sourceTree = "<group>";
 		};
+		F286E3A4167DB2D200FF5E83 /* score */ = {
+			isa = PBXGroup;
+			children = (
+				F286E3A5167DB2D200FF5E83 /* score_invite_btn@2x.png */,
+				F286E3A6167DB2D200FF5E83 /* score_invite_btn_down@2x.png */,
+				F286E3A7167DB2D200FF5E83 /* score_invites_bg@2x.png */,
+				F286E3A8167DB2D200FF5E83 /* score_puzzles_bg@2x.png */,
+			);
+			name = score;
+			path = PrizeWord/assets/score;
+			sourceTree = "<group>";
+		};
 		F2950235165E011000DACFBA /* EventSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -688,6 +713,7 @@
 		F2950249166206CD00DACFBA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				F286E3A4167DB2D200FF5E83 /* score */,
 				F286E37C167CEBAD00FF5E83 /* menu */,
 				F286E31D167C6B9400FF5E83 /* puzzles */,
 				F286E320167C6B9500FF5E83 /* shared */,
@@ -896,6 +922,9 @@
 				F286E318167C690000FF5E83 /* PuzzlesViewController.h */,
 				F286E319167C690300FF5E83 /* PuzzlesViewController.m */,
 				F286E31A167C690600FF5E83 /* PuzzlesViewController.xib */,
+				F286E3AD167DB30700FF5E83 /* ScoreViewController.h */,
+				F286E3AE167DB30800FF5E83 /* ScoreViewController.m */,
+				F286E3AF167DB30900FF5E83 /* ScoreViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1137,6 +1166,11 @@
 				F286E39A167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png in Resources */,
 				F286E3A1167DA3DC00FF5E83 /* menu_btn_down@2x.png in Resources */,
 				F286E3A2167DA3DC00FF5E83 /* menu_btn@2x.png in Resources */,
+				F286E3A9167DB2D200FF5E83 /* score_invite_btn@2x.png in Resources */,
+				F286E3AA167DB2D200FF5E83 /* score_invite_btn_down@2x.png in Resources */,
+				F286E3AB167DB2D200FF5E83 /* score_invites_bg@2x.png in Resources */,
+				F286E3AC167DB2D200FF5E83 /* score_puzzles_bg@2x.png in Resources */,
+				F286E3B1167DB30D00FF5E83 /* ScoreViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1173,6 +1207,7 @@
 				F286E2ED1677AD0200FF5E83 /* PrizeWordViewController.m in Sources */,
 				F286E31B167C690800FF5E83 /* PuzzlesViewController.m in Sources */,
 				F286E353167CA90000FF5E83 /* BadgeView.m in Sources */,
+				F286E3B0167DB30D00FF5E83 /* ScoreViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

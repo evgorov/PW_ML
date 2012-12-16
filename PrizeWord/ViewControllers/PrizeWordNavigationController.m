@@ -63,13 +63,11 @@
 
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"didShowViewController");
     [viewController viewDidAppear:animated];
 }
 
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"willShowViewController");
     [viewController viewWillAppear:animated];
 }
 

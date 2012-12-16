@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #import "GameViewController.h"
 #import "PuzzlesViewController.h"
+#import "ScoreViewController.h"
 
 @interface RootViewController ()
 
@@ -154,6 +155,12 @@
 
 - (IBAction)handleScoreClick:(id)sender
 {
+    if (![navController.topViewController isKindOfClass:[ScoreViewController class]])
+    {
+        [navController popViewControllerAnimated:NO];
+        [navController pushViewController:[ScoreViewController new] animated:YES];
+    }
+    [self hideMenuAnimated:YES];
 }
 
 - (IBAction)handleRatingClick:(id)sender
