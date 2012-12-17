@@ -113,7 +113,7 @@
                 case TILE_QUESTION_WRONG:
                     [self dropQuestion];
                     [self selectQuestion:data];
-                    data.state = TILE_QUESTION_INPUT;
+                    return;
                     break;
                     
                 case TILE_QUESTION_INPUT:
@@ -186,6 +186,10 @@
 
         case EVENT_POP_LETTER:
         {
+            if (currentLetterIdx == 0)
+            {
+                return;
+            }
             TileData * letter;
             for (--currentLetterIdx; currentLetterIdx > 0; --currentLetterIdx) {
                 letter = [currentWord objectAtIndex:currentLetterIdx];
@@ -270,9 +274,17 @@
         }
         ++currentLetterIdx;
     }
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_BEGIN_INPUT]];
-    TileData * selectedLetter = [currentWord objectAtIndex:currentLetterIdx];
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:selectedLetter]];
+    if (currentLetterIdx < currentWord.count)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_BEGIN_INPUT]];
+        TileData * selectedLetter = [currentWord objectAtIndex:currentLetterIdx];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:selectedLetter]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
+    }
+    else
+    {
+        [self checkQuestion];
+    }
 }
 
 // unselect current question tile and all corresponding letters tiles

@@ -108,16 +108,16 @@
 {
     [super setFrame:frame];
     [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    
-    if (focusedTile != nil)
-    {
-        [self switchFocusToTile:focusedTile];
-    }
 }
 
 -(void)switchFocusToTile:(TileData *)tile
 {
     focusedTile = tile;
+    [self refreshFocus];
+}
+
+-(void)refreshFocus
+{
     if (focusedTile != nil) {
         int offsetX = kTileOffset + focusedTile.x * kTileWidth + kTileWidth / 2 - scrollView.frame.size.width / 2;
         int offsetY = kTileOffset + focusedTile.y * kTileHeight + kTileHeight / 2 - scrollView.frame.size.height / 2;
@@ -133,5 +133,6 @@
         [scrollView setContentOffset:CGPointMake(offsetX, offsetY) animated:YES];
     }
 }
+
 
 @end

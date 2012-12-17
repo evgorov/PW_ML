@@ -233,7 +233,7 @@
         case kAnswerPositionWest | kAnswerPositionBottom:
         case kAnswerPositionWest | kAnswerPositionTop:
         case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionTop:
-        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
             rotation = -M_PI_2;
             break;
 
@@ -241,7 +241,7 @@
         case kAnswerPositionEast | kAnswerPositionTop:
         case kAnswerPositionEast | kAnswerPositionBottom:
         case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionBottom:
-        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
             rotation = M_PI_2;
             break;
             

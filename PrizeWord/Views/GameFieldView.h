@@ -26,5 +26,6 @@
 }
 
 -(void)setGameField:(GameField *)gameField;
+-(void)refreshFocus;
 
 @end
