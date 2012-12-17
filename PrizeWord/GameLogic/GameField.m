@@ -54,6 +54,7 @@
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUSH_LETTER];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_POP_LETTER];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_REQUEST_FINISH_INPUT];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_REQUEST_APPLY_HINT];
     }
     return self;
 }
@@ -95,6 +96,7 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUSH_LETTER];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_POP_LETTER];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_REQUEST_FINISH_INPUT];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_REQUEST_APPLY_HINT];
     [tiles removeAllObjects];
     tiles = nil;
     currentQuestion = nil;
@@ -216,6 +218,23 @@
             [self dropQuestion];
             break;
 
+        case EVENT_REQUEST_APPLY_HINT:
+        {
+            if (currentQuestion == nil)
+            {
+                break;
+            }
+            for (TileData * letter in currentWord) {
+                if (letter.state != TILE_LETTER_CORRECT_INPUT)
+                {
+                    letter.currentLetter = letter.targetLetter;
+                    letter.state = TILE_LETTER_INPUT;
+                }
+            }
+            [self checkQuestion];
+        }
+            break;
+            
         default:
             break;
     }

@@ -139,6 +139,17 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
 }
 
+- (IBAction)handleHintClick:(id)sender
+{
+    if ([GameLogic sharedLogic].gameField.activeQuestion != nil)
+    {
+        int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
+        hints--;
+        [btnHint setTitle:[NSString stringWithFormat:@"%d", hints] forState:UIControlStateNormal];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+    }
+}
+
 - (IBAction)handlePauseNext:(id)sender
 {
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
