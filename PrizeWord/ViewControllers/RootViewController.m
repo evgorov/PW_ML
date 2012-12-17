@@ -442,7 +442,46 @@
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
+    if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
+    {
+        NSLog(@"old flow");
+        [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
+    }
+}
+
+-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    int page = targetContentOffset->x / scrollView.frame.size.width + 0.5f;
+    
+    NSArray * pageButtons = nil;
+    for (UIView * subview in rulesView.subviews)
+    {
+        if ([subview isKindOfClass:[UIImageView class]])
+        {
+            pageButtons = subview.subviews;
+            break;
+        }
+    }
+    
+    if (pageButtons == nil)
+    {
+        return;
+    }
+    if (page >= pageButtons.count)
+    {
+        page = pageButtons.count - 1;
+    }
+    if (page < 0)
+    {
+        page = 0;
+    }
+    
+    for (UIButton * pageButton in pageButtons)
+    {
+        pageButton.selected = (page == pageButton.tag);
+    }
+    targetContentOffset->x = page * rulesScrollView.frame.size.width;
+    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
 }
 
 @end
