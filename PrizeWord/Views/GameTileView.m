@@ -161,7 +161,14 @@
     }
     else
     {
-        [self.superview sendSubviewToBack:self];
+        if (tileData.state == TILE_LETTER_CORRECT_INPUT || tileData.state == TILE_LETTER_EMPTY_INPUT || tileData.state == TILE_LETTER_INPUT)
+        {
+            [self.superview bringSubviewToFront:self];
+        }
+        else
+        {
+            [self.superview sendSubviewToBack:self];
+        }
         questionLabel.text = @"";
         questionLabel.hidden = YES;
         [self hideArrow];
