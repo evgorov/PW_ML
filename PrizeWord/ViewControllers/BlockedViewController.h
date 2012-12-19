@@ -14,12 +14,12 @@
     UIScrollView * scrollView;
     UIView * contentView;
     
-    NSMutableArray * blockViews;
-    
     UIBarButtonItem * menuItem;
 }
 
 -(void)addFramedView:(UIView *)view;
 -(void)addSimpleView:(UIView *)view;
+-(void)resizeView:(UIView *)view newHeight:(float)height;
+-(void)resizeView:(UIView *)view newHeight:(float)height animated:(BOOL)animated;
 
 @end

@@ -44,7 +44,6 @@ static const int VERTICAL_SPACE = 20;
 {
     contentView = nil;
     scrollView = nil;
-    blockViews = nil;
     [super viewDidUnload];
 }
 
@@ -106,7 +105,6 @@ static const int VERTICAL_SPACE = 20;
     view.autoresizesSubviews = YES;
     [view addSubview:borderView];
     [contentView addSubview:view];
-    [blockViews addObject:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
     contentView.frame = CGRectMake(0, 0, self.view.frame.size.width, contentHeight);
     scrollView.contentSize = contentView.frame.size;
@@ -121,10 +119,61 @@ static const int VERTICAL_SPACE = 20;
     view.clipsToBounds = NO;
     view.autoresizesSubviews = YES;
     [contentView addSubview:view];
-    [blockViews addObject:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
     contentView.frame = CGRectMake(0, 0, self.view.frame.size.width, contentHeight);
     scrollView.contentSize = contentView.frame.size;
+}
+
+-(void)resizeView:(UIView *)view newHeight:(float)height
+{
+    [self resizeView:view newHeight:height animated:NO];
+}
+
+-(void)resizeView:(UIView *)view newHeight:(float)height animated:(BOOL)animated
+{
+    if (height == view.frame.size.height)
+    {
+        return;
+    }
+    float delta = 0;
+    for (UIView * subview in contentView.subviews)
+    {
+        if (subview == view)
+        {
+            delta = height - subview.frame.size.height;
+            if (height == 0)
+            {
+                delta -= VERTICAL_SPACE;
+            }
+            else if (subview.frame.size.height == 0)
+            {
+                delta += VERTICAL_SPACE;
+            }
+            if (animated)
+            {
+                [UIView animateWithDuration:0.3 animations:^{
+                    subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
+                }];
+            }
+            else
+            {
+                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
+            }
+        }
+        else if (delta != 0)
+        {
+            if (animated)
+            {
+                [UIView animateWithDuration:0.3 animations:^{
+                    subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height);
+                }];
+            }
+            else
+            {
+                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height);
+            }
+        }
+    }
 }
 
 @end

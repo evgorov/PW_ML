@@ -15,7 +15,11 @@
     IBOutlet UIView *currentPuzzlesView;
     IBOutlet UIView *hintsView;
     IBOutlet UIView *archiveView;
-    
+
+    IBOutlet UIButton *btnBuyHint1;
+    IBOutlet UIButton *btnBuyHint2;
+    IBOutlet UIButton *btnBuyHint3;
+
     NSMutableArray * currentGoldBadges;
     NSMutableArray * currentSilverBadges;
     NSMutableArray * archiveBadges;

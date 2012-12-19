@@ -31,6 +31,10 @@
     [self addFramedView:hintsView];
     [self addFramedView:archiveView];
     
+    btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
+    btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
+    btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
+    
     currentGoldBadges = [NSMutableArray new];
     for (int i = 0; i != 4; ++i)
     {
@@ -97,11 +101,17 @@
     archiveBadges = nil;
     hintsView = nil;
     archiveView = nil;
+    btnBuyHint1 = nil;
+    btnBuyHint2 = nil;
+    btnBuyHint3 = nil;
     [super viewDidUnload];
 }
 
 - (IBAction)handleNewsCloseClick:(id)sender
 {
+    newsView.autoresizesSubviews = NO;
+    newsView.clipsToBounds = YES;
+    [self resizeView:newsView newHeight:0 animated:YES];
 }
 
 -(void)handleBadgeClick:(id)sender
