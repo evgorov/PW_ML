@@ -102,7 +102,7 @@ static const int VERTICAL_SPACE = 20;
     borderView.image = border;
     view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
     view.clipsToBounds = NO;
-    view.autoresizesSubviews = YES;
+    view.autoresizesSubviews = NO;
     [view addSubview:borderView];
     [contentView addSubview:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
@@ -174,6 +174,17 @@ static const int VERTICAL_SPACE = 20;
             }
         }
     }
+    if (animated)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta);
+        }];
+    }
+    else
+    {
+        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta);
+    }
+    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width, scrollView.contentSize.height + delta);
 }
 
 @end
