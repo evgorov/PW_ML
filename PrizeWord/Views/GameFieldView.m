@@ -47,6 +47,7 @@
         focusedTile = nil;
         
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
     }
     return self;
 }
@@ -79,6 +80,7 @@
 -(void)dealloc
 {
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FOCUS_CHANGE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_CHANGE];
     for (GameTileView * tile in tiles) {
         [tile removeFromSuperview];
     }
@@ -101,6 +103,12 @@
     if (event.type == EVENT_FOCUS_CHANGE)
     {
         [self switchFocusToTile:event.data];
+    }
+    else if (event.type == EVENT_TILE_CHANGE)
+    {
+        TileData * tileData = event.data;
+        GameTileView * tileView = [tiles objectAtIndex:(tileData.x + tileData.y * tilesPerRow)];
+        [tileView handleEvent:event];
     }
 }
 

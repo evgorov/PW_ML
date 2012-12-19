@@ -54,7 +54,6 @@
         
         tileData = data;
         [self initParts];
-        [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
         
         self.userInteractionEnabled = YES;
         UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
@@ -65,7 +64,6 @@
 
 -(void)dealloc
 {
-    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_CHANGE];
     tileData = nil;
     background = nil;
     questionLabel = nil;

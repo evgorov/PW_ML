@@ -19,6 +19,7 @@
 
 -(void)handleBadgeClick:(id)sender;
 -(void)handleBuyClick:(id)sender;
+-(void)activateBadges:(NSArray *)badges;
 
 @end
 
@@ -30,6 +31,7 @@
 
     PuzzleSetView * brilliantSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_BRILLIANT puzzlesCount:17 minScore:10000000 price:3.99f];
     PuzzleSetView * goldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil]];
+    [self activateBadges:goldSet.badges];
     PuzzleSetView * silverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER puzzlesCount:15 minScore:10000 price:1.99f];
     PuzzleSetView * silver2Set = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 puzzlesCount:10 minScore:10000 price:1.99f];
     PuzzleSetView * freeSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_FREE puzzlesCount:7 minScore:0 price:0];
@@ -164,6 +166,15 @@
         }
     }
     [self resizeView:blockView newHeight:(blockView.frame.size.height + delta) animated:YES];
+    [self activateBadges:setView.badges];
+}
+
+-(void)activateBadges:(NSArray *)badges
+{
+    for (BadgeView * badgeView in badges)
+    {
+        [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 @end
