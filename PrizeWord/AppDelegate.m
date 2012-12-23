@@ -21,6 +21,7 @@
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+@synthesize isIPad = _isIPad;
 
 static AppDelegate * currentInstance = nil;
 static GameLogic * sharedGameLogic = nil;
@@ -37,6 +38,8 @@ static GameLogic * sharedGameLogic = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    _isIPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+    
     [application setStatusBarHidden:YES];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];

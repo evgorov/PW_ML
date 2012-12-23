@@ -10,4 +10,6 @@
 
 @interface PrizeWordNavigationController : UINavigationController<UINavigationControllerDelegate>
 
++(void)setTitleViewForViewController:(UIViewController *)viewController;
+
 @end

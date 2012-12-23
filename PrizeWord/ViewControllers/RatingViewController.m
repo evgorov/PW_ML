@@ -17,7 +17,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    self.title = @"456-ой в рейтинге";
+
     [self addFramedView:ratingView];
 }
 

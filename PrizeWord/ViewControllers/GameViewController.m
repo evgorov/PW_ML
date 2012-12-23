@@ -144,9 +144,11 @@
     if ([GameLogic sharedLogic].gameField.activeQuestion != nil)
     {
         int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
-        hints--;
-        [btnHint setTitle:[NSString stringWithFormat:@"%d", hints] forState:UIControlStateNormal];
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+        if (hints > 0)
+        {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_USE_HINT", nil) message:NSLocalizedString(@"QUESTION_USE_HINT", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_USE_HINT", nil), nil];
+            [alertView show];
+        }
     }
 }
 
@@ -262,6 +264,17 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:nil]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
     return YES;
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.cancelButtonIndex == buttonIndex) {
+        return;
+    }
+    int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
+    hints--;
+    [btnHint setTitle:[NSString stringWithFormat:@"%d", hints] forState:UIControlStateNormal];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
 }
 
 - (void)viewDidUnload {

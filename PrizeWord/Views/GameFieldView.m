@@ -28,11 +28,17 @@
     if (self)
     {
         scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        scrollView.bounces = NO;
+        scrollView.bounces = YES;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
-        scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
+        scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+        fieldView = [UIView new];
+        fieldView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
+        [scrollView addSubview:fieldView];
         UIImage * stretchableBorder = [[UIImage imageNamed:@"bg_border"] stretchableImageWithLeftCapWidth:40 topCapHeight:40];
+        scrollView.minimumZoomScale = 0.3;
+        scrollView.maximumZoomScale = 2;
+        scrollView.delegate = self;
         borderTopLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomLeft.transform = CGAffineTransformMakeRotation(-M_PI_2);
@@ -40,10 +46,10 @@
         borderTopRight.transform = CGAffineTransformMakeRotation(M_PI_2);
         borderBottomRight = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomRight.transform = CGAffineTransformMakeRotation(M_PI);
-        [scrollView addSubview:borderTopLeft];
-        [scrollView addSubview:borderTopRight];
-        [scrollView addSubview:borderBottomLeft];
-        [scrollView addSubview:borderBottomRight];
+        [fieldView addSubview:borderTopLeft];
+        [fieldView addSubview:borderTopRight];
+        [fieldView addSubview:borderBottomLeft];
+        [fieldView addSubview:borderBottomRight];
         focusedTile = nil;
         
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
@@ -65,12 +71,13 @@
         for (uint i = 0; i != tilesPerRow; ++i) {
             GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i + kTileOffset, kTileHeight * j + kTileOffset, kTileWidth, kTileHeight) andData:[gameField dataForPositionX:i y:j]];
             [tiles addObject:tile];
-            [scrollView insertSubview:tile atIndex:0];
+            [fieldView insertSubview:tile atIndex:0];
         }
     }
     int width = tilesPerRow * kTileWidth + 2 * kTileOffset;
     int height = tilesPerCol * kTileHeight + 2 * kTileOffset;
     scrollView.contentSize = CGSizeMake(width, height);
+    fieldView.frame = CGRectMake(0, 0, width, height);
     borderTopLeft.frame = CGRectMake(0, 0, width / 2, height / 2);
     borderTopRight.frame = CGRectMake(width / 2, 0, width - width / 2, height / 2);
     borderBottomLeft.frame = CGRectMake(0, height / 2, width / 2, height - height / 2);
@@ -87,6 +94,7 @@
     tiles = nil;
     [scrollView removeFromSuperview];
     scrollView = nil;
+    fieldView = nil;
     [borderTopLeft removeFromSuperview];
     [borderTopRight removeFromSuperview];
     [borderBottomLeft removeFromSuperview];
@@ -142,5 +150,9 @@
     }
 }
 
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return fieldView;
+}
 
 @end

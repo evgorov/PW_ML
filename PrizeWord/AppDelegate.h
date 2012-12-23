@@ -22,6 +22,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (readonly) BOOL isIPad;
+
 + (AppDelegate *)currentDelegate;
 + (GameLogic *)gameLogic;
 - (void)saveContext;

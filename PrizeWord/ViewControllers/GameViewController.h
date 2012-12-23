@@ -12,7 +12,7 @@
 @class GameFieldView;
 @class GameField;
 
-@interface GameViewController : UIViewController<EventListenerDelegate, UITextFieldDelegate>
+@interface GameViewController : UIViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
     GameField * gameField;
     UITextField * textField;

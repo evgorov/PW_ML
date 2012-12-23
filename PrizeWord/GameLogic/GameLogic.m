@@ -15,6 +15,7 @@
 #import "QuestionData.h"
 #import "PuzzleSetData.h"
 #import "PrizeWordNavigationController.h"
+#import "RootViewController.h"
 
 @interface GameLogic (private)
 
@@ -73,6 +74,7 @@
         {
             LetterType type = (LetterType)([(NSNumber *)event.data intValue]);
             [self initGameFieldWithType:type];
+            [[AppDelegate currentDelegate].rootViewController hideMenuAnimated:YES];
             [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
             gameState = GAMESTATE_PLAYING;
             _gameTime = 0;

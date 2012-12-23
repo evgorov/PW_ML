@@ -314,10 +314,8 @@
         return;
     }
     
-    currentQuestion.state = TILE_QUESTION_NEW;
     TileData * prevQuestion = currentQuestion;
     currentQuestion = nil;
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:prevQuestion]];
 
     for (TileData * letter in currentWord)
     {
@@ -339,6 +337,9 @@
         }
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
+    prevQuestion.state = TILE_QUESTION_WRONG;
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:prevQuestion]];
+    
     [currentWord removeAllObjects];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
 }

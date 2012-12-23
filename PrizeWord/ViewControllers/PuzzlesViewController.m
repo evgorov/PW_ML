@@ -12,7 +12,6 @@
 #import "TileData.h"
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
-#import "AppDelegate.h"
 #import "PuzzleSetView.h"
 
 @interface PuzzlesViewController ()
@@ -21,6 +20,10 @@
 -(void)handleBuyClick:(id)sender;
 -(void)activateBadges:(NSArray *)badges;
 
+-(void)handleNewsPrev:(id)sender;
+-(void)handleNewsNext:(id)sender;
+-(void)handleNewsTap:(id)sender;
+
 @end
 
 @implementation PuzzlesViewController
@@ -28,6 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = @"Сканворды";
+    
+    UISwipeGestureRecognizer * newsRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsPrev:)];
+    newsRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    UISwipeGestureRecognizer * newsLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsNext:)];
+    newsLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    UITapGestureRecognizer * newsTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsTap:)];
+    [newsScrollView setGestureRecognizers:[NSArray arrayWithObjects:newsLeftGestureRecognizer, newsRightGestureRecognizer, newsTapGestureRecognizer, nil]];
 
     PuzzleSetView * brilliantSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_BRILLIANT puzzlesCount:17 minScore:10000000 price:3.99f];
     PuzzleSetView * goldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil]];
@@ -99,6 +111,8 @@
     btnBuyHint2 = nil;
     btnBuyHint3 = nil;
     setToBuyView = nil;
+    newsPaginator = nil;
+    newsScrollView = nil;
     [super viewDidUnload];
 }
 
@@ -121,6 +135,13 @@
     [self showActivityIndicator];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(buySet:) userInfo:sender repeats:NO];
 }
+
+- (IBAction)handleNewsPaginatorChange:(id)sender
+{
+    NSLog(@"paginator: %d", newsPaginator.currentPage);
+    [newsScrollView setContentOffset:CGPointMake(newsPaginator.currentPage * newsScrollView.frame.size.width, 0) animated:YES];
+}
+
 
 -(void)buySet:(id)sender
 {
@@ -176,5 +197,39 @@
         [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
+
+-(void)handleNewsPrev:(id)sender
+{
+    if (newsPaginator.currentPage == 0)
+    {
+        return;
+    }
+    newsPaginator.currentPage = newsPaginator.currentPage - 1;
+    [self handleNewsPaginatorChange:newsPaginator];
+}
+
+-(void)handleNewsNext:(id)sender
+{
+    if (newsPaginator.currentPage == newsPaginator.numberOfPages - 1)
+    {
+        return;
+    }
+    newsPaginator.currentPage = newsPaginator.currentPage + 1;
+    [self handleNewsPaginatorChange:newsPaginator];
+}
+
+-(void)handleNewsTap:(id)sender
+{
+    if (newsPaginator.currentPage == newsPaginator.numberOfPages - 1)
+    {
+        newsPaginator.currentPage = 0;
+        [self handleNewsPaginatorChange:newsPaginator];
+        return;
+    }
+    newsPaginator.currentPage = newsPaginator.currentPage + 1;
+    [self handleNewsPaginatorChange:newsPaginator];
+}
+
+
 
 @end

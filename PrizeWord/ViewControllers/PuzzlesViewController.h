@@ -16,6 +16,9 @@
     IBOutlet UIView *hintsView;
     IBOutlet UIView *archiveView;
     IBOutlet UIView *setToBuyView;
+    
+    IBOutlet UIPageControl *newsPaginator;
+    IBOutlet UIScrollView *newsScrollView;
 
     IBOutlet UIButton *btnBuyHint1;
     IBOutlet UIButton *btnBuyHint2;

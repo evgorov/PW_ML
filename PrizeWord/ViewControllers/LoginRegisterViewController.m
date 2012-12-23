@@ -22,6 +22,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"TITLE_REGISTRATION", nil);
+    
     scrollView.contentSize = imgBackground.frame.size;
     [datePicker addTarget:self action:@selector(handleDateChanged:) forControlEvents:UIControlEventValueChanged];
     datePicker.date = [NSDate new];

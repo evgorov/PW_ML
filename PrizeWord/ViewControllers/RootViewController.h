@@ -10,7 +10,7 @@
 
 @class PrizeWordNavigationController;
 
-@interface RootViewController : UIViewController<UIScrollViewDelegate>
+@interface RootViewController : UIViewController
 {
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;

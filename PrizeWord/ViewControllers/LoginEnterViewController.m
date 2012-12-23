@@ -18,6 +18,11 @@
 
 @implementation LoginEnterViewController
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"TITLE_ENTER", nil);
+}
 
 - (void)viewDidUnload {
     txtEmail = nil;

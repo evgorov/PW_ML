@@ -24,6 +24,8 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"3456 в декабре";
+    
     [self addFramedView:puzzlesView];
     [self addFramedView:invitesView];
     
@@ -43,14 +45,7 @@
         [puzzlesView addSubview:badgeView];
         [badges addObject:badgeView];
     }
-    
-    for (int i = 0; i != 2; ++i)
-    {
-        BadgeView * badgeView = [BadgeView badgeWithType:BADGE_FREE andNumber:(i + 1) andScore:(1000 + (rand() % 10000))];
-        badgeView.frame = CGRectMake(18 + (i % 4) * 70, 573 + (i / 4) * 105, badgeView.frame.size.width, badgeView.frame.size.height);
-        [puzzlesView addSubview:badgeView];
-        [badges addObject:badgeView];
-    }
+
 }
 
 - (void)viewDidUnload

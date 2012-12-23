@@ -51,6 +51,7 @@ static UIImage * backgroundImage = nil;
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
+    NSLog(@"sizeThatFits: %f %f", size.width, size.height);
     return CGSizeMake(backgroundImage.size.width, backgroundImage.size.height * 116 / 123);
 }
 

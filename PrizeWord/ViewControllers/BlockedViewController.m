@@ -19,7 +19,7 @@
 
 @implementation BlockedViewController
 
-static const int VERTICAL_SPACE = 20;
+static int VERTICAL_SPACE = 20;
 
 - (void)viewDidLoad
 {
@@ -38,6 +38,11 @@ static const int VERTICAL_SPACE = 20;
     contentView.clipsToBounds = YES;
     contentView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:contentView];
+    
+    if ([AppDelegate currentDelegate].isIPad)
+    {
+        VERTICAL_SPACE = 40;
+    }
 }
 
 -(void)viewDidUnload
@@ -50,15 +55,23 @@ static const int VERTICAL_SPACE = 20;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
-    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
-    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
-    [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];
-    menuItem = [[UIBarButtonItem alloc] initWithCustomView:
-                [PrizeWordNavigationBar containerWithView:menuButton]];
-    [self.navigationItem setLeftBarButtonItem:menuItem animated:animated];
+    
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
+        UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
+        UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
+        [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+        [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
+        [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];
+        menuItem = [[UIBarButtonItem alloc] initWithCustomView:
+                    [PrizeWordNavigationBar containerWithView:menuButton]];
+        [self.navigationItem setLeftBarButtonItem:menuItem animated:animated];
+    }
+    else
+    {
+        [[AppDelegate currentDelegate].rootViewController showMenuAnimated:animated];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -20,6 +20,12 @@
 
 @implementation LoginRemindViewController
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"TITLE_RECOVER", nil);
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -51,6 +57,7 @@
 -(void)handleSent:(id)sender
 {
     [self hideActivityIndicator];
+    self.title = NSLocalizedString(@"TITLE_SENT", nil);
     [[AppDelegate currentDelegate].rootViewController showOverlay:doneOverlay];
 }
 

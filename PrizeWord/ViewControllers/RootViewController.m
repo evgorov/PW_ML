@@ -14,11 +14,17 @@
 #import "RatingViewController.h"
 #import "PrizeWordNavigationController.h"
 #import "PrizeWordNavigationBar.h"
+#import "AppDelegate.h"
 
 @interface RootViewController (private)
 
 -(void)handlePageButtonClick:(id)sender;
 -(void)handleRulesMenuClick:(id)sender;
+
+-(void)handleRulesPrev:(id)sender;
+-(void)handleRulesNext:(id)sender;
+-(void)handleRulesTap:(id)sender;
+-(void)updatePageButtons:(int)currentPage;
 
 @end
 
@@ -41,6 +47,8 @@
 
 -(void)viewDidLoad
 {
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_black_tile.jpg"]];
+    
     mainMenuView.contentSize = mainMenuBg.frame.size;
     
     UIFont * font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:13];
@@ -131,24 +139,41 @@
 
 -(void)showMenuAnimated:(BOOL)animated
 {
+    if (!_isMenuHidden)
+        return;
     _isMenuHidden = NO;
     if (animated)
     {
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView animateWithDuration:0.3 animations:^{
             mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
-            navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+            if ([AppDelegate currentDelegate].isIPad)
+            {
+                navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width - mainMenuView.frame.size.width, self.view.frame.size.height);
+            }
+            else
+            {
+                navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+            }
         }];
     }
     else
     {
         mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
-        navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-    }
+        if ([AppDelegate currentDelegate].isIPad)
+        {
+            navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width - mainMenuView.frame.size.width, self.view.frame.size.height);
+        }
+        else
+        {
+            navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        }    }
 }
 
 -(void)hideMenuAnimated:(BOOL)animated
 {
+    if (_isMenuHidden)
+        return;
     _isMenuHidden = YES;
     if (animated)
     {
@@ -178,6 +203,7 @@
     [navController.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]]];
     [navController.topViewController.navigationItem setRightBarButtonItem:nil];
     [navController.topViewController.navigationItem setTitleView:nil];
+    [PrizeWordNavigationController setTitleViewForViewController:navController.topViewController];
     
     overlayContainer.alpha = 0;
     overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
@@ -251,7 +277,10 @@
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[PuzzlesViewController new] animated:YES];
     }
-    [self hideMenuAnimated:YES];
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        [self hideMenuAnimated:YES];
+    }
 }
 
 - (IBAction)handleSwitchUserClick:(id)sender
@@ -267,7 +296,10 @@
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[ScoreViewController new] animated:YES];
     }
-    [self hideMenuAnimated:YES];
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        [self hideMenuAnimated:YES];
+    }
 }
 
 - (IBAction)handleRatingClick:(id)sender
@@ -277,7 +309,10 @@
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[RatingViewController new] animated:YES];
     }
-    [self hideMenuAnimated:YES];
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        [self hideMenuAnimated:YES];
+    }
 }
 
 - (IBAction)handleInviteClick:(id)sender
@@ -287,7 +322,10 @@
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[InviteViewController new] animated:YES];
     }
-    [self hideMenuAnimated:YES];
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        [self hideMenuAnimated:YES];
+    }
 }
 
 - (IBAction)handleRulesClick:(id)sender
@@ -300,12 +338,19 @@
 
         int pages = 5;
         rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
-        rulesScrollView.delegate = self;
         rulesScrollView.backgroundColor = [UIColor clearColor];
-        rulesScrollView.scrollEnabled = YES;
+        rulesScrollView.scrollEnabled = NO;
         rulesScrollView.showsHorizontalScrollIndicator = YES;
         rulesScrollView.showsVerticalScrollIndicator = NO;
         rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
+
+        UISwipeGestureRecognizer * rulesRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesPrev:)];
+        rulesRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        UISwipeGestureRecognizer * rulesLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesNext:)];
+        rulesLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        UITapGestureRecognizer * rulesTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)];
+        [rulesScrollView setGestureRecognizers:[NSArray arrayWithObjects:rulesLeftGestureRecognizer, rulesRightGestureRecognizer, rulesTapGestureRecognizer, nil]];
+        
         [rulesView addSubview:rulesScrollView];
 
         if ([pagecontrolBgImage respondsToSelector:@selector(resizableImageWithCapInsets:)])
@@ -341,7 +386,11 @@
             [rulesScrollView addSubview:pageView];
         }
     }
-    [self hideMenuAnimated:YES];
+    if (![AppDelegate currentDelegate].isIPad)
+    {
+        [self hideMenuAnimated:YES];
+    }
+    navController.topViewController.title = NSLocalizedString(@"TITLE_RULES", nil);
     [self showOverlay:rulesView];
     UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
     UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
@@ -402,10 +451,47 @@
     [rulesScrollView setContentOffset:CGPointMake(selectedButton.tag * rulesScrollView.frame.size.width, 0) animated:YES];
 }
 
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+-(void)handleRulesPrev:(id)sender
 {
-    int page = scrollView.contentOffset.x / scrollView.frame.size.width + 0.5f;
-    
+    int page = rulesScrollView.contentOffset.x / rulesScrollView.frame.size.width + 0.5f;
+    if (page == 0)
+    {
+        return;
+    }
+    --page;
+    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
+    [self updatePageButtons:page];
+}
+
+-(void)handleRulesNext:(id)sender
+{
+    int page = rulesScrollView.contentOffset.x / rulesScrollView.frame.size.width + 0.5f;
+    if (page == (int)(rulesScrollView.contentSize.width / rulesScrollView.frame.size.width + 0.5f) - 1)
+    {
+        return;
+    }
+    ++page;
+    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
+    [self updatePageButtons:page];
+}
+
+-(void)handleRulesTap:(id)sender
+{
+    int page = rulesScrollView.contentOffset.x / rulesScrollView.frame.size.width + 0.5f;
+    if (page == (int)(rulesScrollView.contentSize.width / rulesScrollView.frame.size.width + 0.5f) - 1)
+    {
+        page = 0;
+    }
+    else
+    {
+        ++page;
+    }
+    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
+    [self updatePageButtons:page];
+}
+
+-(void)updatePageButtons:(int)currentPage
+{
     NSArray * pageButtons = nil;
     for (UIView * subview in rulesView.subviews)
     {
@@ -420,68 +506,11 @@
     {
         return;
     }
-    if (page >= pageButtons.count)
-    {
-        page = pageButtons.count - 1;
-    }
-    if (page < 0)
-    {
-        page = 0;
-    }
     
     for (UIButton * pageButton in pageButtons)
     {
-        pageButton.selected = (page == pageButton.tag);
+        pageButton.selected = (pageButton.tag == currentPage);
     }
-    if (decelerate)
-    {
-        [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
-    }
-    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
-}
-
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
-    {
-        NSLog(@"old flow");
-        [rulesScrollView setContentOffset:rulesScrollView.contentOffset animated:NO];
-    }
-}
-
--(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    int page = targetContentOffset->x / scrollView.frame.size.width + 0.5f;
-    
-    NSArray * pageButtons = nil;
-    for (UIView * subview in rulesView.subviews)
-    {
-        if ([subview isKindOfClass:[UIImageView class]])
-        {
-            pageButtons = subview.subviews;
-            break;
-        }
-    }
-    
-    if (pageButtons == nil)
-    {
-        return;
-    }
-    if (page >= pageButtons.count)
-    {
-        page = pageButtons.count - 1;
-    }
-    if (page < 0)
-    {
-        page = 0;
-    }
-    
-    for (UIButton * pageButton in pageButtons)
-    {
-        pageButton.selected = (page == pageButton.tag);
-    }
-    targetContentOffset->x = page * rulesScrollView.frame.size.width;
-    [rulesScrollView setContentOffset:CGPointMake(page * rulesScrollView.frame.size.width, 0) animated:YES];
 }
 
 @end
