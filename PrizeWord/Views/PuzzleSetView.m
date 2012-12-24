@@ -8,8 +8,13 @@
 
 #import "PuzzleSetView.h"
 #import "BadgeView.h"
+#import "AppDelegate.h"
 
 @interface PuzzleSetView (private)
+
+-(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
+
+-(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents;
 
 -(void)initHeaderWithType:(PuzzleSetType)type;
 -(void)initElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
@@ -21,45 +26,54 @@
 @implementation PuzzleSetView
 
 @synthesize imgBar = _imgBar;
+@synthesize imgStar = _imgStar;
 @synthesize lblCaption = _lblCaption;
 @synthesize lblCount = _lblCount;
 @synthesize lblScore = _lblScore;
+@synthesize lblText1 = _lblText1;
+@synthesize lblText2 = _lblText2;
 @synthesize btnBuy = _btnBuy;
+@synthesize btnShowMore = _btnShowMore;
 @synthesize badges = _badges;
+
+@synthesize shortSize = _shortSize;
+@synthesize fullSize = _fullSize;
 
 -(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 303, 130)];
     if (self)
     {
         puzzlesCount = count;
         setType = type;
         
+        self.autoresizesSubviews = NO;
+        self.clipsToBounds = YES;
+        
         [self initHeaderWithType:type];
         [self initElementsWithType:type puzzlesCount:count minScore:score price:price];
         _badges = nil;
-        
-        self.autoresizesSubviews = NO;
-        self.clipsToBounds = YES;
     }
     return self;
 }
 
 -(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 303, 105)];
-    if (self != nil)
+    if (self)
     {
         puzzlesCount = count;
         setType = type;
-        
+
+        self.autoresizesSubviews = NO;
+        self.clipsToBounds = YES;
+
         [self initHeaderWithType:type];
         [self initBoughtElementsWithType:type puzzlesCount:count puzzlesSolved:solved score:score ids:ids percents:percents];
         
         if (_badges.count > 0)
         {
             BadgeView * lastBadge = [_badges lastObject];
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + 115);
+            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
+            _fullSize = self.frame.size;
         }
     }
     return self;
@@ -67,9 +81,6 @@
 
 -(void)initHeaderWithType:(PuzzleSetType)type
 {
-    UIImageView * delimeter = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_set_delimeter"]];
-    [self addSubview:delimeter];
-    
     NSString * barFilename = nil;
     if (type == PUZZLESET_BRILLIANT) {
         barFilename = @"puzzles_set_br";
@@ -84,17 +95,9 @@
     }
     if (barFilename != nil)
     {
-        _imgBar = [[UIImageView alloc] initWithImage:[UIImage imageNamed:barFilename]];
-        _imgBar.frame = CGRectMake(14, 17, _imgBar.frame.size.width, _imgBar.frame.size.height);
-        [self addSubview:_imgBar];
+        _imgBar.image = [UIImage imageNamed:barFilename];
     }
-    _lblCaption = [[UILabel alloc] initWithFrame:CGRectMake(76, 13, 225, 32)];
-    _lblCaption.font = [UIFont fontWithName:@"DINPro-Bold" size:25];
-    _lblCaption.textColor = [UIColor colorWithRed:80/255.f green:79/255.f blue:74/255.f alpha:1];
-    _lblCaption.shadowColor = [UIColor whiteColor];
-    _lblCaption.backgroundColor = [UIColor clearColor];
-    _lblCaption.shadowOffset = CGSizeMake(0, 1);
-    _lblCaption.textAlignment = NSTextAlignmentLeft;
+    _lblCaption.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 30 : 25)];
     if (type == PUZZLESET_BRILLIANT) {
         _lblCaption.text = @"Бриллиантовый";
     } else if (type == PUZZLESET_GOLD) {
@@ -106,62 +109,29 @@
     } else if (type == PUZZLESET_FREE) {
         _lblCaption.text = @"Бесплатный";
     }
-    [self addSubview:_lblCaption];
 }
 
 -(void)initElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
 {
-    UIFont * helveticaBold12 = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12];
-    UIFont * helvetica12 = [UIFont fontWithName:@"HelveticaNeue" size:12];
     NSString * countString = [NSString stringWithFormat:@"%d", count];
-    CGSize countSize = [countString sizeWithFont:helveticaBold12];
-    _lblCount = [[UILabel alloc] initWithFrame:CGRectMake(16, 50, countSize.width, countSize.height)];
-    _lblCount.font = helveticaBold12;
+    CGSize countSize = [countString sizeWithFont:_lblCount.font];
+    _lblCount.frame = CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height);
     _lblCount.text = countString;
-    _lblCount.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    _lblCount.backgroundColor = [UIColor clearColor];
-    _lblCount.shadowColor = [UIColor whiteColor];
-    _lblCount.shadowOffset = CGSizeMake(0, 1);
-    _lblCount.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:_lblCount];
     
     NSString * text = (type == PUZZLESET_FREE) ? @" сканвордов " : @" сканвордов, минимум ";
-    CGSize textSize = [text sizeWithFont:helvetica12];
-    UILabel * lblText = [[UILabel alloc] initWithFrame:CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height)];
-    lblText.font = helvetica12;
-    lblText.text = text;
-    lblText.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    lblText.shadowColor = [UIColor whiteColor];
-    lblText.backgroundColor = [UIColor clearColor];
-    lblText.shadowOffset = CGSizeMake(0, 1);
-    lblText.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:lblText];
+    CGSize textSize = [text sizeWithFont:_lblText1.font];
+    _lblText1.frame = CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height);
+    _lblText1.text = text;
     
-    UIImageView * star = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_badge_star"]];
-    star.frame = CGRectMake(lblText.frame.origin.x + lblText.frame.size.width, lblText.frame.origin.y + star.frame.size.height / 4, star.frame.size.width, star.frame.size.height);
-    [self addSubview:star];
+    
+    _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:score]];
-    CGSize scoreSize = [scoreString sizeWithFont:helveticaBold12];
-    _lblScore = [[UILabel alloc] initWithFrame:CGRectMake(star.frame.origin.x + star.frame.size.width, _lblCount.frame.origin.y, scoreSize.width, scoreSize.height)];
-    _lblScore.font = helveticaBold12;
+    CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
+    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
-    _lblScore.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    _lblScore.shadowColor = [UIColor whiteColor];
-    _lblScore.backgroundColor = [UIColor clearColor];
-    _lblScore.shadowOffset = CGSizeMake(0, 1);
-    _lblScore.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:_lblScore];
     
-    UIImage * imgBuy = [UIImage imageNamed:@"puzzles_buy_btn"];
-    UIImage * imgBuyDown = [UIImage imageNamed:@"puzzles_buy_btn_down"];
-    _btnBuy = [[UIButton alloc] initWithFrame:CGRectMake(13, 70, imgBuy.size.width, imgBuy.size.height)];
-    [_btnBuy setBackgroundImage:imgBuy forState:UIControlStateNormal];
-    [_btnBuy setBackgroundImage:imgBuyDown forState:UIControlStateHighlighted];
-    _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
-    _btnBuy.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    [_btnBuy setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_btnBuy setTitleShadowColor:[UIColor colorWithRed:0 green:51/255.f blue:13/255.f alpha:1] forState:UIControlStateNormal];
+    _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
     if (type == PUZZLESET_FREE)
     {
         [_btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
@@ -170,65 +140,37 @@
     {
         [_btnBuy setTitle:[NSString stringWithFormat:@"%0.02f$", price] forState:UIControlStateNormal];
     }
-    [self addSubview:_btnBuy];
+    _shortSize = CGSizeMake(self.frame.size.width, self.frame.size.height - _btnBuy.frame.size.height);
+    _fullSize = self.frame.size;
 }
 
 -(void)initBoughtElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents
 {
-    UIFont * helveticaBold12 = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12];
-    UIFont * helvetica12 = [UIFont fontWithName:@"HelveticaNeue" size:12];
+    _btnBuy.hidden = YES;
+    _lblText2.hidden = NO;
+    _btnShowMore.hidden = NO;
     
     NSString * text = @"Разгадано ";
-    CGSize textSize = [text sizeWithFont:helvetica12];
-    UILabel * lblText = [[UILabel alloc] initWithFrame:CGRectMake(16, 50, textSize.width, textSize.height)];
-    lblText.font = helvetica12;
-    lblText.text = text;
-    lblText.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    lblText.shadowColor = [UIColor whiteColor];
-    lblText.backgroundColor = [UIColor clearColor];
-    lblText.shadowOffset = CGSizeMake(0, 1);
-    lblText.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:lblText];
+    CGSize textSize = [text sizeWithFont:_lblText1.font];
+    _lblText1.frame = CGRectMake(_lblText2.frame.origin.x, _lblText1.frame.origin.y, textSize.width, textSize.height);
+    _lblText1.text = text;
     
     NSString * countString = [NSString stringWithFormat:@"%d/%d ", solved, count];
-    CGSize countSize = [countString sizeWithFont:helveticaBold12];
-    _lblCount = [[UILabel alloc] initWithFrame:CGRectMake(lblText.frame.origin.x + lblText.frame.size.width, lblText.frame.origin.y, countSize.width, countSize.height)];
-    _lblCount.font = helveticaBold12;
+    CGSize countSize = [countString sizeWithFont:_lblCount.font];
+    _lblCount.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y, countSize.width, countSize.height);
     _lblCount.text = countString;
-    _lblCount.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    _lblCount.backgroundColor = [UIColor clearColor];
-    _lblCount.shadowColor = [UIColor whiteColor];
-    _lblCount.shadowOffset = CGSizeMake(0, 1);
-    _lblCount.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:_lblCount];
     
     NSString * text2 = @"Набрано ";
-    CGSize text2Size = [text2 sizeWithFont:helvetica12];
-    UILabel * lblText2 = [[UILabel alloc] initWithFrame:CGRectMake(16, 64, text2Size.width, text2Size.height)];
-    lblText2.font = helvetica12;
-    lblText2.text = text2;
-    lblText2.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    lblText2.shadowColor = [UIColor whiteColor];
-    lblText2.backgroundColor = [UIColor clearColor];
-    lblText2.shadowOffset = CGSizeMake(0, 1);
-    lblText2.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:lblText2];
+    CGSize text2Size = [text2 sizeWithFont:_lblText2.font];
+    _lblText2.frame = CGRectMake(_lblText2.frame.origin.x, _lblText2.frame.origin.y, text2Size.width, text2Size.height);
+    _lblText2.text = text2;
     
-    UIImageView * star = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_badge_star"]];
-    star.frame = CGRectMake(lblText2.frame.origin.x + lblText2.frame.size.width, lblText2.frame.origin.y + star.frame.size.height / 4, star.frame.size.width, star.frame.size.height);
-    [self addSubview:star];
+    _imgStar.frame = CGRectMake(_lblText2.frame.origin.x + _lblText2.frame.size.width, _lblText2.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:score]];
-    CGSize scoreSize = [scoreString sizeWithFont:helveticaBold12];
-    _lblScore = [[UILabel alloc] initWithFrame:CGRectMake(star.frame.origin.x + star.frame.size.width, lblText2.frame.origin.y, scoreSize.width, scoreSize.height)];
-    _lblScore.font = helveticaBold12;
+    CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
+    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText2.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
-    _lblScore.textColor = [UIColor colorWithRed:112/255.f green:99/255.f blue:88/255.f alpha:1];
-    _lblScore.shadowColor = [UIColor whiteColor];
-    _lblScore.backgroundColor = [UIColor clearColor];
-    _lblScore.shadowOffset = CGSizeMake(0, 1);
-    _lblScore.textAlignment = NSTextAlignmentLeft;
-    [self addSubview:_lblScore];
     
     UIImageView * progressbarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_set_progressbar_bg"]];
     progressbarView.frame = CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y + 4, progressbarView.frame.size.width, progressbarView.frame.size.height);
@@ -249,34 +191,34 @@
     [progressbarView addSubview:progressbar];
     
     int badgesCount = ids.count;
+    int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;
     _badges = [NSMutableArray arrayWithCapacity:badgesCount];
     for (int badgeIdx = 0; badgeIdx != badgesCount; ++badgeIdx)
     {
         BadgeView * badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andPercent:[(NSNumber *)[percents objectAtIndex:badgeIdx] floatValue]];
-        badgeView.frame = CGRectMake(16 + (badgeIdx % 4) * 70, 95 + (badgeIdx / 4) * 105, badgeView.frame.size.width, badgeView.frame.size.height);
+        badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (badgeIdx % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (badgeIdx / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
         badgeView.tag = [(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] - 1;
         [self addSubview:badgeView];
         [_badges addObject:badgeView];
     }
+    _shortSize = CGSizeMake(self.frame.size.width, self.frame.size.height - _btnBuy.frame.size.height);
+    _fullSize = self.frame.size;
 }
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
 {
-    return [[PuzzleSetView alloc] initWithType:type puzzlesCount:count minScore:score price:price];
+    PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
+    return [setView initWithType:type puzzlesCount:count minScore:score price:price];
 }
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents
 {
-    return [[PuzzleSetView alloc] initWithType:type puzzlesCount:count puzzlesSolved:solved score:score ids:ids percents:percents];
+    PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
+    return [setView initWithType:type puzzlesCount:count puzzlesSolved:solved score:score ids:ids percents:percents];
 }
 
 -(void)switchToBought
 {
-    while (self.subviews.count > 0)
-    {
-        [(UIView *)[self.subviews lastObject] removeFromSuperview];
-    }
-    _btnBuy = nil;
     [self initHeaderWithType:setType];
     NSMutableArray * ids = [NSMutableArray arrayWithCapacity:puzzlesCount];
     NSMutableArray * percents = [NSMutableArray arrayWithCapacity:puzzlesCount];
@@ -290,7 +232,8 @@
     if (_badges.count > 0)
     {
         BadgeView * lastBadge = [_badges lastObject];
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + 115);
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
+        _fullSize = self.frame.size;
     }
     else
     {

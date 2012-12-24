@@ -17,9 +17,13 @@ typedef enum BadgeType
 } BadgeType;
 
 @interface BadgeView : UIButton
-
--(id)initWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
--(id)initWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;
+{
+    IBOutlet UIImageView *badgeImage;
+    IBOutlet UILabel *lblPercent;
+    IBOutlet UILabel *lblScore;
+    IBOutlet UIImageView *imgProgress;
+    IBOutlet UIImageView *imgStar;
+}
 
 + (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
 + (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;

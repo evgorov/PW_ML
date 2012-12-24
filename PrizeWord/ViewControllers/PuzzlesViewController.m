@@ -18,11 +18,14 @@
 
 -(void)handleBadgeClick:(id)sender;
 -(void)handleBuyClick:(id)sender;
+-(void)handleShowMoreClick:(id)sender;
 -(void)activateBadges:(NSArray *)badges;
 
 -(void)handleNewsPrev:(id)sender;
 -(void)handleNewsNext:(id)sender;
 -(void)handleNewsTap:(id)sender;
+
+-(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize;
 
 @end
 
@@ -61,50 +64,44 @@
     [silverSet.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
     [silver2Set.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
     [freeSet.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
+    [brilliantSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [goldSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [silverSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [silver2Set.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [freeSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
     currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, freeSet.frame.origin.y + freeSet.frame.size.height);
+    
+    PuzzleSetView * archiveGoldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil]];
+    PuzzleSetView * archiveSilverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil]];
+    PuzzleSetView * archiveGoldSet2 = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD puzzlesCount:13 puzzlesSolved:8 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil]];
+    
+    archiveGoldSet.frame = CGRectMake(0, archiveView.frame.size.height, archiveGoldSet.frame.size.width, archiveGoldSet.frame.size.height);
+    archiveSilverSet.frame = CGRectMake(0, archiveGoldSet.frame.origin.y + archiveGoldSet.frame.size.height, archiveSilverSet.frame.size.width, archiveSilverSet.frame.size.height);
+    archiveGoldSet2.frame = CGRectMake(0, archiveSilverSet.frame.origin.y + archiveSilverSet.frame.size.height, archiveGoldSet2.frame.size.width, archiveGoldSet2.frame.size.height);
+
+    [archiveView addSubview:archiveGoldSet];
+    [archiveView addSubview:archiveSilverSet];
+    [archiveView addSubview:archiveGoldSet2];
+    archiveView.frame = CGRectMake(0, 0, archiveView.frame.size.width, archiveGoldSet2.frame.origin.y + archiveGoldSet2.frame.size.height);
+    [archiveGoldSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [archiveSilverSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [archiveGoldSet2.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSimpleView:newsView];
     [self addFramedView:currentPuzzlesView];
     [self addFramedView:hintsView];
     [self addFramedView:archiveView];
-
+    
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
-    
 
-    archiveBadges = [NSMutableArray new];
-    for (int i = 0; i != 12; ++i)
-    {
-        BadgeView * badgeView;
-        if (i < 5)
-        {
-            badgeView = [BadgeView badgeWithType:BADGE_GOLD andNumber:(i + 1) andScore:(1000 + (rand() % 10000))];
-        }
-        else
-        {
-            badgeView = [BadgeView badgeWithType:BADGE_GOLD andNumber:(i + 1) andPercent:((rand() % 10000) / 10000.0f)];
-        }
-        badgeView.frame = CGRectMake(18 + (i % 4) * 70, 145 + (i / 4) * 105, badgeView.frame.size.width, badgeView.frame.size.height);
-        [archiveView addSubview:badgeView];
-        [archiveBadges addObject:badgeView];
-        if (i >= 5)
-        {
-            [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
-        }
-    }
 }
 
 - (void)viewDidUnload
 {
     newsView = nil;
     currentPuzzlesView = nil;
-    for (UIImageView * badge in archiveBadges)
-    {
-        [badge removeFromSuperview];
-    }
-    [archiveBadges removeAllObjects];
-    archiveBadges = nil;
     hintsView = nil;
     archiveView = nil;
     btnBuyHint1 = nil;
@@ -136,6 +133,21 @@
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(buySet:) userInfo:sender repeats:NO];
 }
 
+-(void)handleShowMoreClick:(id)sender
+{
+    UIButton * btnShowMore = (UIButton *)sender;
+
+    PuzzleSetView * setView = (PuzzleSetView *)btnShowMore.superview;
+    UIView * blockView = setView.superview;
+    CGSize oldSize = setView.frame.size;
+
+    btnShowMore.selected = !btnShowMore.selected;
+    CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
+    
+    [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
+    
+}
+
 - (IBAction)handleNewsPaginatorChange:(id)sender
 {
     NSLog(@"paginator: %d", newsPaginator.currentPage);
@@ -156,6 +168,12 @@
     [setView switchToBought];
     CGSize newSize = setView.frame.size;
     
+    [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
+    [self activateBadges:setView.badges];
+}
+
+-(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize
+{
     float delta = 0;
     for (UIView * subview in blockView.subviews)
     {
@@ -171,9 +189,9 @@
             }];
             continue;
         }
-        if (subview == setView)
+        if (subview == innerView)
         {
-            delta = subview.frame.size.height - oldSize.height;
+            delta = newSize.height - oldSize.height;
             subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height);
             [UIView animateWithDuration:0.3 animations:^{
                 subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height + delta);
@@ -187,7 +205,6 @@
         }
     }
     [self resizeView:blockView newHeight:(blockView.frame.size.height + delta) animated:YES];
-    [self activateBadges:setView.badges];
 }
 
 -(void)activateBadges:(NSArray *)badges

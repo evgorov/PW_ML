@@ -37,7 +37,7 @@
         [scrollView addSubview:fieldView];
         UIImage * stretchableBorder = [[UIImage imageNamed:@"bg_border"] stretchableImageWithLeftCapWidth:40 topCapHeight:40];
         scrollView.minimumZoomScale = 0.3;
-        scrollView.maximumZoomScale = 2;
+        scrollView.maximumZoomScale = 1;
         scrollView.delegate = self;
         borderTopLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomLeft = [[UIImageView alloc] initWithImage:stretchableBorder];

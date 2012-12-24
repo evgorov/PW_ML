@@ -24,7 +24,6 @@
     IBOutlet UIButton *btnBuyHint2;
     IBOutlet UIButton *btnBuyHint3;
 
-    NSMutableArray * archiveBadges;
 }
 
 @end

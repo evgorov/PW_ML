@@ -203,6 +203,17 @@
             arrow.image = [UIImage imageNamed:@"tile_arrow_north_left"];
             break;
             
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionBottom:
+            arrow.image = [UIImage imageNamed:@"tile_arrow_northeast_right"];
+            break;
+            
         default:
             arrow.image = [UIImage imageNamed:@"tile_arrow_northwest_right"];
             break;
@@ -239,6 +250,8 @@
         case kAnswerPositionWest | kAnswerPositionTop:
         case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionTop:
         case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionBottom:
             rotation = -M_PI_2;
             break;
 
@@ -247,6 +260,8 @@
         case kAnswerPositionEast | kAnswerPositionBottom:
         case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionBottom:
         case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionTop:
             rotation = M_PI_2;
             break;
             
@@ -255,6 +270,8 @@
         case kAnswerPositionSouth | kAnswerPositionLeft:
         case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionLeft:
         case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionLeft:
             rotation = M_PI;
             break;
         default:
@@ -271,6 +288,11 @@
         case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
         case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
         case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionRight:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionBottom:
+            
             scaleX = -1;
             break;
     }

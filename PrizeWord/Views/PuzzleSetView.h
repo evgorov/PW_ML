@@ -24,20 +24,25 @@ PuzzleSetType;
     int puzzlesCount;
 }
 
-@property (nonatomic, readonly) UIImageView * imgBar;
-@property (nonatomic, readonly) UILabel * lblCaption;
-@property (nonatomic, readonly) UILabel * lblCount;
-@property (nonatomic, readonly) UILabel * lblScore;
-@property (nonatomic, readonly) UIButton * btnBuy;
+
+@property (strong, nonatomic) IBOutlet UIImageView *imgBar;
+@property (strong, nonatomic) IBOutlet UIImageView *imgStar;
+@property (strong, nonatomic) IBOutlet UILabel * lblCaption;
+@property (strong, nonatomic) IBOutlet UILabel *lblCount;
+@property (strong, nonatomic) IBOutlet UILabel *lblScore;
+@property (strong, nonatomic) IBOutlet UILabel *lblText1;
+@property (strong, nonatomic) IBOutlet UILabel *lblText2;
+@property (strong, nonatomic) IBOutlet UIButton *btnBuy;
+@property (strong, nonatomic) IBOutlet UIButton *btnShowMore;
 @property (nonatomic, readonly) NSMutableArray * badges;
 
--(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
-
--(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents;
+@property (nonatomic, readonly) CGSize shortSize;
+@property (nonatomic, readonly) CGSize fullSize;
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents;
+
 
 -(void)switchToBought;
 

@@ -12,6 +12,8 @@
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
+    
+    UIBarButtonItem * inviteAllItem;
 }
 
 @end

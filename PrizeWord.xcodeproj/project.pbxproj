@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
+		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
+		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
+		F279AE2C16886FEE00424267 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2B16886FEE00424267 /* Default.png */; };
+		F279AE2E16886FF100424267 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2D16886FF100424267 /* Default@2x.png */; };
 		F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7B166685D6003F0686 /* PuzzleData.m */; };
 		F2868C7F166685D7003F0686 /* QuestionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7E166685D7003F0686 /* QuestionData.m */; };
 		F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C801666A48B003F0686 /* tile_question_input@2x.png */; };
@@ -346,9 +351,18 @@
 		F2FDDA2116867A470013D069 /* rules_pagecontrol_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA1D16867A470013D069 /* rules_pagecontrol_bg@2x~ipad.png */; };
 		F2FDDA2416867AAA0013D069 /* RatingViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA2216867AA40013D069 /* RatingViewController~ipad.xib */; };
 		F2FDDA2516867AAA0013D069 /* InviteViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA2316867AA60013D069 /* InviteViewController~ipad.xib */; };
+		F2FDDA28168834C60013D069 /* invite_invite_all_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA26168834C60013D069 /* invite_invite_all_btn_down@2x.png */; };
+		F2FDDA29168834C60013D069 /* invite_invite_all_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA27168834C60013D069 /* invite_invite_all_btn@2x.png */; };
+		F2FDDA2B168839030013D069 /* BadgeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA2A168839030013D069 /* BadgeView.xib */; };
+		F2FDDA2D168848020013D069 /* BadgeView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA2C168848020013D069 /* BadgeView~ipad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
+		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
+		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
+		F279AE2B16886FEE00424267 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		F279AE2D16886FF100424267 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F2868C7A166685D6003F0686 /* PuzzleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleData.h; path = PrizeWord/DataModels/PuzzleData.h; sourceTree = "<group>"; };
 		F2868C7B166685D6003F0686 /* PuzzleData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleData.m; path = PrizeWord/DataModels/PuzzleData.m; sourceTree = "<group>"; };
 		F2868C7D166685D7003F0686 /* QuestionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionData.h; path = PrizeWord/DataModels/QuestionData.h; sourceTree = "<group>"; };
@@ -722,6 +736,10 @@
 		F2FDDA1D16867A470013D069 /* rules_pagecontrol_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_pagecontrol_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F2FDDA2216867AA40013D069 /* RatingViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "RatingViewController~ipad.xib"; path = "ViewControllers/RatingViewController~ipad.xib"; sourceTree = "<group>"; };
 		F2FDDA2316867AA60013D069 /* InviteViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "InviteViewController~ipad.xib"; path = "ViewControllers/InviteViewController~ipad.xib"; sourceTree = "<group>"; };
+		F2FDDA26168834C60013D069 /* invite_invite_all_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_invite_all_btn_down@2x.png"; sourceTree = "<group>"; };
+		F2FDDA27168834C60013D069 /* invite_invite_all_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_invite_all_btn@2x.png"; sourceTree = "<group>"; };
+		F2FDDA2A168839030013D069 /* BadgeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BadgeView.xib; path = Views/BadgeView.xib; sourceTree = "<group>"; };
+		F2FDDA2C168848020013D069 /* BadgeView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "BadgeView~ipad.xib"; path = "Views/BadgeView~ipad.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -989,6 +1007,8 @@
 		F286E3B5167DCCDE00FF5E83 /* invite */ = {
 			isa = PBXGroup;
 			children = (
+				F2FDDA26168834C60013D069 /* invite_invite_all_btn_down@2x.png */,
+				F2FDDA27168834C60013D069 /* invite_invite_all_btn@2x.png */,
 				F2FDDA0C16867A3E0013D069 /* invite_fb_bg@2x~ipad.png */,
 				F2FDDA0D16867A3E0013D069 /* invite_vk_bg@2x~ipad.png */,
 				F2FDDA0E16867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png */,
@@ -1068,8 +1088,12 @@
 				F2868CC1166B6964003F0686 /* TileImageHelper.m */,
 				F286E351167CA90000FF5E83 /* BadgeView.h */,
 				F286E352167CA90000FF5E83 /* BadgeView.m */,
+				F2FDDA2A168839030013D069 /* BadgeView.xib */,
+				F2FDDA2C168848020013D069 /* BadgeView~ipad.xib */,
 				F286E3FD1681760200FF5E83 /* PuzzleSetView.h */,
 				F286E3FE1681760200FF5E83 /* PuzzleSetView.m */,
+				F279AE2216884F5300424267 /* PuzzleSetView.xib */,
+				F279AE291688679200424267 /* PuzzleSetView~ipad.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1097,6 +1121,7 @@
 		F295024A166206E600DACFBA /* gamefield */ = {
 			isa = PBXGroup;
 			children = (
+				F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */,
 				F2868CD3166DC83D003F0686 /* tile_arrow_north_left@2x.png */,
 				F2868CD4166DC83D003F0686 /* tile_arrow_north_up@2x.png */,
 				F2868CD5166DC83D003F0686 /* tile_arrow_northwest_right@2x.png */,
@@ -1191,6 +1216,8 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F279AE2D16886FF100424267 /* Default@2x.png */,
+				F279AE2B16886FEE00424267 /* Default.png */,
 				F286E2F01677B95D00FF5E83 /* CoreImage.framework */,
 				F2A22DEF166487C400CF7859 /* Default-568h@2x.png */,
 				F2D62705165DF80900EF6E8A /* PrizeWord */,
@@ -1663,6 +1690,15 @@
 				F2FDDA2116867A470013D069 /* rules_pagecontrol_bg@2x~ipad.png in Resources */,
 				F2FDDA2416867AAA0013D069 /* RatingViewController~ipad.xib in Resources */,
 				F2FDDA2516867AAA0013D069 /* InviteViewController~ipad.xib in Resources */,
+				F2FDDA28168834C60013D069 /* invite_invite_all_btn_down@2x.png in Resources */,
+				F2FDDA29168834C60013D069 /* invite_invite_all_btn@2x.png in Resources */,
+				F2FDDA2B168839030013D069 /* BadgeView.xib in Resources */,
+				F2FDDA2D168848020013D069 /* BadgeView~ipad.xib in Resources */,
+				F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */,
+				F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */,
+				F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */,
+				F279AE2C16886FEE00424267 /* Default.png in Resources */,
+				F279AE2E16886FF100424267 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

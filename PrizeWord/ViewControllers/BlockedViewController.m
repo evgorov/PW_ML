@@ -70,6 +70,8 @@ static int VERTICAL_SPACE = 20;
     }
     else
     {
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:
+                                                   [UIView new]] animated:animated];
         [[AppDelegate currentDelegate].rootViewController showMenuAnimated:animated];
     }
 }

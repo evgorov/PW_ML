@@ -779,19 +779,12 @@
 					<string key="className">GameViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="handleFBClick:">id</string>
 						<string key="handleHintClick:">id</string>
 						<string key="handlePauseClick:">UIButton</string>
-						<string key="handlePauseMenu:">id</string>
 						<string key="handlePauseNext:">id</string>
 						<string key="handlePlayClick:">id</string>
-						<string key="handleVKClick:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="handleFBClick:">
-							<string key="name">handleFBClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="handleHintClick:">
 							<string key="name">handleHintClick:</string>
 							<string key="candidateClassName">id</string>
@@ -800,20 +793,12 @@
 							<string key="name">handlePauseClick:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="handlePauseMenu:">
-							<string key="name">handlePauseMenu:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="handlePauseNext:">
 							<string key="name">handlePauseNext:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="handlePlayClick:">
 							<string key="name">handlePlayClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleVKClick:">
-							<string key="name">handleVKClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
