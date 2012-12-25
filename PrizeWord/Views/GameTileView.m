@@ -13,6 +13,7 @@
 #import "QuestionData.h"
 #import "GameLogic.h"
 #import "GameField.h"
+#import "AppDelegate.h"
 
 #import <QuartzCore/CALayer.h>
 
@@ -35,7 +36,7 @@
         background.contentMode = UIViewContentModeScaleToFill;
         [self addSubview:background];
         questionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        questionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:8];
+        questionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 10 : 8)];
         questionLabel.adjustsFontSizeToFitWidth = NO;
         questionLabel.backgroundColor = [UIColor clearColor];
         questionLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -329,5 +330,14 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_TAP andData:tileData]];
 }
 
++ (int)tileWidth
+{
+    return [AppDelegate currentDelegate].isIPad ? 75 : 63;
+}
+
++ (int)tileHeight
+{
+    return [AppDelegate currentDelegate].isIPad ? 75 : 63;
+}
 
 @end

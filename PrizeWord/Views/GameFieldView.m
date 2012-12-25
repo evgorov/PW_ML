@@ -70,15 +70,17 @@
         [tile removeFromSuperview];
     }
     [tiles removeAllObjects];
+    int tileWidth = [GameTileView tileWidth];
+    int tileHeight = [GameTileView tileHeight];
     for (uint j = 0; j != tilesPerCol; ++j) {
         for (uint i = 0; i != tilesPerRow; ++i) {
-            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(kTileWidth * i + kTileOffset, kTileHeight * j + kTileOffset, kTileWidth, kTileHeight) andData:[gameField dataForPositionX:i y:j]];
+            GameTileView * tile = [[GameTileView alloc] initWithFrame:CGRectMake(tileWidth * i + kTileOffset, tileHeight * j + kTileOffset, tileWidth, tileHeight) andData:[gameField dataForPositionX:i y:j]];
             [tiles addObject:tile];
             [fieldView insertSubview:tile atIndex:0];
         }
     }
-    int width = tilesPerRow * kTileWidth + 2 * kTileOffset;
-    int height = tilesPerCol * kTileHeight + 2 * kTileOffset;
+    int width = tilesPerRow * tileWidth + 2 * kTileOffset;
+    int height = tilesPerCol * tileHeight + 2 * kTileOffset;
     scrollView.contentSize = CGSizeMake(width, height);
     fieldView.frame = CGRectMake(0, 0, width, height);
     borderTopLeft.frame = CGRectMake(0, 0, width / 2, height / 2);
@@ -138,8 +140,10 @@
 -(void)refreshFocus
 {
     if (focusedTile != nil) {
-        int offsetX = kTileOffset + focusedTile.x * kTileWidth + kTileWidth / 2 - scrollView.frame.size.width / 2;
-        int offsetY = kTileOffset + focusedTile.y * kTileHeight + kTileHeight / 2 - scrollView.frame.size.height / 2;
+        int tileWidth = [GameTileView tileWidth];
+        int tileHeight = [GameTileView tileHeight];
+        int offsetX = kTileOffset + focusedTile.x * tileWidth + tileWidth / 2 - scrollView.frame.size.width / 2;
+        int offsetY = kTileOffset + focusedTile.y * tileHeight + tileHeight / 2 - scrollView.frame.size.height / 2;
         if (offsetX > scrollView.contentSize.width - scrollView.frame.size.width)
             offsetX = scrollView.contentSize.width - scrollView.frame.size.width;
         if (offsetY > scrollView.contentSize.height - scrollView.frame.size.height)
