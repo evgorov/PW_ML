@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EventListenerDelegate.h"
+#import "PrizeWordSwitchView.h"
 
 @class GameFieldView;
 @class GameField;
@@ -23,9 +24,9 @@
     IBOutlet UILabel * lblTime;
     IBOutlet UIView * viewTime;
     IBOutlet UIView *pauseOverlay;
-    IBOutlet UISwitch *pauseSwtMusic;
-    IBOutlet UISwitch *pauseSwtSound;
     IBOutlet UIImageView *pauseImgProgressbar;
+    IBOutlet PrizeWordSwitchView *pauseSwtMusic;
+    IBOutlet PrizeWordSwitchView *pauseSwtSound;
     IBOutlet UILabel *pauseTxtProgress;
     float pauseMaxProgress;
 

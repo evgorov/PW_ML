@@ -36,6 +36,18 @@
 
 -(void)viewDidLoad
 {
+    PrizeWordSwitchView * switchView = [PrizeWordSwitchView switchView];
+    switchView.frame = pauseSwtMusic.frame;
+    [pauseSwtMusic.superview addSubview:switchView];
+    [pauseSwtMusic removeFromSuperview];
+    pauseSwtMusic = switchView;
+    
+    switchView = [PrizeWordSwitchView switchView];
+    switchView.frame = pauseSwtSound.frame;
+    [pauseSwtSound.superview addSubview:switchView];
+    [pauseSwtSound removeFromSuperview];
+    pauseSwtSound = switchView;
+    
     pauseMaxProgress = pauseImgProgressbar.frame.size.width;
     UIImage * imgProgress = [UIImage imageNamed:@"pause_progressbar"];
     CGSize imageSize = imgProgress.size;
@@ -221,6 +233,9 @@
     {
         btnPause.hidden = YES;
         btnPlay.hidden = NO;
+        float progress = (float)[GameLogic sharedLogic].gameField.questionsComplete / [GameLogic sharedLogic].gameField.questionsTotal;
+        pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress * progress, pauseImgProgressbar.frame.size.height);
+        [pauseTxtProgress setText:[NSString stringWithFormat:@"%d%%", (int)(100 * progress)]];
         [[AppDelegate currentDelegate].rootViewController showOverlay:pauseOverlay];
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
@@ -285,6 +300,8 @@
     pauseImgProgressbar = nil;
     pauseTxtProgress = nil;
     finalOverlay = nil;
+    pauseSwtMusic = nil;
+    pauseSwtSound = nil;
     [super viewDidUnload];
 }
 

@@ -132,6 +132,24 @@
     return self;
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    imgOverlay.hidden = NO;
+    [super touchesBegan:touches withEvent:event];
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    imgOverlay.hidden = YES;
+    [super touchesCancelled:touches withEvent:event];
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    imgOverlay.hidden = YES;
+    [super touchesEnded:touches withEvent:event];
+}
+
 + (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent
 {
     BadgeView * badgeView = (BadgeView *)[[[NSBundle mainBundle] loadNibNamed:@"BadgeView" owner:self options:nil] objectAtIndex:0];

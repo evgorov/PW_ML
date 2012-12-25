@@ -18,12 +18,12 @@
     NSMutableArray * currentWord;
     uint currentLetterIdx;
     TileData * currentQuestion;
-    int totalQuestions;
-    int completeQuestions;
 }
 
 @property (readonly) uint tilesPerRow;
 @property (readonly) uint tilesPerCol;
+@property (readonly) uint questionsTotal;
+@property (readonly) uint questionsComplete;
 
 -(id)initWithData:(PuzzleData *)puzzleData;
 -(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type;

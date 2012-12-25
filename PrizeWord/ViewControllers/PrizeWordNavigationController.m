@@ -71,10 +71,7 @@
 {
     UIViewController * popped = [super popViewControllerAnimated:animated];
     [popped viewWillDisappear:animated];
-    if (self.topViewController.navigationItem.leftBarButtonItem == nil)
-    {
-        [self.topViewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];
-    }
+
     return popped;
 }
 

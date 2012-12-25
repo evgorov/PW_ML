@@ -12,7 +12,7 @@
 @class GameField;
 @class TileData;
 
-@interface GameFieldView : UIView<EventListenerDelegate, UIScrollViewDelegate>
+@interface GameFieldView : UIView<EventListenerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 {
     UIScrollView * scrollView;
     UIView * fieldView;

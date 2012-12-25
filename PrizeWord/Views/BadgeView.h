@@ -23,6 +23,7 @@ typedef enum BadgeType
     IBOutlet UILabel *lblScore;
     IBOutlet UIImageView *imgProgress;
     IBOutlet UIImageView *imgStar;
+    IBOutlet UIView *imgOverlay;
 }
 
 + (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;

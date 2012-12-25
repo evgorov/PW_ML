@@ -30,6 +30,8 @@
 
 @synthesize tilesPerRow = _tilesPerRow;
 @synthesize tilesPerCol = _tilesPerCol;
+@synthesize questionsComplete = _questionsComplete;
+@synthesize questionsTotal = _questionsTotal;
 
 -(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type
 {
@@ -65,8 +67,8 @@
     
     if (self)
     {
-        totalQuestions = puzzleData.questions.count;
-        completeQuestions = 0;
+        _questionsTotal = puzzleData.questions.count;
+        _questionsComplete = 0;
         for (QuestionData * question in puzzleData.questions) {
             TileData * tile = [tiles objectAtIndex:([question.column unsignedIntValue] + [question.row unsignedIntValue] * _tilesPerRow)];
             tile.question = question.question_text;
@@ -390,8 +392,8 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
     currentQuestion = nil;
-    completeQuestions++;
-    if (completeQuestions == totalQuestions)
+    _questionsComplete++;
+    if (_questionsComplete == _questionsTotal)
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
     }

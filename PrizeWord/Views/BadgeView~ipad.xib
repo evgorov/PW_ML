@@ -42,7 +42,7 @@
 						<string key="NSFrameSize">{70, 112}</string>
 						<reference key="NSSuperview" ref="417963354"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="771255127"/>
+						<reference key="NSNextKeyView" ref="563308055"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -152,6 +152,7 @@
 						<string key="NSFrame">{{22, 100}, {10, 7}}</string>
 						<reference key="NSSuperview" ref="417963354"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -175,6 +176,22 @@
 							<string key="NSResourceName">puzzles_badge_progress@2x.png</string>
 						</object>
 					</object>
+					<object class="IBUIView" id="563308055">
+						<reference key="NSNextResponder" ref="417963354"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrameSize">{70, 112}</string>
+						<reference key="NSSuperview" ref="417963354"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="771255127"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC41MDMzMDc0ODE4IDAuMgA</bytes>
+						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
 				</array>
 				<string key="NSFrameSize">{70, 112}</string>
 				<reference key="NSSuperview"/>
@@ -197,7 +214,7 @@
 						<string key="NSFrameSize">{70, 112}</string>
 						<reference key="NSSuperview" ref="494736712"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="149159187"/>
+						<reference key="NSNextKeyView" ref="197372548"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -313,6 +330,7 @@
 						<string key="NSFrame">{{7, 89}, {13, 14}}</string>
 						<reference key="NSSuperview" ref="494736712"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -320,6 +338,22 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">puzzles_badge_star@2x.png</string>
 						</object>
+					</object>
+					<object class="IBUIView" id="197372548">
+						<reference key="NSNextResponder" ref="494736712"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrameSize">{70, 112}</string>
+						<reference key="NSSuperview" ref="494736712"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="149159187"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC41MDMzMDc0ODE4IDAuMgA</bytes>
+						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
 				<string key="NSFrameSize">{70, 112}</string>
@@ -372,6 +406,14 @@
 						<reference key="destination" ref="106568097"/>
 					</object>
 					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">imgOverlay</string>
+						<reference key="source" ref="417963354"/>
+						<reference key="destination" ref="563308055"/>
+					</object>
+					<int key="connectionID">62</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -443,6 +485,7 @@
 							<reference ref="106568097"/>
 							<reference ref="1028746446"/>
 							<reference ref="118871888"/>
+							<reference ref="563308055"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -486,6 +529,7 @@
 							<reference ref="418718505"/>
 							<reference ref="545746174"/>
 							<reference ref="551103407"/>
+							<reference ref="197372548"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -519,6 +563,16 @@
 						<reference key="object" ref="545746174"/>
 						<reference key="parent" ref="494736712"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">59</int>
+						<reference key="object" ref="563308055"/>
+						<reference key="parent" ref="417963354"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">60</int>
+						<reference key="object" ref="197372548"/>
+						<reference key="parent" ref="494736712"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -541,12 +595,14 @@
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">58</int>
+			<int key="maxID">62</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -555,6 +611,7 @@
 					<string key="superclassName">UIButton</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="badgeImage">UIImageView</string>
+						<string key="imgOverlay">UIView</string>
 						<string key="imgProgress">UIImageView</string>
 						<string key="imgStar">UIImageView</string>
 						<string key="lblPercent">UILabel</string>
@@ -564,6 +621,10 @@
 						<object class="IBToOneOutletInfo" key="badgeImage">
 							<string key="name">badgeImage</string>
 							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="imgOverlay">
+							<string key="name">imgOverlay</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="imgProgress">
 							<string key="name">imgProgress</string>

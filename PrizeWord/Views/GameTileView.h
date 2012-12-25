@@ -20,6 +20,7 @@
     UIImageView * background;
     UILabel * questionLabel;
     UIImageView * arrow;
+    UIImageView * overlay;
 }
 
 - (id)initWithFrame:(CGRect)frame andData:(TileData *)data;

@@ -27,9 +27,11 @@ PuzzleSetType;
 
 @property (strong, nonatomic) IBOutlet UIImageView *imgBar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgStar;
+@property (strong, nonatomic) IBOutlet UIImageView *imgScoreBg;
 @property (strong, nonatomic) IBOutlet UILabel * lblCaption;
 @property (strong, nonatomic) IBOutlet UILabel *lblCount;
 @property (strong, nonatomic) IBOutlet UILabel *lblScore;
+@property (strong, nonatomic) IBOutlet UILabel *lblPercent;
 @property (strong, nonatomic) IBOutlet UILabel *lblText1;
 @property (strong, nonatomic) IBOutlet UILabel *lblText2;
 @property (strong, nonatomic) IBOutlet UIButton *btnBuy;
@@ -42,6 +44,9 @@ PuzzleSetType;
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents;
+
++(PuzzleSetView *)puzzleSetCompleteViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores;
+
 
 
 -(void)switchToBought;

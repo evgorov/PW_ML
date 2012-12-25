@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PrizeWordSwitchView.h"
 
 @class PrizeWordNavigationController;
 
@@ -14,6 +15,9 @@
 {
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;
+    IBOutlet PrizeWordSwitchView *mainMenuVKSwitch;
+    IBOutlet PrizeWordSwitchView *mainMenuFBSwitch;
+    IBOutlet PrizeWordSwitchView *mainMenuNotificationsSwitch;
     IBOutlet UIButton *btnScore;
     IBOutlet UIButton *btnRating;
     IBOutlet UIView *rulesView;

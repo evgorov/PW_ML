@@ -50,6 +50,7 @@
         [self addSubview:questionLabel];
         
         arrow = nil;
+        overlay = nil;
         self.clipsToBounds = YES;
         
         tileData = data;
@@ -67,6 +68,8 @@
     tileData = nil;
     background = nil;
     questionLabel = nil;
+    overlay = nil;
+    arrow = nil;
 }
 
 -(void)handleEvent:(Event *)event
@@ -147,8 +150,8 @@
             questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
         }
         questionLabel.hidden = NO;
-        
-        if (tileData.state != TILE_QUESTION_CORRECT && tileData != [GameLogic sharedLogic].gameField.activeQuestion)
+
+        if (tileData.state == TILE_QUESTION_NEW)
         {
             [self showArrow];
         }
@@ -170,6 +173,18 @@
         questionLabel.text = @"";
         questionLabel.hidden = YES;
         [self hideArrow];
+    }
+    
+    if (tileData.state == TILE_LETTER_CORRECT_INPUT && overlay == nil)
+    {
+        overlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tile_letter_correct_input_overlay"]];
+        overlay.contentMode = UIViewContentModeScaleToFill;
+        [self addSubview:overlay];
+    }
+    else if (tileData.state != TILE_LETTER_CORRECT_INPUT && overlay != nil)
+    {
+        [overlay removeFromSuperview];
+        overlay = nil;
     }
 }
 
@@ -314,13 +329,5 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_TAP andData:tileData]];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

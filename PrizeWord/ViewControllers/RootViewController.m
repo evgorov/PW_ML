@@ -109,6 +109,24 @@
     {
         [self showMenuAnimated:NO];
     }
+    
+    PrizeWordSwitchView * switchView = [PrizeWordSwitchView switchView];
+    switchView.frame = mainMenuVKSwitch.frame;
+    [mainMenuVKSwitch.superview addSubview:switchView];
+    [mainMenuVKSwitch removeFromSuperview];
+    mainMenuVKSwitch = switchView;
+    
+    switchView = [PrizeWordSwitchView switchView];
+    switchView.frame = mainMenuFBSwitch.frame;
+    [mainMenuFBSwitch.superview addSubview:switchView];
+    [mainMenuFBSwitch removeFromSuperview];
+    mainMenuFBSwitch = switchView;
+    
+    switchView = [PrizeWordSwitchView switchView];
+    switchView.frame = mainMenuNotificationsSwitch.frame;
+    [mainMenuNotificationsSwitch.superview addSubview:switchView];
+    [mainMenuNotificationsSwitch removeFromSuperview];
+    mainMenuNotificationsSwitch = switchView;
 }
 
 - (void)viewDidUnload
@@ -119,6 +137,9 @@
     mainMenuBg = nil;
     rulesView = nil;
     fullscreenOverlayContainer = nil;
+    mainMenuVKSwitch = nil;
+    mainMenuFBSwitch = nil;
+    mainMenuNotificationsSwitch = nil;
     [super viewDidUnload];
 }
 

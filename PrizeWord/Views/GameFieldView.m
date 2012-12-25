@@ -17,6 +17,7 @@
 @interface GameFieldView (private)
 
 -(void)switchFocusToTile:(TileData *)tile;
+-(void)handlePinch:(id)sender;
 
 @end
 
@@ -36,8 +37,6 @@
         fieldView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
         [scrollView addSubview:fieldView];
         UIImage * stretchableBorder = [[UIImage imageNamed:@"bg_border"] stretchableImageWithLeftCapWidth:40 topCapHeight:40];
-        scrollView.minimumZoomScale = 0.3;
-        scrollView.maximumZoomScale = 1;
         scrollView.delegate = self;
         borderTopLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
         borderBottomLeft = [[UIImageView alloc] initWithImage:stretchableBorder];
@@ -51,6 +50,10 @@
         [fieldView addSubview:borderBottomLeft];
         [fieldView addSubview:borderBottomRight];
         focusedTile = nil;
+        
+        UIPinchGestureRecognizer * pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        pinchGestureRecognizer.delegate = self;
+        [scrollView addGestureRecognizer:pinchGestureRecognizer];
         
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
@@ -153,6 +156,36 @@
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return fieldView;
+}
+
+CGPoint pinchSavedOffset;
+-(void)handlePinch:(id)sender
+{
+    UIPinchGestureRecognizer * pinchGestureRecognizer = sender;
+    if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        pinchSavedOffset = scrollView.contentOffset;
+        if (pinchGestureRecognizer.scale > 1)
+        {
+            return;
+        }
+        float targetZoom = scrollView.frame.size.width / scrollView.contentSize.width;
+        if (scrollView.frame.size.height / scrollView.contentSize.height < targetZoom)
+        {
+            targetZoom = scrollView.frame.size.height / scrollView.contentSize.height;
+        }
+        if (targetZoom < 1)
+        {
+            scrollView.minimumZoomScale = targetZoom;
+            [scrollView setZoomScale:targetZoom animated:YES];
+        }
+    }
+    else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        scrollView.minimumZoomScale = 1;
+        [scrollView setZoomScale:1 animated:YES];
+        [scrollView setContentOffset:pinchSavedOffset animated:YES];
+    }
 }
 
 @end

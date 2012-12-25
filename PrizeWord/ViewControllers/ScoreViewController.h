@@ -15,8 +15,6 @@
     
     IBOutlet UIView *invitesView;
     IBOutlet UIButton *btnInvite;
-    
-    NSMutableArray * badges;
 }
 
 @end
