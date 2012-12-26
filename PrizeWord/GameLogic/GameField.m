@@ -23,6 +23,11 @@
 // if word is correct, mark all corresponding tiles as correct
 // if word is wrong, mark all corresponding tiles as wrong
 -(BOOL)checkQuestion;
+// check all questions
+// if some word is correct, mark all corresponding tiles as correct
+// doesn't change focus!
+-(void)checkOtherQuestions;
+-(NSArray *)lettersForQuestion:(TileData *)question;
 
 @end
 
@@ -40,7 +45,7 @@
     if (self)
     {
         currentQuestion = nil;
-        currentWord = [NSMutableArray new];
+        currentWord = nil;
         _tilesPerRow = width;
         _tilesPerCol = height;
  
@@ -69,6 +74,7 @@
     {
         _questionsTotal = puzzleData.questions.count;
         _questionsComplete = 0;
+        questions = [[NSMutableSet alloc] initWithCapacity:_questionsTotal];
         for (QuestionData * question in puzzleData.questions) {
             TileData * tile = [tiles objectAtIndex:([question.column unsignedIntValue] + [question.row unsignedIntValue] * _tilesPerRow)];
             tile.question = question.question_text;
@@ -76,6 +82,7 @@
             tile.answerPosition = question.answer_positionAsUint;
             tile.state = TILE_QUESTION_NEW;
             ;
+            [questions addObject:tile];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
         }
     }
@@ -103,6 +110,8 @@
     tiles = nil;
     currentQuestion = nil;
     currentWord = nil;
+    [questions removeAllObjects];
+    questions = nil;
 }
 
 -(void)handleEvent:(Event *)event
@@ -126,7 +135,7 @@
                     
                 case TILE_LETTER_INPUT:
                 case TILE_LETTER_EMPTY_INPUT:
-                    for (int idx = 0; idx < currentWord.count; ++idx) {
+                    for (int idx = 0; currentWord != nil && idx < currentWord.count; ++idx) {
                         TileData * letter = [currentWord objectAtIndex:idx];
                         if (data.x == letter.x && data.y == letter.y)
                         {
@@ -161,10 +170,11 @@
 
         case EVENT_PUSH_LETTER:
         {
-            if (currentLetterIdx >= currentWord.count)
+            if (currentWord == nil || currentLetterIdx >= currentWord.count)
             {
                 break;
             }
+            saveQuestionAsNew = NO;
             TileData * letter = [currentWord objectAtIndex:currentLetterIdx];
             letter.state = TILE_LETTER_INPUT;
             letter.currentLetter = (NSString *)event.data;
@@ -190,7 +200,7 @@
 
         case EVENT_POP_LETTER:
         {
-            if (currentLetterIdx == 0)
+            if (currentLetterIdx == 0 || currentWord == nil)
             {
                 return;
             }
@@ -244,33 +254,15 @@
 
 -(void)selectQuestion:(TileData *)question
 {
+    saveQuestionAsNew = (question.state == TILE_QUESTION_NEW);
     currentQuestion = question;
     currentQuestion.state = TILE_QUESTION_INPUT;
 
-    int letterX = currentQuestion.x;
-    int letterY = currentQuestion.y;
-    int offsetX = 0;
-    int offsetY = 0;
-    if ((currentQuestion.answerPosition & kAnswerPositionNorth) != 0)
-        letterY--;
-    if ((currentQuestion.answerPosition & kAnswerPositionSouth) != 0)
-        letterY++;
-    if ((currentQuestion.answerPosition & kAnswerPositionWest) != 0)
-        letterX--;
-    if ((currentQuestion.answerPosition & kAnswerPositionEast) != 0)
-        letterX++;
-    if ((currentQuestion.answerPosition & kAnswerPositionTop) != 0)
-        offsetY--;
-    if ((currentQuestion.answerPosition & kAnswerPositionBottom) != 0)
-        offsetY++;
-    if ((currentQuestion.answerPosition & kAnswerPositionLeft) != 0)
-        offsetX--;
-    if ((currentQuestion.answerPosition & kAnswerPositionRight) != 0)
-        offsetX++;
-    uint len = currentQuestion.answer.length;
-    for (uint i = 0; i != len; ++i, letterX += offsetX, letterY += offsetY) {
-        TileData * letter = [tiles objectAtIndex:(letterX + letterY * _tilesPerRow)];
-        [currentWord addObject:letter];
+    currentWord = [self lettersForQuestion:currentQuestion];
+
+    int i = 0;
+    for (TileData * letter in currentWord)
+    {
         letter.targetLetter = [currentQuestion.answer substringWithRange:NSMakeRange(i, 1)];
         if (letter.state == TILE_LETTER_EMPTY || letter.state == TILE_LETTER_WRONG)
         {
@@ -286,6 +278,7 @@
             continue;
         }
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+        ++i;
     }
     currentLetterIdx = 0;
     for (TileData * letter in currentWord) {
@@ -339,10 +332,10 @@
         }
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
-    prevQuestion.state = TILE_QUESTION_WRONG;
+    currentWord = nil;
+    prevQuestion.state = saveQuestionAsNew ? TILE_QUESTION_NEW : TILE_QUESTION_WRONG;
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:prevQuestion]];
     
-    [currentWord removeAllObjects];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
 }
 
@@ -360,7 +353,7 @@
     {
         if ([letter.currentLetter caseInsensitiveCompare:letter.targetLetter] != NSOrderedSame)
         {
-            currentQuestion.state = TILE_QUESTION_WRONG;
+            currentQuestion.state = saveQuestionAsNew ? TILE_QUESTION_NEW : TILE_QUESTION_WRONG;
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
             return NO;
         }
@@ -385,20 +378,96 @@
         }
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
     }
-    [currentWord removeAllObjects];
+    currentWord = nil;
 
     currentQuestion.state = TILE_QUESTION_CORRECT;
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
+    [questions removeObject:currentQuestion];
     currentQuestion = nil;
     _questionsComplete++;
     if (_questionsComplete == _questionsTotal)
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
     }
+    else
+    {
+        [self checkOtherQuestions];
+    }
     return YES;
 }
 
+-(void)checkOtherQuestions
+{
+    NSMutableArray * completedQuestions = [NSMutableArray new];
+    for (TileData * question in questions)
+    {
+        if (question.state == TILE_QUESTION_CORRECT)
+        {
+            continue;
+        }
+        NSArray * word = [self lettersForQuestion:question];
+        
+        BOOL allCorrect = YES;
+        for (TileData * letter in word)
+        {
+            if (letter.state != TILE_LETTER_CORRECT)
+            {
+                allCorrect = NO;
+                break;
+            }
+        }
+        
+        if (allCorrect)
+        {
+            [completedQuestions addObject:question];
+            question.state = TILE_QUESTION_CORRECT;
+            _questionsComplete++;
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:question]];
+        }
+    }
+    for (TileData * question in completedQuestions)
+    {
+        [questions removeObject:question];
+    }
+    if (_questionsComplete == _questionsTotal)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
+    }
+}
+
+-(NSArray *)lettersForQuestion:(TileData *)question
+{
+    NSMutableArray * word = [NSMutableArray new];
+    int letterX = question.x;
+    int letterY = question.y;
+    int offsetX = 0;
+    int offsetY = 0;
+    if ((question.answerPosition & kAnswerPositionNorth) != 0)
+        letterY--;
+    if ((question.answerPosition & kAnswerPositionSouth) != 0)
+        letterY++;
+    if ((question.answerPosition & kAnswerPositionWest) != 0)
+        letterX--;
+    if ((question.answerPosition & kAnswerPositionEast) != 0)
+        letterX++;
+    if ((question.answerPosition & kAnswerPositionTop) != 0)
+        offsetY--;
+    if ((question.answerPosition & kAnswerPositionBottom) != 0)
+        offsetY++;
+    if ((question.answerPosition & kAnswerPositionLeft) != 0)
+        offsetX--;
+    if ((question.answerPosition & kAnswerPositionRight) != 0)
+        offsetX++;
+    uint len = question.answer.length;
+    for (uint i = 0; i != len; ++i, letterX += offsetX, letterY += offsetY)
+    {
+        TileData * letter = [tiles objectAtIndex:(letterX + letterY * _tilesPerRow)];
+        [word addObject:letter];
+    }
+    
+    return word;
+}
 
 @end

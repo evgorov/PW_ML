@@ -35,7 +35,7 @@
         background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tile_letter_empty"]];
         background.contentMode = UIViewContentModeScaleToFill;
         [self addSubview:background];
-        questionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        questionLabel = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width * 0.1, 0, frame.size.width * 0.8, frame.size.height)];
         questionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 10 : 8)];
         questionLabel.adjustsFontSizeToFitWidth = NO;
         questionLabel.backgroundColor = [UIColor clearColor];

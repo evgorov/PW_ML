@@ -158,6 +158,8 @@
         int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
         if (hints > 0)
         {
+            [textField resignFirstResponder];
+            
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_USE_HINT", nil) message:NSLocalizedString(@"QUESTION_USE_HINT", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_USE_HINT", nil), nil];
             [alertView show];
         }
@@ -166,7 +168,8 @@
 
 - (IBAction)handlePauseNext:(id)sender
 {
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+    [[AppDelegate currentDelegate].rootViewController hideOverlay];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START]];
 }
 
 - (IBAction)handlePauseMenu:(id)sender
@@ -284,6 +287,7 @@
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.cancelButtonIndex == buttonIndex) {
+        [textField becomeFirstResponder];
         return;
     }
     int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];

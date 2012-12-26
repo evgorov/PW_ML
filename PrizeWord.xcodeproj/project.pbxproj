@@ -26,6 +26,8 @@
 		F247C3211689CD1A00A81D16 /* tile_letters_input@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C30E1689CD1A00A81D16 /* tile_letters_input@2x~ipad.png */; };
 		F247C3221689CD1A00A81D16 /* tile_letters_correct_silver@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C30F1689CD1A00A81D16 /* tile_letters_correct_silver@2x~ipad.png */; };
 		F247C3231689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C3101689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png */; };
+		F247C327168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */; };
+		F247C328168AF71D00A81D16 /* puzzles_set_month_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -414,6 +416,8 @@
 		F247C30E1689CD1A00A81D16 /* tile_letters_input@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_input@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C30F1689CD1A00A81D16 /* tile_letters_correct_silver@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_correct_silver@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C3101689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_wrong@2x~ipad.png"; sourceTree = "<group>"; };
+		F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_set_month_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_set_month_bg@2x.png"; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -918,6 +922,8 @@
 		F286E31D167C6B9400FF5E83 /* puzzles */ = {
 			isa = PBXGroup;
 			children = (
+				F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */,
+				F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */,
 				F2FDD9E91685B25B0013D069 /* puzzles_archive_showmore_btn_down@2x~ipad.png */,
 				F2FDD9EA1685B25B0013D069 /* puzzles_archive_showmore_btn@2x~ipad.png */,
 				F2FDD9EB1685B25B0013D069 /* puzzles_buy_hint_btn_down@2x~ipad.png */,
@@ -1848,6 +1854,8 @@
 				F247C3211689CD1A00A81D16 /* tile_letters_input@2x~ipad.png in Resources */,
 				F247C3221689CD1A00A81D16 /* tile_letters_correct_silver@2x~ipad.png in Resources */,
 				F247C3231689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png in Resources */,
+				F247C327168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png in Resources */,
+				F247C328168AF71D00A81D16 /* puzzles_set_month_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
