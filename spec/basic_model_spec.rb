@@ -41,7 +41,9 @@ describe BasicModel do
 
   it '#save' do
     storage = mock(:storage).as_null_object
-    storage.should_receive(:set).with(data['key'], data.merge('id' => data['key']).to_json)
+    Time.stub(now: '2012-12-29 10:42:21 +0400')
+    saved_data = data.merge('created_at' => Time.now, 'id' => data['key']).to_json
+    storage.should_receive(:set).with(data['key'], saved_data)
     subject.storage(storage).merge(data).save
   end
 
@@ -65,6 +67,8 @@ describe BasicModel do
     storage.should_receive(:zadd).with('all', kind_of(Numeric), data['key'])
     subject.storage(storage).merge(data).save
   end
+
+  it '#size'
 
   it '#all returns all instances' do
     storage = mock(:storage)

@@ -53,7 +53,7 @@ module Middleware
 
     get '/users' do
       result = {}
-      result['users'] = RegisteredUser.storage(env['redis']).users_by_rating(params['page'].to_i)
+      result['users'] = User.storage(env['redis']).users_by_rating(params['page'].to_i)
       result['me'] = env['token_auth'].user if env['token_auth'].authorized?
       result.to_json
     end

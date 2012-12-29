@@ -13,6 +13,14 @@ class PuzzleSet < BasicModel
     self
   end
 
+  def save(*)
+    super.tap { @storage.sadd("PuzzleSets:#{self['year']}##{self['month']}", self['id']) }
+  end
+
+  def delete(*)
+    super.tap { @storage.srem("PuzzleSets:#{self['year']}##{self['month']}", self['id']) }
+  end
+
   def set_defaults!
     self['puzzles'] = []
     self['month'] = Time.now.month
@@ -20,21 +28,11 @@ class PuzzleSet < BasicModel
     self['published'] = false
   end
 
-  def publish
-    self.validate!.tap { |o|
-      o['published'] = true
-      @storage.sadd("PuzzleSets:#{self['year']}##{self['month']}", self['id'])
-    }.save
-  end
-
-  def unpublish
-    self.validate!.tap { |o|
-      o['published'] = false
-      @storage.srem("PuzzleSets:#{self['year']}##{self['month']}", self['id'])
-    }.save
-  end
-
   def published_for(year = Time.now.year, month = Time.now.month)
+    self.all_for(year, month).select { |o| o['published'] }
+  end
+
+  def all_for(year = Time.now.year, month = Time.now.month)
     keys = @storage.smembers("PuzzleSets:#{year}##{month}")
     keys.map{ |id| self.storage(@storage).load(id) }
   end

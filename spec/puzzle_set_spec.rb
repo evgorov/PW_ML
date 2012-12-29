@@ -20,6 +20,7 @@ describe PuzzleSet do
     storage.stub(namespace: storage)
     subject.merge!(set_in_storage)
     storage.should_receive(:set).with("1487", {}.merge(subject).to_json)
+    storage.should_receive(:sadd).with("PuzzleSets:2012#10", "1487")
     subject.storage(storage).save
   end
 
@@ -38,31 +39,22 @@ describe PuzzleSet do
     subject.storage(storage).delete
   end
 
-  it '#publish' do
-    storage = mock(:storage).as_null_object
-    subject.merge!(set_in_storage)
-    stored_data = {}.merge(subject).merge('published' => true).to_json
-    storage.should_receive(:set).with("1487", stored_data)
-    storage.should_receive(:sadd).with("PuzzleSets:2012#10", "1487")
-    subject.storage(storage).publish
-  end
-
-  it '#unpublish' do
-    storage = mock(:storage).as_null_object
-    subject.merge!(set_in_storage).merge('published' => true)
-    stored_data = {}.merge(subject).merge('published' => false).to_json
-    storage.should_receive(:set).with("1487", stored_data)
-    storage.should_receive(:srem).with("PuzzleSets:2012#10", "1487")
-    subject.storage(storage).unpublish
-  end
-
   it '#published_for' do
     storage = mock(:storage).as_null_object
     storage.should_receive(:smembers).with("PuzzleSets:2012#10").and_return(['1', '2', '3'])
-    storage.should_receive(:get).with("1").and_return('{}')
-    storage.should_receive(:get).with("2").and_return('{}')
-    storage.should_receive(:get).with("3").and_return('{}')
-    subject.storage(storage).published_for(2012, 10)
+    storage.should_receive(:get).with("1").and_return({ "published" => true }.to_json)
+    storage.should_receive(:get).with("2").and_return({ "published" => false }.to_json)
+    storage.should_receive(:get).with("3").and_return({ "published" => true }.to_json)
+    subject.storage(storage).published_for(2012, 10).size.should == 2
+  end
+
+  it '#all_for' do
+    storage = mock(:storage).as_null_object
+    storage.should_receive(:smembers).with("PuzzleSets:2012#10").and_return(['1', '2', '3'])
+    storage.should_receive(:get).with("1").and_return({ "published" => true }.to_json)
+    storage.should_receive(:get).with("2").and_return({ "published" => false }.to_json)
+    storage.should_receive(:get).with("3").and_return({ "published" => false }.to_json)
+    subject.storage(storage).all_for(2012, 10).size.should == 3
   end
 
 end

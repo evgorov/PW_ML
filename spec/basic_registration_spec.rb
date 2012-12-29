@@ -98,7 +98,7 @@ describe Middleware::BasicRegistration do
 
   it 'POST /login returns 403 if user matching user hasn\'t been found' do
     RegisteredUser.should_receive(:storage).and_return(RegisteredUser)
-    RegisteredUser.should_receive(:authenticate).with('john@example.org', '12345').and_raise(User::NotFound)
+    RegisteredUser.should_receive(:authenticate).with('john@example.org', '12345').and_raise(BasicModel::NotFound)
     post '/login', { email: 'john@example.org', password: '12345' }
     last_response.status.should == 403
   end

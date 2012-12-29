@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Prizeword interface mockup</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/datepicker.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/puzzle.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="container">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Главная</a></li>
+        <li><a href="#tab2" data-toggle="tab">Пользователи</a></li>
+        <li><a href="#tab3" data-toggle="tab">Сеты</a></li>
+        <li class="pull-right logout" role="logout"><span class="muted">Пользователь: </span><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <div class="row">
+            <div class="span6">
+              <table class="table">
+                <caption><h4>Рейтинг пользователей:</h4></caption>
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>имя</th>
+                    <th>Очки</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Мориарти</td>
+                    <td>99999</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Шерлок Холмс</td>
+                    <td>2342</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Джон Ватсон</td>
+                    <td>500</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>К. Лестрейд</td>
+                    <td>300</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="span6">
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab2">
+          <div role="users">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Имя</th>
+                  <th>Фамилия</th>
+                  <th>Почта</th>
+                  <th>Зарегистрирован</th>
+                  <th>Решено</th>
+                  <th>Месячный счет</th>
+                  <th>Высший счет</th>
+                  <th>Подсказки</th>
+                </tr>
+              </thead>
+              <tbody role="rows">
+              </tbody>
+            </table>
+            <div class="pagination pagination-centered" role="pagination">
+            </div>
+          </div>
+        </div>
+       <div class="tab-pane" id="tab3" class="sets">
+          <div role="sets">
+            <div class="row m-bottom-20px">
+              <div class="span12 va-middle">
+                <span class="pull-right h3-height va-middle">
+                  <a href="#" class="btn btn-small" role="add-set"><i class="icon-plus-sign"></i> Добавить сет</a>
+                </span>
+                <h3 class="va-middle"><span role="current-date-description"></span></h3>&nbsp;
+                <span class="h3-height va-middle"><a href="#" role="sets-datepicker" class="btn btn-mini"><i class="icon-calendar"></i></a></span>
+              </div>
+            </div>
+            <div role="sets-container">
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="puzzle" role="puzzle-editor" style="display: none;">
+      <div class="container">
+        <div class="row">
+          <div class="span12 puzzle-editor">
+            <div class="puzzle-title">
+              <h3>Редактор Сканворда</h3>
+            </div>
+            <div class="puzzle-properties form-inline m-bottom-20px">
+              <label class="">Размеры:</label>
+              <input type="text" class="input-mini" placeholder="10x10" role="puzzle-size">
+              <label class="">Название:</label>
+              <input type="text" class="input-large" placeholder="Сканворды народов мира" role="puzzle-name">
+              <label class="">Счет:</label>
+              <input type="text" class="input-small" placeholder="1000" role="puzzle-base-score">
+              <label class="">Время:</label>
+              <input type="text" class="input-small" placeholder="100" role="puzzle-time-given">
+            </div>
+            <div id="field">
+            </div>
+            <div id="interface" class="m-bottom-20px">
+              <div class="questions">
+              </div>
+              <button class="btn" role="add_question">Добавить вопрос</button>
+            </div>
+            <div class="pull-right">
+              <button class="btn" role="save-puzzle">Ок</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-signin-container" role="form-signin-container">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Вход на сайт</h2>
+        <input type="text" class="input-block-level" placeholder="электронная почта" role="form-signin-email" required />
+        <input type="password" class="input-block-level" placeholder="пароль" role="form-signin-password" required />
+        <p class="text-error" role="form-signin-error" style="display: none;"></p>
+        <button class="btn btn-medium btn-primary" type="submit" role="form-signin-button">Войти</button>
+      </form>
+    </div>
+    <!-- Templates: -->
+    <script type="text/template" id="simple-puzzle-view-template">
+      <div class="question" role="question">
+        <input type="text" class="position x" value="<%- column %>" />
+        <input type="text" class="position y" value="<%- row %>" />
+        <select class="input-medium">
+          <option value="north:left">north:left</option>
+          <option value="north:top">north:top</option>
+          <option value="north:right">north:right</option>
+          <option value="north-east:left">north-east:left</option>
+          <option value="north-east:bottom">north-east:bottom</option>
+          <option value="east:top">east:top</option>
+          <option value="east:right">east:right</option>
+          <option value="east:bottom">east:bottom</option>
+          <option value="south-east:left">south-east:left</option>
+          <option value="south-east:top">south-east:top</option>
+          <option value="south:left">south:left</option>
+          <option value="south:right">south:right</option>
+          <option value="south:bottom">south:bottom</option>
+          <option value="south-west:top">south-west:top</option>
+          <option value="south-west:right">south-west:right</option>
+          <option value="west:left">west:left</option>
+          <option value="west:top">west:top</option>
+          <option value="west:bottom">west:bottom</option>
+          <option value="north-west:right">north-west:right</option>
+          <option value="north-west:bottom">north-west:bottom</option>
+        </select>
+        <textarea class="hint input-medium"><%- question_text %></textarea>
+        <input type="text" class="answer input-small" value="<%- answer %>" />
+        <button href="#" class="btn " role="delete_question">Удалить вопрос</button>
+      </div>
+    </script>
+    <script type="text/template" id="set-view-empty-template">
+      <div class="row m-bottom-20px">
+        <div class="span12 sets-set empty" role="empty-set">
+          <h3>Нет ни одного сета</h3>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="set-view-template">
+      <div class="span12 sets-set">
+        <h3><%- name %> <% if(!published) { %><span class="label label-info va-super">Черновик</span><% }; %></h3>
+        <p><span class="muted">Тип:</span> <b><%- type %></b></p>
+        <p>Сканворды:</p>
+        <ul>
+          <% if(puzzles.length === 0) { %>
+            <li>Нет сканвордов</li>
+          <% } else { %>
+            <% _.each(puzzles, function(o){ %>
+              <li><%- o.name %></li>
+            <% }); %>
+          <% }; %>
+        </ul>
+        <div class="pull-right">
+          <button class="btn" role="edit-set"><i class="icon-edit"></i> Редактировать</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="set-view-editor-template">
+        <div class="span12 sets-set">
+          <form>
+            <legend>Редактор сета:</legend>
+            <div class="m-bottom-10px">
+              <label class="">Название:</label>
+              <input type="text" class="input-large" placeholder="Сканворды народов мира" value="<%- name %>" role="set-name">
+            </div>
+            <div class="m-bottom-10px">
+              <label class="">Тип:</label>
+              <input type="text" class="input-large" placeholder="Golden" value="<%- type %>" role="set-type">
+            </div>
+            <div class="m-bottom-10px">
+              <p>Сканворды:</p>
+              <ul>
+                <% _.each(puzzles, function(puzzle){ %>
+                  <li data-puzzle-id="<%- puzzle.id %>" role="puzzle-list-item">
+                    <%- puzzle.name %>
+                    <div class="btn-group">
+                      <button class="btn btn-mini btn-danger" role="delete-puzzle">Удалить</button>
+                      <button class="btn btn-mini" role="edit-puzzle">Редактировать</button>
+                    </div>
+                  </li>
+                <% }); %>
+              </ul>
+            </div>
+            <button class="btn btn-small" role="add-puzzle">
+              <i class="icon-plus-sign"></i> Добавить сканворд
+            </button>
+          </form>
+          <div class="pull-right">
+            <div class="btn-group">
+              <button class="btn btn-danger" role="delete-set">Удалить</button>
+              <% if(!published){ %>
+                <button class="btn" role="publish-set">Опубликовать</button>
+              <% }; %>
+              <button class="btn" role="save-set">Сохранить</button>
+            </div>
+          </div>
+        </div>
+    </script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.ru.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    <script type="text/javascript" src="js/backbone-min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>

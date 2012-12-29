@@ -3,6 +3,8 @@ require 'dummy_storage'
 
 class BasicModel
 
+  PER_PAGE = 10
+
   class NotFound < Exception; end
   class InvalidState < Exception; end
 
@@ -63,11 +65,18 @@ class BasicModel
     self.collection_for_key('all', page)
   end
 
+  def size
+    self.collection_size_for_key('all');
+  end
+
+  def collection_size_for_key(key)
+    @storage.zcard(key)
+  end
+
   def collection_for_key(key, page = 1)
     page = 1 if page == 0
-    per_page = 10
     # this should be done with by: 'nosort' but buggix is not in all versions of redis
-    ids = @storage.zrevrange(key, (page - 1) * per_page, page * per_page)
+    ids = @storage.zrevrange(key, (page - 1) * PER_PAGE, page * PER_PAGE - 1)
     data_list = @storage.mget(*ids)
     data_list.map do |data|
       self.class.new(JSON.parse(data), @storage)
@@ -75,6 +84,7 @@ class BasicModel
   end
 
   def save(skip_validation = false)
+    self['created_at'] = Time.now if !@old_id && !self['created_at']
     id = if self.class.guuid?
            self['id'] ||= SecureRandom.uuid
          else

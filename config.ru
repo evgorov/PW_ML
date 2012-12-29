@@ -4,6 +4,7 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require "bundler/setup"
 
+require 'rack/contrib/static_cache'
 require 'middleware/redis_middleware'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
@@ -12,7 +13,23 @@ require 'middleware/password_reset'
 require 'middleware/users'
 require 'middleware/admin'
 
-if ENV["REDISTOGO_URL"]
+class IndexPage
+
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    env['PATH_INFO'] = '/index.html' if env['PATH_INFO'] =~ %r{^/[0-9]*$}
+    @app.call(env)
+  end
+end
+
+use IndexPage
+use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.html"],
+                       :root => "public", :versioning => false
+
+if !ENV["REDISTOGO_URL"]
   use Middleware::RedisMiddleware
 else
   uri = URI.parse(ENV["REDISTOGO_URL"])

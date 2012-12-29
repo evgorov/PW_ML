@@ -1,4 +1,4 @@
-shared_context "fixtures" do
+shared_context 'fixtures' do
   let(:valid_user_data) {
     {
       'email' => 'sherlock@example.org',
@@ -18,12 +18,12 @@ shared_context "fixtures" do
       'email' => 'sherlock@example.org',
       'name' => 'Sherlock',
       'surname' => 'Holmes',
-      "position" => 0,
-      "solved" => 0,
-      "month_score" => 0,
-      "high_score" => 0,
-      "dynamics" => 0,
-      "hints" => 0,
+      'position' => 0,
+      'solved' => 0,
+      'month_score' => 0,
+      'high_score' => 0,
+      'dynamics' => 0,
+      'hints' => 0,
       'birthdate' => '1873-11-12',
       'userpic' => 'image data',
       'city' => 'London'
@@ -37,12 +37,12 @@ shared_context "fixtures" do
       'email' => 'sherlock@example.org',
       'name' => 'Sherlock',
       'surname' => 'Holmes',
-      "position" => 0,
-      "solved" => 0,
-      "month_score" => 0,
-      "high_score" => 0,
-      "dynamics" => 0,
-      "hints" => 0,
+      'position' => 0,
+      'solved' => 0,
+      'month_score' => 0,
+      'high_score' => 0,
+      'dynamics' => 0,
+      'hints' => 0,
       'birthdate' => '1873-11-12',
       'userpic' => 'http://graph.facebook.com/123456789/picture',
       'city' => 'London, UK'
@@ -52,39 +52,40 @@ shared_context "fixtures" do
   let(:user2_in_storage_key) { 'facebook#1234' }
   let(:user2_in_storage) {
     {
-      "provider" => "facebook",
-      "facebook_id" => "1234",
-      "role" => "user",
-      "position" => 0,
-      "solved" => 2,
-      "month_score" => 100,
-      "high_score" => 1100,
-      "dynamics" => 0,
-      "hints" => 3,
-      "name" => "Sherlock",
-      "surname" => "Holmes",
-      "email" => "holmes@example.org"
+      'provider' => 'facebook',
+      'facebook_id' => '1234',
+      'role' => 'user',
+      'position' => 0,
+      'solved' => 2,
+      'month_score' => 100,
+      'high_score' => 1100,
+      'dynamics' => 0,
+      'hints' => 3,
+      'name' => 'Sherlock',
+      'surname' => 'Holmes',
+      'email' => 'holmes@example.org'
     }
   }
 
 
   let(:user_in_storage_key) { 'registered#g@interpol.co.uk' }
-  let(:user_in_storage_password) { "1234" }
+  let(:user_in_storage_password) { '1234' }
   let(:user_in_storage) {
     {
       'id' => 'registered#g@interpol.co.uk',
-      "provider" => "registered",
-      "position" => 0,
-      "role" => "user",
-      "solved" => 0,
-      "month_score" => 0,
-      "high_score" => 0,
-      "password_hash" => "$2a$04$Tb8kcdU0ZAEuzrEMQGVqQOAGh1kZ1neGAncRyNUfoossmITcD/DSe",
-      "dynamics" => 0,
-      "hints" => 0,
-      "name" => "G.",
-      "surname" => "Lestrade",
-      "email" => "g@interpol.co.uk"
+      'provider' => 'registered',
+      'position' => 0,
+      'role' => 'user',
+      'solved' => 0,
+      'month_score' => 0,
+      'high_score' => 0,
+      'password_hash' => '$2a$04$Tb8kcdU0ZAEuzrEMQGVqQOAGh1kZ1neGAncRyNUfoossmITcD/DSe',
+      'created_at' => '2012-12-29 10:42:21 +0400',
+      'dynamics' => 0,
+      'hints' => 0,
+      'name' => 'G.',
+      'surname' => 'Lestrade',
+      'email' => 'g@interpol.co.uk'
     }
   }
 
@@ -142,7 +143,8 @@ shared_context "fixtures" do
       'sets' => [],
       'year' => '2012',
       'month' => '10',
-      'user_id' => "registered#john@example.com"
+      'created_at' => '2012-12-29 10:42:21 +0400',
+      'user_id' => 'registered#john@example.com'
     }
   }
 
@@ -155,7 +157,8 @@ shared_context "fixtures" do
       'id' => '1487',
       'puzzles' => [],
       'published' => false,
-      'type' => 'golden'
+      'type' => 'golden',
+      'created_at' => '2012-12-29 10:42:21 +0400'
     }
   }
 

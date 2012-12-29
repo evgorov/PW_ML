@@ -2,12 +2,13 @@ require 'sinatra/base'
 require 'json'
 require 'securerandom'
 require 'pony'
+require 'user'
 
 module Middleware
   class PasswordReset < Sinatra::Base
 
     set :views, 'views/password_reset'
-    error(User::NotFound) { halt(404) }
+    error(BasicModel::NotFound) { halt(404) }
 
     helpers do
       def generate_html_body(token)

@@ -1,0 +1,119 @@
+div { box-sizing: border-box }
+
+body{
+    margin-top: 20px;
+    padding-bottom: 40px;
+}
+
+.va-middle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.va-super{
+    display: inline-block;
+    vertical-align: super;
+}
+
+.ta-center{
+    text-align: center;
+}
+
+.h3-height{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 40px;
+}
+
+.sets-set.empty{
+    padding-top: 20px;
+    text-align: center;
+}
+
+.sets-set{
+    background: #eee;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
+.sets-set form{
+    margin-top: 10px;
+}
+
+.m-bottom-20px{ margin-bottom: 20px; }
+.m-bottom-10px{ margin-bottom: 10px; }
+
+.puzzle{
+    position: absolute;
+    height: auto;
+    overflow: visible;
+    width: 100%;
+    top: 2%;
+    left: 0;
+    z-index: 1;
+}
+
+.puzzle .container, .puzzle .row {
+    overflow: visible;
+    height: auto;
+}
+
+.puzzle-editor{
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 6px #888;
+    background: white;
+}
+
+/* Login box */
+
+.form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+
+.logout{
+    padding-top: 9px;
+
+}
+
+.form-signin-container{
+    padding-top: 60px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+}
+
+.input-micro{
+    width: 20px;
+}

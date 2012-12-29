@@ -9,19 +9,14 @@ class User < BasicModel
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE -
                         ['password'] +
-                        %w[id position solved month_score high_score dynamics hints provider]
+                        %w[id position solved month_score high_score dynamics hints provider created_at]
 
   class << self
 
     def new(*a)
-
-
       case
       when self.name == 'User' && a.first.is_a?(Hash) && !a.first.empty?
         @@providers[a.first['provider']].new(*a)
-      when self.name == 'User'
-        raise NotImplementedError.new("This class is an abstract class, "+
-                                      "you must use it's children.")
       else
         super(*a)
       end
@@ -84,6 +79,10 @@ class User < BasicModel
   end
 
   def save(*a)
+    if self.class == User
+      raise NotImplementedError.new("This class is an abstract class, "+
+                                    "you must use it's children.")
+    end
     self['provider'] = self.provider_name
     super(*a)
     @storage.zadd('rating', self['month_score'].to_i, self.id)

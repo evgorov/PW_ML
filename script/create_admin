@@ -1,0 +1,32 @@
+#!/usr/bin/ruby
+# encoding: utf-8
+
+libdir = File.join(File.dirname(__FILE__), '../lib')
+$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+
+require 'user'
+require 'storage'
+require 'puzzle_set'
+
+redis = Redis.new
+
+100.times do |i|
+u = RegisteredUser.new
+u['role'] = 'user'
+u['email'] = "user#{i}@example.com"
+u['password'] = '1234'
+u['provider'] = 'registered'
+u['name'] = 'User#{1}'
+u['surname'] = 'Userovich'
+u.storage(redis).save
+puts "user #{i} user created"
+
+end
+
+
+
+# ps = PuzzleSet.new
+# ps['name'] = 'Средиземье'
+# ps['type'] = 'Golden'
+# ps.storage(redis).save
+# puts "Puzzle set created"

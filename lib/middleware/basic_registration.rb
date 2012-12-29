@@ -34,7 +34,7 @@ module Middleware
       end
     end
 
-    error(User::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
+    error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
 
     post '/signup' do
       validate_signup_params!

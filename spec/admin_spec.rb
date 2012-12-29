@@ -60,36 +60,10 @@ describe Middleware::Admin do
     last_response.status.should == 200
   end
 
-  it 'POST /sets/:id/publish' do
-    token_auth = mock(:token_auth).as_null_object
-    puzzle_set = mock(:puzzle_set).as_null_object
-    puzzle_set.should_receive(:storage).and_return(puzzle_set)
-    puzzle_set.should_receive(:load).with('1234').and_return(puzzle_set)
-    puzzle_set.should_receive(:publish)
-    PuzzleSet.should_receive(:new).and_return(puzzle_set)
-    post('/sets/1234/publish',
-         { session_key: 'valid_session_key' },
-         { 'token_auth' => token_auth })
-    last_response.status.should == 200
-  end
-
-  it 'POST /sets/:id/unpublish' do
-    token_auth = mock(:token_auth).as_null_object
-    puzzle_set = mock(:puzzle_set).as_null_object
-    puzzle_set.should_receive(:storage).and_return(puzzle_set)
-    puzzle_set.should_receive(:load).with('1234').and_return(puzzle_set)
-    puzzle_set.should_receive(:unpublish)
-    PuzzleSet.should_receive(:new).and_return(puzzle_set)
-    post('/sets/1234/unpublish',
-         { session_key: 'valid_session_key' },
-         { 'token_auth' => token_auth })
-    last_response.status.should == 200
-  end
-
   it 'GET /sets' do
     token_auth = mock(:token_auth).as_null_object
     puzzle_set = mock(:puzzle_set).as_null_object
-    puzzle_set.should_receive(:all).with(0).and_return([{ 'k' => 'v' }])
+    puzzle_set.should_receive(:all_for).and_return([{ 'k' => 'v' }])
     PuzzleSet.should_receive(:storage).and_return(puzzle_set)
     get('/sets',
          { session_key: 'valid_session_key' },
@@ -97,6 +71,25 @@ describe Middleware::Admin do
     last_response.status.should == 200
   end
 
+  it 'PUT /sets/:id' do
+    token_auth = mock(:token_auth).as_null_object
+    puzzle_set = mock(:puzzle_set).as_null_object
+    puzzle_set.should_receive(:load).with('1234').and_return(puzzle_set)
+    puzzle_set.should_receive(:save)
+    PuzzleSet.should_receive(:storage).and_return(puzzle_set)
+
+    put('/sets/1234',
+        {
+          session_key: 'valid_session_key',
+          year: '2012',
+          month: '12',
+          name: 'Test',
+          type: 'Silver',
+          puzzles: [].to_json
+        },
+         { 'token_auth' => token_auth })
+    last_response.status.should == 200
+  end
 
   it 'DELETE /sets/:id' do
     token_auth = mock(:token_auth).as_null_object
@@ -108,6 +101,18 @@ describe Middleware::Admin do
     delete('/sets/1234',
          { session_key: 'valid_session_key' },
          { 'token_auth' => token_auth })
+    last_response.status.should == 200
+  end
+
+  it 'GET /users/paginate' do
+    token_auth = mock(:token_auth).as_null_object
+    user = mock(:user).as_null_object
+    user.should_receive(:all).with(2)
+    User.should_receive(:storage).and_return(user)
+
+    get('/users/paginate',
+        { session_key: 'valid_session_key', page: 2 },
+        { 'token_auth' => token_auth })
     last_response.status.should == 200
   end
 end

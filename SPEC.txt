@@ -664,10 +664,6 @@ Add or removes points from user score. This endpoint can be used score for activ
 
 **`PUT /sets/:id`**
 
-**`PUT /sets/:id/publish`**
-
-**`PUT /sets/:id/unpublish`**
-
 **`DELETE /sets/:id`**
 
 **`PUT /service_message`**
@@ -695,11 +691,11 @@ Each `question` can have one of following properties:
 - `question_text`: text of the question
 - `answer`: answer to the question, lower case.
 - `answer_position`: position of answer relative to cell, can be one of the following:
-  `north:left`, `north:top`, `north:right`, `north-east:left`, `north-east:top`, `north-east:right`,
-  `north-east:bottom`, `east:top`, `east:right`, `east:bottom`, `south-east:left`, `south-east:top`,
-  `south-east:right`, `south-east:bottom`, `south:left`, `south:right`, `south:bottom`, `south-west:left`,
-  `south-west:top`, `south-west:right`, `south-west:bottom`, `west:left`, `west:top`, `west:bottom`,
-  `north-west:left`, `north-west:top`, `north-west:right`, `north-west:bottom`.
+  `north:left`, `north:top`, `north:right`, `north-east:left`,
+  `north-east:bottom`, `east:top`, `east:right`, `east:bottom`,
+  `south-east:left`, `south-east:top`, `south:left`, `south:right`,
+  `south:bottom`, `south-west:top`, `south-west:right`, `west:left`,
+  `west:top`, `west:bottom`, `north-west:right`, `north-west:bottom`.
 
 Example:
 

@@ -1,3 +1,4 @@
+require 'json'
 module Middleware::TokenAuthStrategy
   class Middleware
 
@@ -24,10 +25,13 @@ module Middleware::TokenAuthStrategy
     private
 
     def unauthorized_reponse
-      response_message = "Unauthorized"
+      response_message = { 'message' => 'Unauthorized' }.to_json
       [
        401,
-       {'Content-Length' => response_message.size},
+       {
+         'Content-Length' => response_message.size.to_s,
+         'Content-Type' => 'Application/json'
+       },
        [response_message]
       ]
     end

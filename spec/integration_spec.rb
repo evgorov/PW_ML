@@ -1,4 +1,5 @@
 require 'middleware/redis_middleware'
+require 'middleware/password_reset'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
@@ -44,6 +45,8 @@ describe 'Integration spec' do
 
   def app
     app = Rack::Builder.new do
+      use Rack::Lint
+      use Rack::ContentLength
       use Middleware::RedisMiddleware
 
       Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
@@ -94,12 +97,14 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
     session_key.should_not == nil
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == valid_user_data_user_as_json
 
     get '/me', { session_key: session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == valid_user_data_user_as_json
 
     post '/login', email: valid_user_data['email'], password: valid_user_data['password']
@@ -113,12 +118,14 @@ describe 'Integration spec' do
     last_response.status.should == 403
     new_session_key = response_data['session_key']
     new_session_key.should_not == session_key
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == valid_user_data_user_as_json
 
     get '/me', { session_key: new_session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == valid_user_data_user_as_json
   end
 
@@ -133,9 +140,11 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     new_valid_data = valid_user_data_user_as_json.merge('email' => 'new_email@example.org',
                                                         'id' => 'registered#new_email@example.org')
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == new_valid_data
     get '/me', { session_key: session_key }
     response_data = JSON.parse(last_response.body)
+    response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == new_valid_data
   end
 
@@ -150,12 +159,14 @@ describe 'Integration spec' do
       response_data = JSON.parse(last_response.body)
       session_key = response_data['session_key']
       session_key.should_not == nil
+      response_data['me'].delete('created_at').should_not == nil
       response_data['me'].should == valid_facebook_user_data_user_as_json
 
       get '/me', { session_key: session_key }
       last_response_should_be_json
       last_response.status.should == 200
       response_data = JSON.parse(last_response.body)
+      response_data['me'].delete('created_at').should_not == nil
       response_data['me'].should == valid_facebook_user_data_user_as_json
     end
   end
@@ -210,7 +221,7 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
 
-    post '/sets/123/publish'
+    post '/sets'
     last_response.status.should == 401
   end
 
@@ -225,9 +236,10 @@ describe 'Integration spec' do
 
     post('/sets',
          {
-           year: 2012,
-           month: 10,
+           year: Time.now.year,
+           month: Time.now.month,
            name: 'Cool set',
+           published: 'true',
            puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
            type: 'golden',
            session_key: session_key
@@ -237,10 +249,6 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     admin_set_id = response_data['id']
-
-    post("/sets/#{admin_set_id}/publish", { session_key: session_key })
-    last_response.status.should == 200
-    last_response_should_be_json
 
     get('/sets_available')
     last_response.status.should == 200
@@ -342,10 +350,6 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     admin_set_id2 = response_data['id']
-
-    post("/sets/#{admin_set_id2}/publish", { session_key: session_key })
-    last_response.status.should == 200
-    last_response_should_be_json
 
     get('/sets', { session_key: session_key })
     last_response.status.should == 200
