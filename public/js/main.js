@@ -41,7 +41,7 @@ var Field = Backbone.Model.extend({
       if(!result[attr] || (result[attr].type === value.type && result[attr].value === value.value)){
         result[attr] = value;
       } else {
-        result[attr] = { type: 'error' };
+        result[attr] = { type: 'error', hasHint : value.type === 'hint' || result[attr].type === 'hint' };
       }
     };
 
@@ -177,53 +177,89 @@ var FieldView = Backbone.View.extend({
   },
 
   initialize: function(){
+    this.boxHeight = this.boxWidth = 50;
     this.render();
-    this.model.on('change', this.render, this);
+    this.model.on('change:height change:width', this.render, this);
+    this.model.on('change:coordinates', this.updateCoordinates, this);
   },
 
-  render: function() {
-    this.$el.empty();
-    var coordinates = this.model.get('coordinates');
+  updateCoordinates: function(){
     for(var x = 1; x <= this.model.get('width'); x++){
       for(var y = 1; y <= this.model.get('height'); y++){
-        var $token = $('<div>').attr('data-x', x).attr('data-y', y).addClass('token');
-        var properties = coordinates[[x,y].join(':')];
-        if(properties){
-          _(properties).each(function(v,k) { $token.attr('data-' + k, v); });
-        } else {
-          $token.attr('data-type', 'empty');
-        }
-        this.$el.append($token);
+        var $token = this.coordinates[[x, y].join(':')];
+        this.setTokenFromCoordinates($token, x, y);
       }
     }
-    this.initializeDraggable();
     return this;
   },
 
-  initializeDraggable: function(){
+  render: function() {
+    var height = this.model.get('height'),
+        width = this.model.get('width');
+    this.coordinates = {};
+    var $container = $('<div>').css({'height': height * this.boxHeight + 'px',
+                                     'width': width * this.boxWidth + 'px',
+                                     'position': 'relative'
+                                    });
+
+    for(var x = 1; x <= width; x++){
+      for(var y = 1; y <= height; y++){
+        var $token = $('<div>').attr('data-x', x).attr('data-y', y).addClass('token');
+        this.coordinates[[x, y].join(':')] = $token;
+        this.setTokenFromCoordinates($token, x, y);
+        $container.append($token);
+      }
+    }
+    this.$el.html('').append($container);
+    return this;
+  },
+
+  setTokenFromCoordinates: function($token, x, y){
+    var properties = this.model.get('coordinates')[[x,y].join(':')];
+    // set attributes
+    if(properties){
+      _(properties).each(function(v,k) { $token.attr('data-' + k, v); });
+    } else {
+      $token.attr('data-type', 'empty');
+    }
+
+    if(properties && (properties.type === 'hint' || properties.hasHint)){
+      this.initializeDraggable($token);
+    } else {
+      this.removeDraggable($token);
+    }
+  },
+
+  removeDraggable: function($token){
+    if(!$token.data('draggable')) return null;
+    $token.draggable('destroy');
+    return null;
+  },
+
+  initializeDraggable: function($token){
+    if($token.data('draggable')) return null;
     var self = this;
-    this.$el.find('.token[data-type="empty"]').droppable({
-      drop: function(event, ui){
-        var extractCoord = function($el){
-          return {
-            x: $el.attr('data-x'),
-            y: $el.attr('data-y')
-          };
-        };
+    $token.draggable({
+      containment: 'parent',
+      helper: 'clone',
+      snap: '.token',
+      addClasses: false,
+      snapTolerance: 5,
+      zIndex: 100,
+      stop: function(event, ui){
         self.trigger('tokenMoved', {
-                       source: extractCoord(ui.draggable),
-                       destination: extractCoord($(this))
+                       source: {
+                         x: parseInt(ui.helper.attr('data-x')),
+                         y: parseInt(ui.helper.attr('data-y'))
+                       },
+                       destination: {
+                         x: Math.round(ui.position.left / self.boxWidth) + 1,
+                         y: Math.round(ui.position.top / self.boxHeight) + 1
+                       }
                      });
       }
     });
-    this.$el.find('.token[data-type="hint"]').draggable({
-      containment: 'parent',
-      helper: 'clone',
-      revertType: 'invalid',
-      snap: '.token[data-type="empty"]',
-      snapTolerance: 10,
-      zIndex: 100
-    });
+    return null;
   }
 });
 
@@ -438,7 +474,7 @@ var FormSigninView = Backbone.View.extend({
     this.model.on('change:message', function(){
       this.showError(this.model.get('message'));
     }, this);
-    
+
     if(this.model.get('signed')) this.hide();
   },
 
