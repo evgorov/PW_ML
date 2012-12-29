@@ -30,11 +30,6 @@ Backbone.ajax = function(options){
 
 var Field = Backbone.Model.extend({
 
-  defaults: {
-    height: 10,
-    width: 10
-  },
-
   initialize: function(){
     this.updateField();
     this.on('change:questions', this.updateField, this);
@@ -131,17 +126,30 @@ var Puzzle = Backbone.Model.extend({
     };
   },
   initialize: function(){
-    var self = this;
-    this.field = new Field({ questions: this.get('questions')});
-    this.on('change:questions', function(){
-      self.field.set('questions', self.get('questions'));
+    this.field = new Field({
+      questions: this.get('questions'),
+      width: this.get('width'),
+      height: this.get('height')
     });
+
+    this.on('change:height change:width', function(){
+      this.field.set('width', this.get('width'));
+      this.field.set('height', this.get('height'));
+    }, this);
+
+    this.on('change:questions', function(){
+      this.field.set('questions', this.get('questions'));
+    }, this);
   },
   getField: function(){ return this.field; },
-  addEmptyQuestion: function(){
+  addEmptyQuestion: function(x, y){
+    if(typeof x == 'undefined' && typeof y == 'undefined'){
+      x = 1;
+      y = 1;
+    }
     var question = {
-      "column": '1',
-      "row": '1',
+      "column": x,
+      "row": y,
       "question_text": "",
       "answer": "",
       "answer_position": "east:right"
@@ -156,11 +164,16 @@ var FieldView = Backbone.View.extend({
   id: "field",
 
   events: {
-    "click": "select"
+    'click .token': 'triggerClickEvent'
   },
 
-  select: function(){
+  triggerClickEvent: function(e){
+    var $token = $(e.srcElement),
+        type = $token.attr('data-type'),
+        x = $token.attr('data-x'),
+        y = $token.attr('data-y');
 
+    this.trigger('tokenClick', { type: type, x: x, y: y });
   },
 
   initialize: function(){
@@ -183,7 +196,34 @@ var FieldView = Backbone.View.extend({
         this.$el.append($token);
       }
     }
+    this.initializeDraggable();
     return this;
+  },
+
+  initializeDraggable: function(){
+    var self = this;
+    this.$el.find('.token[data-type="empty"]').droppable({
+      drop: function(event, ui){
+        var extractCoord = function($el){
+          return {
+            x: $el.attr('data-x'),
+            y: $el.attr('data-y')
+          };
+        };
+        self.trigger('tokenMoved', {
+                       source: extractCoord(ui.draggable),
+                       destination: extractCoord($(this))
+                     });
+      }
+    });
+    this.$el.find('.token[data-type="hint"]').draggable({
+      containment: 'parent',
+      helper: 'clone',
+      revertType: 'invalid',
+      snap: '.token[data-type="empty"]',
+      snapTolerance: 10,
+      zIndex: 100
+    });
   }
 });
 
@@ -220,6 +260,26 @@ var PuzzleView = Backbone.View.extend({
     this.model.set('questions', $.makeArray(questions));
   },
 
+ findQuestion: function(x, y){
+   return $('.question').
+     filter(function(i, o){ return $(o).find('.position.x').val() == x;}).
+     filter(function(i, o){ return $(o).find('.position.y').val() == y;}).
+     first();
+ },
+
+ rotateQuestion: function(x, y){
+   var $s = this.findQuestion(x, y).find('select');
+   $s.val($s.find(':selected + option').val());
+   $s.change();
+ },
+
+ moveQuestion: function(e){
+   var $question = this.findQuestion(e.source.x, e.source.y);
+   $question.find('.position.x').val(e.destination.x);
+   $question.find('.position.y').val(e.destination.y);
+   $question.find('.position.x').change();
+ },
+
   updatePuzzleAtribute: function(){
     var size = this.$el.find('[role="puzzle-size"]').val(),
         name = this.$el.find('[role="puzzle-name"]').val(),
@@ -234,6 +294,18 @@ var PuzzleView = Backbone.View.extend({
   },
 
   initialize: function(){
+    var fieldView = new FieldView({ model: this.model.getField(), el: $('#field')[0] });
+    fieldView.on('tokenClick', function(e){
+                   switch(e.type){
+                   case 'empty':
+                     this.model.addEmptyQuestion(e.x, e.y);
+                     break;
+                   case 'hint':
+                     this.rotateQuestion(e.x, e.y);
+                     break;
+                   }
+                 }, this);
+    fieldView.on('tokenMoved', this.moveQuestion, this);
     this.render();
     this.model.on('change', this.render, this);
   },
@@ -245,7 +317,6 @@ var PuzzleView = Backbone.View.extend({
   render: function() {
     var $questions = this.$el.find('.questions'),
         fieldSize = this.model.get('height') + 'x' + this.model.get('width');
-
 
     this.$el.find('[role="puzzle-size"]').val(fieldSize);
     this.$el.find('[role="puzzle-name"]').val(this.model.get('name'));
@@ -511,7 +582,6 @@ var PuzzleSetView = Backbone.View.extend({
     e.preventDefault();
     var id = $(e.srcElement).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
         puzzle = this.model.getPuzzle(id);
-    fieldView = new FieldView({ model: puzzle.getField(), el: $('#field')[0] });
     puzzleView = new PuzzleView({ model: puzzle, el: $('[role="puzzle-editor"]')[0] });
     puzzleView.show();
   },
@@ -658,7 +728,7 @@ var UsersView = Backbone.View.extend({
 
 /* Initializnig code */
 
-var fieldView, puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView;
 $(function(){
   currentUser = new CurrentUser();
   formSigninView = new FormSigninView({ model: currentUser,

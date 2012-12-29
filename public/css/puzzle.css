@@ -39,6 +39,7 @@
     background-size: 400px;
     background-position-y: -200px;
     background-position-x: -100px;
+    cursor: pointer;
 }
 
 .current{
@@ -57,14 +58,16 @@
 }
 
 [data-type="hint"]{
-
   background-position-y: 0px;
   background-position-x: 0px;
+  cursor:move;
 /*
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 */
 }
+
+/*
 
 [data-type="hint"]:hover{
   background-position-y: 0px;
@@ -91,6 +94,8 @@
   top: 15px;
 }
 
+*/
+
 [data-type="hint"]:after{
   content: attr(data-value);
   position: absolute;
@@ -106,9 +111,11 @@
   z-index: 1;
 }
 
+/*
 [data-type="hint"][data-arrow]:hover:before{
     display: none;
 }
+*/
 
 [data-type="hint"][data-arrow]:before{
   position: absolute;
@@ -132,7 +139,7 @@
 }
 [data-type="hint"][data-arrow="north:right"]:before{
     top: -50px;
-    background-position-x: -150px;
+    background-position-x: -50px;
 }
 [data-type="hint"][data-arrow="north-east:left"]:before{
     top: -50px;
@@ -299,6 +306,26 @@
 [data-x="17"] { left: 750px; }
 [data-x="18"] { left: 800px; }
 [data-x="19"] { left: 850px; }
+[data-x="20"] { left: 900px; }
+[data-x="21"] { left: 900px; }
+[data-x="22"] { left: 950px; }
+[data-x="23"] { left: 1000px; }
+[data-x="24"] { left: 1050px; }
+[data-x="25"] { left: 1100px; }
+[data-x="26"] { left: 1150px; }
+[data-x="27"] { left: 1200px; }
+[data-x="28"] { left: 1250px; }
+[data-x="29"] { left: 1300px; }
+[data-x="30"] { left: 1350px; }
+[data-x="31"] { left: 1350px; }
+[data-x="32"] { left: 1400px; }
+[data-x="33"] { left: 1450px; }
+[data-x="34"] { left: 1500px; }
+[data-x="35"] { left: 1550px; }
+[data-x="36"] { left: 1600px; }
+[data-x="37"] { left: 1650px; }
+[data-x="38"] { left: 1700px; }
+[data-x="39"] { left: 1750px; }
 
 [data-y="1"]  { top: 0px;   }
 [data-y="2"]  { top: 50px;  }
@@ -319,6 +346,26 @@
 [data-y="17"] { top: 750px; }
 [data-y="18"] { top: 800px; }
 [data-y="19"] { top: 850px; }
+[data-y="20"] { top: 900px; }
+[data-y="21"] { top: 900px; }
+[data-y="22"] { top: 950px; }
+[data-y="23"] { top: 1000px; }
+[data-y="24"] { top: 1050px; }
+[data-y="25"] { top: 1100px; }
+[data-y="26"] { top: 1150px; }
+[data-y="27"] { top: 1200px; }
+[data-y="28"] { top: 1250px; }
+[data-y="29"] { top: 1300px; }
+[data-y="30"] { top: 1350px; }
+[data-y="31"] { top: 1350px; }
+[data-y="32"] { top: 1400px; }
+[data-y="33"] { top: 1450px; }
+[data-y="34"] { top: 1500px; }
+[data-y="35"] { top: 1550px; }
+[data-y="36"] { top: 1600px; }
+[data-y="37"] { top: 1650px; }
+[data-y="38"] { top: 1700px; }
+[data-y="39"] { top: 1750px; }
 
 
 /* Interface */
