@@ -273,7 +273,8 @@ var PuzzleView = Backbone.View.extend({
     'click [role="delete_question"]': 'deleteQuestion',
     'change .question *': 'changeQuestion',
     'click [role="save-puzzle"]': 'savePuzzle',
-    'change [role^="puzzle"]': 'updatePuzzleAtribute'
+    'change [role^="puzzle"]': 'updatePuzzleAtribute',
+    'click [role="cancel-puzzle"]': 'cancelPuzzle'
   },
 
   addQuestion: function(){ this.model.addEmptyQuestion(); },
@@ -301,6 +302,12 @@ var PuzzleView = Backbone.View.extend({
      filter(function(i, o){ return $(o).find('.position.x').val() == x;}).
      filter(function(i, o){ return $(o).find('.position.y').val() == y;}).
      first();
+ },
+
+ cancelPuzzle: function(e){
+   if(e && e.preventDefault) e.preventDefault();
+   this.trigger('cancel');
+   this.hide();
  },
 
  rotateQuestion: function(x, y){
@@ -479,7 +486,7 @@ var FormSigninView = Backbone.View.extend({
   },
 
   signin: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
     var self = this;
     var $email = this.$el.find('[role="form-signin-email"]'),
         $password = this.$el.find('[role="form-signin-password"]');
@@ -521,6 +528,20 @@ var PuzzleSet = Backbone.Model.extend({
       year: (new Date).getFullYear(),
       name: _.uniqueId('Сет ')
     };
+  },
+
+  pushState: function(){
+    this.stateHistory = this.stateHistory || [];
+    this.stateHistory.push(this.toJSON());
+  },
+
+  popState: function(){
+    var state = this.stateHistory.pop();
+    this.set(state);
+  },
+
+  clearState: function(){
+    this.stateHistory = [];
   },
 
   addNewPuzzle: function(){
@@ -568,7 +589,8 @@ var PuzzleSetView = Backbone.View.extend({
     'click [role="delete-puzzle"]': 'deletePuzzle',
     'click [role="edit-puzzle"]': 'editPuzzle',
     'click [role="save-set"]': 'saveSet',
-    'click [role="publish-set"]': 'publishSet'
+    'click [role="publish-set"]': 'publishSet',
+    'click [role="cancel-set"]': 'cancelSet'
   },
 
   initialize: function(){
@@ -590,11 +612,12 @@ var PuzzleSetView = Backbone.View.extend({
 
   startEditing: function(){
     this.editing = true;
+    this.model.pushState();
     this.render();
   },
 
   addPuzzle: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
     this.model.addNewPuzzle();
   },
 
@@ -609,32 +632,46 @@ var PuzzleSetView = Backbone.View.extend({
   },
 
   deletePuzzle: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
     var id = $(e.srcElement).closest('[role="puzzle-list-item"]').attr('data-puzzle-id');
     this.model.deletePuzzle(id);
   },
 
   editPuzzle: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
+    this.model.pushState();
     var id = $(e.srcElement).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
         puzzle = this.model.getPuzzle(id);
     puzzleView = new PuzzleView({ model: puzzle, el: $('[role="puzzle-editor"]')[0] });
+    puzzleView.on('cancel', function(){
+                    this.model.popState();
+                    this.render();
+                  }, this);
     puzzleView.show();
   },
 
-  saveSet: function(e){
-    e.preventDefault();
-    this.model.save();
+  cancelSet: function(e){
+    if(e && e.preventDefault) e.preventDefault();
     this.editing = false;
+    this.model.popState();
     this.render();
   },
 
+  saveSet: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    this.model.save();
+    this.editing = false;
+    this.render();
+    this.model.clearState();
+  },
+
   publishSet: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
     this.model.set('published', true);
     this.model.save();
     this.editing = false;
     this.render();
+    this.model.clearState();
   }
 });
 
@@ -754,7 +791,7 @@ var UsersView = Backbone.View.extend({
   },
 
   selectPage: function(e){
-    e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
     var page = $(e.srcElement).text();
     this.collection.fetch({ data: { page: page }});
   }
