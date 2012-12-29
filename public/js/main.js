@@ -7,6 +7,8 @@ Backbone.ajax = function(options){
     setTimeout(_.bind(Backbone.ajax, this, options), 100);
     return null;
   }
+
+  var $spinner = $('[role="loading-spinner"]').show();
   if(typeof options.data === 'undefined') options.data = {};
   if(options.type !== 'GET'){
     delete options.contentType;
@@ -23,6 +25,11 @@ Backbone.ajax = function(options){
   }
 
   options.data.session_key = sessionKey;
+  var originalSuccess = options.success;
+  options.success = function(){
+    $spinner.hide();
+    originalSuccess.apply(this, arguments);
+  };
   return $.ajax.call($, options);
 };
 
@@ -813,4 +820,5 @@ $(function(){
 
   puzzleSets = new PuzzleSets();
   puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]'), collection: puzzleSets});
+  $('[role="loading-spinner"]').hide();
 });
