@@ -348,8 +348,8 @@ var PuzzleView = Backbone.View.extend({
     this.model.set('name', name);
     this.model.set('base_score', baseScore);
     this.model.set('time_given', timeGiven);
-    this.model.set('height', parseInt(size.split('x')[0]));
-    this.model.set('width', parseInt(size.split('x')[1]));
+    this.model.set('width', parseInt(size.split('x')[0]));
+    this.model.set('height', parseInt(size.split('x')[1]));
   },
 
   initialize: function(){
