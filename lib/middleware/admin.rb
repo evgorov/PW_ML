@@ -66,5 +66,15 @@ module Middleware
       { 'message' => "Puzzle set deleted"}.to_json
     end
 
+    get '/counters' do
+      authorize!
+      days = (0..30).map{|i| Time.now - i * 60 * 60 * 24 }.reverse.map{ |o| o.strftime("%Y-%m-%d") }
+      result = %w[logins sets_bought hints_bought scored].inject({'days' => days}) do  |acc, counter|
+        acc[counter] = env['counter'].get(*days.map { |o| o + ':' + counter })
+        acc
+      end
+
+      result.to_json
+    end
   end
 end

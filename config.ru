@@ -12,6 +12,7 @@ require 'middleware/oauth_provider_authorization'
 require 'middleware/password_reset'
 require 'middleware/users'
 require 'middleware/admin'
+require 'middleware/counter'
 
 class IndexPage
 
@@ -35,6 +36,13 @@ else
   uri = URI.parse(ENV["REDISTOGO_URL"])
   use Middleware::RedisMiddleware, { :host => uri.host, :port => uri.port, :password => uri.password }
 end
+
+use Middleware::Counter, counter_mappings: {
+  [200, %r{/login}] => 'logins',
+  [200, %r{/sets/[^/]*/buy}] => 'sets_bought',
+  [200, %r{/hints/buy}] => 'hints_bought',
+  [200, %r{/score}] => 'scored'
+}
 
 Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
 Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
