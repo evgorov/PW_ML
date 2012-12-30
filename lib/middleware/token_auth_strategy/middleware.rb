@@ -30,7 +30,7 @@ module Middleware::TokenAuthStrategy
        401,
        {
          'Content-Length' => response_message.size.to_s,
-         'Content-Type' => 'Application/json'
+         'Content-Type' => 'application/json'
        },
        [response_message]
       ]

@@ -58,6 +58,11 @@ module Middleware
       result.to_json
     end
 
+    post '/hints/buy' do
+      # need this to allow counters include hints_bought,
+      { "message" => "ok" }.to_json
+    end
+
     post '/sets/:id/buy' do
       env['token_auth'].authorize!
       UserPuzzles.

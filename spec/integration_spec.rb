@@ -49,6 +49,12 @@ describe 'Integration spec' do
       use Rack::ContentLength
       use Middleware::RedisMiddleware
 
+      use Middleware::Counter, counter_mappings: {
+        [200, %r{/login}] => 'logins',
+        [200, %r{/sets/[^/]*/buy}] => 'sets_bought',
+        [200, %r{/score}] => 'scored',
+      }
+
       Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
       Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
         provider, id = key.split('#', 2)
@@ -367,6 +373,19 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     response_data['sets'].size.should == 1
     response_data['sets'][0]['published'].should == true
+  end
+
+  it 'counters' do
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+    get '/counters', { session_key: session_key }
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['logins'].last.should == 1
   end
 
   it 'invte users'

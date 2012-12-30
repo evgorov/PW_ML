@@ -3,7 +3,7 @@ require 'dummy_storage'
 
 class BasicModel
 
-  PER_PAGE = 10
+  PER_PAGE = 50
 
   class NotFound < Exception; end
   class InvalidState < Exception; end

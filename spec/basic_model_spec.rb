@@ -75,7 +75,7 @@ describe BasicModel do
     storage.stub(namespace: storage)
     keys = data_lsit.map{ |o| o['key'] }
 
-    storage.should_receive(:zrevrange).with('all', 20, 30).and_return(keys)
+    storage.should_receive(:zrevrange).with('all', 100, 149).and_return(keys)
     storage.should_receive(:mget).with(*keys).and_return(data_lsit.map(&:to_json))
 
     subject.class.storage(storage).all(3).size.should == 3
