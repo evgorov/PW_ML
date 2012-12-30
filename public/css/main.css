@@ -5,6 +5,10 @@ body{
     padding-bottom: 40px;
 }
 
+.hidden{
+    display: none;
+}
+
 .va-middle {
     display: inline-block;
     vertical-align: middle;
@@ -116,4 +120,9 @@ body{
 
 .input-micro{
     width: 20px;
+}
+
+.chart{
+    height: 500px;
+    width: 900px;
 }

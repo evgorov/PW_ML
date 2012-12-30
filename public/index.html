@@ -11,6 +11,9 @@
   </head>
   <body>
     <div class="container">
+    <div class="alert alert-error hidden" role="page-error">
+      Произошла ошибка, попробуйте перезагрузить страницу.
+    </div>
     <div class="tabbable">
       <ul class="nav nav-tabs">
         <li class="active"><a href="#tab1" data-toggle="tab">Главная</a></li>
@@ -20,42 +23,11 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <div class="row">
-            <div class="span6">
-              <table class="table">
-                <caption><h4>Рейтинг пользователей:</h4></caption>
-                <thead>
-                  <tr>
-                    <th>№</th>
-                    <th>имя</th>
-                    <th>Очки</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Мориарти</td>
-                    <td>99999</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Шерлок Холмс</td>
-                    <td>2342</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Джон Ватсон</td>
-                    <td>500</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>К. Лестрейд</td>
-                    <td>300</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="span6">
+          <div role="dashboard">
+            <div class="row m-bottom-20px">
+              <div class="span12 ta-center"><h3>Основные показатели приложения</h3></div>
+              <div class="span12 ta-center muted"><p>Данные за последние 30 дней</p></div>
+              <div class="span12" role="chart" style="height: 400px;"></div>
             </div>
           </div>
         </div>
@@ -99,6 +71,39 @@
     </div>
     </div>
     <div class="puzzle" role="puzzle-editor" style="display: none;">
+
+    </div>
+    <div class="form-signin-container" role="form-signin-container">
+      <form class="form-signin">
+        <h2 class="form-signin-heading ta-center">Prizeword</h2>
+        <input type="text" class="input-block-level" placeholder="электронная почта" role="form-signin-email" required />
+        <input type="password" class="input-block-level" placeholder="пароль" role="form-signin-password" required />
+        <p class="text-error" role="form-signin-error" style="display: none;"></p>
+        <button class="btn btn-medium btn-primary" type="submit" role="form-signin-button">Войти</button>
+      </form>
+    </div>
+    <div id="spinner-background" role="loading-spinner">
+      <div id="floatingCirclesG">
+        <div class="f_circleG" id="frotateG_01">
+        </div>
+        <div class="f_circleG" id="frotateG_02">
+        </div>
+        <div class="f_circleG" id="frotateG_03">
+        </div>
+        <div class="f_circleG" id="frotateG_04">
+        </div>
+        <div class="f_circleG" id="frotateG_05">
+        </div>
+        <div class="f_circleG" id="frotateG_06">
+        </div>
+        <div class="f_circleG" id="frotateG_07">
+        </div>
+        <div class="f_circleG" id="frotateG_08">
+        </div>
+      </div>
+    </div>
+    <!-- Templates: -->
+    <script type="text/template" id="puzzle-editor-template">
       <div class="container">
         <div class="row">
           <div class="span12 puzzle-editor">
@@ -130,35 +135,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="form-signin-container" role="form-signin-container">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Вход на сайт</h2>
-        <input type="text" class="input-block-level" placeholder="электронная почта" role="form-signin-email" required />
-        <input type="password" class="input-block-level" placeholder="пароль" role="form-signin-password" required />
-        <p class="text-error" role="form-signin-error" style="display: none;"></p>
-        <button class="btn btn-medium btn-primary" type="submit" role="form-signin-button">Войти</button>
-      </form>
-    </div>
-    <div id="floatingCirclesG" role="loading-spinner">
-      <div class="f_circleG" id="frotateG_01">
-      </div>
-      <div class="f_circleG" id="frotateG_02">
-      </div>
-      <div class="f_circleG" id="frotateG_03">
-      </div>
-      <div class="f_circleG" id="frotateG_04">
-      </div>
-      <div class="f_circleG" id="frotateG_05">
-      </div>
-      <div class="f_circleG" id="frotateG_06">
-      </div>
-      <div class="f_circleG" id="frotateG_07">
-      </div>
-      <div class="f_circleG" id="frotateG_08">
-      </div>
-    </div>
-    <!-- Templates: -->
+    </script>
     <script type="text/template" id="simple-puzzle-view-template">
       <div class="question" role="question">
         <input type="text" class="position x" value="<%- column %>" />
@@ -267,5 +244,9 @@
     <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/backbone-min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+    </script>
   </body>
 </html>

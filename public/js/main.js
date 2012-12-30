@@ -28,8 +28,16 @@ Backbone.ajax = function(options){
   var originalSuccess = options.success;
   options.success = function(){
     $spinner.hide();
-    originalSuccess.apply(this, arguments);
+    if(originalSuccess) originalSuccess.apply(this, arguments);
   };
+
+  var originalError = options.error;
+  options.error = function(){
+    $spinner.hide();
+    $('[role="page-error"]').show();
+    if(originalError) originalError.apply(this, arguments);
+  };
+
   return $.ajax.call($, options);
 };
 
@@ -167,7 +175,7 @@ var Puzzle = Backbone.Model.extend({
 
 var FieldView = Backbone.View.extend({
 
-  tagName: "div",
+  tagName: 'div',
   id: "field",
 
   events: {
@@ -272,7 +280,8 @@ var FieldView = Backbone.View.extend({
 
 var PuzzleView = Backbone.View.extend({
 
-  tagName: "div",
+  tagName: 'div',
+  template: _.template($('#puzzle-editor-template').html()),
   rowTemplate: _.template($('#simple-puzzle-view-template').html()),
 
   events: {
@@ -344,6 +353,7 @@ var PuzzleView = Backbone.View.extend({
   },
 
   initialize: function(){
+    this.$el.html(this.template());
     var fieldView = new FieldView({ model: this.model.getField(), el: $('#field')[0] });
     fieldView.on('tokenClick', function(e){
                    switch(e.type){
@@ -355,8 +365,8 @@ var PuzzleView = Backbone.View.extend({
                      break;
                    }
                  }, this);
-    fieldView.on('tokenMoved', this.moveQuestion, this);
     this.render();
+    fieldView.on('tokenMoved', this.moveQuestion, this);
     this.model.on('change', this.render, this);
   },
 
@@ -468,7 +478,7 @@ var LogoutView = Backbone.View.extend({
 });
 
 var FormSigninView = Backbone.View.extend({
-  tagName: "div",
+  tagName: 'div',
   className: "form-signin-container",
 
   events: {
@@ -683,7 +693,7 @@ var PuzzleSetView = Backbone.View.extend({
 });
 
 var PuzzleSetsView = Backbone.View.extend({
-  tagName: "div",
+  tagName: 'div',
   emptySetsTemplate: _.template($('#set-view-empty-template').html()),
   events: {
     'changeMonth': 'changeMonth',
@@ -756,7 +766,7 @@ var Users = Backbone.Collection.extend({
 });
 
 var UsersView = Backbone.View.extend({
-  tagName: "div",
+  tagName: 'div',
   rowTemplate: (function(){
               var items = _([
                    '=name', '=surname', '=email', 'print(created_at.split(" ")[0])',
@@ -804,11 +814,54 @@ var UsersView = Backbone.View.extend({
   }
 });
 
+/* Dashboard */
+
+var Counters = Backbone.Model.extend({
+  url: '/counters',
+  toData: function(){
+    var days = ['День'].concat(this.get('days')),
+        logins = ['Логины'].concat(this.get('logins')),
+        sets_bought = ['покупки сетов'].concat(this.get('sets_bought')),
+        hints_bought = ['покупки подсаказок'].concat(this.get('hints_bought')),
+        scored = ['увеличение счета'].concat(this.get('scored'));
+    return _.zip(days, logins, sets_bought, hints_bought, scored);
+  }
+});
+
+
+var DashboardView = Backbone.View.extend({
+
+  tagName: 'div',
+  className: 'row',
+
+  events: {
+  },
+
+  initialize: function(){
+    this.counters = new Counters();
+    this.counters.on('change', this.renderChart, this);
+    this.counters.fetch();
+    this.render();
+  },
+
+  renderChart: function(){
+    var data = google.visualization.arrayToDataTable(this.counters.toData());
+    var options = {
+      chartArea: { left: 40, width: 900 },
+      legend: { position: 'top' }
+    };
+
+    var chart = new google.visualization.LineChart(this.$el.find('[role="chart"]')[0]);
+    chart.draw(data, options);
+  },
+
+  render: function() {}
+});
 
 
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView;
 $(function(){
   currentUser = new CurrentUser();
   formSigninView = new FormSigninView({ model: currentUser,
@@ -816,9 +869,11 @@ $(function(){
   logoutView = new LogoutView({ model: currentUser,
                                         el: $('[role="logout"]')[0] });
   users = new Users;
-  usersView = new UsersView({ el: $('[role="users"]'), collection: users });
+  usersView = new UsersView({ el: $('[role="users"]')[0], collection: users });
 
   puzzleSets = new PuzzleSets();
-  puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]'), collection: puzzleSets});
+  puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]')[0], collection: puzzleSets});
+
+  dashboardView = new DashboardView({ el: $('[role="dashboard"]')[0] });
   $('[role="loading-spinner"]').hide();
 });

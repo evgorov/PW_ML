@@ -10,23 +10,18 @@ require 'puzzle_set'
 
 redis = Redis.new
 
-100.times do |i|
 u = RegisteredUser.new
-u['role'] = 'user'
-u['email'] = "user#{i}@example.com"
-u['password'] = '1234'
+u['role'] = 'admin'
+u['email'] = 'admin@example.com'
+u['password'] = 'admin'
 u['provider'] = 'registered'
-u['name'] = 'User#{1}'
-u['surname'] = 'Userovich'
+u['name'] = 'Admin'
+u['surname'] = 'Admin'
 u.storage(redis).save
-puts "user #{i} user created"
+puts "Admin user created"
 
-end
-
-
-
-# ps = PuzzleSet.new
-# ps['name'] = 'Средиземье'
-# ps['type'] = 'Golden'
-# ps.storage(redis).save
-# puts "Puzzle set created"
+ps = PuzzleSet.new
+ps['name'] = 'Средиземье'
+ps['type'] = 'Golden'
+ps.storage(redis).save
+puts "Puzzle set created"
