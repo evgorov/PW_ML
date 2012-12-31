@@ -10,6 +10,23 @@ require 'puzzle_set'
 
 redis = Redis.new
 
+redis.flushdb
+
+# Random data for graphs
+days = (0..30).map{|i| Time.now - i * 60 * 60 * 24 }.reverse.map{ |o| o.strftime("%Y-%m-%d") }
+%w[logins sets_bought hints_bought scored].each do |counter|
+  days.each_with_index do |o, i|
+    value = case counter
+            when 'logins'; (rand * i * 100).round
+            when 'hints_bought'; (rand * i * 10).round
+            else; (rand * i).round
+            end
+    redis.set('counter:' + o + ':' + counter, value)
+  end
+end
+puts "Counters populated"
+
+# Creating user
 u = RegisteredUser.new
 u['role'] = 'admin'
 u['email'] = 'admin@example.com'
@@ -20,6 +37,8 @@ u['surname'] = 'Admin'
 u.storage(redis).save
 puts "Admin user created"
 
+
+# Creating puzzle
 ps = PuzzleSet.new
 ps['name'] = 'Средиземье'
 ps['type'] = 'Golden'

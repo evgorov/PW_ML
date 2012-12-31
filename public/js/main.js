@@ -36,6 +36,8 @@ Backbone.ajax = function(options){
     $spinner.hide();
     $('[role="page-error"]').show();
     if(originalError) originalError.apply(this, arguments);
+    $.cookie('sessionKey', null);
+    $.cookie('username', null);
   };
 
   return $.ajax.call($, options);
@@ -170,6 +172,7 @@ var Puzzle = Backbone.Model.extend({
       "answer_position": "east:right"
     };
     this.set('questions', this.get('questions').concat([question]));
+    this.trigger('questionAdded');
   }
 });
 
@@ -287,7 +290,7 @@ var PuzzleView = Backbone.View.extend({
   events: {
     'click [role="add_question"]': 'addQuestion',
     'click [role="delete_question"]': 'deleteQuestion',
-    'change .question *': 'changeQuestion',
+    'keyup .question *': 'changeQuestion',
     'click [role="save-puzzle"]': 'savePuzzle',
     'change [role^="puzzle"]': 'updatePuzzleAtribute',
     'click [role="cancel-puzzle"]': 'cancelPuzzle'
@@ -306,7 +309,7 @@ var PuzzleView = Backbone.View.extend({
         "column": parseInt($this.find('.position.x').val()),
         "row": parseInt($this.find('.position.y').val()),
         "question_text": $this.find('.hint').val(),
-        "answer": $this.find('.answer').val(),
+        "answer": $this.find('.answer').val().toLowerCase(),
         "answer_position": $this.find('select').val()
       };
     });
@@ -336,7 +339,7 @@ var PuzzleView = Backbone.View.extend({
    var $question = this.findQuestion(e.source.x, e.source.y);
    $question.find('.position.x').val(e.destination.x);
    $question.find('.position.y').val(e.destination.y);
-   $question.find('.position.x').change();
+   $question.find('.position.x').keyup();
  },
 
   updatePuzzleAtribute: function(){
@@ -367,7 +370,7 @@ var PuzzleView = Backbone.View.extend({
                  }, this);
     this.render();
     fieldView.on('tokenMoved', this.moveQuestion, this);
-    this.model.on('change', this.render, this);
+    this.model.on('questionAdded', this.render, this);
   },
 
   savePuzzle: function(){
@@ -483,7 +486,7 @@ var FormSigninView = Backbone.View.extend({
 
   events: {
     'submit': 'signin',
-    'focus *': 'hideError'
+    'focus *': 'removeError'
   },
 
   initialize: function(){
@@ -496,7 +499,13 @@ var FormSigninView = Backbone.View.extend({
       }
     }, this);
     this.model.on('change:message', function(){
-      this.showError(this.model.get('message'));
+      var message = this.model.get('message');
+      if(message){
+        this.showError(message);
+      } else {
+        this.hideError();
+      }
+
     }, this);
 
     if(this.model.get('signed')) this.hide();
@@ -512,6 +521,10 @@ var FormSigninView = Backbone.View.extend({
       $email.val('');
       $password.val('');
     }, 1000);
+  },
+
+  removeError: function(){
+    this.model.set('message', null);
   },
 
   showError: function(message){

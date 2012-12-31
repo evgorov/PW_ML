@@ -124,8 +124,20 @@
               <div></div>
             </div>
             <div id="interface" class="m-bottom-20px">
-              <div class="questions">
-              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td>Столбец</td>
+                    <td>Строка</td>
+                    <td>Направление</td>
+                    <td>Вопрос</td>
+                    <td>Ответ</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody class="questions">
+                </tbody>
+              </table>
               <button class="btn" role="add_question">Добавить вопрос</button>
             </div>
             <div class="pull-right">
@@ -137,10 +149,10 @@
       </div>
     </script>
     <script type="text/template" id="simple-puzzle-view-template">
-      <div class="question" role="question">
-        <input type="text" class="position x" value="<%- column %>" />
-        <input type="text" class="position y" value="<%- row %>" />
-        <select class="input-medium">
+      <tr class="question" role="question">
+        <td><input type="text" class="position x" value="<%- column %>" /></td>
+        <td><input type="text" class="position y" value="<%- row %>" /></td>
+        <td><select class="input-medium">
           <option value="north:left">north:left</option>
           <option value="north:top">north:top</option>
           <option value="north:right">north:right</option>
@@ -161,11 +173,11 @@
           <option value="west:top">west:top</option>
           <option value="north-west:bottom">north-west:bottom</option>
           <option value="north-west:right">north-west:right</option>
-        </select>
-        <textarea class="hint input-medium"><%- question_text %></textarea>
-        <input type="text" class="answer input-small" value="<%- answer %>" />
-        <button href="#" class="btn " role="delete_question">Удалить вопрос</button>
-      </div>
+        </select></td>
+        <td><textarea class="hint input-medium"><%- question_text %></textarea></td>
+        <td><input type="text" class="answer input-small" value="<%- answer %>" /></td>
+        <td><button href="#" class="btn " role="delete_question">Удалить вопрос</button></td>
+      </tr>
     </script>
     <script type="text/template" id="set-view-empty-template">
       <div class="row m-bottom-20px">
