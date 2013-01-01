@@ -291,6 +291,7 @@ var PuzzleView = Backbone.View.extend({
     'click [role="add_question"]': 'addQuestion',
     'click [role="delete_question"]': 'deleteQuestion',
     'keyup .question *': 'changeQuestion',
+    'change .question *': 'changeQuestion',
     'click [role="save-puzzle"]': 'savePuzzle',
     'change [role^="puzzle"]': 'updatePuzzleAtribute',
     'click [role="cancel-puzzle"]': 'cancelPuzzle'
