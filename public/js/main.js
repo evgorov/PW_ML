@@ -358,7 +358,8 @@ var PuzzleView = Backbone.View.extend({
 
   initialize: function(){
     this.$el.html(this.template());
-    var fieldView = new FieldView({ model: this.model.getField(), el: $('#field')[0] });
+    $('[role="puzzle-editor"]').empty().append(this.$el);
+    var fieldView = new FieldView({ model: this.model.getField(), el: this.$el.find('[role="field"]')[0] });
     fieldView.on('tokenClick', function(e){
                    switch(e.type){
                    case 'empty':
@@ -398,11 +399,11 @@ var PuzzleView = Backbone.View.extend({
   },
 
   hide: function(){
-    this.$el.hide('fast');
+    this.$el.parent().hide('fast');
   },
 
   show: function(){
-    this.$el.show('fast');
+    this.$el.parent().show('fast');
   }
 });
 
@@ -673,7 +674,7 @@ var PuzzleSetView = Backbone.View.extend({
     this.model.pushState();
     var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
         puzzle = this.model.getPuzzle(id);
-    puzzleView = new PuzzleView({ model: puzzle, el: $('[role="puzzle-editor"]')[0] });
+    puzzleView = new PuzzleView({ model: puzzle });
     puzzleView.on('cancel', function(){
                     this.model.popState();
                     this.render();
