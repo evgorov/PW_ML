@@ -50,8 +50,8 @@
 }
 
 [data-type="error"]{
-    background-position-y: -50px;
     background-position-x: 0;
+    background-position-y: -50px;
     z-index: 100;
 }
 
@@ -136,15 +136,21 @@
 [data-type="hint"][data-arrow="north:left"]:before{
     top: -50px;
     background-position-x: -200px;
+    background-position-y: 0;
+
 }
 
 [data-type="hint"][data-arrow="north:top"]:before{
     top: -50px;
-    background-position-x: -150px;n
+    background-position-x: -150px;
+    background-position-y: 0;
+
 }
 [data-type="hint"][data-arrow="north:right"]:before{
     top: -50px;
     background-position-x: -50px;
+    background-position-y: 0;
+
 }
 [data-type="hint"][data-arrow="north-east:left"]:before{
     top: -50px;

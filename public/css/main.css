@@ -1,4 +1,7 @@
-div { box-sizing: border-box }
+div {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
 
 body{
     margin-top: 20px;
