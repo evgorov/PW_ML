@@ -186,7 +186,7 @@ var FieldView = Backbone.View.extend({
   },
 
   triggerClickEvent: function(e){
-    var $token = $(e.srcElement),
+    var $token = $(e.target),
         type = $token.attr('data-type'),
         x = $token.attr('data-x'),
         y = $token.attr('data-y');
@@ -299,7 +299,7 @@ var PuzzleView = Backbone.View.extend({
 
   addQuestion: function(){ this.model.addEmptyQuestion(); },
   deleteQuestion: function(e){
-    $(e.srcElement).closest('.question').remove();
+    $(e.target).closest('.question').remove();
     this.changeQuestion();
   },
 
@@ -653,25 +653,25 @@ var PuzzleSetView = Backbone.View.extend({
   },
 
   changeName: function(e){
-    this.model.set('name', $(e.srcElement).val());
+    this.model.set('name', $(e.target).val());
     return true;
   },
 
   changeType: function(e){
-    this.model.set('type', $(e.srcElement).val());
+    this.model.set('type', $(e.target).val());
     return true;
   },
 
   deletePuzzle: function(e){
     if(e && e.preventDefault) e.preventDefault();
-    var id = $(e.srcElement).closest('[role="puzzle-list-item"]').attr('data-puzzle-id');
+    var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id');
     this.model.deletePuzzle(id);
   },
 
   editPuzzle: function(e){
     if(e && e.preventDefault) e.preventDefault();
     this.model.pushState();
-    var id = $(e.srcElement).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
+    var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
         puzzle = this.model.getPuzzle(id);
     puzzleView = new PuzzleView({ model: puzzle, el: $('[role="puzzle-editor"]')[0] });
     puzzleView.on('cancel', function(){
@@ -823,7 +823,7 @@ var UsersView = Backbone.View.extend({
 
   selectPage: function(e){
     if(e && e.preventDefault) e.preventDefault();
-    var page = $(e.srcElement).text();
+    var page = $(e.target).text();
     this.collection.fetch({ data: { page: page }});
   }
 });

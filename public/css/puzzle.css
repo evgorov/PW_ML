@@ -41,18 +41,16 @@
     height: 50px;
     background-image: url(../img/puzzle-background.jpg);
     background-size: 400px;
-    background-position-y: -200px;
-    background-position-x: -100px;
     cursor: pointer;
+    background-position: -100px -200px;
 }
 
 .current{
 }
 
 [data-type="error"]{
-    background-position-x: 0;
-    background-position-y: -50px;
     z-index: 100;
+    background-position: 0 -50px;
 }
 
 [data-type="empty"]{
@@ -63,26 +61,24 @@
 }
 
 [data-type="hint"]{
-  background-position-y: 0px;
-  background-position-x: 0px;
   cursor:move;
 /*
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 */
+    background-position: 0px 0px;
 }
 
 /*
 
 [data-type="hint"]:hover{
-  background-position-y: 0px;
-  background-position-x: 0px;
   height: 100px;
   width: 100px;
   z-index: 4;
   background-size: 800px;
   margin-left: -25px;
   margin-top: -25px;
+    background-position: 0px 0px;
 }
 [data-type="hint"]:hover:after{
   z-index: 5;
@@ -135,28 +131,24 @@
 
 [data-type="hint"][data-arrow="north:left"]:before{
     top: -50px;
-    background-position-x: -200px;
-    background-position-y: 0;
 
+    background-position: -200px 0;
 }
 
 [data-type="hint"][data-arrow="north:top"]:before{
     top: -50px;
-    background-position-x: -150px;
-    background-position-y: 0;
 
+    background-position: -150px 0;
 }
 [data-type="hint"][data-arrow="north:right"]:before{
     top: -50px;
-    background-position-x: -50px;
-    background-position-y: 0;
 
+    background-position: -50px 0;
 }
 [data-type="hint"][data-arrow="north-east:left"]:before{
     top: -50px;
     left: 50px;
-    background-position-x: -100px;
-    background-position-y: -150px;
+    background-position: -100px -150px;
 }
 
 [data-type="hint"][data-arrow="north-east:top"]:before{}
@@ -165,40 +157,34 @@
 [data-type="hint"][data-arrow="north-east:bottom"]:before{
     top: -50px;
     left: 50px;
-    background-position-x: -250px;
-    background-position-y: -50px;
+    background-position: -250px -50px;
 }
 
 [data-type="hint"][data-arrow="east:top"]:before{
     left: 50px;
-    background-position-x: -200px;
-    background-position-y: -50px;
+    background-position: -200px -50px;
 }
 
 [data-type="hint"][data-arrow="east:right"]:before{
     left: 50px;
-    background-position-x: -150px;
-    background-position-y: -50px;
+    background-position: -150px -50px;
 }
 
 [data-type="hint"][data-arrow="east:bottom"]:before{
     left: 50px;
-    background-position-x: -50px;
-    background-position-y: -50px;
+    background-position: -50px -50px;
 }
 
 [data-type="hint"][data-arrow="south-east:left"]:before{
     top: 50px;
     left: 50px;
-    background-position-x: -250px;
-    background-position-y: -100px;
+    background-position: -250px -100px;
 }
 
 [data-type="hint"][data-arrow="south-east:top"]:before{
     top: 50px;
     left: 50px;
-    background-position-x: -100px;
-    background-position-y: -50px;
+    background-position: -100px -50px;
 }
 
 [data-type="hint"][data-arrow="south-east:right"]:before{}
@@ -206,57 +192,49 @@
 
 [data-type="hint"][data-arrow="south:left"]:before{
     top: 50px;
-    background-position-x: -50px;
-    background-position-y: -100px;
+    background-position: -50px -100px;
 }
 
 [data-type="hint"][data-arrow="south:right"]:before{
     top: 50px;
-    background-position-x: -200px;
-    background-position-y: -100px;
+    background-position: -200px -100px;
 }
 
 [data-type="hint"][data-arrow="south:bottom"]:before{
     top: 50px;
-    background-position-x: -150px;
-    background-position-y: -100px;
+    background-position: -150px -100px;
 }
 
 [data-type="hint"][data-arrow="south-west:left"]:before{}
 [data-type="hint"][data-arrow="south-west:top"]:before{
     left: -50px;
     top: 50px;
-    background-position-x: -250px;
-    background-position-y: 0px;
+    background-position: -250px 0px;
 }
 
 [data-type="hint"][data-arrow="south-west:right"]:before{
     left: -50px;
     top: 50px;
-    background-position-x: -100px;
-    background-position-y: -100px;
+    background-position: -100px -100px;
 }
 
 [data-type="hint"][data-arrow="south-west:bottom"]:before{}
 
 [data-type="hint"][data-arrow="west:left"]:before{
     left: -50px;
-    background-position-x: -150px;
-    background-position-y: -150px;
+    background-position: -150px -150px;
 }
 
 [data-type="hint"][data-arrow="west:top"]:before{
     top: 0;
     left: -50px;
-    background-position-x: -50px;
-    background-position-y: -150px;
+    background-position: -50px -150px;
 }
 
 [data-type="hint"][data-arrow="west:bottom"]:before{
     top: 0;
     left: -50px;
-    background-position-x: -200px;
-    background-position-y: -150px;
+    background-position: -200px -150px;
 }
 
 [data-type="hint"][data-arrow="north-west:left"]:before{}
@@ -265,21 +243,18 @@
 [data-type="hint"][data-arrow="north-west:right"]:before{
     top: -50px;
     left: -50px;
-    background-position-x: -250px;
-    background-position-y: -150px;
+    background-position: -250px -150px;
 }
 
 [data-type="hint"][data-arrow="north-west:bottom"]:before{
     top: -50px;
     left: -50px;
-    background-position-x: -100px;
-    background-position-y: -0px;
+    background-position: -100px -0px;
 }
 
 
 [data-type="value"]{
-  background-position-y: -100px;
-  background-position-x: 0px;
+    background-position: 0px -100px;
 }
 
 [data-type="value"]:after{
