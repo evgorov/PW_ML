@@ -834,9 +834,9 @@ var Counters = Backbone.Model.extend({
   url: '/counters',
   toData: function(){
     var days = ['День'].concat(this.get('days')),
-        logins = ['Логины'].concat(this.get('logins')),
+        logins = ['логины'].concat(this.get('logins')),
         sets_bought = ['покупки сетов'].concat(this.get('sets_bought')),
-        hints_bought = ['покупки подсаказок'].concat(this.get('hints_bought')),
+        hints_bought = ['покупки подсказок'].concat(this.get('hints_bought')),
         scored = ['увеличение счета'].concat(this.get('scored'));
     return _.zip(days, logins, sets_bought, hints_bought, scored);
   }
