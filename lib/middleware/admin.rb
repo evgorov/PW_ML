@@ -26,6 +26,7 @@ module Middleware
         current_page: page
       }.to_json
     end
+
     get '/sets' do
       authorize!
       args = []

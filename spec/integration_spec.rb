@@ -1,5 +1,6 @@
 require 'middleware/redis_middleware'
 require 'middleware/password_reset'
+require 'middleware/counter'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
@@ -314,7 +315,7 @@ describe 'Integration spec' do
     last_response.status.should == 200
   end
 
-  xit 'admin' do
+  it 'admin' do
     admin_user
     post '/login', email: user_in_storage['email'], password: user_in_storage_password
 
@@ -325,11 +326,12 @@ describe 'Integration spec' do
 
     post('/sets',
          {
-           year: 2012,
-           month: 10,
+           year: Time.now.year,
+           month: Time.now.month,
            name: 'Cool set',
            puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
            type: 'golden',
+           published: true,
            session_key: session_key
          })
 
@@ -338,17 +340,14 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     admin_set_id1 = response_data['id']
 
-    post("/sets/#{admin_set_id1}/publish", { session_key: session_key })
-    last_response.status.should == 200
-    last_response_should_be_json
-
     post('/sets',
          {
-           year: 2012,
-           month: 10,
+           year: Time.now.year,
+           month: Time.now.month,
            name: 'Cool set2',
            puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
            type: 'silver',
+           published: false,
            session_key: session_key
          })
 

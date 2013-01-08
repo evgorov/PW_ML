@@ -149,7 +149,7 @@ describe User do
 
       storage.
         should_receive(:zrevrange).
-        with('rating', 0, 9).
+        with('rating', 0, 49).
         and_return(['registered#g@interpol.co.uk', 'facebook#1234'])
       storage.should_receive(:mget).
         with(user_in_storage_key, user2_in_storage_key).

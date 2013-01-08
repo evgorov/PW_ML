@@ -68,7 +68,13 @@ describe BasicModel do
     subject.storage(storage).merge(data).save
   end
 
-  it '#size'
+  it '#size' do
+    storage = mock(:storage)
+    storage.stub(namespace: storage)
+
+    storage.should_receive(:zcard).with('all').and_return(3)
+    subject.class.storage(storage).size.should == 3
+  end
 
   it '#all returns all instances' do
     storage = mock(:storage)
