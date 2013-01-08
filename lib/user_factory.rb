@@ -1,6 +1,6 @@
 require 'httparty'
 require 'json'
-require 'user'
+require 'model/user'
 
 module UserFactory
 

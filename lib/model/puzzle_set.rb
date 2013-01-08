@@ -1,6 +1,6 @@
 require 'json'
 require 'ext/hash'
-require 'basic_model'
+require 'model/basic_model'
 
 class PuzzleSet < BasicModel
 

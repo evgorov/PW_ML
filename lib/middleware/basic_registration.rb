@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'user_factory'
-require 'user'
+require 'model/user'
 
 module Middleware
   class BasicRegistration < Sinatra::Base

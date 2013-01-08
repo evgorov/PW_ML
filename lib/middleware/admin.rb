@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'puzzle_set'
+require 'model/puzzle_set'
 
 module Middleware
   class Admin < Sinatra::Base

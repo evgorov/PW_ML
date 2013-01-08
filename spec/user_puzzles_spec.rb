@@ -1,5 +1,5 @@
 require 'fixtures'
-require 'user_puzzles'
+require 'model/user_puzzles'
 
 describe UserPuzzles do
   include_context 'fixtures'

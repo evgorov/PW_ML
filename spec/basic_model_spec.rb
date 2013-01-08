@@ -1,4 +1,4 @@
-require 'basic_model'
+require 'model/basic_model'
 
 describe BasicModel do
 

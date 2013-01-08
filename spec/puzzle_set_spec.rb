@@ -1,4 +1,4 @@
-require 'puzzle_set'
+require 'model/puzzle_set'
 require 'fixtures'
 
 describe PuzzleSet do

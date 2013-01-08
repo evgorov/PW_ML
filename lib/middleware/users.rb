@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'user_factory'
-require 'user'
-require 'user_puzzles'
+require 'model/user'
+require 'model/user_puzzles'
 
 module Middleware
   class Users < Sinatra::Base

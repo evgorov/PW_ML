@@ -1,4 +1,4 @@
-require 'user'
+require 'model/user'
 require 'fixtures'
 
 # Lets add some speed!

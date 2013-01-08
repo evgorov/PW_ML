@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'json'
 require 'securerandom'
 require 'pony'
-require 'user'
+require 'model/user'
 
 module Middleware
   class PasswordReset < Sinatra::Base
