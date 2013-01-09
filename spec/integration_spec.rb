@@ -159,7 +159,7 @@ describe 'Integration spec' do
     VCR.use_cassette('facebook_success_login') do
       get '/facebook/login'
       last_response.status.should == 302
-      # Here we assume user logs in into our app
+      # Here we assume user logs in into facebook and aproves our app
       get '/facebook/authorize', { code: 'AQALG4kdgy528xTY0KlG-WlKG9vzMyOZ3TGUhquw_yWMVYa0E7o0dyBvSd9uNFigtbhQaIMX7i33pL2G9DhIhIBk1LgEUfwALggMCXnT7ZFW-B7iS0_0giZEGllyJQgvpJPyLAXykWGMXt3S2l-Cm7AyEA9DsbmB646QhZVtIiKL-cGH9aS7omfCMgRpKZewJkbLvjdR7pfG5k6YT1iYAth6' }
       last_response_should_be_json
       last_response.status.should == 200
@@ -387,7 +387,33 @@ describe 'Integration spec' do
     response_data['logins'].last.should == 1
   end
 
-  it 'invte users'
+  it 'does service messages' do
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
 
-  it 'service messages'
+    get '/service_message', { session_key: session_key }
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['service_message'].should == ""
+
+    put '/service_message', { session_key: session_key, service_message: 'new message' }
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['service_message'].should == "new message"
+
+
+    get '/service_message', { session_key: session_key }
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['service_message'].should == "new message"
+  end
+
+  it 'invte users'
 end

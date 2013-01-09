@@ -2,7 +2,7 @@
 
 # Prizeword api
 
-Status codes in use: 200, 201, 302, 401, 403, 404, 500.
+Status codes in use: 200, 302, 401, 403, 404, 500.
 
 # Authentication
 
@@ -16,7 +16,7 @@ Api uses oauth [Web Server Flow](http://tools.ietf.org/html/draft-ietf-oauth-v2-
 
 This action returns redirect URL pointing to Login Dialog Url for `:provider_name`. Client application must show this page in browser window (Webview in case of IOS application). After user authorizes, provider will redirect him to `/:provider_name/authorize`. Application should call this endpoint to obtain session token.
 
-*Request:*
+*Request parameters:*
 
 - `provider_name`: Authentication provider name (facebook, vkontakte)
 
@@ -28,7 +28,7 @@ This action returns redirect URL pointing to Login Dialog Url for `:provider_nam
 
 Endpoint for final step in OAUTH2 authorization process. Web server will get access token using `code` and return session token.
 
-*Request:*
+*Request parameters:*
 
 - `provider_name`: Authentication provider name (facebook, vkontakte)
 - `code`: Authorization code from OAUTH provider
@@ -59,7 +59,7 @@ JSON object, representing containing session token and user information:
 
 List user's friends in provided social network.
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token
 - `provider_name`: Authentication provider name (facebook, vkontakte)
@@ -114,7 +114,7 @@ If user has valid access token, then it will return list of friends:
 
 Send invite to user
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token
 - `provider_name`: Authentication provider name (facebook, vkontakte)
@@ -122,7 +122,7 @@ Send invite to user
 
 *Response:*
 
-201 response in case of success.
+200 response in case of success.
 
 ## Simple flow
 
@@ -132,7 +132,7 @@ This is straight forward registration flow. User can register in application usi
 
 If userpic is included in request, then whole request should be encoded with `multipart/form-data`.
 
-*Request:*
+*Request parameters:*
 
 - `email`: Email address
 - `name`: Name
@@ -166,7 +166,7 @@ JSON object, representing containing session token and user information:
 
 **`POST /login`**
 
-*Request:*
+*Request parameters:*
 
 - `email`: Email address
 - `password`: Password
@@ -197,19 +197,19 @@ JSON object, representing containing session token and user information:
 
 It will trigger send password reset link to user email.
 
-*Request:*
+*Request parameters:*
 
 - `email`: Email address
 
 *Response:*
 
-201 in case of success, 404 if email is not registered.
+200 in case of success, 404 if email is not registered.
 
 **`GET /password_reset`**
 
 Html page for password reset. Link to it will be mailed in within `POST /forgot_password` request. This technically is not part of API, but included here to provide full picture.
 
-*Request:*
+*Request parameters:*
 
 - `token`: password reset token, automatically generated token for password reset.
 
@@ -221,7 +221,7 @@ Html page for password reset. Link to it will be mailed in within `POST /forgot_
 
 This post request will be triggered by password reset form. It will change user password.
 
-*Request:*
+*Request parameters:*
 
 - `token`: password reset token, automatically generated token for password reset.
 - `password`: new password for user.
@@ -234,7 +234,7 @@ This post request will be triggered by password reset form. It will change user 
 
 Get basic info for logged in user.
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token.
 
@@ -261,7 +261,7 @@ Get basic info for logged in user.
 
 Update basic information. If userpic is included in request, then whole request should be encoded with `multipart/form-data`.
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token
 - `[name]`: Name
@@ -297,7 +297,7 @@ Update basic information. If userpic is included in request, then whole request 
 
 Set of routes describing information about users.
 
-*Request:*
+*Request parameters:*
 
 - `[session_token]`: if session token for current user, response will include scoring information about user.
 - `[page]`: paginate collection of users.
@@ -368,7 +368,7 @@ Set of routes describing information about users.
 List puzzles for given month and their status, if month is not present, show information about current month.
 
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token.
 - `[year]`: Year
@@ -462,10 +462,10 @@ Three dots (...) in documentation mean that part of payload was skipped to keep 
 
 Method for storing arbitrary data, about given puzzle.
 
-*Request:*
+*Request parameters:*
 
 - `id`: Id of the puzzle
--  all post data for this request will be saved.
+- `puzzle_data`: puzzle data to be saved
 
 *Response:*
 
@@ -475,7 +475,7 @@ Method for storing arbitrary data, about given puzzle.
 
 Method for retrieving data stored with `PUT /puzzles/"id`.
 
-*Request:*
+*Request parameters:*
 
 - `id`: Id of the puzzle
 
@@ -487,7 +487,7 @@ Data stored with `PUT /puzzles/"id`.
 
 Sets available sets for buying (shows this month only)
 
-*Request:*
+*Request parameters:*
 
 No parameters available.
 
@@ -500,6 +500,7 @@ No parameters available.
         "month":12,
         "year":2012,
         "moth":10,
+        "published": true,
         "name":"Cool set",
         "type":"golden"
       }
@@ -509,7 +510,7 @@ No parameters available.
 
 Buy set.
 
-*Request:*
+*Request parameters:*
 
 - `id`: Id of set to buy
 - `receipt-data`: receipt data from itunes
@@ -603,7 +604,7 @@ Three dots (...) in documentation mean that part of payload was skipped to keep 
 Add or removes hints from user.
 
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token.
 - `[hints_change]`: amount to change.
@@ -631,7 +632,7 @@ Add or removes hints from user.
 
 Add or removes points from user score. This endpoint can be used score for activities other than puzzle solving (inviting friends, achivements, ect.)
 
-*Request:*
+*Request parameters:*
 
 - `session_token`: Session token.
 - `[score]`: Amount to change score.
@@ -660,15 +661,123 @@ Add or removes points from user score. This endpoint can be used score for activ
 
 **`GET /sets`**
 
+Returns all sets for given month, including unpublished ones.
+
+*Request parameters:*
+
+- `month`: Month for which puzzle sets will be returned, if not given current one will be used.
+- `year`: Year for which puzzle sets will be returned, if not given current one will be used.
+
+*Response:*
+
+    [
+      {
+       "id":"7e4e7bc7-a484-4b67-8c4c-1727f041047a",
+        "puzzles":[{"name":"puzzle1"},{"name":"puzzle2"}],
+        "month":12,
+        "year":2012,
+        "moth":10,
+        "published": true,
+        "name":"Cool set",
+        "type":"golden"
+      }
+    ]
+
 **`POST /sets`**
+
+Creates puzzle set.
+
+*Request parameters:*
+
+- `month`: Puzzle set will be added to list for given month and year
+- `year`: Puzzle set will be added to list for given month and year
+- `name`: Name of set
+- `published`: Boolean, describes if puzzle is exposed to users
+- `type`: Type of puzzle set (free, golden, etc.)
+- `puzzles`: JSON serizalized puzzles, see chapter *Puzzle data format*.
+
+*Response:*
+
+    {
+     "id":"7e4e7bc7-a484-4b67-8c4c-1727f041047a",
+      "puzzles":[{"name":"puzzle1"},{"name":"puzzle2"}],
+      "month":12,
+      "year":2012,
+      "moth":10,
+      "published": true,
+      "name":"Cool set",
+      "type":"golden"
+    }
 
 **`PUT /sets/:id`**
 
+Updates puzzle for given id.
+
+*Request parameters:*
+
+- `month`: Puzzle set will be added to list for given month and year
+- `year`: Puzzle set will be added to list for given month and year
+- `name`: Name of set
+- `published`: Boolean, describes if puzzle is exposed to users
+- `type`: Type of puzzle set (free, golden, etc.)
+- `puzzles`: JSON serizalized puzzles, see chapter *Puzzle data format*.
+
+*Response:*
+
+    {
+     "id":"7e4e7bc7-a484-4b67-8c4c-1727f041047a",
+      "puzzles":[{"name":"puzzle1"},{"name":"puzzle2"}],
+      "month":12,
+      "year":2012,
+      "moth":10,
+      "published": true,
+      "name":"Cool set",
+      "type":"golden"
+    }
+
 **`DELETE /sets/:id`**
+
+Deletes puzzle set
+
+*Request parameters:*
+
+- `id`: Id of puzzle set.
+
+*Response:*
+
+    {
+      "message": "Puzzle set deleted"
+    }
+
+**`GET /service_message`**
+
+Returns current service message
+
+*Request parameters:*
+
+No parameters available.
+
+*Response:*
+
+    {
+      "service_message": "This is an example service message"
+    }
+
 
 **`PUT /service_message`**
 
-**`DELETE /service_message`**
+Sets service message
+
+*Request parameters:*
+
+- `service_message`: Data that will be returned with service message. Note: no html escaping is done.
+
+*Response:*
+
+    {
+      "service_message": "updated service message"
+    }
+
 
 ## Puzzle data format
 

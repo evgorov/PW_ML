@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
 require 'model/user_puzzles'
+require 'model/service_message'
 
 module Middleware
   class Users < Sinatra::Base
@@ -13,6 +14,12 @@ module Middleware
     get '/me' do
       env['token_auth'].authorize!
       { me: env['token_auth'].user }.to_json
+    end
+
+    get '/service_message' do
+      env['token_auth'].authorize!
+      message = ServiceMessage.storage(env['redis']).message
+      { service_message: message }.to_json
     end
 
     post '/me' do

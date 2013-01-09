@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'model/puzzle_set'
+require 'model/service_message'
 
 module Middleware
   class Admin < Sinatra::Base
@@ -13,6 +14,13 @@ module Middleware
         env['token_auth'].authorize!
         env['token_auth'].unauthorized! unless env['token_auth'].user['role'] == 'admin'
       end
+    end
+
+    put '/service_message' do
+      authorize!
+      service_message = ServiceMessage.storage(env['redis'])
+      service_message.message = params['service_message']
+      { service_message: service_message.message }.to_json
     end
 
     get '/users/paginate' do
