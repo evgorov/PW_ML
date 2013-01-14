@@ -874,15 +874,49 @@ var DashboardView = Backbone.View.extend({
 });
 
 
+/* Service message */
+
+var ServiceMessage = Backbone.Model.extend({
+  url: '/service_message',
+  isNew: function(){ return false; }
+});
+
+var ServiceMessageView = Backbone.View.extend({
+  tagName: 'div',
+
+  events: {
+    'change [role="service-message-text"]' : 'updateServiceMessage',
+    'click [role="save-service-message"]': 'saveServiceMessage'
+  },
+
+  initialize: function(){
+    this.model.on('change', this.render, this);
+    this.model.fetch();
+  },
+
+  render: function(){
+    this.$el.find('[role="service-message-text"]').text(this.model.get('service_message'));
+  },
+
+  updateServiceMessage: function(e){
+    this.model.set('service_message', $(e.target).val());
+  },
+
+  saveServiceMessage: function(){
+    this.model.save();
+  }
+});
+
+
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView;
 $(function(){
   currentUser = new CurrentUser();
   formSigninView = new FormSigninView({ model: currentUser,
                                         el: $('[role="form-signin-container"]')[0] });
   logoutView = new LogoutView({ model: currentUser,
-                                        el: $('[role="logout"]')[0] });
+                                el: $('[role="logout"]')[0] });
   users = new Users;
   usersView = new UsersView({ el: $('[role="users"]')[0], collection: users });
 
@@ -890,5 +924,10 @@ $(function(){
   puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]')[0], collection: puzzleSets});
 
   dashboardView = new DashboardView({ el: $('[role="dashboard"]')[0] });
+
+  serviceMessageView = new ServiceMessageView({
+                                                el: $('[role="service-message"]')[0],
+                                                model: new ServiceMessage()
+                                              });
   $('[role="loading-spinner"]').hide();
 });

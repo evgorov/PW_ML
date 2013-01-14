@@ -19,6 +19,7 @@
         <li class="active"><a href="#tab1" data-toggle="tab">Главная</a></li>
         <li><a href="#tab2" data-toggle="tab">Пользователи</a></li>
         <li><a href="#tab3" data-toggle="tab">Сеты</a></li>
+        <li><a href="#tab4" data-toggle="tab">Объявления</a></li>
         <li class="pull-right logout" role="logout"><span class="muted">Пользователь: </span><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
       </ul>
       <div class="tab-content">
@@ -66,9 +67,20 @@
             </div>
             <div role="sets-container">
             </div>
-        </div>
+          </div>
+       </div>
+       <div class="tab-pane" id="tab4" class="messages" role="service-message">
+         <div class="row">
+           <div class="span12">
+             <h3>Сервисное сообщение</h3>
+             <div>
+               <textarea class="input-xxlarge service-message-text" role="service-message-text"></textarea>
+             </div>
+             <button type="submit" class="btn btn-primary" role="save-service-message">Сохранить</button>
+           </div>
+         </div>
+       </div>
       </div>
-    </div>
     </div>
     <div class="puzzle" role="puzzle-editor" style="display: none;"></div>
     <div class="form-signin-container" role="form-signin-container">
