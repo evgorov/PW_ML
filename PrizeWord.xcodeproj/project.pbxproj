@@ -28,6 +28,10 @@
 		F247C3231689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C3101689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png */; };
 		F247C327168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */; };
 		F247C328168AF71D00A81D16 /* puzzles_set_month_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */; };
+		F247C32A168B88AE00A81D16 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C329168B88AE00A81D16 /* Icon.png */; };
+		F247C32C168B88B200A81D16 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C32B168B88B200A81D16 /* Icon@2x.png */; };
+		F247C32E168B88C000A81D16 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C32D168B88C000A81D16 /* Icon-72.png */; };
+		F247C330168B88C900A81D16 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C32F168B88C900A81D16 /* Icon-72@2x.png */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -418,6 +422,10 @@
 		F247C3101689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letters_wrong@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_set_month_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_set_month_bg@2x.png"; sourceTree = "<group>"; };
+		F247C329168B88AE00A81D16 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		F247C32B168B88B200A81D16 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		F247C32D168B88C000A81D16 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		F247C32F168B88C900A81D16 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -1335,6 +1343,10 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F247C32F168B88C900A81D16 /* Icon-72@2x.png */,
+				F247C32D168B88C000A81D16 /* Icon-72.png */,
+				F247C32B168B88B200A81D16 /* Icon@2x.png */,
+				F247C329168B88AE00A81D16 /* Icon.png */,
 				F279AE2D16886FF100424267 /* Default@2x.png */,
 				F279AE2B16886FEE00424267 /* Default.png */,
 				F286E2F01677B95D00FF5E83 /* CoreImage.framework */,
@@ -1856,6 +1868,10 @@
 				F247C3231689CD1A00A81D16 /* tile_letters_wrong@2x~ipad.png in Resources */,
 				F247C327168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png in Resources */,
 				F247C328168AF71D00A81D16 /* puzzles_set_month_bg@2x.png in Resources */,
+				F247C32A168B88AE00A81D16 /* Icon.png in Resources */,
+				F247C32C168B88B200A81D16 /* Icon@2x.png in Resources */,
+				F247C32E168B88C000A81D16 /* Icon-72.png in Resources */,
+				F247C330168B88C900A81D16 /* Icon-72@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
