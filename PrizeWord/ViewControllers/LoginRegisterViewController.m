@@ -8,12 +8,15 @@
 
 #import "LoginRegisterViewController.h"
 #import "PuzzlesViewController.h"
+#import "APIRequest.h"
 
 @interface LoginRegisterViewController ()
 
 -(void)handleDateChanged:(id)sender;
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
+-(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
+-(void)handleSignupFailed:(NSError *)error;
 
 @end
 
@@ -123,7 +126,51 @@
     [activeResponder resignFirstResponder];
     [self handleDatePickerDoneClick:self];
     [self showActivityIndicator];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
+    APIRequest * request = [APIRequest postRequest:@"signup" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
+        [self handleSignupComplete:response receivedData:receivedData];
+    } failCallback:^(NSError *error) {
+        [self handleSignupFailed:error];
+    }];
+    
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    [request.params setObject:tfEmail.text forKey:@"email"];
+    [request.params setObject:tfName.text forKey:@"name"];
+    [request.params setObject:tfSurname.text forKey:@"surname"];
+    [request.params setObject:tfPassword.text forKey:@"password"];
+    [request.params setObject:[dateFormatter stringFromDate:datePicker.date] forKey:@"birthday"];
+    [request.params setObject:tfCity.text forKey:@"city"];
+    // TODO :: set userpic
+    [request runSilent];
+}
+
+-(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
+{
+    [self hideActivityIndicator];
+    if (response.statusCode == 200)
+    {
+        NSLog(@"signup complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        UINavigationController * navController = self.navigationController;
+        [navController popViewControllerAnimated:NO];
+        [navController pushViewController:[PuzzlesViewController new] animated:YES];
+    }
+    else
+    {
+        NSLog(@"signup failed! %d %@", response.statusCode, [NSString stringWithUTF8String:receivedData.bytes]);
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[NSString stringWithUTF8String:receivedData.bytes] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        alert.tag = 1;
+        [alert show];
+    }
+}
+
+-(void)handleSignupFailed:(NSError *)error
+{
+    [self hideActivityIndicator];
+    NSLog(@"signup failed! %@", error.description);
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Ошибка соединения с сервером. Попробуйте ещё раз." delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+    alert.tag = 0;
+    [alert show];
 }
 
 -(void)handleDateChanged:(id)sender
@@ -213,12 +260,12 @@
     }
 }
 
--(void)gotoRoot:(id)sender
+-(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self hideActivityIndicator];
-    UINavigationController * navController = self.navigationController;
-    [navController popViewControllerAnimated:NO];
-    [navController pushViewController:[PuzzlesViewController new] animated:YES];
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        [self handleRegisterClick:nil];
+    }
 }
 
 @end

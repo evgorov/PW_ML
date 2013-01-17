@@ -62,6 +62,7 @@
 		F279AE79168959F200424267 /* frame_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE66168959F200424267 /* frame_border@2x.png */; };
 		F279AE7C16895A1900424267 /* score_score_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE7A16895A1900424267 /* score_score_bg@2x~ipad.png */; };
 		F279AE7D16895A1900424267 /* score_score_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE7B16895A1900424267 /* score_score_bg@2x.png */; };
+		F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0216A5E62C0041C1D5 /* APIRequest.m */; };
 		F2868C7C166685D6003F0686 /* PuzzleData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7B166685D6003F0686 /* PuzzleData.m */; };
 		F2868C7F166685D7003F0686 /* QuestionData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2868C7E166685D7003F0686 /* QuestionData.m */; };
 		F2868C811666A48B003F0686 /* tile_question_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2868C801666A48B003F0686 /* tile_question_input@2x.png */; };
@@ -457,6 +458,8 @@
 		F279AE66168959F200424267 /* frame_border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border@2x.png"; sourceTree = "<group>"; };
 		F279AE7A16895A1900424267 /* score_score_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_score_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F279AE7B16895A1900424267 /* score_score_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_score_bg@2x.png"; sourceTree = "<group>"; };
+		F2848E0116A5E62C0041C1D5 /* APIRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = APIRequest.h; path = Net/APIRequest.h; sourceTree = "<group>"; };
+		F2848E0216A5E62C0041C1D5 /* APIRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = APIRequest.m; path = Net/APIRequest.m; sourceTree = "<group>"; };
 		F2868C7A166685D6003F0686 /* PuzzleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleData.h; path = PrizeWord/DataModels/PuzzleData.h; sourceTree = "<group>"; };
 		F2868C7B166685D6003F0686 /* PuzzleData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleData.m; path = PrizeWord/DataModels/PuzzleData.m; sourceTree = "<group>"; };
 		F2868C7D166685D7003F0686 /* QuestionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionData.h; path = PrizeWord/DataModels/QuestionData.h; sourceTree = "<group>"; };
@@ -845,6 +848,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F2848E0016A5E61E0041C1D5 /* Net */ = {
+			isa = PBXGroup;
+			children = (
+				F2848E0116A5E62C0041C1D5 /* APIRequest.h */,
+				F2848E0216A5E62C0041C1D5 /* APIRequest.m */,
+			);
+			name = Net;
+			sourceTree = "<group>";
+		};
 		F2868C79166683C8003F0686 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1380,6 +1392,7 @@
 		F2D62705165DF80900EF6E8A /* PrizeWord */ = {
 			isa = PBXGroup;
 			children = (
+				F2848E0016A5E61E0041C1D5 /* Net */,
 				F2868C79166683C8003F0686 /* DataModels */,
 				F2950249166206CD00DACFBA /* assets */,
 				F29502451662036E00DACFBA /* Views */,
@@ -1882,6 +1895,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */,
 				F2D6270C165DF80900EF6E8A /* main.m in Sources */,
 				F2D62710165DF80900EF6E8A /* AppDelegate.m in Sources */,
 				F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */,
