@@ -23,6 +23,7 @@
     IBOutlet UIButton *btnBuyHint1;
     IBOutlet UIButton *btnBuyHint2;
     IBOutlet UIButton *btnBuyHint3;
+    IBOutlet UILabel *lblHintsLeft;
 
 }
 

@@ -41,7 +41,6 @@
 				<string key="NSFrameSize">{480, 954}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -123,7 +122,6 @@
 						<string key="NSFrame">{{155, 100}, {170, 36}}</string>
 						<reference key="NSSuperview" ref="221264550"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="97148886">
 							<int key="NSColorSpace">3</int>
@@ -281,7 +279,6 @@
 						<string key="NSFrameSize">{443, 55}</string>
 						<reference key="NSSuperview" ref="547552237"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -324,7 +321,7 @@
 					<object class="IBUILabel" id="1007612071">
 						<reference key="NSNextResponder" ref="658280758"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{320, 20}, {95, 19}}</string>
+						<string key="NSFrame">{{315, 20}, {108, 19}}</string>
 						<reference key="NSSuperview" ref="658280758"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="497390921"/>
@@ -344,7 +341,7 @@
 						</object>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<int key="IBUITextAlignment">2</int>
+						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<string key="name">Helvetica-Bold</string>
 							<string key="family">Helvetica</string>
@@ -422,7 +419,6 @@
 						<string key="NSFrame">{{250, 117}, {90, 40}}</string>
 						<reference key="NSSuperview" ref="658280758"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -459,7 +455,6 @@
 						<string key="NSFrameSize">{443, 60}</string>
 						<reference key="NSSuperview" ref="959300778"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">1</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -519,7 +514,6 @@
 						<string key="NSFrame">{{72, 6}, {219, 38}}</string>
 						<reference key="NSSuperview" ref="526283808"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="97148886"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -688,6 +682,14 @@
 						<reference key="destination" ref="391717276"/>
 					</object>
 					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">lblHintsLeft</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="1007612071"/>
+					</object>
+					<int key="connectionID">66</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -918,7 +920,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">65</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -941,20 +943,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PuzzlesViewController</string>
 					<string key="superclassName">BlockedViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="handleNewsCloseClick:">id</string>
-						<string key="handleNewsPaginatorChange:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="handleNewsCloseClick:">
-							<string key="name">handleNewsCloseClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleNewsPaginatorChange:">
-							<string key="name">handleNewsPaginatorChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="archiveView">UIView</string>
 						<string key="btnBuyHint1">UIButton</string>
@@ -962,6 +950,7 @@
 						<string key="btnBuyHint3">UIButton</string>
 						<string key="currentPuzzlesView">UIView</string>
 						<string key="hintsView">UIView</string>
+						<string key="lblHintsLeft">UILabel</string>
 						<string key="newsPaginator">UIPageControl</string>
 						<string key="newsScrollView">UIScrollView</string>
 						<string key="newsView">UIView</string>
@@ -991,6 +980,10 @@
 						<object class="IBToOneOutletInfo" key="hintsView">
 							<string key="name">hintsView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="lblHintsLeft">
+							<string key="name">lblHintsLeft</string>
+							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="newsPaginator">
 							<string key="name">newsPaginator</string>

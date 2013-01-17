@@ -13,6 +13,8 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "PuzzleSetView.h"
+#import "GlobalData.h"
+#import "UserData.h"
 
 @interface PuzzlesViewController ()
 
@@ -98,7 +100,7 @@
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
-
+    lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
 }
 
 - (void)viewDidUnload
@@ -113,6 +115,7 @@
     setToBuyView = nil;
     newsPaginator = nil;
     newsScrollView = nil;
+    lblHintsLeft = nil;
     [super viewDidUnload];
 }
 

@@ -9,10 +9,15 @@
 #import "LoginEnterViewController.h"
 #import "PuzzlesViewController.h"
 #import "LoginRemindViewController.h"
+#import "APIRequest.h"
+#import "SBJson.h"
+#import "GlobalData.h"
+#import "UserData.h"
 
 @interface LoginEnterViewController (private)
 
--(void)gotoRoot:(id)sender;
+-(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
+-(void)handleEnterFailed:(NSError *)error;
 
 @end
 
@@ -33,7 +38,52 @@
 - (IBAction)handleEnterClick:(id)sender
 {
     [self showActivityIndicator];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
+    APIRequest * request = [APIRequest postRequest:@"login" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
+        [self handleEnterComplete:response receivedData:receivedData];
+    } failCallback:^(NSError *error) {
+        [self handleEnterFailed:error];
+    }];
+    
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    [request.params setObject:txtEmail.text forKey:@"email"];
+    [request.params setObject:txtPassword.text forKey:@"password"];
+    [request runSilent];
+}
+
+
+-(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
+{
+    [self hideActivityIndicator];
+    if (response.statusCode == 200)
+    {
+        NSLog(@"login complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
+        NSString * sessionKey = [json objectForKey:@"session_key"];
+        UserData * userData = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
+        [GlobalData globalData].sessionKey = sessionKey;
+        [GlobalData globalData].loggedInUser = userData;
+        UINavigationController * navController = self.navigationController;
+        [navController popViewControllerAnimated:NO];
+        [navController pushViewController:[PuzzlesViewController new] animated:YES];
+    }
+    else
+    {
+        NSLog(@"login failed! %d %@", response.statusCode, [NSString stringWithUTF8String:receivedData.bytes]);
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[NSString stringWithUTF8String:receivedData.bytes] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        alert.tag = 1;
+        [alert show];
+    }
+}
+
+-(void)handleEnterFailed:(NSError *)error
+{
+    [self hideActivityIndicator];
+    NSLog(@"login failed! %@", error.description);
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Ошибка соединения с сервером. Попробуйте ещё раз." delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+    alert.tag = 0;
+    [alert show];
 }
 
 - (IBAction)handleForgetClick:(id)sender
@@ -57,12 +107,12 @@
     return YES;
 }
 
--(void)gotoRoot:(id)sender
+-(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self hideActivityIndicator];
-    UINavigationController * navController = self.navigationController;
-    [navController popViewControllerAnimated:NO];
-    [navController pushViewController:[PuzzlesViewController new] animated:YES];
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        [self handleEnterClick:nil];
+    }
 }
 
 @end
