@@ -16,5 +16,8 @@
 
 @property (nonatomic, strong) NSString * sessionKey;
 @property (nonatomic, strong) UserData * loggedInUser;
+@property (nonatomic, strong) NSArray * monthSets;
+
+-(void)loadMonthSets:(void(^)())onComplete;
 
 @end

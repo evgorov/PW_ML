@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSNumber * column;
 @property (nonatomic, retain) NSNumber * row;
 @property (nonatomic, retain) NSNumber * answer_position;
+@property (nonatomic, retain) NSNumber * solved;
 @property (nonatomic, retain) NSString * question_text;
 @property (nonatomic, retain) NSString * answer;
 @property (nonatomic, retain) PuzzleData *puzzle;

@@ -18,6 +18,16 @@
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSNumber * bought;
 @property (nonatomic, retain) NSSet *puzzles;
+
++(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict;
+
+-(id)initWithDictionary:(NSDictionary *)dict;
+-(int)solved;
+-(int)total;
+-(float)percent;
+-(int)score;
+-(int)minScore;
+
 @end
 
 @interface PuzzleSetData (CoreDataGeneratedAccessors)

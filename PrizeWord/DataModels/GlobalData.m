@@ -7,11 +7,15 @@
 //
 
 #import "GlobalData.h"
+#import "APIRequest.h"
+#import "PuzzleSetData.h"
+#import "SBJson.h"
 
 @implementation GlobalData
 
 @synthesize sessionKey = _sessionKey;
 @synthesize loggedInUser = _loggedInUser;
+@synthesize monthSets = _monthSets;
 
 +(GlobalData *)globalData
 {
@@ -30,8 +34,29 @@
     {
         _sessionKey = nil;
         _loggedInUser = nil;
+        _monthSets = nil;
     }
     return self;
+}
+
+-(void)loadMonthSets:(void(^)())onComplete
+{
+    APIRequest * request = [APIRequest getRequest:@"puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSMutableArray * sets = [NSMutableArray new];
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * data = [parser objectWithData:receivedData];
+        NSLog(@"month score: %@", [data objectForKey:@"score"]);
+        NSArray * setsData = [data objectForKey:@"sets"];
+        for (NSDictionary * setData in setsData)
+        {
+            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData]];
+        }
+        sets = [NSArray arrayWithArray:sets];
+    } failCallback:^(NSError *error) {
+        NSLog(@"Error: cannot load month sets!");
+    }];
+    [request.params setObject:_sessionKey forKey:@"session_token"];
+    [request runSilent];
 }
 
 @end

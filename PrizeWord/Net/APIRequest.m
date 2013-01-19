@@ -10,6 +10,8 @@
 
 @interface APIRequest (private)
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
+-(void)prepareRequest;
+
 @end
 
 @implementation APIRequest
@@ -42,41 +44,39 @@
     return [[APIRequest alloc] initWithMethod:@"POST" command:command successCallback:successCallback failCallback:failCallback];
 }
 
--(void)run
+-(void)prepareRequest
 {
-    silentMode = NO;
-    NSMutableString * postString = [NSMutableString new];
+    NSMutableString * paramsString = [NSMutableString new];
     [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (postString.length == 0)
+        if (paramsString.length == 0)
         {
-            [postString appendFormat:@"%@=%@", key, obj];
+            [paramsString appendFormat:@"%@=%@", key, obj];
         }
         else
         {
-            [postString appendFormat:@"&%@=%@", key, obj];
+            [paramsString appendFormat:@"&%@=%@", key, obj];
         }
     }];
-    NSLog(@"params: %@", postString);
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+    NSLog(@"params: %@", paramsString);
+    if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame) {
+        request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
+    }
+    else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
+        [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+}
+
+-(void)run
+{
+    silentMode = NO;
+    [self prepareRequest];
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
 -(void)runSilent
 {
     silentMode = YES;
-    NSMutableString * postString = [NSMutableString new];
-    [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (postString.length == 0)
-        {
-            [postString appendFormat:@"%@=%@", key, obj];
-        }
-        else
-        {
-            [postString appendFormat:@"&%@=%@", key, obj];
-        }
-    }];
-    NSLog(@"params: %@", postString);
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+    [self prepareRequest];
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 

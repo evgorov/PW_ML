@@ -24,7 +24,8 @@
     IBOutlet UIButton *btnBuyHint2;
     IBOutlet UIButton *btnBuyHint3;
     IBOutlet UILabel *lblHintsLeft;
-
 }
+
+-(void)updateMonthSets:(NSArray*)monthSets;
 
 @end

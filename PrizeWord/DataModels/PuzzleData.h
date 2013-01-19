@@ -14,15 +14,23 @@
 
 @interface PuzzleData : NSManagedObject
 
-@property (nonatomic, retain) NSString * puzzle_id;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSDate * issuedAt;
 @property (nonatomic, retain) NSNumber * base_score;
 @property (nonatomic, retain) NSNumber * time_given;
+@property (nonatomic, retain) NSNumber * time_left;
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * width;
+@property (nonatomic, retain) NSNumber * score;
+@property (nonatomic, retain) NSNumber * solved;
 @property (nonatomic, retain) NSSet *questions;
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
+
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict;
+
+-(id)initWithDictionary:(NSDictionary *)dict;
+-(float)progress;
+
 @end
 
 @interface PuzzleData (CoreDataGeneratedAccessors)

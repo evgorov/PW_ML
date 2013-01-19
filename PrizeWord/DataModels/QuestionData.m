@@ -15,6 +15,7 @@
 @dynamic column;
 @dynamic row;
 @dynamic answer_position;
+@dynamic solved;
 @dynamic question_text;
 @dynamic answer;
 @dynamic puzzle;

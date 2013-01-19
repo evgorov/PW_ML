@@ -5,8 +5,10 @@
         <attribute name="height" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <attribute name="issuedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="puzzle_id" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="score" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="solved" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="time_given" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="time_left" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="width" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <relationship name="puzzleSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PuzzleSet" inverseName="puzzles" inverseEntity="PuzzleSet" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Question" inverseName="puzzle" inverseEntity="Question" syncable="YES"/>
@@ -27,8 +29,8 @@
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Question" positionX="-6120" positionY="-15822" width="128" height="135"/>
-        <element name="Puzzle" positionX="-6120" positionY="-16032" width="128" height="180"/>
+        <element name="Puzzle" positionX="-6120" positionY="-16032" width="128" height="210"/>
         <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="120"/>
+        <element name="Question" positionX="-6120" positionY="-15822" width="128" height="135"/>
     </elements>
 </model>

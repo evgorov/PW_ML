@@ -13,6 +13,8 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "PuzzleSetView.h"
+#import "PuzzleSetData.h"
+#import "PuzzleData.h"
 #import "GlobalData.h"
 #import "UserData.h"
 
@@ -39,6 +41,20 @@
     
     self.title = @"Сканворды";
     
+    NSArray * monthSets = [GlobalData globalData].monthSets;
+    if (monthSets == nil)
+    {
+        [self showActivityIndicator];
+        [[GlobalData globalData] loadMonthSets:^{
+            [self hideActivityIndicator];
+            [self updateMonthSets:[GlobalData globalData].monthSets];
+        }];
+    }
+    else
+    {
+        [self updateMonthSets:[GlobalData globalData].monthSets];
+    }
+    
     UISwipeGestureRecognizer * newsRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsPrev:)];
     newsRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     UISwipeGestureRecognizer * newsLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsNext:)];
@@ -46,32 +62,7 @@
     UITapGestureRecognizer * newsTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsTap:)];
     [newsScrollView setGestureRecognizers:[NSArray arrayWithObjects:newsLeftGestureRecognizer, newsRightGestureRecognizer, newsTapGestureRecognizer, nil]];
 
-    PuzzleSetView * brilliantSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_BRILLIANT puzzlesCount:17 minScore:10000000 price:3.99f];
-    PuzzleSetView * goldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:0 puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:1200], nil]];
-    [self activateBadges:goldSet.badges];
-    PuzzleSetView * silverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER puzzlesCount:15 minScore:10000 price:1.99f];
-    PuzzleSetView * silver2Set = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 puzzlesCount:10 minScore:10000 price:1.99f];
-    PuzzleSetView * freeSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_FREE puzzlesCount:7 minScore:0 price:0];
-    brilliantSet.frame = CGRectMake(0, currentPuzzlesView.frame.size.height, brilliantSet.frame.size.width, brilliantSet.frame.size.height);
-    goldSet.frame = CGRectMake(0, brilliantSet.frame.origin.y + brilliantSet.frame.size.height, goldSet.frame.size.width, goldSet.frame.size.height);
-    silverSet.frame = CGRectMake(0, goldSet.frame.origin.y + goldSet.frame.size.height, silverSet.frame.size.width, silverSet.frame.size.height);
-    silver2Set.frame = CGRectMake(0, silverSet.frame.origin.y + silverSet.frame.size.height, silver2Set.frame.size.width, silver2Set.frame.size.height);
-    freeSet.frame = CGRectMake(0, silver2Set.frame.origin.y + silver2Set.frame.size.height, freeSet.frame.size.width, freeSet.frame.size.height);
-    [currentPuzzlesView addSubview:brilliantSet];
-    [currentPuzzlesView addSubview:goldSet];
-    [currentPuzzlesView addSubview:silverSet];
-    [currentPuzzlesView addSubview:silver2Set];
-    [currentPuzzlesView addSubview:freeSet];
-    [brilliantSet.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
-    [silverSet.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
-    [silver2Set.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
-    [freeSet.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
-    [brilliantSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [goldSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [silverSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [silver2Set.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [freeSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, freeSet.frame.origin.y + freeSet.frame.size.height);
+
     
     PuzzleSetView * archiveGoldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:5  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
     PuzzleSetView * archiveSilverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 month:0  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
@@ -117,6 +108,41 @@
     newsScrollView = nil;
     lblHintsLeft = nil;
     [super viewDidUnload];
+}
+
+-(void)updateMonthSets:(NSArray *)monthSets
+{
+    float yOffset = currentPuzzlesView.frame.size.height;
+    for (PuzzleSetData * puzzleSet in monthSets) {
+        if ([puzzleSet.bought boolValue]) {
+            NSMutableArray * unsolvedIds = [NSMutableArray new];
+            NSMutableArray * unsolvedPercent = [NSMutableArray new];
+            NSMutableArray * unsolvedScores = [NSMutableArray new];
+            int idx = 1;
+            for (PuzzleData * puzzle in puzzleSet.puzzles) {
+                if (![puzzle.solved boolValue])
+                {
+                    [unsolvedIds addObject:[NSNumber numberWithInt:idx]];
+                    [unsolvedPercent addObject:[NSNumber numberWithFloat:puzzle.progress]];
+                    [unsolvedScores addObject:puzzle.base_score];
+                }
+                ++idx;
+            }
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:0 puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:puzzleSet.solved score:puzzleSet.score ids:unsolvedIds percents:unsolvedPercent scores:unsolvedScores];
+            puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+            yOffset += puzzleSetView.frame.size.height;
+            [currentPuzzlesView addSubview:puzzleSetView];
+            [self activateBadges:puzzleSetView.badges];
+        } else {
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] puzzlesCount:puzzleSet.puzzles.count minScore:puzzleSet.minScore price:3.99f];
+            puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+            yOffset += puzzleSetView.frame.size.height;
+            [currentPuzzlesView addSubview:puzzleSetView];
+            [puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    
+    currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, yOffset);
 }
 
 - (IBAction)handleNewsCloseClick:(id)sender

@@ -138,7 +138,6 @@
         [puzzle setIssuedAt:[NSDate date]];
         [puzzle setBase_score:[NSNumber numberWithUnsignedInt:1000]];
         [puzzle setName:@"Сканворд 1"];
-        [puzzle setPuzzle_id:@"puzzle_1"];
         [puzzle setTime_given:[NSNumber numberWithUnsignedInt:10000]];
         [puzzleSet addPuzzlesObject:puzzle];
 
@@ -703,7 +702,6 @@
         [puzzle setIssuedAt:[NSDate date]];
         [puzzle setBase_score:[NSNumber numberWithUnsignedInt:1000]];
         [puzzle setName:@"Сканворд 2"];
-        [puzzle setPuzzle_id:@"puzzle_2"];
         [puzzle setTime_given:[NSNumber numberWithUnsignedInt:10000]];
         [puzzleSet addPuzzlesObject:puzzle];
         
