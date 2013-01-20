@@ -38,7 +38,7 @@ Endpoint for final step in OAUTH2 authorization process. Web server will get acc
 JSON object, representing containing session token and user information:
 
     {
-      "session_token": "dS435wsjdDF23d2K",
+      "session_key": "dS435wsjdDF23d2K",
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
@@ -61,7 +61,7 @@ List user's friends in provided social network.
 
 *Request parameters:*
 
-- `session_token`: Session token
+- `session_key`: Session token
 - `provider_name`: Authentication provider name (facebook, vkontakte)
 
 *Response:*
@@ -69,7 +69,6 @@ List user's friends in provided social network.
 If user user has no access token for given network this request will return 403 response code with json:
 
     {
-      "error": "NotConnectedError",
       "message": "User not connected with Facebook"
     }
 
@@ -116,7 +115,7 @@ Send invite to user
 
 *Request parameters:*
 
-- `session_token`: Session token
+- `session_key`: Session token
 - `provider_name`: Authentication provider name (facebook, vkontakte)
 - `ids`: Coma-separated list if user ids, e.g. "1003,232"
 
@@ -147,7 +146,7 @@ If userpic is included in request, then whole request should be encoded with `mu
 JSON object, representing containing session token and user information:
 
     {
-      "session_token": "dS435wsjdDF23d2K",
+      "session_key": "dS435wsjdDF23d2K",
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
@@ -174,7 +173,7 @@ JSON object, representing containing session token and user information:
 JSON object, representing containing session token and user information:
 
     {
-      "session_token": "dS435wsjdDF23d2K",
+      "session_key": "dS435wsjdDF23d2K",
       "me": {
         "name": "Sherlock",
         "surname": "Holmes",
@@ -236,7 +235,7 @@ Get basic info for logged in user.
 
 *Request parameters:*
 
-- `session_token`: Session token.
+- `session_key`: Session token.
 
 *Response:*
 
@@ -263,7 +262,7 @@ Update basic information. If userpic is included in request, then whole request 
 
 *Request parameters:*
 
-- `session_token`: Session token
+- `session_key`: Session token
 - `[name]`: Name
 - `[password]`: Name
 - `[surname]`": Surname
@@ -299,7 +298,7 @@ Set of routes describing information about users.
 
 *Request parameters:*
 
-- `[session_token]`: if session token for current user, response will include scoring information about user.
+- `[session_key]`: if session token for current user, response will include scoring information about user.
 - `[page]`: paginate collection of users.
 
 *Response:*
@@ -370,7 +369,7 @@ List puzzles for given month and their status, if month is not present, show inf
 
 *Request parameters:*
 
-- `session_token`: Session token.
+- `session_key`: Session token.
 - `[year]`: Year
 - `[month]`: Month
 
@@ -606,7 +605,7 @@ Add or removes hints from user.
 
 *Request parameters:*
 
-- `session_token`: Session token.
+- `session_key`: Session token.
 - `[hints_change]`: amount to change.
 
 *Response:*
@@ -634,7 +633,7 @@ Add or removes points from user score. This endpoint can be used score for activ
 
 *Request parameters:*
 
-- `session_token`: Session token.
+- `session_key`: Session token.
 - `[score]`: Amount to change score.
 - `[solved]`: Amount to change puzzles solved.
 
