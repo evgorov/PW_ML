@@ -130,7 +130,7 @@ This is straight forward registration flow. User can register in application usi
 
 **`POST /signup`**
 
-If userpic is included in request, then whole request should be encoded with `multipart/form-data`.
+If userpic is included in request, then whole request should be encoded with `multipart/form-data`. If user with email is already registered this method should return 403.
 
 *Request parameters:*
 

@@ -97,6 +97,13 @@ describe 'Integration spec' do
     u
   end
 
+  it 'basic registration: register user with already existed email' do
+    post '/signup', valid_user_data
+    last_response.status.should == 200
+    post '/signup', valid_user_data
+    last_response.status.should == 403
+  end
+
   it 'basic registration' do
     post '/signup', valid_user_data
     last_response.status.should == 200
