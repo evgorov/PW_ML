@@ -619,6 +619,7 @@ var PuzzleSetView = Backbone.View.extend({
     'change [role="set-name"]': 'changeName',
     'change [role="set-type"]': 'changeType',
     'click [role="delete-puzzle"]': 'deletePuzzle',
+    'click [role="delete-set"]': 'destroy',
     'click [role="edit-puzzle"]': 'editPuzzle',
     'click [role="save-set"]': 'saveSet',
     'click [role="publish-set"]': 'publishSet',
