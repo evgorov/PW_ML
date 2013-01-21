@@ -61,7 +61,7 @@ module Middleware
       authorize!
       PuzzleSet.storage(env['redis']).load(params['id']).tap { |o|
         o['year'] = params['year'].to_i
-        o['moth'] = params['month'].to_i
+        o['month'] = params['month'].to_i
         o['name'] = params['name']
         o['published'] = (params['published'] == 'true')
         o['type'] = params['type']
