@@ -9,10 +9,10 @@ Backbone.ajax = function(options){
   }
 
   var $spinner = $('[role="loading-spinner"]').show();
-  if(typeof options.data === 'undefined') options.data = '{}';
+  if(typeof options.data === 'undefined') options.data = {};
   if(options.type !== 'GET'){
     delete options.contentType;
-    options.data = JSON.parse(options.data);
+    if(typeof options.data === 'string') options.data = JSON.parse(options.data);
     options.data = _.reduce(options.data, function(acc, v, k){
       if(typeof v === 'string'){
         acc[k] = v;
