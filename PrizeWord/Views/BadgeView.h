@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PuzzleData.h"
 
 typedef enum BadgeType
 {

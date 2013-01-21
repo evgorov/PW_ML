@@ -60,10 +60,8 @@
     {
         NSLog(@"login complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
         NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
-        NSString * sessionKey = [json objectForKey:@"session_key"];
-        UserData * userData = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
-        [GlobalData globalData].sessionKey = sessionKey;
-        [GlobalData globalData].loggedInUser = userData;
+        [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
+        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
         UINavigationController * navController = self.navigationController;
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[PuzzlesViewController new] animated:YES];

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PuzzleSetData.h"
 
 typedef enum PuzzleSetType
 {
@@ -43,6 +44,8 @@ PuzzleSetType;
 
 @property (nonatomic, readonly) CGSize shortSize;
 @property (nonatomic, readonly) CGSize fullSize;
+
+@property (nonatomic, strong) PuzzleSetData * puzzleSetData;
 
 +(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
 

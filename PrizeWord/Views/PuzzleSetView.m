@@ -45,6 +45,8 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
 @synthesize shortSize = _shortSize;
 @synthesize fullSize = _fullSize;
 
+@synthesize puzzleSetData = _puzzleSetData;
+
 -(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
 {
     if (self)

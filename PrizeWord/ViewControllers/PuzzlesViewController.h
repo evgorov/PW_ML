@@ -20,6 +20,8 @@
     IBOutlet UIPageControl *newsPaginator;
     IBOutlet UIScrollView *newsScrollView;
 
+    IBOutlet UILabel *puzzlesViewCaption;
+
     IBOutlet UIButton *btnBuyHint1;
     IBOutlet UIButton *btnBuyHint2;
     IBOutlet UIButton *btnBuyHint3;

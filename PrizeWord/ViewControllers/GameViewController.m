@@ -14,6 +14,10 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "AppDelegate.h"
+#import "GlobalData.h"
+#import "UserData.h"
+#import "APIRequest.h"
+#import "SBJson.h"
 
 @interface GameViewController (private)
 
@@ -93,6 +97,7 @@
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
     [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     
+    [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_BEGIN_INPUT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_FINISH_INPUT];
@@ -155,7 +160,7 @@
 {
     if ([GameLogic sharedLogic].gameField.activeQuestion != nil)
     {
-        int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
+        int hints = [GlobalData globalData].loggedInUser.hints;
         if (hints > 0)
         {
             [textField resignFirstResponder];
@@ -169,7 +174,8 @@
 - (IBAction)handlePauseNext:(id)sender
 {
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START]];
+    // TODO :: load next puzzle
+//    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START]];
 }
 
 - (IBAction)handlePauseMenu:(id)sender
@@ -290,10 +296,18 @@
         [textField becomeFirstResponder];
         return;
     }
-    int hints = [[btnHint titleForState:UIControlStateNormal] integerValue];
-    hints--;
-    [btnHint setTitle:[NSString stringWithFormat:@"%d", hints] forState:UIControlStateNormal];
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * data = [parser objectWithData:receivedData];
+        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+        [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+    } failCallback:^(NSError *error) {
+        
+    }];
+    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [request.params setObject:@"-1" forKey:@"hints_change"];
+    [request runSilent];
 }
 
 - (void)viewDidUnload {

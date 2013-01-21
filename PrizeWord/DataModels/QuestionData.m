@@ -8,7 +8,7 @@
 
 #import "QuestionData.h"
 #import "PuzzleData.h"
-
+#import "AppDelegate.h"
 
 @implementation QuestionData
 
@@ -111,6 +111,47 @@
     if ([answer_positionAsString rangeOfString:@"right"].location != NSNotFound)
         position |= kAnswerPositionRight;
     self.answer_positionAsUint = position;
+}
+
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict
+{
+    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Question" inManagedObjectContext:managedObjectContext];
+    
+    [request setEntity:puzzleEntity];
+    [request setFetchLimit:1];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"question_text = %@", [dict objectForKey:@"question_text"]]];
+    
+    NSError *error = nil;
+    NSArray *questions = [managedObjectContext executeFetchRequest:request error:&error];
+    
+    QuestionData * question;
+    if (questions == nil || questions.count == 0)
+    {
+        question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:managedObjectContext];
+    }
+    else
+    {
+        question = [questions objectAtIndex:0];
+    }
+    
+    [question setAnswer:[dict objectForKey:@"answer"]];
+    [question setAnswer_positionAsString:[dict objectForKey:@"answer_position"]];
+    [question setColumn:[dict objectForKey:@"column"]];
+    [question setQuestion_text:[dict objectForKey:@"question_text"]];
+    [question setRow:[dict objectForKey:@"row"]];
+    [question setSolved:[NSNumber numberWithBool:NO]];
+    [question setColumnAsUint:(question.columnAsUint - 1)];
+    [question setRowAsUint:(question.rowAsUint - 1)];
+    
+    [managedObjectContext save:&error];
+    if (error != nil) {
+        NSLog(@"DB error: %@", error.description);
+    }
+    
+    return question;
 }
 
 @end

@@ -9,6 +9,9 @@
 #import "LoginRegisterViewController.h"
 #import "PuzzlesViewController.h"
 #import "APIRequest.h"
+#import "GlobalData.h"
+#import "SBJson.h"
+#import "UserData.h"
 
 @interface LoginRegisterViewController ()
 
@@ -151,6 +154,10 @@
     if (response.statusCode == 200)
     {
         NSLog(@"signup complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * dict = [parser objectWithData:receivedData];
+        [GlobalData globalData].sessionKey = [dict objectForKey:@"session_key"];
+        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
         UINavigationController * navController = self.navigationController;
         [navController popViewControllerAnimated:NO];
         [navController pushViewController:[PuzzlesViewController new] animated:YES];

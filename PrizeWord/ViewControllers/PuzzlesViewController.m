@@ -17,13 +17,18 @@
 #import "PuzzleData.h"
 #import "GlobalData.h"
 #import "UserData.h"
+#import "APIRequest.h"
+#import "SBJson.h"
+
+NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
+
 
 @interface PuzzlesViewController ()
 
 -(void)handleBadgeClick:(id)sender;
 -(void)handleBuyClick:(id)sender;
 -(void)handleShowMoreClick:(id)sender;
--(void)activateBadges:(NSArray *)badges;
+-(void)activateBadges:(PuzzleSetView *)puzzleSetView;
 
 -(void)handleNewsPrev:(id)sender;
 -(void)handleNewsNext:(id)sender;
@@ -40,6 +45,7 @@
     [super viewDidLoad];
     
     self.title = @"Сканворды";
+    puzzlesViewCaption.text = @"Сканворды за ...";   
     
     NSArray * monthSets = [GlobalData globalData].monthSets;
     if (monthSets == nil)
@@ -67,9 +73,9 @@
     PuzzleSetView * archiveGoldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:5  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
     PuzzleSetView * archiveSilverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 month:0  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
     PuzzleSetView * archiveGoldSet2 = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:9  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
-    [self activateBadges:archiveGoldSet.badges];
-    [self activateBadges:archiveSilverSet.badges];
-    [self activateBadges:archiveGoldSet2.badges];
+    [self activateBadges:archiveGoldSet];
+    [self activateBadges:archiveSilverSet];
+    [self activateBadges:archiveGoldSet2];
     
     archiveGoldSet.frame = CGRectMake(0, archiveView.frame.size.height, archiveGoldSet.frame.size.width, archiveGoldSet.frame.size.height);
     archiveSilverSet.frame = CGRectMake(0, archiveGoldSet.frame.origin.y + archiveGoldSet.frame.size.height, archiveSilverSet.frame.size.width, archiveSilverSet.frame.size.height);
@@ -83,6 +89,8 @@
     [archiveSilverSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
     [archiveGoldSet2.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, currentPuzzlesView.frame.size.height);
+    
     [self addSimpleView:newsView];
     [self addFramedView:currentPuzzlesView];
     [self addFramedView:hintsView];
@@ -91,7 +99,6 @@
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
-    lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
 }
 
 - (void)viewDidUnload
@@ -107,7 +114,14 @@
     newsPaginator = nil;
     newsScrollView = nil;
     lblHintsLeft = nil;
+    puzzlesViewCaption = nil;
     [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
 }
 
 -(void)updateMonthSets:(NSArray *)monthSets
@@ -128,21 +142,28 @@
                 }
                 ++idx;
             }
-            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:0 puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:puzzleSet.solved score:puzzleSet.score ids:unsolvedIds percents:unsolvedPercent scores:unsolvedScores];
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:0 puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:[PuzzleSetData solved:puzzleSet] score:[PuzzleSetData score:puzzleSet] ids:unsolvedIds percents:unsolvedPercent scores:unsolvedScores];
+            puzzleSetView.puzzleSetData = puzzleSet;
             puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
             yOffset += puzzleSetView.frame.size.height;
             [currentPuzzlesView addSubview:puzzleSetView];
-            [self activateBadges:puzzleSetView.badges];
+            [self activateBadges:puzzleSetView];
         } else {
-            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] puzzlesCount:puzzleSet.puzzles.count minScore:puzzleSet.minScore price:3.99f];
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] puzzlesCount:puzzleSet.puzzles.count minScore:[PuzzleSetData minScore:puzzleSet] price:3.99f];
+            puzzleSetView.puzzleSetData = puzzleSet;
             puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
             yOffset += puzzleSetView.frame.size.height;
             [currentPuzzlesView addSubview:puzzleSetView];
             [puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
+    puzzlesViewCaption.text = [NSString stringWithFormat:@"Сканворды за %@", MONTHS2[[GlobalData globalData].currentMonth]];
     
-    currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, yOffset);
+    UIView * frame = [currentPuzzlesView.subviews objectAtIndex:1];
+    [UIView animateWithDuration:0.3 animations:^{
+        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, currentPuzzlesView.frame.size.width - frame.frame.origin.x * 2, yOffset - frame.frame.origin.y * 2);
+    }];
+    [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
 }
 
 - (IBAction)handleNewsCloseClick:(id)sender
@@ -155,8 +176,16 @@
 -(void)handleBadgeClick:(id)sender
 {
     BadgeView * badge = (BadgeView *)sender;
+    PuzzleSetView * puzzleSetView = (PuzzleSetView *)badge.superview;
+    PuzzleSetData * puzzleSet = puzzleSetView.puzzleSetData;
+    NSEnumerator * puzzleIt = [puzzleSet.puzzles objectEnumerator];
+    for (int i = 0; i < badge.tag; ++i)
+    {
+        [puzzleIt nextObject];
+    }
+    PuzzleData * puzzle = [puzzleIt nextObject];
     
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:[NSNumber numberWithInt:(LetterType)badge.badgeType]]];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
 }
 
 -(void)handleBuyClick:(id)sender
@@ -186,6 +215,25 @@
     [newsScrollView setContentOffset:CGPointMake(newsPaginator.currentPage * newsScrollView.frame.size.width, 0) animated:YES];
 }
 
+- (IBAction)handleBuyHints:(id)sender
+{
+    UIButton * button = sender;
+    [self showActivityIndicator];
+    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSLog(@"hints: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * dict = [parser objectWithData:receivedData];
+        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
+        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
+        [self hideActivityIndicator];
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+        NSLog(@"hints error: %@", error.description);
+    }];
+    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [request.params setObject:[NSString stringWithFormat:@"%d", button.tag] forKey:@"hints_change"];
+    [request runSilent];
+}
 
 -(void)buySet:(id)sender
 {
@@ -201,7 +249,7 @@
     CGSize newSize = setView.frame.size;
     
     [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
-    [self activateBadges:setView.badges];
+    [self activateBadges:setView];
 }
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize
@@ -239,9 +287,9 @@
     [self resizeView:blockView newHeight:(blockView.frame.size.height + delta) animated:YES];
 }
 
--(void)activateBadges:(NSArray *)badges
+-(void)activateBadges:(PuzzleSetView *)puzzleSetView
 {
-    for (BadgeView * badgeView in badges)
+    for (BadgeView * badgeView in puzzleSetView.badges)
     {
         [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
     }

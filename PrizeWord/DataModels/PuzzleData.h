@@ -14,6 +14,7 @@
 
 @interface PuzzleData : NSManagedObject
 
+@property (nonatomic, retain) NSString * puzzle_id;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSDate * issuedAt;
 @property (nonatomic, retain) NSNumber * base_score;
@@ -28,7 +29,6 @@
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict;
 
--(id)initWithDictionary:(NSDictionary *)dict;
 -(float)progress;
 
 @end

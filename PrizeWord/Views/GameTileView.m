@@ -263,7 +263,7 @@
     {
         case kAnswerPositionWest | kAnswerPositionLeft:
         case kAnswerPositionWest | kAnswerPositionBottom:
-        case kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionEast | kAnswerPositionBottom:
         case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionTop:
         case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionTop:
         case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionTop:
@@ -273,7 +273,7 @@
 
         case kAnswerPositionEast | kAnswerPositionRight:
         case kAnswerPositionEast | kAnswerPositionTop:
-        case kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionWest | kAnswerPositionTop:
         case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionBottom:
         case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionBottom:
         case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionBottom:

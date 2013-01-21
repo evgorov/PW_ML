@@ -25,9 +25,9 @@
     {
         successCallback = success;
         failCallback = fail;
+        _params = [NSMutableDictionary new];
         request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:10];
         request.HTTPMethod = httpMethod;
-        _params = [NSMutableDictionary new];
         receivedData = [NSMutableData new];
     }
     return self;
@@ -129,7 +129,6 @@
 {
     NSLog(@"connectionDidFinishLoading");
     successCallback(httpResponse, receivedData);
-    [receivedData setLength:0];
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response

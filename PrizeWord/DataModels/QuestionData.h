@@ -35,4 +35,6 @@
 @property (nonatomic) uint answer_positionAsUint;
 @property (nonatomic, retain) NSString * answer_positionAsString;
 
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict;
+
 @end

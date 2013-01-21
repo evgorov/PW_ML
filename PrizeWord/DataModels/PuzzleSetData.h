@@ -21,13 +21,6 @@
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict;
 
--(id)initWithDictionary:(NSDictionary *)dict;
--(int)solved;
--(int)total;
--(float)percent;
--(int)score;
--(int)minScore;
-
 @end
 
 @interface PuzzleSetData (CoreDataGeneratedAccessors)
@@ -36,4 +29,12 @@
 - (void)removePuzzlesObject:(PuzzleData *)value;
 - (void)addPuzzles:(NSSet *)values;
 - (void)removePuzzles:(NSSet *)values;
+@end
+
+@interface PuzzleSetData (DependedParameters)
++(int)solved:(PuzzleSetData *)puzzleSet;
++(int)total:(PuzzleSetData *)puzzleSet;
++(float)percent:(PuzzleSetData *)puzzleSet;
++(int)score:(PuzzleSetData *)puzzleSet;
++(int)minScore:(PuzzleSetData *)puzzleSet;
 @end
