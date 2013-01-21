@@ -619,7 +619,7 @@ var PuzzleSetView = Backbone.View.extend({
     'change [role="set-name"]': 'changeName',
     'change [role="set-type"]': 'changeType',
     'click [role="delete-puzzle"]': 'deletePuzzle',
-    'click [role="delete-set"]': 'destroy',
+    'click [role="delete-set"]': 'deletePuzzleSet',
     'click [role="edit-puzzle"]': 'editPuzzle',
     'click [role="save-set"]': 'saveSet',
     'click [role="publish-set"]': 'publishSet',
@@ -668,6 +668,11 @@ var PuzzleSetView = Backbone.View.extend({
     if(e && e.preventDefault) e.preventDefault();
     var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id');
     this.model.deletePuzzle(id);
+  },
+
+  deletePuzzleSet: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    this.model.destroy();
   },
 
   editPuzzle: function(e){
