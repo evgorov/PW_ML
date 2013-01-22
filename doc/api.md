@@ -364,19 +364,16 @@ Set of routes describing information about users.
 
 **`GET /puzzles`**
 
-List puzzles for given month and their status, if month is not present, show information about current month.
+List puzzles all puzzles for current user.
 
 
 *Request parameters:*
 
 - `session_key`: Session token.
-- `[year]`: Year
-- `[month]`: Month
 
 *Response:*
 
     {
-      "score": 23180,
       "sets": [
         {
           "id": "23",
