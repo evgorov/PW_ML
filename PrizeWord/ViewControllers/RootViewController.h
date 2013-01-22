@@ -18,6 +18,9 @@
     IBOutlet PrizeWordSwitchView *mainMenuVKSwitch;
     IBOutlet PrizeWordSwitchView *mainMenuFBSwitch;
     IBOutlet PrizeWordSwitchView *mainMenuNotificationsSwitch;
+    IBOutlet UILabel *mainMenuUserName;
+    IBOutlet UIImageView *mainMenuAvatar;
+    IBOutlet UILabel *mainMenuMaxScore;
     IBOutlet UIButton *btnScore;
     IBOutlet UIButton *btnRating;
     IBOutlet UIView *rulesView;
