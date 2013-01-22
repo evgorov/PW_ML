@@ -233,19 +233,25 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
         float percent = [(NSNumber *)[percents objectAtIndex:badgeIdx] floatValue];
         if (percent < 1)
         {
-            badgeView= [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andPercent:percent];
+            badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andPercent:percent];
         }
         else
         {
-            badgeView= [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andScore:[(NSNumber *)[scores objectAtIndex:badgeIdx] intValue]];
+            badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andScore:[(NSNumber *)[scores objectAtIndex:badgeIdx] intValue]];
         }
         badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (badgeIdx % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (badgeIdx / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
         badgeView.tag = [(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] - 1;
         [self addSubview:badgeView];
         [_badges addObject:badgeView];
     }
-    _shortSize = CGSizeMake(self.frame.size.width, self.frame.size.height - _btnBuy.frame.size.height);
-    _fullSize = self.frame.size;
+    _shortSize = CGSizeMake(self.frame.size.width, _lblText1.frame.origin.y + _lblText1.frame.size.height * 2);
+    if (badgesCount == 0) {
+        _fullSize = _shortSize;
+        _btnShowMore.hidden = YES;
+    }
+    else {
+        _fullSize = self.frame.size;
+    }
 }
 
 -(void)initCompleteElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores
