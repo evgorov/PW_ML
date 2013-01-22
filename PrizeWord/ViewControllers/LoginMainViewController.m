@@ -58,8 +58,8 @@
 -(void)gotoRoot:(id)sender
 {
     [self hideActivityIndicator];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+//    [self.navigationController setNavigationBarHidden:NO animated:YES];
+//    [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
 @end
