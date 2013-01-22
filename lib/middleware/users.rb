@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
-require 'model/user_puzzles'
 require 'model/service_message'
 
 module Middleware
@@ -72,26 +71,26 @@ module Middleware
 
     post '/sets/:id/buy' do
       env['token_auth'].authorize!
-      UserPuzzles.
-        storage(env['redis']).
-        puzzles_for(env['token_auth'].user.id).
-        tap{ |o| o.add_set(params['id']) }.
-        to_json
+      puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
+
+      user = env['token_auth'].user
+      user['sets'] ||= []
+      user['sets'] |= [puzzle_set.to_hash]
+      user.save
+
+      puzzle_set.to_json
     end
 
     get '/puzzles' do
       env['token_auth'].authorize!
-      args = [env['token_auth'].user.id]
-      if params['year'] && params['month']
-        args << params['year'].to_i
-        args << params['month'].to_i
-      end
-      UserPuzzles.storage(env['redis']).puzzles_for(*args).to_json
+      {
+        sets: env['token_auth'].user['sets'] || []
+      }.to_json
     end
 
     get '/puzzles/:id' do
       env['token_auth'].authorize!
-      env['token_auth'].user["puzzles.#{params[:id]}"].to_json
+      env['token_auth'].user["puzzle-data.#{params[:id]}"].to_json
     end
 
     put '/puzzles/:id' do
@@ -102,7 +101,7 @@ module Middleware
       end
 
       env['token_auth'].authorize!
-      env['token_auth'].user["puzzles.#{params[:id]}"] = params['puzzle_data']
+      env['token_auth'].user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
     end
   end
 end

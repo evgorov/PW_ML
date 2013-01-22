@@ -161,14 +161,19 @@ describe Middleware::Users do
 
   it 'GET /sets/:id/buy adds set to user storage' do
     token_auth = stub(:token_auth).as_null_object
+
     user = stub(:user)
+    user.as_null_object
     user.stub(id: 'USER_ID')
+    user.should_receive(:save)
+
+    puzzle_set = stub(:puzzle_set).as_null_object
+    puzzle_set.should_receive(:load)
+    puzzle_set.stub(to_json: "{}")
+    PuzzleSet.should_receive(:storage).and_return(puzzle_set)
+
+
     token_auth.stub(user: user)
-    user_puzzles = mock(:user_puzzles)
-    user_puzzles.stub(to_json: {}.to_json)
-    user_puzzles.should_receive(:puzzles_for).and_return(user_puzzles)
-    user_puzzles.should_receive(:add_set).with('1234')
-    UserPuzzles.should_receive(:storage).and_return(user_puzzles)
 
     post('/sets/1234/buy',
          { session_key: 'valid_session_key' },
@@ -185,7 +190,7 @@ describe Middleware::Users do
     user = stub(:user)
     token_auth.stub(user: user)
     res = { 'valid_json' => 'object' }
-    user.should_receive(:[]).with('puzzles.1234').and_return(res)
+    user.should_receive(:[]).with('puzzle-data.1234').and_return(res)
 
     get('/puzzles/1234',
         { session_key: 'valid_session_key' },
@@ -202,7 +207,7 @@ describe Middleware::Users do
     user = stub(:user)
     token_auth.stub(user: user)
     data = { 'valid_json' => 'object' }
-    user.should_receive(:[]=).with('puzzles.1234', data.to_json)
+    user.should_receive(:[]=).with('puzzle-data.1234', data.to_json)
 
     put('/puzzles/1234',
         {
@@ -230,27 +235,19 @@ describe Middleware::Users do
 
   it 'GET /puzzles returns puzzles for current user' do
     token_auth = stub(:token_auth).as_null_object
-    user = stub(:user)
+    user = stub(:user).as_null_object
     user.stub(id: 'USER_ID')
     token_auth.stub(user: user)
-    res = {
-      'score' => 12,
-      'sets' => ['some sets...']
-    }
-    UserPuzzles.should_receive(:storage).and_return(UserPuzzles)
-    UserPuzzles.should_receive(:puzzles_for).with('USER_ID', 2011, 11).and_return(res)
+
     get('/puzzles',
         {
           session_key: 'valid_session_key',
-          month: 11,
-          year: 2011
         },
         { 'token_auth' => token_auth })
 
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data.should == res
   end
 
 end

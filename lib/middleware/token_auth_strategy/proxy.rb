@@ -23,7 +23,7 @@ module Middleware::TokenAuthStrategy
 
     def user
       self.authorize!
-      if ::Middleware::TokenAuthStrategy.deserialize_user_proc
+      @user ||= if ::Middleware::TokenAuthStrategy.deserialize_user_proc
         ::Middleware::TokenAuthStrategy.deserialize_user_proc.call(@env, @user_key)
       else
         @user_key

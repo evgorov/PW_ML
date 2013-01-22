@@ -286,11 +286,6 @@ describe 'Integration spec' do
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-
-    response_data['year'].should == Time.now.year
-    response_data['month'].should == Time.now.month
-    response_data['user_id'].should == user_id
-    response_data['user_id'].should == user_id
     response_data['sets'][0]['id'].should == set_id
   end
 
