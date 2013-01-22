@@ -417,5 +417,67 @@ describe 'Integration spec' do
     response_data['service_message'].should == "new message"
   end
 
+  it '/puzzles can list all puzzles' do
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+
+    post('/sets',
+         {
+           year: Time.now.year,
+           month: Time.now.month,
+           name: 'Cool set',
+           published: 'true',
+           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
+           type: 'golden',
+           session_key: session_key
+         })
+
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    admin_set1_id = response_data['id']
+
+    post('/sets',
+         {
+           year: Time.now.year,
+           month: (Time.now - 60 * 60 * 24 * 31).month,
+           name: 'another Cool set',
+           published: 'true',
+           puzzles: [{ name: 'puzzle3' }, { name: 'puzzle4' }].to_json,
+           type: 'golden',
+           session_key: session_key
+         })
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    admin_set2_id = response_data['id']
+
+    post '/signup', valid_user_data
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+    user_id = response_data['me']['id']
+
+    post("/sets/#{admin_set1_id}/buy", { session_key: session_key })
+    last_response.status.should == 200
+    post("/sets/#{admin_set2_id}/buy", { session_key: session_key })
+    last_response.status.should == 200
+
+    get("/puzzles", { session_key: session_key })
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['sets'][0]['id'].should == admin_set2_id
+    response_data['sets'][1]['id'].should == admin_set1_id
+  end
+
   it 'invte users'
 end

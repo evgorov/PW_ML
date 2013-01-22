@@ -165,6 +165,7 @@ describe Middleware::Users do
     user = stub(:user)
     user.as_null_object
     user.stub(id: 'USER_ID')
+    user.stub(:[]).with('sets').and_return([])
     user.should_receive(:save)
 
     puzzle_set = stub(:puzzle_set).as_null_object

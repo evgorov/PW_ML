@@ -75,7 +75,7 @@ module Middleware
 
       user = env['token_auth'].user
       user['sets'] ||= []
-      user['sets'] |= [puzzle_set.to_hash]
+      user['sets'] = [puzzle_set.to_hash] | user['sets']
       user.save
 
       puzzle_set.to_json
