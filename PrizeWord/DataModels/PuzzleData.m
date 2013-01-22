@@ -21,7 +21,6 @@
 @dynamic height;
 @dynamic width;
 @dynamic score;
-@dynamic solved;
 @dynamic questions;
 @dynamic puzzleSet;
 
@@ -65,7 +64,7 @@
     }
 //    [puzzle setTime_given:[dict objectForKey:@"time_given"]];
     [puzzle setTime_left:[dict objectForKey:@"time_left"]];
-    [puzzle setSolved:[dict objectForKey:@"solved"]];
+//    [puzzle setSolved:[dict objectForKey:@"solved"]];
     [puzzle setScore:[dict objectForKey:@"score"]];
     [puzzle setHeight:[dict objectForKey:@"height"]];
     [puzzle setWidth:[dict objectForKey:@"width"]];
@@ -76,7 +75,7 @@
     
     NSArray * questionsData = [dict objectForKey:@"questions"];
     for (NSDictionary * questionData in questionsData) {
-        QuestionData * question = [QuestionData questionDataFromDictionary:questionData];
+        QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle];
         [puzzle addQuestionsObject:question];
     }
     
@@ -90,14 +89,18 @@
 
 -(float)progress
 {
+    return (float)[self solved] / self.questions.count;
+}
+
+-(int)solved
+{
     int solvedQuestions = 0;
     for (QuestionData * question in self.questions) {
         if ([question.solved boolValue]) {
             ++solvedQuestions;
         }
     }
-    return (float)solvedQuestions / self.questions.count;
+    return solvedQuestions;
 }
-
 
 @end

@@ -62,10 +62,9 @@
     else {
         NSLog(@"unknown set's type: %@", type);
     }
-    [puzzleSet setBought:[dict objectForKey:@"bought"]];
-    if (puzzleSet.bought == nil)
+    if ([dict objectForKey:@"bought"] != nil && [(NSNumber *)[dict objectForKey:@"bought"] boolValue])
     {
-        [puzzleSet setBought:[NSNumber numberWithBool:NO]];
+        [puzzleSet setBought:[NSNumber numberWithBool:YES]];
     }
     
     NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
@@ -86,7 +85,7 @@
 {
     int value = 0;
     for (PuzzleData * puzzle in puzzleSet.puzzles) {
-        if ([puzzle.solved boolValue]) {
+        if (puzzle.solved == puzzle.questions.count) {
             ++value;
         }
     }
@@ -100,6 +99,9 @@
 
 +(float)percent:(PuzzleSetData *)puzzleSet
 {
+    if (puzzleSet.puzzles.count == 0) {
+        return 1;
+    }
     return (float)[PuzzleSetData solved:puzzleSet] / puzzleSet.puzzles.count;
 }
 

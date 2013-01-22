@@ -306,11 +306,16 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     {
         imgProgress = [imgProgress stretchableImageWithLeftCapWidth:(imageSize.width / 2 - 1) topCapHeight:(imageSize.height / 2 - 1)];
     }
-    UIImageView * progressbar = [[UIImageView alloc] initWithFrame:CGRectMake(1, 1, (progressbarView.frame.size.width - 2) * solved / count, imageSize.height)];
+    float progress = 1;
+    if (count != 0)
+    {
+        progress = (float)solved / count;
+    }
+    UIImageView * progressbar = [[UIImageView alloc] initWithFrame:CGRectMake(1, 1, (progressbarView.frame.size.width - 2) * progress, imageSize.height)];
     progressbar.image = imgProgress;
     [progressbarView addSubview:progressbar];
     
-    NSString * percentString = [NSString stringWithFormat:@" %d%%", 100 * solved / count];
+    NSString * percentString = [NSString stringWithFormat:@" %d%%", (int)(100 * progress)];
     CGSize percentSize = [percentString sizeWithFont:_lblPercent.font];
     _lblPercent.frame = CGRectMake(progressbarView.frame.origin.x + progressbarView.frame.size.width, _lblPercent.frame.origin.y, percentSize.width, percentSize.height);
     _lblPercent.text = percentString;

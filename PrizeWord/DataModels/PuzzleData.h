@@ -23,12 +23,12 @@
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSNumber * score;
-@property (nonatomic, retain) NSNumber * solved;
 @property (nonatomic, retain) NSSet *questions;
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict;
 
+-(int)solved;
 -(float)progress;
 
 @end

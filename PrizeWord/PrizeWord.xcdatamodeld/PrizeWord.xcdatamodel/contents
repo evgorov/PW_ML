@@ -7,7 +7,6 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="puzzle_id" attributeType="String" syncable="YES"/>
         <attribute name="score" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="solved" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="time_given" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="time_left" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="width" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
@@ -25,14 +24,15 @@
         <attribute name="answer" attributeType="String" syncable="YES"/>
         <attribute name="answer_position" attributeType="Integer 32" valueTransformerName="position" minValueString="17" defaultValueString="17" syncable="YES"/>
         <attribute name="column" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="question_id" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="question_text" attributeType="String" syncable="YES"/>
         <attribute name="row" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="solved" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="225"/>
+        <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="210"/>
         <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="120"/>
-        <element name="Question" positionX="-6336" positionY="-15786" width="128" height="150"/>
+        <element name="Question" positionX="-6336" positionY="-15786" width="128" height="165"/>
     </elements>
 </model>

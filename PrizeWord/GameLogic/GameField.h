@@ -14,6 +14,7 @@
 
 @interface GameField : NSObject<EventListenerDelegate>
 {
+    PuzzleData * puzzle;
     NSMutableArray * tiles;
     NSArray * currentWord;
     uint currentLetterIdx;

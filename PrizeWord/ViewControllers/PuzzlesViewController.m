@@ -19,6 +19,7 @@
 #import "UserData.h"
 #import "APIRequest.h"
 #import "SBJson.h"
+#import "AppDelegate.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -46,20 +47,6 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     
     self.title = @"Сканворды";
     puzzlesViewCaption.text = @"Сканворды за ...";   
-    
-    NSArray * monthSets = [GlobalData globalData].monthSets;
-    if (monthSets == nil)
-    {
-        [self showActivityIndicator];
-        [[GlobalData globalData] loadMonthSets:^{
-            [self hideActivityIndicator];
-            [self updateMonthSets:[GlobalData globalData].monthSets];
-        }];
-    }
-    else
-    {
-        [self updateMonthSets:[GlobalData globalData].monthSets];
-    }
     
     UISwipeGestureRecognizer * newsRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsPrev:)];
     newsRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
@@ -121,12 +108,23 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self showActivityIndicator];
+    [[GlobalData globalData] loadMonthSets:^{
+        [self hideActivityIndicator];
+        [self updateMonthSets:[GlobalData globalData].monthSets];
+    }];
+
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
 }
 
 -(void)updateMonthSets:(NSArray *)monthSets
 {
     float yOffset = currentPuzzlesView.frame.size.height;
+    while (currentPuzzlesView.subviews.count > 2) {
+        UIView * subview = [currentPuzzlesView.subviews objectAtIndex:currentPuzzlesView.subviews.count-1];
+        yOffset -= subview.frame.size.height;
+        [subview removeFromSuperview];
+    }
     for (PuzzleSetData * puzzleSet in monthSets) {
         if ([puzzleSet.bought boolValue]) {
             NSMutableArray * unsolvedIds = [NSMutableArray new];
@@ -134,7 +132,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
             NSMutableArray * unsolvedScores = [NSMutableArray new];
             int idx = 1;
             for (PuzzleData * puzzle in puzzleSet.puzzles) {
-                if (![puzzle.solved boolValue])
+                if (puzzle.solved != puzzle.questions.count)
                 {
                     [unsolvedIds addObject:[NSNumber numberWithInt:idx]];
                     [unsolvedPercent addObject:[NSNumber numberWithFloat:puzzle.progress]];
@@ -161,7 +159,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     
     UIView * frame = [currentPuzzlesView.subviews objectAtIndex:1];
     [UIView animateWithDuration:0.3 animations:^{
-        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, currentPuzzlesView.frame.size.width - frame.frame.origin.x * 2, yOffset - frame.frame.origin.y * 2);
+        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
     }];
     [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
 }
@@ -190,8 +188,25 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)handleBuyClick:(id)sender
 {
+    PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
     [self showActivityIndicator];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(buySet:) userInfo:sender repeats:NO];
+    APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", setView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSLog(@"set bought! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        [self hideActivityIndicator];
+        [self buySet:sender];
+        [setView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
+        NSError * error;
+        [[AppDelegate currentDelegate].managedObjectContext save:&error];
+        if (error != nil) {
+            NSLog(@"error: %@", error.description);
+        }
+    } failCallback:^(NSError *error) {
+        NSLog(@"set error: %@", error.description);
+        [self hideActivityIndicator];
+    }];
+    [request.params setObject:setView.puzzleSetData.set_id forKey:@"id"];
+    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [request runSilent];
 }
 
 -(void)handleShowMoreClick:(id)sender
@@ -239,8 +254,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 {
     [self hideActivityIndicator];
     
-    NSTimer * timer = sender;
-    UIButton * btnBuy = timer.userInfo;
+    UIButton * btnBuy = sender;
     PuzzleSetView * setView = (PuzzleSetView *)btnBuy.superview;
     UIView * blockView = setView.superview;
     CGSize oldSize = setView.frame.size;

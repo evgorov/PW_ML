@@ -12,6 +12,8 @@
 #import "EventManager.h"
 #import "QuestionData.h"
 #import "PuzzleSetData.h"
+#import "GameLogic.h"
+#import "AppDelegate.h"
 
 @interface GameField (private)
 
@@ -28,6 +30,7 @@
 // doesn't change focus!
 -(void)checkOtherQuestions;
 -(NSArray *)lettersForQuestion:(TileData *)question;
+-(void)saveSolvedQuestion:(TileData *)questionTile;
 
 @end
 
@@ -44,6 +47,7 @@
     
     if (self)
     {
+        puzzle = nil;
         currentQuestion = nil;
         currentWord = nil;
         _tilesPerRow = width;
@@ -72,6 +76,7 @@
     
     if (self)
     {
+        puzzle = puzzleData;
         _questionsTotal = puzzleData.questions.count;
         _questionsComplete = 0;
         questions = [[NSMutableSet alloc] initWithCapacity:_questionsTotal];
@@ -80,8 +85,24 @@
             tile.question = question.question_text;
             tile.answer = question.answer;
             tile.answerPosition = question.answer_positionAsUint;
-            tile.state = TILE_QUESTION_NEW;
-            ;
+            tile.state = [question.solved boolValue] ? TILE_QUESTION_CORRECT : TILE_QUESTION_NEW;
+            if ([question.solved boolValue])
+            {
+                ++_questionsComplete;
+                NSArray * letters = [self lettersForQuestion:tile];
+                int idx = 0;
+                for (TileData * letter in letters) {
+                    if (letter.state == TILE_LETTER_CORRECT) {
+                        ++idx;
+                        continue;
+                    }
+                    letter.state = TILE_LETTER_CORRECT;
+                    letter.currentLetter = [question.answer substringWithRange:NSMakeRange(idx, 1)];
+                    letter.targetLetter = letter.currentLetter;
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:letter]];
+                    ++idx;
+                }
+            }
             [questions addObject:tile];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
         }
@@ -381,6 +402,7 @@
     currentWord = nil;
 
     currentQuestion.state = TILE_QUESTION_CORRECT;
+    [self saveSolvedQuestion:currentQuestion];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
@@ -423,6 +445,7 @@
         {
             [completedQuestions addObject:question];
             question.state = TILE_QUESTION_CORRECT;
+            [self saveSolvedQuestion:question];
             _questionsComplete++;
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:question]];
         }
@@ -468,6 +491,33 @@
     }
     
     return word;
+}
+
+-(void)saveSolvedQuestion:(TileData *)questionTile
+{
+    QuestionData * question = nil;
+    for (QuestionData * data in puzzle.questions) {
+        if (data.rowAsUint == questionTile.y && data.columnAsUint == questionTile.x)
+        {
+            question = data;
+            break;
+        }
+    }
+    if (question == nil)
+    {
+        return;
+    }
+    [question setSolved:[NSNumber numberWithBool:YES]];
+    int timeLeft = (puzzle.time_given.intValue - (int)[GameLogic sharedLogic].gameTime);
+    if (timeLeft < 0) {
+        timeLeft = 0;
+    }
+    [puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    NSError * error;
+    [[AppDelegate currentDelegate].managedObjectContext save:&error];
+    if (error != nil) {
+        NSLog(@"error: %@", error.description);
+    }
 }
 
 @end

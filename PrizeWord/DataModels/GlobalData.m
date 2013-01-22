@@ -75,6 +75,17 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
             NSArray * setsData = [parser objectWithData:receivedData];
             for (NSDictionary * setData in setsData)
             {
+                NSString * setId = [setData objectForKey:@"id"];
+                BOOL alreadyExists = NO;
+                for (PuzzleSetData * puzzleSet in _monthSets) {
+                    if ([puzzleSet.set_id compare:setId] == NSOrderedSame) {
+                        alreadyExists = YES;
+                        break;
+                    }
+                }
+                if (alreadyExists) {
+                    continue;
+                }
                 PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData];
                 NSLog(@"min score: %d", [PuzzleSetData minScore:puzzleSet]);
                 [sets addObject:puzzleSet];
