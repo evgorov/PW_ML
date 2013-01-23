@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "APIRequest.h"
 #import "GlobalData.h"
+#import "UserData.h"
 
 @interface GameField (private)
 
@@ -74,7 +75,11 @@
 
 -(id)initWithData:(PuzzleData *)puzzleData
 {
-    self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] tilesPerCol:[puzzleData.height unsignedIntValue] andType:[puzzleData.puzzleSet.type intValue]];
+    int type = [puzzleData.puzzleSet.type intValue];
+    if (type == PUZZLESET_SILVER2) {
+        type = PUZZLESET_SILVER;
+    }
+    self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] tilesPerCol:[puzzleData.height unsignedIntValue] andType:type];
     
     if (self)
     {
@@ -534,6 +539,7 @@
         [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
         [request.params setObject:@"1" forKey:@"solved"];
         [request runSilent];
+        [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
         
         [puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     }
