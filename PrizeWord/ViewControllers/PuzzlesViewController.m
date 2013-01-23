@@ -37,6 +37,10 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize;
 
+-(void)updateArchive:(NSData *)receivedData;
+-(void)updateMonthSets:(NSArray*)monthSets;
+
+
 @end
 
 @implementation PuzzlesViewController
@@ -55,37 +59,6 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     UITapGestureRecognizer * newsTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsTap:)];
     [newsScrollView setGestureRecognizers:[NSArray arrayWithObjects:newsLeftGestureRecognizer, newsRightGestureRecognizer, newsTapGestureRecognizer, nil]];
 
-    APIRequest * request = [APIRequest getRequest:@"old_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"archive: %@", [NSString stringWithUTF8String:receivedData.bytes]);
-    } failCallback:^(NSError *error) {
-        NSLog(@"archive error: %@", error.description);
-    }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:@"0" forKey:@"from"];
-    [request.params setObject:@"100" forKey:@"limit"];
-    [request runSilent];
-/*
-    PuzzleSetView * archiveGoldSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:5  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
-    PuzzleSetView * archiveSilverSet = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_SILVER2 month:0  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
-    PuzzleSetView * archiveGoldSet2 = [PuzzleSetView puzzleSetViewWithType:PUZZLESET_GOLD month:9  puzzlesCount:12 puzzlesSolved:7 score:27000 ids:[NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:2], [NSNumber numberWithInt:4], [NSNumber numberWithInt:5], [NSNumber numberWithInt:6], [NSNumber numberWithInt:12], nil] percents:[NSArray arrayWithObjects:[NSNumber numberWithFloat:1], [NSNumber numberWithFloat:0.5], [NSNumber numberWithFloat:0.43], [NSNumber numberWithFloat:0.25], [NSNumber numberWithFloat:0.1], [NSNumber numberWithFloat:0], nil] scores:[NSArray arrayWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:400], [NSNumber numberWithInt:500], [NSNumber numberWithInt:600], [NSNumber numberWithInt:12], nil]];
-    [self activateBadges:archiveGoldSet];
-    [self activateBadges:archiveSilverSet];
-    [self activateBadges:archiveGoldSet2];
-    
-    archiveGoldSet.frame = CGRectMake(0, archiveView.frame.size.height, archiveGoldSet.frame.size.width, archiveGoldSet.frame.size.height);
-    archiveSilverSet.frame = CGRectMake(0, archiveGoldSet.frame.origin.y + archiveGoldSet.frame.size.height, archiveSilverSet.frame.size.width, archiveSilverSet.frame.size.height);
-    archiveGoldSet2.frame = CGRectMake(0, archiveSilverSet.frame.origin.y + archiveSilverSet.frame.size.height, archiveGoldSet2.frame.size.width, archiveGoldSet2.frame.size.height);
-
-    [archiveView addSubview:archiveGoldSet];
-    [archiveView addSubview:archiveSilverSet];
-    [archiveView addSubview:archiveGoldSet2];
-    archiveView.frame = CGRectMake(0, 0, archiveView.frame.size.width, archiveGoldSet2.frame.origin.y + archiveGoldSet2.frame.size.height);
-    [archiveGoldSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [archiveSilverSet.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [archiveGoldSet2.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-*/    
-    currentPuzzlesView.frame = CGRectMake(0, 0, currentPuzzlesView.frame.size.width, currentPuzzlesView.frame.size.height);
-    
     [self addSimpleView:newsView];
     [self addFramedView:currentPuzzlesView];
     [self addFramedView:hintsView];
@@ -121,6 +94,16 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         [self hideActivityIndicator];
         [self updateMonthSets:[GlobalData globalData].monthSets];
     }];
+    
+    APIRequest * request = [APIRequest getRequest:@"puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        [self updateArchive:receivedData];
+    } failCallback:^(NSError *error) {
+        NSLog(@"archive error: %@", error.description);
+    }];
+    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [request.params setObject:@"0" forKey:@"from"];
+    [request.params setObject:@"100" forKey:@"limit"];
+    [request runSilent];
 
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
 }
@@ -171,6 +154,63 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
     }];
     [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
+}
+
+-(void)updateArchive:(NSData *)receivedData
+{
+    NSLog(@"archive: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+    SBJsonParser * parser = [SBJsonParser new];
+    NSDictionary * data = [parser objectWithData:receivedData];
+    NSArray * setsData = [data objectForKey:@"sets"];
+    
+    int lastMonth = 0;
+    
+    float yOffset = archiveView.frame.size.height;
+    while (archiveView.subviews.count > 2) {
+        UIView * subview = [archiveView.subviews objectAtIndex:archiveView.subviews.count-1];
+        yOffset -= subview.frame.size.height;
+        [subview removeFromSuperview];
+    }
+    
+    for (NSDictionary * setData in setsData) {
+        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData];
+        int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
+        int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];
+        if (year == [GlobalData globalData].currentYear && month == ([GlobalData globalData].currentMonth + 1))
+        {
+            continue;
+        }
+        if (lastMonth != month) {
+            lastMonth = month;
+        }
+        else {
+            month = 0;
+        }
+        NSMutableArray * ids = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
+        NSMutableArray * percents = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
+        NSMutableArray * scores = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
+        int idx = 1;
+        for (PuzzleData * puzzle in puzzleSet.puzzles) {
+            [ids addObject:[NSNumber numberWithInt:idx]];
+            [percents addObject:[NSNumber numberWithFloat:puzzle.progress]];
+            [scores addObject:puzzle.score];
+            ++idx;
+        }
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:month puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:[PuzzleSetData solved:puzzleSet] score:[PuzzleSetData score:puzzleSet] ids:ids percents:percents scores:scores];
+        puzzleSetView.puzzleSetData = puzzleSet;
+        [self activateBadges:puzzleSetView];
+        [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+        yOffset += puzzleSetView.frame.size.height;
+        
+        [archiveView addSubview:puzzleSetView];
+    }
+    
+    UIView * frame = [archiveView.subviews objectAtIndex:1];
+    [UIView animateWithDuration:0.3 animations:^{
+        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
+    }];
+    [self resizeView:archiveView newHeight:yOffset animated:YES];
 }
 
 - (IBAction)handleNewsCloseClick:(id)sender

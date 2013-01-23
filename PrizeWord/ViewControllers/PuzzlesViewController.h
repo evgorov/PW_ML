@@ -28,6 +28,4 @@
     IBOutlet UILabel *lblHintsLeft;
 }
 
--(void)updateMonthSets:(NSArray*)monthSets;
-
 @end

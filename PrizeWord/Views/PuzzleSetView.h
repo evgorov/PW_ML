@@ -9,16 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "PuzzleSetData.h"
 
-typedef enum PuzzleSetType
-{
-    PUZZLESET_BRILLIANT = 0,
-    PUZZLESET_GOLD,
-    PUZZLESET_SILVER,
-    PUZZLESET_FREE,
-    PUZZLESET_SILVER2,
-}
-PuzzleSetType;
-
 @interface PuzzleSetView : UIView
 {
     PuzzleSetType setType;

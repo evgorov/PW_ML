@@ -103,7 +103,10 @@
                     ++idx;
                 }
             }
-            [questions addObject:tile];
+            else
+            {
+                [questions addObject:tile];
+            }
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:tile]];
         }
     }
@@ -402,13 +405,13 @@
     currentWord = nil;
 
     currentQuestion.state = TILE_QUESTION_CORRECT;
-    [self saveSolvedQuestion:currentQuestion];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:currentQuestion]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:currentQuestion]];
     [questions removeObject:currentQuestion];
-    currentQuestion = nil;
     _questionsComplete++;
+    [self saveSolvedQuestion:currentQuestion];
+    currentQuestion = nil;
     if (_questionsComplete == _questionsTotal)
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
@@ -445,8 +448,8 @@
         {
             [completedQuestions addObject:question];
             question.state = TILE_QUESTION_CORRECT;
-            [self saveSolvedQuestion:question];
             _questionsComplete++;
+            [self saveSolvedQuestion:question];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:question]];
         }
     }
@@ -509,10 +512,17 @@
     }
     [question setSolved:[NSNumber numberWithBool:YES]];
     int timeLeft = (puzzle.time_given.intValue - (int)[GameLogic sharedLogic].gameTime);
-    if (timeLeft < 0) {
+    if (timeLeft < 0)
+    {
         timeLeft = 0;
     }
     [puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+
+    if (_questionsComplete == _questionsTotal)
+    {
+        [puzzle setScore:[NSNumber numberWithInt:([puzzle.base_score intValue] + [puzzle.time_left intValue] / 10)]];
+    }
+
     NSError * error;
     [[AppDelegate currentDelegate].managedObjectContext save:&error];
     if (error != nil) {

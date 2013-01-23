@@ -48,16 +48,19 @@
     [puzzleSet setName:[dict objectForKey:@"name"]];
     NSString * type = [dict objectForKey:@"type"];
     if (type == nil || [type compare:@"free" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:LETTER_FREE]];
+        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_FREE]];
     }
     else if ([type compare:@"brilliant" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:LETTER_BRILLIANT]];
+        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_BRILLIANT]];
+    }
+    else if ([type compare:@"silver2" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER2]];
     }
     else if ([type compare:@"silver" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:LETTER_SILVER]];
+        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER]];
     }
     else if ([type compare:@"gold" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:LETTER_GOLD]];
+        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_GOLD]];
     }
     else {
         NSLog(@"unknown set's type: %@", type);

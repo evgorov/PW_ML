@@ -57,15 +57,31 @@
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
     }
-//    [puzzle setBase_score:[dict objectForKey:@"base_score"]];
+    id base_scoreData = [dict objectForKey:@"base_score"];
+    if ([base_scoreData isKindOfClass:[NSString class]]) {
+        NSString * base_scoreString = base_scoreData;
+        [puzzle setBase_score:[NSNumber numberWithInt:[base_scoreString intValue]]];
+    } else {
+        [puzzle setBase_score:[dict objectForKey:@"base_score"]];
+    }
     if (puzzle.base_score == nil)
     {
         [puzzle setBase_score:[NSNumber numberWithInt:0]];
     }
-//    [puzzle setTime_given:[dict objectForKey:@"time_given"]];
-    [puzzle setTime_left:[dict objectForKey:@"time_left"]];
+    id time_givenData = [dict objectForKey:@"time_given"];
+    if ([time_givenData isKindOfClass:[NSString class]]) {
+        NSString * time_givenString = time_givenData;
+        [puzzle setTime_given:[NSNumber numberWithInt:[time_givenString intValue]]];
+    } else {
+        [puzzle setTime_given:[dict objectForKey:@"time_given"]];
+    }
+    if (puzzle.time_given == nil)
+    {
+        [puzzle setTime_given:[NSNumber numberWithInt:60000]];
+    }
+//    [puzzle setTime_left:[dict objectForKey:@"time_left"]];
 //    [puzzle setSolved:[dict objectForKey:@"solved"]];
-    [puzzle setScore:[dict objectForKey:@"score"]];
+//    [puzzle setScore:[dict objectForKey:@"score"]];
     [puzzle setHeight:[dict objectForKey:@"height"]];
     [puzzle setWidth:[dict objectForKey:@"width"]];
     if (puzzle.score == nil)

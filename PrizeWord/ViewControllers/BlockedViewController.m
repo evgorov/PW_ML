@@ -19,7 +19,7 @@
 
 @implementation BlockedViewController
 
-static int VERTICAL_SPACE = 20;
+static int VERTICAL_SPACE = 23;
 
 - (void)viewDidLoad
 {
@@ -41,7 +41,7 @@ static int VERTICAL_SPACE = 20;
     
     if ([AppDelegate currentDelegate].isIPad)
     {
-        VERTICAL_SPACE = 40;
+        VERTICAL_SPACE = 27;
     }
 }
 

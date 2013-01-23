@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UserData * loggedInUser;
 @property (nonatomic, strong) NSArray * monthSets;
 @property () int currentMonth;
+@property () int currentYear;
 
 -(void)loadMonthSets:(void(^)())onComplete;
 

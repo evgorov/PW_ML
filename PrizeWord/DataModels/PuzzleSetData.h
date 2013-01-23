@@ -11,6 +11,16 @@
 
 @class PuzzleData;
 
+typedef enum PuzzleSetType
+{
+    PUZZLESET_BRILLIANT = 0,
+    PUZZLESET_GOLD,
+    PUZZLESET_SILVER,
+    PUZZLESET_FREE,
+    PUZZLESET_SILVER2,
+}
+PuzzleSetType;
+
 @interface PuzzleSetData : NSManagedObject
 
 @property (nonatomic, retain) NSString * set_id;

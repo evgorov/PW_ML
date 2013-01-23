@@ -19,6 +19,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
 @synthesize loggedInUser = _loggedInUser;
 @synthesize monthSets = _monthSets;
 @synthesize currentMonth = _currentMonth;
+@synthesize currentYear = _currentYear;
 
 +(GlobalData *)globalData
 {
@@ -39,13 +40,14 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         _loggedInUser = nil;
         _monthSets = nil;
         _currentMonth = 0;
+        _currentYear = 2013;
     }
     return self;
 }
 
 -(void)loadMonthSets:(void(^)())onComplete
 {
-    APIRequest * request = [APIRequest getRequest:@"puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    APIRequest * request = [APIRequest getRequest:@"sets_available" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         NSString * dateString = [response.allHeaderFields objectForKey:@"Date"];
         for (int month = 0; month < 12; ++month) {
@@ -55,52 +57,24 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
                 break;
             }
         }
+        for (int year = 2000; year < 2100; ++year) {
+            if ([dateString rangeOfString:[NSString stringWithFormat:@"%d", year]].location != NSNotFound)
+            {
+                _currentYear = year;
+                break;
+            }
+        }
         
-        NSLog(@"puzzles: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"available sets: %@", [NSString stringWithUTF8String:receivedData.bytes]);
         NSMutableArray * sets = [NSMutableArray new];
         SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
-        NSLog(@"month score: %@", [data objectForKey:@"score"]);
-        NSArray * setsData = [data objectForKey:@"sets"];
-        for (NSDictionary * setData in setsData)
+        NSArray * data = [parser objectWithData:receivedData];
+        for (NSDictionary * setData in data)
         {
             [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData]];
         }
         _monthSets = [NSArray arrayWithArray:sets];
-
-        APIRequest * innerRequest = [APIRequest getRequest:@"sets_available" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"available sets: %@", [NSString stringWithUTF8String:receivedData.bytes]);
-            NSMutableArray * sets = [_monthSets mutableCopy];
-            SBJsonParser * parser = [SBJsonParser new];
-            NSArray * setsData = [parser objectWithData:receivedData];
-            for (NSDictionary * setData in setsData)
-            {
-                NSString * setId = [setData objectForKey:@"id"];
-                BOOL alreadyExists = NO;
-                for (PuzzleSetData * puzzleSet in _monthSets) {
-                    if ([puzzleSet.set_id compare:setId] == NSOrderedSame) {
-                        alreadyExists = YES;
-                        break;
-                    }
-                }
-                if (alreadyExists) {
-                    continue;
-                }
-                PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData];
-                NSLog(@"min score: %d", [PuzzleSetData minScore:puzzleSet]);
-                [sets addObject:puzzleSet];
-            }
-            _monthSets = [NSArray arrayWithArray:sets];
-            onComplete();
-            
-        } failCallback:^(NSError *error) {
-            NSLog(@"Error: cannot load available sets!");
-            onComplete();
-        }];
-        
-        [innerRequest.params setObject:_sessionKey forKey:@"session_key"];
-        [innerRequest runSilent];
-        
+        onComplete();
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");
         onComplete();
