@@ -322,8 +322,8 @@
 
 - (IBAction)handleSwitchUserClick:(id)sender
 {
-    [navController popToRootViewControllerAnimated:YES];
     [self hideMenuAnimated:YES];
+    [navController popToRootViewControllerAnimated:YES];
 }
 
 - (IBAction)handleScoreClick:(id)sender

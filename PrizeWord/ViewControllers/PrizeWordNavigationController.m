@@ -88,6 +88,7 @@
     {
         [self.topViewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];
     }
+    [self setNavigationBarHidden:YES animated:animated];
     return popped;
 }
 

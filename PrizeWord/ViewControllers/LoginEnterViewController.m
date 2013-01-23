@@ -16,6 +16,9 @@
 
 @interface LoginEnterViewController (private)
 
+-(void)handleKeyboardWillShow:(NSNotification *)aNotification;
+-(void)handleKeyboardWillHide:(NSNotification *)aNotification;
+
 -(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
 -(void)handleEnterFailed:(NSError *)error;
 
@@ -27,12 +30,39 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"TITLE_ENTER", nil);
+    scrollView.autoresizesSubviews = NO;
+    scrollView.bounces = NO;
+    scrollView.contentSize = self.view.frame.size;
 }
 
 - (void)viewDidUnload {
     txtEmail = nil;
     txtPassword = nil;
+    scrollView = nil;
     [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"enter viewWillAppear");
+    [super viewWillAppear:animated];
+    activeResponder = nil;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"enter viewWillDisappear");
+    [super viewWillDisappear:animated];
+    if (activeResponder != nil)
+    {
+        [activeResponder resignFirstResponder];
+    }
+    activeResponder = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (IBAction)handleEnterClick:(id)sender
@@ -89,17 +119,25 @@
     [self.navigationController pushViewController:[LoginRemindViewController new] animated:YES];
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    activeResponder = textField;
+    return YES;
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == txtEmail)
     {
         [textField resignFirstResponder];
+        activeResponder = txtPassword;
         [txtPassword becomeFirstResponder];
         return NO;
     }
     else if (textField == txtPassword)
     {
         [textField resignFirstResponder];
+        activeResponder = nil;
         [self handleEnterClick:self];
     }
     return YES;
@@ -112,5 +150,36 @@
         [self handleEnterClick:nil];
     }
 }
+
+-(void)handleKeyboardWillShow:(NSNotification *)aNotification
+{
+    NSDictionary * userInfo = aNotification.userInfo;
+    CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView setAnimationCurve:animationCurve];
+    [UIView animateWithDuration:animationDuration animations:^{
+        scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - endFrame.size.height);
+    } completion:^(BOOL finished) {
+        [scrollView scrollRectToVisible:activeResponder.frame animated:YES];
+    }];
+}
+
+-(void)handleKeyboardWillHide:(NSNotification *)aNotification
+{
+        NSDictionary * userInfo = aNotification.userInfo;
+        
+        UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+        double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        [UIView setAnimationCurve:animationCurve];
+        [UIView animateWithDuration:animationDuration animations:^{
+            scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    activeResponder = nil;
+}
+
 
 @end

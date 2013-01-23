@@ -11,8 +11,11 @@
 
 @interface LoginEnterViewController : PrizeWordViewController<UITextFieldDelegate, UIAlertViewDelegate>
 {
+    IBOutlet UIScrollView *scrollView;
     IBOutlet UITextField *txtEmail;
     IBOutlet UITextField *txtPassword;
+    
+    UIView * activeResponder;
 }
 
 @end
