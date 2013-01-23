@@ -166,13 +166,15 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     int lastMonth = 0;
     
     float yOffset = archiveView.frame.size.height;
-    while (archiveView.subviews.count > 2) {
+    while (archiveView.subviews.count > 2)
+    {
         UIView * subview = [archiveView.subviews objectAtIndex:archiveView.subviews.count-1];
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
     
-    for (NSDictionary * setData in setsData) {
+    for (NSDictionary * setData in setsData)
+    {
         PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData];
         int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
         int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];
@@ -180,17 +182,20 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         {
             continue;
         }
-        if (lastMonth != month) {
+        if (lastMonth != month)
+        {
             lastMonth = month;
         }
-        else {
+        else
+        {
             month = 0;
         }
         NSMutableArray * ids = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
         NSMutableArray * percents = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
         NSMutableArray * scores = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
         int idx = 1;
-        for (PuzzleData * puzzle in puzzleSet.puzzles) {
+        for (PuzzleData * puzzle in puzzleSet.puzzles)
+        {
             [ids addObject:[NSNumber numberWithInt:idx]];
             [percents addObject:[NSNumber numberWithFloat:puzzle.progress]];
             [scores addObject:puzzle.score];

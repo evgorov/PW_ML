@@ -156,7 +156,7 @@
     while (btnRating.subviews.count > 1) {
         [[btnRating.subviews objectAtIndex:(btnRating.subviews.count - 1)] removeFromSuperview];
     }
-    NSString * score = [NSString stringWithFormat:@"%d ", [GlobalData globalData].loggedInUser.high_score];
+    NSString * score = [NSString stringWithFormat:@"%d ", [GlobalData globalData].loggedInUser.month_score];
     CGSize scoreSize = [score sizeWithFont:font];
     UILabel * lblScoreNumber = [[UILabel alloc] initWithFrame:CGRectMake(40, 15, scoreSize.width, scoreSize.height)];
     lblScoreNumber.font = font;

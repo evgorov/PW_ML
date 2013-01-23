@@ -244,7 +244,7 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
         [self addSubview:badgeView];
         [_badges addObject:badgeView];
     }
-    _shortSize = CGSizeMake(self.frame.size.width, _lblText1.frame.origin.y + _lblText1.frame.size.height * 2);
+    _shortSize = CGSizeMake(self.frame.size.width, _lblText1.frame.origin.y + _lblText1.frame.size.height * 3);
     if (badgesCount == 0) {
         _fullSize = _shortSize;
         _btnShowMore.hidden = YES;
@@ -270,6 +270,8 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblScore.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
+    _lblScore.textColor = [UIColor whiteColor];
+    _lblScore.shadowColor = [UIColor blackColor];
     
     int badgesCount = ids.count;
     int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;

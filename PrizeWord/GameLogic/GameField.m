@@ -14,6 +14,8 @@
 #import "PuzzleSetData.h"
 #import "GameLogic.h"
 #import "AppDelegate.h"
+#import "APIRequest.h"
+#import "GlobalData.h"
 
 @interface GameField (private)
 
@@ -520,7 +522,20 @@
 
     if (_questionsComplete == _questionsTotal)
     {
-        [puzzle setScore:[NSNumber numberWithInt:([puzzle.base_score intValue] + [puzzle.time_left intValue] / 10)]];
+        int scoreForPuzzle = [puzzle.base_score intValue] + [puzzle.time_left intValue] / 10;
+        
+        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            NSLog(@"score success! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        } failCallback:^(NSError *error) {
+            NSLog(@"score error! %@", error.description);
+        }];
+        
+        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
+        [request.params setObject:@"1" forKey:@"solved"];
+        [request runSilent];
+        
+        [puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     }
 
     NSError * error;
