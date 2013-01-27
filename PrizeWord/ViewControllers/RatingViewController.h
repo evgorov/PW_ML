@@ -8,9 +8,10 @@
 
 #import "BlockedViewController.h"
 
-@interface RatingViewController : BlockedViewController
+@interface RatingViewController : BlockedViewController<UITableViewDelegate, UITableViewDataSource>
 {
-    IBOutlet UIView *ratingView;
+    IBOutlet UITableView * ratingView;
+    NSMutableArray * users;
 }
 
 @end

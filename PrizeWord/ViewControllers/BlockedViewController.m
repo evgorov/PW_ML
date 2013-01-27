@@ -164,14 +164,27 @@ static int VERTICAL_SPACE = 23;
             {
                 delta += VERTICAL_SPACE;
             }
+            UIImageView * borderView = nil;
+            if ([[view.subviews objectAtIndex:view.subviews.count - 1] isKindOfClass:[UIImageView class]])
+            {
+                borderView = [view.subviews objectAtIndex:view.subviews.count - 1];
+            }
             if (animated)
             {
                 [UIView animateWithDuration:0.3 animations:^{
+                    if (borderView != nil)
+                    {
+                        borderView.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta);
+                    }
                     subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
                 }];
             }
             else
             {
+                if (borderView != nil)
+                {
+                    borderView.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta);
+                }
                 subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
             }
         }
