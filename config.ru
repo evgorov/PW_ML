@@ -13,6 +13,7 @@ require 'middleware/password_reset'
 require 'middleware/users'
 require 'middleware/admin'
 require 'middleware/counter'
+require 'middleware/uploader'
 
 class IndexPage
 
@@ -36,6 +37,8 @@ else
   uri = URI.parse(ENV["REDISTOGO_URL"])
   use Middleware::RedisMiddleware, { :host => uri.host, :port => uri.port, :password => uri.password }
 end
+
+use Middleware::Uploader
 
 use Middleware::Counter, counter_mappings: {
   [200, %r{/login}] => 'logins',

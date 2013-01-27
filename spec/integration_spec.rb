@@ -1,6 +1,7 @@
 require 'middleware/redis_middleware'
 require 'middleware/password_reset'
 require 'middleware/counter'
+require 'middleware/uploader'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
@@ -49,6 +50,7 @@ describe 'Integration spec' do
       use Rack::Lint
       use Rack::ContentLength
       use Middleware::RedisMiddleware
+      use Middleware::Uploader
 
       use Middleware::Counter, counter_mappings: {
         [200, %r{/login}] => 'logins',
