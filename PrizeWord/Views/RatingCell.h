@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveUp;
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveDown;
 @property (strong, nonatomic) IBOutlet UIImageView *imgPhoto;
+@property (strong, nonatomic) IBOutlet UIImageView *imgBorder;
+@property (strong, nonatomic) IBOutlet UILabel *lblSurname;
 @property (strong, nonatomic) IBOutlet UILabel *lblName;
 @property (strong, nonatomic) IBOutlet UILabel *lblSolved;
 @property (strong, nonatomic) IBOutlet UILabel *lblSolvedLabel;

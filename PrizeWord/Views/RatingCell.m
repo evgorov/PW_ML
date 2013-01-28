@@ -7,6 +7,7 @@
 //
 
 #import "RatingCell.h"
+#import "AppDelegate.h"
 
 @implementation RatingCell
 
@@ -16,26 +17,19 @@
 @synthesize imgMoveUp = _imgMoveUp;
 @synthesize imgMoveDown = _imgMoveDown;
 @synthesize imgPhoto = _imgPhoto;
+@synthesize imgBorder = _imgBorder;
+@synthesize lblSurname = _lblSurname;
 @synthesize lblName = _lblName;
 @synthesize lblSolved = _lblSolved;
 @synthesize lblSolvedLabel = _lblSolvedLabel;
 @synthesize lblScore = _lblScore;
 @synthesize lblPosition = _lblPosition;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+-(void)awakeFromNib
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    [super awakeFromNib];
+    _lblName.font = [UIFont fontWithName:@"DINPro-Bold" size:[[AppDelegate currentDelegate] isIPad] ? 20 : 17];
+    _lblSurname.font = _lblName.font;
 }
 
 @end

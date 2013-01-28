@@ -12,8 +12,11 @@
 #import "GlobalData.h"
 #import "SBJson.h"
 #import "RatingCell.h"
+#import "AppDelegate.h"
 
 int ROW_HEIGHT = 83;
+int FOOTER_HEIGHT = 24;
+int HEADER_HEIGHT = 24;
 
 @interface RatingViewController ()
 
@@ -24,11 +27,20 @@ int ROW_HEIGHT = 83;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([AppDelegate currentDelegate].isIPad)
+    {
+        ROW_HEIGHT = 97;
+        FOOTER_HEIGHT = 35;
+        HEADER_HEIGHT = 35;
+    }
 
-    ratingView.frame = CGRectMake(0, 0, ratingView.frame.size.width, 30);
+    ratingView.frame = CGRectMake((self.view.frame.size.width - ratingView.frame.size.width) / 2, 0, ratingView.frame.size.width, 0);
+    ratingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
+    ratingView.clipsToBounds = NO;
     ratingView.delegate = self;
     ratingView.dataSource = self;
-    [self addFramedView:ratingView];
+    [self.view addSubview:ratingView];
     
     users = [NSMutableArray new];
 }
@@ -54,18 +66,27 @@ int ROW_HEIGHT = 83;
         {
             [users addObject:[UserData userDataWithDictionary:userData]];
         }
-        
-        [self resizeView:ratingView newHeight:(ROW_HEIGHT * users.count) animated:YES];
+        int height = (ROW_HEIGHT * users.count) + HEADER_HEIGHT + FOOTER_HEIGHT;
+        if (height > self.view.frame.size.height) {
+            height = self.view.frame.size.height;
+        }
+        [UIView animateWithDuration:0.3 animations:^{
+            ratingView.frame = CGRectMake(ratingView.frame.origin.x, ratingView.frame.origin.y, ratingView.frame.size.width, height);
+        }];
         
         [ratingView reloadData];
+        [ratingView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[GlobalData globalData].loggedInUser.position inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        [self hideActivityIndicator];
     } failCallback:^(NSError *error)
     {
         NSLog(@"users error: %@", error.description);
+        [self hideActivityIndicator];
     }];
     [request.params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setValue:@"0" forKey:@"from"];
     [request.params setValue:@"100" forKey:@"limit"];
     [request runSilent];
+    [self showActivityIndicator];
 }
 
 #pragma mark UITableViewDelegate, UITableViewDataSource
@@ -77,27 +98,65 @@ int ROW_HEIGHT = 83;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return users.count;
+    return users.count + 2;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 0)
+    {
+        return HEADER_HEIGHT;
+    }
+    else if (indexPath.row > users.count)
+    {
+        return FOOTER_HEIGHT;
+    }
     return ROW_HEIGHT;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 0 || indexPath.row > users.count)
+    {
+        UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"hfrc"];
+        UIImageView * bg = nil;
+        if (indexPath.row == 0)
+        {
+            bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rating_header.png"]];
+        }
+        else
+        {
+            bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rating_footer.png"]];
+        }
+        NSLog(@"%f %f %f", ratingView.frame.size.width, bg.frame.size.width, ratingView.frame.size.width - bg.frame.size.width);
+        bg.frame = CGRectMake((ratingView.frame.size.width - bg.frame.size.width) / 2, 0, bg.frame.size.width, bg.frame.size.height);
+        [cell addSubview:bg];
+        cell.clipsToBounds = NO;
+        return cell;
+    }
+    
     RatingCell * cell = (RatingCell *)[tableView dequeueReusableCellWithIdentifier:@"rating_cell"];
     if (cell == nil)
     {
         cell = (RatingCell *)[[[NSBundle mainBundle] loadNibNamed:@"RatingCell" owner:self options:nil] objectAtIndex:0];
     }
+    
+    if (indexPath.row == 1)
+    {
+        cell.imgBorder.image = [UIImage imageNamed:@"rating_cell_border_first.png"];
+    }
+    else if (indexPath.row == users.count)
+    {
+        cell.imgBorder.image = [UIImage imageNamed:@"rating_cell_border_last.png"];
+    }
     else
     {
-        NSLog(@"reuse success");
+        cell.imgBorder.image = [UIImage imageNamed:@"rating_cell_border.png"];
     }
-    UserData * user = [users objectAtIndex:indexPath.row];
-    cell.lblName.text = [NSString stringWithFormat:@"%@\n%@", user.last_name, user.first_name];
+    
+    UserData * user = [users objectAtIndex:indexPath.row - 1];
+    cell.lblName.text = user.first_name;
+    cell.lblSurname.text = user.last_name;
     cell.lblPosition.text = [NSString stringWithFormat:@"%d", user.position];
     cell.lblScore.text = [NSString stringWithFormat:@"%d", user.month_score];
     cell.lblSolved.text = [NSString stringWithFormat:@"%d ", user.solved];
@@ -105,18 +164,48 @@ int ROW_HEIGHT = 83;
     cell.imgMoveUp.hidden = YES;
     cell.imgMoveDown.hidden = YES;
     cell.imgMoveNone.hidden = YES;
-    if (user.dynamics > 0)
+    cell.lblPosition.hidden = YES;
+    if (indexPath.row == 1)
     {
-        cell.imgMoveUp.hidden = NO;
+        cell.imgPlaceBg.image = [UIImage imageNamed:@"rating_cell_first_place.png"];
     }
-    else if (user.dynamics < 0)
+    else if (indexPath.row == 2)
     {
-        cell.imgMoveDown.hidden = NO;
+        cell.imgPlaceBg.image = [UIImage imageNamed:@"rating_cell_second_place.png"];
+    }
+    else if (indexPath.row == 3)
+    {
+        cell.imgPlaceBg.image = [UIImage imageNamed:@"rating_cell_third_place.png"];
     }
     else
     {
-        cell.imgMoveNone.hidden = NO;
+        cell.imgPlaceBg.image = [UIImage imageNamed:@"rating_cell_other_place_bg.png"];
+        cell.lblPosition.hidden = NO;
+        if (user.dynamics > 0)
+        {
+            cell.imgMoveUp.hidden = NO;
+        }
+        else if (user.dynamics < 0)
+        {
+            cell.imgMoveDown.hidden = NO;
+        }
+        else
+        {
+            cell.imgMoveNone.hidden = NO;
+        }
     }
+    
+    if ([user.provider_id compare:[GlobalData globalData].loggedInUser.provider_id] == NSOrderedSame)
+    {
+        cell.imgBackground.image = [UIImage imageNamed:@"rating_cell_me_bg.png"];
+        cell.lblSurname.text = @"Я";
+        cell.lblName.text = @"";
+    }
+    else
+    {
+        cell.imgBackground.image = [UIImage imageNamed:@"rating_cell_bg.png"];
+    }
+
     return cell;
 }
 
