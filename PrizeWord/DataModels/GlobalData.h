@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @class UserData;
 
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) NSString * sessionKey;
 @property (nonatomic, strong) UserData * loggedInUser;
 @property (nonatomic, strong) NSArray * monthSets;
+@property (nonatomic, strong) FBSession * fbSession;
 @property () int currentMonth;
 @property () int currentYear;
 

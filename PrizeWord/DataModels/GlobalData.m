@@ -20,6 +20,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
 @synthesize monthSets = _monthSets;
 @synthesize currentMonth = _currentMonth;
 @synthesize currentYear = _currentYear;
+@synthesize fbSession = _fbSession;
 
 +(GlobalData *)globalData
 {
@@ -39,6 +40,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         _sessionKey = nil;
         _loggedInUser = nil;
         _monthSets = nil;
+        _fbSession = nil;
         _currentMonth = 0;
         _currentYear = 2013;
     }

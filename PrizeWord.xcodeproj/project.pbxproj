@@ -67,6 +67,10 @@
 		F250911D16B5F2240045621E /* rating_cell_border@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250911816B5F2230045621E /* rating_cell_border@2x~ipad.png */; };
 		F250911E16B5F2240045621E /* rating_cell_border_first@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250911916B5F2230045621E /* rating_cell_border_first@2x~ipad.png */; };
 		F250911F16B5F2240045621E /* rating_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250911A16B5F2230045621E /* rating_header@2x~ipad.png */; };
+		F250912C16B736FD0045621E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250912B16B736FC0045621E /* FacebookSDK.framework */; };
+		F250913116B739B20045621E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913016B739B10045621E /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F250913316B739BB0045621E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913216B739BB0045621E /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F250913516B739D10045621E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913416B739D10045621E /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -519,6 +523,10 @@
 		F250911816B5F2230045621E /* rating_cell_border@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating_cell_border@2x~ipad.png"; sourceTree = "<group>"; };
 		F250911916B5F2230045621E /* rating_cell_border_first@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating_cell_border_first@2x~ipad.png"; sourceTree = "<group>"; };
 		F250911A16B5F2230045621E /* rating_header@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating_header@2x~ipad.png"; sourceTree = "<group>"; };
+		F250912B16B736FC0045621E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "third-party/FacebookSDK.framework"; sourceTree = "<group>"; };
+		F250913016B739B10045621E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		F250913216B739BB0045621E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		F250913416B739D10045621E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -964,11 +972,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
+				F250913316B739BB0045621E /* Social.framework in Frameworks */,
+				F250913116B739B20045621E /* Accounts.framework in Frameworks */,
 				F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */,
 				F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */,
 				F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */,
 				F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */,
 				F2D62704165DF80900EF6E8A /* CoreData.framework in Frameworks */,
+				F250912C16B736FD0045621E /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1594,6 +1606,10 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F250913416B739D10045621E /* AdSupport.framework */,
+				F250913216B739BB0045621E /* Social.framework */,
+				F250913016B739B10045621E /* Accounts.framework */,
+				F250912B16B736FC0045621E /* FacebookSDK.framework */,
 				F2A22DF116648AAA00CF7859 /* QuartzCore.framework */,
 				F2D626FD165DF80900EF6E8A /* UIKit.framework */,
 				F2D626FF165DF80900EF6E8A /* Foundation.framework */,
@@ -2273,12 +2289,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/third-party/SBJson 1-19-13 7.15 AM/Library/Frameworks\"",
+					"\"$(SRCROOT)/third-party\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2291,12 +2309,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/third-party/SBJson 1-19-13 7.15 AM/Library/Frameworks\"",
+					"\"$(SRCROOT)/third-party\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PrizeWordViewController.h"
 
-@interface LoginMainViewController : PrizeWordViewController
+@interface LoginMainViewController : PrizeWordViewController<UIAlertViewDelegate>
 {
 }
 

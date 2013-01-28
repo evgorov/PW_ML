@@ -30,7 +30,7 @@
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5];
-        titleLabel.shadowOffset = CGSizeMake(0, 1.5);
+        titleLabel.shadowOffset = CGSizeMake(0, 1.5f);
         [viewController.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:titleLabel]];
     }
 }
