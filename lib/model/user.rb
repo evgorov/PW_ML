@@ -32,6 +32,10 @@ class User < BasicModel
     end
   end
 
+  def after_load
+    load_external_attributes
+  end
+
   def []=(key, value)
     case(key)
     when 'password'; super('password_hash', BCrypt::Password.create(value))
@@ -84,8 +88,13 @@ class User < BasicModel
                                     "you must use it's children.")
     end
     self['provider'] = self.provider_name
+    if self['month_score'].to_i > self['high_score'].to_i
+      self['high_score'] = self['month_score']
+    end
     super(*a)
     @storage.zadd('rating', self['month_score'].to_i, self.id)
+    save_external_attributes
+    load_external_attributes # get real position after object creation
     self
   end
 
@@ -133,6 +142,29 @@ class User < BasicModel
                   'role' => 'user',
                   'hints' => 0
                 })
+  end
+
+  def load_external_attributes
+    self['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
+    current_position = @storage.zrevrank('rating', self['id']).to_i + 1
+    @storage.set("#{self['id']}#position#{current_period}", current_position)
+    # if user misses couple of monthes, it will get higher dynamics
+    previous_position = @storage.get("#{self['id']}#position#{previous_position}")
+    self['position'] = current_position || 9999
+    self['dynamics'] = current_position.to_i - previous_position.to_i
+  end
+
+  def save_external_attributes
+    @storage.set("#{self['id']}#score##{current_period}", self['month_score'])
+  end
+
+  def current_period
+    "#{Time.now.year}##{Time.now.month}"
+  end
+
+  def previous_period
+    time = Time.now - 60 * 60 * 24 * 31
+    "#{time.year}##{time.month}"
   end
 end
 

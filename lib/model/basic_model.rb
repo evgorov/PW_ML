@@ -51,10 +51,9 @@ class BasicModel
     end
   end
 
-
   def validate!; self; end
   def set_defaults!; self; end
-
+  def after_load; self; end
 
   def storage(storage)
     @storage = storage.namespace(self.class.name)
@@ -79,7 +78,7 @@ class BasicModel
     ids = @storage.zrevrange(key, (page - 1) * PER_PAGE, page * PER_PAGE - 1)
     data_list = @storage.mget(*ids)
     data_list.map do |data|
-      self.class.new(JSON.parse(data), @storage)
+      self.class.new(JSON.parse(data), @storage).tap(&:after_load)
     end
   end
 
@@ -100,7 +99,7 @@ class BasicModel
   def load(id)
     response = @storage.get(id)
     raise NotFound unless response
-    self.class.new(JSON.parse(response), @storage)
+    self.class.new(JSON.parse(response), @storage).tap(&:after_load)
   end
 
   def delete

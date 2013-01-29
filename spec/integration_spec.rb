@@ -151,6 +151,7 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
     post '/me', { session_key: session_key, email: 'new_email@example.org' }
+    require 'pry'; binding.pry
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
@@ -158,6 +159,7 @@ describe 'Integration spec' do
                                                         'id' => 'registered#new_email@example.org')
     response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == new_valid_data
+
     get '/me', { session_key: session_key }
     response_data = JSON.parse(last_response.body)
     response_data['me'].delete('created_at').should_not == nil
@@ -225,9 +227,13 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     response_data['users'][0]['email'].should == 'email4@example.org'
+    response_data['users'][0]['position'].should == 1
     response_data['users'][1]['email'].should == 'email2@example.org'
+    response_data['users'][1]['position'].should == 2
     response_data['users'][2]['email'].should == 'email10@example.org'
+    response_data['users'][2]['position'].should == 3
     response_data['users'][3]['email'].should == 'email1@example.org'
+    response_data['users'][3]['position'].should == 4
   end
 
   it 'simple user cannot use admin' do

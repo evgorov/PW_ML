@@ -48,12 +48,14 @@ describe User do
       storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
       storage.should_receive(:del).with(user_in_storage_key)
-      expected_data =
       storage.should_receive(:set).with do |key, data|
+        next if key =~ /#position|#score/
         key.should == 'registered#g@fbi.gov'
         JSON.parse(data).should == {}.merge(subject).merge('email' => 'g@fbi.gov', 'id' => 'registered#g@fbi.gov')
       end
-      storage.should_receive(:get).and_return(nil)
+      storage.should_receive(:get).with('registered#g@fbi.gov').and_return(nil)
+      storage.stub(get: 0)
+      storage.stub(zrevrank: 0)
 
       u = RegisteredUser.storage(storage).load_by_key(user_in_storage['email'])
       u['email'] = 'g@fbi.gov'
@@ -125,6 +127,9 @@ describe User do
     it '.load_by_provider_and_key' do
       storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
+      storage.stub(get: 0)
+      storage.stub(zrevrank: 0)
+
       u = User.load_by_provider_and_key(storage, 'registered', user_in_storage['email'])
       u.is_a?(User).should be_true
       u.to_hash.should == user_in_storage
@@ -133,6 +138,9 @@ describe User do
     it '#load' do
       storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).and_return(user_in_storage.to_json)
+      storage.stub(get: 0)
+      storage.stub(zrevrank: 0)
+
       u = RegisteredUser.storage(storage).load("registered##{user_in_storage['email']}")
       u.is_a?(User).should be_true
       u.to_hash.should == user_in_storage
@@ -146,6 +154,8 @@ describe User do
 
     it '#users_by_rating' do
       storage = stub(:storage).as_null_object
+      storage.stub(get: 0)
+      storage.stub(zrevrank: 0)
 
       storage.
         should_receive(:zrevrange).
@@ -178,6 +188,9 @@ describe User do
     it '#authenticate' do
       storage = mock(:storage).as_null_object
       storage.should_receive(:get).with(user_in_storage_key).exactly(2).and_return(user_in_storage.to_json)
+      storage.stub(get: 0)
+      storage.stub(zrevrank: 0)
+
       u = RegisteredUser.storage(storage).authenticate(user_in_storage['email'], user_in_storage_password)
       u.to_hash.should == user_in_storage
       lambda {
