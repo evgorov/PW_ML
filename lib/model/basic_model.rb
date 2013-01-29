@@ -1,5 +1,6 @@
 require 'securerandom'
 require 'dummy_storage'
+require 'json'
 
 class BasicModel
 
@@ -18,10 +19,9 @@ class BasicModel
   end
 
   def initialize(hash = {}, storage = DummyStorage.new)
-    @hash, @storage = {}, storage
-    set_defaults!
-    self.merge!(hash)
-    self.old_id = self.id unless hash.empty?
+    @hash, @old_hash, @storage = hash, hash.dup, storage
+    set_defaults! if @hash.empty?
+    self.merge!(@hash)
   end
 
   def []=(key, value)
@@ -53,7 +53,11 @@ class BasicModel
 
   def validate!; self; end
   def set_defaults!; self; end
-  def after_load; self; end
+
+  def after_load
+    @loaded = true
+    self
+  end
 
   def storage(storage)
     @storage = storage.namespace(self.class.name)
@@ -83,16 +87,21 @@ class BasicModel
   end
 
   def save(skip_validation = false)
-    self['created_at'] = Time.now if !@old_id && !self['created_at']
+    self['created_at'] = Time.now if self.new? && !self['created_at']
     id = if self.class.guuid?
            self['id'] ||= SecureRandom.uuid
          else
            self['id'] = self.id
          end
+
     validate! unless skip_validation
+
     @storage.set(id, {}.merge(self).to_json)
-    @storage.del(@old_id) if @old_id && @old_id != id
     @storage.zadd("all", Time.now.to_i, id)
+
+    # delete old hash if id changed
+    self.class.new(@old_hash, @storage).delete if self.id_changed?
+
     self
   end
 
@@ -121,9 +130,11 @@ class BasicModel
     self.to_hash.to_json(*a)
   end
 
-  protected
+  def new?
+    !@loaded
+  end
 
-  def old_id=(id)
-    @old_id = id
+  def id_changed?
+    !!(@old_hash['id'] && @hash['id'] != @old_hash['id'])
   end
 end

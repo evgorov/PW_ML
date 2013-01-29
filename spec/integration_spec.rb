@@ -151,7 +151,6 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
     post '/me', { session_key: session_key, email: 'new_email@example.org' }
-    require 'pry'; binding.pry
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)

@@ -166,8 +166,8 @@ describe User do
         and_return([user_in_storage.to_json, user2_in_storage.to_json])
 
       users = subject.storage(storage).users_by_rating
-      users[0].to_hash.should == user_in_storage
-      users[1].to_hash.should == user2_in_storage
+      users[0]['id'].should == user_in_storage['id']
+      users[1]['id'].should == user2_in_storage['id']
     end
   end
 

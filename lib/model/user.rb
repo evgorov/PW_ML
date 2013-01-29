@@ -33,6 +33,7 @@ class User < BasicModel
   end
 
   def after_load
+    super
     load_external_attributes
   end
 
@@ -99,6 +100,7 @@ class User < BasicModel
   end
 
   def delete(*a)
+    # TODO: delete custom columns
     @storage.zrem('rating', self.id)
     super(*a)
   end
@@ -203,9 +205,8 @@ class RegisteredUser < User
     raise InvalidState.new("Missing required field: password") unless self['password']
     # all validation will be run with storage anyway when save is called
     return unless @storage
-    case
-    when @old_id && @old_id != self.id, !@old_id
-      raise InvalidState.new("Email is already taken") if @storage.get(self.id)
+    if (self.new? || self.id_changed?) && @storage.get(self.id)
+      raise InvalidState.new("Email is already taken")
     end
   end
 end
