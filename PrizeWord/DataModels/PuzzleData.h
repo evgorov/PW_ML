@@ -16,6 +16,7 @@
 
 @property (nonatomic, retain) NSString * puzzle_id;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSDate * issuedAt;
 @property (nonatomic, retain) NSNumber * base_score;
 @property (nonatomic, retain) NSNumber * time_given;
@@ -26,7 +27,7 @@
 @property (nonatomic, retain) NSSet *questions;
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
 
-+(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict;
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
 
 -(int)solved;
 -(float)progress;

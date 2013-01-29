@@ -24,12 +24,13 @@ PuzzleSetType;
 @interface PuzzleSetData : NSManagedObject
 
 @property (nonatomic, retain) NSString * set_id;
+@property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSNumber * bought;
 @property (nonatomic, retain) NSSet *puzzles;
 
-+(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict;
++(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
 
 @end
 

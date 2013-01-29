@@ -14,12 +14,13 @@
 @implementation PuzzleSetData
 
 @dynamic set_id;
+@dynamic user_id;
 @dynamic name;
 @dynamic type;
 @dynamic bought;
 @dynamic puzzles;
 
-+(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict
++(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
     NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -28,7 +29,7 @@
     
     [request setEntity:puzzleSetEntity];
     [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"set_id = %@", [dict objectForKey:@"id"]]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(set_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
     
     NSError *error = nil;
     NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:&error];
@@ -46,6 +47,7 @@
     
     [puzzleSet setSet_id:[dict objectForKey:@"id"]];
     [puzzleSet setName:[dict objectForKey:@"name"]];
+    [puzzleSet setUser_id:userId];
     NSString * type = [dict objectForKey:@"type"];
     if (type == nil || [type compare:@"free" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
         [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_FREE]];
@@ -72,7 +74,7 @@
     
     NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
     for (NSDictionary * puzzleData in puzzlesData) {
-        PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData];
+        PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId];
         [puzzleSet addPuzzlesObject:puzzle];
     }
     

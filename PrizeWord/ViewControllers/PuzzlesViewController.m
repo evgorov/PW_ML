@@ -175,7 +175,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     
     for (NSDictionary * setData in setsData)
     {
-        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData];
+        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.provider_id];
         int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
         int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];
         if (year == [GlobalData globalData].currentYear && month == ([GlobalData globalData].currentMonth + 1))

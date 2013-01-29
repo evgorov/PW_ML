@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSNumber * answer_position;
 @property (nonatomic, retain) NSNumber * solved;
 @property (nonatomic, retain) NSString * question_id;
+@property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSString * question_text;
 @property (nonatomic, retain) NSString * answer;
 @property (nonatomic, retain) PuzzleData *puzzle;
@@ -36,6 +37,6 @@
 @property (nonatomic) uint answer_positionAsUint;
 @property (nonatomic, retain) NSString * answer_positionAsString;
 
-+(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle;
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId;
 
 @end

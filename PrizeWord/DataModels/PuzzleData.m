@@ -14,6 +14,7 @@
 
 @dynamic puzzle_id;
 @dynamic name;
+@dynamic user_id;
 @dynamic issuedAt;
 @dynamic base_score;
 @dynamic time_given;
@@ -24,7 +25,7 @@
 @dynamic questions;
 @dynamic puzzleSet;
 
-+(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
     NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -33,7 +34,7 @@
     
     [request setEntity:puzzleEntity];
     [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"puzzle_id = %@", [dict objectForKey:@"id"]]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
     
     NSError *error = nil;
     NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
@@ -50,6 +51,7 @@
     
     [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
     [puzzle setName:[dict objectForKey:@"name"]];
+    [puzzle setUser_id:userId];
     NSString * dateString = [dict objectForKey:@"issuedAt"];
     if (dateString != nil)
     {
@@ -91,7 +93,7 @@
     
     NSArray * questionsData = [dict objectForKey:@"questions"];
     for (NSDictionary * questionData in questionsData) {
-        QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle];
+        QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
         [puzzle addQuestionsObject:question];
     }
     

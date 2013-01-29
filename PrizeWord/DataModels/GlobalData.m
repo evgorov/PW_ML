@@ -10,6 +10,7 @@
 #import "APIRequest.h"
 #import "PuzzleSetData.h"
 #import "SBJson.h"
+#import "UserData.h"
 
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
 
@@ -73,7 +74,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         NSArray * data = [parser objectWithData:receivedData];
         for (NSDictionary * setData in data)
         {
-            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData]];
+            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.provider_id]];
         }
         _monthSets = [NSArray arrayWithArray:sets];
         onComplete();

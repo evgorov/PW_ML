@@ -82,7 +82,12 @@
 - (IBAction)handleVKClick:(UIButton *)sender
 {
     [self showActivityIndicator];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(gotoRoot:) userInfo:nil repeats:NO];
+    
+    UIWebView * vkWebView = [[UIWebView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:vkWebView];
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]]];
+    NSLog(@"request: %@", request.URL.path);
+    [vkWebView loadRequest:request];
 }
 
 - (IBAction)handleReleaseNotesClick:(UIButton *)sender
@@ -111,6 +116,31 @@
     [request.params setObject:@"facebook" forKey:@"provider_name"];
     [request.params setObject:[GlobalData globalData].fbSession.accessToken forKey:@"code"];
     [request runSilent];
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSLog(@"should start?");
+    return YES;
+}
+
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"login failed: %@", error.description);
+    [webView removeFromSuperview];
+    [self hideActivityIndicator];
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    NSLog(@"login complete: %@", webView.request.URL.path);
+    [webView removeFromSuperview];
+    [self hideActivityIndicator];
+}
+
+-(void)webViewDidStartLoad:(UIWebView *)webView
+{
+    NSLog(@"login did start load");
 }
 
 -(void)gotoRoot:(id)sender

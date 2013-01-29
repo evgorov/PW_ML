@@ -17,6 +17,7 @@
 @dynamic answer_position;
 @dynamic solved;
 @dynamic question_id;
+@dynamic user_id;
 @dynamic question_text;
 @dynamic answer;
 @dynamic puzzle;
@@ -114,7 +115,7 @@
     self.answer_positionAsUint = position;
 }
 
-+(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId
 {
     NSString * question_id = [NSString stringWithFormat:@"%@_%d_%d", puzzle.puzzle_id, [(NSNumber *)[dict objectForKey:@"column"] intValue], [(NSNumber *)[dict objectForKey:@"row"] intValue]];
     
@@ -125,7 +126,7 @@
     
     [request setEntity:puzzleEntity];
     [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"question_id = %@", question_id]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(question_id = %@) AND (user_id = %@)", question_id, userId]];
     
     NSError *error = nil;
     NSArray *questions = [managedObjectContext executeFetchRequest:request error:&error];
@@ -141,6 +142,7 @@
         question = [questions objectAtIndex:0];
     }
     
+    [question setUser_id:userId];
     [question setAnswer:[dict objectForKey:@"answer"]];
     [question setAnswer_positionAsString:[dict objectForKey:@"answer_position"]];
     [question setColumn:[dict objectForKey:@"column"]];
