@@ -51,7 +51,7 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
                    },
                    timeout: 1)
       halt(403, { message: "Invalid code" }.to_json) unless response.code == 200
-      Rack::Utils.parse_query(response.body)['access_token']
+      Rack::Utils.parse_query(response.body)['access_token'] || JSON.parse(response.body)['access_token']
     end
   end
 

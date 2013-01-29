@@ -33,6 +33,31 @@ module UserFactory
       end
     end
 
+
+    def find_or_create_vkontakte_user(storage, access_token)
+      fb_data = facebook_user_info(access_token)
+      begin
+        user = VkontakteUser.storage(storage).load(fb_data['id'])
+        user['access_token'] = access_token
+        user.save
+        return user
+      rescue User::NotFound
+      end
+
+      VkontakteUser.new.tap do |u|
+        u['access_token'] = access_token.to_s
+        u['facebook_id'] = fb_data['id']
+        u['name'] = fb_data['first_name']
+        u['surname'] = fb_data['last_name']
+        u['email'] = fb_data['email']
+        month, day, year = fb_data['birthday'] && fb_data['birthday'].split('/')
+        u['birthdate'] = [year, month, day].join('-')
+        u['city'] = fb_data['hometown']['name']
+        u['userpic'] = "http://graph.facebook.com/#{fb_data['id']}/picture"
+        u.storage(storage).save
+      end
+    end
+
     def create_user(storage, user_data)
       begin
         raise AlreadyRegistred if RegisteredUser.storage(storage).load(user_data['email'])
