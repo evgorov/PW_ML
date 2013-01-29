@@ -74,7 +74,7 @@ module UserFactory
                               query: { 'access_token' => access_token },
                               timeout: 1)
       raise VkontakteException unless response.code == 200
-      response.to_hash.['response'].first.tap { |h|
+      response.to_hash['response'].first.tap { |h|
         raise VkontakteException.new('Missing id') unless h['uid']
       }
     end
