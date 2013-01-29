@@ -6,10 +6,10 @@ require 'model/basic_model'
 class User < BasicModel
 
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
-  FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city]
+  FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE -
                         ['password'] +
-                        %w[id position solved month_score high_score dynamics hints provider created_at]
+                        %w[id position month_score high_score dynamics hints provider created_at]
 
   class << self
 
@@ -30,6 +30,16 @@ class User < BasicModel
     def load_by_provider_and_key(storage, provider, key)
       @@providers[provider].storage(storage).load_by_key(key)
     end
+  end
+
+  def before_save
+    super
+    self['position'] = self['position'].to_i
+    self['solved'] = self['solved'].to_i
+    self['month_score'] = self['month_score'].to_i
+    self['high_score'] = self['high_score'].to_i
+    self['dynamics'] = self['dynamics'].to_i
+    self['hints'] = self['hints'].to_i
   end
 
   def after_load

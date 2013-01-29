@@ -150,12 +150,13 @@ describe 'Integration spec' do
     post '/login', email: valid_user_data['email'], password: valid_user_data['password']
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/me', { session_key: session_key, email: 'new_email@example.org' }
+    post '/me', { session_key: session_key, email: 'new_email@example.org', solved: 3 }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     new_valid_data = valid_user_data_user_as_json.merge('email' => 'new_email@example.org',
-                                                        'id' => 'registered#new_email@example.org')
+                                                        'id' => 'registered#new_email@example.org',
+                                                        'solved' => 3)
     response_data['me'].delete('created_at').should_not == nil
     response_data['me'].should == new_valid_data
 

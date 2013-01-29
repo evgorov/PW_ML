@@ -53,11 +53,10 @@ class BasicModel
 
   def validate!; self; end
   def set_defaults!; self; end
-
-  def after_load
-    @loaded = true
-    self
-  end
+  def before_load; @loaded = true; self; end
+  def after_load; self; end
+  def before_save; self; end
+  def after_save; self; end
 
   def storage(storage)
     @storage = storage.namespace(self.class.name)
@@ -87,6 +86,7 @@ class BasicModel
   end
 
   def save(skip_validation = false)
+    before_save
     self['created_at'] = Time.now if self.new? && !self['created_at']
     id = if self.class.guuid?
            self['id'] ||= SecureRandom.uuid
@@ -102,13 +102,15 @@ class BasicModel
     # delete old hash if id changed
     self.class.new(@old_hash, @storage).delete if self.id_changed?
 
+    after_save
     self
   end
 
   def load(id)
+    before_load
     response = @storage.get(id)
     raise NotFound unless response
-    self.class.new(JSON.parse(response), @storage).tap(&:after_load)
+    self.class.new(JSON.parse(response), @storage).tap(&:before_load).tap(&:after_load)
   end
 
   def delete
