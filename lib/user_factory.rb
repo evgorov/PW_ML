@@ -38,7 +38,7 @@ module UserFactory
     def find_or_create_vkontakte_user(storage, access_token)
       vk_data = vkontakte_user_info(access_token)
       begin
-        user = VkontakteUser.storage(storage).load(fb_data['id'])
+        user = VkontakteUser.storage(storage).load(vk_data['uid'])
         user['access_token'] = access_token
         user.save
         return user
