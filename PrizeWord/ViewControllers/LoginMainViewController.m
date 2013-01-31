@@ -81,12 +81,11 @@
 
 - (IBAction)handleVKClick:(UIButton *)sender
 {
-    [self showActivityIndicator];
-    
     UIWebView * vkWebView = [[UIWebView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:vkWebView];
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]]];
     NSLog(@"request: %@", request.URL.path);
+    vkWebView.delegate = self;
     [vkWebView loadRequest:request];
 }
 
@@ -101,12 +100,24 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest getRequest:@"facebook/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
-        [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        if (response.statusCode == 200)
+        {
+            NSLog(@"facebook/authorize: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        }
+        else
+        {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:[data objectForKey:@"message"] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+            alert.tag = 1;
+            [alert show];
+        }
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
@@ -120,8 +131,40 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"should start?");
-    return YES;
+    if ([request.URL.path compare:@"/vkontakte/authorize"] == NSOrderedSame)
+    {
+        [webView removeFromSuperview];
+        NSLog(@"url: %@", request.URL.query);
+        
+        [self showActivityIndicator];
+        APIRequest * apiRequest = [APIRequest getRequest:@"vkontakte/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            [self hideActivityIndicator];
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        } failCallback:^(NSError *error) {
+            [self hideActivityIndicator];
+            NSLog(@"vk error: %@", error.description);
+            /*
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+            alert.tag = 2;
+            [alert show];
+            */
+        }];
+        [apiRequest.params setObject:@"vkontakte" forKey:@"provider_name"];
+        [apiRequest.params setObject:[request.URL.query substringFromIndex:[request.URL.query rangeOfString:@"="].location + 1] forKey:@"code"];
+        [apiRequest runSilent];
+        
+        return NO;
+    }
+    else
+    {
+        NSLog(@"should start? %@", request.URL.path);
+        return YES;
+    }
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -133,9 +176,9 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"login complete: %@", webView.request.URL.path);
-    [webView removeFromSuperview];
-    [self hideActivityIndicator];
+    NSLog(@"login complete!");
+//    [webView removeFromSuperview];
+//    [self hideActivityIndicator];
 }
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
