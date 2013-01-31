@@ -125,7 +125,7 @@
         [alert show];
     }];
     [request.params setObject:@"facebook" forKey:@"provider_name"];
-    [request.params setObject:[GlobalData globalData].fbSession.accessToken forKey:@"code"];
+    [request.params setObject:[GlobalData globalData].fbSession.accessToken forKey:@"access_token"];
     [request runSilent];
 }
 
