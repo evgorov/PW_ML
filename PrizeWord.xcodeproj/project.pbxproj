@@ -71,6 +71,15 @@
 		F250913116B739B20045621E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913016B739B10045621E /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F250913316B739BB0045621E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913216B739BB0045621E /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F250913516B739D10045621E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913416B739D10045621E /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F250913C16BA1F160045621E /* invite_cell_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913616BA1F160045621E /* invite_cell_bg@2x~ipad.png */; };
+		F250913D16BA1F160045621E /* invite_fb_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913716BA1F160045621E /* invite_fb_header@2x~ipad.png */; };
+		F250913E16BA1F160045621E /* invite_vk_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913816BA1F160045621E /* invite_vk_header@2x~ipad.png */; };
+		F250913F16BA1F160045621E /* invite_cell_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913916BA1F160045621E /* invite_cell_bg@2x.png */; };
+		F250914016BA1F160045621E /* invite_fb_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913A16BA1F160045621E /* invite_fb_header@2x.png */; };
+		F250914116BA1F160045621E /* invite_vk_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913B16BA1F160045621E /* invite_vk_header@2x.png */; };
+		F250914316BA200A0045621E /* InviteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914216BA20080045621E /* InviteCellView.xib */; };
+		F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914416BA21B80045621E /* InviteCellView~ipad.xib */; };
+		F250914816BA22FE0045621E /* InviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F250914716BA22FC0045621E /* InviteCellView.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -272,8 +281,6 @@
 		F286E3BB167DCCDE00FF5E83 /* invite_add_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3B6167DCCDE00FF5E83 /* invite_add_btn@2x.png */; };
 		F286E3BC167DCCDE00FF5E83 /* invite_add_btn_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3B7167DCCDE00FF5E83 /* invite_add_btn_down@2x.png */; };
 		F286E3BD167DCCDE00FF5E83 /* invite_add_btn_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3B8167DCCDE00FF5E83 /* invite_add_btn_selected@2x.png */; };
-		F286E3BE167DCCDE00FF5E83 /* invite_fb_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3B9167DCCDE00FF5E83 /* invite_fb_bg@2x.png */; };
-		F286E3BF167DCCDE00FF5E83 /* invite_vk_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3BA167DCCDE00FF5E83 /* invite_vk_bg@2x.png */; };
 		F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F286E3C1167DCD0500FF5E83 /* InviteViewController.m */; };
 		F286E3C4167DCD1700FF5E83 /* InviteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */; };
 		F286E3CA167DD7BC00FF5E83 /* rules_page_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E3C6167DD7BC00FF5E83 /* rules_page_1@2x.png */; };
@@ -442,8 +449,6 @@
 		F2FDDA021685B25B0013D069 /* puzzles_news_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDD9F51685B25B0013D069 /* puzzles_news_bg@2x~ipad.png */; };
 		F2FDDA041685B8050013D069 /* ScoreViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA031685B8050013D069 /* ScoreViewController~ipad.xib */; };
 		F2FDDA0916865D850013D069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA0716865D840013D069 /* Localizable.strings */; };
-		F2FDDA1316867A3E0013D069 /* invite_fb_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA0C16867A3E0013D069 /* invite_fb_bg@2x~ipad.png */; };
-		F2FDDA1416867A3E0013D069 /* invite_vk_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA0D16867A3E0013D069 /* invite_vk_bg@2x~ipad.png */; };
 		F2FDDA1516867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA0E16867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png */; };
 		F2FDDA1616867A3E0013D069 /* invite_add_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA0F16867A3E0013D069 /* invite_add_btn_down@2x~ipad.png */; };
 		F2FDDA1716867A3E0013D069 /* invite_add_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2FDDA1016867A3E0013D069 /* invite_add_btn@2x~ipad.png */; };
@@ -527,6 +532,16 @@
 		F250913016B739B10045621E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		F250913216B739BB0045621E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F250913416B739D10045621E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		F250913616BA1F160045621E /* invite_cell_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_cell_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F250913716BA1F160045621E /* invite_fb_header@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_fb_header@2x~ipad.png"; sourceTree = "<group>"; };
+		F250913816BA1F160045621E /* invite_vk_header@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_vk_header@2x~ipad.png"; sourceTree = "<group>"; };
+		F250913916BA1F160045621E /* invite_cell_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_cell_bg@2x.png"; sourceTree = "<group>"; };
+		F250913A16BA1F160045621E /* invite_fb_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_fb_header@2x.png"; sourceTree = "<group>"; };
+		F250913B16BA1F160045621E /* invite_vk_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_vk_header@2x.png"; sourceTree = "<group>"; };
+		F250914216BA20080045621E /* InviteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InviteCellView.xib; path = Views/InviteCellView.xib; sourceTree = "<group>"; };
+		F250914416BA21B80045621E /* InviteCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "InviteCellView~ipad.xib"; path = "Views/InviteCellView~ipad.xib"; sourceTree = "<group>"; };
+		F250914616BA22FB0045621E /* InviteCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteCellView.h; path = Views/InviteCellView.h; sourceTree = "<group>"; };
+		F250914716BA22FC0045621E /* InviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteCellView.m; path = Views/InviteCellView.m; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -759,8 +774,6 @@
 		F286E3B6167DCCDE00FF5E83 /* invite_add_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn@2x.png"; sourceTree = "<group>"; };
 		F286E3B7167DCCDE00FF5E83 /* invite_add_btn_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn_down@2x.png"; sourceTree = "<group>"; };
 		F286E3B8167DCCDE00FF5E83 /* invite_add_btn_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn_selected@2x.png"; sourceTree = "<group>"; };
-		F286E3B9167DCCDE00FF5E83 /* invite_fb_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_fb_bg@2x.png"; sourceTree = "<group>"; };
-		F286E3BA167DCCDE00FF5E83 /* invite_vk_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_vk_bg@2x.png"; sourceTree = "<group>"; };
 		F286E3C0167DCD0400FF5E83 /* InviteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteViewController.h; path = ViewControllers/InviteViewController.h; sourceTree = "<group>"; };
 		F286E3C1167DCD0500FF5E83 /* InviteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteViewController.m; path = ViewControllers/InviteViewController.m; sourceTree = "<group>"; };
 		F286E3C2167DCD1000FF5E83 /* InviteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InviteViewController.xib; path = ViewControllers/InviteViewController.xib; sourceTree = "<group>"; };
@@ -948,8 +961,6 @@
 		F2FDD9F51685B25B0013D069 /* puzzles_news_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F2FDDA031685B8050013D069 /* ScoreViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ScoreViewController~ipad.xib"; path = "ViewControllers/ScoreViewController~ipad.xib"; sourceTree = "<group>"; };
 		F2FDDA0816865D850013D069 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = PrizeWord/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F2FDDA0C16867A3E0013D069 /* invite_fb_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_fb_bg@2x~ipad.png"; sourceTree = "<group>"; };
-		F2FDDA0D16867A3E0013D069 /* invite_vk_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_vk_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F2FDDA0E16867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn_selected@2x~ipad.png"; sourceTree = "<group>"; };
 		F2FDDA0F16867A3E0013D069 /* invite_add_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
 		F2FDDA1016867A3E0013D069 /* invite_add_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_add_btn@2x~ipad.png"; sourceTree = "<group>"; };
@@ -1316,10 +1327,14 @@
 		F286E3B5167DCCDE00FF5E83 /* invite */ = {
 			isa = PBXGroup;
 			children = (
+				F250913616BA1F160045621E /* invite_cell_bg@2x~ipad.png */,
+				F250913716BA1F160045621E /* invite_fb_header@2x~ipad.png */,
+				F250913816BA1F160045621E /* invite_vk_header@2x~ipad.png */,
+				F250913916BA1F160045621E /* invite_cell_bg@2x.png */,
+				F250913A16BA1F160045621E /* invite_fb_header@2x.png */,
+				F250913B16BA1F160045621E /* invite_vk_header@2x.png */,
 				F2FDDA26168834C60013D069 /* invite_invite_all_btn_down@2x.png */,
 				F2FDDA27168834C60013D069 /* invite_invite_all_btn@2x.png */,
-				F2FDDA0C16867A3E0013D069 /* invite_fb_bg@2x~ipad.png */,
-				F2FDDA0D16867A3E0013D069 /* invite_vk_bg@2x~ipad.png */,
 				F2FDDA0E16867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png */,
 				F2FDDA0F16867A3E0013D069 /* invite_add_btn_down@2x~ipad.png */,
 				F2FDDA1016867A3E0013D069 /* invite_add_btn@2x~ipad.png */,
@@ -1328,8 +1343,6 @@
 				F286E3B6167DCCDE00FF5E83 /* invite_add_btn@2x.png */,
 				F286E3B7167DCCDE00FF5E83 /* invite_add_btn_down@2x.png */,
 				F286E3B8167DCCDE00FF5E83 /* invite_add_btn_selected@2x.png */,
-				F286E3B9167DCCDE00FF5E83 /* invite_fb_bg@2x.png */,
-				F286E3BA167DCCDE00FF5E83 /* invite_vk_bg@2x.png */,
 			);
 			name = invite;
 			path = PrizeWord/assets/invite;
@@ -1439,6 +1452,10 @@
 				F250911416B5E26A0045621E /* RatingCell~ipad.xib */,
 				F250910716B48F8C0045621E /* RatingCell.h */,
 				F250910816B48F8C0045621E /* RatingCell.m */,
+				F250914216BA20080045621E /* InviteCellView.xib */,
+				F250914416BA21B80045621E /* InviteCellView~ipad.xib */,
+				F250914616BA22FB0045621E /* InviteCellView.h */,
+				F250914716BA22FC0045621E /* InviteCellView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1948,8 +1965,6 @@
 				F286E3BB167DCCDE00FF5E83 /* invite_add_btn@2x.png in Resources */,
 				F286E3BC167DCCDE00FF5E83 /* invite_add_btn_down@2x.png in Resources */,
 				F286E3BD167DCCDE00FF5E83 /* invite_add_btn_selected@2x.png in Resources */,
-				F286E3BE167DCCDE00FF5E83 /* invite_fb_bg@2x.png in Resources */,
-				F286E3BF167DCCDE00FF5E83 /* invite_vk_bg@2x.png in Resources */,
 				F286E3C4167DCD1700FF5E83 /* InviteViewController.xib in Resources */,
 				F286E3CA167DD7BC00FF5E83 /* rules_page_1@2x.png in Resources */,
 				F286E3CB167DD7BC00FF5E83 /* rules_pagecontrol_bg@2x.png in Resources */,
@@ -2042,8 +2057,6 @@
 				F2FDDA021685B25B0013D069 /* puzzles_news_bg@2x~ipad.png in Resources */,
 				F2FDDA041685B8050013D069 /* ScoreViewController~ipad.xib in Resources */,
 				F2FDDA0916865D850013D069 /* Localizable.strings in Resources */,
-				F2FDDA1316867A3E0013D069 /* invite_fb_bg@2x~ipad.png in Resources */,
-				F2FDDA1416867A3E0013D069 /* invite_vk_bg@2x~ipad.png in Resources */,
 				F2FDDA1516867A3E0013D069 /* invite_add_btn_selected@2x~ipad.png in Resources */,
 				F2FDDA1616867A3E0013D069 /* invite_add_btn_down@2x~ipad.png in Resources */,
 				F2FDDA1716867A3E0013D069 /* invite_add_btn@2x~ipad.png in Resources */,
@@ -2156,6 +2169,14 @@
 				F250911D16B5F2240045621E /* rating_cell_border@2x~ipad.png in Resources */,
 				F250911E16B5F2240045621E /* rating_cell_border_first@2x~ipad.png in Resources */,
 				F250911F16B5F2240045621E /* rating_header@2x~ipad.png in Resources */,
+				F250913C16BA1F160045621E /* invite_cell_bg@2x~ipad.png in Resources */,
+				F250913D16BA1F160045621E /* invite_fb_header@2x~ipad.png in Resources */,
+				F250913E16BA1F160045621E /* invite_vk_header@2x~ipad.png in Resources */,
+				F250913F16BA1F160045621E /* invite_cell_bg@2x.png in Resources */,
+				F250914016BA1F160045621E /* invite_fb_header@2x.png in Resources */,
+				F250914116BA1F160045621E /* invite_vk_header@2x.png in Resources */,
+				F250914316BA200A0045621E /* InviteCellView.xib in Resources */,
+				F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2214,6 +2235,7 @@
 				F2848E3616AA76740041C1D5 /* GlobalData.m in Sources */,
 				F2848E3916AA77980041C1D5 /* UserData.m in Sources */,
 				F250910916B48F8D0045621E /* RatingCell.m in Sources */,
+				F250914816BA22FE0045621E /* InviteCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -139,12 +139,15 @@
         [self showActivityIndicator];
         APIRequest * apiRequest = [APIRequest getRequest:@"vkontakte/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
-            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+            if (response.statusCode == 200)
+            {
+                SBJsonParser * parser = [SBJsonParser new];
+                NSDictionary * data = [parser objectWithData:receivedData];
+                [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+                [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+                [self.navigationController setNavigationBarHidden:NO animated:YES];
+                [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+            }
         } failCallback:^(NSError *error) {
             [self hideActivityIndicator];
             NSLog(@"vk error: %@", error.description);

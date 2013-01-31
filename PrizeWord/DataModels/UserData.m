@@ -25,6 +25,7 @@
 @synthesize high_score = _high_score;
 @synthesize dynamics = _dynamics;
 @synthesize hints = _hints;
+@synthesize invited = _invited;
 
 -(id)initWithDictionary:(NSDictionary *)dict
 {
@@ -53,6 +54,7 @@
         _high_score = [(NSNumber *)[dict objectForKey:@"high_score"] intValue];
         _dynamics = [(NSNumber *)[dict objectForKey:@"dynamics"] intValue];
         _hints = [(NSNumber *)[dict objectForKey:@"hints"] intValue];
+        _invited = [(NSNumber *)[dict objectForKey:@"invite_sent"] boolValue];
     }
     return self;
 }

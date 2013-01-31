@@ -44,6 +44,11 @@
     return [[APIRequest alloc] initWithMethod:@"POST" command:command successCallback:successCallback failCallback:failCallback];
 }
 
++(APIRequest *)putRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback
+{
+    return [[APIRequest alloc] initWithMethod:@"PUT" command:command successCallback:successCallback failCallback:failCallback];
+}
+
 -(void)prepareRequest
 {
     NSMutableString * paramsString = [NSMutableString new];
@@ -62,6 +67,9 @@
         request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
     else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
+        [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    else if ([request.HTTPMethod compare:@"PUT"] == NSOrderedSame) {
         [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
     }
 }

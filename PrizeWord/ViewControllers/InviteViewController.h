@@ -8,12 +8,16 @@
 
 #import "BlockedViewController.h"
 
-@interface InviteViewController : BlockedViewController
+@interface InviteViewController : BlockedViewController<UIAlertViewDelegate>
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
+    IBOutlet UIImageView *vkHeader;
+    IBOutlet UIImageView *fbHeader;
     
     UIBarButtonItem * inviteAllItem;
+    NSMutableArray * vkFriends;
+    NSMutableArray * fbFriends;
 }
 
 @end

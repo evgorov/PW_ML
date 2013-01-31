@@ -28,6 +28,7 @@ typedef void(^FailCallback)(NSError * error);
 
 +(APIRequest *)getRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 +(APIRequest *)postRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
++(APIRequest *)putRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 
 -(void)run;
 -(void)runSilent;

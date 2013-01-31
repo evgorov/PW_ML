@@ -29,6 +29,7 @@
 @property () int high_score;
 @property () int dynamics;
 @property () int hints;
+@property () BOOL invited;
 
 
 @end
