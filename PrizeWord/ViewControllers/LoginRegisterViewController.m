@@ -153,7 +153,7 @@
     [self hideActivityIndicator];
     if (response.statusCode == 200)
     {
-        NSLog(@"signup complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"signup complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * dict = [parser objectWithData:receivedData];
         [GlobalData globalData].sessionKey = [dict objectForKey:@"session_key"];
@@ -164,8 +164,8 @@
     }
     else
     {
-        NSLog(@"signup failed! %d %@", response.statusCode, [NSString stringWithUTF8String:receivedData.bytes]);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[NSString stringWithUTF8String:receivedData.bytes] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        NSLog(@"signup failed! %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
         alert.tag = 1;
         [alert show];
     }

@@ -102,7 +102,7 @@
         [self hideActivityIndicator];
         if (response.statusCode == 200)
         {
-            NSLog(@"facebook/authorize: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+            NSLog(@"facebook/authorize: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
             [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];

@@ -14,7 +14,7 @@
         <relationship name="puzzleSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PuzzleSet" inverseName="puzzles" inverseEntity="PuzzleSet" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Question" inverseName="puzzle" inverseEntity="Question" syncable="YES"/>
     </entity>
-    <entity name="PuzzleSet" representedClassName="PuzzleSet" syncable="YES">
+    <entity name="PuzzleSet" representedClassName="PuzzleSetData" syncable="YES">
         <attribute name="bought" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="set_id" attributeType="String" syncable="YES"/>

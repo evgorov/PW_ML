@@ -36,6 +36,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 -(void)handleNewsTap:(id)sender;
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize;
+-(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView;
 
 -(void)updateArchive:(NSData *)receivedData;
 -(void)updateMonthSets:(NSArray*)monthSets;
@@ -117,33 +118,14 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         [subview removeFromSuperview];
     }
     for (PuzzleSetData * puzzleSet in monthSets) {
-        if ([puzzleSet.bought boolValue]) {
-            NSMutableArray * unsolvedIds = [NSMutableArray new];
-            NSMutableArray * unsolvedPercent = [NSMutableArray new];
-            NSMutableArray * unsolvedScores = [NSMutableArray new];
-            int idx = 1;
-            for (PuzzleData * puzzle in puzzleSet.puzzles) {
-                if (puzzle.solved != puzzle.questions.count)
-                {
-                    [unsolvedIds addObject:[NSNumber numberWithInt:idx]];
-                    [unsolvedPercent addObject:[NSNumber numberWithFloat:puzzle.progress]];
-                    [unsolvedScores addObject:puzzle.base_score];
-                }
-                ++idx;
-            }
-            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:0 puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:[PuzzleSetData solved:puzzleSet] score:[PuzzleSetData score:puzzleSet] ids:unsolvedIds percents:unsolvedPercent scores:unsolvedScores];
-            puzzleSetView.puzzleSetData = puzzleSet;
-            puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
-            yOffset += puzzleSetView.frame.size.height;
-            [currentPuzzlesView addSubview:puzzleSetView];
-            [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-            [self activateBadges:puzzleSetView];
-        } else {
-            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] puzzlesCount:puzzleSet.puzzles.count minScore:[PuzzleSetData minScore:puzzleSet] price:3.99f];
-            puzzleSetView.puzzleSetData = puzzleSet;
-            puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
-            yOffset += puzzleSetView.frame.size.height;
-            [currentPuzzlesView addSubview:puzzleSetView];
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:0 showSolved:NO showUnsolved:YES];
+        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+        yOffset += puzzleSetView.frame.size.height;
+        [currentPuzzlesView addSubview:puzzleSetView];
+        [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self activateBadges:puzzleSetView];
+        if (!puzzleSet.bought.boolValue)
+        {
             [puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
@@ -158,7 +140,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)updateArchive:(NSData *)receivedData
 {
-    NSLog(@"archive: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+    NSLog(@"archive: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     SBJsonParser * parser = [SBJsonParser new];
     NSDictionary * data = [parser objectWithData:receivedData];
     NSArray * setsData = [data objectForKey:@"sets"];
@@ -190,19 +172,8 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         {
             month = 0;
         }
-        NSMutableArray * ids = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
-        NSMutableArray * percents = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
-        NSMutableArray * scores = [[NSMutableArray alloc] initWithCapacity:puzzleSet.puzzles.count];
-        int idx = 1;
-        for (PuzzleData * puzzle in puzzleSet.puzzles)
-        {
-            [ids addObject:[NSNumber numberWithInt:idx]];
-            [percents addObject:[NSNumber numberWithFloat:puzzle.progress]];
-            [scores addObject:puzzle.score];
-            ++idx;
-        }
-        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithType:[puzzleSet.type intValue] month:month puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:[PuzzleSetData solved:puzzleSet] score:[PuzzleSetData score:puzzleSet] ids:ids percents:percents scores:scores];
-        puzzleSetView.puzzleSetData = puzzleSet;
+
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:month showSolved:YES showUnsolved:YES];
         [self activateBadges:puzzleSetView];
         [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
         puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
@@ -228,14 +199,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 -(void)handleBadgeClick:(id)sender
 {
     BadgeView * badge = (BadgeView *)sender;
-    PuzzleSetView * puzzleSetView = (PuzzleSetView *)badge.superview;
-    PuzzleSetData * puzzleSet = puzzleSetView.puzzleSetData;
-    NSEnumerator * puzzleIt = [puzzleSet.puzzles objectEnumerator];
-    for (int i = 0; i < badge.tag; ++i)
-    {
-        [puzzleIt nextObject];
-    }
-    PuzzleData * puzzle = [puzzleIt nextObject];
+    PuzzleData * puzzle = badge.puzzle;
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
 }
@@ -245,9 +209,9 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", setView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"set bought! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         [self hideActivityIndicator];
-        [self buySet:sender];
+        [self switchSetViewToBought:setView];
         [setView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
         NSError * error;
         [[AppDelegate currentDelegate].managedObjectContext save:&error];
@@ -289,7 +253,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     UIButton * button = sender;
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"hints: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * dict = [parser objectWithData:receivedData];
         [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
@@ -304,20 +268,18 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     [request runSilent];
 }
 
--(void)buySet:(id)sender
+-(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView
 {
     [self hideActivityIndicator];
     
-    UIButton * btnBuy = sender;
-    PuzzleSetView * setView = (PuzzleSetView *)btnBuy.superview;
-    UIView * blockView = setView.superview;
-    CGSize oldSize = setView.frame.size;
+    UIView * blockView = puzzleSetView.superview;
+    CGSize oldSize = puzzleSetView.frame.size;
     
-    [setView switchToBought];
-    CGSize newSize = setView.frame.size;
+    [puzzleSetView switchToBought];
+    CGSize newSize = puzzleSetView.frame.size;
     
-    [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
-    [self activateBadges:setView];
+    [self resizeBlockView:blockView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
+    [self activateBadges:puzzleSetView];
 }
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize
@@ -357,6 +319,10 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)activateBadges:(PuzzleSetView *)puzzleSetView
 {
+    if (puzzleSetView.badges == nil)
+    {
+        return;
+    }
     for (BadgeView * badgeView in puzzleSetView.badges)
     {
         [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];

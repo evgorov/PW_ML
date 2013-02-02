@@ -86,10 +86,10 @@
     return puzzleSet;
 }
 
-+(int)solved:(PuzzleSetData *)puzzleSet
+-(int)solved
 {
     int value = 0;
-    for (PuzzleData * puzzle in puzzleSet.puzzles) {
+    for (PuzzleData * puzzle in self.puzzles) {
         if (puzzle.solved == puzzle.questions.count) {
             ++value;
         }
@@ -97,32 +97,32 @@
     return value;
 }
 
-+(int)total:(PuzzleSetData *)puzzleSet
+-(int)total
 {
-    return puzzleSet.puzzles.count;
+    return self.puzzles.count;
 }
 
-+(float)percent:(PuzzleSetData *)puzzleSet
+-(float)percent
 {
-    if (puzzleSet.puzzles.count == 0) {
+    if (self.puzzles.count == 0) {
         return 1;
     }
-    return (float)[PuzzleSetData solved:puzzleSet] / puzzleSet.puzzles.count;
+    return (float)[self solved] / self.puzzles.count;
 }
 
-+(int)score:(PuzzleSetData *)puzzleSet
+-(int)score
 {
     int value = 0;
-    for (PuzzleData * puzzle in puzzleSet.puzzles) {
+    for (PuzzleData * puzzle in self.puzzles) {
         value += [puzzle.score intValue];
     }
     return value;
 }
 
-+(int)minScore:(PuzzleSetData *)puzzleSet
+-(int)minScore
 {
     int value = 0;
-    for (PuzzleData * puzzle in puzzleSet.puzzles) {
+    for (PuzzleData * puzzle in self.puzzles) {
         value += [puzzle.base_score intValue];
     }
     return value;

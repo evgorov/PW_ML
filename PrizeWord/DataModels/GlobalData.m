@@ -68,7 +68,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
             }
         }
         
-        NSLog(@"available sets: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"available sets: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         NSMutableArray * sets = [NSMutableArray new];
         SBJsonParser * parser = [SBJsonParser new];
         NSArray * data = [parser objectWithData:receivedData];

@@ -32,6 +32,8 @@
 -(int)solved;
 -(float)progress;
 
+-(void)synchronize;
+
 @end
 
 @interface PuzzleData (CoreDataGeneratedAccessors)

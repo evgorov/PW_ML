@@ -13,6 +13,7 @@
 #import "RootViewController.h"
 #import "InviteViewController.h"
 #import "PuzzleSetView.h"
+#import "PuzzleSetData.h"
 #import "GlobalData.h"
 #import "UserData.h"
 
@@ -33,22 +34,21 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
     int yOffset = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
-            NSMutableArray * solvedIds = [NSMutableArray new];
-            NSMutableArray * solvedScores = [NSMutableArray new];
-            int idx = 1;
-            for (PuzzleData * puzzle in puzzleSet.puzzles) {
-                if (puzzle.solved == puzzle.questions.count)
-                {
-                    [solvedIds addObject:[NSNumber numberWithInt:idx]];
-                    [solvedScores addObject:puzzle.score];
-                }
-                ++idx;
+        NSMutableArray * solvedIds = [NSMutableArray new];
+        NSMutableArray * solvedScores = [NSMutableArray new];
+        int idx = 1;
+        for (PuzzleData * puzzle in puzzleSet.puzzles) {
+            if (puzzle.solved == puzzle.questions.count)
+            {
+                [solvedIds addObject:[NSNumber numberWithInt:idx]];
+                [solvedScores addObject:puzzle.score];
             }
-            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetCompleteViewWithType:[puzzleSet.type intValue] puzzlesCount:puzzleSet.puzzles.count puzzlesSolved:[PuzzleSetData solved:puzzleSet] score:[PuzzleSetData score:puzzleSet] ids:solvedIds scores:solvedScores];
-            puzzleSetView.puzzleSetData = puzzleSet;
-            puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
-            yOffset += puzzleSetView.frame.size.height;
-            [puzzlesView addSubview:puzzleSetView];
+            ++idx;
+        }
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetCompleteViewWithData:puzzleSet];
+        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+        yOffset += puzzleSetView.frame.size.height;
+        [puzzlesView addSubview:puzzleSetView];
     }
     puzzlesView.frame = CGRectMake(0, 0, puzzlesView.frame.size.width, yOffset);
     

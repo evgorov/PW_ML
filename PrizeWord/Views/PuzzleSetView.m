@@ -9,19 +9,23 @@
 #import "PuzzleSetView.h"
 #import "BadgeView.h"
 #import "AppDelegate.h"
+#import "PuzzleSetData.h"
 
 NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
+float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 
 @interface PuzzleSetView (private)
 
 -(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
--(id)initWithType:(PuzzleSetType)type month:(int)month puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores;
--(id)initCompleteWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores;
+-(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
+-(id)initCompleteWithData:(PuzzleSetData *)puzzleSetData;
+
 
 -(void)initHeaderWithType:(PuzzleSetType)type month:(int)month;
--(void)initElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
--(void)initBoughtElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores;
--(void)initCompleteElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores;
+-(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData;
+-(void)initBougtSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
+-(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
+-(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 -(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved;
 -(NSString *)stringWithScore:(int)score;
 
@@ -42,42 +46,32 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
 @synthesize btnShowMore = _btnShowMore;
 @synthesize badges = _badges;
 
+@synthesize puzzleSetData = _puzzleSetData;
 @synthesize shortSize = _shortSize;
 @synthesize fullSize = _fullSize;
 
-@synthesize puzzleSetData = _puzzleSetData;
-
--(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
+-(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     if (self)
     {
-        puzzlesCount = count;
-        setType = type;
+        _puzzleSetData = puzzleSetData;
         
         self.autoresizesSubviews = NO;
         self.clipsToBounds = YES;
         
-        [self initHeaderWithType:type month:0];
-        [self initElementsWithType:type puzzlesCount:count minScore:score price:price];
-        _badges = nil;
-    }
-    return self;
-}
-
--(id)initWithType:(PuzzleSetType)type month:(int)month puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores
-{
-    if (self)
-    {
-        puzzlesCount = count;
-        setType = type;
+        [self initHeaderWithType:puzzleSetData.type.intValue month:month];
+        if (puzzleSetData.bought.boolValue)
+        {
+            [self initBougtSubtitlesWithData:puzzleSetData];
+            [self initElementsWithData:puzzleSetData showSolved:showSolved showUnsolved:showUnsolved];
+        }
+        else
+        {
+            [self initBuySubtitlesWithData:puzzleSetData];
+            _badges = nil;
+        }
         
-        self.autoresizesSubviews = NO;
-        self.clipsToBounds = YES;
-        
-        [self initHeaderWithType:type month:month];
-        [self initBoughtElementsWithType:type puzzlesCount:count puzzlesSolved:solved score:score ids:ids percents:percents scores:scores];
-        
-        if (_badges.count > 0)
+        if (_badges != nil && _badges.count > 0)
         {
             BadgeView * lastBadge = [_badges lastObject];
             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
@@ -87,18 +81,18 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     return self;
 }
 
--(id)initCompleteWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores
+-(id)initCompleteWithData:(PuzzleSetData *)puzzleSetData
 {
     if (self)
     {
-        puzzlesCount = count;
-        setType = type;
+        _puzzleSetData = puzzleSetData;
         
         self.autoresizesSubviews = NO;
         self.clipsToBounds = YES;
         
-        [self initHeaderWithType:type month:0];
-        [self initCompleteElementsWithType:type puzzlesCount:count puzzlesSolved:solved score:score ids:ids scores:scores];
+        [self initHeaderWithType:puzzleSetData.type.intValue month:0];
+        [self initSolvedSubtitlesWithData:puzzleSetData];
+        [self initElementsWithData:puzzleSetData showSolved:YES showUnsolved:NO];
         
         if (_badges.count > 0)
         {
@@ -170,14 +164,20 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     }
 }
 
--(void)initElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
+-(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData
 {
+    int count = puzzleSetData.puzzles.count;
+    int minScore = 0;
+    for (PuzzleData * puzzleData in puzzleSetData.puzzles)
+    {
+        minScore += puzzleData.base_score.intValue;
+    }
     NSString * countString = [NSString stringWithFormat:@"%d", count];
     CGSize countSize = [countString sizeWithFont:_lblCount.font];
     _lblCount.frame = CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height);
     _lblCount.text = countString;
     
-    NSString * text = (type == PUZZLESET_FREE) ? @" сканвордов " : @" сканвордов, минимум ";
+    NSString * text = (puzzleSetData.type.intValue == PUZZLESET_FREE) ? @" сканвордов " : @" сканвордов, минимум ";
     CGSize textSize = [text sizeWithFont:_lblText1.font];
     _lblText1.frame = CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height);
     _lblText1.text = text;
@@ -185,32 +185,32 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     
     _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:score]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:minScore]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
     
     _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
-    if (type == PUZZLESET_FREE)
+    if (puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         [_btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
     }
     else
     {
-        [_btnBuy setTitle:[NSString stringWithFormat:@"%0.02f$", price] forState:UIControlStateNormal];
+        [_btnBuy setTitle:[NSString stringWithFormat:@"%0.02f$", PRICES[puzzleSetData.type.intValue]] forState:UIControlStateNormal];
     }
     _shortSize = CGSizeMake(self.frame.size.width, self.frame.size.height - _btnBuy.frame.size.height);
     _fullSize = self.frame.size;
 }
 
--(void)initBoughtElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores
+-(void)initBougtSubtitlesWithData:(PuzzleSetData *)puzzleSetData
 {
     _btnBuy.hidden = YES;
     _lblText2.hidden = NO;
     _btnShowMore.hidden = NO;
     _lblPercent.hidden = NO;
     
-    [self initProgressWithPuzzlesCount:count puzzlesSolved:solved];
+    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
     
     NSString * text2 = @"Набрано ";
     CGSize text2Size = [text2 sizeWithFont:_lblText2.font];
@@ -219,42 +219,13 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     
     _imgStar.frame = CGRectMake(_lblText2.frame.origin.x + _lblText2.frame.size.width, _lblText2.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:score]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText2.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
-    
-    int badgesCount = ids.count;
-    int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;
-    _badges = [NSMutableArray arrayWithCapacity:badgesCount];
-    for (int badgeIdx = 0; badgeIdx != badgesCount; ++badgeIdx)
-    {
-        BadgeView * badgeView;
-        float percent = [(NSNumber *)[percents objectAtIndex:badgeIdx] floatValue];
-        if (percent < 1)
-        {
-            badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andPercent:percent];
-        }
-        else
-        {
-            badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andScore:[(NSNumber *)[scores objectAtIndex:badgeIdx] intValue]];
-        }
-        badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (badgeIdx % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (badgeIdx / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
-        badgeView.tag = [(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] - 1;
-        [self addSubview:badgeView];
-        [_badges addObject:badgeView];
-    }
-    _shortSize = CGSizeMake(self.frame.size.width, _lblText1.frame.origin.y + _lblText1.frame.size.height * 3);
-    if (badgesCount == 0) {
-        _fullSize = _shortSize;
-        _btnShowMore.hidden = YES;
-    }
-    else {
-        _fullSize = self.frame.size;
-    }
 }
 
--(void)initCompleteElementsWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores
+-(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData
 {
     _btnBuy.hidden = YES;
     _lblText2.hidden = YES;
@@ -262,30 +233,51 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     _lblPercent.hidden = NO;
     _imgScoreBg.hidden = NO;
     
-    [self initProgressWithPuzzlesCount:count puzzlesSolved:solved];
-
+    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
+    
     _imgStar.frame = CGRectMake(_imgScoreBg.frame.origin.x + _imgStar.frame.size.width / 2, _imgStar.frame.origin.y, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:score]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblScore.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
     _lblScore.textColor = [UIColor whiteColor];
     _lblScore.shadowColor = [UIColor blackColor];
-    
-    int badgesCount = ids.count;
+}
+
+-(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
+{
     int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;
-    _badges = [NSMutableArray arrayWithCapacity:badgesCount];
-    for (int badgeIdx = 0; badgeIdx != badgesCount; ++badgeIdx)
+    _badges = [NSMutableArray arrayWithCapacity:puzzleSetData.total];
+    int badgeIdx = 0;
+    for (PuzzleData * puzzleData in puzzleSetData.puzzles)
     {
-        BadgeView * badgeView = [BadgeView badgeWithType:(type == PUZZLESET_SILVER2 ? BADGE_SILVER : (BadgeType)type) andNumber:[(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] andScore:[(NSNumber *)[scores objectAtIndex:badgeIdx] intValue]];
-        badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (badgeIdx % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + (badgeIdx / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
-        badgeView.tag = [(NSNumber *)[ids objectAtIndex:badgeIdx] intValue] - 1;
+        ++badgeIdx;
+        if (puzzleData.progress == 1 && !showSolved)
+        {
+            continue;
+        }
+        if (puzzleData.progress != 1 && !showUnsolved)
+        {
+            continue;
+        }
+        BadgeView * badgeView;
+        badgeView = [BadgeView badgeForPuzzle:puzzleData andNumber:badgeIdx];
+        badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (_badges.count % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (_badges.count / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
+        badgeView.tag = badgeIdx - 1;
         [self addSubview:badgeView];
         [_badges addObject:badgeView];
     }
-    _shortSize = self.frame.size;
-    _fullSize = self.frame.size;
+    _shortSize = CGSizeMake(self.frame.size.width, _lblText1.frame.origin.y + _lblText1.frame.size.height * 3);
+    if (_badges.count == 0)
+    {
+        _fullSize = _shortSize;
+        _btnShowMore.hidden = YES;
+    }
+    else
+    {
+        _fullSize = self.frame.size;
+    }
 }
 
 -(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved
@@ -329,37 +321,24 @@ NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апр
     _lblPercent.text = percentString;
 }
 
-+(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price
++(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
-    return [setView initWithType:type puzzlesCount:count minScore:score price:price];
+    return [setView initWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
 }
 
-+(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type month:(int)month puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores
++(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetData *)puzzleSetData
 {
     PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
-    return [setView initWithType:type month:month puzzlesCount:count puzzlesSolved:solved score:score ids:ids percents:percents scores:scores];
+    return [setView initCompleteWithData:puzzleSetData];
 }
 
-+(PuzzleSetView *)puzzleSetCompleteViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores
-{
-    PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
-    return [setView initCompleteWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores];
-}
 
 -(void)switchToBought
 {
-    [self initHeaderWithType:setType month:0];
-    NSMutableArray * ids = [NSMutableArray arrayWithCapacity:puzzlesCount];
-    NSMutableArray * percents = [NSMutableArray arrayWithCapacity:puzzlesCount];
-    NSMutableArray * scores = [NSMutableArray arrayWithCapacity:puzzlesCount];
-    for (int i = 0; i != puzzlesCount; ++i)
-    {
-        [ids addObject:[NSNumber numberWithInt:(i + 1)]];
-        [percents addObject:[NSNumber numberWithFloat:0]];
-        [scores addObject:[NSNumber numberWithInt:0]];
-    }
-    [self initBoughtElementsWithType:setType puzzlesCount:puzzlesCount puzzlesSolved:0 score:0 ids:ids percents:percents scores:scores];
+    [self initHeaderWithType:_puzzleSetData.type.intValue month:0];
+    [self initBougtSubtitlesWithData:_puzzleSetData];
+    [self initElementsWithData:_puzzleSetData showSolved:NO showUnsolved:YES];
 
     if (_badges.count > 0)
     {

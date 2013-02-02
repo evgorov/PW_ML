@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PuzzleSetData.h"
+
+@class PuzzleSetData;
 
 @interface PuzzleSetView : UIView
 {
-    PuzzleSetType setType;
-    int puzzlesCount;
     IBOutlet UIImageView *imgDelimeter;
     IBOutlet UIImageView *imgMonthBg;
     IBOutlet UILabel *lblMonth;
@@ -32,17 +31,13 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnShowMore;
 @property (nonatomic, readonly) NSMutableArray * badges;
 
+@property (nonatomic, readonly) PuzzleSetData * puzzleSetData;
 @property (nonatomic, readonly) CGSize shortSize;
 @property (nonatomic, readonly) CGSize fullSize;
 
-@property (nonatomic, strong) PuzzleSetData * puzzleSetData;
++(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 
-+(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
-
-+(PuzzleSetView *)puzzleSetViewWithType:(PuzzleSetType)type month:(int)month puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids percents:(NSArray *)percents scores:(NSArray *)scores;
-
-+(PuzzleSetView *)puzzleSetCompleteViewWithType:(PuzzleSetType)type puzzlesCount:(int)count puzzlesSolved:(int)solved score:(int)score ids:(NSArray *)ids scores:(NSArray *)scores;
-
++(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetData *)puzzleSetData;
 
 
 -(void)switchToBought;

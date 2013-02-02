@@ -88,7 +88,7 @@
     [self hideActivityIndicator];
     if (response.statusCode == 200)
     {
-        NSLog(@"login complete! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
         [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
         [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
@@ -98,8 +98,8 @@
     }
     else
     {
-        NSLog(@"login failed! %d %@", response.statusCode, [NSString stringWithUTF8String:receivedData.bytes]);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[NSString stringWithUTF8String:receivedData.bytes] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        NSLog(@"login failed! %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
         alert.tag = 1;
         [alert show];
     }

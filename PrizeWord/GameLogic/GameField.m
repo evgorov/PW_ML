@@ -524,13 +524,14 @@
         timeLeft = 0;
     }
     [puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    [puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
     {
         int scoreForPuzzle = [puzzle.base_score intValue] + [puzzle.time_left intValue] / 10;
         
         APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"score success! %@", [NSString stringWithUTF8String:receivedData.bytes]);
+            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         } failCallback:^(NSError *error) {
             NSLog(@"score error! %@", error.description);
         }];

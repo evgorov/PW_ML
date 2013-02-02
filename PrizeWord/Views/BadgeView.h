@@ -8,17 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "PuzzleData.h"
+#import "EventListenerDelegate.h"
 
-typedef enum BadgeType
+@interface BadgeView : UIButton<EventListenerDelegate>
 {
-    BADGE_BRILLIANT = 0,
-    BADGE_GOLD,
-    BADGE_SILVER,
-    BADGE_FREE
-} BadgeType;
-
-@interface BadgeView : UIButton
-{
+    int badgeNumber;
+    IBOutlet UIImageView *imgBg;
     IBOutlet UIImageView *badgeImage;
     IBOutlet UILabel *lblPercent;
     IBOutlet UILabel *lblScore;
@@ -27,9 +22,8 @@ typedef enum BadgeType
     IBOutlet UIView *imgOverlay;
 }
 
-+ (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
-+ (BadgeView *)badgeWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;
++ (BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
 
-@property (readonly) BadgeType badgeType;
+@property (readonly) PuzzleData * puzzle;
 
 @end

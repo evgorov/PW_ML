@@ -130,7 +130,7 @@
             {
                 SBJsonParser * parser = [SBJsonParser new];
                 NSDictionary * data = [parser objectWithData:receivedData];
-                NSString * message = data == nil ? ([NSString stringWithUTF8String:receivedData.bytes]) : [data objectForKey:@"message"];
+                NSString * message = data == nil ? ([[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]) : [data objectForKey:@"message"];
                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:message delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
                 alert.tag = 1;
                 [alert show];
@@ -192,7 +192,7 @@
             {
                 SBJsonParser * parser = [SBJsonParser new];
                 NSDictionary * data = [parser objectWithData:receivedData];
-                NSString * message = data == nil ? ([NSString stringWithUTF8String:receivedData.bytes]) : [data objectForKey:@"message"];
+                NSString * message = data == nil ? ([[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]) : [data objectForKey:@"message"];
                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:message delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
                 alert.tag = 2;
                 [alert show];
@@ -214,7 +214,7 @@
 {
     [self showActivityIndicator];
     APIRequest * request = [APIRequest putRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"invite success: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         [self hideActivityIndicator];
         for (UIView * subview in vkView.subviews) {
             if ([subview isKindOfClass:[InviteCellView class]])
@@ -241,7 +241,7 @@
 {
     [self showActivityIndicator];
     APIRequest * request = [APIRequest putRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"invite success: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+        NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         [self hideActivityIndicator];
         for (UIView * subview in fbView.subviews) {
             if ([subview isKindOfClass:[InviteCellView class]])
@@ -278,7 +278,7 @@
             }
         }
         APIRequest * request = [APIRequest putRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"invite success: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+            NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             [self hideActivityIndicator];
             for (UIView * subview in vkView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
@@ -312,7 +312,7 @@
             }
         }
         APIRequest * request = [APIRequest putRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"invite success: %@", [NSString stringWithUTF8String:receivedData.bytes]);
+            NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             [self hideActivityIndicator];
             for (UIView * subview in fbView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
