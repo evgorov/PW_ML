@@ -72,7 +72,7 @@ module UserFactory
     def vkontakte_user_info(access_token)
       response = HTTParty.get('https://api.vk.com/method/getProfiles.json',
                               query: { 'access_token' => access_token },
-                              timeout: 1)
+                              timeout: 10)
       raise VkontakteException unless response.code == 200
       response.to_hash['response'].first.tap { |h|
         raise VkontakteException.new('Missing id') unless h['uid']
@@ -82,7 +82,7 @@ module UserFactory
     def facebook_user_info(access_token)
       response = HTTParty.get('https://graph.facebook.com/me',
                               query: { 'access_token' => access_token },
-                              timeout: 1)
+                              timeout: 10)
       raise FacebookException unless response.code == 200
       response.to_hash.tap { |h|
         raise FacebookException.new('Missing id') unless h['id']

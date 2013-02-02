@@ -103,5 +103,26 @@ module Middleware
       env['token_auth'].authorize!
       env['token_auth'].user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
     end
+
+    get '/:provider/friends' do
+      env['token_auth'].authorize!
+      env['token_auth'].user.fetch_friends
+      env['token_auth'].user.save
+      env['token_auth'].user['friends'].values.to_json
+    end
+
+    post '/:provider/invite' do
+      halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
+      env['token_auth'].authorize!
+      env['token_auth'].user.fetch_friends
+
+      params['ids'].split(',').each do |id|
+        if env['token_auth'].user['friends'][id]
+          env['token_auth'].user['friends'][id]['invite_sent'] = true
+        end
+      end
+      env['token_auth'].user.save
+      { "message" => "ok" }.to_json
+    end
   end
 end

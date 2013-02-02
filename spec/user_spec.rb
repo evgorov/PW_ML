@@ -240,6 +240,31 @@ describe User do
       lambda { subject.merge(facebook_data).validate! }.should_not raise_error(User::InvalidState)
     end
 
+    it '#friends return friends for user' do
+      storage = stub(:storage).as_null_object
+      storage.stub(get: nil)
+      subject.merge!(facebook_data)
+      FriendsFetcher.stub(fetch_facebook_friends: [{ 'id' => 'one' }])
+
+      subject.storage(storage).fetch_friends
+      friends = subject['friends'].values
+      friends.empty?.should_not == true
+      friends.first['invite_sent'].should == false
+      friends.first['invite_used'].should == false
+    end
+
+    it '#friends checks if invited user has been registered' do
+      storage = mock(:storage).as_null_object
+      subject.merge!(facebook_data)
+      FriendsFetcher.stub(fetch_facebook_friends: [{ 'id' => '1234' }, { 'id' => '56789'}])
+      storage.should_receive(:get).with('facebook#1234').and_return('USER_DATA')
+      storage.should_receive(:get).with('facebook#56789').and_return(nil)
+
+      subject.storage(storage).fetch_friends
+      friends = subject['friends'].values
+      friends[0]['invite_used'].should == true
+      friends[1]['invite_used'].should == false
+    end
   end
 
   context 'vkontakte' do

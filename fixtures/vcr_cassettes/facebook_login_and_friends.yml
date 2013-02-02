@@ -1,0 +1,245 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=Asome_access_token
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"451e5a7f5e09d3652d0f0e10c654138519a3aa1c"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Last-Modified:
+      - '2013-02-02T06:49:42+0000'
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - OuMCRSqn25HazXStRMiUosUNU3soC122Gl0U98aHKn4=
+      Date:
+      - Sat, 02 Feb 2013 17:16:59 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '376'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005121189826","name":"Carol Ameabaahihbf Sharpewitz","first_name":"Carol","middle_name":"Ameabaahihbf","last_name":"Sharpewitz","link":"http:\/\/www.facebook.com\/profile.php?id=100005121189826","birthday":"08\/08\/1980","gender":"female","email":"trhdtpc_sharpewitz_1359787780\u0040tfbnw.net","timezone":4,"locale":"en_US","updated_time":"2013-02-02T06:49:42+0000"}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:00 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=Asome_access_token&fields=friends&limit=2000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"542cee117c10a616300fcf270a342b2e409fabfd"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - p78+w3Xv7oCEFH5K/9XkY8e/fxxV9wi0W4mTlh4o32s=
+      Date:
+      - Sat, 02 Feb 2013 17:17:01 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '427'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005121189826","friends":{"data":[{"name":"John Ameachchkbb
+        Rosenthalsen","id":"100005138380022"},{"name":"Susan Ameafihgebdc Adeagbosen","id":"100005169875243"}],"paging":{"next":"https:\/\/graph.facebook.com\/100005121189826\/friends?access_token=Asome_access_token&limit=5000&offset=5000&__after_id=100005169875243"}}}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:02 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=Asome_access_token&fields=friends&limit=2000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"542cee117c10a616300fcf270a342b2e409fabfd"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - M5W7cJ/8NHloYKMDw12Q6Zxswe7xfiNzwfzr7rTlgNI=
+      Date:
+      - Sat, 02 Feb 2013 17:17:03 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '427'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005121189826","friends":{"data":[{"name":"John Ameachchkbb
+        Rosenthalsen","id":"100005138380022"},{"name":"Susan Ameafihgebdc Adeagbosen","id":"100005169875243"}],"paging":{"next":"https:\/\/graph.facebook.com\/100005121189826\/friends?access_token=Asome_access_token&limit=5000&offset=5000&__after_id=100005169875243"}}}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:03 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=Asome_access_token&fields=friends&limit=2000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"542cee117c10a616300fcf270a342b2e409fabfd"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - qCNrS3nS1zm6AJW/1Oz684zyc6eSMuKfngdwZX1bYlE=
+      Date:
+      - Sat, 02 Feb 2013 17:17:05 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '427'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005121189826","friends":{"data":[{"name":"John Ameachchkbb
+        Rosenthalsen","id":"100005138380022"},{"name":"Susan Ameafihgebdc Adeagbosen","id":"100005169875243"}],"paging":{"next":"https:\/\/graph.facebook.com\/100005121189826\/friends?access_token=Asome_access_token&limit=5000&offset=5000&__after_id=100005169875243"}}}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:05 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=access_token
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"98066aa82e38f0475ac443ae22097850546cdceb"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Last-Modified:
+      - '2013-02-02T13:28:17+0000'
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - MQKdgexiIwDyqsmUiUTrn08b5cCGv80DHxpgOHesv1Y=
+      Date:
+      - Sat, 02 Feb 2013 17:17:07 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '376'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005138380022","name":"John Ameachchkbb Rosenthalsen","first_name":"John","middle_name":"Ameachchkbb","last_name":"Rosenthalsen","link":"http:\/\/www.facebook.com\/profile.php?id=100005138380022","birthday":"08\/08\/1980","gender":"male","email":"ukohmwj_rosenthalsen_1359811695\u0040tfbnw.net","timezone":4,"locale":"en_US","updated_time":"2013-02-02T13:28:17+0000"}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:07 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=Asome_access_token&fields=friends&limit=2000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Etag:
+      - ! '"542cee117c10a616300fcf270a342b2e409fabfd"'
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      Pragma:
+      - no-cache
+      X-Fb-Rev:
+      - '727171'
+      X-Fb-Debug:
+      - K9xoHK+0xZor1Aw/Ede20F3eQRYg+jwpQW1YG2UnvV8=
+      Date:
+      - Sat, 02 Feb 2013 17:17:08 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '427'
+    body:
+      encoding: US-ASCII
+      string: ! '{"id":"100005121189826","friends":{"data":[{"name":"John Ameachchkbb
+        Rosenthalsen","id":"100005138380022"},{"name":"Susan Ameafihgebdc Adeagbosen","id":"100005169875243"}],"paging":{"next":"https:\/\/graph.facebook.com\/100005121189826\/friends?access_token=Asome_access_token&limit=5000&offset=5000&__after_id=100005169875243"}}}'
+    http_version: !!null 
+  recorded_at: Sat, 02 Feb 2013 17:17:09 GMT
+recorded_with: VCR 2.3.0

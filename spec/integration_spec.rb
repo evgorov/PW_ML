@@ -9,6 +9,7 @@ require 'middleware/users'
 require 'middleware/admin'
 
 require 'rack/test'
+require 'vcr'
 require 'webmock'
 require 'json'
 
@@ -20,7 +21,6 @@ BCrypt::Engine::DEFAULT_COST = 1
 describe 'Integration spec' do
 
   before(:all) do
-    require 'vcr'
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = true
       c.cassette_library_dir = 'fixtures/vcr_cassettes'
@@ -487,5 +487,44 @@ describe 'Integration spec' do
     response_data['sets'][1]['id'].should == admin_set1_id
   end
 
-  it 'invte users'
+  it 'invite users' do
+    VCR.use_cassette('facebook_login_and_friends') do
+      get '/facebook/authorize', { access_code: 'Asome_access_token' }
+      last_response.status.should == 200
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+      get("/facebook/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['invite_sent'].should == false
+      response_data.first['invite_used'].should == false
+
+      post("/facebook/invite", { session_key: session_key, ids: id })
+      last_response.status.should == 200
+
+      get("/facebook/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['invite_sent'].should == true
+      response_data.first['invite_used'].should == false
+
+      get '/facebook/authorize', { access_code: 'access_token' }
+      last_response.status.should == 200
+
+      get("/facebook/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['invite_sent'].should == true
+      response_data.first['invite_used'].should == true
+    end
+  end
 end

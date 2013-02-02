@@ -49,7 +49,7 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
                      client_secret: @provider.client_secret,
                      redirect_uri: oauth_redirect_uri
                    },
-                   timeout: 1)
+                   timeout: 10)
       halt(403, { message: "Invalid code" }.to_json) unless response.code == 200
       Rack::Utils.parse_query(response.body)['access_token'] || JSON.parse(response.body)['access_token']
     end
@@ -71,8 +71,8 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
   end
 
   get '/:provider_name/authorize' do
-    halt 403 unless params.has_key?('code') || params.has_key?('access_token')
-    access_token = params['access_token'] || get_access_token(params['code'])
+    halt 403 unless params.has_key?('code') || params.has_key?('access_token') || params.has_key?('access_code')
+    access_token = params['access_token'] || params['access_code'] || get_access_token(params['code'])
     user = UserFactory.send("find_or_create_#{@provider.name}_user", env['redis'], access_token)
     session_key = env['token_auth'].create_token(user)
     { session_key: session_key, me: user }.to_json

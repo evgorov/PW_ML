@@ -113,6 +113,10 @@ class BasicModel
     self.class.new(JSON.parse(response), @storage).tap(&:before_load).tap(&:after_load)
   end
 
+  def exist?(id)
+    @storage.get(id) != nil
+  end
+
   def delete
     return unless self.id
     @storage.del(self.id)

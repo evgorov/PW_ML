@@ -250,5 +250,4 @@ describe Middleware::Users do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
   end
-
 end

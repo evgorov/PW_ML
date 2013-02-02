@@ -2,6 +2,7 @@ require 'bcrypt'
 require 'json'
 require 'ext/hash'
 require 'model/basic_model'
+require 'friends_fetcher'
 
 class User < BasicModel
 
@@ -142,6 +143,23 @@ class User < BasicModel
     @hash.extract(*FIELDS_USER_CAN_SEE).to_json(*a)
   end
 
+  def fetch_friends
+    self['friends'] ||= {}
+    return self['friends'] unless %w[facebook vkontakte].include?(self['provider'])
+
+    fetched_friends = FriendsFetcher.send("fetch_#{self['provider']}_friends", self['access_token'])
+    Hash[fetched_friends.map { |h| [h['id'], h]}].each do |k, h|
+      if self['friends'][k]
+        self['friends'][k].merge!(h)
+      else
+        self['friends'][k] = h
+      end
+    end
+    self['friends'].values.each { |h| h['invite_used'] = self.exist?("#{self['provider']}##{h['id']}") }
+    self['friends'].values.each { |h| h['invite_sent'] = false unless h.has_key?('invite_sent') }
+    self['friends'].values
+  end
+
   private
 
   def set_defaults!
@@ -193,7 +211,6 @@ class FacebookUser < User
     raise InvalidState.new("Missing required field: access_token") unless self['access_token']
     self
   end
-
 end
 
 class RegisteredUser < User
