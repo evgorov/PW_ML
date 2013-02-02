@@ -102,6 +102,9 @@ module Middleware
 
       env['token_auth'].authorize!
       env['token_auth'].user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
+      env['token_auth'].user.save
+
+      { "message" => "ok" }.to_json
     end
 
     get '/:provider/friends' do
