@@ -71,8 +71,8 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
   end
 
   get '/:provider_name/authorize' do
-    halt 403 unless params.has_key?('code')
-    access_token = get_access_token(params['code'])
+    halt 403 unless params.has_key?('code') || params.has_key?('access_token')
+    access_token = params['access_token'] || get_access_token(params['code'])
     user = UserFactory.send("find_or_create_#{@provider.name}_user", env['redis'], access_token)
     session_key = env['token_auth'].create_token(user)
     { session_key: session_key, me: user }.to_json
