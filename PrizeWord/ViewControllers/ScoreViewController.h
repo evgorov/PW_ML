@@ -15,6 +15,9 @@
     
     IBOutlet UIView *invitesView;
     IBOutlet UIButton *btnInvite;
+    IBOutlet UILabel *lblInvitesScore;
+    IBOutlet UILabel *lblInvitesFriendsCount;
+    IBOutlet UILabel *lblInvitesFriendsLabel;
 }
 
 @end

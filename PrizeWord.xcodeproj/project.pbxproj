@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F235D09716BD62410066664F /* score_invites_cell_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F235D09516BD62410066664F /* score_invites_cell_bg@2x.png */; };
+		F235D09816BD62410066664F /* score_invites_cell_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F235D09616BD62410066664F /* score_invites_cell_bg@2x~ipad.png */; };
+		F235D09B16BD627B0066664F /* ScoreInviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F235D09A16BD627A0066664F /* ScoreInviteCellView.m */; };
+		F235D09D16BD629F0066664F /* ScoreInviteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F235D09C16BD629F0066664F /* ScoreInviteCellView.xib */; };
+		F235D09F16BD643F0066664F /* ScoreInviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F235D09E16BD643F0066664F /* ScoreInviteCellView~ipad.xib */; };
 		F247C3111689CD1A00A81D16 /* tile_question_input@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C2FE1689CD1A00A81D16 /* tile_question_input@2x~ipad.png */; };
 		F247C3121689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C2FF1689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png */; };
 		F247C3131689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C3001689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png */; };
@@ -354,8 +359,6 @@
 		F286E45B1685A0EF00FF5E83 /* menu_my_puzzles_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E44C1685A0E900FF5E83 /* menu_my_puzzles_btn_down@2x~ipad.png */; };
 		F286E45C1685A0EF00FF5E83 /* menu_my_puzzles_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E44D1685A0E900FF5E83 /* menu_my_puzzles_btn@2x~ipad.png */; };
 		F286E45D1685A0EF00FF5E83 /* menu_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F286E44E1685A0E900FF5E83 /* menu_bg@2x~ipad.jpg */; };
-		F286E4631685A56100FF5E83 /* score_puzzles_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E45E1685A56100FF5E83 /* score_puzzles_bg@2x~ipad.png */; };
-		F286E4641685A56100FF5E83 /* score_puzzles_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E45F1685A56100FF5E83 /* score_puzzles_bg@2x.png */; };
 		F286E4651685A56100FF5E83 /* score_invites_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E4601685A56100FF5E83 /* score_invites_bg@2x~ipad.png */; };
 		F286E4661685A56100FF5E83 /* score_invite_btn_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E4611685A56100FF5E83 /* score_invite_btn_down@2x~ipad.png */; };
 		F286E4671685A56100FF5E83 /* score_invite_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F286E4621685A56100FF5E83 /* score_invite_btn@2x~ipad.png */; };
@@ -467,6 +470,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F235D09516BD62410066664F /* score_invites_cell_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invites_cell_bg@2x.png"; sourceTree = "<group>"; };
+		F235D09616BD62410066664F /* score_invites_cell_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invites_cell_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		F235D09916BD627A0066664F /* ScoreInviteCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreInviteCellView.h; path = Views/ScoreInviteCellView.h; sourceTree = "<group>"; };
+		F235D09A16BD627A0066664F /* ScoreInviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoreInviteCellView.m; path = Views/ScoreInviteCellView.m; sourceTree = "<group>"; };
+		F235D09C16BD629F0066664F /* ScoreInviteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreInviteCellView.xib; path = Views/ScoreInviteCellView.xib; sourceTree = "<group>"; };
+		F235D09E16BD643F0066664F /* ScoreInviteCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ScoreInviteCellView~ipad.xib"; path = "Views/ScoreInviteCellView~ipad.xib"; sourceTree = "<group>"; };
 		F247C2FE1689CD1A00A81D16 /* tile_question_input@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_input@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C2FF1689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_left@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C3001689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_up@2x~ipad.png"; sourceTree = "<group>"; };
@@ -850,8 +859,6 @@
 		F286E44C1685A0E900FF5E83 /* menu_my_puzzles_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_my_puzzles_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
 		F286E44D1685A0E900FF5E83 /* menu_my_puzzles_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_my_puzzles_btn@2x~ipad.png"; sourceTree = "<group>"; };
 		F286E44E1685A0E900FF5E83 /* menu_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "menu_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
-		F286E45E1685A56100FF5E83 /* score_puzzles_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_puzzles_bg@2x~ipad.png"; sourceTree = "<group>"; };
-		F286E45F1685A56100FF5E83 /* score_puzzles_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_puzzles_bg@2x.png"; sourceTree = "<group>"; };
 		F286E4601685A56100FF5E83 /* score_invites_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invites_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F286E4611685A56100FF5E83 /* score_invite_btn_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invite_btn_down@2x~ipad.png"; sourceTree = "<group>"; };
 		F286E4621685A56100FF5E83 /* score_invite_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_invite_btn@2x~ipad.png"; sourceTree = "<group>"; };
@@ -1309,10 +1316,10 @@
 		F286E3A4167DB2D200FF5E83 /* score */ = {
 			isa = PBXGroup;
 			children = (
+				F235D09516BD62410066664F /* score_invites_cell_bg@2x.png */,
+				F235D09616BD62410066664F /* score_invites_cell_bg@2x~ipad.png */,
 				F279AE7A16895A1900424267 /* score_score_bg@2x~ipad.png */,
 				F279AE7B16895A1900424267 /* score_score_bg@2x.png */,
-				F286E45E1685A56100FF5E83 /* score_puzzles_bg@2x~ipad.png */,
-				F286E45F1685A56100FF5E83 /* score_puzzles_bg@2x.png */,
 				F286E4601685A56100FF5E83 /* score_invites_bg@2x~ipad.png */,
 				F286E4611685A56100FF5E83 /* score_invite_btn_down@2x~ipad.png */,
 				F286E4621685A56100FF5E83 /* score_invite_btn@2x~ipad.png */,
@@ -1456,6 +1463,10 @@
 				F250914416BA21B80045621E /* InviteCellView~ipad.xib */,
 				F250914616BA22FB0045621E /* InviteCellView.h */,
 				F250914716BA22FC0045621E /* InviteCellView.m */,
+				F235D09916BD627A0066664F /* ScoreInviteCellView.h */,
+				F235D09A16BD627A0066664F /* ScoreInviteCellView.m */,
+				F235D09C16BD629F0066664F /* ScoreInviteCellView.xib */,
+				F235D09E16BD643F0066664F /* ScoreInviteCellView~ipad.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2035,8 +2046,6 @@
 				F286E45B1685A0EF00FF5E83 /* menu_my_puzzles_btn_down@2x~ipad.png in Resources */,
 				F286E45C1685A0EF00FF5E83 /* menu_my_puzzles_btn@2x~ipad.png in Resources */,
 				F286E45D1685A0EF00FF5E83 /* menu_bg@2x~ipad.jpg in Resources */,
-				F286E4631685A56100FF5E83 /* score_puzzles_bg@2x~ipad.png in Resources */,
-				F286E4641685A56100FF5E83 /* score_puzzles_bg@2x.png in Resources */,
 				F286E4651685A56100FF5E83 /* score_invites_bg@2x~ipad.png in Resources */,
 				F286E4661685A56100FF5E83 /* score_invite_btn_down@2x~ipad.png in Resources */,
 				F286E4671685A56100FF5E83 /* score_invite_btn@2x~ipad.png in Resources */,
@@ -2177,6 +2186,10 @@
 				F250914116BA1F160045621E /* invite_vk_header@2x.png in Resources */,
 				F250914316BA200A0045621E /* InviteCellView.xib in Resources */,
 				F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */,
+				F235D09716BD62410066664F /* score_invites_cell_bg@2x.png in Resources */,
+				F235D09816BD62410066664F /* score_invites_cell_bg@2x~ipad.png in Resources */,
+				F235D09D16BD629F0066664F /* ScoreInviteCellView.xib in Resources */,
+				F235D09F16BD643F0066664F /* ScoreInviteCellView~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2236,6 +2249,7 @@
 				F2848E3916AA77980041C1D5 /* UserData.m in Sources */,
 				F250910916B48F8D0045621E /* RatingCell.m in Sources */,
 				F250914816BA22FE0045621E /* InviteCellView.m in Sources */,
+				F235D09B16BD627B0066664F /* ScoreInviteCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
