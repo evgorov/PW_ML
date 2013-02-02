@@ -28,7 +28,7 @@ module UserFactory
         u['email'] = fb_data['email']
         month, day, year = fb_data['birthday'] && fb_data['birthday'].split('/')
         u['birthdate'] = [year, month, day].join('-')
-        u['city'] = fb_data['hometown']['name']
+        u['city'] = fb_data['hometown'] && fb_data['hometown']['name']
         u['userpic'] = "http://graph.facebook.com/#{fb_data['id']}/picture"
         u.storage(storage).save
       end
