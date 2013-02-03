@@ -69,11 +69,11 @@
 -(void)handleAddClick:(id)sender
 {
     UIButton * btn = sender;
-    if (btn.superview == vkView)
+    if (btn.superview.superview == vkView)
     {
         [self inviteVKUser:btn.tag];
     }
-    else if (btn.superview == fbView)
+    else if (btn.superview.superview == fbView)
     {
         [self inviteFBUser:btn.tag];
     }
@@ -106,23 +106,24 @@
             [self hideActivityIndicator];
             if (response.statusCode == 200)
             {
+                NSLog(@"vkontakte/friends: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 float height = vkHeader.frame.size.height;
                 SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * data = [parser objectWithData:receivedData];
-                NSArray * friendsData = [data objectForKey:@"friends"];
+                NSArray * friendsData = [parser objectWithData:receivedData];
                 for (NSDictionary * friendData in friendsData)
                 {
-                    UserData * user = [UserData userDataWithDictionary:friendData];
+                    //UserData * user = [UserData userDataWithDictionary:friendData];
+                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue];
                     InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
-                    userView.lblName.text = user.first_name;
-                    userView.lblSurname.text = user.last_name;
-                    userView.btnAdd.enabled = user.invited;
+                    userView.lblName.text = [friendData objectForKey:@"first_name"];
+                    userView.lblSurname.text = [friendData objectForKey:@"last_name"];
+                    userView.btnAdd.enabled = !invited;
                     userView.btnAdd.tag = vkFriends.count;
                     [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
                     userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                    [vkView addSubview:userView];
+                    [vkView insertSubview:userView atIndex:0];
                     height += userView.frame.size.height;
-                    [vkFriends addObject:user];
+                    [vkFriends addObject:friendData];
                 }
                 [self resizeView:vkView newHeight:height animated:YES];
             }
@@ -142,7 +143,6 @@
             [alert show];
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"vkontakte" forKey:@"provider_name"];
         [request runSilent];
     }
 }
@@ -168,23 +168,25 @@
             [self hideActivityIndicator];
             if (response.statusCode == 200)
             {
+                NSLog(@"facebook/friends: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 float height = fbHeader.frame.size.height;
                 SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * data = [parser objectWithData:receivedData];
-                NSArray * friendsData = [data objectForKey:@"friends"];
+                NSArray * friendsData = [parser objectWithData:receivedData];
                 for (NSDictionary * friendData in friendsData)
                 {
-                    UserData * user = [UserData userDataWithDictionary:friendData];
+                    //UserData * user = [UserData userDataWithDictionary:friendData];
+                    NSString * name = [friendData objectForKey:@"name"];
+                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue];
                     InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
-                    userView.lblName.text = user.first_name;
-                    userView.lblSurname.text = user.last_name;
-                    userView.btnAdd.enabled = user.invited;
+                    userView.lblName.text = [name substringToIndex:[name rangeOfString:@" "].location];
+                    userView.lblSurname.text = [name substringFromIndex:[name rangeOfString:@" "].location + 1];
+                    userView.btnAdd.enabled = !invited;
                     userView.btnAdd.tag = fbFriends.count;
                     [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
                     userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                    [fbView addSubview:userView];
+                    [fbView insertSubview:userView atIndex:0];
                     height += userView.frame.size.height;
-                    [fbFriends addObject:user];
+                    [fbFriends addObject:friendData];
                 }
                 [self resizeView:fbView newHeight:height animated:YES];
             }
@@ -204,7 +206,6 @@
             [alert show];
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"facebook" forKey:@"provider_name"];
         [request runSilent];
     }
 }
@@ -230,10 +231,9 @@
         NSLog(@"invite failed: %@", error.description);
         [self hideActivityIndicator];
     }];
-    UserData * user = [vkFriends objectAtIndex:idx];
+    NSDictionary * userData = [vkFriends objectAtIndex:idx];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:@"vkontakte" forKey:@"provider_name"];
-    [request.params setObject:user.provider_id forKey:@"ids"];
+    [request.params setObject:[userData objectForKey:@"id"] forKey:@"ids"];
     [request runSilent];
 }
 
@@ -257,10 +257,9 @@
         NSLog(@"invite failed: %@", error.description);
         [self hideActivityIndicator];
     }];
-    UserData * user = [fbFriends objectAtIndex:idx];
+    NSDictionary * userData = [fbFriends objectAtIndex:idx];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:@"facebook" forKey:@"provider_name"];
-    [request.params setObject:user.provider_id forKey:@"ids"];
+    [request.params setObject:[userData objectForKey:@"id"] forKey:@"ids"];
     [request runSilent];
 }
 
@@ -270,11 +269,11 @@
     {
         [self showActivityIndicator];
         NSString * ids = @"";
-        for (UserData * friendData in vkFriends)
+        for (NSDictionary * friendData in vkFriends)
         {
-            if (!friendData.invited)
+            if (![(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue])
             {
-                ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", friendData.provider_id] : friendData.provider_id;
+                ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", [friendData objectForKey:@"id"]] : [friendData objectForKey:@"id"];
             }
         }
         APIRequest * request = [APIRequest putRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
@@ -292,7 +291,6 @@
             [self hideActivityIndicator];
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"vkontakte" forKey:@"provider_name"];
         [request.params setObject:ids forKey:@"ids"];
         [request runSilent];
     }
@@ -304,11 +302,11 @@
     {
         [self showActivityIndicator];
         NSString * ids = @"";
-        for (UserData * friendData in fbFriends)
+        for (NSDictionary * friendData in fbFriends)
         {
-            if (!friendData.invited)
+            if (![(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue])
             {
-                ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", friendData.provider_id] : friendData.provider_id;
+                ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", [friendData objectForKey:@"id"]] : [friendData objectForKey:@"id"];
             }
         }
         APIRequest * request = [APIRequest putRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
@@ -326,7 +324,6 @@
             [self hideActivityIndicator];
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"facebook" forKey:@"provider_name"];
         [request.params setObject:ids forKey:@"ids"];
         [request runSilent];
     }
