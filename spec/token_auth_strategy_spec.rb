@@ -81,7 +81,7 @@ describe Middleware::TokenAuthStrategy do
 
     it 'returns 200 when called valid token' do
       redis = fake_redis_middleware
-      redis.should_receive(:set)
+      redis.should_receive(:setex)
       get '/create_token'
       last_response.status.should == 200
       token = last_response.body

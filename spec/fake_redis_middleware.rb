@@ -20,6 +20,7 @@ shared_context "fake_redis_middleware" do
 
         def namespace(prefix); self; end
         def set(k, v); @hash[k] = v; end
+        def setex(k, ttl, v); @hash[k] = v; end
         def get(k); @hash[k]; end
         def del(k); @hash.delete(k); end
 

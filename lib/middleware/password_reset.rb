@@ -7,6 +7,8 @@ require 'model/user'
 module Middleware
   class PasswordReset < Sinatra::Base
 
+    KEY_TTL = 60 * 60 * 24 * 7
+
     set :views, 'views/password_reset'
     error(BasicModel::NotFound) { halt(404) }
 
@@ -23,7 +25,7 @@ module Middleware
     post '/forgot_password' do
       user = RegisteredUser.storage(env['redis']).load_by_key(params['email'])
       token = SecureRandom.uuid
-      redis.set(token, user['email'])
+      redis.setex(token, KEY_TTL, user['email'])
       Pony.mail(to: user['email'],
                 from: 'noreply@prizeword.ru',
                 subject: 'Prizeword password reset',

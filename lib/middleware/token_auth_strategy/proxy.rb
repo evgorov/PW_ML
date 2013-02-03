@@ -2,6 +2,7 @@ require 'securerandom'
 
 module Middleware::TokenAuthStrategy
   class Proxy
+    KEY_TTL = 60 * 60 * 24 * 7
 
     def initialize(env)
       @env = env
@@ -49,7 +50,7 @@ module Middleware::TokenAuthStrategy
                 user.to_s
               end
 
-      @redis.set(key, value)
+      @redis.setex(key, KEY_TTL, value)
     end
 
   end

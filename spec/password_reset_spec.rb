@@ -61,7 +61,7 @@ describe Middleware::PasswordReset do
     it 'POST /forgot_password creates token for password_reset' do
       token = nil
       redis.should_receive(:namespace)
-      redis.should_receive(:set){ |t, email| token = t; email.should == 'registered@example.org' }
+      redis.should_receive(:setex){ |t, ttl, email| token = t; email.should == 'registered@example.org' }
       Pony.should_receive(:mail) { |h| h[:html_body].should =~ /#{token}/ }
 
       post('/forgot_password',
