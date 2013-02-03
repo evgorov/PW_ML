@@ -12,6 +12,7 @@
 		F235D09B16BD627B0066664F /* ScoreInviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F235D09A16BD627A0066664F /* ScoreInviteCellView.m */; };
 		F235D09D16BD629F0066664F /* ScoreInviteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F235D09C16BD629F0066664F /* ScoreInviteCellView.xib */; };
 		F235D09F16BD643F0066664F /* ScoreInviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F235D09E16BD643F0066664F /* ScoreInviteCellView~ipad.xib */; };
+		F235D0A116BEC1510066664F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F235D0A016BEC1510066664F /* MobileCoreServices.framework */; };
 		F247C3111689CD1A00A81D16 /* tile_question_input@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C2FE1689CD1A00A81D16 /* tile_question_input@2x~ipad.png */; };
 		F247C3121689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C2FF1689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png */; };
 		F247C3131689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F247C3001689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png */; };
@@ -476,6 +477,7 @@
 		F235D09A16BD627A0066664F /* ScoreInviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoreInviteCellView.m; path = Views/ScoreInviteCellView.m; sourceTree = "<group>"; };
 		F235D09C16BD629F0066664F /* ScoreInviteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreInviteCellView.xib; path = Views/ScoreInviteCellView.xib; sourceTree = "<group>"; };
 		F235D09E16BD643F0066664F /* ScoreInviteCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ScoreInviteCellView~ipad.xib"; path = "Views/ScoreInviteCellView~ipad.xib"; sourceTree = "<group>"; };
+		F235D0A016BEC1510066664F /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F247C2FE1689CD1A00A81D16 /* tile_question_input@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_input@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C2FF1689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_left@2x~ipad.png"; sourceTree = "<group>"; };
 		F247C3001689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_north_up@2x~ipad.png"; sourceTree = "<group>"; };
@@ -990,6 +992,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F235D0A116BEC1510066664F /* MobileCoreServices.framework in Frameworks */,
 				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
 				F250913316B739BB0045621E /* Social.framework in Frameworks */,
 				F250913116B739B20045621E /* Accounts.framework in Frameworks */,
@@ -1609,6 +1612,7 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
+				F235D0A016BEC1510066664F /* MobileCoreServices.framework */,
 				F247C32F168B88C900A81D16 /* Icon-72@2x.png */,
 				F247C32D168B88C000A81D16 /* Icon-72.png */,
 				F247C32B168B88B200A81D16 /* Icon@2x.png */,

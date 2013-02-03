@@ -51,26 +51,56 @@
 
 -(void)prepareRequest
 {
-    NSMutableString * paramsString = [NSMutableString new];
-    [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (paramsString.length == 0)
-        {
-            [paramsString appendFormat:@"%@=%@", key, obj];
-        }
-        else
-        {
-            [paramsString appendFormat:@"&%@=%@", key, obj];
-        }
-    }];
-    NSLog(@"params: %@", paramsString);
-    if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame) {
+    if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame || [request.HTTPMethod compare:@"PUT"] == NSOrderedSame)
+    {
+        NSMutableString * paramsString = [NSMutableString new];
+        [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if (paramsString.length == 0)
+            {
+                [paramsString appendFormat:@"%@=%@", key, obj];
+            }
+            else
+            {
+                [paramsString appendFormat:@"&%@=%@", key, obj];
+            }
+        }];
         request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
     else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
-        [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    else if ([request.HTTPMethod compare:@"PUT"] == NSOrderedSame) {
-        request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
+        NSString * boundary = @"qpojw49j023n4fn1983cdh10239cn";
+        // set Content-Type in HTTP header
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
+        
+        // post body
+        NSMutableData *body = [NSMutableData data];
+        [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([obj isKindOfClass:[UIImage class]])
+            {
+                // add image data
+                NSData *imageData = UIImageJPEGRepresentation((UIImage *)obj, 1.0f);
+                if (imageData) {
+                    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.jpg\"\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:imageData];
+                    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                }
+            }
+            else
+            {
+                // add string params
+                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"%@\r\n", obj] dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+        }];
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSLog(@"POST request data: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+
+        [request setHTTPBody:body];
     }
 }
 

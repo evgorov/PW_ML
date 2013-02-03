@@ -12,6 +12,7 @@
 #import "GlobalData.h"
 #import "SBJson.h"
 #import "UserData.h"
+#import <MobileCoreServices/UTCoreTypes.h>
 
 @interface LoginRegisterViewController ()
 
@@ -35,6 +36,7 @@
     [datePicker addTarget:self action:@selector(handleDateChanged:) forControlEvents:UIControlEventValueChanged];
     datePicker.date = [NSDate new];
     [self handleDateChanged:self];
+    avatar = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,11 +77,18 @@
     btnBirthday = nil;
     
     datePickerView = nil;
+    btnAvatar = nil;
     [super viewDidUnload];
 }
 
 - (IBAction)handleAvaClick:(id)sender
 {
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    imagePickerController.delegate = self;
+    imagePickerController.allowsEditing = YES;
+    imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    [self.navigationController presentModalViewController:imagePickerController animated:YES];
 }
 
 - (IBAction)handleBirthdayClick:(id)sender
@@ -144,7 +153,10 @@
     [request.params setObject:tfPassword.text forKey:@"password"];
     [request.params setObject:[dateFormatter stringFromDate:datePicker.date] forKey:@"birthday"];
     [request.params setObject:tfCity.text forKey:@"city"];
-    // TODO :: set userpic
+    if (avatar != nil)
+    {
+        [request.params setObject:request forKey:@"userpic"];
+    }
     [request runSilent];
 }
 
@@ -273,6 +285,35 @@
     {
         [self handleRegisterClick:nil];
     }
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker.parentViewController dismissModalViewControllerAnimated:YES];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *originalImage, *editedImage, *imageToSave;
+
+    // Handle a still image capture
+    editedImage = (UIImage *) [info objectForKey:UIImagePickerControllerEditedImage];
+    originalImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (editedImage) {
+        imageToSave = editedImage;
+    } else {
+        imageToSave = originalImage;
+    }
+    int width = imageToSave.size.width;
+    int height = imageToSave.size.height;
+    int minDimension = width < height ? width : height;
+    CGRect subrect = CGRectMake((width - minDimension) / 2, (height - minDimension) / 2, minDimension, minDimension);
+    avatar = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    // Save the new image (original or edited) to the Camera Roll
+    [btnAvatar setBackgroundImage:avatar forState:UIControlStateNormal];
+    [btnAvatar setBackgroundImage:nil forState:UIControlStateHighlighted];
+    
+    [[picker parentViewController] dismissModalViewControllerAnimated: YES];
 }
 
 @end
