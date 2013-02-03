@@ -181,7 +181,11 @@ class User < BasicModel
     # if user misses couple of monthes, it will get higher dynamics
     previous_position = @storage.get("#{self['id']}#position#{previous_position}")
     self['position'] = current_position || 9999
-    self['dynamics'] = current_position.to_i - previous_position.to_i
+    self['dynamics'] = if !previous_position
+                         0
+                       else
+                         current_position.to_i - previous_position.to_i
+                       end
   end
 
   def save_external_attributes
