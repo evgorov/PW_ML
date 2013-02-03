@@ -209,6 +209,7 @@ describe Middleware::Users do
     token_auth.stub(user: user)
     data = { 'valid_json' => 'object' }
     user.should_receive(:[]=).with('puzzle-data.1234', data.to_json)
+    user.should_receive(:save)
 
     put('/puzzles/1234',
         {
@@ -219,8 +220,6 @@ describe Middleware::Users do
 
     last_response_should_be_json
     last_response.status.should == 200
-    response_data = JSON.parse(last_response.body)
-    response_data.should == data
   end
 
   it 'PUT /puzzles/:id returns 403 if not valid json object is given' do
