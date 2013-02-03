@@ -50,33 +50,41 @@ var Field = Backbone.Model.extend({
   initialize: function(){
     this.updateField();
     this.on('change:questions', this.updateField, this);
+    this.set('errors', []);
   },
 
   updateField: function(){
-    var result = {};
-    var writeResultCheckConflict = function(attr, value){
-      if(!result[attr] || (result[attr].type === value.type && result[attr].value === value.value)){
-        result[attr] = value;
+    var result = {},
+        errors = [];
+    var writeResultCheckConflict = function(coord, value){
+      if(!result[coord] || (result[coord].type === value.type && result[coord].value === value.value)){
+        result[coord] = value;
+        return true;
       } else {
-        result[attr] = { type: 'error', hasHint : value.type === 'hint' || result[attr].type === 'hint' };
+        result[coord] = { type: 'error', hasHint : value.type === 'hint' || result[coord].type === 'hint' };
+        return false;
       }
     };
 
-    _(this.get('questions')).each(function(answer){
+    _(this.get('questions')).each(function(question){
       // Write hint
-      writeResultCheckConflict([answer.column, answer.row].join(':'),
-                         { 'type' : 'hint', value: answer.question_text, arrow: answer.answer_position });
+      var coord = [question.column, question.row].join(':'),
+          value = { 'type' : 'hint', value: question.question_text, arrow: question.answer_position },
+          hasErrors = !writeResultCheckConflict(coord, value);
 
       // Write tokens
-      var coordinates = this._coordinatesFor(answer.answer, answer.answer_position);
+      var coordinates = this._coordinatesFor(question.answer, question.answer_position);
       coordinates = _(coordinates).map(function(o){
-        return [o[0] + answer.column, o[1] + answer.row, o[2]];
+        return [o[0] + question.column, o[1] + question.row, o[2]];
       });
       _(coordinates).each(function(o){
-        writeResultCheckConflict(o.slice(0,2).join(':'), { type: 'value', value: o[2] });
+         var e = !writeResultCheckConflict(o.slice(0,2).join(':'), { type: 'value', value: o[2] });
+         hasErrors = hasErrors || e;
       });
+      if(hasErrors) errors.push(question);
     }, this);
 
+    this.set('errors', errors);
     this.set('coordinates', result);
   },
 
@@ -130,6 +138,7 @@ var Field = Backbone.Model.extend({
 });
 
 var Puzzle = Backbone.Model.extend({
+
   defaults: function(){
     return {
       questions: [],
@@ -142,6 +151,7 @@ var Puzzle = Backbone.Model.extend({
       "width": 10
     };
   },
+
   initialize: function(){
     this.field = new Field({
       questions: this.get('questions'),
@@ -157,8 +167,13 @@ var Puzzle = Backbone.Model.extend({
     this.on('change:questions', function(){
       this.field.set('questions', this.get('questions'));
     }, this);
+
+    this.field.on('change:errors', function(){
+      this.errors = this.field.get('errors');
+      this.trigger('errors');
+    }, this);
   },
-  getField: function(){ return this.field; },
+
   addEmptyQuestion: function(x, y){
     if(typeof x == 'undefined' && typeof y == 'undefined'){
       x = 1;
@@ -280,7 +295,6 @@ var FieldView = Backbone.View.extend({
     return null;
   }
 });
-
 var PuzzleView = Backbone.View.extend({
 
   tagName: 'div',
@@ -317,30 +331,30 @@ var PuzzleView = Backbone.View.extend({
     this.model.set('questions', $.makeArray(questions));
   },
 
- findQuestion: function(x, y){
-   return $('.question').
+  findQuestion: function(x, y){
+    return $('.question').
      filter(function(i, o){ return $(o).find('.position.x').val() == x;}).
      filter(function(i, o){ return $(o).find('.position.y').val() == y;}).
      first();
- },
+  },
 
- cancelPuzzle: function(e){
-   if(e && e.preventDefault) e.preventDefault();
-   this.trigger('cancel');
-   this.hide();
- },
+  cancelPuzzle: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    this.trigger('cancel');
+    this.hide();
+  },
 
- rotateQuestion: function(x, y){
-   var $s = this.findQuestion(x, y).find('select');
-   $s.val($s.find(':selected + option').val());
-   $s.change();
- },
+  rotateQuestion: function(x, y){
+    var $s = this.findQuestion(x, y).find('select');
+    $s.val($s.find(':selected + option').val());
+    $s.change();
+  },
 
- moveQuestion: function(e){
-   var $question = this.findQuestion(e.source.x, e.source.y);
-   $question.find('.position.x').val(e.destination.x);
-   $question.find('.position.y').val(e.destination.y);
-   $question.find('.position.x').keyup();
+  moveQuestion: function(e){
+    var $question = this.findQuestion(e.source.x, e.source.y);
+    $question.find('.position.x').val(e.destination.x);
+    $question.find('.position.y').val(e.destination.y);
+    $question.find('.position.x').keyup();
  },
 
   updatePuzzleAtribute: function(){
@@ -359,8 +373,8 @@ var PuzzleView = Backbone.View.extend({
   initialize: function(){
     this.$el.html(this.template());
     $('[role="puzzle-editor"]').empty().append(this.$el);
-    var fieldView = new FieldView({ model: this.model.getField(), el: this.$el.find('[role="field"]')[0] });
-    fieldView.on('tokenClick', function(e){
+    this.fieldView = new FieldView({ model: this.model.field, el: this.$el.find('[role="field"]')[0] });
+    this.fieldView.on('tokenClick', function(e){
                    switch(e.type){
                    case 'empty':
                      this.model.addEmptyQuestion(e.x, e.y);
@@ -371,8 +385,16 @@ var PuzzleView = Backbone.View.extend({
                    }
                  }, this);
     this.render();
-    fieldView.on('tokenMoved', this.moveQuestion, this);
+    this.fieldView.on('tokenMoved', this.moveQuestion, this);
     this.model.on('questionAdded', this.render, this);
+    this.model.on('errors', this.showErrors, this);
+  },
+
+  showErrors: function(){
+    this.$el.find('.question').removeClass('error');
+    _(this.model.errors).each(function(error){
+       this.findQuestion(error.column, error.row).addClass('error');
+    },this);
   },
 
   savePuzzle: function(){
@@ -640,6 +662,7 @@ var PuzzleSetView = Backbone.View.extend({
     }
 
     this.$el.empty().append(template(this.model.toJSON()));
+    this.$el.find('[role="set-type"]').val(this.model.get('type'));
     return this;
   },
 
