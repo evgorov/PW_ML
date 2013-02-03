@@ -109,7 +109,7 @@ If user has valid access token, then it will return list of friends:
       ]
     }
 
-**`PUT /:provider_name/invite`**
+**`POST /:provider_name/invite`**
 
 Send invite to user
 
