@@ -81,6 +81,8 @@ describe Middleware::Users do
     user.stub(to_json: '"USER_AS_JSON"')
     user.should_receive(:[]).with('month_score').and_return(10)
     user.should_receive(:[]=).with('month_score', 14)
+    user.should_receive(:[]).with('solved').and_return(0)
+    user.should_receive(:[]=).with('solved', 0)
     user.should_receive(:save)
 
     token_auth = stub(:token_auth)

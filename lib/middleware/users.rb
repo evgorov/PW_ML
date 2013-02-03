@@ -35,6 +35,7 @@ module Middleware
       env['token_auth'].authorize!
       user = env['token_auth'].user
       user['month_score'] += params['score'].to_i
+      user['solved'] += params['solved'].to_i
       user.save
       { me: user }.to_json
     end

@@ -196,7 +196,7 @@ describe 'Integration spec' do
     last_response.status.should == 200
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/score', session_key: session_key, score: 100
+    post '/score', session_key: session_key, score: 100, solved: 10
     last_response.status.should == 200
     post '/score', session_key: session_key, score: 100
     last_response.status.should == 200
@@ -227,6 +227,7 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     response_data['users'][0]['email'].should == 'email4@example.org'
+    response_data['users'][0]['solved'].should == 10
     response_data['users'][0]['position'].should == 1
     response_data['users'][1]['email'].should == 'email2@example.org'
     response_data['users'][1]['position'].should == 2
