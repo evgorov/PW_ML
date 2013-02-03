@@ -39,6 +39,7 @@
 
 @implementation GameField
 
+@synthesize puzzle = _puzzle;
 @synthesize tilesPerRow = _tilesPerRow;
 @synthesize tilesPerCol = _tilesPerCol;
 @synthesize questionsComplete = _questionsComplete;
@@ -50,7 +51,7 @@
     
     if (self)
     {
-        puzzle = nil;
+        _puzzle = nil;
         currentQuestion = nil;
         currentWord = nil;
         _tilesPerRow = width;
@@ -83,7 +84,7 @@
     
     if (self)
     {
-        puzzle = puzzleData;
+        _puzzle = puzzleData;
         _questionsTotal = puzzleData.questions.count;
         _questionsComplete = 0;
         questions = [[NSMutableSet alloc] initWithCapacity:_questionsTotal];
@@ -506,7 +507,7 @@
 -(void)saveSolvedQuestion:(TileData *)questionTile
 {
     QuestionData * question = nil;
-    for (QuestionData * data in puzzle.questions) {
+    for (QuestionData * data in _puzzle.questions) {
         if (data.rowAsUint == questionTile.y && data.columnAsUint == questionTile.x)
         {
             question = data;
@@ -518,17 +519,17 @@
         return;
     }
     [question setSolved:[NSNumber numberWithBool:YES]];
-    int timeLeft = (puzzle.time_given.intValue - (int)[GameLogic sharedLogic].gameTime);
+    int timeLeft = (_puzzle.time_given.intValue - (int)[GameLogic sharedLogic].gameTime);
     if (timeLeft < 0)
     {
         timeLeft = 0;
     }
-    [puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
-    [puzzle synchronize];
+    [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
     {
-        int scoreForPuzzle = [puzzle.base_score intValue] + [puzzle.time_left intValue] / 10;
+        int scoreForPuzzle = [_puzzle.base_score intValue] + [_puzzle.time_left intValue] / 10;
         
         APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -542,7 +543,7 @@
         [request runSilent];
         [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
         
-        [puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
+        [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     }
 
     NSError * error;

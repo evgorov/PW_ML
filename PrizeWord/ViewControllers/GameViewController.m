@@ -18,6 +18,8 @@
 #import "UserData.h"
 #import "APIRequest.h"
 #import "SBJson.h"
+#import "PuzzleData.h"
+#import "PuzzleSetData.h"
 
 @interface GameViewController (private)
 
@@ -174,8 +176,39 @@
 - (IBAction)handlePauseNext:(id)sender
 {
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
-    // TODO :: load next puzzle
-//    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START]];
+    PuzzleData * puzzle = gameField.puzzle;
+    PuzzleSetData * puzzleSet = puzzle.puzzleSet;
+    BOOL selectNext = NO;
+    PuzzleData * nextPuzzle = nil;
+    for (PuzzleData * otherPuzzle in puzzleSet.puzzles) {
+        if (selectNext && otherPuzzle.progress != 1)
+        {
+            nextPuzzle = otherPuzzle;
+            break;
+        }
+        if ([otherPuzzle.puzzle_id isEqualToString:puzzle.puzzle_id])
+        {
+            selectNext = YES;
+        }
+    }
+    if (nextPuzzle == nil)
+    {
+        for (PuzzleData * otherPuzzle in puzzleSet.puzzles) {
+            if (otherPuzzle.progress != 1)
+            {
+                nextPuzzle = otherPuzzle;
+                break;
+            }
+        }
+    }
+    if (nextPuzzle != nil)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:nextPuzzle]];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)handlePauseMenu:(id)sender
