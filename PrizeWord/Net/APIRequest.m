@@ -70,7 +70,7 @@
         [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
     }
     else if ([request.HTTPMethod compare:@"PUT"] == NSOrderedSame) {
-        [request setHTTPBody:[paramsString dataUsingEncoding:NSUTF8StringEncoding]];
+        request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
 }
 

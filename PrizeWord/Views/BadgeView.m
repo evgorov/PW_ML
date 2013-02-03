@@ -9,6 +9,7 @@
 #import "BadgeView.h"
 #import "AppDelegate.h"
 #import "PuzzleSetData.h"
+#import "EventManager.h"
 
 @interface BadgeView (private)
 /*
@@ -117,6 +118,12 @@
     }
 }
 
+-(void)dealloc
+{
+    NSLog(@"BadgeView dealloc");
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     imgOverlay.hidden = NO;
@@ -152,6 +159,7 @@
 +(BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number
 {
     BadgeView * badgeView = (BadgeView *)[[[NSBundle mainBundle] loadNibNamed:@"BadgeView" owner:self options:nil] objectAtIndex:0];
+    [[EventManager sharedManager] registerListener:badgeView forEventType:EVENT_PUZZLE_SYNCHRONIZED];
     [badgeView initWithPuzzle:puzzle andNumber:number];
     return badgeView;
 }

@@ -141,9 +141,12 @@
         }
         else
         {
-            NSLog(@"puzzle %@ synchronization success: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSString * receivedString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+            receivedString = [receivedString substringWithRange:NSMakeRange(1, receivedString.length - 2)];
+            receivedString = [receivedString stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
+            NSLog(@"puzzle %@ synchronization success: %@", self.puzzle_id, receivedString);
             SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
+            NSDictionary * data = [parser objectWithString:receivedString];
             NSArray * solvedData = [data objectForKey:@"solved_questions"];
             NSMutableSet * solvedQuestions = [NSMutableSet new];
             for (NSDictionary * questionData in solvedData)
@@ -197,7 +200,6 @@
                     NSLog(@"puz puzzle %@ failed: %@", self.puzzle_id, error.description);
                 }];
                 [putRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [putRequest.params setObject:self.puzzle_id forKey:@"id"];
                 [putRequest.params setObject:data forKey:@"puzzle_data"];
                 [putRequest runSilent];
             }
