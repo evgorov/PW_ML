@@ -48,13 +48,23 @@ module Middleware
     end
 
     get '/sets_available' do
+      env['token_auth'].authorize!
+      user_sets = if env['token_auth'].user['sets']
+                    Hash[env['token_auth'].user['sets'].map{ |o| [o['id'], o]}]
+                  else
+                    {}
+                  end
+
       args = []
       if params['year'] && params['month']
         args << params['year'].to_i
         args << params['month'].to_i
       end
 
-      PuzzleSet.storage(env['redis']).published_for(*args).to_json
+      sets_available = PuzzleSet.storage(env['redis']).published_for(*args)
+      sets_available.each { |h| h['bought'] = !!user_sets[h['id']] }
+
+      sets_available.to_json
     end
 
     get '/users' do

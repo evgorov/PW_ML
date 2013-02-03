@@ -28,8 +28,7 @@ describe Middleware::Users do
   end
 
   it 'GET /me returns informaiton about users' do
-    token_auth = mock
-    token_auth.stub(:authorize!)
+    token_auth = mock(:token_auth).as_null_object
     user = { 'name' => 'John' }
     token_auth.should_receive(:user).and_return(user)
     get('/me',
@@ -148,15 +147,32 @@ describe Middleware::Users do
   end
 
   it 'GET /sets_available returns list of sets available for this month' do
-    res = ['some sets...']
+    # available sets
+    available_sets = [{'id' => '1'}, { 'id' => '2'}]
     PuzzleSet.should_receive(:storage).and_return(PuzzleSet)
-    PuzzleSet.should_receive(:published_for).with(2011, 11).and_return(res)
-    get('/sets_available', { month: 11, year: 2011 })
+    PuzzleSet.should_receive(:published_for).with(2011, 11).and_return(available_sets)
+    # users sets
+    user_sets = [{'id' => '1'}]
+    user = stub(:user).as_null_object
+    user.stub(id: 'USER_ID')
+    user.stub(:[]).with('sets').and_return(user_sets)
+    # stub authorization
+    token_auth = stub(:token_auth).as_null_object
+    token_auth.stub(user: user)
+
+    get('/sets_available',
+        {
+          month: 11,
+          year: 2011,
+          session_key: 'valid_session_key'
+        },
+        { 'token_auth' => token_auth })
 
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data.should == res
+    response_data.should == [{'id' => '1', 'bought' => true },
+                             { 'id' => '2', 'bought' => false }]
   end
 
   it 'GET /sets/:id/buy adds set to user storage' do
@@ -235,8 +251,10 @@ describe Middleware::Users do
 
   it 'GET /puzzles returns puzzles for current user' do
     token_auth = stub(:token_auth).as_null_object
+    puzzle_sets = [{'key' => 'value'}]
     user = stub(:user).as_null_object
     user.stub(id: 'USER_ID')
+    user.should_receive(:[]).with('sets').and_return(puzzle_sets)
     token_auth.stub(user: user)
 
     get('/puzzles',
@@ -248,5 +266,6 @@ describe Middleware::Users do
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
+    response_data.should == { 'sets' => puzzle_sets }
   end
 end
