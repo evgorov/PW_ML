@@ -560,7 +560,7 @@
 
 -(void)handleSwipeLeft:(id)sender
 {
-    if ([navController.topViewController isKindOfClass:[BlockedViewController class]] && !_isMenuHidden)
+    if (![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && !_isMenuHidden)
     {
         [self hideMenuAnimated:YES];
     }
@@ -568,7 +568,7 @@
 
 -(void)handleSwipeRight:(id)sender
 {
-    if ([navController.topViewController isKindOfClass:[BlockedViewController class]] && _isMenuHidden)
+    if (![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && _isMenuHidden)
     {
         [self showMenuAnimated:YES];
     }
