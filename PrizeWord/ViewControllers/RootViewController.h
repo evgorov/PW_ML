@@ -21,6 +21,7 @@
     IBOutlet UILabel *mainMenuUserName;
     IBOutlet UIImageView *mainMenuAvatar;
     IBOutlet UILabel *mainMenuMaxScore;
+    IBOutlet UILabel *mainMenuYourResult;
     IBOutlet UIButton *btnScore;
     IBOutlet UIButton *btnRating;
     IBOutlet UIView *rulesView;

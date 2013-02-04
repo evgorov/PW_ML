@@ -116,7 +116,7 @@
                 for (NSDictionary * friendData in friendsData)
                 {
                     //UserData * user = [UserData userDataWithDictionary:friendData];
-                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue];
+                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue];
                     InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
                     userView.lblName.text = [friendData objectForKey:@"first_name"];
                     userView.lblSurname.text = [friendData objectForKey:@"last_name"];
@@ -179,7 +179,7 @@
                 {
                     //UserData * user = [UserData userDataWithDictionary:friendData];
                     NSString * name = [friendData objectForKey:@"name"];
-                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue];
+                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue];
                     InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
                     userView.lblName.text = [name substringToIndex:[name rangeOfString:@" "].location];
                     userView.lblSurname.text = [name substringFromIndex:[name rangeOfString:@" "].location + 1];
@@ -270,7 +270,7 @@
         NSString * ids = @"";
         for (NSDictionary * friendData in vkFriends)
         {
-            if (![(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue])
+            if (!([(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue]))
             {
                 ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", [friendData objectForKey:@"id"]] : [friendData objectForKey:@"id"];
             }
@@ -304,7 +304,7 @@
         NSMutableString * usersString = [NSMutableString new];
         for (NSDictionary * userData in fbFriends)
         {
-            if (![(NSNumber *)[userData objectForKey:@"invite_sent"] boolValue])
+            if (!([(NSNumber *)[userData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[userData objectForKey:@"invite_used"] boolValue]))
             {
                 if (usersString.length != 0)
                 {
@@ -364,15 +364,25 @@
     }
     else
     {
+        NSMutableString * userIds = [NSMutableString new];
+        [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([(NSString *)key rangeOfString:@"to"].location == 0)
+            {
+                if (userIds.length != 0)
+                {
+                    [userIds appendString:@","];
+                }
+                [userIds appendFormat:@"%@", obj];
+            }
+        }];
         APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             [self hideActivityIndicator];
-            NSString * to = [params objectForKey:@"to[0]"];
             for (UIView * subview in fbView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
                 {
                     InviteCellView * inviteView = (InviteCellView *)subview;
-                    if ([to rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.btnAdd.tag] objectForKey:@"id"]].location != NSNotFound)
+                    if ([userIds rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.btnAdd.tag] objectForKey:@"id"]].location != NSNotFound)
                     {
                         inviteView.btnAdd.enabled = NO;
                     }
@@ -382,7 +392,7 @@
             NSLog(@"invite failed: %@", error.description);
             [self hideActivityIndicator];
         }];
-        [request.params setObject:[params objectForKey:@"request"] forKey:@"request_ids"];
+        [request.params setObject:userIds forKey:@"ids"];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [request runSilent];
     }

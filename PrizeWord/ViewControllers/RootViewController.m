@@ -33,10 +33,11 @@
 
 @end
 
+NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"апреле", @"мае", @"июне", @"июле", @"августе", @"сентябре", @"октябре", @"ноябре", @"декабре"};
+
 @implementation RootViewController
 
 @synthesize currentOverlay = _currentOverlay;
-
 @synthesize isMenuHidden = _isMenuHidden;
 
 -(id)initWithNavigationController:(PrizeWordNavigationController *)navigationController
@@ -55,7 +56,9 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_black_tile.jpg"]];
     
     mainMenuView.contentSize = mainMenuBg.frame.size;
-    
+    mainMenuView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"menu_bg_tile.jpg"]];
+    mainMenuYourResult.font = [UIFont fontWithName:@"DINPro-Bold" size:[AppDelegate currentDelegate].isIPad ? 18 : 15];
+    mainMenuYourResult.text = [NSString stringWithFormat:@"Ваш результат в %@", MONTHS3[[GlobalData globalData].currentMonth]];
 
     
     [self.view addSubview:navController.view];
@@ -107,6 +110,7 @@
     mainMenuAvatar = nil;
     mainMenuMaxScore = nil;
     mainMenuUserName = nil;
+    mainMenuYourResult = nil;
     [super viewDidUnload];
 }
 
