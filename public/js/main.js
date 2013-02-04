@@ -50,6 +50,7 @@ var Field = Backbone.Model.extend({
   initialize: function(){
     this.updateField();
     this.on('change:questions', this.updateField, this);
+    this.on('change:current', this.updateField, this);
     this.set('errors', []);
   },
 
@@ -69,16 +70,19 @@ var Field = Backbone.Model.extend({
     _(this.get('questions')).each(function(question){
       // Write hint
       var coord = [question.column, question.row].join(':'),
-          value = { 'type' : 'hint', value: question.question_text, arrow: question.answer_position },
-          hasErrors = !writeResultCheckConflict(coord, value);
+          current = coord == this.get('current'),
+          value = { 'type' : 'hint', value: question.question_text, arrow: question.answer_position, current: current },
+          hasErrors = false;
 
+      hasErrors = !writeResultCheckConflict(coord, value);
       // Write tokens
       var coordinates = this._coordinatesFor(question.answer, question.answer_position);
       coordinates = _(coordinates).map(function(o){
         return [o[0] + question.column, o[1] + question.row, o[2]];
       });
+
       _(coordinates).each(function(o){
-         var e = !writeResultCheckConflict(o.slice(0,2).join(':'), { type: 'value', value: o[2] });
+         var e = !writeResultCheckConflict(o.slice(0,2).join(':'), { type: 'value', value: o[2], current: current });
          hasErrors = hasErrors || e;
       });
       if(hasErrors) errors.push(question);
@@ -167,11 +171,6 @@ var Puzzle = Backbone.Model.extend({
     this.on('change:questions', function(){
       this.field.set('questions', this.get('questions'));
     }, this);
-
-    this.field.on('change:errors', function(){
-      this.errors = this.field.get('errors');
-      this.trigger('errors');
-    }, this);
   },
 
   addEmptyQuestion: function(x, y){
@@ -254,6 +253,7 @@ var FieldView = Backbone.View.extend({
       _(properties).each(function(v,k) { $token.attr('data-' + k, v); });
     } else {
       $token.attr('data-type', 'empty');
+      $token.attr('data-current', 'false');      
     }
 
     if(properties && (properties.type === 'hint' || properties.hasHint)){
@@ -295,6 +295,7 @@ var FieldView = Backbone.View.extend({
     return null;
   }
 });
+
 var PuzzleView = Backbone.View.extend({
 
   tagName: 'div',
@@ -308,16 +309,34 @@ var PuzzleView = Backbone.View.extend({
     'change .question *': 'changeQuestion',
     'click [role="save-puzzle"]': 'savePuzzle',
     'change [role^="puzzle"]': 'updatePuzzleAtribute',
-    'click [role="cancel-puzzle"]': 'cancelPuzzle'
+    'click [role="cancel-puzzle"]': 'cancelPuzzle',
+    'focus input, textarea': 'setCurrent',
+    'blur input, textarea': 'removeCurrent'
+  },
+
+  setCurrent: function(e){
+    var $question = $(e.target).closest('.question'),
+        x = $question.find('.position.x').val(),
+        y = $question.find('.position.y').val();
+    this.model.field.set('current', [x, y].join(':'));
+    $question.addClass('current');
+  },
+
+  removeCurrent: function(e){
+    var $question = $(e.target).closest('.question');
+    this.model.field.set('current', '');
+    $question.removeClass('current');
   },
 
   addQuestion: function(){ this.model.addEmptyQuestion(); },
+
   deleteQuestion: function(e){
     $(e.target).closest('.question').remove();
     this.changeQuestion();
   },
 
   changeQuestion: function(){
+    var self = this;
     var questions = this.$el.find('.question').map(function(){
       var $this = $(this);
       return {
@@ -329,6 +348,13 @@ var PuzzleView = Backbone.View.extend({
       };
     });
     this.model.set('questions', $.makeArray(questions));
+
+    this.$el.find('.questions .question.current').map(function(){
+      var $this = $(this),
+          x = $this.find('.position.x').val(),
+          y = $this.find('.position.y').val();
+      self.model.field.set('current', [x, y].join(':'));
+    });
   },
 
   findQuestion: function(x, y){
@@ -387,14 +413,14 @@ var PuzzleView = Backbone.View.extend({
     this.render();
     this.fieldView.on('tokenMoved', this.moveQuestion, this);
     this.model.on('questionAdded', this.render, this);
-    this.model.on('errors', this.showErrors, this);
+    this.model.field.on('change:errors', this.showErrors, this);
   },
 
   showErrors: function(){
     this.$el.find('.question').removeClass('error');
-    _(this.model.errors).each(function(error){
+    _(this.model.field.get('errors')).each(function(error){
        this.findQuestion(error.column, error.row).addClass('error');
-    },this);
+    }, this);
   },
 
   savePuzzle: function(){

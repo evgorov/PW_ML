@@ -46,6 +46,7 @@
 }
 
 .current{
+    background-color: #ddd;
 }
 
 [data-type="error"]{
@@ -53,8 +54,13 @@
     background-position: 0 -50px;
 }
 
+
 [data-type="empty"]{
 
+}
+
+[data-current="true"]{
+    opacity: 0.8;
 }
 
 .token:hover{
@@ -96,6 +102,10 @@
 }
 
 */
+
+[data-current="true"]:before{
+    opacity: 0;
+}
 
 [data-type="hint"]:after{
   content: attr(data-value);
