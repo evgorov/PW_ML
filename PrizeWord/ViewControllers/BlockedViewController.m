@@ -14,6 +14,8 @@
 @interface BlockedViewController (private)
 
 -(void)handleMenuClick:(id)sender;
+-(void)handleSwipeLeft:(id)sender;
+-(void)handleSwipeRight:(id)sender;
 
 @end
 
@@ -38,7 +40,13 @@ static int VERTICAL_SPACE = 23;
     contentView.clipsToBounds = YES;
     contentView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:contentView];
-    
+/*
+    UISwipeGestureRecognizer * swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
+    swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    UISwipeGestureRecognizer * swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeRight:)];
+    swipeRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
+*/
     if ([AppDelegate currentDelegate].isIPad)
     {
         VERTICAL_SPACE = 27;
@@ -93,6 +101,24 @@ static int VERTICAL_SPACE = 23;
     else
     {
         [rootViewController hideMenuAnimated:YES];
+    }
+}
+
+-(void)handleSwipeLeft:(id)sender
+{
+    RootViewController * rootViewController = [AppDelegate currentDelegate].rootViewController;
+    if (!rootViewController.isMenuHidden)
+    {
+        [rootViewController hideMenuAnimated:YES];
+    }
+}
+
+-(void)handleSwipeRight:(id)sender
+{
+    RootViewController * rootViewController = [AppDelegate currentDelegate].rootViewController;
+    if (rootViewController.isMenuHidden)
+    {
+        [rootViewController showMenuAnimated:YES];
     }
 }
 

@@ -28,6 +28,9 @@
 -(void)handleRulesTap:(id)sender;
 -(void)updatePageButtons:(int)currentPage;
 
+-(void)handleSwipeLeft:(id)sender;
+-(void)handleSwipeRight:(id)sender;
+
 @end
 
 @implementation RootViewController
@@ -82,7 +85,12 @@
     [mainMenuNotificationsSwitch.superview addSubview:switchView];
     [mainMenuNotificationsSwitch removeFromSuperview];
     mainMenuNotificationsSwitch = switchView;
-    
+
+    UISwipeGestureRecognizer * swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
+    swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    UISwipeGestureRecognizer * swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeRight:)];
+    swipeRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
 }
 
 - (void)viewDidUnload
@@ -547,6 +555,22 @@
     for (UIButton * pageButton in pageButtons)
     {
         pageButton.selected = (pageButton.tag == currentPage);
+    }
+}
+
+-(void)handleSwipeLeft:(id)sender
+{
+    if ([navController.topViewController isKindOfClass:[BlockedViewController class]] && !_isMenuHidden)
+    {
+        [self hideMenuAnimated:YES];
+    }
+}
+
+-(void)handleSwipeRight:(id)sender
+{
+    if ([navController.topViewController isKindOfClass:[BlockedViewController class]] && _isMenuHidden)
+    {
+        [self showMenuAnimated:YES];
     }
 }
 
