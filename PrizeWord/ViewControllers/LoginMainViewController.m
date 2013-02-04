@@ -48,6 +48,7 @@
     {
         // create a fresh session object
         [GlobalData globalData].fbSession = [[FBSession alloc] init];
+        [FBSession setActiveSession:[GlobalData globalData].fbSession];
         
         // if we don't have a cached token, a call to open here would cause UX for login to
         // occur; we don't want that to happen unless the user clicks the login button, and so

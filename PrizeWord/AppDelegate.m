@@ -12,8 +12,8 @@
 #import "PrizeWordNavigationController.h"
 #import "LoginMainViewController.h"
 #import "RootViewController.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "GlobalData.h"
+#import "Facebook.h"
 
 @implementation AppDelegate
 
@@ -117,7 +117,7 @@ static GameLogic * sharedGameLogic = nil;
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
     // attempt to extract a token from the url
-    return [[GlobalData globalData].fbSession handleOpenURL:url];
+    return [FBSession.activeSession handleOpenURL:url];
 }
 
 #pragma mark - Core Data stack

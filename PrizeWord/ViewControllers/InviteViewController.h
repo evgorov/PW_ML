@@ -7,8 +7,9 @@
 //
 
 #import "BlockedViewController.h"
+#import "Facebook.h"
 
-@interface InviteViewController : BlockedViewController<UIAlertViewDelegate>
+@interface InviteViewController : BlockedViewController<UIAlertViewDelegate, FBDialogDelegate>
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
@@ -18,6 +19,7 @@
     UIBarButtonItem * inviteAllItem;
     NSMutableArray * vkFriends;
     NSMutableArray * fbFriends;
+    Facebook * facebook;
 }
 
 @end

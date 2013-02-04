@@ -88,8 +88,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         {
             float yOffset = invitesView.frame.size.height - ([AppDelegate currentDelegate].isIPad ? 110 : 75);
             SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSArray * friendsData = [data objectForKey:@"friends"];
+            NSArray * friendsData = [parser objectWithData:receivedData];
             for (NSDictionary * friendData in friendsData)
             {
                 UserData * user = [UserData userDataWithDictionary:friendData];
