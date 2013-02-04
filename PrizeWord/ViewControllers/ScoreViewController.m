@@ -92,6 +92,10 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             for (NSDictionary * friendData in friendsData)
             {
                 UserData * user = [UserData userDataWithDictionary:friendData];
+                if (!user.invited)
+                {
+                    continue;
+                }
                 ScoreInviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
                 userView.lblName.text = [NSString stringWithFormat:@"%@ %@", user.first_name, user.last_name];
                 userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
