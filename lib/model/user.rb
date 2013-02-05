@@ -148,16 +148,31 @@ class User < BasicModel
     return self['friends'] unless %w[facebook vkontakte].include?(self['provider'])
 
     fetched_friends = FriendsFetcher.send("fetch_#{self['provider']}_friends", self['access_token'])
-    Hash[fetched_friends.map { |h| [h['id'], h]}].each do |k, h|
+    Hash[fetched_friends.map { |h| [h['id'], h] }].each do |k, h|
       if self['friends'][k]
         self['friends'][k].merge!(h)
       else
         self['friends'][k] = h
       end
     end
-    self['friends'].values.each { |h| h['invite_used'] = self.exist?("#{self['provider']}##{h['id']}") }
-    self['friends'].values.each { |h| h['invite_sent'] = false unless h.has_key?('invite_sent') }
+
+    self['friends'].values.each do |h|
+      exist = self.exist?("#{self['provider']}##{h['id']}")
+      case
+      when  h['status'] == nil && exist; h['status'] = 'already_registered'
+      when  h['status'] == nil; h['status'] = 'uninvited'
+      when  h['status'] == 'uninvited' && exist; h['status'] = 'already_registered'
+      when  h['status'] == 'invite_sent' && exist; h['status'] = 'invite_used'
+      end
+    end
+
     self['friends'].values
+  end
+
+  def invite(friend_id)
+    return false unless self['friends'][friend_id]
+    return false unless self['friends'][friend_id]['status'] == 'uninvited'
+    self['friends'][friend_id]['status'] = 'invite_sent'
   end
 
   private

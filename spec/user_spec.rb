@@ -249,8 +249,7 @@ describe User do
       subject.storage(storage).fetch_friends
       friends = subject['friends'].values
       friends.empty?.should_not == true
-      friends.first['invite_sent'].should == false
-      friends.first['invite_used'].should == false
+      friends.first['status'].should == 'uninvited'
     end
 
     it '#friends checks if invited user has been registered' do
@@ -262,8 +261,8 @@ describe User do
 
       subject.storage(storage).fetch_friends
       friends = subject['friends'].values
-      friends[0]['invite_used'].should == true
-      friends[1]['invite_used'].should == false
+      friends[0]['status'].should == 'already_registered'
+      friends[1]['status'].should == 'uninvited'
     end
   end
 

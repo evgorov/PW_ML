@@ -129,12 +129,7 @@ module Middleware
       halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
       env['token_auth'].authorize!
       env['token_auth'].user.fetch_friends
-
-      params['ids'].split(',').each do |id|
-        if env['token_auth'].user['friends'][id]
-          env['token_auth'].user['friends'][id]['invite_sent'] = true
-        end
-      end
+      params['ids'].split(',').each { |id| env['token_auth'].user.invite(id) }
       env['token_auth'].user.save
       { "message" => "ok" }.to_json
     end

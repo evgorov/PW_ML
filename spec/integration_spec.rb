@@ -494,20 +494,53 @@ describe 'Integration spec' do
     response_data['sets'][1]['id'].should == admin_set1_id
   end
 
-  it 'invite users' do
+  it 'doesn\'t set invite_used when user is already registered' do
     VCR.use_cassette('facebook_login_and_friends') do
+      get '/facebook/authorize', { access_code: 'access_token' }
+      last_response.status.should == 200
+
       get '/facebook/authorize', { access_code: 'Asome_access_token' }
       last_response.status.should == 200
       response_data = JSON.parse(last_response.body)
       session_key = response_data['session_key']
+
       get("/facebook/friends", { session_key: session_key })
       last_response.status.should == 200
       last_response_should_be_json
       response_data = JSON.parse(last_response.body)
       id = response_data.first['id']
       id.should_not == nil
-      response_data.first['invite_sent'].should == false
-      response_data.first['invite_used'].should == false
+      response_data.first['status'].should == 'already_registered'
+
+      $debug = true
+      post("/facebook/invite", { session_key: session_key, ids: id })
+      last_response.status.should == 200
+      $debug = false
+
+      get("/facebook/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['status'].should == 'already_registered'
+    end
+  end
+
+  it 'invite users' do
+    VCR.use_cassette('facebook_login_and_friends') do
+      get '/facebook/authorize', { access_code: 'Asome_access_token' }
+      last_response.status.should == 200
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+
+      get("/facebook/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['status'].should == 'uninvited'
 
       post("/facebook/invite", { session_key: session_key, ids: id })
       last_response.status.should == 200
@@ -518,8 +551,7 @@ describe 'Integration spec' do
       response_data = JSON.parse(last_response.body)
       id = response_data.first['id']
       id.should_not == nil
-      response_data.first['invite_sent'].should == true
-      response_data.first['invite_used'].should == false
+      response_data.first['status'].should == 'invite_sent'
 
       get '/facebook/authorize', { access_code: 'access_token' }
       last_response.status.should == 200
@@ -530,8 +562,7 @@ describe 'Integration spec' do
       response_data = JSON.parse(last_response.body)
       id = response_data.first['id']
       id.should_not == nil
-      response_data.first['invite_sent'].should == true
-      response_data.first['invite_used'].should == true
+      response_data.first['status'].should == 'invite_used'
     end
   end
 end
