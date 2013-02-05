@@ -24,6 +24,9 @@
     TileData * focusedTile;
     uint tilesPerRow;
     uint tilesPerCol;
+    
+    UIPinchGestureRecognizer * pinchGestureRecognizer;
+    UITapGestureRecognizer * tapGestureRecognizer;
 }
 
 -(void)setGameField:(GameField *)gameField;

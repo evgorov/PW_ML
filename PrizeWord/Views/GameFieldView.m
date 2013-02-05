@@ -18,6 +18,7 @@
 
 -(void)switchFocusToTile:(TileData *)tile;
 -(void)handlePinch:(id)sender;
+-(void)handleTap:(id)sender;
 
 @end
 
@@ -51,9 +52,18 @@
         [fieldView addSubview:borderBottomRight];
         focusedTile = nil;
         
-        UIPinchGestureRecognizer * pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
         pinchGestureRecognizer.delegate = self;
+        tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        tapGestureRecognizer.delegate = self;
+        tapGestureRecognizer.numberOfTapsRequired = 1;
+        tapGestureRecognizer.numberOfTouchesRequired = 1;
         [scrollView addGestureRecognizer:pinchGestureRecognizer];
+        [scrollView addGestureRecognizer:tapGestureRecognizer];
+        scrollView.userInteractionEnabled = YES;
+        scrollView.multipleTouchEnabled = YES;
+        fieldView.userInteractionEnabled = YES;
+        fieldView.multipleTouchEnabled = YES;
         
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
@@ -162,13 +172,10 @@
     return fieldView;
 }
 
-CGPoint pinchSavedOffset;
 -(void)handlePinch:(id)sender
 {
-    UIPinchGestureRecognizer * pinchGestureRecognizer = sender;
     if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        pinchSavedOffset = scrollView.contentOffset;
         if (pinchGestureRecognizer.scale > 1)
         {
             return;
@@ -182,14 +189,42 @@ CGPoint pinchSavedOffset;
         {
             scrollView.minimumZoomScale = targetZoom;
             [scrollView setZoomScale:targetZoom animated:YES];
+            pinchGestureRecognizer.enabled = NO;
+            tapGestureRecognizer.enabled = YES;
         }
     }
-    else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded)
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] && scrollView.zoomScale >= 1)
     {
-        scrollView.minimumZoomScale = 1;
-        [scrollView setZoomScale:1 animated:YES];
-        [scrollView setContentOffset:pinchSavedOffset animated:YES];
+        return NO;
     }
+
+    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        if (scrollView.zoomScale < 1)
+        {
+            CGPoint touchPosition = [touch locationInView:fieldView];
+            scrollView.minimumZoomScale = 1;
+            [scrollView setZoomScale:1 animated:YES];
+            touchPosition.x -= scrollView.frame.size.width / 2;
+            touchPosition.y -= scrollView.frame.size.height / 2;
+            if (touchPosition.x < 0) touchPosition.x = 0;
+            if (touchPosition.y < 0) touchPosition.y = 0;
+            if (touchPosition.x > scrollView.contentSize.width - scrollView.frame.size.width) touchPosition.x = scrollView.contentSize.width - scrollView.frame.size.width;
+            if (touchPosition.y > scrollView.contentSize.height - scrollView.frame.size.height) touchPosition.y = scrollView.contentSize.height - scrollView.frame.size.height;
+            [scrollView setContentOffset:touchPosition];
+            pinchGestureRecognizer.enabled = YES;
+            tapGestureRecognizer.enabled = NO;
+        }
+    }
+    return YES;
+}
+
+-(void)handleTap:(id)sender
+{
 }
 
 @end
