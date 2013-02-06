@@ -12,7 +12,13 @@ module FriendsFetcher
                             },
                             timeout: 10)
       if response['friends'] && response['friends']['data']
-        response['friends']['data']
+        response['friends']['data'].map do |h|
+          first, last = h.delete('name').split(' ', 2)
+          h['first_name'] = first
+          h['last_name'] = last
+          h['userpic'] = "http://graph.facebook.com/#{h['id']}/picture"
+          h
+        end
       else
         []
       end
@@ -22,12 +28,18 @@ module FriendsFetcher
     response = HTTParty.get('https://api.vk.com/method/friends.get',
                             query: {
                               access_token: access_token,
-                              fields: 'uid,first_name,last_name'
+                              fields: 'uid,first_name,last_name,photo'
                             },
                             timeout: 10)
 
       if response['response']
-        response['response'].map{ |h| id = h.delete('uid'); h['id'] = id; h }
+        response['response'].map do |h|
+          id = h.delete('uid')
+          h['id'] = id
+          photo = h.delete('photo')
+          h['userpic'] = photo
+          h
+        end
       else
         []
       end
