@@ -88,7 +88,7 @@
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
     imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    [self.navigationController presentModalViewController:imagePickerController animated:YES];
+    [self presentModalViewController:imagePickerController animated:YES];
 }
 
 - (IBAction)handleBirthdayClick:(id)sender
@@ -304,6 +304,7 @@
     } else {
         imageToSave = originalImage;
     }
+    UIImageWriteToSavedPhotosAlbum (imageToSave, nil, nil, nil);
     int width = imageToSave.size.width;
     int height = imageToSave.size.height;
     int minDimension = width < height ? width : height;
@@ -313,7 +314,7 @@
     [btnAvatar setBackgroundImage:avatar forState:UIControlStateNormal];
     [btnAvatar setBackgroundImage:nil forState:UIControlStateHighlighted];
     
-    [[picker parentViewController] dismissModalViewControllerAnimated: YES];
+    [picker.parentViewController dismissModalViewControllerAnimated: YES];
 }
 
 @end

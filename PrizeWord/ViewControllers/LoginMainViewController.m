@@ -115,6 +115,7 @@
         {
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
+            NSLog(@"error: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);		
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:[data objectForKey:@"message"] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
             alert.tag = 1;
             [alert show];
@@ -125,7 +126,6 @@
         alert.tag = 1;
         [alert show];
     }];
-    [request.params setObject:@"facebook" forKey:@"provider_name"];
     [request.params setObject:[GlobalData globalData].fbSession.accessToken forKey:@"access_token"];
     [request runSilent];
 }

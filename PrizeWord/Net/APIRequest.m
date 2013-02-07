@@ -115,6 +115,7 @@
 {
     silentMode = YES;
     [self prepareRequest];
+    NSLog(@"request: %@", request.URL.description);
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
