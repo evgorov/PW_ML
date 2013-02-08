@@ -531,17 +531,28 @@
     {
         int scoreForPuzzle = [_puzzle.base_score intValue] + [_puzzle.time_left intValue] / 10;
         
-        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        } failCallback:^(NSError *error) {
-            NSLog(@"score error! %@", error.description);
-        }];
-        
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
-        [request.params setObject:@"1" forKey:@"solved"];
-        [request runSilent];
-        [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
+        BOOL isArchivePuzzle = YES;
+        for (PuzzleSetData * puzzleSetData in [GlobalData globalData].monthSets) {
+            if ([_puzzle.puzzleSet.set_id compare:puzzleSetData.set_id] == NSOrderedSame)
+            {
+                isArchivePuzzle = NO;
+                break;
+            }
+        }
+        if (!isArchivePuzzle)
+        {
+            APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            } failCallback:^(NSError *error) {
+                NSLog(@"score error! %@", error.description);
+            }];
+            
+            [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+            [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
+            [request.params setObject:@"1" forKey:@"solved"];
+            [request runSilent];
+            [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
+        }
         
         [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     }
