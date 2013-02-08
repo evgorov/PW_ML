@@ -88,7 +88,11 @@
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
     imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    [self presentModalViewController:imagePickerController animated:YES];
+    if ([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    } else {
+        [self presentModalViewController:imagePickerController animated:YES];
+    }
 }
 
 - (IBAction)handleBirthdayClick:(id)sender
@@ -289,7 +293,14 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [picker.parentViewController dismissModalViewControllerAnimated:YES];
+    if ([picker respondsToSelector:@selector(presentingViewController)])
+    {
+        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [picker.parentViewController dismissModalViewControllerAnimated:YES];
+    }
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -313,8 +324,15 @@
     // Save the new image (original or edited) to the Camera Roll
     [btnAvatar setBackgroundImage:avatar forState:UIControlStateNormal];
     [btnAvatar setBackgroundImage:nil forState:UIControlStateHighlighted];
-    
-    [picker.parentViewController dismissModalViewControllerAnimated: YES];
+
+    if ([picker respondsToSelector:@selector(presentingViewController)])
+    {
+        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [picker.parentViewController dismissModalViewControllerAnimated:YES];
+    }
 }
 
 @end
