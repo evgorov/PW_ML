@@ -22,6 +22,7 @@
 
 -(void)updateVK;
 -(void)updateFB;
+-(void)updateContainer:(UIView *)container withViews:(NSMutableArray *)views andData:(NSMutableArray *)data;
 -(void)inviteVKUser:(int)idx;
 -(void)inviteFBUser:(int)idx;
 -(void)inviteAllVKUsers;
@@ -38,6 +39,10 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"TITLE_INVITE", nil);
+    scrollView.delegate = self;
+    viewsForReuse = [NSMutableArray new];
+    updateVKInProgress = NO;
+    updateFBInProgress = NO;
     
     [self addFramedView:vkView];
     [self addFramedView:fbView];
@@ -66,6 +71,7 @@
     fbView = nil;
     vkHeader = nil;
     fbHeader = nil;
+    viewsForReuse = nil;
     [super viewDidUnload];
 }
 
@@ -90,10 +96,12 @@
 
 -(void)updateVK
 {
-    if ([[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    if (!updateVKInProgress && [[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
     {
+        updateVKInProgress = YES;
         [self showActivityIndicator];
         vkFriends = [NSMutableArray new];
+        vkFriendsViews = [NSMutableArray new];
         for (int idx = 0; idx < vkView.subviews.count; ++idx)
         {
             UIView * view = [vkView.subviews objectAtIndex:idx];
@@ -107,28 +115,33 @@
         
         APIRequest * request = [APIRequest getRequest:@"vkontakte/friends" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
+            updateVKInProgress = NO;
             if (response.statusCode == 200)
             {
                 NSLog(@"vkontakte/friends: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 float height = vkHeader.frame.size.height;
                 SBJsonParser * parser = [SBJsonParser new];
-                NSArray * friendsData = [parser objectWithData:receivedData];
-                for (NSDictionary * friendData in friendsData)
+                vkFriends = [parser objectWithData:receivedData];
+                for (NSDictionary * friendData in vkFriends)
                 {
                     //UserData * user = [UserData userDataWithDictionary:friendData];
-                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue];
-                    InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
-                    userView.lblName.text = [friendData objectForKey:@"first_name"];
-                    userView.lblSurname.text = [friendData objectForKey:@"last_name"];
-                    userView.btnAdd.enabled = !invited;
-                    userView.btnAdd.tag = vkFriends.count;
-                    [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
-                    userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                    [vkView insertSubview:userView atIndex:0];
-                    height += userView.frame.size.height;
-                    [vkFriends addObject:friendData];
+                    if (vkFriendsViews.count == 0)
+                    {
+                        InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
+                        userView.lblName.text = [friendData objectForKey:@"first_name"];
+                        userView.lblSurname.text = [friendData objectForKey:@"last_name"];
+                        userView.btnAdd.enabled = [(NSString *)[friendData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+                        userView.btnAdd.tag = 0;
+                        [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
+                        userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
+                        [vkView insertSubview:userView atIndex:0];
+                        height += userView.frame.size.height * vkFriends.count;
+                        userView.tag = 0;
+                        [vkFriendsViews addObject:userView];
+                    }
                 }
                 [self resizeView:vkView newHeight:height animated:YES];
+                [self updateContainer:vkView withViews:vkFriendsViews andData:vkFriends];
             }
             else
             {
@@ -141,6 +154,7 @@
             }
         } failCallback:^(NSError *error) {
             [self hideActivityIndicator];
+            updateVKInProgress = NO;
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
             alert.tag = 1;
             [alert show];
@@ -152,9 +166,11 @@
 
 -(void)updateFB
 {
-    if ([[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    if (!updateFBInProgress && [[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
     {
         [self showActivityIndicator];
+        updateFBInProgress = YES;
+        fbFriendsViews = [NSMutableArray new];
         fbFriends = [NSMutableArray new];
         for (int idx = 0; idx < fbView.subviews.count; ++idx)
         {
@@ -169,29 +185,33 @@
         
         APIRequest * request = [APIRequest getRequest:@"facebook/friends" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
+            updateFBInProgress = NO;
             if (response.statusCode == 200)
             {
                 NSLog(@"facebook/friends: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 float height = fbHeader.frame.size.height;
                 SBJsonParser * parser = [SBJsonParser new];
-                NSArray * friendsData = [parser objectWithData:receivedData];
-                for (NSDictionary * friendData in friendsData)
+                fbFriends = [parser objectWithData:receivedData];
+                
+                for (NSDictionary * friendData in fbFriends)
                 {
-                    //UserData * user = [UserData userDataWithDictionary:friendData];
-                    NSString * name = [friendData objectForKey:@"name"];
-                    BOOL invited = [(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue];
-                    InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
-                    userView.lblName.text = [name substringToIndex:[name rangeOfString:@" "].location];
-                    userView.lblSurname.text = [name substringFromIndex:[name rangeOfString:@" "].location + 1];
-                    userView.btnAdd.enabled = !invited;
-                    userView.btnAdd.tag = fbFriends.count;
-                    [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
-                    userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                    [fbView insertSubview:userView atIndex:0];
-                    height += userView.frame.size.height;
-                    [fbFriends addObject:friendData];
+                    if (fbFriendsViews.count == 0)
+                    {
+                        InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
+                        userView.lblName.text = [friendData objectForKey:@"first_name"];
+                        userView.lblSurname.text = [friendData objectForKey:@"last_name"];
+                        userView.btnAdd.enabled = [(NSString *)[friendData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+                        userView.btnAdd.tag = 0;
+                        [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
+                        userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
+                        [fbView insertSubview:userView atIndex:0];
+                        height += userView.frame.size.height * fbFriends.count;
+                        userView.tag = 0;
+                        [fbFriendsViews addObject:userView];
+                    }
                 }
                 [self resizeView:fbView newHeight:height animated:YES];
+                [self updateContainer:fbView withViews:fbFriendsViews andData:fbFriends];
             }
             else
             {
@@ -204,6 +224,7 @@
             }
         } failCallback:^(NSError *error) {
             [self hideActivityIndicator];
+            updateFBInProgress = NO;
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
             alert.tag = 2;
             [alert show];
@@ -331,6 +352,73 @@
     }
 }
 
+-(void)updateContainer:(UIView *)container withViews:(NSMutableArray *)views andData:(NSMutableArray *)data
+{
+    while (views.count > 1 && [(InviteCellView *)[views objectAtIndex:0] frame].origin.y + [(InviteCellView *)[views objectAtIndex:0] frame].size.height + container.frame.origin.y < scrollView.contentOffset.y)
+    {
+        [viewsForReuse addObject:[views objectAtIndex:0]];
+        [views removeObjectAtIndex:0];
+    }
+    while (views.count > 1 && [(InviteCellView *)[views lastObject] frame].origin.y + container.frame.origin.y > scrollView.contentOffset.y + scrollView.frame.size.height)
+    {
+        [viewsForReuse addObject:[views lastObject]];
+        [views removeLastObject];
+    }
+    
+    while (views.count != 0 && [(InviteCellView *)[views objectAtIndex:0] frame].origin.y + container.frame.origin.y >= scrollView.contentOffset.y && [(InviteCellView *)[views objectAtIndex:0] tag] > 0)
+    {
+        InviteCellView * firstView = [views objectAtIndex:0];
+        InviteCellView * newView = nil;
+        if (viewsForReuse.count > 0)
+        {
+            newView = viewsForReuse.lastObject;
+            [viewsForReuse removeLastObject];
+        }
+        else
+        {
+            newView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
+            [newView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        newView.tag = firstView.tag - 1;
+        NSDictionary * userData = [data objectAtIndex:newView.tag];
+        newView.lblName.text = [userData objectForKey:@"first_name"];
+        newView.lblSurname.text = [userData objectForKey:@"last_name"];
+        newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+        newView.frame = CGRectMake(0, firstView.frame.origin.y - newView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
+        [container insertSubview:newView atIndex:0];
+        [views insertObject:newView atIndex:0];
+    }
+
+    while (views.count != 0 && [(InviteCellView *)[views lastObject] frame].origin.y + [(InviteCellView *)[views lastObject] frame].size.height + container.frame.origin.y <= scrollView.contentOffset.y + scrollView.frame.size.height && [(InviteCellView *)[views lastObject] tag] < data.count - 1)
+    {
+        InviteCellView * lastView = [views lastObject];
+        InviteCellView * newView = nil;
+        if (viewsForReuse.count > 0)
+        {
+            newView = viewsForReuse.lastObject;
+            [viewsForReuse removeLastObject];
+        }
+        else
+        {
+            newView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
+            [newView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        newView.tag = lastView.tag + 1;
+        NSDictionary * userData = [data objectAtIndex:newView.tag];
+        newView.lblName.text = [userData objectForKey:@"first_name"];
+        newView.lblSurname.text = [userData objectForKey:@"last_name"];
+        newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+        newView.frame = CGRectMake(0, lastView.frame.origin.y + lastView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
+        [container insertSubview:newView atIndex:0];
+        [views addObject:newView];
+    }
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateContainer:vkView withViews:vkFriendsViews andData:vkFriends];
+    [self updateContainer:fbView withViews:fbFriendsViews andData:fbFriends];
+}
 
 -(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {

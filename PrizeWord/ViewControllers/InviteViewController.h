@@ -9,16 +9,22 @@
 #import "BlockedViewController.h"
 #import "Facebook.h"
 
-@interface InviteViewController : BlockedViewController<UIAlertViewDelegate, FBDialogDelegate>
+@interface InviteViewController : BlockedViewController<UIAlertViewDelegate, FBDialogDelegate, UIScrollViewDelegate>
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
     IBOutlet UIImageView *vkHeader;
     IBOutlet UIImageView *fbHeader;
     
+    BOOL updateVKInProgress;
+    BOOL updateFBInProgress;
+    
     UIBarButtonItem * inviteAllItem;
     NSMutableArray * vkFriends;
     NSMutableArray * fbFriends;
+    NSMutableArray * vkFriendsViews;
+    NSMutableArray * fbFriendsViews;
+    NSMutableArray * viewsForReuse;
     Facebook * facebook;
 }
 
