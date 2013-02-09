@@ -525,12 +525,12 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    int scoreForPuzzle = [_puzzle.base_score intValue] + 1000 * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
+    [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
     {
-        int scoreForPuzzle = [_puzzle.base_score intValue] + [_puzzle.time_left intValue] / 10;
-        
         BOOL isArchivePuzzle = YES;
         for (PuzzleSetData * puzzleSetData in [GlobalData globalData].monthSets) {
             if ([_puzzle.puzzleSet.set_id compare:puzzleSetData.set_id] == NSOrderedSame)
@@ -553,8 +553,6 @@
             [request runSilent];
             [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
         }
-        
-        [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     }
 
     NSError * error;

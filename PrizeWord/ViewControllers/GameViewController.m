@@ -137,14 +137,19 @@
     hintButtonItem = nil;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return (UIInterfaceOrientationPortrait | UIInterfaceOrientationPortraitUpsideDown);
+    return toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(NSUInteger)supportedInterfaceOrientations
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+    return UIInterfaceOrientationMaskAll;
+}
+
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 - (IBAction)handlePauseClick:(UIButton *)sender
@@ -229,10 +234,12 @@
 {
     NSDictionary * userInfo = aNotification.userInfo;
     CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    endFrame = [self.view convertRect:endFrame toView:nil];
     
     UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
     double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
+    NSLog(@"animation frame size: %f %f %f %f", self.view.frame.size.width, self.view.frame.size.height, endFrame.size.height, endFrame.origin.y);
     [UIView setAnimationCurve:animationCurve];
     [UIView animateWithDuration:animationDuration animations:^{
         gameFieldView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - endFrame.size.height);

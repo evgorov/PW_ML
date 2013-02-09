@@ -13,6 +13,12 @@
 
 @interface RootViewController : UIViewController
 {
+    /*
+    IBOutlet UIView *mainPortraitView;
+    IBOutlet UIView *mainLandscapeView;
+    UIDeviceOrientation orientation;
+     */
+    
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;
     IBOutlet PrizeWordSwitchView *mainMenuVKSwitch;

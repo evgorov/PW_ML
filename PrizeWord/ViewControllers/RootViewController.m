@@ -20,6 +20,8 @@
 
 @interface RootViewController (private)
 
+-(void)clearCurrentView;
+
 -(void)handlePageButtonClick:(id)sender;
 -(void)handleRulesMenuClick:(id)sender;
 
@@ -53,6 +55,17 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 -(void)viewDidLoad
 {
+    /*
+    //----- SETUP ORIENTATION -----
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didOrientationChanged:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
+    orientation = (UIDeviceOrientation)[[UIDevice currentDevice] orientation];
+    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
+    {
+        orientation = UIDeviceOrientationPortrait;
+    }
+    */
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_black_tile.jpg"]];
     
     mainMenuView.contentSize = mainMenuBg.frame.size;
@@ -111,6 +124,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     mainMenuMaxScore = nil;
     mainMenuUserName = nil;
     mainMenuYourResult = nil;
+//    mainLandscapeView = nil;
+//    mainPortraitView = nil;
     [super viewDidUnload];
 }
 
@@ -127,6 +142,34 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             [subview removeFromSuperview];
         }
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    /*
+    //----- SETUP ORIENTATION -----
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didOrientationChanged:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
+    //orientation = [[UIDevice currentDevice] orientation];
+    orientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;    //This is more reliable than (self.interfaceOrientation) and [[UIDevice currentDevice] orientation] (which may give a faceup type value)
+    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
+    {
+        orientation = UIDeviceOrientationPortrait;
+    }
+    // Do orientation logic
+    if ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight) && [AppDelegate currentDelegate].isIPad)
+    {
+        // Clear the current view and insert the orientation specific view.
+        [self clearCurrentView];
+        [self.view insertSubview:mainLandscapeView atIndex:0];
+    }
+    else if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown)
+    {
+        // Clear the current view and insert the orientation specific view.
+        [self clearCurrentView];
+        [self.view insertSubview:mainPortraitView atIndex:0];
+    }
+     */
 }
 
 -(void)showMenuAnimated:(BOOL)animated
@@ -255,15 +298,23 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [PrizeWordNavigationController setTitleViewForViewController:navController.topViewController];
     
     overlayContainer.alpha = 0;
-    overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+    if ([AppDelegate currentDelegate].isIPad)
+    {
+        overlayContainer.frame = CGRectMake(0, 70, self.view.bounds.size.width, self.view.bounds.size.height - 70);
+    }
+    else
+    {
+        overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+    }
     [self.view addSubview:overlayContainer];
     overlayContainer.clipsToBounds = YES;
     
     _currentOverlay = overlayView;
     [overlayContainer addSubview:_currentOverlay];
-    _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+    _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [UIView animateWithDuration:0.5 animations:^{
-        _currentOverlay.frame = CGRectMake(0, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 1;
     }];
 }
@@ -276,15 +327,15 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     }
     
     fullscreenOverlayContainer.alpha = 0;
-    fullscreenOverlayContainer.frame = CGRectMake(0, 0, fullscreenOverlayContainer.frame.size.width, fullscreenOverlayContainer.frame.size.height);
+    fullscreenOverlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [self.view addSubview:fullscreenOverlayContainer];
     fullscreenOverlayContainer.clipsToBounds = YES;
     
     _currentOverlay = overlayView;
     [fullscreenOverlayContainer addSubview:_currentOverlay];
-    _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+    _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
     [UIView animateWithDuration:0.5 animations:^{
-        _currentOverlay.frame = CGRectMake(0, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         fullscreenOverlayContainer.alpha = 1;
     }];
     
@@ -309,8 +360,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     }
     
     [UIView animateWithDuration:0.5 animations:^{
-        _currentOverlay.frame = CGRectMake(0, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+        _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 0;
+        fullscreenOverlayContainer.alpha = 0;
     } completion:^(BOOL finished) {
         [_currentOverlay removeFromSuperview];
         [overlayContainer removeFromSuperview];
@@ -577,5 +629,119 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [self showMenuAnimated:YES];
     }
 }
+/*
+-(void)didOrientationChanged:(NSNotification *)notification
+{
+    
+    UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
+    if (newOrientation != UIDeviceOrientationUnknown && newOrientation != UIDeviceOrientationFaceUp && newOrientation != UIDeviceOrientationFaceDown)
+    {
+        if (orientation != newOrientation)
+        {
+            //ORIENTATION HAS CHANGED
+            NSLog(@"Changed Orientation");
+            
+            // Do orientation logic
+            if (
+                ((newOrientation == UIDeviceOrientationLandscapeLeft || newOrientation == UIDeviceOrientationLandscapeRight)) &&
+                ((orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown) &&
+                 [AppDelegate currentDelegate].isIPad)
+                )
+            {
+                NSLog(@"Changed Orientation To Landscape");
+                // Clear the current view and insert the orientation specific view.
+                [self clearCurrentView];
+                [self.view insertSubview:mainLandscapeView atIndex:0];
+                
+                //Copy object states between views
+                //SomeTextControlL.text = SomeTextControlP.text;
+                orientation = newOrientation;
+            }
+            else if (
+                     ((newOrientation == UIDeviceOrientationPortrait || newOrientation == UIDeviceOrientationPortraitUpsideDown)) &&
+                     ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight))
+                     )
+            {
+                NSLog(@"Changed Orientation To Portrait");
+                // Clear the current view and insert the orientation specific view.
+                [self clearCurrentView];
+                [self.view insertSubview:mainPortraitView atIndex:0];
+                
+                //Copy object states between views
+                //SomeTextControlP.text = SomeTextControlL.text;
+                orientation = newOrientation;
+            }
+        }
+        
+    }
+}
+ */
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return [navController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
+-(BOOL)shouldAutorotate
+{
+    return [navController shouldAutorotate];
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return [navController supportedInterfaceOrientations];
+}
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (_currentOverlay != nil)
+    {
+        // we grab the screen frame first off; these are always
+        // in portrait mode
+        CGRect bounds = [[UIScreen mainScreen] applicationFrame];
+        CGSize size = bounds.size;
+        
+        // let's figure out if width/height must be swapped
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            // we're going to landscape, which means we gotta swap them
+            size.width = bounds.size.height;
+            size.height = bounds.size.width;
+        }
+        if (_currentOverlay.superview == overlayContainer)
+        {
+            [UIView animateWithDuration:duration animations:^{
+                if ([AppDelegate currentDelegate].isIPad)
+                {
+                    overlayContainer.frame = CGRectMake(0, 70, size.width, size.height - 70);
+                }
+                else
+                {
+                    overlayContainer.frame = CGRectMake(0, size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+                }
+                _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            }];
+        }
+        else
+        {
+            [UIView animateWithDuration:duration animations:^{
+                fullscreenOverlayContainer.frame = CGRectMake(0, 0, size.width, size.height);
+                _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            }];
+        }
+    }
+}
+/*
+- (void) clearCurrentView
+{
+    if (mainLandscapeView.superview)
+    {
+        [mainLandscapeView removeFromSuperview];
+    }
+    else if (mainPortraitView.superview)
+    {
+        [mainPortraitView removeFromSuperview];
+    }
+}
+*/
 
 @end

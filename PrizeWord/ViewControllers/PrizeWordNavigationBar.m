@@ -8,6 +8,12 @@
 
 #import "PrizeWordNavigationBar.h"
 
+@interface PrizeWordNavigationBar (private)
+
+-(void)loadNavigationBarImage;
+
+@end
+
 @implementation PrizeWordNavigationBar
 
 static UIImage * backgroundImage = nil;
@@ -25,11 +31,8 @@ static UIImage * backgroundImage = nil;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        if (backgroundImage == nil)
-        {
-            backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
-        }
-        self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+        orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        [self loadNavigationBarImage];
         self.clipsToBounds = NO;
     }
     return self;
@@ -39,14 +42,24 @@ static UIImage * backgroundImage = nil;
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        if (backgroundImage == nil)
-        {
-            backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
-        }
-        self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+        orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        [self loadNavigationBarImage];
         self.clipsToBounds = NO;
     }
     return self;
+}
+
+-(void)loadNavigationBarImage
+{
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+    }
+    else
+    {
+        backgroundImage = [UIImage imageNamed:@"navigationbar_bg_landscape"];
+    }
+    self.backgroundColor = [UIColor clearColor];
 }
 
 -(CGSize)sizeThatFits:(CGSize)size
@@ -56,6 +69,11 @@ static UIImage * backgroundImage = nil;
 
 - (void)drawRect:(CGRect)rect
 {
+    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) != UIInterfaceOrientationIsPortrait(orientation))
+    {
+        orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        [self loadNavigationBarImage];
+    }
     [backgroundImage drawInRect:CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height)];
 }
 
