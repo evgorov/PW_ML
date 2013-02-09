@@ -12,7 +12,8 @@
 
 @class GameFieldView;
 @class GameField;
-
+@class FlipNumberView;
+@class PuzzleData;
 @interface GameViewController : UIViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
     GameField * gameField;
@@ -31,6 +32,16 @@
     float pauseMaxProgress;
 
     IBOutlet UIView *finalOverlay;
+    IBOutlet UIView *finalShareView;
+    IBOutlet UILabel *lblFinalBaseScore;
+    IBOutlet UILabel *lblFinalTimeBonus;
+    IBOutlet FlipNumberView *finalFlipNumber4;
+    IBOutlet FlipNumberView *finalFlipNumber3;
+    IBOutlet FlipNumberView *finalFlipNumber2;
+    IBOutlet FlipNumberView *finalFlipNumber1;
+    IBOutlet FlipNumberView *finalFlipNumber0;
+    NSArray * finalFlipNumbers;
+    PuzzleData * puzzleData;
 
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;

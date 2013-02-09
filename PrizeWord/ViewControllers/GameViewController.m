@@ -20,11 +20,13 @@
 #import "SBJson.h"
 #import "PuzzleData.h"
 #import "PuzzleSetData.h"
+#import "FlipNumberView.h"
 
 @interface GameViewController (private)
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
+-(void)animateFinalScreenAppears:(id)sender;
 
 @end
 
@@ -68,6 +70,7 @@
     pauseImgProgressbar.image = imgProgress;
     pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress, pauseImgProgressbar.frame.size.height);
     [pauseTxtProgress setText:@"100%"];
+    finalFlipNumbers = [NSArray arrayWithObjects:finalFlipNumber0, finalFlipNumber1, finalFlipNumber2, finalFlipNumber3, finalFlipNumber4, nil];
 }
 
 -(void)dealloc
@@ -301,6 +304,16 @@
     }
     else if (event.type == EVENT_GAME_REQUEST_COMPLETE)
     {
+        puzzleData = event.data;
+        for (int i = 0; i < 5; ++i)
+        {
+            [[finalFlipNumbers objectAtIndex:i] reset];
+        }
+        finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 442 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
+        lblFinalBaseScore.text = @"0";
+        lblFinalTimeBonus.text = @"0";
+        [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:nil repeats:NO];
+
         [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
     }
 }
@@ -360,8 +373,34 @@
     finalOverlay = nil;
     pauseSwtMusic = nil;
     pauseSwtSound = nil;
+    lblFinalBaseScore = nil;
+    lblFinalTimeBonus = nil;
+    finalFlipNumber4 = nil;
+    finalFlipNumber3 = nil;
+    finalFlipNumber2 = nil;
+    finalFlipNumber1 = nil;
+    finalFlipNumber0 = nil;
+    finalFlipNumbers = nil;
+    finalShareView = nil;
     [super viewDidUnload];
 }
 
+-(void)animateFinalScreenAppears:(id)sender
+{
+    CGRect shareFrame = finalShareView.frame;
+    shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 602 : 308;
+    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationCurveEaseOut animations:^{
+        finalShareView.frame = shareFrame;
+    } completion:^(BOOL finished) {
+        lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.base_score unsignedIntValue]];
+        lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - [puzzleData.base_score unsignedIntValue]];
+        uint score = [puzzleData.score unsignedIntValue];
+        for (int i = 0; i < 5; ++i)
+        {
+            [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * (4 - i) + score % 10)];
+            score /= 10;
+        }
+    }];
+}
 
 @end

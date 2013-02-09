@@ -422,7 +422,7 @@
     currentQuestion = nil;
     if (_questionsComplete == _questionsTotal)
     {
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE andData:_puzzle]];
     }
     else
     {
@@ -467,7 +467,7 @@
     }
     if (_questionsComplete == _questionsTotal)
     {
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE andData:_puzzle]];
     }
 }
 
@@ -527,6 +527,7 @@
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
     int scoreForPuzzle = [_puzzle.base_score intValue] + 1000 * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
     [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
+    return;
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
