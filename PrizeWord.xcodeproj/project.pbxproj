@@ -1689,7 +1689,6 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
-				F235D0A016BEC1510066664F /* MobileCoreServices.framework */,
 				F247C32F168B88C900A81D16 /* Icon-72@2x.png */,
 				F247C32D168B88C000A81D16 /* Icon-72.png */,
 				F247C32B168B88B200A81D16 /* Icon@2x.png */,
@@ -1715,6 +1714,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F235D0A016BEC1510066664F /* MobileCoreServices.framework */,
 				F250913416B739D10045621E /* AdSupport.framework */,
 				F250913216B739BB0045621E /* Social.framework */,
 				F250913016B739B10045621E /* Accounts.framework */,

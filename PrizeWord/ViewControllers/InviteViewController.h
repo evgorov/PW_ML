@@ -13,18 +13,16 @@
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
-    IBOutlet UIImageView *vkHeader;
-    IBOutlet UIImageView *fbHeader;
-    
-    BOOL updateVKInProgress;
-    BOOL updateFBInProgress;
-    
+    IBOutlet UIImageView *headerView;
+
     UIBarButtonItem * inviteAllItem;
     NSMutableArray * vkFriends;
     NSMutableArray * fbFriends;
     NSMutableArray * vkFriendsViews;
     NSMutableArray * fbFriendsViews;
     NSMutableArray * viewsForReuse;
+    NSMutableDictionary * updateInProgress;
+    
     Facebook * facebook;
 }
 

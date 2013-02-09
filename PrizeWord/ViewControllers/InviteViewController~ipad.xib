@@ -143,19 +143,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">vkHeader</string>
+						<string key="label">headerView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="308119574"/>
 					</object>
-					<int key="connectionID">45</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">fbHeader</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="620566707"/>
-					</object>
-					<int key="connectionID">46</int>
+					<int key="connectionID">47</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -225,7 +217,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">47</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -240,34 +232,18 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">InviteViewController</string>
 					<string key="superclassName">BlockedViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">handleAddClick:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">handleAddClick:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">handleAddClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="fbHeader">UIImageView</string>
 						<string key="fbView">UIView</string>
-						<string key="vkHeader">UIImageView</string>
+						<string key="headerView">UIImageView</string>
 						<string key="vkView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="fbHeader">
-							<string key="name">fbHeader</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="fbView">
 							<string key="name">fbView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="vkHeader">
-							<string key="name">vkHeader</string>
+						<object class="IBToOneOutletInfo" key="headerView">
+							<string key="name">headerView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="vkView">
