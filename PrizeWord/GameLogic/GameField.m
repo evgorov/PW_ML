@@ -527,7 +527,6 @@
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
     int scoreForPuzzle = [_puzzle.base_score intValue] + 1000 * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
     [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
-    return;
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
