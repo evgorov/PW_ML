@@ -225,7 +225,6 @@ class FacebookUser < User
   end
 
   def validate!
-    super
     raise InvalidState.new("Missing required field: facebook_id") unless self['facebook_id']
     raise InvalidState.new("Missing required field: access_token") unless self['access_token']
     self
@@ -246,7 +245,6 @@ class RegisteredUser < User
   end
 
   def validate!
-    super
     raise InvalidState.new("Missing required field: email") unless self['email']
     raise InvalidState.new("Missing required field: password") unless self['password']
     # all validation will be run with storage anyway when save is called
