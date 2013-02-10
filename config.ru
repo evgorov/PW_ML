@@ -31,14 +31,9 @@ use IndexPage
 use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.html"],
                        :root => "public", :versioning => false
 
-if !ENV["REDISTOGO_URL"]
-  use Middleware::RedisMiddleware
-else
-  uri = URI.parse(ENV["REDISTOGO_URL"])
-  use Middleware::RedisMiddleware, { :host => uri.host, :port => uri.port, :password => uri.password }
-end
+use Middleware::RedisMiddleware
 
-use Middleware::Uploader
+use Middleware::Uploader, serve_from: '/img/uploads'
 
 use Middleware::Counter, counter_mappings: {
   [200, %r{/login}] => 'logins',

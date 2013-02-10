@@ -65,6 +65,8 @@ describe 'Integration spec' do
       end
       use Middleware::TokenAuthStrategy
 
+      Middleware::OauthProviderAuthorization.settings.environment = :test
+
       facebook_options = {
         client_id: '390010757745933',
         client_secret: '650d73bdb360c1e06719468b8e5eeddd',
@@ -74,8 +76,18 @@ describe 'Integration spec' do
         scope: 'email,user_birthday,user_about_me,publish_stream'
       }
       facebook_provider = Middleware::OauthProviderAuthorization::Provider.new('facebook', facebook_options)
-      Middleware::OauthProviderAuthorization.settings.environment = :test
       use Middleware::OauthProviderAuthorization, facebook_provider
+
+      vkontakte_options = {
+        redirect_uri: '/redirect_uri',
+        scope: 'email,user_birthday,user_about_me,wall',
+        client_id: '3392295',
+        client_secret: '9hQhk0pKNEHOt0WikSZz',
+        login_dialog_uri: 'https://oauth.vk.com/authorize',
+        access_token_uri: 'https://oauth.vk.com/access_token'
+      }
+      vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkontakte', vkontakte_options)
+      use Middleware::OauthProviderAuthorization, vkontakte_provider
 
       Middleware::BasicRegistration.settings.environment = :test
       use Middleware::BasicRegistration
@@ -527,7 +539,7 @@ describe 'Integration spec' do
     end
   end
 
-  it 'invite users' do
+  it 'invite facebook and register friends' do
     VCR.use_cassette('facebook_login_and_friends') do
       get '/facebook/authorize', { access_code: 'Asome_access_token' }
       last_response.status.should == 200
@@ -563,6 +575,34 @@ describe 'Integration spec' do
       id = response_data.first['id']
       id.should_not == nil
       response_data.first['status'].should == 'invite_used'
+    end
+  end
+
+  it 'invite vkontakte friends' do
+    VCR.use_cassette('vkontakte_login_and_friends') do
+      get '/vkontakte/authorize', { access_code: 'access_token' }
+      last_response.status.should == 200
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+
+      get("/vkontakte/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['status'].should == 'uninvited'
+
+      post("/vkontakte/invite", { session_key: session_key, ids: id })
+      last_response.status.should == 200
+
+      get("/vkontakte/friends", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      id = response_data.first['id']
+      id.should_not == nil
+      response_data.first['status'].should == 'invite_sent'
     end
   end
 end

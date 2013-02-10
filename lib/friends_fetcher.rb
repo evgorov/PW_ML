@@ -34,7 +34,7 @@ module FriendsFetcher
 
       if response['response']
         response['response'].map do |h|
-          id = h.delete('uid')
+          id = h.delete('uid').to_s
           h['id'] = id
           photo = h.delete('photo')
           h['userpic'] = photo

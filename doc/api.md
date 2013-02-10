@@ -631,8 +631,9 @@ Add or removes points from user score. This endpoint can be used score for activ
 *Request parameters:*
 
 - `session_key`: Session token.
+- `[source]`: unique identifier describing reason for change (will be used in merging of accounts)
 - `[score]`: Amount to change score.
-- `[solved]`: Amount to change puzzles solved.
+- `[solved]`: Amount to change puzzles solved counter.
 
 *Response:*
 

@@ -1,0 +1,155 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.vk.com/method/getProfiles.json?access_token=access_token
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sun, 10 Feb 2013 14:55:51 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - "73"
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze3
+      Set-Cookie:
+      - remixlang=0; expires=Mon, 10-Feb-2014 18:24:47 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: ASCII-8BIT
+      string: "{\"response\":[{\"uid\":12345,\"first_name\":\"Sherlock\",\"last_name\":\"Holmes\"}]}"
+    http_version:
+  recorded_at: Sun, 10 Feb 2013 14:55:52 GMT
+- request:
+    method: get
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sun, 10 Feb 2013 14:55:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - "158"
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze14
+      Set-Cookie:
+      - remixlang=0; expires=Mon, 03-Feb-2014 23:51:48 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: ASCII-8BIT
+      string: "{\"response\":[{\"uid\":54321,\"first_name\":\"Mycroft\",\"last_name\":\"Holmes\",\"photo\":\"http:\\/\\/cs407921.userapi.com\\/v407921256\\/4747\\/ObxhxLKB1cc.jpg\",\"online\":0}]}"
+    http_version:
+  recorded_at: Sun, 10 Feb 2013 14:55:52 GMT
+- request:
+    method: get
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sun, 10 Feb 2013 14:55:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - "158"
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze14
+      Set-Cookie:
+      - remixlang=0; expires=Sun, 09-Feb-2014 16:05:48 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: ASCII-8BIT
+      string: "{\"response\":[{\"uid\":54321,\"first_name\":\"Mycroft\",\"last_name\":\"Holmes\",\"photo\":\"http:\\/\\/cs407921.userapi.com\\/v407921256\\/4747\\/ObxhxLKB1cc.jpg\",\"online\":0}]}"
+    http_version:
+  recorded_at: Sun, 10 Feb 2013 14:55:53 GMT
+- request:
+    method: get
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    body:
+      encoding: US-ASCII
+      string: ""
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sun, 10 Feb 2013 14:55:53 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - "158"
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze3
+      Set-Cookie:
+      - remixlang=0; expires=Thu, 13-Feb-2014 02:44:26 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: ASCII-8BIT
+      string: "{\"response\":[{\"uid\":54321,\"first_name\":\"Mycroft\",\"last_name\":\"Holmes\",\"photo\":\"http:\\/\\/cs407921.userapi.com\\/v407921256\\/4747\\/ObxhxLKB1cc.jpg\",\"online\":0}]}"
+    http_version:
+  recorded_at: Sun, 10 Feb 2013 14:55:53 GMT
+recorded_with: VCR 2.3.0

@@ -235,7 +235,7 @@ describe User do
 
     it '#validate! for facebook provider' do
       invalid_data = facebook_data.dup
-      invalid_data.delete('name')
+      invalid_data.delete('facebook_id')
       lambda { subject.merge(invalid_data).validate! }.should raise_error(User::InvalidState)
       lambda { subject.merge(facebook_data).validate! }.should_not raise_error(User::InvalidState)
     end
@@ -272,7 +272,7 @@ describe User do
 
     it '#validate! for vkontakte provider' do
       invalid_data = vkontakte_data.dup
-      invalid_data.delete('name')
+      invalid_data.delete('vkontakte_id')
       lambda { subject.merge(invalid_data).validate! }.should raise_error(User::InvalidState)
       lambda { subject.merge(vkontakte_data).validate! }.should_not raise_error(User::InvalidState)
     end

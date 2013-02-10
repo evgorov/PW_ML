@@ -4,6 +4,8 @@ require 'ext/hash'
 require 'model/basic_model'
 require 'friends_fetcher'
 
+class AbstractClassError < NotImplementedError; end
+
 class User < BasicModel
 
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
@@ -95,14 +97,9 @@ class User < BasicModel
   end
 
   def save(*a)
-    if self.class == User
-      raise NotImplementedError.new("This class is an abstract class, "+
-                                    "you must use it's children.")
-    end
+    raise AbstractClassError if self.class.name == 'User'if self.class == User
     self['provider'] = self.provider_name
-    if self['month_score'].to_i > self['high_score'].to_i
-      self['high_score'] = self['month_score']
-    end
+    self['high_score'] = self['month_score'] if self['month_score'].to_i > self['high_score'].to_i
     super(*a)
     @storage.zadd('rating', self['month_score'].to_i, self.id)
     save_external_attributes
@@ -117,7 +114,7 @@ class User < BasicModel
   end
 
   def provider_name
-    raise NotImplementedError if self.class.name == 'User'
+    raise AbstractClassError if self.class.name == 'User'
     self.class.name.chomp('User').downcase
   end
 
@@ -217,20 +214,6 @@ class User < BasicModel
   end
 end
 
-class FacebookUser < User
-
-  def id
-    raise InvalidState unless self['facebook_id']
-    "facebook##{self['facebook_id']}"
-  end
-
-  def validate!
-    raise InvalidState.new("Missing required field: facebook_id") unless self['facebook_id']
-    raise InvalidState.new("Missing required field: access_token") unless self['access_token']
-    self
-  end
-end
-
 class RegisteredUser < User
 
   def id
@@ -245,6 +228,7 @@ class RegisteredUser < User
   end
 
   def validate!
+    super
     raise InvalidState.new("Missing required field: email") unless self['email']
     raise InvalidState.new("Missing required field: password") unless self['password']
     # all validation will be run with storage anyway when save is called
@@ -263,8 +247,21 @@ class VkontakteUser < User
   end
 
   def validate!
-    super
     raise InvalidState.new("Missing required field: vkontakte_id") unless self['vkontakte_id']
     raise InvalidState.new("Missing required field: access_token") unless self['access_token']
+  end
+end
+
+class FacebookUser < User
+
+  def id
+    raise InvalidState unless self['facebook_id']
+    "facebook##{self['facebook_id']}"
+  end
+
+  def validate!
+    raise InvalidState.new("Missing required field: facebook_id") unless self['facebook_id']
+    raise InvalidState.new("Missing required field: access_token") unless self['access_token']
+    self
   end
 end
