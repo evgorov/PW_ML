@@ -17,8 +17,12 @@
     UIImageView * background;
     UILabel * questionLabel;
     UIImageView * arrow;
+    BOOL arrowDone;
     UIImageView * overlay;
 }
+
+@property (readonly) int arrowTileX;
+@property (readonly) int arrowTileY;
 
 - (id)initWithFrame:(CGRect)frame andData:(TileData *)data;
 + (int)tileWidth;

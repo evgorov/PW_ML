@@ -23,10 +23,14 @@
 -(void)initParts;
 -(void)showArrow;
 -(void)hideArrow;
+-(void)updateSourceForArrow;
 
 @end
 
 @implementation GameTileView
+
+@synthesize arrowTileX;
+@synthesize arrowTileY;
 
 - (id)initWithFrame:(CGRect)frame andData:(TileData *)data
 {
@@ -53,8 +57,34 @@
         arrow = nil;
         overlay = nil;
         self.clipsToBounds = YES;
-        
+
         tileData = data;
+
+        arrowTileX = -1;
+        arrowTileY = -1;
+        arrowDone = NO;
+        if (tileData.state == TILE_QUESTION_CORRECT || tileData.state == TILE_QUESTION_INPUT || tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_WRONG)
+        {
+            arrowTileX = tileData.x;
+            arrowTileY = tileData.y;
+            if ((tileData.answerPosition & kAnswerPositionNorth) != 0)
+            {
+                arrowTileY = tileData.y - 1;
+            }
+            if ((tileData.answerPosition & kAnswerPositionSouth) != 0)
+            {
+                arrowTileY = tileData.y + 1;
+            }
+            if ((tileData.answerPosition & kAnswerPositionWest) != 0)
+            {
+                arrowTileX = tileData.x - 1;
+            }
+            if ((tileData.answerPosition & kAnswerPositionEast) != 0)
+            {
+                arrowTileX = tileData.x + 1;
+            }
+        }
+
         [self initParts];
         
         self.userInteractionEnabled = YES;
@@ -83,6 +113,17 @@
             {
                 tileData = newData;
                 [self initParts];
+            }
+            else if (arrowTileX == newData.x && arrowTileY == newData.y)
+            {
+                if (arrow != nil)
+                {
+                    if (!arrowDone && (newData.state == TILE_LETTER_CORRECT || newData.state == TILE_LETTER_CORRECT_INPUT || newData.state == TILE_LETTER_INPUT || newData.state == TILE_LETTER_WRONG))
+                    {
+                        arrowDone = YES;
+                        [self updateSourceForArrow];
+                    }
+                }
             }
             break;
         }
@@ -199,41 +240,7 @@
         [self addSubview: arrow];
     }
     
-    switch (tileData.answerPosition)
-    {
-        case kAnswerPositionNorth | kAnswerPositionTop:
-        case kAnswerPositionSouth | kAnswerPositionBottom:
-        case kAnswerPositionWest | kAnswerPositionLeft:
-        case kAnswerPositionEast | kAnswerPositionRight:
-            arrow.image = [UIImage imageNamed:@"tile_arrow_north_up"];
-            break;
-            
-        case kAnswerPositionNorth | kAnswerPositionLeft:
-        case kAnswerPositionSouth | kAnswerPositionLeft:
-        case kAnswerPositionWest | kAnswerPositionTop:
-        case kAnswerPositionEast | kAnswerPositionTop:
-        case kAnswerPositionNorth | kAnswerPositionRight:
-        case kAnswerPositionSouth | kAnswerPositionRight:
-        case kAnswerPositionWest | kAnswerPositionBottom:
-        case kAnswerPositionEast | kAnswerPositionBottom:
-            arrow.image = [UIImage imageNamed:@"tile_arrow_north_left"];
-            break;
-            
-        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionRight:
-        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionTop:
-        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionLeft:
-        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionTop:
-        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionRight:
-        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionBottom:
-        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionLeft:
-        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionBottom:
-            arrow.image = [UIImage imageNamed:@"tile_arrow_northeast_right"];
-            break;
-            
-        default:
-            arrow.image = [UIImage imageNamed:@"tile_arrow_northwest_right"];
-            break;
-    }
+    [self updateSourceForArrow];
     
     int offsetX = 0;
     int offsetY = 0;
@@ -322,6 +329,49 @@
     {
         [arrow removeFromSuperview];
         arrow = nil;
+    }
+}
+
+-(void)updateSourceForArrow
+{
+    if (arrow == nil)
+    {
+        return;
+    }
+    switch (tileData.answerPosition)
+    {
+        case kAnswerPositionNorth | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionBottom:
+        case kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionEast | kAnswerPositionRight:
+            arrow.image = [UIImage imageNamed:arrowDone ? @"tile_arrow_north_up_done" : @"tile_arrow_north_up"];
+            break;
+            
+        case kAnswerPositionNorth | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionLeft:
+        case kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionRight:
+        case kAnswerPositionWest | kAnswerPositionBottom:
+        case kAnswerPositionEast | kAnswerPositionBottom:
+            arrow.image = [UIImage imageNamed:arrowDone ? @"tile_arrow_north_left_done" : @"tile_arrow_north_left"];
+            break;
+            
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionNorth | kAnswerPositionEast | kAnswerPositionTop:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionNorth | kAnswerPositionWest | kAnswerPositionTop:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionRight:
+        case kAnswerPositionSouth | kAnswerPositionEast | kAnswerPositionBottom:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionLeft:
+        case kAnswerPositionSouth | kAnswerPositionWest | kAnswerPositionBottom:
+            arrow.image = [UIImage imageNamed:arrowDone ? @"tile_arrow_northeast_right_done" : @"tile_arrow_northeast_right"];
+            break;
+            
+        default:
+            arrow.image = [UIImage imageNamed:arrowDone ? @"tile_arrow_northwest_right_done" : @"tile_arrow_northwest_right"];
+            break;
     }
 }
 

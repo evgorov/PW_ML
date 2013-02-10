@@ -132,6 +132,16 @@
         TileData * tileData = event.data;
         GameTileView * tileView = [tiles objectAtIndex:(tileData.x + tileData.y * tilesPerRow)];
         [tileView handleEvent:event];
+        if (tileData.state == TILE_LETTER_CORRECT || tileData.state == TILE_LETTER_CORRECT_INPUT || tileData.state == TILE_LETTER_INPUT || tileData.state == TILE_LETTER_WRONG)
+        {
+            for (GameTileView * tile in tiles)
+            {
+                if (tile.arrowTileX == tileData.x && tile.arrowTileY == tileData.y)
+                {
+                    [tile handleEvent:event];
+                }
+            }
+        }
     }
 }
 
