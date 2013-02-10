@@ -132,7 +132,7 @@
                 NSLog(@"%@/friends: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 float height = headerView.frame.size.height;
                 SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * friendsData = [parser objectWithData:receivedData];
+                NSArray * friendsData = [parser objectWithData:receivedData];
                 for (NSDictionary * friendData in friendsData)
                 {
                     //UserData * user = [UserData userDataWithDictionary:friendData];
@@ -145,6 +145,7 @@
                         userView.btnAdd.tag = 0;
                         [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
                         userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
+                        [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
                         [container insertSubview:userView atIndex:0];
                         height += userView.frame.size.height * friendsData.count;
                         userView.tag = 0;
@@ -181,6 +182,7 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        // TODO :: add score
         [self hideActivityIndicator];
         for (UIView * subview in vkView.subviews) {
             if ([subview isKindOfClass:[InviteCellView class]])
@@ -239,6 +241,7 @@
         }
         APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            // TODO :: add score
             [self hideActivityIndicator];
             for (UIView * subview in vkView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
@@ -297,11 +300,13 @@
 {
     while (views.count > 1 && [(InviteCellView *)[views objectAtIndex:0] frame].origin.y + [(InviteCellView *)[views objectAtIndex:0] frame].size.height + container.frame.origin.y < scrollView.contentOffset.y)
     {
+        [[(InviteCellView *)[views objectAtIndex:0] imgAvatar] clear];
         [viewsForReuse addObject:[views objectAtIndex:0]];
         [views removeObjectAtIndex:0];
     }
     while (views.count > 1 && [(InviteCellView *)[views lastObject] frame].origin.y + container.frame.origin.y > scrollView.contentOffset.y + scrollView.frame.size.height)
     {
+        [[(InviteCellView *)views.lastObject imgAvatar] clear];
         [viewsForReuse addObject:[views lastObject]];
         [views removeLastObject];
     }
@@ -326,6 +331,7 @@
         newView.lblName.text = [userData objectForKey:@"first_name"];
         newView.lblSurname.text = [userData objectForKey:@"last_name"];
         newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+        [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:[userData objectForKey:@"userpic"]]];
         newView.frame = CGRectMake(0, firstView.frame.origin.y - newView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
         [container insertSubview:newView atIndex:0];
         [views insertObject:newView atIndex:0];
@@ -351,6 +357,7 @@
         newView.lblName.text = [userData objectForKey:@"first_name"];
         newView.lblSurname.text = [userData objectForKey:@"last_name"];
         newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+        [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:[userData objectForKey:@"userpic"]]];
         newView.frame = CGRectMake(0, lastView.frame.origin.y + lastView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
         [container insertSubview:newView atIndex:0];
         [views addObject:newView];
@@ -408,6 +415,7 @@
         }];
         APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            // TODO :: add score
             [self hideActivityIndicator];
             for (UIView * subview in fbView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])

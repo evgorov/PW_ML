@@ -55,6 +55,9 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     }
     puzzlesView.frame = CGRectMake(0, 0, puzzlesView.frame.size.width, yOffset);
     
+    updateInProgress = [NSMutableDictionary new];
+    invitedFriends = 0;
+
     [self addFramedView:puzzlesView];
     [self addFramedView:invitesView];
     
@@ -82,8 +85,14 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
 -(void)updateInvited:(NSString *)providerName
 {
+    if ([updateInProgress objectForKey:providerName] != nil) {
+        return;
+    }
+    [self showActivityIndicator];
+    [updateInProgress setObject:[NSNumber numberWithBool:YES] forKey:providerName];
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", providerName] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
+        [updateInProgress removeObjectForKey:providerName];
         if (response.statusCode == 200)
         {
             float yOffset = invitesView.frame.size.height - ([AppDelegate currentDelegate].isIPad ? 110 : 75);
@@ -91,21 +100,28 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             NSArray * friendsData = [parser objectWithData:receivedData];
             for (NSDictionary * friendData in friendsData)
             {
-                UserData * user = [UserData userDataWithDictionary:friendData];
-                if (!user.invited)
+                NSString * status = [friendData objectForKey:@"status"];
+                if ([status rangeOfString:@"uninvited"].location != NSNotFound)
                 {
                     continue;
                 }
                 ScoreInviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
-                userView.lblName.text = [NSString stringWithFormat:@"%@ %@", user.first_name, user.last_name];
+                userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
+                [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
                 userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
                 [invitesView addSubview:userView];
                 yOffset += userView.frame.size.height;
+                invitedFriends++;
             }
-            [self resizeView:invitesView newHeight:(yOffset + [AppDelegate currentDelegate].isIPad ? 110 : 75) animated:YES];
+            
+            [self resizeView:invitesView newHeight:(yOffset + ([AppDelegate currentDelegate].isIPad ? 110 : 75)) animated:YES];
             [UIView animateWithDuration:0.3 animations:^{
                 btnInvite.frame = CGRectMake(btnInvite.frame.origin.x, yOffset, btnInvite.frame.size.width, btnInvite.frame.size.height);
             }];
+            lblInvitesFriendsCount.text = [NSString stringWithFormat:@"%d ", invitedFriends];
+            lblInvitesFriendsCount.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x, lblInvitesFriendsCount.frame.origin.y, [lblInvitesFriendsCount.text sizeWithFont:lblInvitesFriendsCount.font].width, lblInvitesFriendsCount.frame.size.height);
+            lblInvitesFriendsLabel.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x + lblInvitesFriendsCount.frame.size.width, lblInvitesFriendsLabel.frame.origin.y, lblInvitesFriendsLabel.frame.size.width, lblInvitesFriendsLabel.frame.size.height);
+            lblInvitesScore.text = [NSString stringWithFormat:@"%d", invitedFriends * 400];
         }
         else
         {
@@ -116,6 +132,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         }
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
+        [updateInProgress removeObjectForKey:providerName];
         NSLog(@"error: %@", error.description);
     }];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];

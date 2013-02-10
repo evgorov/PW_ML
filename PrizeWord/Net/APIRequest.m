@@ -123,7 +123,7 @@
 -(BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
     NSLog(@"canAuthenticateAgainstProtectionSpace: %@", protectionSpace.description);
-    return NO;
+    return YES;
 }
 
 -(void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -154,7 +154,7 @@
 -(BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)conn
 {
     NSLog(@"connectionShouldUseCredentialStorage: %@", conn.description);
-    return NO;
+    return YES;
 }
 
 #pragma mark NSURLConnectionDataDelegate

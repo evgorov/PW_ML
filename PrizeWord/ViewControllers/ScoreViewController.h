@@ -18,6 +18,9 @@
     IBOutlet UILabel *lblInvitesScore;
     IBOutlet UILabel *lblInvitesFriendsCount;
     IBOutlet UILabel *lblInvitesFriendsLabel;
+
+    NSMutableDictionary * updateInProgress;
+    int invitedFriends;
 }
 
 @end
