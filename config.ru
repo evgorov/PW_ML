@@ -52,7 +52,6 @@ use Middleware::TokenAuthStrategy
 facebook_options = {
   client_id: 'FACEBOOK_CLIENT_ID',
   client_secret: 'FACEBOOK_CLIENT_SECRET',
-  redirect_uri: '/redirect_uri',
   login_dialog_uri: 'https://facebook.com/dialog/oauth',
   access_token_uri: 'https://graph.facebook.com/oauth/access_token',
   scope: 'email,user_birthday,user_about_me,publish_stream'
@@ -64,7 +63,7 @@ use Middleware::OauthProviderAuthorization, facebook_provider
 vkontakte_options = {
   client_id: 'VKONTAKTE_CLIENT_ID',
   client_secret: 'VKONTAKTE_CLIENT_SECRET',
-  redirect_uri: '/redirect_uri',
+  redirect_uri: 'http://oauth.vk.com/blank.html',
   login_dialog_uri: 'https://vkontakte.com/dialog/oauth',
   access_token_uri: 'https://graph.vkontakte.com/oauth/access_token',
   scope: 'email,user_birthday,user_about_me,wall'

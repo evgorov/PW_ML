@@ -6,14 +6,19 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
 
   class Provider
 
-    REQUIRED_ATTRIBUTES = [:client_id,
+    REQUIRED_ATTRIBUTES = [
+                           :client_id,
                            :client_secret,
                            :login_dialog_uri,
                            :access_token_uri,
-                           :scope]
+                           :scope
+                          ]
 
-    attr_reader :name
-    REQUIRED_ATTRIBUTES.each do |attr|
+    OPTIONAL_ATTRIBUTES = [
+                           :name,
+                           :redirect_uri
+                          ]
+    (REQUIRED_ATTRIBUTES + OPTIONAL_ATTRIBUTES).each do |attr|
       define_method(attr) { @options[attr] }
     end
 
@@ -21,9 +26,9 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
       unless REQUIRED_ATTRIBUTES.all? { |o| options.has_key?(o) }
         raise ArgumentError
       end
-      @name, @options = name, options
+      @options = options
+      @options[:name] = name
     end
-
   end
 
   def initialize(app, provider)
@@ -38,7 +43,7 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
     end
 
     def oauth_redirect_uri
-      to("/#{@provider.name}/authorize")
+      @provider.redirect_uri || to("/#{@provider.name}/authorize")
     end
 
     def get_access_token(code)

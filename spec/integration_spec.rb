@@ -70,7 +70,6 @@ describe 'Integration spec' do
       facebook_options = {
         client_id: '390010757745933',
         client_secret: '650d73bdb360c1e06719468b8e5eeddd',
-        redirect_uri: '/redirect_uri',
         login_dialog_uri: 'https://facebook.com/dialog/oauth',
         access_token_uri: 'https://graph.facebook.com/oauth/access_token',
         scope: 'email,user_birthday,user_about_me,publish_stream'
@@ -79,7 +78,7 @@ describe 'Integration spec' do
       use Middleware::OauthProviderAuthorization, facebook_provider
 
       vkontakte_options = {
-        redirect_uri: '/redirect_uri',
+        redirect_uri: 'http://oauth.vk.com/blank.html',
         scope: 'email,user_birthday,user_about_me,wall',
         client_id: '3392295',
         client_secret: '9hQhk0pKNEHOt0WikSZz',

@@ -39,7 +39,6 @@ describe Middleware::OauthProviderAuthorization do
     options = {
       client_id: 'CLIENT_ID',
       client_secret: 'CLIENT_SECRET',
-      redirect_uri: 'http://example.org/redirect_uri',
       login_dialog_uri: 'https://example.org/dialog/oauth',
       access_token_uri: 'https://example.org/ouath/access_token',
       scope: 'email'
