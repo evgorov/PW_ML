@@ -138,6 +138,11 @@ module Middleware
       { "message" => "ok" }.to_json
     end
 
+    post '/vkontakte/share' do
+      env['token_auth'].authorize!
+       WallPublisher.post(env['token_auth'].user['access_token'], params['message'])
+    end
+
     post '/link_accounts' do
       user1 = env['token_auth'].get_user_by_session_key(params['session_key1'])
       user2 = env['token_auth'].get_user_by_session_key(params['session_key2'])
