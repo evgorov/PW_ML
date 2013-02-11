@@ -11,6 +11,18 @@ shared_context 'fixtures' do
     }
   }
 
+  let(:another_valid_user_data) {
+    {
+      'email' => 'sherlock2@example.org',
+      'name' => 'Sherlock',
+      'surname' => 'Holmes',
+      'password' => 'mxadsfiwoqrsajk!x93',
+      'birthdate' => '1873-11-12',
+      'userpic' => 'other_image_data',
+      'city' => 'London'
+    }
+  }
+
   let(:valid_user_data_user_as_json) {
     {
       'id' => 'registered#sherlock@example.org',

@@ -10,12 +10,10 @@ class User < BasicModel
 
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved]
-  FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE -
-                        ['password'] +
+  FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
                         %w[id position month_score high_score dynamics hints provider created_at]
 
   class << self
-
     def new(*a)
       case
       when self.name == 'User' && a.first.is_a?(Hash) && !a.first.empty?
@@ -45,6 +43,13 @@ class User < BasicModel
     self['hints'] = self['hints'].to_i
   end
 
+  def after_save
+    super
+    @storage.zadd('rating', self['month_score'].to_i, self.id)
+    save_external_attributes
+    load_external_attributes # get real position after object creation
+  end
+
   def after_load
     super
     load_external_attributes
@@ -67,13 +72,39 @@ class User < BasicModel
   end
 
   def merge!(other)
-    # force storing 'password' field with []=
-    other = other.dup
-    if password = other.delete('password')
-      self['password'] = password
+    case(other)
+    when User
+      result = other.dup.merge(self.to_hash)
+
+      # merge friends
+      result.to_hash.keys.grep(/_friends/).each do |k|
+        result[k] = other[k].merge!(self[k]) { |k, h1, h2| h1['status'] =~ /\Ainvite/ ? h1 : h2 }
+      end
+
+      # merge scores
+      user1_scores = UserScore.storage(@storage).scores_for(self.id)
+      user2_scores = UserScore.storage(@storage).scores_for(other.id)
+      combined_scores = (user1_scores + user2_scores).group_by { |o| o['source'] }.values
+      solved, score = combined_scores.inject([0,0]) do |(solved, score), (u1, u2)|
+        if !u2 || u1['score'] > u2['score']
+          [solved + u1['solved'], score + u1['score']]
+        else
+          [solved + u2['solved'], score + u2['score']]
+        end
+      end
+      result['solved'], result['month_score'] = solved, score
+      self.merge!(result.to_hash)
+    when Hash
+      # force storing 'password' field with []=
+      other = other.dup
+      if password = other.delete('password')
+        self['password'] = password
+      end
+      super(other)
+      self
+    else
+      raise ArgumentError
     end
-    super(other)
-    self
   end
 
   def storage(storage)
@@ -97,13 +128,10 @@ class User < BasicModel
   end
 
   def save(*a)
-    raise AbstractClassError if self.class.name == 'User'if self.class == User
+    raise AbstractClassError if self.class == User
     self['provider'] = self.provider_name
     self['high_score'] = self['month_score'] if self['month_score'].to_i > self['high_score'].to_i
     super(*a)
-    @storage.zadd('rating', self['month_score'].to_i, self.id)
-    save_external_attributes
-    load_external_attributes # get real position after object creation
     self
   end
 
@@ -140,20 +168,15 @@ class User < BasicModel
     @hash.extract(*FIELDS_USER_CAN_SEE).to_json(*a)
   end
 
-  def fetch_friends
-    self['friends'] ||= {}
-    return self['friends'] unless %w[facebook vkontakte].include?(self['provider'])
+  def fetch_friends(provider)
+    friends = self["#{provider}_friends"] ||= {}
+    raise ArgumentError unless FriendsFetcher.respond_to?("fetch_#{self['provider']}_friends")
 
     fetched_friends = FriendsFetcher.send("fetch_#{self['provider']}_friends", self['access_token'])
-    Hash[fetched_friends.map { |h| [h['id'], h] }].each do |k, h|
-      if self['friends'][k]
-        self['friends'][k].merge!(h)
-      else
-        self['friends'][k] = h
-      end
-    end
+    friends.merge!(Hash[fetched_friends.map { |h| [h['id'], h] }]) { |k, h1, h2| h1.merge(h2) }
 
-    self['friends'].values.each do |h|
+    # state machine
+    friends.values.each do |h|
       exist = self.exist?("#{self['provider']}##{h['id']}")
       case
       when  h['status'] == nil && exist; h['status'] = 'already_registered'
@@ -163,13 +186,13 @@ class User < BasicModel
       end
     end
 
-    self['friends'].values
+    friends.values
   end
 
-  def invite(friend_id)
-    return false unless self['friends'][friend_id]
-    return false unless self['friends'][friend_id]['status'] == 'uninvited'
-    self['friends'][friend_id]['status'] = 'invite_sent'
+  def invite(provider, friend_id)
+    friends = self["#{provider}_friends"]
+    return false if !friends[friend_id] || friends[friend_id]['status'] != 'uninvited'
+    friends[friend_id]['status'] = 'invite_sent'
   end
 
   private

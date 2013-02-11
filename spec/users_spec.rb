@@ -85,6 +85,10 @@ describe Middleware::Users do
     user.should_receive(:[]=).with('solved', 0)
     user.should_receive(:save)
 
+    user_score = mock
+    user_score.should_receive(:create)
+    UserScore.stub(storage: user_score)
+
     token_auth = stub(:token_auth)
     token_auth.stub(user: user)
     token_auth.stub(:authorize!)
@@ -92,7 +96,8 @@ describe Middleware::Users do
     post('/score',
          {
            session_key: 'valid_session_key',
-           score: '4'
+           score: '4',
+           source: 'forNiceLooking'
          },
          { 'token_auth' => token_auth })
 

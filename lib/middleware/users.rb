@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
+require 'model/user_score'
 require 'model/service_message'
 
 module Middleware
@@ -33,10 +34,13 @@ module Middleware
 
     post '/score' do
       env['token_auth'].authorize!
+      halt(403, { 'message' => 'missing source'}.to_json) unless params['source']
+      score, solved, source = params['score'].to_i, params['solved'].to_i, params['source']
       user = env['token_auth'].user
-      user['month_score'] += params['score'].to_i
-      user['solved'] += params['solved'].to_i
+      user['month_score'] += score
+      user['solved'] += solved
       user.save
+      UserScore.storage(env['redis']).create(user, score, solved, source)
       { me: user }.to_json
     end
 
@@ -120,17 +124,27 @@ module Middleware
 
     get '/:provider/friends' do
       env['token_auth'].authorize!
-      env['token_auth'].user.fetch_friends
+      env['token_auth'].user.fetch_friends(params['provider'])
       env['token_auth'].user.save
-      env['token_auth'].user['friends'].values.to_json
+      env['token_auth'].user["#{params['provider'].to_s}_friends"].values.to_json
     end
 
     post '/:provider/invite' do
       halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
       env['token_auth'].authorize!
-      env['token_auth'].user.fetch_friends
-      params['ids'].split(',').each { |id| env['token_auth'].user.invite(id) }
+      env['token_auth'].user.fetch_friends(params['provider'])
+      params['ids'].split(',').each { |id| env['token_auth'].user.invite(params['provider'], id) }
       env['token_auth'].user.save
+      { "message" => "ok" }.to_json
+    end
+
+    post '/link_accounts' do
+      user1 = env['token_auth'].get_user_by_session_key(params['session_key1'])
+      user2 = env['token_auth'].get_user_by_session_key(params['session_key2'])
+      halt(403, { 'message' => 'cannot authorize session_key1'}.to_json) unless user1
+      halt(403, { 'message' => 'cannot authorize session_key2'}.to_json) unless user2
+      user1.merge!(user2)
+      user1.save
       { "message" => "ok" }.to_json
     end
   end

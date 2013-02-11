@@ -207,29 +207,29 @@ describe 'Integration spec' do
     last_response.status.should == 200
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/score', session_key: session_key, score: 100, solved: 10
+    post '/score', session_key: session_key, score: 100, solved: 10, source: 'some_reason'
     last_response.status.should == 200
-    post '/score', session_key: session_key, score: 100
+    post '/score', session_key: session_key, score: 100, source: 'another_some_reason'
     last_response.status.should == 200
 
     post '/login', email: 'email2@example.org', password: valid_user_data['password']
     last_response.status.should == 200
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/score', session_key: session_key, score: 150
+    post '/score', session_key: session_key, score: 150, source: 'yet_another_reason'
     last_response.status.should == 200
 
     post '/login', email: 'email10@example.org', password: valid_user_data['password']
     last_response.status.should == 200
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/score', session_key: session_key, score: 80
+    post '/score', session_key: session_key, score: 80, source: 'and_another'
 
     post '/login', email: 'email1@example.org', password: valid_user_data['password']
     last_response.status.should == 200
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    post '/score', session_key: session_key, score: 70
+    post '/score', session_key: session_key, score: 70, source: 'and_some_more'
     last_response_should_be_json
     last_response.status.should == 200
 
@@ -523,10 +523,8 @@ describe 'Integration spec' do
       id.should_not == nil
       response_data.first['status'].should == 'already_registered'
 
-      $debug = true
       post("/facebook/invite", { session_key: session_key, ids: id })
       last_response.status.should == 200
-      $debug = false
 
       get("/facebook/friends", { session_key: session_key })
       last_response.status.should == 200
@@ -603,5 +601,34 @@ describe 'Integration spec' do
       id.should_not == nil
       response_data.first['status'].should == 'invite_sent'
     end
+  end
+
+  it '/link_accounts for two registered accounts' do
+    post '/signup', valid_user_data
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key1 = response_data['session_key']
+
+    post '/signup', another_valid_user_data
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key2 = response_data['session_key']
+
+    post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+    post '/score', session_key: session_key1, score: 100, solved: 10, source: 'reason2'
+    post '/score', session_key: session_key2, score: 150, solved: 10, source: 'reason3'
+    post '/score', session_key: session_key2, score: 150, solved: 10, source: 'reason2'
+
+    post '/link_accounts', { session_key1: session_key1, session_key2: session_key2 }
+    last_response.status.should == 200
+    last_response_should_be_json
+
+    get '/me', { session_key: session_key1 }
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['me']['month_score'].should == 450
   end
 end

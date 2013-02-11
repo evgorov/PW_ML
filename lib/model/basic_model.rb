@@ -18,6 +18,10 @@ class BasicModel
     def guuid?; !!@use_guuid; end
   end
 
+  def dup
+    self.class.new(@hash.dup, @storage)
+  end
+
   def initialize(hash = {}, storage = DummyStorage.new)
     @hash, @old_hash, @storage = hash, hash.dup, storage
     set_defaults! if @hash.empty?
@@ -35,7 +39,6 @@ class BasicModel
 
   def merge(other)
     self.dup.merge!(other)
-    self
   end
 
   def merge!(other)
@@ -79,10 +82,12 @@ class BasicModel
     page = 1 if page == 0
     # this should be done with by: 'nosort' but buggix is not in all versions of redis
     ids = @storage.zrevrange(key, (page - 1) * PER_PAGE, page * PER_PAGE - 1)
-    data_list = @storage.mget(*ids)
-    data_list.map do |data|
-      self.class.new(JSON.parse(data), @storage).tap(&:after_load)
-    end
+    data_list = case ids.size
+                when 0; []
+                when 1; [@storage.get(ids.first)]
+                else; @storage.mget(*ids)
+                end
+    data_list.map { |data| self.class.new(JSON.parse(data), @storage).tap(&:after_load) }
   end
 
   def save(skip_validation = false)

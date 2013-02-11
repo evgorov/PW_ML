@@ -19,16 +19,20 @@ module Middleware::TokenAuthStrategy
     end
 
     def authorized?
-      @user_key || (@user_key = @redis.get(@request.params['session_key']))
+      !!self.user
+    end
+
+    def get_user_by_session_key(session_key)
+      return unless user_key = @redis.get(session_key)
+      if ::Middleware::TokenAuthStrategy.deserialize_user_proc
+        ::Middleware::TokenAuthStrategy.deserialize_user_proc.call(@env, user_key)
+      else
+        user_key
+      end
     end
 
     def user
-      self.authorize!
-      @user ||= if ::Middleware::TokenAuthStrategy.deserialize_user_proc
-        ::Middleware::TokenAuthStrategy.deserialize_user_proc.call(@env, @user_key)
-      else
-        @user_key
-      end
+      @user ||= get_user_by_session_key(@request.params['session_key'])
     end
 
     def create_token(user = true)
@@ -52,6 +56,5 @@ module Middleware::TokenAuthStrategy
 
       @redis.setex(key, KEY_TTL, value)
     end
-
   end
 end

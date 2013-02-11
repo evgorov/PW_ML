@@ -246,8 +246,8 @@ describe User do
       subject.merge!(facebook_data)
       FriendsFetcher.stub(fetch_facebook_friends: [{ 'id' => 'one' }])
 
-      subject.storage(storage).fetch_friends
-      friends = subject['friends'].values
+      subject.storage(storage).fetch_friends('facebook')
+      friends = subject['facebook_friends'].values
       friends.empty?.should_not == true
       friends.first['status'].should == 'uninvited'
     end
@@ -259,8 +259,8 @@ describe User do
       storage.should_receive(:get).with('facebook#1234').and_return('USER_DATA')
       storage.should_receive(:get).with('facebook#56789').and_return(nil)
 
-      subject.storage(storage).fetch_friends
-      friends = subject['friends'].values
+      subject.storage(storage).fetch_friends('facebook')
+      friends = subject['facebook_friends'].values
       friends[0]['status'].should == 'already_registered'
       friends[1]['status'].should == 'uninvited'
     end

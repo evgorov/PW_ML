@@ -25,9 +25,6 @@ describe Middleware::OauthProviderAuthorization::Provider do
     it { subject.new('test', params).respond_to?(attribute).should be_true }
     it { lambda { subject.new('test', params.delete(attrubute)) }.should raise_error }
   end
-
-
-
 end
 
 describe Middleware::OauthProviderAuthorization do

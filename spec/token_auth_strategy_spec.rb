@@ -140,7 +140,7 @@ describe Middleware::TokenAuthStrategy do
       token = last_response.body
 
       @deserialize_user = mock(:retrieve_user_proc)
-      @deserialize_user.should_receive(:call).with(anything, '1234').and_return(@user)
+      @deserialize_user.should_receive(:call).exactly(2).with(anything, '1234').and_return(@user)
       subject.deserialize_user_proc = @deserialize_user
       get '/', session_key: token
       last_response.status.should == 200
