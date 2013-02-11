@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ExternalImage.h"
 
 @interface RatingCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UIImageView *imgBackground;
@@ -14,7 +15,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveNone;
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveUp;
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveDown;
-@property (strong, nonatomic) IBOutlet UIImageView *imgPhoto;
+@property (strong, nonatomic) IBOutlet ExternalImage *imgPhoto;
 @property (strong, nonatomic) IBOutlet UIImageView *imgBorder;
 @property (strong, nonatomic) IBOutlet UILabel *lblSurname;
 @property (strong, nonatomic) IBOutlet UILabel *lblName;

@@ -7,6 +7,7 @@
 //
 
 #import "UserData.h"
+#import "NSData+Base64.h"
 
 @implementation UserData
 
@@ -16,6 +17,7 @@
 @synthesize provider = _provider;
 @synthesize provider_id = _provider_id;
 @synthesize city = _city;
+@synthesize userpic = _userpic;
 @synthesize userpic_url = _userpic_url;
 @synthesize birthday = _birthday;
 
@@ -38,7 +40,24 @@
         _provider = [dict objectForKey:@"provider"];
         _provider_id = [dict objectForKey:@"id"];
         _city = [dict objectForKey:@"city"];
-        _userpic_url = [dict objectForKey:@"userpic_url"];
+        _userpic = nil;
+        _userpic_url = nil;
+        id userpicObject = [dict objectForKey:@"userpic"];
+        if ([userpicObject isKindOfClass:[NSString class]])
+        {
+            NSString * userpicString = userpicObject;
+            if (userpicString != nil && userpicString.length > 0)
+            {
+                if (userpicString.length > 10 && [userpicString rangeOfString:@"http" options:NSCaseInsensitiveSearch range:NSMakeRange(0, 10)].location != NSNotFound)
+                {
+                    _userpic_url = userpicString;
+                }
+                else
+                {
+                    _userpic = [UIImage imageWithData:[NSData dataFromBase64String:userpicString]];
+                }
+            }
+        }
         NSString * dateString = [dict objectForKey:@"birthday"];
         _birthday = nil;
         if (dateString != nil)

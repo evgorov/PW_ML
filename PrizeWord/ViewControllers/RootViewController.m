@@ -55,17 +55,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 -(void)viewDidLoad
 {
-    /*
-    //----- SETUP ORIENTATION -----
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didOrientationChanged:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
-    orientation = (UIDeviceOrientation)[[UIDevice currentDevice] orientation];
-    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
-    {
-        orientation = UIDeviceOrientationPortrait;
-    }
-    */
-    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_black_tile.jpg"]];
     
     mainMenuView.contentSize = mainMenuBg.frame.size;
@@ -124,8 +113,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     mainMenuMaxScore = nil;
     mainMenuUserName = nil;
     mainMenuYourResult = nil;
-//    mainLandscapeView = nil;
-//    mainPortraitView = nil;
     [super viewDidUnload];
 }
 
@@ -142,34 +129,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             [subview removeFromSuperview];
         }
     }
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    /*
-    //----- SETUP ORIENTATION -----
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didOrientationChanged:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
-    //orientation = [[UIDevice currentDevice] orientation];
-    orientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;    //This is more reliable than (self.interfaceOrientation) and [[UIDevice currentDevice] orientation] (which may give a faceup type value)
-    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
-    {
-        orientation = UIDeviceOrientationPortrait;
-    }
-    // Do orientation logic
-    if ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight) && [AppDelegate currentDelegate].isIPad)
-    {
-        // Clear the current view and insert the orientation specific view.
-        [self clearCurrentView];
-        [self.view insertSubview:mainLandscapeView atIndex:0];
-    }
-    else if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown)
-    {
-        // Clear the current view and insert the orientation specific view.
-        [self clearCurrentView];
-        [self.view insertSubview:mainPortraitView atIndex:0];
-    }
-     */
 }
 
 -(void)showMenuAnimated:(BOOL)animated
@@ -203,6 +162,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [mainMenuUserName setFont:dinFont];
     mainMenuMaxScore.text = [NSString stringWithFormat:@"%d очков", [GlobalData globalData].loggedInUser.high_score];
     mainMenuUserName.text = [NSString stringWithFormat:@"%@ %@", [GlobalData globalData].loggedInUser.first_name, [GlobalData globalData].loggedInUser.last_name];
+    mainMenuAvatar.image = [GlobalData globalData].loggedInUser.userpic;
     
     UIFont * font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 18 : 13)];
     while (btnScore.subviews.count > 1) {
@@ -629,53 +589,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [self showMenuAnimated:YES];
     }
 }
-/*
--(void)didOrientationChanged:(NSNotification *)notification
-{
-    
-    UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
-    if (newOrientation != UIDeviceOrientationUnknown && newOrientation != UIDeviceOrientationFaceUp && newOrientation != UIDeviceOrientationFaceDown)
-    {
-        if (orientation != newOrientation)
-        {
-            //ORIENTATION HAS CHANGED
-            NSLog(@"Changed Orientation");
-            
-            // Do orientation logic
-            if (
-                ((newOrientation == UIDeviceOrientationLandscapeLeft || newOrientation == UIDeviceOrientationLandscapeRight)) &&
-                ((orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown) &&
-                 [AppDelegate currentDelegate].isIPad)
-                )
-            {
-                NSLog(@"Changed Orientation To Landscape");
-                // Clear the current view and insert the orientation specific view.
-                [self clearCurrentView];
-                [self.view insertSubview:mainLandscapeView atIndex:0];
-                
-                //Copy object states between views
-                //SomeTextControlL.text = SomeTextControlP.text;
-                orientation = newOrientation;
-            }
-            else if (
-                     ((newOrientation == UIDeviceOrientationPortrait || newOrientation == UIDeviceOrientationPortraitUpsideDown)) &&
-                     ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight))
-                     )
-            {
-                NSLog(@"Changed Orientation To Portrait");
-                // Clear the current view and insert the orientation specific view.
-                [self clearCurrentView];
-                [self.view insertSubview:mainPortraitView atIndex:0];
-                
-                //Copy object states between views
-                //SomeTextControlP.text = SomeTextControlL.text;
-                orientation = newOrientation;
-            }
-        }
-        
-    }
-}
- */
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -730,18 +643,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         }
     }
 }
-/*
-- (void) clearCurrentView
-{
-    if (mainLandscapeView.superview)
-    {
-        [mainLandscapeView removeFromSuperview];
-    }
-    else if (mainPortraitView.superview)
-    {
-        [mainPortraitView removeFromSuperview];
-    }
-}
-*/
+
 
 @end

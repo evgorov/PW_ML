@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString * provider_id;
 @property (nonatomic, strong) NSString * city;
 @property (nonatomic, strong) NSString * userpic_url;
+@property (nonatomic, strong) UIImage * userpic;
 @property (nonatomic, strong) NSDate * birthday;
 
 @property () int position;

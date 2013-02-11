@@ -88,7 +88,7 @@
     [self hideActivityIndicator];
     if (response.statusCode == 200)
     {
-        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
         [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
         [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];

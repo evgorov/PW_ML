@@ -7,6 +7,7 @@
 //
 
 #import "APIRequest.h"
+#import "NSData+Base64.h"
 
 @interface APIRequest (private)
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
@@ -80,11 +81,10 @@
                 // add image data
                 NSData *imageData = UIImageJPEGRepresentation((UIImage *)obj, 1.0f);
                 if (imageData) {
+                    NSString * base64Encoded = [imageData base64EncodedString];
                     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.jpg\"\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
-                    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-                    [body appendData:imageData];
-                    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[[NSString stringWithFormat:@"%@\r\n", base64Encoded] dataUsingEncoding:NSUTF8StringEncoding]];
                 }
             }
             else
@@ -98,7 +98,7 @@
         
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
-        NSLog(@"POST request data: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+//        NSLog(@"POST request data: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
 
         [request setHTTPBody:body];
     }

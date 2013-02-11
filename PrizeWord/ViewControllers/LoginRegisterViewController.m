@@ -159,7 +159,7 @@
     [request.params setObject:tfCity.text forKey:@"city"];
     if (avatar != nil)
     {
-        [request.params setObject:request forKey:@"userpic"];
+        [request.params setObject:avatar forKey:@"userpic"];
     }
     [request runSilent];
 }

@@ -59,7 +59,7 @@ int HEADER_HEIGHT = 24;
 
     APIRequest * request = [APIRequest getRequest:@"users" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData)
     {
-        NSLog(@"rating: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"rating: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * data = [parser objectWithData:receivedData];
         NSArray * usersData = [data objectForKey:@"users"];
@@ -166,6 +166,12 @@ int HEADER_HEIGHT = 24;
     cell.imgMoveDown.hidden = YES;
     cell.imgMoveNone.hidden = YES;
     cell.lblPosition.hidden = YES;
+    [cell.imgPhoto clear];
+    cell.imgPhoto.image = user.userpic;
+    if (user.userpic_url != nil)
+    {
+        [cell.imgPhoto loadImageFromURL:[NSURL URLWithString:user.userpic_url]];
+    }
     if (indexPath.row == 1)
     {
         cell.imgPlaceBg.image = [UIImage imageNamed:@"rating_cell_first_place.png"];
