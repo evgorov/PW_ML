@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "EventListenerDelegate.h"
-
-@class TileData;
+#import "TileData.h"
 
 @interface GameTileView : UIView<EventListenerDelegate>
 {
     TileData * tileData;
+    TileState oldState;
     UIImageView * background;
     UILabel * questionLabel;
     UIImageView * arrow;

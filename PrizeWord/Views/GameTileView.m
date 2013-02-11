@@ -8,7 +8,6 @@
 
 #import "GameTileView.h"
 #import "EventManager.h"
-#import "TileData.h"
 #import "TileImageHelper.h"
 #import "QuestionData.h"
 #import "GameLogic.h"
@@ -24,6 +23,7 @@
 -(void)showArrow;
 -(void)hideArrow;
 -(void)updateSourceForArrow;
+-(void)animateToCorrect;
 
 @end
 
@@ -58,6 +58,7 @@
         overlay = nil;
         self.clipsToBounds = YES;
 
+        oldState = TILE_UNUSED;
         tileData = data;
 
         arrowTileX = -1;
@@ -135,51 +136,59 @@
 
 -(void)initParts
 {
-    switch (tileData.state) {
-        case TILE_QUESTION_NEW:
-            [background setImage:[UIImage imageNamed:@"tile_question_new"]];
-            break;
-            
-        case TILE_QUESTION_CORRECT:
-            [background setImage:[UIImage imageNamed:@"tile_question_correct"]];
-            break;
-            
-        case TILE_QUESTION_WRONG:
-            [background setImage:[UIImage imageNamed:@"tile_question_wrong"]];
-            break;
-            
-        case TILE_QUESTION_INPUT:
-            [background setImage:[UIImage imageNamed:@"tile_question_input"]];
-            break;
-            
-        case TILE_LETTER_EMPTY:
-            [background setImage:[UIImage imageNamed:@"tile_letter_empty"]];
-            break;
-            
-        case TILE_LETTER_CORRECT_INPUT:
-        case TILE_LETTER_CORRECT:
-        {
-            [background setImage:[[TileImageHelper sharedHelper] letterForType:tileData.letterType andIndex:tileData.currentLetterIdx]];
-        }
-            break;
-            
-        case TILE_LETTER_WRONG:
-            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_WRONG andIndex:tileData.currentLetterIdx]];
-            break;
-            
-        case TILE_LETTER_EMPTY_INPUT:
-            [background setImage:[UIImage imageNamed:@"tile_letter_empty_input"]];
-            break;
-            
-        case TILE_LETTER_INPUT:
-        {
-            [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_INPUT andIndex:tileData.currentLetterIdx]];
-        }
-            break;
-            
-        default:
-            break;
+    if ((oldState == TILE_LETTER_INPUT || oldState == TILE_LETTER_EMPTY_INPUT) && tileData.state == TILE_LETTER_CORRECT)
+    {
+        [self animateToCorrect];
     }
+    else
+    {
+        switch (tileData.state) {
+            case TILE_QUESTION_NEW:
+                [background setImage:[UIImage imageNamed:@"tile_question_new"]];
+                break;
+                
+            case TILE_QUESTION_CORRECT:
+                [background setImage:[UIImage imageNamed:@"tile_question_correct"]];
+                break;
+                
+            case TILE_QUESTION_WRONG:
+                [background setImage:[UIImage imageNamed:@"tile_question_wrong"]];
+                break;
+                
+            case TILE_QUESTION_INPUT:
+                [background setImage:[UIImage imageNamed:@"tile_question_input"]];
+                break;
+                
+            case TILE_LETTER_EMPTY:
+                [background setImage:[UIImage imageNamed:@"tile_letter_empty"]];
+                break;
+                
+            case TILE_LETTER_CORRECT_INPUT:
+            case TILE_LETTER_CORRECT:
+            {
+                [background setImage:[[TileImageHelper sharedHelper] letterForType:tileData.letterType andIndex:tileData.currentLetterIdx]];
+            }
+                break;
+                
+            case TILE_LETTER_WRONG:
+                [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_WRONG andIndex:tileData.currentLetterIdx]];
+                break;
+                
+            case TILE_LETTER_EMPTY_INPUT:
+                [background setImage:[UIImage imageNamed:@"tile_letter_empty_input"]];
+                break;
+                
+            case TILE_LETTER_INPUT:
+            {
+                [background setImage:[[TileImageHelper sharedHelper] letterForType:LETTER_INPUT andIndex:tileData.currentLetterIdx]];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    oldState = tileData.state;
     if (tileData.state == TILE_QUESTION_NEW || tileData.state == TILE_QUESTION_CORRECT || tileData.state == TILE_QUESTION_WRONG || tileData.state == TILE_QUESTION_INPUT)
     {
         questionLabel.text = tileData.question;
@@ -373,6 +382,31 @@
             arrow.image = [UIImage imageNamed:arrowDone ? @"tile_arrow_northwest_right_done" : @"tile_arrow_northwest_right"];
             break;
     }
+}
+
+-(void)animateToCorrect
+{
+    UIImageView * foreground = [[UIImageView alloc] initWithImage:[[TileImageHelper sharedHelper] letterForType:tileData.letterType andIndex:tileData.currentLetterIdx]];
+    foreground.alpha = 0;
+    foreground.frame = background.frame;
+    [self insertSubview:foreground aboveSubview:background];
+
+    CGRect originalFrame = background.frame;
+    CGRect zoomedFrame = CGRectMake(originalFrame.origin.x - originalFrame.size.width * 0.1f, originalFrame.origin.y - originalFrame.size.height * 0.1f, originalFrame.size.width * 1.2f, originalFrame.size.height * 1.2f);
+    
+    [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseOut animations:^{
+        background.frame = zoomedFrame;
+        foreground.frame = zoomedFrame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.4f delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseOut animations:^{
+            background.frame = originalFrame;
+            foreground.frame = originalFrame;
+            foreground.alpha = 1;
+        } completion:^(BOOL finished) {
+            background.image = foreground.image;
+            [foreground removeFromSuperview];
+        }];
+    }];
 }
 
 -(void)onTap
