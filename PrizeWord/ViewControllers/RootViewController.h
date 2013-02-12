@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PrizeWordSwitchView.h"
+#import "ExternalImage.h"
 
 @class PrizeWordNavigationController;
 
@@ -19,7 +20,7 @@
     IBOutlet PrizeWordSwitchView *mainMenuFBSwitch;
     IBOutlet PrizeWordSwitchView *mainMenuNotificationsSwitch;
     IBOutlet UILabel *mainMenuUserName;
-    IBOutlet UIImageView *mainMenuAvatar;
+    IBOutlet ExternalImage *mainMenuAvatar;
     IBOutlet UILabel *mainMenuMaxScore;
     IBOutlet UILabel *mainMenuYourResult;
     IBOutlet UIButton *btnScore;

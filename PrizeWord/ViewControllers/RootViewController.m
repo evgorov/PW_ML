@@ -162,7 +162,14 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [mainMenuUserName setFont:dinFont];
     mainMenuMaxScore.text = [NSString stringWithFormat:@"%d очков", [GlobalData globalData].loggedInUser.high_score];
     mainMenuUserName.text = [NSString stringWithFormat:@"%@ %@", [GlobalData globalData].loggedInUser.first_name, [GlobalData globalData].loggedInUser.last_name];
-    mainMenuAvatar.image = [GlobalData globalData].loggedInUser.userpic;
+    [mainMenuAvatar clear];
+    if ([GlobalData globalData].loggedInUser.userpic != nil) {
+        mainMenuAvatar.image = [GlobalData globalData].loggedInUser.userpic;
+    }
+    else if ([GlobalData globalData].loggedInUser.userpic_url != nil)
+    {
+        [mainMenuAvatar loadImageFromURL:[NSURL URLWithString:[GlobalData globalData].loggedInUser.userpic_url]];
+    }
     
     UIFont * font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 18 : 13)];
     while (btnScore.subviews.count > 1) {

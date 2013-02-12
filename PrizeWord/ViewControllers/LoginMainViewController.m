@@ -140,6 +140,7 @@
         [self showActivityIndicator];
         APIRequest * apiRequest = [APIRequest getRequest:@"vkontakte/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
+            NSLog(@"vkontakte/authorize: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             if (response.statusCode == 200)
             {
                 SBJsonParser * parser = [SBJsonParser new];
