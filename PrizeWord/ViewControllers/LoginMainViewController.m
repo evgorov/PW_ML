@@ -18,8 +18,8 @@
 
 @interface LoginMainViewController ()
 
--(void)gotoRoot:(id)sender;
--(void)handleFacebookLoggedIn;
+-(NSDictionary*)parseURLParams:(NSString *)query;
+-(void)finalizeAuthorizationWithToken:(NSString *)accessToken forProvider:(NSString *)provider;
 
 @end
 
@@ -63,7 +63,7 @@
                 if (error == nil)
                 {
                     [GlobalData globalData].fbSession = session;
-                    [self handleFacebookLoggedIn];
+                    [self finalizeAuthorizationWithToken:session.accessToken forProvider:@"facebook"];
                 }
                 else
                 {
@@ -77,7 +77,7 @@
             return;
         }
     }
-    [self handleFacebookLoggedIn];
+    [self finalizeAuthorizationWithToken:[GlobalData globalData].fbSession.accessToken forProvider:@"facebook"];
 }
 
 - (IBAction)handleVKClick:(UIButton *)sender
@@ -87,6 +87,7 @@
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]]];
     NSLog(@"request: %@", request.URL.path);
     vkWebView.delegate = self;
+    vkWebView.hidden = YES;
     [vkWebView loadRequest:request];
 }
 
@@ -96,43 +97,23 @@
     [self.navigationController pushViewController:[ReleaseNotesViewController new] animated:YES];
 }
 
--(void)handleFacebookLoggedIn
-{
-    [self showActivityIndicator];
-    APIRequest * request = [APIRequest getRequest:@"facebook/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        [self hideActivityIndicator];
-        if (response.statusCode == 200)
-        {
-            NSLog(@"facebook/authorize: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
-            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
-        }
-        else
-        {
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSLog(@"error: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);		
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:[data objectForKey:@"message"] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-            alert.tag = 1;
-            [alert show];
-        }
-    } failCallback:^(NSError *error) {
-        [self hideActivityIndicator];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-        alert.tag = 1;
-        [alert show];
-    }];
-    [request.params setObject:[GlobalData globalData].fbSession.accessToken forKey:@"access_token"];
-    [request runSilent];
-}
-
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ([request.URL.path compare:@"/vkontakte/authorize"] == NSOrderedSame)
+    NSLog(@"vkontakte: %@", request.description);
+    NSDictionary * params = [self parseURLParams:request.URL.query];
+    if ([params objectForKey:@"access_token"])
+    {
+        [webView removeFromSuperview];
+        [self finalizeAuthorizationWithToken:[params objectForKey:@"access_token"] forProvider:@"vkontakte"];
+        return NO;
+    }
+    else if ([params objectForKey:@"act"] != nil && [params objectForKey:@"cancel"] != nil && [(NSString *)[params objectForKey:@"act"] compare:@"grant_access"] == NSOrderedSame && [(NSString *)[params objectForKey:@"cancel"] compare:@"1"] == NSOrderedSame)
+    {
+        [self hideActivityIndicator];
+        [webView removeFromSuperview];
+        return NO;
+    }
+    else if ([request.URL.path compare:@"/vkontakte/authorize"] == NSOrderedSame)
     {
         [webView removeFromSuperview];
         NSLog(@"url: %@", request.URL.query);
@@ -153,11 +134,6 @@
         } failCallback:^(NSError *error) {
             [self hideActivityIndicator];
             NSLog(@"vk error: %@", error.description);
-            /*
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-            alert.tag = 2;
-            [alert show];
-            */
         }];
         [apiRequest.params setObject:@"vkontakte" forKey:@"provider_name"];
         [apiRequest.params setObject:[request.URL.query substringFromIndex:[request.URL.query rangeOfString:@"="].location + 1] forKey:@"code"];
@@ -167,7 +143,6 @@
     }
     else
     {
-        NSLog(@"should start? %@", request.URL.path);
         return YES;
     }
 }
@@ -181,23 +156,68 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"login complete!");
-//    [webView removeFromSuperview];
-//    [self hideActivityIndicator];
+    NSLog(@"vkontakte page loaded");
+    webView.hidden = NO;
 }
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {
-    NSLog(@"login did start load");
 }
 
--(void)gotoRoot:(id)sender
+
+
+-(NSDictionary*)parseURLParams:(NSString *)query
 {
-    [self hideActivityIndicator];
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];
-//    [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs)
+    {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [[kv objectAtIndex:1]
+         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [params setObject:val forKey:[[kv objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSLog(@"params: %@=%@", [[kv objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [[kv objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
+    }
+    return params;
 }
 
+-(void)finalizeAuthorizationWithToken:(NSString *)accessToken forProvider:(NSString *)provider
+{
+    [self showActivityIndicator];
+    lastAccessToken = accessToken;
+    lastProvider = provider;
+    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/authorize", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        [self hideActivityIndicator];
+        if (response.statusCode == 200)
+        {
+            NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        }
+        else
+        {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            NSLog(@"error: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:[data objectForKey:@"message"] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+            alert.tag = 1;
+            [alert show];
+        }
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        alert.tag = 1;
+        [alert show];
+    }];
+    [request.params setObject:accessToken forKey:@"access_token"];
+    [request runSilent];
+}
 
 -(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -209,7 +229,7 @@
         }
         else if (alertView.tag == 1)
         {
-            [self handleFacebookLoggedIn];
+            [self finalizeAuthorizationWithToken:lastAccessToken forProvider:lastProvider];
         }
     }
 }

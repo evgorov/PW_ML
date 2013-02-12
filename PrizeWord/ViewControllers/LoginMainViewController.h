@@ -11,6 +11,8 @@
 
 @interface LoginMainViewController : PrizeWordViewController<UIAlertViewDelegate, UIWebViewDelegate>
 {
+    NSString * lastAccessToken;
+    NSString * lastProvider;
 }
 
 @end
