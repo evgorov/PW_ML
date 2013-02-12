@@ -53,6 +53,7 @@ int HEADER_HEIGHT = 24;
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"viewWillAppear");
     self.title = [NSString stringWithFormat:@"%d-ой в рейтинге", [GlobalData globalData].loggedInUser.position];
     
     [super viewWillAppear:animated];
@@ -88,6 +89,21 @@ int HEADER_HEIGHT = 24;
     [request.params setValue:@"100" forKey:@"limit"];
     [request runSilent];
     [self showActivityIndicator];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidAppear");
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"viewWillDisappear");
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"viewDidDisappear");
 }
 
 #pragma mark UITableViewDelegate, UITableViewDataSource

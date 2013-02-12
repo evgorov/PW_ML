@@ -82,7 +82,10 @@
     
     if (top != nil)
     {
-        [top viewWillDisappear:animated];
+        if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
+        {
+            [top viewWillDisappear:animated];
+        }
     }
     if (self.topViewController.navigationItem.leftBarButtonItem == nil)
     {
@@ -94,12 +97,18 @@
 
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [viewController viewDidAppear:animated];
+    if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
+    {
+        [viewController viewDidAppear:animated];
+    }
 }
 
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [viewController viewWillAppear:animated];
+    if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
+    {
+        [viewController viewWillAppear:animated];
+    }
 }
 
 -(void)handleBackTap:(UIButton *)sender

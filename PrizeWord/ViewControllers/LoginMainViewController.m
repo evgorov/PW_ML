@@ -44,7 +44,7 @@
 
 - (IBAction)handleFacebookClick:(UIButton *)sender
 {
-    if ([GlobalData globalData].fbSession == nil || ![GlobalData globalData].fbSession.isOpen)
+    if ([GlobalData globalData].fbSession == nil || ![GlobalData globalData].fbSession.isOpen || [[GlobalData globalData].fbSession.expirationDate compare:[NSDate new]] == NSOrderedDescending)
     {
         // create a fresh session object
         [GlobalData globalData].fbSession = [[FBSession alloc] init];
