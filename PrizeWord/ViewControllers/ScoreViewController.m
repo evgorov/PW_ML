@@ -60,9 +60,6 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
     [self addFramedView:puzzlesView];
     [self addFramedView:invitesView];
-    
-    [self updateInvited:@"facebook"];
-    [self updateInvited:@"vkontakte"];
 }
 
 - (void)viewDidUnload
@@ -74,6 +71,19 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     lblInvitesFriendsCount = nil;
     lblInvitesFriendsLabel = nil;
     [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ([[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    {
+        [self updateInvited:@"vkontakte"];
+    }
+    else if  ([[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    {
+        [self updateInvited:@"facebook"];
+    }
 }
 
 - (IBAction)handleInviteClick:(id)sender
@@ -93,6 +103,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", providerName] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
         [updateInProgress removeObjectForKey:providerName];
+        NSLog(@"updateInvited %@ complete: %@", providerName, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         if (response.statusCode == 200)
         {
             float yOffset = invitesView.frame.size.height - ([AppDelegate currentDelegate].isIPad ? 110 : 75);
@@ -109,7 +120,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
                 userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
                 [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
                 userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
-                [invitesView addSubview:userView];
+                [invitesView insertSubview:userView atIndex:0];
                 yOffset += userView.frame.size.height;
                 invitedFriends++;
             }
