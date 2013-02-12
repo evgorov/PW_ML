@@ -267,17 +267,20 @@
         [self showActivityIndicator];
         
         NSMutableString * usersString = [NSMutableString new];
+        int count = 0;
         for (NSDictionary * userData in fbFriends)
         {
             if ([(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame)
             {
-                if (usersString.length != 0)
-                {
-                    [usersString appendString:@","];
-                }
-                [usersString appendFormat:@"%@", [userData objectForKey:@"id"]];
+                [usersString appendFormat:@"%@,", [userData objectForKey:@"id"]];
+                ++count;
+            }
+            if (count >= 50)
+            {
+                break;
             }
         }
+        NSLog(@"invite fb friends: %@", usersString);
         NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        @"PrizeWord Hello!", @"title",
                                        @"Come check out PrizeWord.",  @"message",
@@ -391,6 +394,16 @@
     NSLog(@"dialog error: %@", error.description);
 }
 
+-(void)dialogDidComplete:(FBDialog *)dialog
+{
+    NSLog(@"dialogDidComplete");
+}
+
+-(void)dialogDidNotCompleteWithUrl:(NSURL *)url
+{
+    NSLog(@"dialogDidNotCompleteWithURL: %@", url.description);
+}
+
 -(void)dialogCompleteWithUrl:(NSURL *)url
 {
     NSLog(@"dialog complete with URL: %@", url.description);
@@ -447,6 +460,7 @@
 {
     NSLog(@"dialog should open external url: %@", url.description);
     return YES;
+    
 }
 
 -(NSDictionary*)parseURLParams:(NSString *)query
