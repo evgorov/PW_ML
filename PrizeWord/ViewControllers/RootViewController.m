@@ -17,10 +17,11 @@
 #import "AppDelegate.h"
 #import "GlobalData.h"
 #import "UserData.h"
+#import "EventManager.h"
 
 @interface RootViewController (private)
 
--(void)clearCurrentView;
+-(void)updateUserInfo;
 
 -(void)handlePageButtonClick:(id)sender;
 -(void)handleRulesMenuClick:(id)sender;
@@ -96,6 +97,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     UISwipeGestureRecognizer * swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeRight:)];
     swipeRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
+    
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
 }
 
 - (void)viewDidUnload
@@ -113,6 +116,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     mainMenuMaxScore = nil;
     mainMenuUserName = nil;
     mainMenuYourResult = nil;
+    
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
+    
     [super viewDidUnload];
 }
 
@@ -131,35 +137,16 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     }
 }
 
--(void)showMenuAnimated:(BOOL)animated
+-(void)handleEvent:(Event *)event
 {
-    if (!_isMenuHidden)
-        return;
-    _isMenuHidden = NO;
-    if (animated)
+    if (event.type == EVENT_ME_UPDATED)
     {
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [UIView animateWithDuration:0.3 animations:^{
-            mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
-            navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-            if ([AppDelegate currentDelegate].isIPad)
-            {
-                navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width - mainMenuView.frame.size.width, navController.navigationBar.frame.size.height);
-            }
-        }];
+        [self updateUserInfo];
     }
-    else
-    {
-        mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
-        navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        if ([AppDelegate currentDelegate].isIPad)
-        {
-            navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width - mainMenuView.frame.size.width, navController.navigationBar.frame.size.height);
-        }
-    }
+}
 
-    UIFont * dinFont = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 16 : 13)];
-    [mainMenuUserName setFont:dinFont];
+-(void)updateUserInfo
+{
     mainMenuMaxScore.text = [NSString stringWithFormat:@"%d очков", [GlobalData globalData].loggedInUser.high_score];
     mainMenuUserName.text = [NSString stringWithFormat:@"%@ %@", [GlobalData globalData].loggedInUser.first_name, [GlobalData globalData].loggedInUser.last_name];
     [mainMenuAvatar clear];
@@ -170,6 +157,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     {
         [mainMenuAvatar loadImageFromURL:[NSURL URLWithString:[GlobalData globalData].loggedInUser.userpic_url]];
     }
+
+    UIFont * dinFont = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 16 : 13)];
+    [mainMenuUserName setFont:dinFont];
     
     UIFont * font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 18 : 13)];
     while (btnScore.subviews.count > 1) {
@@ -225,6 +215,36 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     lblRatingSuffix.shadowOffset = CGSizeMake(0, -1);
     lblRatingSuffix.text = @"в рейтинге";
     [btnRating addSubview:lblRatingSuffix];
+}
+
+-(void)showMenuAnimated:(BOOL)animated
+{
+    if (!_isMenuHidden)
+        return;
+    _isMenuHidden = NO;
+    if (animated)
+    {
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView animateWithDuration:0.3 animations:^{
+            mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
+            navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+            if ([AppDelegate currentDelegate].isIPad)
+            {
+                navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width - mainMenuView.frame.size.width, navController.navigationBar.frame.size.height);
+            }
+        }];
+    }
+    else
+    {
+        mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
+        navController.view.frame = CGRectMake(mainMenuView.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        if ([AppDelegate currentDelegate].isIPad)
+        {
+            navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width - mainMenuView.frame.size.width, navController.navigationBar.frame.size.height);
+        }
+    }
+
+    [self updateUserInfo];
 }
 
 -(void)hideMenuAnimated:(BOOL)animated

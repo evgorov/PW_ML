@@ -17,6 +17,7 @@
 #import "APIRequest.h"
 #import "GlobalData.h"
 #import "UserData.h"
+#import "SBJsonParser.h"
 
 @interface GameField (private)
 
@@ -543,6 +544,7 @@
         {
             APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                [[GlobalData globalData] loadMe];
             } failCallback:^(NSError *error) {
                 NSLog(@"score error! %@", error.description);
             }];
@@ -550,6 +552,7 @@
             [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
             [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
             [request.params setObject:@"1" forKey:@"solved"];
+            [request.params setObject:_puzzle.puzzle_id forKey:@"source"];
             [request runSilent];
             [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
         }

@@ -11,6 +11,7 @@
 #import "PuzzleSetData.h"
 #import "SBJson.h"
 #import "UserData.h"
+#import "EventManager.h"
 
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
 
@@ -81,6 +82,32 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");
         onComplete();
+    }];
+    [request.params setObject:_sessionKey forKey:@"session_key"];
+    [request runSilent];
+}
+
+-(void)loadMe
+{
+    APIRequest * request = [APIRequest getRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        if (response.statusCode == 200)
+        {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            NSLog(@"me: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            if (newMe != nil)
+            {
+                _loggedInUser = newMe;
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:_loggedInUser]];
+            }
+        }
+        else
+        {
+            NSLog(@"me response: %@", response.description);
+        }
+    } failCallback:^(NSError *error) {
+        NSLog(@"me error: %@", error.description);
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request runSilent];

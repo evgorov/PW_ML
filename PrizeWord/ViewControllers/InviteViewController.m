@@ -182,7 +182,6 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        // TODO :: add score
         [self hideActivityIndicator];
         for (UIView * subview in vkView.subviews) {
             if ([subview isKindOfClass:[InviteCellView class]])
@@ -194,6 +193,20 @@
                 }
             }
         }
+        
+        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            [[GlobalData globalData] loadMe];
+        } failCallback:^(NSError *error) {
+            NSLog(@"score error! %@", error.description);
+        }];
+        
+        NSDictionary * userData = [vkFriends objectAtIndex:idx];
+        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [request.params setObject:@"400" forKey:@"score"];
+        [request.params setObject:[NSString stringWithFormat:@"friend_vk#%@", [userData objectForKey:@"id"]] forKey:@"source"];
+        [request runSilent];
+        
     } failCallback:^(NSError *error) {
         NSLog(@"invite failed: %@", error.description);
         [self hideActivityIndicator];
@@ -428,7 +441,6 @@
         }];
         APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            // TODO :: add score
             [self hideActivityIndicator];
             for (UIView * subview in fbView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
@@ -437,6 +449,18 @@
                     if ([userIds rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.tag] objectForKey:@"id"]].location != NSNotFound)
                     {
                         inviteView.btnAdd.enabled = NO;
+                        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                            [[GlobalData globalData] loadMe];
+                        } failCallback:^(NSError *error) {
+                            NSLog(@"score error! %@", error.description);
+                        }];
+                        
+                        NSDictionary * userData = [vkFriends objectAtIndex:inviteView.tag];
+                        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+                        [request.params setObject:@"400" forKey:@"score"];
+                        [request.params setObject:[NSString stringWithFormat:@"friend_fb#%@", [userData objectForKey:@"id"]] forKey:@"source"];
+                        [request runSilent];
                     }
                 }
             }

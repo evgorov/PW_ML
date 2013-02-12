@@ -23,5 +23,6 @@
 @property () int currentYear;
 
 -(void)loadMonthSets:(void(^)())onComplete;
+-(void)loadMe;
 
 @end

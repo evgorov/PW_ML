@@ -26,6 +26,7 @@ typedef enum EventType {
     EVENT_TILE_TAP,
     
     EVENT_PUZZLE_SYNCHRONIZED,
+    EVENT_ME_UPDATED,
     
     EVENTS_COUNT
 } EventType;
