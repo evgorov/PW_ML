@@ -22,6 +22,8 @@
 -(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
 -(void)handleEnterFailed:(NSError *)error;
 
+-(void)handleBackgroundTap:(id)sender;
+
 @end
 
 @implementation LoginEnterViewController
@@ -33,6 +35,10 @@
     scrollView.autoresizesSubviews = NO;
     scrollView.bounces = NO;
     scrollView.contentSize = self.view.frame.size;
+    UITapGestureRecognizer * tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    tapGestureRecognizer.numberOfTouchesRequired = 1;
+    [scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)viewDidUnload {
@@ -179,6 +185,14 @@
             scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         }];
     activeResponder = nil;
+}
+
+-(void)handleBackgroundTap:(id)sender
+{
+    if (activeResponder != nil)
+    {
+        [activeResponder resignFirstResponder];
+    }
 }
 
 

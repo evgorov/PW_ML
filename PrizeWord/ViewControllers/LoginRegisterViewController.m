@@ -21,6 +21,7 @@
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
 -(void)handleSignupFailed:(NSError *)error;
+-(void)handleBackgroundTap:(id)sender;
 
 @end
 
@@ -37,6 +38,10 @@
     datePicker.date = [NSDate new];
     [self handleDateChanged:self];
     avatar = nil;
+    UITapGestureRecognizer * tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    tapGestureRecognizer.numberOfTouchesRequired = 1;
+    [scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning
@@ -281,6 +286,15 @@
             scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         }];
     }
+}
+
+-(void)handleBackgroundTap:(id)sender
+{
+    if (activeResponder != nil)
+    {
+        [activeResponder resignFirstResponder];
+    }
+    [self handleDatePickerDoneClick:sender];
 }
 
 -(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex

@@ -15,6 +15,7 @@
 -(void)handleSent:(id)sender;
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
+-(void)handleBackgroundTap:(id)sender;
 
 @end
 
@@ -24,6 +25,10 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"TITLE_RECOVER", nil);
+    UITapGestureRecognizer * tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    tapGestureRecognizer.numberOfTouchesRequired = 1;
+    [scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -94,6 +99,12 @@
     [UIView animateWithDuration:animationDuration animations:^{
         scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     }];
+}
+
+
+-(void)handleBackgroundTap:(id)sender
+{
+    [txtEmail resignFirstResponder];
 }
 
 - (void)viewDidUnload {
