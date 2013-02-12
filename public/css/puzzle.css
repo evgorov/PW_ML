@@ -60,6 +60,7 @@
 
 [data-current="true"]{
     opacity: 0.8;
+    -webkit-filter: hue-rotate(50deg);
 }
 
 .token:hover{
@@ -135,7 +136,6 @@
   background-size: 400px;
   z-index: 1;
   content: '';
-
 }
 
 [data-type="hint"][data-arrow="north:left"]:before{
@@ -470,3 +470,139 @@
     text-align: center;
 }
 
+[data-arrow-control]{
+  width: 50px;
+  height: 50px;
+  background-image: url(../img/puzzle-background.jpg);
+  background-size: 400px;
+  z-index: 1;
+  content: '';
+}
+
+[data-arrow-control="north:left"]{
+    background-position: -200px 0;
+}
+
+[data-arrow-control="north:top"]{
+    background-position: -150px 0;
+}
+
+[data-arrow-control="north:right"]{
+    background-position: -50px 0;
+}
+
+[data-arrow-control="north-east:left"]{
+    background-position: -100px -150px;
+}
+
+[data-arrow-control="north-east:top"]{}
+
+[data-arrow-control="north-east:right"]{}
+
+[data-arrow-control="north-east:bottom"]{
+    background-position: -250px -50px;
+}
+
+[data-arrow-control="east:top"]{
+    background-position: -200px -50px;
+}
+
+[data-arrow-control="east:right"]{
+    background-position: -150px -50px;
+}
+
+[data-arrow-control="east:bottom"]{
+    background-position: -50px -50px;
+}
+
+[data-arrow-control="south-east:left"]{
+    background-position: -250px -100px;
+}
+
+[data-arrow-control="south-east:top"]{
+    background-position: -100px -50px;
+}
+
+[data-arrow-control="south-east:right"]{}
+
+[data-arrow-control="south-east:bottom"]{}
+
+[data-arrow-control="south:left"]{
+    background-position: -50px -100px;
+}
+
+[data-arrow-control="south:right"]{
+    background-position: -200px -100px;
+}
+
+[data-arrow-control="south:bottom"]{
+    background-position: -150px -100px;
+}
+
+[data-arrow-control="south-west:left"]{}
+
+[data-arrow-control="south-west:top"]{
+    background-position: -250px 0px;
+}
+
+[data-arrow-control="south-west:right"]{
+    background-position: -100px -100px;
+}
+
+[data-arrow-control="south-west:bottom"]{}
+
+[data-arrow-control="west:left"]{
+    background-position: -150px -150px;
+}
+
+[data-arrow-control="west:top"]{
+    background-position: -50px -150px;
+}
+
+[data-arrow-control="west:bottom"]{
+    background-position: -200px -150px;
+}
+
+[data-arrow-control="north-west:left"]{}
+
+[data-arrow-control="north-west:top"]{}
+
+[data-arrow-control="north-west:right"]{
+    background-position: -250px -150px;
+}
+
+[data-arrow-control="north-west:bottom"]{
+    background-position: -100px -0px;
+}
+
+.arrow-select{ display: none!important; }
+
+.arrow-control-hover-wrapper { position: relative; }
+.arrow-control-hover{
+    position: absolute;
+    left: -210px;
+    top: -174px;
+    cursor: pointer;
+    display: none;
+}
+.arrow-control-hover [data-arrow-control]{position: absolute;}
+.arrow-control-hover [data-arrow-control="north:left"]{ left: 184px; top: 25px; }
+.arrow-control-hover [data-arrow-control="north:top"]{ left: 211px; top: 77px; }
+.arrow-control-hover [data-arrow-control="north:right"]{ left: 236px; top: 26px; }
+.arrow-control-hover [data-arrow-control="north-east:left"]{ left: 296px; top: 39px; }
+.arrow-control-hover [data-arrow-control="north-east:bottom"]{ left: 348px; top: 40px; }
+.arrow-control-hover [data-arrow-control="east:top"]{ left: 312px; top: 97px; }
+.arrow-control-hover [data-arrow-control="east:right"]{ left: 260px; top: 124px; }
+.arrow-control-hover [data-arrow-control="east:bottom"]{ left: 313px; top: 150px; }
+.arrow-control-hover [data-arrow-control="south-east:top"]{ left: 352px; top: 211px; }
+.arrow-control-hover [data-arrow-control="south-east:left"]{ left: 299px; top: 211px; }
+.arrow-control-hover [data-arrow-control="south:right"]{ left: 238px; top: 225px; }
+.arrow-control-hover [data-arrow-control="south:bottom"]{ left: 210px; top: 172px; }
+.arrow-control-hover [data-arrow-control="south:left"]{ left: 183px; top: 225px; }
+.arrow-control-hover [data-arrow-control="south-west:right"]{ left: 126px; top: 213px; }
+.arrow-control-hover [data-arrow-control="south-west:top"]{ left: 73px; top: 213px; }
+.arrow-control-hover [data-arrow-control="west:bottom"]{ left: 108px; top: 149px; }
+.arrow-control-hover [data-arrow-control="west:left"]{ left: 160px; top: 124px; }
+.arrow-control-hover [data-arrow-control="west:top"]{ left: 108px; top: 99px; }
+.arrow-control-hover [data-arrow-control="north-west:bottom"]{ left: 77px; top: 39px; }
+.arrow-control-hover [data-arrow-control="north-west:right"]{ left: 130px; top: 39px; }

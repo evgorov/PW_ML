@@ -311,7 +311,22 @@ var PuzzleView = Backbone.View.extend({
     'change [role^="puzzle"]': 'updatePuzzleAtribute',
     'click [role="cancel-puzzle"]': 'cancelPuzzle',
     'focus input, textarea': 'setCurrent',
-    'blur input, textarea': 'removeCurrent'
+    'blur input, textarea': 'removeCurrent',
+    'click [role="current-arrow"]': 'showArrowPicker',
+    'click [role="arrow-control-hover"] [data-arrow-control]': 'selectArrow'
+  },
+
+  showArrowPicker: function(e){
+    e.preventDefault();
+    $(e.target).parent().find('[role="arrow-control-hover"]').toggle();
+  },
+
+  selectArrow: function(e){
+    e.preventDefault();
+    var val = $(e.target).attr('data-arrow-control');
+    $(e.target).closest('[role="arrow-control-hover"]').hide();
+    $(e.target).closest('[role="question"]').find('[role="arrow-select"]').val(val).change();
+    $(e.target).closest('[role="question"]').find('[role="current-arrow"]').attr('data-arrow-control', val);
   },
 
   setCurrent: function(e){
@@ -440,6 +455,7 @@ var PuzzleView = Backbone.View.extend({
     _(this.model.get('questions')).each(function(question){
       var $q = $(this.rowTemplate(question));
       $q.find('select').val(question.answer_position);
+      $q.find('[role="current-arrow"]').attr('data-arrow-control', question.answer_position);
       $questions.append($q);
     }, this);
 
