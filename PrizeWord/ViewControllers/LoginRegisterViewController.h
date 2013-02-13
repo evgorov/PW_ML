@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PrizeWordViewController.h"
 
-@interface LoginRegisterViewController : PrizeWordViewController<UITextFieldDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface LoginRegisterViewController : PrizeWordViewController<UITextFieldDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIPopoverControllerDelegate>
 {
     IBOutlet UIScrollView * scrollView;
     IBOutlet UIImageView * imgBackground;
@@ -27,6 +27,7 @@
     
     UIView * activeResponder;
     UIImage * avatar;
+    UIPopoverController * popoverController;
 }
 
 @end

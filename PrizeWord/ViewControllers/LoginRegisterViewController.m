@@ -13,6 +13,7 @@
 #import "SBJson.h"
 #import "UserData.h"
 #import <MobileCoreServices/UTCoreTypes.h>
+#import "AppDelegate.h"
 
 @interface LoginRegisterViewController ()
 
@@ -94,10 +95,19 @@
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
     imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    if ([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
-        [self presentViewController:imagePickerController animated:YES completion:nil];
-    } else {
-        [self presentModalViewController:imagePickerController animated:YES];
+    if ([AppDelegate currentDelegate].isIPad && imagePickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+    {
+        popoverController = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
+        popoverController.delegate = self;
+        [popoverController presentPopoverFromRect:btnAvatar.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        if ([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
+            [self presentViewController:imagePickerController animated:YES completion:nil];
+        } else {
+            [self presentModalViewController:imagePickerController animated:YES];
+        }
     }
 }
 
@@ -317,13 +327,20 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    if ([picker respondsToSelector:@selector(presentingViewController)])
+    if ([AppDelegate currentDelegate].isIPad && picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
     {
-        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [(UIPopoverController *)picker.parentViewController dismissPopoverAnimated:YES];
     }
     else
     {
-        [picker.parentViewController dismissModalViewControllerAnimated:YES];
+        if ([picker respondsToSelector:@selector(presentingViewController)])
+        {
+            [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [picker.parentViewController dismissModalViewControllerAnimated:YES];
+        }
     }
 }
 
@@ -349,14 +366,7 @@
     [btnAvatar setBackgroundImage:avatar forState:UIControlStateNormal];
     [btnAvatar setBackgroundImage:nil forState:UIControlStateHighlighted];
 
-    if ([picker respondsToSelector:@selector(presentingViewController)])
-    {
-        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        [picker.parentViewController dismissModalViewControllerAnimated:YES];
-    }
+    [self imagePickerControllerDidCancel:picker];
 }
 
 @end
