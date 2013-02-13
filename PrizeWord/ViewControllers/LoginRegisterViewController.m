@@ -41,6 +41,7 @@
     UITapGestureRecognizer * tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
     tapGestureRecognizer.numberOfTouchesRequired = 1;
+    tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
@@ -89,7 +90,7 @@
 - (IBAction)handleAvaClick:(id)sender
 {
     UIImagePickerController * imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    imagePickerController.sourceType = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerController.delegate = self;
     imagePickerController.allowsEditing = YES;
     imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
@@ -286,6 +287,15 @@
             scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         }];
     }
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([touch.view isKindOfClass:[UIButton class]])
+    {
+        return NO;
+    }
+    return YES;
 }
 
 -(void)handleBackgroundTap:(id)sender
