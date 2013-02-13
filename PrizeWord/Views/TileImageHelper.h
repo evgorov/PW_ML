@@ -24,5 +24,6 @@
 +(TileImageHelper *)sharedHelper;
 
 -(UIImage *)letterForType:(LetterType)type andIndex:(uint)index;
+-(UIImage *)correctQuestionForType:(LetterType)type;
 
 @end

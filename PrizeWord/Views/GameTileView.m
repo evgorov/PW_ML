@@ -148,7 +148,7 @@
                 break;
                 
             case TILE_QUESTION_CORRECT:
-                [background setImage:[UIImage imageNamed:@"tile_question_correct"]];
+                [background setImage:[[TileImageHelper sharedHelper] correctQuestionForType:tileData.letterType]];
                 break;
                 
             case TILE_QUESTION_WRONG:

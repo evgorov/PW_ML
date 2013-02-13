@@ -439,6 +439,7 @@
                 [userIds appendFormat:@"%@", obj];
             }
         }];
+        NSLog(@"userIds: %@", userIds);
         APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             [self hideActivityIndicator];

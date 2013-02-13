@@ -496,7 +496,7 @@
     if ((question.answerPosition & kAnswerPositionRight) != 0)
         offsetX++;
     uint len = question.answer.length;
-    for (uint i = 0; i != len; ++i, letterX += offsetX, letterY += offsetY)
+    for (uint i = 0; i < len; ++i, letterX += offsetX, letterY += offsetY)
     {
         TileData * letter = [tiles objectAtIndex:(letterX + letterY * _tilesPerRow)];
         [word addObject:letter];

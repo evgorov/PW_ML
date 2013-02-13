@@ -103,4 +103,25 @@ static TileImageHelper * _sharedHelper = nil;
     return nil;
 }
 
+-(UIImage *)correctQuestionForType:(LetterType)type
+{
+    switch (type) {
+        case LETTER_BRILLIANT:
+            return [UIImage imageNamed:@"tile_question_correct_brilliant.png"];
+            
+        case LETTER_GOLD:
+            return [UIImage imageNamed:@"tile_question_correct_gold.png"];
+            
+        case LETTER_SILVER:
+            return [UIImage imageNamed:@"tile_question_correct_silver.png"];
+            
+        case LETTER_FREE:
+            return [UIImage imageNamed:@"tile_question_correct_free.png"];
+            
+        default:
+            break;
+    }
+    return nil;
+}
+
 @end
