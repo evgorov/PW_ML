@@ -456,7 +456,7 @@
                             NSLog(@"score error! %@", error.description);
                         }];
                         
-                        NSDictionary * userData = [vkFriends objectAtIndex:inviteView.tag];
+                        NSDictionary * userData = [fbFriends objectAtIndex:inviteView.tag];
                         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
                         [request.params setObject:@"400" forKey:@"score"];
                         [request.params setObject:[NSString stringWithFormat:@"friend_fb#%@", [userData objectForKey:@"id"]] forKey:@"source"];
