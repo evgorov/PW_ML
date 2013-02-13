@@ -57,6 +57,7 @@ int HEADER_HEIGHT = 24;
     self.title = [NSString stringWithFormat:@"%d-ой в рейтинге", [GlobalData globalData].loggedInUser.position];
     
     [super viewWillAppear:animated];
+    [[GlobalData globalData] loadMe];
 
     APIRequest * request = [APIRequest getRequest:@"users" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData)
     {

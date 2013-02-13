@@ -91,6 +91,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 {
     [super viewWillAppear:animated];
     [self showActivityIndicator];
+    [[GlobalData globalData] loadMe];
     [[GlobalData globalData] loadMonthSets:^{
         [self hideActivityIndicator];
         [self updateMonthSets:[GlobalData globalData].monthSets];

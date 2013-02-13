@@ -148,6 +148,8 @@
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithString:receivedString];
             NSArray * solvedData = [data objectForKey:@"solved_questions"];
+            NSNumber * solvedScore = [data objectForKey:@"score"];
+            NSNumber * solvedTimeLeft = [data objectForKey:@"time_left"];
             NSMutableSet * solvedQuestions = [NSMutableSet new];
             for (NSDictionary * questionData in solvedData)
             {
@@ -157,6 +159,23 @@
             }
             BOOL needUpdateServer = NO;
             BOOL wasUpdatedLocal = NO;
+            
+            if (solvedScore.intValue > self.score.intValue)
+            {
+                self.score = solvedScore;
+                wasUpdatedLocal = YES;
+            }
+            
+            if (solvedTimeLeft.intValue > self.time_left.intValue)
+            {
+                needUpdateServer = YES;
+            }
+            else if (solvedTimeLeft.intValue < self.time_left.intValue)
+            {
+                self.time_left = solvedTimeLeft;
+                wasUpdatedLocal = YES;
+            }
+            
             for (QuestionData * question in self.questions)
             {
                 NSNumber * position = [NSNumber numberWithInt:(question.columnAsUint + question.rowAsUint * self.width.intValue)];
@@ -180,6 +199,12 @@
             if (wasUpdatedLocal)
             {
                 [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
+                NSError * error = nil;
+                [[AppDelegate currentDelegate].managedObjectContext save:&error];
+                if (error != nil)
+                {
+                    NSLog(@"puzzle save error: %@", error.description);
+                }
             }
             if (needUpdateServer)
             {
@@ -192,7 +217,7 @@
                     }
                 }
                 
-                NSString * data = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObject:solvedQuestions forKey:@"solved_questions"]];
+                NSString * data = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
                 
                 APIRequest * putRequest = [APIRequest putRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id]  successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                     NSLog(@"put puzzle %@: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);

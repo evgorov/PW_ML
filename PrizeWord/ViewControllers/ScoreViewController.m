@@ -84,6 +84,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     {
         [self updateInvited:@"facebook"];
     }
+    [[GlobalData globalData] loadMe];
 }
 
 - (IBAction)handleInviteClick:(id)sender
