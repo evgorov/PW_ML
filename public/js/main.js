@@ -56,8 +56,17 @@ var Field = Backbone.Model.extend({
 
   updateField: function(){
     var result = {},
-        errors = [];
+        errors = [],
+        width = this.get('width'),
+        height = this.get('height');
+    
     var writeResultCheckConflict = function(coord, value){
+      var x = parseInt(coord.split(':')[0]),
+          y = parseInt(coord.split(':')[1]);
+      if(x > width || y > height){
+        result[coord] = { type: 'error', hasHint : false };
+        return false;
+      }
       if(!result[coord] || (result[coord].type === value.type && result[coord].value === value.value)){
         result[coord] = value;
         return true;
@@ -216,12 +225,11 @@ var FieldView = Backbone.View.extend({
   },
 
   updateCoordinates: function(){
-    for(var x = 1; x <= this.model.get('width'); x++){
-      for(var y = 1; y <= this.model.get('height'); y++){
-        var $token = this.coordinates[[x, y].join(':')];
-        this.setTokenFromCoordinates($token, x, y);
-      }
-    }
+    _(this.coordinates).each(function(v, k){
+        var x = k.split(':')[0],
+            y = k.split(':')[1];
+        this.setTokenFromCoordinates(v, x, y);
+    }, this);
     return this;
   },
 
