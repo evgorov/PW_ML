@@ -100,7 +100,14 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSLog(@"vkontakte: %@", request.description);
-    NSDictionary * params = [self parseURLParams:request.URL.query];
+    NSString * urlString = request.URL.absoluteString;
+    NSString * query = request.URL.query;
+    if ([urlString rangeOfString:@"html#"].location != NSNotFound)
+    {
+        query = [urlString substringFromIndex:[urlString rangeOfString:@"html#"].location + 5];
+    }
+    NSLog(@"query: %@", query);
+    NSDictionary * params = [self parseURLParams:query];
     if ([params objectForKey:@"access_token"])
     {
         [webView removeFromSuperview];
