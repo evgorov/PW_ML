@@ -16,7 +16,7 @@ module FriendsFetcher
           first, last = h.delete('name').split(' ', 2)
           h['first_name'] = first
           h['last_name'] = last
-          h['userpic'] = "http://graph.facebook.com/#{h['id']}/picture"
+          h['userpic'] = "http://graph.facebook.com/#{h['id']}/picture?width=85&height=85"
           h
         end
       else

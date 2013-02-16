@@ -66,7 +66,7 @@ vkontakte_options = {
   redirect_uri: 'http://oauth.vk.com/blank.html',
   login_dialog_uri: 'https://vkontakte.com/dialog/oauth',
   access_token_uri: 'https://graph.vkontakte.com/oauth/access_token',
-  scope: 'email,user_birthday,user_about_me,wall'
+  scope: 'offline,email,user_birthday,user_about_me,wall'
 }
 vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkontakte', vkontakte_options)
 use Middleware::OauthProviderAuthorization, vkontakte_provider

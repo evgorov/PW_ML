@@ -13,7 +13,7 @@ module UserFactory
     def find_or_create_facebook_user(storage, access_token)
       fb_data = facebook_user_info(access_token)
       begin
-        user = FacebookUser.storage(storage).load(fb_data['id'])
+        user = FacebookUser.storage(storage).load("facebook##{fb_data['id']}")
         user['access_token'] = access_token
         user.save
         return user
@@ -29,7 +29,7 @@ module UserFactory
         month, day, year = fb_data['birthday'] && fb_data['birthday'].split('/')
         u['birthdate'] = [year, month, day].join('-')
         u['city'] = fb_data['hometown'] && fb_data['hometown']['name']
-        u['userpic'] = "http://graph.facebook.com/#{fb_data['id']}/picture"
+        u['userpic'] = "http://graph.facebook.com/#{fb_data['id']}/picture?width=85&height=85"
         u.storage(storage).save
       end
     end
@@ -38,7 +38,7 @@ module UserFactory
     def find_or_create_vkontakte_user(storage, access_token)
       vk_data = vkontakte_user_info(access_token)
       begin
-        user = VkontakteUser.storage(storage).load(vk_data['uid'])
+        user = VkontakteUser.storage(storage).load("vkontakte##{vk_data['uid']}")
         user['access_token'] = access_token
         user.save
         return user
@@ -51,6 +51,7 @@ module UserFactory
         u['email'] = ''
         u['name'] = vk_data['first_name']
         u['surname'] = vk_data['last_name']
+        u['userpic'] = vk_data['photo_medium']
         u.storage(storage).save
       end
     end
@@ -71,7 +72,8 @@ module UserFactory
 
     def vkontakte_user_info(access_token)
       response = HTTParty.get('https://api.vk.com/method/getProfiles.json',
-                              query: { 'access_token' => access_token },
+                              query: { 'access_token' => access_token,
+                                       'fields' => 'photo_medium,first_name,last_name,city' },
                               timeout: 10)
       raise VkontakteException unless response.code == 200
       response.to_hash['response'].first.tap { |h|

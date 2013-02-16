@@ -72,7 +72,8 @@ class Middleware::OauthProviderAuthorization < Sinatra::Base
     redirect build_redirect_uri(@provider.login_dialog_uri,
                                 client_id: @provider.client_id,
                                 redirect_uri: oauth_redirect_uri,
-                                scope: @provider.scope)
+                                scope: @provider.scope,
+                                response_type: 'token')
   end
 
   get '/:provider_name/authorize' do
