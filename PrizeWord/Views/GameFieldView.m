@@ -149,6 +149,12 @@
 {
     [super setFrame:frame];
     [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    float dx = scrollView.frame.size.width - scrollView.contentSize.width;
+    float dy = scrollView.frame.size.height - scrollView.contentSize.height;
+    if (dx > 0 || dy > 0)
+    {
+        scrollView.contentOffset = CGPointMake(dx > 0 ? (-dx) / 2 : scrollView.contentOffset.x, dy > 0 ? (-dy) / 2 : scrollView.contentOffset.y);
+    }
 }
 
 -(void)switchFocusToTile:(TileData *)tile
@@ -198,7 +204,15 @@
         if (targetZoom < 1)
         {
             scrollView.minimumZoomScale = targetZoom;
+            scrollView.maximumZoomScale = targetZoom;
             [scrollView setZoomScale:targetZoom animated:YES];
+            NSLog(@"%f %f %f %f", scrollView.frame.size.width, scrollView.frame.size.height, scrollView.contentSize.width, scrollView.contentSize.height);
+            float dx = scrollView.frame.size.width - scrollView.contentSize.width;
+            float dy = scrollView.frame.size.height - scrollView.contentSize.height;
+            if (dx > 0 || dy > 0)
+            {
+                [scrollView setContentOffset:CGPointMake(dx > 0 ? (-dx) / 2 : 0, dy > 0 ? (-dy) / 2 : 0) animated:YES];
+            }
             pinchGestureRecognizer.enabled = NO;
             tapGestureRecognizer.enabled = YES;
         }
@@ -218,6 +232,7 @@
         {
             CGPoint touchPosition = [touch locationInView:fieldView];
             scrollView.minimumZoomScale = 1;
+            scrollView.maximumZoomScale = 1;
             [scrollView setZoomScale:1 animated:YES];
             touchPosition.x -= scrollView.frame.size.width / 2;
             touchPosition.y -= scrollView.frame.size.height / 2;
@@ -226,6 +241,7 @@
             if (touchPosition.x > scrollView.contentSize.width - scrollView.frame.size.width) touchPosition.x = scrollView.contentSize.width - scrollView.frame.size.width;
             if (touchPosition.y > scrollView.contentSize.height - scrollView.frame.size.height) touchPosition.y = scrollView.contentSize.height - scrollView.frame.size.height;
             [scrollView setContentOffset:touchPosition];
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
             pinchGestureRecognizer.enabled = YES;
             tapGestureRecognizer.enabled = NO;
         }
