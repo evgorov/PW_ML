@@ -624,10 +624,18 @@ describe 'Integration spec' do
     last_response.status.should == 200
     last_response_should_be_json
 
+    post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+
     get '/me', { session_key: session_key1 }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['me']['month_score'].should == 450
+    response_data['me']['month_score'].should == 600
+
+    get '/me', { session_key: session_key2 }
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['me']['month_score'].should == 600
   end
 end

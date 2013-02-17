@@ -56,6 +56,11 @@ class User < BasicModel
     raise AbstractClassError if self.class.name == 'User'
     self.class.name.chomp('User').downcase
   end
+
+  # Forceds simple format to prevent accidental password leakage
+  def to_json(*a)
+    { id: self.id }
+  end
 end
 
 class RegisteredUser < User

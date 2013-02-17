@@ -39,15 +39,15 @@ module Middleware
 
     post '/signup' do
       validate_signup_params!
-      user = UserFactory.create_user(env['redis'], params).user_data
+      user = UserFactory.create_user(env['redis'], params)
       session_key = env['token_auth'].create_token(user)
-      { session_key: session_key, me: user }.to_json
+      { session_key: session_key, me: user.user_data }.to_json
     end
 
     post '/login' do
-      user = RegisteredUser.storage(env['redis']).authenticate(params['email'], params['password']).user_data
+      user = RegisteredUser.storage(env['redis']).authenticate(params['email'], params['password'])
       session_key = env['token_auth'].create_token(user)
-      { session_key: session_key, me: user }.to_json
+      { session_key: session_key, me: user.user_data }.to_json
     end
   end
 end

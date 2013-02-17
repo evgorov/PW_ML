@@ -8,13 +8,19 @@ require 'model/service_message'
 module Middleware
   class Users < Sinatra::Base
 
+    helpers do
+      def current_user
+        @current_user ||= env['token_auth'].user.user_data
+      end
+    end
+
     before do
       content_type 'application/json'
     end
 
     get '/me' do
       env['token_auth'].authorize!
-      { me: env['token_auth'].user }.to_json
+      { me: current_user }.to_json
     end
 
     get '/service_message' do
@@ -26,18 +32,26 @@ module Middleware
     post '/me' do
       env['token_auth'].authorize!
       user = env['token_auth'].user
-      user.merge_fields_user_can_change!(params)
-      user.save
+
+      user_data = user.user_data
+      user_data.merge_fields_user_can_change!(params)
+      user_data.save
+
       # We need to update user as it's email can change
-      env['token_auth'].update_user(user)
-      { me: user }.to_json
+      if params['email']
+        user['email'] = params['email']
+        user.save
+        env['token_auth'].update_user(user)
+      end
+
+      { me: user_data }.to_json
     end
 
     post '/score' do
       env['token_auth'].authorize!
       halt(403, { 'message' => 'missing source'}.to_json) unless params['source']
       score, solved, source = params['score'].to_i, params['solved'].to_i, params['source']
-      user = env['token_auth'].user
+      user = current_user
       user['month_score'] += score
       user['solved'] += solved
       user.save
@@ -47,7 +61,7 @@ module Middleware
 
     post '/hints' do
       env['token_auth'].authorize!
-      user = env['token_auth'].user
+      user = current_user
       user['hints'] += params['hints_change'].to_i
       user.save
       { me: user }.to_json
@@ -55,8 +69,8 @@ module Middleware
 
     get '/sets_available' do
       env['token_auth'].authorize!
-      user_sets = if env['token_auth'].user['sets']
-                    Hash[env['token_auth'].user['sets'].map{ |o| [o['id'], o]}]
+      user_sets = if current_user['sets']
+                    Hash[current_user['sets'].map{ |o| [o['id'], o]}]
                   else
                     {}
                   end
@@ -76,7 +90,7 @@ module Middleware
     get '/users' do
       result = {}
       result['users'] = UserData.storage(env['redis']).users_by_rating(params['page'].to_i)
-      result['me'] = env['token_auth'].user if env['token_auth'].authorized?
+      result['me'] = current_user if env['token_auth'].authorized?
       result.to_json
     end
 
@@ -89,7 +103,7 @@ module Middleware
       env['token_auth'].authorize!
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
 
-      user = env['token_auth'].user
+      user = current_user
       user['sets'] ||= []
       user['sets'] = [puzzle_set.to_hash] | user['sets']
       user.save
@@ -100,13 +114,13 @@ module Middleware
     get '/puzzles' do
       env['token_auth'].authorize!
       {
-        sets: env['token_auth'].user['sets'] || []
+        sets: current_user['sets'] || []
       }.to_json
     end
 
     get '/puzzles/:id' do
       env['token_auth'].authorize!
-      env['token_auth'].user["puzzle-data.#{params[:id]}"].to_json
+      current_user["puzzle-data.#{params[:id]}"].to_json
     end
 
     put '/puzzles/:id' do
@@ -117,31 +131,31 @@ module Middleware
       end
 
       env['token_auth'].authorize!
-      env['token_auth'].user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
-      env['token_auth'].user.save
+      current_user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
+      current_user.save
 
       { "message" => "ok" }.to_json
     end
 
     get '/:provider/friends' do
       env['token_auth'].authorize!
-      env['token_auth'].user.fetch_friends(params['provider'])
-      env['token_auth'].user.save
-      env['token_auth'].user["#{params['provider'].to_s}_friends"].values.to_json
+      current_user.fetch_friends(params['provider'])
+      current_user.save
+      current_user["#{params['provider'].to_s}_friends"].values.to_json
     end
 
     post '/:provider/invite' do
       halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
       env['token_auth'].authorize!
-      env['token_auth'].user.fetch_friends(params['provider'])
-      params['ids'].split(',').each { |id| env['token_auth'].user.invite(params['provider'], id) }
-      env['token_auth'].user.save
+      current_user.fetch_friends(params['provider'])
+      params['ids'].split(',').each { |id| current_user.invite(params['provider'], id) }
+      current_user.save
       { "message" => "ok" }.to_json
     end
 
     post '/vkontakte/share' do
       env['token_auth'].authorize!
-       WallPublisher.post(env['token_auth'].user['access_token'], params['message'])
+      WallPublisher.post(current_user['vkontakte_access_token'], params['message'])
     end
 
     post '/link_accounts' do
@@ -149,8 +163,15 @@ module Middleware
       user2 = env['token_auth'].get_user_by_session_key(params['session_key2'])
       halt(403, { 'message' => 'cannot authorize session_key1'}.to_json) unless user1
       halt(403, { 'message' => 'cannot authorize session_key2'}.to_json) unless user2
-      user1.merge!(user2)
-      user1.save
+      user_data1, user_data2 = user1.user_data, user2.user_data
+
+      user_data1.merge!(user_data2)
+      user_data1.save
+      user_data2.delete
+
+      user2['user_data_id'] = user_data1.id
+      user2.save
+
       { "message" => "ok" }.to_json
     end
   end

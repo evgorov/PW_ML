@@ -10,9 +10,13 @@ module Middleware
     end
 
     helpers do
+      def current_user
+        @current_user ||= env['token_auth'].user.user_data
+      end
+
       def authorize!
         env['token_auth'].authorize!
-        env['token_auth'].unauthorized! unless env['token_auth'].user['role'] == 'admin'
+        env['token_auth'].unauthorized! unless current_user['role'] == 'admin'
       end
     end
 
