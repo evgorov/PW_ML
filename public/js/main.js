@@ -59,39 +59,55 @@ var Field = Backbone.Model.extend({
         errors = [],
         width = this.get('width'),
         height = this.get('height');
-    
+
+    // this function writes value into result and setting its type to error
+    // if overlapping with other tokens
     var writeResultCheckConflict = function(coord, value){
       var x = parseInt(coord.split(':')[0]),
           y = parseInt(coord.split(':')[1]);
-      if(x > width || y > height){
-        result[coord] = { type: 'error', hasHint : false };
-        return false;
-      }
       if(!result[coord] || (result[coord].type === value.type && result[coord].value === value.value)){
         result[coord] = value;
         return true;
       } else {
-        result[coord] = { type: 'error', hasHint : value.type === 'hint' || result[coord].type === 'hint' };
+        result[coord] = { type: 'error', hasHint : value.hasHint };
         return false;
       }
     };
 
     _(this.get('questions')).each(function(question){
-      // Write hint
-      var coord = [question.column, question.row].join(':'),
-          current = coord == this.get('current'),
-          value = { 'type' : 'hint', value: question.question_text, arrow: question.answer_position, current: current },
-          hasErrors = false;
-
-      hasErrors = !writeResultCheckConflict(coord, value);
-      // Write tokens
+      // Get coordinates for all answer letters.
       var coordinates = this._coordinatesFor(question.answer, question.answer_position);
       coordinates = _(coordinates).map(function(o){
         return [o[0] + question.column, o[1] + question.row, o[2]];
       });
 
+      // Write hint:
+      var coord = [question.column, question.row].join(':'),
+          current = coord == this.get('current'),
+          hasTokensOverBoard = !!_(coordinates).find(function(o){
+                                 return (o[0] < 1 || o[0] > width || o[1] < 1 || o[1] > height);
+                               }),
+          hintValue = {
+                        type : 'hint',
+                        value: question.question_text,
+                        hasHint: true,
+                        arrow: question.answer_position,
+                        current: current
+                      },
+          hasErrors = hasTokensOverBoard;
+
+      var e = !writeResultCheckConflict(coord, hintValue);
+      hasErrors = hasErrors || e;
+
+      // Write tokens:
       _(coordinates).each(function(o){
-         var e = !writeResultCheckConflict(o.slice(0,2).join(':'), { type: 'value', value: o[2], current: current });
+         var value = {
+           type : hasTokensOverBoard ? 'error' : 'value',
+           value: o[2],
+           current: current
+         };
+
+         var e = !writeResultCheckConflict(o.slice(0,2).join(':'), value);
          hasErrors = hasErrors || e;
       });
       if(hasErrors) errors.push(question);
