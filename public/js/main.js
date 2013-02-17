@@ -463,7 +463,7 @@ var PuzzleView = Backbone.View.extend({
   },
 
   savePuzzle: function(){
-    this.hide();
+    if(this.model.field.get('errors').length == 0) this.hide();
   },
 
   render: function() {
@@ -491,6 +491,9 @@ var PuzzleView = Backbone.View.extend({
   },
 
   show: function(){
+    var coord = this.$el.parent().offset();
+    coord.top = $(document).scrollTop();
+    this.$el.parent().offset(coord);
     this.$el.parent().show('fast');
   }
 });

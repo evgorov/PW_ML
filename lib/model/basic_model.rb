@@ -94,7 +94,7 @@ class BasicModel
     before_save
     self['created_at'] = Time.now if self.new? && !self['created_at']
     id = if self.class.guuid?
-           self['id'] ||= SecureRandom.uuid
+           self['id'] ||= "#{self.class.name}.#{SecureRandom.uuid}"
          else
            self['id'] = self.id
          end
