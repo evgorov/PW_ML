@@ -4,6 +4,7 @@
 libdir = File.join(File.dirname(__FILE__), '../lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
+require 'user_factory'
 require 'model/user'
 require 'storage'
 require 'model/puzzle_set'
@@ -27,16 +28,20 @@ end
 puts "Counters populated"
 
 # Creating user
-u = RegisteredUser.new
-u['role'] = 'admin'
-u['email'] = 'admin@example.com'
-u['password'] = 'admin'
-u['provider'] = 'registered'
-u['name'] = 'Admin'
-u['surname'] = 'Admin'
-u.storage(redis).save
-puts "Admin user created"
+params = {
+  'email' => 'admin@example.com',
+  'password' => 'admin',
+  'provider' => 'registered',
+  'name' => 'Admin',
+  'surname' => 'Admin'
+}
 
+u = UserFactory.create_user(redis, params).user_data
+u['role'] = 'admin'
+u.save
+
+
+puts "Admin user created"
 
 # Creating puzzle
 ps = PuzzleSet.new

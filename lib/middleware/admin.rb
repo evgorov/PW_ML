@@ -29,12 +29,12 @@ module Middleware
 
     get '/users/paginate' do
       authorize!
-      users = User.storage(env['redis'])
+      users = UserData.storage(env['redis'])
       page = params[:page].to_i
       page = 1 if page == 0
       {
         users: users.all(page),
-        total_pages: (users.size.to_f / User::PER_PAGE).ceil,
+        total_pages: (users.size.to_f / UserData::PER_PAGE).ceil,
         current_page: page
       }.to_json
     end

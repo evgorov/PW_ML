@@ -42,10 +42,10 @@ use Middleware::Counter, counter_mappings: {
   [200, %r{/score}] => 'scored'
 }
 
-Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
+Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| [u.class.name, u.id].join('#') }
 Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
-  provider, id = key.split('#', 2)
-  User.load_by_provider_and_key(env['redis'], provider, id)
+  klass, id = key.split('#', 2)
+  Kernel.const_get(klass).storage(env['redis']).load(id)
 end
 use Middleware::TokenAuthStrategy
 
