@@ -49,8 +49,14 @@
     vkFriendsViews = [NSMutableArray new];
     fbFriendsViews = [NSMutableArray new];
     
-    [self addFramedView:vkView];
-    [self addFramedView:fbView];
+    if ([[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    {
+        [self addFramedView:vkView];
+    }
+    if ([[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    {
+        [self addFramedView:fbView];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
