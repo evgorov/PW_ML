@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
+require 'model/user_data'
 require 'model/user_score'
 require 'model/service_message'
 
@@ -74,7 +75,7 @@ module Middleware
 
     get '/users' do
       result = {}
-      result['users'] = User.storage(env['redis']).users_by_rating(params['page'].to_i)
+      result['users'] = UserData.storage(env['redis']).users_by_rating(params['page'].to_i)
       result['me'] = env['token_auth'].user if env['token_auth'].authorized?
       result.to_json
     end

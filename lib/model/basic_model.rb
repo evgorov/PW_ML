@@ -103,6 +103,7 @@ class BasicModel
 
     @storage.set(id, {}.merge(self).to_json)
     @storage.zadd("all", Time.now.to_i, id)
+    @saved = true
 
     # delete old hash if id changed
     self.class.new(@old_hash, @storage).delete if self.id_changed?
@@ -142,7 +143,7 @@ class BasicModel
   end
 
   def new?
-    !@loaded
+    !@saved && !@loaded
   end
 
   def id_changed?

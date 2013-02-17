@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.vk.com/method/getProfiles.json?access_token=access_token
+    uri: https://api.vk.com/method/getProfiles.json?access_token=access_token&fields=photo_medium,first_name,last_name,city
     body:
       encoding: US-ASCII
       string: ""

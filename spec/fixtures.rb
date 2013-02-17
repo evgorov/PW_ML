@@ -26,7 +26,6 @@ shared_context 'fixtures' do
   let(:valid_user_data_user_as_json) {
     {
       'id' => 'registered#sherlock@example.org',
-      'provider' => 'registered',
       'email' => 'sherlock@example.org',
       'name' => 'Sherlock',
       'surname' => 'Holmes',
@@ -45,7 +44,6 @@ shared_context 'fixtures' do
   let(:valid_facebook_user_data_user_as_json) {
     {
       'id' => 'facebook#123456789',
-      'provider' => 'facebook',
       'email' => 'sherlock@example.org',
       'name' => 'Sherlock',
       'surname' => 'Holmes',
@@ -56,7 +54,7 @@ shared_context 'fixtures' do
       'dynamics' => 0,
       'hints' => 0,
       'birthdate' => '1873-11-12',
-      'userpic' => 'http://graph.facebook.com/123456789/picture',
+      'userpic' => 'http://graph.facebook.com/123456789/picture?width=85&height=85',
       'city' => 'London, UK'
     }
   }
@@ -64,7 +62,6 @@ shared_context 'fixtures' do
   let(:user2_in_storage_key) { 'facebook#1234' }
   let(:user2_in_storage) {
     {
-      'provider' => 'facebook',
       'facebook_id' => '1234',
       'role' => 'user',
       'position' => 1,
@@ -85,7 +82,6 @@ shared_context 'fixtures' do
   let(:user_in_storage) {
     {
       'id' => 'registered#g@interpol.co.uk',
-      'provider' => 'registered',
       'position' => 1,
       'role' => 'user',
       'solved' => 0,
@@ -106,7 +102,6 @@ shared_context 'fixtures' do
       'password' => '1234',
       'name' => 'G.',
       'surname' => 'Lestrade',
-      'provider' => 'registered',
       'email' => 'g@interpol.co.uk',
       'position' => 100,
       'solved' => 1,
@@ -123,7 +118,6 @@ shared_context 'fixtures' do
       'facebook_id' => '1',
       'name' => 'G.',
       'surname' => 'Lestrade',
-      'provider' => 'facebook',
       'email' => 'g@interpol.co.uk'
     }
   }
@@ -134,7 +128,6 @@ shared_context 'fixtures' do
       'vkontakte_id' => '1',
       'name' => 'G.',
       'surname' => 'Lestrade',
-      'provider' => 'vkontakte',
       'email' => 'g@interpol.co.uk'
     }
   }
@@ -173,6 +166,5 @@ shared_context 'fixtures' do
       'created_at' => '2012-12-29 10:42:21 +0400'
     }
   }
-
 
 end

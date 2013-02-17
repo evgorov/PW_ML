@@ -58,10 +58,10 @@ describe 'Integration spec' do
         [200, %r{/score}] => 'scored',
       }
 
-      Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| u.id }
+      Middleware::TokenAuthStrategy.serialize_user_proc = lambda { |env, u| [u.class.name, u.id].join('#') }
       Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
-        provider, id = key.split('#', 2)
-        User.load_by_provider_and_key(env['redis'], provider, id)
+        klass, id = key.split('#', 2)
+        Kernel.const_get(klass).storage(env['redis']).load(id)
       end
       use Middleware::TokenAuthStrategy
 
@@ -103,10 +103,10 @@ describe 'Integration spec' do
   end
 
   let(:admin_user) do
-    u = RegisteredUser.new
-    u.merge!(user_in_storage)
-    u['role'] = 'admin'
-    u.storage(Redis.new).save
+    u = UserFactory.create_user(Redis.new, user_in_storage.merge('password' => user_in_storage_password))
+    user_data = u.user_data
+    user_data['role'] = 'admin'
+    user_data.save
     u
   end
 
@@ -125,14 +125,14 @@ describe 'Integration spec' do
     session_key = response_data['session_key']
     session_key.should_not == nil
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == valid_user_data_user_as_json
+    response_data['me'].except('id').should == valid_user_data_user_as_json.except('id')
 
     get '/me', { session_key: session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == valid_user_data_user_as_json
+    response_data['me'].except('id').should == valid_user_data_user_as_json.except('id')
 
     post '/login', email: valid_user_data['email'], password: valid_user_data['password']
     last_response.status.should == 200
@@ -146,14 +146,14 @@ describe 'Integration spec' do
     new_session_key = response_data['session_key']
     new_session_key.should_not == session_key
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == valid_user_data_user_as_json
+    response_data['me'].except('id').should == valid_user_data_user_as_json.except('id')
 
     get '/me', { session_key: new_session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == valid_user_data_user_as_json
+    response_data['me'].except('id').should == valid_user_data_user_as_json.except('id')
   end
 
   it 'updates basic_information' do
@@ -166,15 +166,14 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     new_valid_data = valid_user_data_user_as_json.merge('email' => 'new_email@example.org',
-                                                        'id' => 'registered#new_email@example.org',
                                                         'solved' => 3)
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == new_valid_data
+    response_data['me'].except('id').should == new_valid_data.except('id')
 
     get '/me', { session_key: session_key }
     response_data = JSON.parse(last_response.body)
     response_data['me'].delete('created_at').should_not == nil
-    response_data['me'].should == new_valid_data
+    response_data['me'].except('id').should == new_valid_data.except('id')
   end
 
   it 'facebook registration' do
@@ -189,14 +188,14 @@ describe 'Integration spec' do
       session_key = response_data['session_key']
       session_key.should_not == nil
       response_data['me'].delete('created_at').should_not == nil
-      response_data['me'].should == valid_facebook_user_data_user_as_json
+      response_data['me'].except('id').should == valid_facebook_user_data_user_as_json.except('id')
 
       get '/me', { session_key: session_key }
       last_response_should_be_json
       last_response.status.should == 200
       response_data = JSON.parse(last_response.body)
       response_data['me'].delete('created_at').should_not == nil
-      response_data['me'].should == valid_facebook_user_data_user_as_json
+      response_data['me'].except('id').should == valid_facebook_user_data_user_as_json.except('id')
     end
   end
 
