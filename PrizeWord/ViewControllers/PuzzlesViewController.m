@@ -24,6 +24,10 @@
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
+NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.ios.prizeword.hints10";
+NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.ios.prizeword.hints20";
+NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
+
 
 @interface PuzzlesViewController ()
 
@@ -41,7 +45,9 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)updateArchive:(NSData *)receivedData;
 -(void)updateMonthSets:(NSArray*)monthSets;
--(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView;
+-(void)updateHintButton:(UIButton*)button withProduct:(SKProduct*)product;
+-(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
+-(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
 
 @end
 
@@ -71,6 +77,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
+    hintsProducts = [NSMutableArray arrayWithObjects:[NSNull null], [NSNull null], [NSNull null], nil];
 }
 
 - (void)viewDidUnload
@@ -135,16 +142,31 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
         [self hideActivityIndicator];
         
         SKPaymentTransaction * paymentTransaction = event.data;
-        
-        for (UIView * subview in currentPuzzlesView.subviews)
+
+        if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
-            if ([subview isKindOfClass:[PuzzleSetView class]])
+            [self handleHintsBought:10 withTransaction:paymentTransaction];
+        }
+        else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
+        {
+            [self handleHintsBought:20 withTransaction:paymentTransaction];
+        }
+        else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
+        {
+            [self handleHintsBought:30 withTransaction:paymentTransaction];
+        }
+        else
+        {
+            for (UIView * subview in currentPuzzlesView.subviews)
             {
-                PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
-                if ([puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
+                if ([subview isKindOfClass:[PuzzleSetView class]])
                 {
-                    [self handleSetBoughtWithView:puzzleSetView];
-                    break;
+                    PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
+                    if ([puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
+                    {
+                        [self handleSetBoughtWithView:puzzleSetView withTransaction:paymentTransaction];
+                        break;
+                    }
                 }
             }
         }
@@ -213,14 +235,14 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     }];
     [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
     
-    if (hasUnbought)
-    {
-        [self showActivityIndicator];
-        
-        SKProductsRequest * productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
-        productsRequest.delegate = self;
-        [productsRequest start];
-    }
+    // request information about products
+    [self showActivityIndicator];
+    [productsIds addObject:PRODUCTID_HINTS10];
+    [productsIds addObject:PRODUCTID_HINTS20];
+    [productsIds addObject:PRODUCTID_HINTS30];
+    SKProductsRequest * productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
+    productsRequest.delegate = self;
+    [productsRequest start];
 }
 
 -(void)updateArchive:(NSData *)receivedData
@@ -277,6 +299,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
+    // update sets' prices
     for (UIView * subview in currentPuzzlesView.subviews)
     {
         if (![subview isKindOfClass:[PuzzleSetView class]])
@@ -284,35 +307,66 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
             continue;
         }
         PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
+        if (puzzleSetView.puzzleSetData.bought.boolValue)
+        {
+            continue;
+        }
         
         if (puzzleSetView.puzzleSetData.type.intValue == PUZZLESET_FREE)
         {
             [puzzleSetView.btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
+            continue;
         }
-        else
+        for (SKProduct * product in response.products)
         {
-            for (SKProduct * product in response.products)
+//            if ([puzzleSetView.puzzleSetData.set_id compare:product.productIdentifier] == NSOrderedSame)
             {
-                //            if ([puzzleSetView.puzzleSetData.set_id compare:product.productIdentifier] == NSOrderedSame)
-                {
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                    [formatter setLocale:product.priceLocale];
-                    NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-                    NSLog(@"product %@: %@", product.localizedTitle, localizedMoneyString);
-                    
-                    [puzzleSetView.btnBuy setTitle:localizedMoneyString forState:UIControlStateNormal];
-                    puzzleSetView.product = product;
-                    break;
-                }
+                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+                [formatter setLocale:product.priceLocale];
+                NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+                NSLog(@"product %@: %@", product.localizedTitle, localizedMoneyString);
+                
+                [puzzleSetView.btnBuy setTitle:localizedMoneyString forState:UIControlStateNormal];
+                puzzleSetView.product = product;
+                break;
             }
+        }
+    }
+    
+    // update hints' prices
+    for (SKProduct * product in response.products)
+    {
+        if ([product.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
+        {
+            [self updateHintButton:btnBuyHint1 withProduct:product];
+        }
+        else if ([product.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
+        {
+            [self updateHintButton:btnBuyHint2 withProduct:product];
+        }
+        else if ([product.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
+        {
+            [self updateHintButton:btnBuyHint3 withProduct:product];
         }
     }
 
     [self hideActivityIndicator];
 }
 
--(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView
+-(void)updateHintButton:(UIButton*)button withProduct:(SKProduct*)product
+{
+    [hintsProducts replaceObjectAtIndex:button.tag withObject:product];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setLocale:product.priceLocale];
+    NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+    NSLog(@"product %@: %@", product.localizedTitle, localizedMoneyString);
+    
+    [button setTitle:localizedMoneyString forState:UIControlStateNormal];
+}
+
+-(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
 {
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
@@ -331,6 +385,29 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     }];
     [request.params setObject:puzzleSetView.puzzleSetData.set_id forKey:@"id"];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    // transaction == nil for free sets
+    if (transaction != nil)
+    {
+        [request.params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
+    }
+    [request runSilent];
+}
+
+-(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction
+{
+    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * dict = [parser objectWithData:receivedData];
+        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
+        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
+        [self hideActivityIndicator];
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+        NSLog(@"hints error: %@", error.description);
+    }];
+    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [request.params setObject:[NSString stringWithFormat:@"%d", count] forKey:@"hints_change"];
     [request runSilent];
 }
 
@@ -358,7 +435,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
     
     if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
-        [self handleSetBoughtWithView:setView];
+        [self handleSetBoughtWithView:setView withTransaction:nil];
     }
     else
     {
@@ -423,20 +500,7 @@ NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"ап�
 {
     UIButton * button = sender;
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * dict = [parser objectWithData:receivedData];
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
-        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
-        [self hideActivityIndicator];
-    } failCallback:^(NSError *error) {
-        [self hideActivityIndicator];
-        NSLog(@"hints error: %@", error.description);
-    }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:[NSString stringWithFormat:@"%d", button.tag] forKey:@"hints_change"];
-    [request runSilent];
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:[hintsProducts objectAtIndex:button.tag]]];
 }
 
 #pragma mark helpers

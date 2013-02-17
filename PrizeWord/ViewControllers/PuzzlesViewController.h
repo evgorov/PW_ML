@@ -28,6 +28,7 @@
     IBOutlet UIButton *btnBuyHint2;
     IBOutlet UIButton *btnBuyHint3;
     IBOutlet UILabel *lblHintsLeft;
+    NSMutableArray * hintsProducts;
 }
 
 @end
