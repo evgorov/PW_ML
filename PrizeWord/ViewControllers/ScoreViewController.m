@@ -113,7 +113,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             for (NSDictionary * friendData in friendsData)
             {
                 NSString * status = [friendData objectForKey:@"status"];
-                if ([status rangeOfString:@"uninvited"].location != NSNotFound)
+                if ([status compare:@"invite_scored"] != NSOrderedSame)
                 {
                     continue;
                 }

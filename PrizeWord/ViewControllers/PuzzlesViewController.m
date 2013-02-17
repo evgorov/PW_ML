@@ -284,8 +284,9 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:month showSolved:YES showUnsolved:YES];
         [self activateBadges:puzzleSetView];
         [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
-        yOffset += puzzleSetView.frame.size.height;
+        puzzleSetView.btnShowMore.selected = NO;
+        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.shortSize.height);
+        yOffset += puzzleSetView.shortSize.height;
         
         [archiveView addSubview:puzzleSetView];
     }
@@ -455,7 +456,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
     
     [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
-    
 }
 
 - (IBAction)handleNewsPaginatorChange:(id)sender
