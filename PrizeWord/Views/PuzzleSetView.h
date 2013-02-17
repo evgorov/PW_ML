@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class PuzzleSetData;
+@class SKProduct;
 
 @interface PuzzleSetView : UIView
 {
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnBuy;
 @property (strong, nonatomic) IBOutlet UIButton *btnShowMore;
 @property (nonatomic, readonly) NSMutableArray * badges;
+@property (strong, nonatomic) SKProduct * product;
 
 @property (nonatomic, readonly) PuzzleSetData * puzzleSetData;
 @property (nonatomic, readonly) CGSize shortSize;

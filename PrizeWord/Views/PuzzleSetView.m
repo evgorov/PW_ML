@@ -45,6 +45,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 @synthesize btnBuy = _btnBuy;
 @synthesize btnShowMore = _btnShowMore;
 @synthesize badges = _badges;
+@synthesize product = _product;
 
 @synthesize puzzleSetData = _puzzleSetData;
 @synthesize shortSize = _shortSize;

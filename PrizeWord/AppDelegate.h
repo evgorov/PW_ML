@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <StoreKit/SKPaymentQueue.h>
 
 @class GameLogic;
 @class PrizeWordNavigationController;
@@ -26,6 +27,7 @@
 
 + (AppDelegate *)currentDelegate;
 + (GameLogic *)gameLogic;
++ (id<SKPaymentTransactionObserver>)storeObserver;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 

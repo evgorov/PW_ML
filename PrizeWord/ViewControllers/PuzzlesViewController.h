@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BlockedViewController.h"
+#import <StoreKit/SKProductsRequest.h>
+#import "EventListenerDelegate.h"
 
-@interface PuzzlesViewController : BlockedViewController
+@interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate>
 {
     IBOutlet UIView *newsView;
     IBOutlet UIView *currentPuzzlesView;

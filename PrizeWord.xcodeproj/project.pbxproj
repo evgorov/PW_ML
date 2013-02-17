@@ -456,6 +456,8 @@
 		F2C52D4D16CB70B100871649 /* tile_question_correct_free@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2C52D4516CB70B100871649 /* tile_question_correct_free@2x~ipad.png */; };
 		F2C52D4E16CB70B100871649 /* tile_question_correct_gold@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2C52D4616CB70B100871649 /* tile_question_correct_gold@2x~ipad.png */; };
 		F2C52D4F16CB70B100871649 /* tile_question_correct_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2C52D4716CB70B100871649 /* tile_question_correct_gold@2x.png */; };
+		F2C52D5116D0EB8600871649 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C52D5016D0EB8600871649 /* StoreKit.framework */; };
+		F2C52D5416D1066000871649 /* PrizewordStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -1030,6 +1032,9 @@
 		F2C52D4516CB70B100871649 /* tile_question_correct_free@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_correct_free@2x~ipad.png"; sourceTree = "<group>"; };
 		F2C52D4616CB70B100871649 /* tile_question_correct_gold@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_correct_gold@2x~ipad.png"; sourceTree = "<group>"; };
 		F2C52D4716CB70B100871649 /* tile_question_correct_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_correct_gold@2x.png"; sourceTree = "<group>"; };
+		F2C52D5016D0EB8600871649 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F2C52D5216D1066000871649 /* PrizewordStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizewordStoreObserver.h; path = Net/PrizewordStoreObserver.h; sourceTree = "<group>"; };
+		F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizewordStoreObserver.m; path = Net/PrizewordStoreObserver.m; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1082,6 +1087,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2C52D5116D0EB8600871649 /* StoreKit.framework in Frameworks */,
 				F235D0A116BEC1510066664F /* MobileCoreServices.framework in Frameworks */,
 				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
 				F250913316B739BB0045621E /* Social.framework in Frameworks */,
@@ -1151,6 +1157,8 @@
 			children = (
 				F2848E0116A5E62C0041C1D5 /* APIRequest.h */,
 				F2848E0216A5E62C0041C1D5 /* APIRequest.m */,
+				F2C52D5216D1066000871649 /* PrizewordStoreObserver.h */,
+				F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */,
 			);
 			name = Net;
 			sourceTree = "<group>";
@@ -1806,6 +1814,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F2C52D5016D0EB8600871649 /* StoreKit.framework */,
 				F235D0A016BEC1510066664F /* MobileCoreServices.framework */,
 				F250913416B739D10045621E /* AdSupport.framework */,
 				F250913216B739BB0045621E /* Social.framework */,
@@ -2451,6 +2460,7 @@
 				F21FCF8616C686F20022119B /* FlipNumberView.m in Sources */,
 				F21FCF9916C764210022119B /* ExternalImage.m in Sources */,
 				F21FCF9D16C8AB410022119B /* NSData+Base64.m in Sources */,
+				F2C52D5416D1066000871649 /* PrizewordStoreObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

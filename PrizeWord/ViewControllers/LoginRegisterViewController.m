@@ -103,11 +103,7 @@
     }
     else
     {
-        if ([self respondsToSelector:@selector(presentViewController:animated:completion:)]){
-            [self presentViewController:imagePickerController animated:YES completion:nil];
-        } else {
-            [self presentModalViewController:imagePickerController animated:YES];
-        }
+        [self presentViewController:imagePickerController animated:YES completion:nil];
     }
 }
 
@@ -333,14 +329,7 @@
     }
     else
     {
-        if ([picker respondsToSelector:@selector(presentingViewController)])
-        {
-            [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            [picker.parentViewController dismissModalViewControllerAnimated:YES];
-        }
+        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

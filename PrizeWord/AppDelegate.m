@@ -14,6 +14,7 @@
 #import "RootViewController.h"
 #import "GlobalData.h"
 #import "Facebook.h"
+#import "PrizewordStoreObserver.h"
 
 @implementation AppDelegate
 
@@ -27,6 +28,7 @@
 
 static AppDelegate * currentInstance = nil;
 static GameLogic * sharedGameLogic = nil;
+static PrizewordStoreObserver * storeObserver = nil;
 
 + (AppDelegate *)currentDelegate
 {
@@ -36,6 +38,11 @@ static GameLogic * sharedGameLogic = nil;
 + (GameLogic *)gameLogic
 {
     return sharedGameLogic;
+}
+
++ (id<SKPaymentTransactionObserver>)storeObserver
+{
+    return storeObserver;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -54,6 +61,10 @@ static GameLogic * sharedGameLogic = nil;
     currentInstance = self;
     sharedGameLogic = [GameLogic sharedLogic];
     [TileImageHelper initHelper];
+    
+    storeObserver = [PrizewordStoreObserver new];
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:storeObserver];
+    
     return YES;
 }
 
