@@ -544,7 +544,14 @@
         {
             APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                [[GlobalData globalData] loadMe];
+                SBJsonParser * parser = [SBJsonParser new];
+                NSDictionary * data = [parser objectWithData:receivedData];
+                UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+                if (userData != nil)
+                {
+                    [GlobalData globalData].loggedInUser = userData;
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
+                }
             } failCallback:^(NSError *error) {
                 NSLog(@"score error! %@", error.description);
             }];

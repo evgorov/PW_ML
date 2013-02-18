@@ -223,6 +223,7 @@
     }
     else
     {
+        [[AppDelegate currentDelegate].rootViewController hideOverlay];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

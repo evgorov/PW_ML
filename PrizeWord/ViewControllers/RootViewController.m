@@ -147,6 +147,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 -(void)updateUserInfo
 {
+    NSLog(@"update user info");
     mainMenuMaxScore.text = [NSString stringWithFormat:@"%d очков", [GlobalData globalData].loggedInUser.high_score];
     mainMenuUserName.text = [NSString stringWithFormat:@"%@ %@", [GlobalData globalData].loggedInUser.first_name, [GlobalData globalData].loggedInUser.last_name];
     [mainMenuAvatar clear];
@@ -320,6 +321,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     
     _currentOverlay = overlayView;
     [fullscreenOverlayContainer addSubview:_currentOverlay];
+    overlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    
     _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
     [UIView animateWithDuration:0.5 animations:^{
         _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);

@@ -80,6 +80,10 @@
 
 +(UserData *)userDataWithDictionary:(NSDictionary *)dict
 {
+    if (dict == nil)
+    {
+        return nil;
+    }
     return [[UserData alloc] initWithDictionary:dict];
 }
 
