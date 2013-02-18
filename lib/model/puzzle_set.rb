@@ -4,13 +4,15 @@ require 'model/basic_model'
 
 class PuzzleSet < BasicModel
 
-  use_guuid!
-
   def validate!
     %w[year month name type id].each do |field|
       raise InvalidState.new("Missing required field: #{field}") unless self[field]
     end
     self
+  end
+
+  def id
+    self['id'] || "#{self['year']}_#{self['month']}_#{self['type']}_#{@storage.incr('SetCounter')}"
   end
 
   def save(*)
