@@ -198,12 +198,15 @@
             
             if (wasUpdatedLocal)
             {
-                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
                 NSError * error = nil;
                 [[AppDelegate currentDelegate].managedObjectContext save:&error];
                 if (error != nil)
                 {
                     NSLog(@"puzzle save error: %@", error.description);
+                }
+                else
+                {
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
                 }
             }
             if (needUpdateServer)

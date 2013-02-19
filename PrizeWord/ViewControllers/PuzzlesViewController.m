@@ -101,6 +101,12 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_BOUGHT];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_FAILED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_ERROR];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
+    
     [self showActivityIndicator];
     [[GlobalData globalData] loadMe];
     [[GlobalData globalData] loadMonthSets:^{
@@ -119,10 +125,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [request runSilent];
 
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
-    
-    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_BOUGHT];
-    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_FAILED];
-    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_ERROR];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -132,6 +134,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_BOUGHT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_ERROR];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
 }
 
 #pragma mark EventListenerDelegate
@@ -189,6 +192,44 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         {
             NSLog(@"error: %@", paymentTransaction.error.description);
         }
+    }
+    else if (event.type == EVENT_PUZZLE_SYNCHRONIZED)
+    {
+        PuzzleData * puzzleData = event.data;
+        if (puzzleData.progress < 1)
+        {
+            return;
+        }
+        
+        PuzzleSetView * oldView = nil;
+        for (UIView * view in currentPuzzlesView.subviews)
+        {
+            if (![view isKindOfClass:[PuzzleSetView class]])
+            {
+                continue;
+            }
+            PuzzleSetView * puzzleSetView = (PuzzleSetView *)view;
+            if ([puzzleSetView.puzzleSetData.set_id compare:puzzleData.puzzleSet.set_id] == NSOrderedSame)
+            {
+                oldView = puzzleSetView;
+                break;
+            }
+        }
+        if (oldView == nil)
+        {
+            return;
+        }
+        
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:NO showUnsolved:YES];
+        CGSize newSize = puzzleSetView.frame.size;
+        CGSize oldSize = oldView.frame.size;
+        puzzleSetView.frame = CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height);
+        [currentPuzzlesView insertSubview:puzzleSetView aboveSubview:oldView];
+        [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self activateBadges:puzzleSetView];
+        
+        [oldView removeFromSuperview];
+        [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
     }
 }
 
@@ -434,14 +475,16 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
     [self showActivityIndicator];
     
-    if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
+//    if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         [self handleSetBoughtWithView:setView withTransaction:nil];
     }
+    /*
     else
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:setView.product]];
     }
+    */
 }
 
 -(void)handleShowMoreClick:(id)sender

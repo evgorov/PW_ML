@@ -48,20 +48,21 @@
     fbFriends = [NSMutableArray new];
     vkFriendsViews = [NSMutableArray new];
     fbFriendsViews = [NSMutableArray new];
-    
-    if ([[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
-    {
-        [self addFramedView:vkView];
-    }
-    if ([[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
-    {
-        [self addFramedView:fbView];
-    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    GlobalData * globalData = [GlobalData globalData];
+    if ([globalData.loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    {
+        [self addFramedView:vkView];
+    }
+    if ([globalData.loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    {
+        [self addFramedView:fbView];
+    }
     
     UIImage * inviteAllImage = [UIImage imageNamed:@"invite_invite_all_btn"];
     UIImage * inviteAllHighlightedImage = [UIImage imageNamed:@"invite_invite_all_btn_down"];
@@ -75,6 +76,14 @@
     
     [self updateData:vkFriends withViews:vkFriendsViews container:vkView andProvider:@"vkontakte"];
     [self updateData:fbFriends withViews:fbFriendsViews container:fbView andProvider:@"facebook"];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self removeFramedView:vkView];
+    [self removeFramedView:fbView];
 }
 
 - (void)viewDidUnload {

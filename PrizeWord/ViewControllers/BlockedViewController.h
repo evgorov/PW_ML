@@ -19,6 +19,8 @@
 
 -(void)addFramedView:(UIView *)view;
 -(void)addSimpleView:(UIView *)view;
+-(void)removeFramedView:(UIView *)view;
+-(void)removeSimpleView:(UIView *)view;
 -(void)resizeView:(UIView *)view newHeight:(float)height;
 -(void)resizeView:(UIView *)view newHeight:(float)height animated:(BOOL)animated;
 

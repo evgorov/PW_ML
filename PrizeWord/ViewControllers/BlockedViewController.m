@@ -165,6 +165,66 @@ static int VERTICAL_SPACE = 23;
     scrollView.contentSize = contentView.frame.size;
 }
 
+-(void)removeFramedView:(UIView *)view
+{
+    int yOffset = 0;
+    
+    for (UIView * subview in contentView.subviews)
+    {
+        if (subview == view)
+        {
+            yOffset = -subview.frame.size.height - VERTICAL_SPACE;
+            for (UIView * innerView in subview.subviews)
+            {
+                if ([innerView isKindOfClass:[UIImageView class]])
+                {
+                    UIImageView * imageView = (UIImageView *)innerView;
+                    if (imageView.frame.size.height > subview.frame.size.height)
+                    {
+                        [imageView removeFromSuperview];
+                        break;
+                    }
+                }
+            }
+        }
+        else if (yOffset != 0)
+        {
+            subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height);
+        }
+    }
+    
+    if (yOffset != 0)
+    {
+        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset);
+        scrollView.contentSize = contentView.frame.size;
+        [view removeFromSuperview];
+    }
+}
+
+-(void)removeSimpleView:(UIView *)view
+{
+    int yOffset = 0;
+
+    for (UIView * subview in contentView.subviews)
+    {
+        if (subview == view)
+        {
+            yOffset = -subview.frame.size.height - VERTICAL_SPACE;
+        }
+        else if (yOffset != 0)
+        {
+            subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height);
+        }
+    }
+    
+    if (yOffset != 0)
+    {
+        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset);
+        scrollView.contentSize = contentView.frame.size;
+        [view removeFromSuperview];
+    }
+}
+
 -(void)resizeView:(UIView *)view newHeight:(float)height
 {
     [self resizeView:view newHeight:height animated:NO];
