@@ -24,6 +24,7 @@
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
+NSString * PRODUCTID_PREFIX = @"ru.aipmedia.ios.prizeword.";
 NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.ios.prizeword.hints10";
 NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.ios.prizeword.hints20";
 NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
@@ -222,8 +223,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             {
                 [puzzleSetView.btnBuy setTitle:@"Обновление" forState:UIControlStateNormal];
                 hasUnbought = YES;
-//                [productsIds addObject:puzzleSet.set_id];
-                [productsIds addObject:@"ru.aipmedia.ios.prizeword.set0"];
+                [productsIds addObject:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]];
             }
         }
     }
@@ -320,7 +320,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         }
         for (SKProduct * product in response.products)
         {
-//            if ([puzzleSetView.puzzleSetData.set_id compare:product.productIdentifier] == NSOrderedSame)
+            if ([product.productIdentifier rangeOfString:puzzleSetView.puzzleSetData.set_id].location != NSNotFound)
             {
                 NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
                 [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
