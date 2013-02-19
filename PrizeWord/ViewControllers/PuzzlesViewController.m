@@ -130,6 +130,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    NSLog(@"puzzles viewWillDisappear");
 
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_BOUGHT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];

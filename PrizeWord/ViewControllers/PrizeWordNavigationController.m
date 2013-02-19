@@ -22,6 +22,7 @@
 {
     if (viewController.title != nil && viewController.title.length != 0)
     {
+        NSLog(@"setTitleViewForViewController: %@", viewController.title);
         UIFont * titleFont = [UIFont fontWithName:@"DINPro-Black" size:18];
         CGSize titleSize = [viewController.title sizeWithFont:titleFont];
         UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, titleSize.width, titleSize.height)];
@@ -58,8 +59,6 @@
 
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    UIViewController * prevViewController = self.topViewController;
-    [prevViewController viewWillDisappear:animated];
     [PrizeWordNavigationController setTitleViewForViewController:viewController];
     [super pushViewController:viewController animated:animated];
     if (viewController.navigationItem.leftBarButtonItem == nil) {
@@ -67,26 +66,10 @@
     }
 }
 
--(UIViewController *)popViewControllerAnimated:(BOOL)animated
-{
-    UIViewController * popped = [super popViewControllerAnimated:animated];
-    [popped viewWillDisappear:animated];
-
-    return popped;
-}
-
 -(NSArray *)popToRootViewControllerAnimated:(BOOL)animated
 {
     NSArray * popped = [super popToRootViewControllerAnimated:animated];
-    UIViewController * top = popped.count > 0 ? [popped objectAtIndex:0] : nil;
     
-    if (top != nil)
-    {
-        if ([[UIDevice currentDevice].systemVersion compare:@"5.0" options:NSNumericSearch] == NSOrderedAscending)
-        {
-            [top viewWillDisappear:animated];
-        }
-    }
     if (self.topViewController.navigationItem.leftBarButtonItem == nil)
     {
         [self.topViewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];

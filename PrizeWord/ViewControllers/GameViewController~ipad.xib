@@ -234,7 +234,7 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 				</array>
-				<string key="NSFrameSize">{182, 69}</string>
+				<string key="NSFrameSize">{182, 57}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="141634450"/>
@@ -1463,10 +1463,15 @@
 					<string key="className">PrizeWordSwitchView</string>
 					<string key="superclassName">UIView</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="handleSwipeLeft:">id</string>
 						<string key="handleSwipeRight:">id</string>
 						<string key="handleTapGesture:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="handleSwipeLeft:">
+							<string key="name">handleSwipeLeft:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="handleSwipeRight:">
 							<string key="name">handleSwipeRight:</string>
 							<string key="candidateClassName">id</string>

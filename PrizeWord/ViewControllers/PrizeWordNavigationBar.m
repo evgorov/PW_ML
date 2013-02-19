@@ -20,9 +20,8 @@ static UIImage * backgroundImage = nil;
 
 +(UIView *)containerWithView:(UIView *)innerView
 {
-    UIView * container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, innerView.frame.size.width, backgroundImage.size.height)];
-    // TODO :: ATTENTION - HACK
-    innerView.frame = CGRectMake(0, (backgroundImage.size.height - innerView.frame.size.height) / 4, innerView.frame.size.width, innerView.frame.size.height);
+    UIView * container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, innerView.frame.size.width, backgroundImage.size.height * 2 - 44)];
+    innerView.frame = CGRectMake(0, (backgroundImage.size.height - innerView.frame.size.height) / 2, innerView.frame.size.width, innerView.frame.size.height);
     [container addSubview:innerView];
     return container;
 }

@@ -250,7 +250,6 @@
 								<string key="NSFrame">{{14, 674}, {221, 46}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -309,7 +308,7 @@
 							<object class="IBUIImageView" id="1012808170">
 								<reference key="NSNextResponder" ref="326372848"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{30, 26}, {55, 55}}</string>
+								<string key="NSFrame">{{30, 27}, {55, 55}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="145930246"/>
@@ -325,7 +324,7 @@
 							<object class="IBUIImageView" id="129066000">
 								<reference key="NSNextResponder" ref="326372848"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{29, 26}, {57, 58}}</string>
+								<string key="NSFrame">{{30, 27}, {55, 55}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1012808170"/>
@@ -473,7 +472,6 @@
 				<string key="NSFrameSize">{320, 422}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="962074322"/>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics" id="755581263">
@@ -488,7 +486,6 @@
 				<string key="NSFrameSize">{320, 422}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -506,7 +503,6 @@
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -910,6 +906,25 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PrizeWordSwitchView</string>
 					<string key="superclassName">UIView</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="handleSwipeLeft:">id</string>
+						<string key="handleSwipeRight:">id</string>
+						<string key="handleTapGesture:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="handleSwipeLeft:">
+							<string key="name">handleSwipeLeft:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleSwipeRight:">
+							<string key="name">handleSwipeRight:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleTapGesture:">
+							<string key="name">handleTapGesture:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="imgSlider">UIImageView</string>
 						<string key="offView">UIView</string>
@@ -995,7 +1010,7 @@
 						<string key="btnRating">UIButton</string>
 						<string key="btnScore">UIButton</string>
 						<string key="fullscreenOverlayContainer">UIView</string>
-						<string key="mainMenuAvatar">UIImageView</string>
+						<string key="mainMenuAvatar">ExternalImage</string>
 						<string key="mainMenuBg">UIImageView</string>
 						<string key="mainMenuFBSwitch">PrizeWordSwitchView</string>
 						<string key="mainMenuMaxScore">UILabel</string>
@@ -1022,7 +1037,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="mainMenuAvatar">
 							<string key="name">mainMenuAvatar</string>
-							<string key="candidateClassName">UIImageView</string>
+							<string key="candidateClassName">ExternalImage</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="mainMenuBg">
 							<string key="name">mainMenuBg</string>

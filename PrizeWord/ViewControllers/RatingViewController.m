@@ -43,6 +43,8 @@ int HEADER_HEIGHT = 24;
     [self.view addSubview:ratingView];
     
     users = [NSMutableArray new];
+
+    self.title = [NSString stringWithFormat:@"%d-ой в рейтинге", [GlobalData globalData].loggedInUser.position];
 }
 
 - (void)viewDidUnload {
@@ -53,9 +55,6 @@ int HEADER_HEIGHT = 24;
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"viewWillAppear");
-    self.title = [NSString stringWithFormat:@"%d-ой в рейтинге", [GlobalData globalData].loggedInUser.position];
-    
     [super viewWillAppear:animated];
     [[GlobalData globalData] loadMe];
 

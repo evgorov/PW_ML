@@ -71,6 +71,8 @@
     pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress, pauseImgProgressbar.frame.size.height);
     [pauseTxtProgress setText:@"100%"];
     finalFlipNumbers = [NSArray arrayWithObjects:finalFlipNumber0, finalFlipNumber1, finalFlipNumber2, finalFlipNumber3, finalFlipNumber4, nil];
+
+    [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
 }
 
 -(void)dealloc
@@ -100,7 +102,6 @@
     [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
     hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
-    [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     
     [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
     
@@ -300,7 +301,7 @@
         [[AppDelegate currentDelegate].rootViewController showOverlay:pauseOverlay];
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
-        [self.navigationItem setTitleView:viewTime];
+        [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     }
     else if (event.type == EVENT_GAME_REQUEST_RESUME)
     {
@@ -309,7 +310,7 @@
         [[AppDelegate currentDelegate].rootViewController hideOverlay];
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
-        [self.navigationItem setTitleView:viewTime];
+        [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
     }
     else if (event.type == EVENT_GAME_REQUEST_COMPLETE)
     {
