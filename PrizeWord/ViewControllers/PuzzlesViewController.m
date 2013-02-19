@@ -562,7 +562,10 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     }
     for (BadgeView * badgeView in puzzleSetView.badges)
     {
-        [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+        if (badgeView.puzzle.progress < 1)
+        {
+            [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
 }
 
