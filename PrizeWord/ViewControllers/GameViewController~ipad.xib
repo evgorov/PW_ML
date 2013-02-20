@@ -530,7 +530,7 @@
 								<reference key="IBUIFont" ref="383768078"/>
 							</object>
 						</array>
-						<string key="NSFrame">{{201, 602}, {376, 198}}</string>
+						<string key="NSFrame">{{201, 402}, {376, 198}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="769621593"/>
@@ -541,7 +541,7 @@
 					<object class="IBUIImageView" id="346138265">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{768, 1024}</string>
+						<string key="NSFrame">{{0, -200}, {768, 1024}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="280037914"/>
@@ -556,7 +556,7 @@
 					<object class="IBUIView" id="321771818">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{235, 431}, {67, 87}}</string>
+						<string key="NSFrame">{{235, 231}, {67, 87}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="254453871"/>
@@ -571,7 +571,7 @@
 					<object class="IBUIView" id="254453871">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{295, 431}, {67, 87}}</string>
+						<string key="NSFrame">{{295, 231}, {67, 87}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="604446285"/>
@@ -586,7 +586,7 @@
 					<object class="IBUIView" id="604446285">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{355, 431}, {67, 87}}</string>
+						<string key="NSFrame">{{355, 231}, {67, 87}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="774892259"/>
@@ -601,7 +601,7 @@
 					<object class="IBUIView" id="774892259">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{415, 431}, {67, 87}}</string>
+						<string key="NSFrame">{{415, 231}, {67, 87}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="337939845"/>
@@ -616,7 +616,7 @@
 					<object class="IBUIView" id="337939845">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{475, 431}, {67, 87}}</string>
+						<string key="NSFrame">{{475, 231}, {67, 87}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="117817270"/>
@@ -631,7 +631,7 @@
 					<object class="IBUILabel" id="986066198">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{265, 357}, {106, 21}}</string>
+						<string key="NSFrame">{{265, 157}, {106, 21}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="666851768"/>
@@ -663,7 +663,7 @@
 					<object class="IBUILabel" id="666851768">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{436, 357}, {115, 21}}</string>
+						<string key="NSFrame">{{436, 157}, {115, 21}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="321771818"/>
@@ -690,7 +690,7 @@
 					<object class="IBUIButton" id="807855330">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{349, 551}, {218, 75}}</string>
+						<string key="NSFrame">{{349, 351}, {218, 75}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="730400658"/>
@@ -719,7 +719,7 @@
 					<object class="IBUIButton" id="117817270">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{215, 551}, {121, 75}}</string>
+						<string key="NSFrame">{{215, 351}, {121, 75}}</string>
 						<reference key="NSSuperview" ref="444050116"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="807855330"/>
@@ -746,7 +746,7 @@
 						<reference key="IBUIFont" ref="383768078"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{768, 1024}</string>
+				<string key="NSFrameSize">{768, 620}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="346138265"/>
@@ -1315,10 +1315,8 @@
 						<string key="handleFBClick:">id</string>
 						<string key="handleHintClick:">id</string>
 						<string key="handlePauseClick:">UIButton</string>
-						<string key="handlePauseMenu:">id</string>
 						<string key="handlePauseNext:">id</string>
 						<string key="handlePlayClick:">id</string>
-						<string key="handleVKClick:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="handleFBClick:">
@@ -1333,20 +1331,12 @@
 							<string key="name">handlePauseClick:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="handlePauseMenu:">
-							<string key="name">handlePauseMenu:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="handlePauseNext:">
 							<string key="name">handlePauseNext:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="handlePlayClick:">
 							<string key="name">handlePlayClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleVKClick:">
-							<string key="name">handleVKClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -1462,25 +1452,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PrizeWordSwitchView</string>
 					<string key="superclassName">UIView</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="handleSwipeLeft:">id</string>
-						<string key="handleSwipeRight:">id</string>
-						<string key="handleTapGesture:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="handleSwipeLeft:">
-							<string key="name">handleSwipeLeft:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleSwipeRight:">
-							<string key="name">handleSwipeRight:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleTapGesture:">
-							<string key="name">handleTapGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="imgSlider">UIImageView</string>
 						<string key="offView">UIView</string>

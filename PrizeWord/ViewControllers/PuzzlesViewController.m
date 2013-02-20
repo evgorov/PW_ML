@@ -476,16 +476,14 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
     [self showActivityIndicator];
     
-//    if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
+    if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         [self handleSetBoughtWithView:setView withTransaction:nil];
     }
-    /*
     else
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:setView.product]];
     }
-    */
 }
 
 -(void)handleShowMoreClick:(id)sender
