@@ -504,10 +504,12 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 - (IBAction)handleVKSwitchChange:(id)sender
 {
+    NSLog(@"handleVKSwitch");
 }
 
 - (IBAction)handleFBSwitchChange:(id)sender
 {
+    NSLog(@"handleFBSwitch");
 }
 
 - (IBAction)handleNotificationSwitchChange:(id)sender
