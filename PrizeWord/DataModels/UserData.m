@@ -20,6 +20,8 @@
 @synthesize userpic = _userpic;
 @synthesize userpic_url = _userpic_url;
 @synthesize birthday = _birthday;
+@synthesize vkProvider = _vkProvider;
+@synthesize fbProvider = _fbProvider;
 
 @synthesize position = _position;
 @synthesize solved = _solved;
@@ -65,6 +67,25 @@
             NSDateFormatter * dateFormatter = [NSDateFormatter new];
             [dateFormatter setDateFormat:@"yyyy-MM-dd"];
             _birthday = [dateFormatter dateFromString:dateString];
+        }
+
+        _vkProvider = nil;
+        _fbProvider = nil;
+        NSArray * providers = [dict objectForKey:@"providers"];
+        if (providers != nil)
+        {
+            for (NSDictionary * provider in providers)
+            {
+                NSString * provider_name = [provider objectForKey:@"provider_name"];
+                if (provider_name != nil && [provider_name compare:@"vkontakte"] == NSOrderedSame)
+                {
+                    _vkProvider = provider;
+                }
+                else if (provider_name != nil && [provider_name compare:@"facebook"] == NSOrderedSame)
+                {
+                    _fbProvider = provider;
+                }
+            }
         }
         
         _position = [(NSNumber *)[dict objectForKey:@"position"] intValue];

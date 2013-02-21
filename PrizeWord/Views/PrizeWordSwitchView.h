@@ -16,6 +16,8 @@
 }
 
 -(BOOL)isOn;
+-(void)switchOnAnimated:(BOOL)animated;
+-(void)switchOffAnimated:(BOOL)animated;
 +(PrizeWordSwitchView *)switchView;
 
 @end

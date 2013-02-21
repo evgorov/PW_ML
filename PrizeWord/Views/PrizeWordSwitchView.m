@@ -48,13 +48,7 @@
 {
     if (![self isOn])
     {
-        {
-            [UIView animateWithDuration:0.5 animations:^{
-                onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-                offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
-                imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
-            }];
-        }
+        [self switchOnAnimated:YES];
     }
 }
 
@@ -62,17 +56,49 @@
 {
     if ([self isOn])
     {
-        [UIView animateWithDuration:0.5 animations:^{
-            onView.frame = CGRectMake(0, 0, 0, self.frame.size.height);
-            offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-            imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
-        }];
+        [self switchOffAnimated:YES];
     }
 }
 
 -(BOOL)isOn
 {
     return onView.frame.size.width > offView.frame.size.height;
+}
+
+-(void)switchOnAnimated:(BOOL)animated
+{
+    if (animated)
+    {
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+            onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+            offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
+            imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+        } completion:nil];
+    }
+    else
+    {
+        onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
+        imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+    }
+}
+
+-(void)switchOffAnimated:(BOOL)animated
+{
+    if (animated)
+    {
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+            onView.frame = CGRectMake(0, 0, 0, self.frame.size.height);
+            offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+            imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+        } completion:nil];
+    }
+    else
+    {
+        onView.frame = CGRectMake(0, 0, 0, self.frame.size.height);
+        offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+    }
 }
 
 +(PrizeWordSwitchView *)switchView
