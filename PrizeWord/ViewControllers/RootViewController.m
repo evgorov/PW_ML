@@ -78,18 +78,21 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     switchView.frame = mainMenuVKSwitch.frame;
     [mainMenuVKSwitch.superview addSubview:switchView];
     [mainMenuVKSwitch removeFromSuperview];
+    [switchView addTarget:self action:@selector(handleVKSwitchChange:) forControlEvents:UIControlEventValueChanged];
     mainMenuVKSwitch = switchView;
     
     switchView = [PrizeWordSwitchView switchView];
     switchView.frame = mainMenuFBSwitch.frame;
     [mainMenuFBSwitch.superview addSubview:switchView];
     [mainMenuFBSwitch removeFromSuperview];
+    [switchView addTarget:self action:@selector(handleFBSwitchChange:) forControlEvents:UIControlEventValueChanged];
     mainMenuFBSwitch = switchView;
     
     switchView = [PrizeWordSwitchView switchView];
     switchView.frame = mainMenuNotificationsSwitch.frame;
     [mainMenuNotificationsSwitch.superview addSubview:switchView];
     [mainMenuNotificationsSwitch removeFromSuperview];
+    [switchView addTarget:self action:@selector(handleNotificationSwitchChange:) forControlEvents:UIControlEventValueChanged];
     mainMenuNotificationsSwitch = switchView;
 
     UISwipeGestureRecognizer * swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PrizeWordSwitchView : UIView
+@interface PrizeWordSwitchView : UIControl
 {
     IBOutlet UIView *offView;
     IBOutlet UIView *onView;

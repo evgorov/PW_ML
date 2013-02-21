@@ -93,6 +93,7 @@
         offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
         imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
     }
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 -(void)switchOffAnimated:(BOOL)animated
@@ -116,6 +117,7 @@
         offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
         imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
     }
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 +(PrizeWordSwitchView *)switchView
