@@ -263,7 +263,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             }
             else
             {
-                [puzzleSetView.btnBuy setTitle:@"Обновление" forState:UIControlStateNormal];
+                [puzzleSetView.btnBuy setTitle:@"" forState:UIControlStateNormal];
                 hasUnbought = YES;
                 [productsIds addObject:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]];
             }
