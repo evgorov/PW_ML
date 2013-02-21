@@ -75,7 +75,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         NSArray * data = [parser objectWithData:receivedData];
         for (NSDictionary * setData in data)
         {
-            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.provider_id]];
+            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id]];
         }
         _monthSets = [NSArray arrayWithArray:sets];
         onComplete();

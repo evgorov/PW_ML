@@ -218,7 +218,7 @@ int HEADER_HEIGHT = 24;
         }
     }
     
-    if ([user.provider_id compare:[GlobalData globalData].loggedInUser.provider_id] == NSOrderedSame)
+    if ([user.user_id compare:[GlobalData globalData].loggedInUser.user_id] == NSOrderedSame)
     {
         cell.imgBackground.image = [UIImage imageNamed:@"rating_cell_me_bg.png"];
         cell.lblSurname.text = @"Я";

@@ -15,7 +15,9 @@
     IBOutlet UIImageView *imgSlider;
 }
 
--(BOOL)isOn;
+@property (readonly) BOOL isOn;
+
+-(void)setOn:(BOOL)on animated:(BOOL)animated;
 -(void)switchOnAnimated:(BOOL)animated;
 -(void)switchOffAnimated:(BOOL)animated;
 +(PrizeWordSwitchView *)switchView;

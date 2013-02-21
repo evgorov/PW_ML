@@ -216,6 +216,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     lblRatingSuffix.shadowOffset = CGSizeMake(0, -1);
     lblRatingSuffix.text = @"в рейтинге";
     [btnRating addSubview:lblRatingSuffix];
+    
+    [mainMenuFBSwitch setOn:([GlobalData globalData].loggedInUser.fbProvider != nil) animated:YES];
+    [mainMenuVKSwitch setOn:([GlobalData globalData].loggedInUser.vkProvider != nil) animated:YES];
 }
 
 -(void)showMenuAnimated:(BOOL)animated

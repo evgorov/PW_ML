@@ -14,11 +14,10 @@
 
 +(UserData *)userDataWithDictionary:(NSDictionary *)dict;
 
+@property (nonatomic, strong) NSString * user_id;
 @property (nonatomic, strong) NSString * first_name;
 @property (nonatomic, strong) NSString * last_name;
 @property (nonatomic, strong) NSString * email;
-@property (nonatomic, strong) NSString * provider;
-@property (nonatomic, strong) NSString * provider_id;
 @property (nonatomic, strong) NSString * city;
 @property (nonatomic, strong) NSString * userpic_url;
 @property (nonatomic, strong) UIImage * userpic;

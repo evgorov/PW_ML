@@ -306,7 +306,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     
     for (NSDictionary * setData in setsData)
     {
-        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.provider_id];
+        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
         puzzleSet.bought = [NSNumber numberWithBool:YES];
         int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
         int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];

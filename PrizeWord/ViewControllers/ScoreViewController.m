@@ -76,11 +76,11 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if ([[GlobalData globalData].loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    if ([GlobalData globalData].loggedInUser.vkProvider != nil)
     {
         [self updateInvited:@"vkontakte"];
     }
-    else if  ([[GlobalData globalData].loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    if  ([GlobalData globalData].loggedInUser.fbProvider != nil)
     {
         [self updateInvited:@"facebook"];
     }

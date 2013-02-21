@@ -49,12 +49,11 @@
     vkFriendsViews = [NSMutableArray new];
     fbFriendsViews = [NSMutableArray new];
 
-    GlobalData * globalData = [GlobalData globalData];
-    if ([globalData.loggedInUser.provider compare:@"vkontakte"] == NSOrderedSame)
+    if ([GlobalData globalData].loggedInUser.vkProvider != nil)
     {
         [self addFramedView:vkView];
     }
-    if ([globalData.loggedInUser.provider compare:@"facebook"] == NSOrderedSame)
+    if ([GlobalData globalData].loggedInUser.fbProvider != nil)
     {
         [self addFramedView:fbView];
     }
@@ -115,7 +114,7 @@
 
 -(void)updateData:(NSMutableArray *)data withViews:(NSMutableArray *)views container:(UIView *)container andProvider:(NSString *)provider
 {
-    if ([updateInProgress objectForKey:provider] == nil && [[GlobalData globalData].loggedInUser.provider compare:provider] == NSOrderedSame)
+    if ([updateInProgress objectForKey:provider] == nil)
     {
         [updateInProgress setObject:[NSNumber numberWithBool:YES] forKey:provider];
         [self showActivityIndicator];

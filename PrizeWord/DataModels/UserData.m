@@ -11,11 +11,10 @@
 
 @implementation UserData
 
+@synthesize user_id = _user_id;
 @synthesize first_name = _first_name;
 @synthesize last_name = _last_name;
 @synthesize email = _email;
-@synthesize provider = _provider;
-@synthesize provider_id = _provider_id;
 @synthesize city = _city;
 @synthesize userpic = _userpic;
 @synthesize userpic_url = _userpic_url;
@@ -39,8 +38,7 @@
         _first_name = [dict objectForKey:@"name"];
         _last_name = [dict objectForKey:@"surname"];
         _email = [dict objectForKey:@"email"];
-        _provider = [dict objectForKey:@"provider"];
-        _provider_id = [dict objectForKey:@"id"];
+        _user_id = [dict objectForKey:@"id"];
         _city = [dict objectForKey:@"city"];
         _userpic = nil;
         _userpic_url = nil;
