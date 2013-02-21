@@ -65,6 +65,14 @@
                 [paramsString appendFormat:@"&%@=%@", key, obj];
             }
         }];
+        if (paramsString.length == 0)
+        {
+            [paramsString appendFormat:@"random=%d", rand()];
+        }
+        else
+        {
+            [paramsString appendFormat:@"&random=%d", rand()];
+        }
         request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
     else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
