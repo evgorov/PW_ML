@@ -31,7 +31,9 @@ class PuzzleSet < BasicModel
   end
 
   def published_for(year = Time.now.year, month = Time.now.month)
-    self.all_for(year, month).select { |o| o['published'] }
+    self.all_for(year, month).
+      select { |o| o['published'] }.
+      sort_by { |o| Time.parse(o['created_at']) }
   end
 
   def all_for(year = Time.now.year, month = Time.now.month)
