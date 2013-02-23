@@ -24,7 +24,7 @@
     {
         UIFont * titleFont = [UIFont fontWithName:@"DINPro-Black" size:18];
         CGSize titleSize = [viewController.title sizeWithFont:titleFont];
-        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, titleSize.width, titleSize.height * 2)];
+        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, titleSize.width, titleSize.height)];
         titleLabel.font = titleFont;
         titleLabel.text = viewController.title;
         titleLabel.backgroundColor = [UIColor clearColor];

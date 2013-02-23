@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PrizeWordViewController.h"
 
-@interface LoginMainViewController : PrizeWordViewController<UIAlertViewDelegate, UIWebViewDelegate>
+@interface LoginMainViewController : PrizeWordViewController<UIWebViewDelegate>
 {
     NSString * lastAccessToken;
     NSString * lastProvider;

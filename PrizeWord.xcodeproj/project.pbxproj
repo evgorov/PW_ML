@@ -458,6 +458,7 @@
 		F2C52D4F16CB70B100871649 /* tile_question_correct_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2C52D4716CB70B100871649 /* tile_question_correct_gold@2x.png */; };
 		F2C52D5116D0EB8600871649 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C52D5016D0EB8600871649 /* StoreKit.framework */; };
 		F2C52D5416D1066000871649 /* PrizewordStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */; };
+		F2C52D5B16D8D3FB00871649 /* SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C52D5A16D8D3FB00871649 /* SocialNetworks.m */; };
 		F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FD165DF80900EF6E8A /* UIKit.framework */; };
 		F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D626FF165DF80900EF6E8A /* Foundation.framework */; };
 		F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D62701165DF80900EF6E8A /* CoreGraphics.framework */; };
@@ -1035,6 +1036,8 @@
 		F2C52D5016D0EB8600871649 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F2C52D5216D1066000871649 /* PrizewordStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizewordStoreObserver.h; path = Net/PrizewordStoreObserver.h; sourceTree = "<group>"; };
 		F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizewordStoreObserver.m; path = Net/PrizewordStoreObserver.m; sourceTree = "<group>"; };
+		F2C52D5916D8D3FA00871649 /* SocialNetworks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SocialNetworks.h; path = Net/SocialNetworks.h; sourceTree = "<group>"; };
+		F2C52D5A16D8D3FB00871649 /* SocialNetworks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SocialNetworks.m; path = Net/SocialNetworks.m; sourceTree = "<group>"; };
 		F2D626F9165DF80900EF6E8A /* PrizeWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrizeWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D626FD165DF80900EF6E8A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F2D626FF165DF80900EF6E8A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1159,6 +1162,8 @@
 				F2848E0216A5E62C0041C1D5 /* APIRequest.m */,
 				F2C52D5216D1066000871649 /* PrizewordStoreObserver.h */,
 				F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */,
+				F2C52D5916D8D3FA00871649 /* SocialNetworks.h */,
+				F2C52D5A16D8D3FB00871649 /* SocialNetworks.m */,
 			);
 			name = Net;
 			sourceTree = "<group>";
@@ -2461,6 +2466,7 @@
 				F21FCF9916C764210022119B /* ExternalImage.m in Sources */,
 				F21FCF9D16C8AB410022119B /* NSData+Base64.m in Sources */,
 				F2C52D5416D1066000871649 /* PrizewordStoreObserver.m in Sources */,
+				F2C52D5B16D8D3FB00871649 /* SocialNetworks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
