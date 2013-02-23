@@ -1,4 +1,7 @@
 shared_context 'fixtures' do
+
+  let(:receipt_data) { "good_receipt_data" }
+
   let(:valid_user_data) {
     {
       'email' => 'sherlock@example.org',

@@ -4,6 +4,7 @@ require 'model/user'
 require 'model/user_data'
 require 'model/user_score'
 require 'model/service_message'
+require 'itunes_receipt_verifier'
 
 module Middleware
   class Users < Sinatra::Base
@@ -101,6 +102,11 @@ module Middleware
 
     post '/sets/:id/buy' do
       env['token_auth'].authorize!
+
+      unless self.class.settings.environment == :test
+        ItunesReceiptVerifier.verify!(params['receipt_data'] || params['receipt-data'], params['id'])
+      end
+
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
 
       user = current_user

@@ -1,0 +1,66 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://sandbox.itunes.apple.com/verifyReceipt
+    body:
+      encoding: UTF-8
+      string: "{\"receipt-data\":\"good_receipt_data\"}"
+    headers: {}
+
+  response:
+    status:
+      code: 200
+      message: Apple WebObjects
+    headers:
+      X-Apple-Jingle-Correlation-Key:
+      - NNJ55AVWSQWTA
+      Pod:
+      - "100"
+      X-Apple-Orig-Url-Path:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Translated-Wo-Url:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Application-Site:
+      - SB
+      Edge-Control:
+      - cache-maxage=0
+      - no-store
+      Set-Cookie:
+      - Pod=100; version="1"; expires=Sat, 23-Mar-2013 19:43:01 GMT; path=/; domain=.apple.com
+      - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects; domain=.apple.com
+      - mzf_in=990116; version="1"; path=/WebObjects; domain=.apple.com; secure
+      - mzf_odc=NK1; version="1"; expires=Sat, 23-Feb-2013 21:13:01 GMT; path=/WebObjects; domain=.apple.com
+      Apple-Timing-App:
+      - 45 ms
+      Cache-Control:
+      - max-age=0
+      - must-revalidate
+      - no-cache
+      - no-store
+      - no-transform
+      - private
+      Expires:
+      - Sat, 23 Feb 2013 20:43:01 GMT
+      X-Apple-Lokamai-No-Cache:
+      - "true"
+      X-Apple-Application-Instance:
+      - "990116"
+      Pragma:
+      - no-cache
+      X-Webobjects-Loadaverage:
+      - "1"
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "704"
+      Date:
+      - Sat, 23 Feb 2013 20:43:01 GMT
+    body:
+      encoding: US-ASCII
+      string: |-
+        {
+        "receipt":{"original_purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "purchase_date_ms":"1361646462693", "unique_identifier":"1692e5e91509354b4ba978874d428ef1494cf67a", "original_transaction_id":"1000000065999077", "bvrs":"39", "transaction_id":"1000000065999077", "quantity":"1", "unique_vendor_identifier":"FB49A4AE-D5D6-4F5B-A826-4D03403BAD35", "item_id":"605210145", "product_id":"ru.aipmedia.ios.prizeword.2013_2_silver2_5", "purchase_date":"2013-02-23 19:07:42 Etc/GMT", "original_purchase_date":"2013-02-23 19:07:42 Etc/GMT", "purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "bid":"ru.aipmedia.ios.prizeword", "original_purchase_date_ms":"1361646462693"}, "status":0}
+    http_version:
+  recorded_at: Sat, 23 Feb 2013 20:43:01 GMT
+recorded_with: VCR 2.3.0
