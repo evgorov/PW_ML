@@ -10,9 +10,12 @@
 
 @interface ExternalImage : UIImageView<NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 {
+    NSURL * imageURL;
     NSURLConnection * connection;
     NSMutableData * receivedData;
 }
+
++(void)clearCache;
 
 -(void)loadImageFromURL:(NSURL*)url;
 -(void)cancelLoading;

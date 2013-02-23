@@ -10,6 +10,18 @@
 
 @implementation ExternalImage
 
+static NSMutableDictionary * cache = nil;
+
++(void)clearCache
+{
+    [cache removeAllObjects];
+}
+
+-(void)awakeFromNib
+{
+    connection = nil;
+}
+
 -(id)init
 {
     self = [super init];
@@ -23,9 +35,23 @@
 -(void)loadImageFromURL:(NSURL *)url
 {
     [self cancelLoading];
-    receivedData = [NSMutableData new];
-    connection = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10] delegate:self];
-    [connection start];
+    
+    imageURL = url;
+    UIImage * cachedImage = nil;
+    if (cache != nil)
+    {
+        cachedImage = [cache objectForKey:url.absoluteString];
+    }
+    if (cachedImage != nil)
+    {
+        self.image = cachedImage;
+    }
+    else
+    {
+        receivedData = [NSMutableData new];
+        connection = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10] delegate:self];
+        [connection start];
+    }
 }
 
 -(void)cancelLoading
@@ -69,7 +95,13 @@
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)conn
 {
-    self.image = [UIImage imageWithData:receivedData];
+    UIImage * loadedImage = [UIImage imageWithData:receivedData];
+    if (cache == nil)
+    {
+        cache = [NSMutableDictionary new];
+    }
+    [cache setObject:loadedImage forKey:imageURL.absoluteString];
+    self.image = loadedImage;
     connection = nil;
 }
 

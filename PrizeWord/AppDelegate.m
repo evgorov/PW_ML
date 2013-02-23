@@ -15,6 +15,7 @@
 #import "GlobalData.h"
 #import "Facebook.h"
 #import "PrizewordStoreObserver.h"
+#import "ExternalImage.h"
 
 @implementation AppDelegate
 
@@ -97,6 +98,11 @@ static PrizewordStoreObserver * storeObserver = nil;
     [self saveContext];
     [TileImageHelper uninitHelper];
     [[GlobalData globalData].fbSession close];
+}
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    [ExternalImage clearCache];
 }
 
 - (void)saveContext
