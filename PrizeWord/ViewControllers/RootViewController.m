@@ -123,22 +123,25 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
     
+    rulesCaption = nil;
     [super viewDidUnload];
 }
 
 -(void)didReceiveMemoryWarning
 {
+    /*
     if (_currentOverlay != rulesView)
     {
-        [rulesScrollView removeFromSuperview];
-        rulesScrollView = nil;
+//        [rulesScrollView removeFromSuperview];
+//        rulesScrollView = nil;
         
-        NSArray * subviews = [rulesView subviews];
+        NSArray * subviews = [rulesScrollView subviews];
         for (UIView * subview in subviews)
         {
             [subview removeFromSuperview];
         }
     }
+    */
 }
 
 -(void)handleEvent:(Event *)event
@@ -435,19 +438,29 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 - (IBAction)handleRulesClick:(id)sender
 {
-    if (rulesScrollView == nil)
+    int pages = 5;
+    if (rulesScrollView.subviews.count < pages)
     {
-        UIImage * paginatorEmptyImage = [UIImage imageNamed:@"rules_pagecontrol_empty"];
-        UIImage * paginatorFullImage = [UIImage imageNamed:@"rules_pagecontrol_full"];
-        UIImage * pagecontrolBgImage = [UIImage imageNamed:@"rules_pagecontrol_bg"];
-
-        int pages = 5;
-        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
+        //        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
         rulesScrollView.backgroundColor = [UIColor clearColor];
         rulesScrollView.scrollEnabled = NO;
         rulesScrollView.showsHorizontalScrollIndicator = YES;
         rulesScrollView.showsVerticalScrollIndicator = NO;
         rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
+        
+        for (int i = 0; i != pages; ++i)
+        {
+            UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
+            pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
+            [rulesScrollView addSubview:pageView];
+        }
+        
+    }
+    if (rulesPageControl == nil)
+    {
+        UIImage * paginatorEmptyImage = [UIImage imageNamed:@"rules_pagecontrol_empty"];
+        UIImage * paginatorFullImage = [UIImage imageNamed:@"rules_pagecontrol_full"];
+        UIImage * pagecontrolBgImage = [UIImage imageNamed:@"rules_pagecontrol_bg"];
 
         UISwipeGestureRecognizer * rulesRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesPrev:)];
         rulesRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
@@ -456,7 +469,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         UITapGestureRecognizer * rulesTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)];
         [rulesScrollView setGestureRecognizers:[NSArray arrayWithObjects:rulesLeftGestureRecognizer, rulesRightGestureRecognizer, rulesTapGestureRecognizer, nil]];
         
-        [rulesView addSubview:rulesScrollView];
+//        [rulesView addSubview:rulesScrollView];
 
         if ([pagecontrolBgImage respondsToSelector:@selector(resizableImageWithCapInsets:)])
         {
@@ -466,12 +479,13 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         {
             pagecontrolBgImage = [pagecontrolBgImage stretchableImageWithLeftCapWidth:(pagecontrolBgImage.size.width / 2 - 1) topCapHeight:(pagecontrolBgImage.size.height / 2 - 1)];
         }
-        UIImageView * pagecontrol = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
-        float pageControlDefaultWidth = pagecontrol.frame.size.width;
+        rulesPageControl = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
+        float pageControlDefaultWidth = rulesPageControl.frame.size.width;
         float pagecontrolWidth = 1.5f * pages * paginatorEmptyImage.size.width + pageControlDefaultWidth;
-        pagecontrol.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - pagecontrol.frame.size.height, pagecontrolWidth, pagecontrol.frame.size.height);
-        pagecontrol.userInteractionEnabled = YES;
-        [rulesView addSubview:pagecontrol];
+        rulesPageControl.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - rulesPageControl.frame.size.height, pagecontrolWidth, rulesPageControl.frame.size.height);
+        rulesPageControl.userInteractionEnabled = YES;
+        [rulesPageControl addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)]];
+        [rulesView addSubview:rulesPageControl];
         for (int i = 0; i != pages; ++i)
         {
             UIButton * pageButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -482,13 +496,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             [pageButton setBackgroundImage:paginatorEmptyImage forState:UIControlStateNormal];
             [pageButton setBackgroundImage:paginatorFullImage forState:UIControlStateSelected];
             [pageButton addTarget:self action:@selector(handlePageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-            pageButton.frame = CGRectMake(pageControlDefaultWidth / 2 + paginatorEmptyImage.size.width / 4 + 1.5f * i * paginatorEmptyImage.size.width, (pagecontrol.frame.size.height - paginatorEmptyImage.size.height) / 2, paginatorEmptyImage.size.width, paginatorEmptyImage.size.height);
+            pageButton.frame = CGRectMake(pageControlDefaultWidth / 2 + paginatorEmptyImage.size.width / 4 + 1.5f * i * paginatorEmptyImage.size.width, (rulesPageControl.frame.size.height - paginatorEmptyImage.size.height) / 2, paginatorEmptyImage.size.width, paginatorEmptyImage.size.height);
             pageButton.tag = i;
-            [pagecontrol addSubview:pageButton];
-            
-            UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
-            pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
-            [rulesScrollView addSubview:pageView];
+            [rulesPageControl addSubview:pageButton];
         }
     }
     if (![AppDelegate currentDelegate].isIPad)
@@ -543,6 +553,11 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 }
 
 -(void)handleRulesMenuClick:(id)sender
+{
+    [self hideOverlay];
+}
+
+- (IBAction)handleRulesBgClick:(id)sender
 {
     [self hideOverlay];
 }

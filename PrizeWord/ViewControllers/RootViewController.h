@@ -30,7 +30,9 @@
     IBOutlet UIView *rulesView;
 
     PrizeWordNavigationController * navController;
-    UIScrollView * rulesScrollView;
+    IBOutlet UIScrollView * rulesScrollView;
+    IBOutlet UILabel *rulesCaption;
+    UIImageView * rulesPageControl;
 
     UIBarButtonItem * currentLeftButton;
     UIBarButtonItem * currentRightButton;
