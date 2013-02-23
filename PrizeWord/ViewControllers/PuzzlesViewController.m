@@ -79,10 +79,18 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
     hintsProducts = [NSMutableArray arrayWithObjects:[NSNull null], [NSNull null], [NSNull null], nil];
+    
+    productsRequest = nil;
 }
 
 - (void)viewDidUnload
 {
+    if (productsRequest != nil)
+    {
+        [productsRequest cancel];
+        productsRequest.delegate = nil;
+        productsRequest = nil;
+    }
     newsView = nil;
     currentPuzzlesView = nil;
     hintsView = nil;
@@ -95,6 +103,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     newsScrollView = nil;
     lblHintsLeft = nil;
     puzzlesViewCaption = nil;
+    
     [super viewDidUnload];
 }
 
@@ -199,6 +208,26 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         PuzzleData * puzzleData = event.data;
         if (puzzleData.progress < 1)
         {
+            for (UIView * view in currentPuzzlesView.subviews)
+            {
+                if (![view isKindOfClass:[PuzzleSetView class]])
+                {
+                    continue;
+                }
+                PuzzleSetView * puzzleSetView = (PuzzleSetView *)view;
+                if ([puzzleSetView.puzzleSetData.set_id compare:puzzleData.puzzleSet.set_id] == NSOrderedSame)
+                {
+                    for (BadgeView * badge in puzzleSetView.badges)
+                    {
+                        if ([badge.puzzle.puzzle_id compare:puzzleData.puzzle_id] == NSOrderedSame)
+                        {
+                            [badge updateWithPuzzle:puzzleData];
+                        }
+                    }
+                    break;
+                }
+            }
+            
             return;
         }
         
@@ -282,7 +311,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [productsIds addObject:PRODUCTID_HINTS10];
     [productsIds addObject:PRODUCTID_HINTS20];
     [productsIds addObject:PRODUCTID_HINTS30];
-    SKProductsRequest * productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
+    productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
     productsRequest.delegate = self;
     [productsRequest start];
 }

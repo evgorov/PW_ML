@@ -75,11 +75,6 @@
     [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
 }
 
--(void)dealloc
-{
-    NSLog(@"GameViewController dealloc");
-}
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

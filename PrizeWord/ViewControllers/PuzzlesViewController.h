@@ -29,6 +29,7 @@
     IBOutlet UIButton *btnBuyHint3;
     IBOutlet UILabel *lblHintsLeft;
     NSMutableArray * hintsProducts;
+    SKProductsRequest * productsRequest;
 }
 
 @end

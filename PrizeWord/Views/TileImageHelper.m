@@ -37,7 +37,6 @@ static TileImageHelper * _sharedHelper = nil;
 
 -(id)init
 {
-    NSLog(@"TileImageHelper init");
     self = [super init];
     if (self) {
         [self prepareLetters:brilliantLetters fromAtlas:[UIImage imageNamed:@"tile_letters_correct_brilliant"]];
@@ -48,11 +47,6 @@ static TileImageHelper * _sharedHelper = nil;
         [self prepareLetters:wrongLetters fromAtlas:[UIImage imageNamed:@"tile_letters_wrong"]];
     }
     return self;
-}
-
--(void)dealloc
-{
-    NSLog(@"TileImageHelper dealloc");
 }
 
 -(void)prepareLetters:(UIImage * __strong *)letters fromAtlas:(UIImage *)atlas;

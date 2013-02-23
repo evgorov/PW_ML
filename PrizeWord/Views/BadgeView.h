@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "PuzzleData.h"
-#import "EventListenerDelegate.h"
 
-@interface BadgeView : UIButton<EventListenerDelegate>
+@interface BadgeView : UIButton
 {
     int badgeNumber;
     IBOutlet UIImageView *imgBg;
@@ -22,7 +21,8 @@
     IBOutlet UIView *imgOverlay;
 }
 
-+ (BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
++(BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
+-(void)updateWithPuzzle:(PuzzleData *)puzzle;
 
 @property (readonly) PuzzleData * puzzle;
 

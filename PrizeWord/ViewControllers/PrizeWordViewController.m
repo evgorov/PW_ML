@@ -14,22 +14,16 @@
 
 @implementation PrizeWordViewController
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(void)viewDidLoad
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        NSLog(@"nib: %@", nibNameOrNil);
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activityIndicator.hidesWhenStopped = YES;
-        activityIndicator.userInteractionEnabled = NO;
-        activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-        [self.view addSubview:activityIndicator];
-    }
-    return self;
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.userInteractionEnabled = NO;
+    activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [self.view addSubview:activityIndicator];
 }
 
--(void)dealloc
+-(void)viewDidUnload
 {
     [activityIndicator removeFromSuperview];
     activityIndicator = nil;
@@ -37,6 +31,7 @@
 
 -(void)showActivityIndicator
 {
+    [self.view bringSubviewToFront:activityIndicator];
     [activityIndicator startAnimating];
     self.view.userInteractionEnabled = NO;
 }

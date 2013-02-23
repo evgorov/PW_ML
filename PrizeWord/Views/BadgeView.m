@@ -9,13 +9,8 @@
 #import "BadgeView.h"
 #import "AppDelegate.h"
 #import "PuzzleSetData.h"
-#import "EventManager.h"
 
 @interface BadgeView (private)
-/*
--(id)initWithType:(BadgeType)badgeType andNumber:(int)number andPercent:(float)percent;
--(id)initWithType:(BadgeType)badgeType andNumber:(int)number andScore:(int)score;
-*/
 
 -(void)initWithPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
 
@@ -118,12 +113,6 @@
     }
 }
 
--(void)dealloc
-{
-    NSLog(@"BadgeView dealloc");
-    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
-}
-
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     imgOverlay.hidden = NO;
@@ -142,25 +131,16 @@
     [super touchesEnded:touches withEvent:event];
 }
 
--(void)handleEvent:(Event *)event
-{
-    if (event.type == EVENT_PUZZLE_SYNCHRONIZED)
-    {
-        PuzzleData * synchronizedData = event.data;
-        if ([synchronizedData.puzzle_id compare:_puzzle.puzzle_id] == NSOrderedSame)
-        {
-            _puzzle = synchronizedData;
-            [self initWithPuzzle:_puzzle andNumber:badgeNumber];
-            return;
-        }
-    }
-}
-
 +(BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number
 {
     BadgeView * badgeView = (BadgeView *)[[[NSBundle mainBundle] loadNibNamed:@"BadgeView" owner:self options:nil] objectAtIndex:0];
-    [[EventManager sharedManager] registerListener:badgeView forEventType:EVENT_PUZZLE_SYNCHRONIZED];
     [badgeView initWithPuzzle:puzzle andNumber:number];
     return badgeView;
 }
+
+-(void)updateWithPuzzle:(PuzzleData *)puzzle
+{
+    [self initWithPuzzle:puzzle andNumber:badgeNumber];
+}
+
 @end
