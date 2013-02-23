@@ -10,10 +10,11 @@
 #import "PrizeWordSwitchView.h"
 #import "ExternalImage.h"
 #import "EventListenerDelegate.h"
+#import "PrizeWordViewController.h"
 
 @class PrizeWordNavigationController;
 
-@interface RootViewController : UIViewController<EventListenerDelegate>
+@interface RootViewController : PrizeWordViewController<EventListenerDelegate>
 {
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;

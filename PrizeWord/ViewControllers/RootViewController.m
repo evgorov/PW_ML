@@ -18,6 +18,7 @@
 #import "GlobalData.h"
 #import "UserData.h"
 #import "EventManager.h"
+#import "SocialNetworks.h"
 
 @interface RootViewController (private)
 
@@ -383,6 +384,13 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 - (IBAction)handleSwitchUserClick:(id)sender
 {
     [self hideMenuAnimated:YES];
+    [GlobalData globalData].loggedInUser = nil;
+    [GlobalData globalData].sessionKey = nil;
+    if ([GlobalData globalData].fbSession != nil)
+    {
+        [[GlobalData globalData].fbSession close];
+        [GlobalData globalData].fbSession = nil;
+    }
     [navController popToRootViewControllerAnimated:YES];
 }
 
@@ -508,11 +516,25 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 - (IBAction)handleVKSwitchChange:(id)sender
 {
     NSLog(@"handleVKSwitch");
+    if (mainMenuVKSwitch.isOn)
+    {
+        [SocialNetworks loginVkontakteWithViewController:self andCallback:^{
+            NSLog(@"vk authorization complete");
+            [[GlobalData globalData] loadMe];
+        }];
+    }
 }
 
 - (IBAction)handleFBSwitchChange:(id)sender
 {
     NSLog(@"handleFBSwitch");
+    if (mainMenuFBSwitch.isOn)
+    {
+        [SocialNetworks loginFacebookWithViewController:self andCallback:^{
+            NSLog(@"fb authorization complete");
+            [[GlobalData globalData] loadMe];
+        }];
+    }
 }
 
 - (IBAction)handleNotificationSwitchChange:(id)sender

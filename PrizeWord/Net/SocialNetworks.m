@@ -132,9 +132,27 @@
             NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
-            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
-            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            successCallback();
+            if ([GlobalData globalData].sessionKey == nil)
+            {
+                [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+                [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+                successCallback();
+            }
+            else
+            {
+                [viewController showActivityIndicator];
+                APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                    NSLog(@"link account success: %d", response.statusCode);
+                    [viewController hideActivityIndicator];
+                    successCallback();
+                } failCallback:^(NSError *error) {
+                    [viewController hideActivityIndicator];
+                    NSLog(@"link accounts failed: %@", error.description);
+                }];
+                [linkRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key1"];
+                [linkRequest.params setObject:[data objectForKey:@"session_key"] forKey:@"session_key2"];
+                [linkRequest runSilent];
+            }
         }
         else
         {
