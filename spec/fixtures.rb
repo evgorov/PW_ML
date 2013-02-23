@@ -37,6 +37,7 @@ shared_context 'fixtures' do
       'hints' => 0,
       'birthdate' => '1873-11-12',
       'userpic' => 'image data',
+      'providers' => [],
       'city' => 'London'
     }
   }
@@ -55,7 +56,10 @@ shared_context 'fixtures' do
       'hints' => 0,
       'birthdate' => '1873-11-12',
       'userpic' => 'http://graph.facebook.com/123456789/picture?width=85&height=85',
-      'city' => 'London, UK'
+      'city' => 'London, UK',
+      'providers' => [{ 'provider_name' => 'facebook',
+                        'provider_id' => '123456789',
+                        'provider_token' => 'LKJLJdkslfjsdfk2423032384fsjdkalf--fdsfdsklfjsklFVSAGFDG' }]
     }
   }
 

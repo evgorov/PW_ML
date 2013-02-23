@@ -10,10 +10,17 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-                        %w[id position month_score high_score dynamics hints created_at]
+                        %w[id position month_score high_score dynamics hints created_at providers]
 
   def before_save
     super
+    self['providers'] = %w[facebook vkontakte].map{ |o|
+      {
+        'provider_name' => o,
+        'provider_id' => self["#{o}_id"],
+        'provider_token' => self["#{o}_access_token"]
+      } if self["#{o}_id"]
+    }.compact
     self['position'] = self['position'].to_i
     self['solved'] = self['solved'].to_i
     self['month_score'] = self['month_score'].to_i

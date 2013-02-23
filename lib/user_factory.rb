@@ -23,9 +23,8 @@ module UserFactory
       end
 
       FacebookUser.new.tap do |u|
-        u['facebook_id'] = fb_data['id']
-
         user_data = UserData.new
+        user_data['facebook_id'] = u['facebook_id'] = fb_data['id']
         user_data['facebook_access_token'] = access_token.to_s
         user_data['name'] = fb_data['first_name']
         user_data['surname'] = fb_data['last_name']
@@ -52,8 +51,8 @@ module UserFactory
       end
 
       VkontakteUser.new.tap do |u|
-        u['vkontakte_id'] = vk_data['uid']
         user_data = UserData.new
+        user_data['vkontakte_id'] = u['vkontakte_id'] = vk_data['uid']
         user_data['name'] = vk_data['first_name']
         user_data['vkontakte_access_token'] = access_token.to_s
         user_data['surname'] = vk_data['last_name']

@@ -26,8 +26,8 @@ describe User do
     it '#save' do
       storage = mock(:storage).as_null_object
       subject.merge!(user_in_storage)
-      storage.should_receive(:set).with(user_in_storage_key, {}.merge(subject).to_json)
-      storage.should_receive(:get).with(user_in_storage_key).and_return(nil)
+      storage.should_receive(:set)
+      storage.stub(get: nil)
       subject.storage(storage).save
     end
 
