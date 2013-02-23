@@ -507,6 +507,7 @@
 
 -(void)saveSolvedQuestion:(TileData *)questionTile
 {
+    return;
     QuestionData * question = nil;
     for (QuestionData * data in _puzzle.questions) {
         if (data.rowAsUint == questionTile.y && data.columnAsUint == questionTile.x)

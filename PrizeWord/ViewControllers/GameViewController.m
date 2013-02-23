@@ -314,7 +314,7 @@
         {
             [[finalFlipNumbers objectAtIndex:i] reset];
         }
-        finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 442 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
+        finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 242 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
         lblFinalBaseScore.text = @"0";
         lblFinalTimeBonus.text = @"0";
         [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:nil repeats:NO];
@@ -393,7 +393,7 @@
 -(void)animateFinalScreenAppears:(id)sender
 {
     CGRect shareFrame = finalShareView.frame;
-    shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 602 : 308;
+    shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationCurveEaseOut animations:^{
         finalShareView.frame = shareFrame;
     } completion:^(BOOL finished) {
