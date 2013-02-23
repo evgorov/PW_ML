@@ -269,7 +269,8 @@
     }];
 }
 
-// EventListenerDelegate
+#pragma mark EventListenerDelegate
+
 -(void)handleEvent:(Event *)event
 {
     if (event.type == EVENT_BEGIN_INPUT)
@@ -309,17 +310,19 @@
     }
     else if (event.type == EVENT_GAME_REQUEST_COMPLETE)
     {
-        puzzleData = event.data;
-        for (int i = 0; i < 5; ++i)
-        {
-            [[finalFlipNumbers objectAtIndex:i] reset];
-        }
-        finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 242 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
-        lblFinalBaseScore.text = @"0";
-        lblFinalTimeBonus.text = @"0";
-        [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:nil repeats:NO];
-
-        [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+            puzzleData = event.data;
+            for (int i = 0; i < 5; ++i)
+            {
+                [[finalFlipNumbers objectAtIndex:i] reset];
+            }
+            finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 242 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
+            lblFinalBaseScore.text = @"0";
+            lblFinalTimeBonus.text = @"0";
+            [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:nil repeats:NO];
+            
+            [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
+        });
     }
 }
 
