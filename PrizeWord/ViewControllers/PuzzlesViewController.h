@@ -14,6 +14,9 @@
 @interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate>
 {
     IBOutlet UIView *newsView;
+    IBOutlet UILabel *newsLbl1;
+    IBOutlet UILabel *newsLbl2;
+    IBOutlet UILabel *newsLbl3;
     IBOutlet UIView *currentPuzzlesView;
     IBOutlet UIView *hintsView;
     IBOutlet UIView *archiveView;

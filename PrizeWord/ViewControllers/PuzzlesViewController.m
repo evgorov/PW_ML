@@ -32,6 +32,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 @interface PuzzlesViewController ()
 
+-(void)updateNews;
+
 -(void)handleBadgeClick:(id)sender;
 -(void)handleBuyClick:(id)sender;
 -(void)handleShowMoreClick:(id)sender;
@@ -81,6 +83,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     hintsProducts = [NSMutableArray arrayWithObjects:[NSNull null], [NSNull null], [NSNull null], nil];
     
     productsRequest = nil;
+    
+    [self updateNews];
 }
 
 - (void)viewDidUnload
@@ -104,6 +108,9 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     lblHintsLeft = nil;
     puzzlesViewCaption = nil;
     
+    newsLbl1 = nil;
+    newsLbl2 = nil;
+    newsLbl3 = nil;
     [super viewDidUnload];
 }
 
@@ -134,6 +141,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [request runSilent];
 
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
+    
+    [self updateNews];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -263,7 +272,46 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     }
 }
 
-#pragma mark update and bought puzzles
+#pragma mark update news, update and bought puzzles
+-(void)updateNews
+{
+    APIRequest * newsUpdateRequest = [APIRequest getRequest:@"service_messages" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        if (response.statusCode == 200)
+        {
+            NSLog(@"news update success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            
+            NSDictionary * messages = [[SBJsonParser new] objectWithData:receivedData];
+            newsLbl1.text = [messages objectForKey:@"message1"];
+            newsLbl2.text = [messages objectForKey:@"message2"];
+            newsLbl3.text = [messages objectForKey:@"message3"];
+            if ([messages objectForKey:@"message1"] == nil)
+            {
+                [self resizeView:newsView newHeight:0 animated:YES];
+            }
+            else if ([messages objectForKey:@"message2"] == nil)
+            {
+                newsPaginator.numberOfPages = 1;
+            }
+            else if ([messages objectForKey:@"message3"] == nil)
+            {
+                newsPaginator.numberOfPages = 2;
+            }
+            else
+            {
+                newsPaginator.numberOfPages = 3;
+            }
+            [newsScrollView setContentSize:CGSizeMake(newsPaginator.numberOfPages * newsScrollView.frame.size.width, newsScrollView.frame.size.height)];
+        }
+        else
+        {
+            NSLog(@"news update failed: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        }
+    } failCallback:^(NSError *error) {
+        NSLog(@"news update error: %@", error.description);
+    }];
+    [newsUpdateRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [newsUpdateRequest runSilent];
+}
 
 -(void)updateMonthSets:(NSArray *)monthSets
 {
