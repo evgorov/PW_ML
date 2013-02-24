@@ -9,6 +9,8 @@
 #import "LoginRemindViewController.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "APIRequest.h"
+#import "SBJsonParser.h"
 
 @interface LoginRemindViewController (private)
 
@@ -57,12 +59,39 @@
 {
     [txtEmail resignFirstResponder];
     [self showActivityIndicator];
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(handleSent:) userInfo:nil repeats:NO];
+    APIRequest * request = [APIRequest postRequest:@"forgot_password" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        [self hideActivityIndicator];
+        if (response.statusCode == 200)
+        {
+            [self handleSent:sender];
+        }
+        else
+        {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            NSString * message = [data objectForKey:@"message"];
+            if (response.statusCode == 404)
+            {
+                message = @"Пользователь с таким email не найден!";
+            }
+            else if (message == nil)
+            {
+                message = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+            }
+                            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                            [alertView show];
+        }
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }];
+    [request.params setObject:txtEmail.text forKey:@"email"];
+    [request runSilent];
 }
 
 -(void)handleSent:(id)sender
 {
-    [self hideActivityIndicator];
     self.title = NSLocalizedString(@"TITLE_SENT", nil);
     [[AppDelegate currentDelegate].rootViewController showOverlay:doneOverlay];
 }

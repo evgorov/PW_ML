@@ -142,7 +142,7 @@
             {
                 [viewController showActivityIndicator];
                 APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                    NSLog(@"link account success: %d", response.statusCode);
+                    NSLog(@"link account success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                     [viewController hideActivityIndicator];
                     successCallback();
                 } failCallback:^(NSError *error) {
