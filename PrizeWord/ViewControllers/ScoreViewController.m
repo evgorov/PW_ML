@@ -37,17 +37,6 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
     int yOffset = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
-        NSMutableArray * solvedIds = [NSMutableArray new];
-        NSMutableArray * solvedScores = [NSMutableArray new];
-        int idx = 1;
-        for (PuzzleData * puzzle in puzzleSet.puzzles) {
-            if (puzzle.solved == puzzle.questions.count)
-            {
-                [solvedIds addObject:[NSNumber numberWithInt:idx]];
-                [solvedScores addObject:puzzle.score];
-            }
-            ++idx;
-        }
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetCompleteViewWithData:puzzleSet];
         puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
         yOffset += puzzleSetView.frame.size.height;

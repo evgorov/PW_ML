@@ -37,6 +37,7 @@ PuzzleSetType;
 -(float)percent;
 -(int)score;
 -(int)minScore;
+-(NSArray *)orderedPuzzles;
 
 @end
 

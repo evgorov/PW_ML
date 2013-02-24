@@ -168,11 +168,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 -(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData
 {
     int count = puzzleSetData.puzzles.count;
-    int minScore = 0;
-    for (PuzzleData * puzzleData in puzzleSetData.puzzles)
-    {
-        minScore += puzzleData.base_score.intValue;
-    }
+    int minScore = puzzleSetData.minScore;
     NSString * countString = [NSString stringWithFormat:@"%d", count];
     CGSize countSize = [countString sizeWithFont:_lblCount.font];
     _lblCount.frame = CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height);
@@ -251,7 +247,8 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;
     _badges = [NSMutableArray arrayWithCapacity:puzzleSetData.total];
     int badgeIdx = 0;
-    for (PuzzleData * puzzleData in puzzleSetData.puzzles)
+    NSArray * orderedPuzzles = puzzleSetData.orderedPuzzles;
+    for (PuzzleData * puzzleData in orderedPuzzles)
     {
         ++badgeIdx;
         if (puzzleData.progress == 1 && !showSolved)

@@ -192,7 +192,9 @@
     PuzzleSetData * puzzleSet = puzzle.puzzleSet;
     BOOL selectNext = NO;
     PuzzleData * nextPuzzle = nil;
-    for (PuzzleData * otherPuzzle in puzzleSet.puzzles) {
+    NSArray * orderedPuzzles = puzzleSet.orderedPuzzles;
+    for (PuzzleData * otherPuzzle in orderedPuzzles)
+    {
         if (selectNext && otherPuzzle.progress != 1)
         {
             nextPuzzle = otherPuzzle;
@@ -205,7 +207,7 @@
     }
     if (nextPuzzle == nil)
     {
-        for (PuzzleData * otherPuzzle in puzzleSet.puzzles) {
+        for (PuzzleData * otherPuzzle in orderedPuzzles) {
             if (otherPuzzle.progress != 1)
             {
                 nextPuzzle = otherPuzzle;
