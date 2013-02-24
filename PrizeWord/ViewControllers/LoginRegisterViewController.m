@@ -313,6 +313,16 @@
     [self handleDatePickerDoneClick:sender];
 }
 
+#pragma mark UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex)
+    {
+        [self handleRegisterClick:nil];
+    }
+}
+
 #pragma mark select image source and start UIImagePickerController
 
 -(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -355,17 +365,6 @@
     }
 }
 
-
-#pragma mark UIAlertViewDelegate
-
--(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != alertView.cancelButtonIndex)
-    {
-        [self handleRegisterClick:nil];
-    }
-}
-
 #pragma mark UIImagePickerControllerDelegate
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -392,7 +391,7 @@
     } else {
         imageToSave = originalImage;
     }
-    UIImageWriteToSavedPhotosAlbum (imageToSave, nil, nil, nil);
+//    UIImageWriteToSavedPhotosAlbum (imageToSave, nil, nil, nil);
     int width = imageToSave.size.width;
     int height = imageToSave.size.height;
     int minDimension = width < height ? width : height;

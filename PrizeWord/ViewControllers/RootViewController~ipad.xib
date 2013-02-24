@@ -430,7 +430,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="150350127"/>
 								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<array key="IBUIGestureRecognizers" id="0"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 							<object class="IBUIImageView" id="208979693">
@@ -477,7 +477,7 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIScrollView" id="18240857">
+					<object class="IBUIScrollView" id="120241627">
 						<reference key="NSNextResponder" ref="442234148"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{115, 113}, {538, 717}}</string>
@@ -488,7 +488,7 @@
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUILabel" id="404000571">
+					<object class="IBUILabel" id="52588990">
 						<reference key="NSNextResponder" ref="442234148"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{171, 832}, {426, 84}}</string>
@@ -524,7 +524,7 @@
 				<string key="NSFrameSize">{768, 954}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="18240857"/>
+				<reference key="NSNextKeyView" ref="120241627"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="150350127"/>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics" id="755581263">
@@ -567,7 +567,8 @@
 				<reference key="IBUISimulatedDestinationMetrics" ref="755581263"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
-			<object class="IBUITapGestureRecognizer" id="558782735"/>
+			<object class="IBUITapGestureRecognizer" id="678748464"/>
+			<object class="IBUITapGestureRecognizer" id="216831754"/>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
@@ -695,7 +696,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">rulesScrollView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="18240857"/>
+						<reference key="destination" ref="120241627"/>
 					</object>
 					<int key="connectionID">74</int>
 				</object>
@@ -703,7 +704,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">rulesCaption</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="404000571"/>
+						<reference key="destination" ref="52588990"/>
 					</object>
 					<int key="connectionID">76</int>
 				</object>
@@ -774,7 +775,7 @@
 					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
 						<string key="label">gestureRecognizers</string>
 						<reference key="source" ref="442234148"/>
-						<reference key="destination" ref="558782735"/>
+						<reference key="destination" ref="678748464"/>
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 						<bool key="addsContentToExistingCollection">YES</bool>
 					</object>
@@ -799,19 +800,37 @@
 					<int key="connectionID">69</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">gestureRecognizers</string>
+						<reference key="source" ref="981536448"/>
+						<reference key="destination" ref="216831754"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">YES</bool>
+					</object>
+					<int key="connectionID">78</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleRulesBgClick:</string>
-						<reference key="source" ref="558782735"/>
+						<reference key="source" ref="678748464"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">72</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">handleAvatarClick:</string>
+						<reference key="source" ref="216831754"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">79</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<array key="object" id="0"/>
+						<reference key="object" ref="0"/>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
@@ -901,8 +920,8 @@
 						<int key="objectID">45</int>
 						<reference key="object" ref="442234148"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="18240857"/>
-							<reference ref="404000571"/>
+							<reference ref="120241627"/>
+							<reference ref="52588990"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -945,6 +964,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">61</int>
 						<reference key="object" ref="981536448"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="326372848"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -959,18 +979,23 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">70</int>
-						<reference key="object" ref="558782735"/>
+						<reference key="object" ref="678748464"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">73</int>
-						<reference key="object" ref="18240857"/>
+						<reference key="object" ref="120241627"/>
 						<reference key="parent" ref="442234148"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">75</int>
-						<reference key="object" ref="404000571"/>
+						<reference key="object" ref="52588990"/>
 						<reference key="parent" ref="442234148"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">77</int>
+						<reference key="object" ref="216831754"/>
+						<reference key="parent" ref="0"/>
 					</object>
 				</array>
 			</object>
@@ -1014,12 +1039,13 @@
 				<string key="70.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="73.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="75.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">76</int>
+			<int key="maxID">79</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1089,6 +1115,7 @@
 					<string key="className">RootViewController</string>
 					<string key="superclassName">PrizeWordViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="handleAvatarClick:">id</string>
 						<string key="handleFBSwitchChange:">id</string>
 						<string key="handleInviteClick:">id</string>
 						<string key="handleMyPuzzlesClick:">id</string>
@@ -1102,6 +1129,10 @@
 						<string key="handleVKSwitchChange:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="handleAvatarClick:">
+							<string key="name">handleAvatarClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="handleFBSwitchChange:">
 							<string key="name">handleFBSwitchChange:</string>
 							<string key="candidateClassName">id</string>

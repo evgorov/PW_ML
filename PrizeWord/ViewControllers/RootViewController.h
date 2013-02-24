@@ -14,7 +14,7 @@
 
 @class PrizeWordNavigationController;
 
-@interface RootViewController : PrizeWordViewController<EventListenerDelegate>
+@interface RootViewController : PrizeWordViewController<EventListenerDelegate, UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
     IBOutlet UIScrollView *mainMenuView;
     IBOutlet UIImageView *mainMenuBg;
@@ -39,6 +39,8 @@
     UIView * currentTitleView;
     IBOutlet UIView *overlayContainer;
     IBOutlet UIView *fullscreenOverlayContainer;
+    
+    UIPopoverController * avatarPopover;
 }
 
 @property (readonly) BOOL isMenuHidden;

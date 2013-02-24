@@ -87,8 +87,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 {
     if (productsRequest != nil)
     {
-        [productsRequest cancel];
         productsRequest.delegate = nil;
+        [productsRequest cancel];
         productsRequest = nil;
     }
     newsView = nil;

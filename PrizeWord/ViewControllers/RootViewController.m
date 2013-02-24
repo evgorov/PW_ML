@@ -19,6 +19,9 @@
 #import "UserData.h"
 #import "EventManager.h"
 #import "SocialNetworks.h"
+#import "APIRequest.h"
+#import <MobileCoreServices/UTCoreTypes.h>
+#import "SBJsonParser.h"
 
 @interface RootViewController (private)
 
@@ -34,6 +37,8 @@
 
 -(void)handleSwipeLeft:(id)sender;
 -(void)handleSwipeRight:(id)sender;
+
+-(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType;
 
 @end
 
@@ -369,6 +374,23 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [fullscreenOverlayContainer removeFromSuperview];
         _currentOverlay = nil;
     }];
+}
+
+- (IBAction)handleAvatarClick:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select source", @"Select source for avatar") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Camera", @"Camera source for avatar"), NSLocalizedString(@"Gallery", @"Gallery source for avatar"), nil];
+        [actionSheet showInView:self.view];
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypeCamera];
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
 }
 
 - (IBAction)handleMyPuzzlesClick:(id)sender
@@ -717,6 +739,108 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             }];
         }
     }
+}
+
+#pragma mark select image source and start UIImagePickerController
+
+-(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex)
+    {
+        if (buttonIndex == actionSheet.firstOtherButtonIndex)
+        {
+            [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypeCamera];
+        }
+        else
+        {
+            [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+    }
+}
+
+// Открывает ImagePicker с выбранным ресурсов (камера или галерея)
+-(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
+{
+    if (![UIImagePickerController isSourceTypeAvailable:sourceType])
+    {
+        return;
+    }
+    
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = sourceType;
+    imagePickerController.delegate = self;
+    imagePickerController.allowsEditing = YES;
+    imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    if ([AppDelegate currentDelegate].isIPad && imagePickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+    {
+        avatarPopover = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
+        avatarPopover.delegate = self;
+        [avatarPopover presentPopoverFromRect:CGRectMake(mainMenuAvatar.frame.origin.x, mainMenuAvatar.frame.origin.y - mainMenuView.contentOffset.y, mainMenuAvatar.frame.size.width, mainMenuAvatar.frame.size.height) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    }
+}
+
+#pragma mark UIImagePickerControllerDelegate
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    if ([AppDelegate currentDelegate].isIPad && picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+    {
+        [(UIPopoverController *)picker.parentViewController dismissPopoverAnimated:YES];
+    }
+    else
+    {
+        [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *originalImage, *editedImage, *imageToSave;
+    
+    // Handle a still image capture
+    editedImage = (UIImage *) [info objectForKey:UIImagePickerControllerEditedImage];
+    originalImage = (UIImage *) [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (editedImage) {
+        imageToSave = editedImage;
+    } else {
+        imageToSave = originalImage;
+    }
+//    UIImageWriteToSavedPhotosAlbum (imageToSave, nil, nil, nil);
+    int width = imageToSave.size.width;
+    int height = imageToSave.size.height;
+    int minDimension = width < height ? width : height;
+    CGRect subrect = CGRectMake((width - minDimension) / 2, (height - minDimension) / 2, minDimension, minDimension);
+    [mainMenuAvatar cancelLoading];
+    mainMenuAvatar.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    
+    [self showActivityIndicator];
+    
+    APIRequest * saveAvatarRequest = [APIRequest postRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSLog(@"update me result: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        if (response.statusCode == 200)
+        {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            UserData * newUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            if (newUser != nil)
+            {
+                [GlobalData globalData].loggedInUser = newUser;
+            }
+            [self hideActivityIndicator];
+            [self imagePickerControllerDidCancel:picker];
+        }
+    } failCallback:^(NSError *error) {
+        NSLog(@"update me error: %@", error.description);
+        [self hideActivityIndicator];
+        [self imagePickerControllerDidCancel:picker];
+    }];
+    [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [saveAvatarRequest.params setObject:mainMenuAvatar.image forKey:@"userpic"];
+    [saveAvatarRequest runSilent];
 }
 
 
