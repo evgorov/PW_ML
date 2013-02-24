@@ -24,6 +24,8 @@
 -(void)handleSignupFailed:(NSError *)error;
 -(void)handleBackgroundTap:(id)sender;
 
+-(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType;
+
 @end
 
 @implementation LoginRegisterViewController
@@ -90,20 +92,18 @@
 
 - (IBAction)handleAvaClick:(id)sender
 {
-    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
-    imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    if ([AppDelegate currentDelegate].isIPad && imagePickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
     {
-        popoverController = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
-        popoverController.delegate = self;
-        [popoverController presentPopoverFromRect:btnAvatar.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select source", @"Select source for avatar") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Camera", @"Camera source for avatar"), NSLocalizedString(@"Gallery", @"Gallery source for avatar"), nil];
+        [actionSheet showInView:self.view];
     }
-    else
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        [self presentViewController:imagePickerController animated:YES completion:nil];
+        [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypeCamera];
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     }
 }
 
@@ -313,6 +313,51 @@
     [self handleDatePickerDoneClick:sender];
 }
 
+#pragma mark select image source and start UIImagePickerController
+
+-(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex)
+    {
+        if (buttonIndex == actionSheet.firstOtherButtonIndex)
+        {
+            [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypeCamera];
+        }
+        else
+        {
+            [self startCameraControllerWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+    }
+}
+
+// Открывает ImagePicker с выбранным ресурсов (камера или галерея)
+-(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
+{
+    if (![UIImagePickerController isSourceTypeAvailable:sourceType])
+    {
+        return;
+    }
+
+    UIImagePickerController * imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = sourceType;
+    imagePickerController.delegate = self;
+    imagePickerController.allowsEditing = YES;
+    imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    if ([AppDelegate currentDelegate].isIPad && imagePickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
+    {
+        popoverController = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
+        popoverController.delegate = self;
+        [popoverController presentPopoverFromRect:CGRectMake(btnAvatar.frame.origin.x, btnAvatar.frame.origin.y - scrollView.contentOffset.y, btnAvatar.frame.size.width, btnAvatar.frame.size.height) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    }
+}
+
+
+#pragma mark UIAlertViewDelegate
+
 -(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != alertView.cancelButtonIndex)
@@ -320,6 +365,8 @@
         [self handleRegisterClick:nil];
     }
 }
+
+#pragma mark UIImagePickerControllerDelegate
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
