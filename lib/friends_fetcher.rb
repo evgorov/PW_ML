@@ -28,7 +28,7 @@ module FriendsFetcher
     response = HTTParty.get('https://api.vk.com/method/friends.get',
                             query: {
                               access_token: access_token,
-                              fields: 'uid,first_name,last_name,photo'
+                              fields: 'uid,first_name,last_name,photo_medium'
                             },
                             timeout: 10)
 

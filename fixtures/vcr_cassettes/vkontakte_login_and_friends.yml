@@ -40,7 +40,7 @@ http_interactions:
   recorded_at: Sun, 10 Feb 2013 14:55:52 GMT
 - request:
     method: get
-    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo_medium
     body:
       encoding: US-ASCII
       string: ""
@@ -78,7 +78,7 @@ http_interactions:
   recorded_at: Sun, 10 Feb 2013 14:55:52 GMT
 - request:
     method: get
-    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo_medium
     body:
       encoding: US-ASCII
       string: ""
@@ -116,7 +116,7 @@ http_interactions:
   recorded_at: Sun, 10 Feb 2013 14:55:53 GMT
 - request:
     method: get
-    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo
+    uri: https://api.vk.com/method/friends.get?access_token=access_token&fields=uid,first_name,last_name,photo_medium
     body:
       encoding: US-ASCII
       string: ""
