@@ -53,7 +53,7 @@
     if ([GlobalData globalData].fbSession == nil || ![GlobalData globalData].fbSession.isOpen || [[GlobalData globalData].fbSession.expirationDate compare:[NSDate new]] == NSOrderedDescending)
     {
         // create a fresh session object
-        [GlobalData globalData].fbSession = [[FBSession alloc] init];
+        [GlobalData globalData].fbSession = [[FBSession alloc] initWithPermissions:[NSArray arrayWithObjects:@"read_stream", @"publish_stream", nil]];
         [FBSession setActiveSession:[GlobalData globalData].fbSession];
         
         // if we don't have a cached token, a call to open here would cause UX for login to
