@@ -53,21 +53,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
 {
     APIRequest * request = [APIRequest getRequest:@"sets_available" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
-        NSString * dateString = [response.allHeaderFields objectForKey:@"Date"];
-        for (int month = 0; month < 12; ++month) {
-            if ([dateString rangeOfString:MONTHS_ENG[month]].location != NSNotFound)
-            {
-                _currentMonth = month;
-                break;
-            }
-        }
-        for (int year = 2000; year < 2100; ++year) {
-            if ([dateString rangeOfString:[NSString stringWithFormat:@"%d", year]].location != NSNotFound)
-            {
-                _currentYear = year;
-                break;
-            }
-        }
+        [self parseDateFromResponse:response];
         
         NSLog(@"available sets: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         NSMutableArray * sets = [NSMutableArray new];
@@ -92,6 +78,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
     APIRequest * request = [APIRequest getRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         if (response.statusCode == 200)
         {
+            [self parseDateFromResponse:response];
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
             NSLog(@"me: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -111,6 +98,29 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request runSilent];
+}
+
+-(void)parseDateFromResponse:(NSHTTPURLResponse *)response
+{
+    NSString * dateString = [response.allHeaderFields objectForKey:@"Date"];
+    if (dateString == nil)
+    {
+        return;
+    }
+    for (int month = 0; month < 12; ++month) {
+        if ([dateString rangeOfString:MONTHS_ENG[month]].location != NSNotFound)
+        {
+            _currentMonth = month;
+            break;
+        }
+    }
+    for (int year = 2000; year < 2100; ++year) {
+        if ([dateString rangeOfString:[NSString stringWithFormat:@"%d", year]].location != NSNotFound)
+        {
+            _currentYear = year;
+            break;
+        }
+    }
 }
 
 @end

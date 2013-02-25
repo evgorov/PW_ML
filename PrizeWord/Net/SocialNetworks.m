@@ -129,6 +129,7 @@
         [viewController hideActivityIndicator];
         if (response.statusCode == 200)
         {
+            [[GlobalData globalData] parseDateFromResponse:response];
             NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];

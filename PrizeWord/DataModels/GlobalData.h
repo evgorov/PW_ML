@@ -24,5 +24,6 @@
 
 -(void)loadMonthSets:(void(^)())onComplete;
 -(void)loadMe;
+-(void)parseDateFromResponse:(NSHTTPURLResponse *)response;
 
 @end

@@ -96,6 +96,7 @@
     if (response.statusCode == 200)
     {
 //        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        [[GlobalData globalData] parseDateFromResponse:response];
         NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
         [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
         [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
