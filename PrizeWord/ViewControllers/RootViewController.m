@@ -100,6 +100,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [mainMenuNotificationsSwitch removeFromSuperview];
     [switchView addTarget:self action:@selector(handleNotificationSwitchChange:) forControlEvents:UIControlEventValueChanged];
     mainMenuNotificationsSwitch = switchView;
+    [mainMenuNotificationsSwitch setOn:YES animated:YES];
 
     UISwipeGestureRecognizer * swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
     swipeLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
@@ -571,7 +572,14 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 - (IBAction)handleNotificationSwitchChange:(id)sender
 {
-    
+    if (mainMenuNotificationsSwitch.isOn)
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    }
 }
 
 -(void)handleRulesMenuClick:(id)sender

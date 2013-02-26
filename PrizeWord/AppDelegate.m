@@ -66,6 +66,8 @@ static PrizewordStoreObserver * storeObserver = nil;
     storeObserver = [PrizewordStoreObserver new];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:storeObserver];
     
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    
     return YES;
 }
 
