@@ -21,6 +21,7 @@
 #import "PuzzleData.h"
 #import "PuzzleSetData.h"
 #import "FlipNumberView.h"
+#import "SocialNetworks.h"
 
 @interface GameViewController (private)
 
@@ -250,28 +251,41 @@
             // Store the Facebook session information
             facebook.accessToken = [GlobalData globalData].fbSession.accessToken;
             facebook.expirationDate = [GlobalData globalData].fbSession.expirationDate;
+
+            NSMutableDictionary* params = [[NSMutableDictionary alloc]
+                                           initWithCapacity:2];
+            [params setObject:@"PrizeWord" forKey:@"name"];
+            [params setObject:message forKey:@"message"];
+            [facebook requestWithGraphPath:@"me/feed"
+                                 andParams:params
+                             andHttpMethod:@"POST"
+                               andDelegate:self];
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
         }
         else
         {
-            NSDictionary * data = [NSDictionary dictionaryWithContentsOfFile:
-                    [[NSBundle mainBundle] pathForResource:@"PrizeWord-info" ofType:@"plist"]];
-            NSString * appId = [data objectForKey:@"FacebookAppID"];
-            facebook = [[Facebook alloc] initWithAppId:appId andDelegate:nil];
-            NSArray* permissions =  [NSArray arrayWithObjects:@"read_stream",
-                                     @"publish_stream", nil];
-            [facebook authorize:permissions];
+            [SocialNetworks loginFacebookWithViewController:self andCallback:^{
+                Facebook * facebook = [[Facebook alloc]
+                            initWithAppId:[GlobalData globalData].fbSession.appID
+                            andDelegate:nil];
+                
+                // Store the Facebook session information
+                facebook.accessToken = [GlobalData globalData].fbSession.accessToken;
+                facebook.expirationDate = [GlobalData globalData].fbSession.expirationDate;
+                
+                NSMutableDictionary* params = [[NSMutableDictionary alloc]
+                                               initWithCapacity:2];
+                [params setObject:@"PrizeWord" forKey:@"name"];
+                [params setObject:message forKey:@"message"];
+                [facebook requestWithGraphPath:@"me/feed"
+                                     andParams:params
+                                 andHttpMethod:@"POST"
+                                   andDelegate:self];
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+            }];
         }
-        
-        NSMutableDictionary* params = [[NSMutableDictionary alloc]
-                                       initWithCapacity:2];
-        [params setObject:@"PrizeWord" forKey:@"name"];
-        [params setObject:message forKey:@"message"];
-        [facebook requestWithGraphPath:@"me/feed"
-                             andParams:params
-                         andHttpMethod:@"POST" 
-                           andDelegate:self];
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
     }
     // vkontakte
     else
