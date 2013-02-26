@@ -18,23 +18,6 @@
 
 @implementation PrizeWordNavigationController
 
-+(void)setTitleViewForViewController:(UIViewController *)viewController
-{
-    if (viewController.title != nil && viewController.title.length != 0)
-    {
-        UIFont * titleFont = [UIFont fontWithName:@"DINPro-Black" size:18];
-        CGSize titleSize = [viewController.title sizeWithFont:titleFont];
-        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, titleSize.width, titleSize.height)];
-        titleLabel.font = titleFont;
-        titleLabel.text = viewController.title;
-        titleLabel.backgroundColor = [UIColor clearColor];
-        titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5];
-        titleLabel.shadowOffset = CGSizeMake(0, 1.5f);
-        [viewController.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:titleLabel]];
-    }
-}
-
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -58,7 +41,6 @@
 
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [PrizeWordNavigationController setTitleViewForViewController:viewController];
     [super pushViewController:viewController animated:animated];
     if (viewController.navigationItem.leftBarButtonItem == nil) {
         [viewController.navigationItem setLeftBarButtonItem:self.backButtonItem animated:animated];

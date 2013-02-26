@@ -298,7 +298,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [navController.topViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[UIView new]]];
     [navController.topViewController.navigationItem setRightBarButtonItem:nil];
     [navController.topViewController.navigationItem setTitleView:nil];
-    [PrizeWordNavigationController setTitleViewForViewController:navController.topViewController];
+    navController.topViewController.title = navController.topViewController.title;
     
     overlayContainer.alpha = 0;
     if ([AppDelegate currentDelegate].isIPad)
@@ -527,8 +527,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     {
         [self hideMenuAnimated:YES];
     }
-    navController.topViewController.title = NSLocalizedString(@"TITLE_RULES", nil);
     [self showOverlay:rulesView];
+    navController.topViewController.title = NSLocalizedString(@"TITLE_RULES", nil);
     UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
     UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
     UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];

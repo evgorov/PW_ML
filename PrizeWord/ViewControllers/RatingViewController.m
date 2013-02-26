@@ -60,6 +60,7 @@ int HEADER_HEIGHT = 24;
 
     APIRequest * request = [APIRequest getRequest:@"users" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData)
     {
+        [users removeAllObjects];
 //        NSLog(@"rating: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * data = [parser objectWithData:receivedData];

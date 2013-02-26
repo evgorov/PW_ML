@@ -7,6 +7,7 @@
 //
 
 #import "PrizeWordViewController.h"
+#import "PrizeWordNavigationBar.h"
 
 @interface PrizeWordViewController ()
 
@@ -27,6 +28,22 @@
 {
     [activityIndicator removeFromSuperview];
     activityIndicator = nil;
+}
+
+-(void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    UINavigationItem * navigationItem = self.navigationItem;
+    UIFont * titleFont = [UIFont fontWithName:@"DINPro-Black" size:18];
+    CGSize titleSize = [title sizeWithFont:titleFont];
+    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, titleSize.width, titleSize.height)];
+    titleLabel.font = titleFont;
+    titleLabel.text = title;
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5];
+    titleLabel.shadowOffset = CGSizeMake(0, 1.5f);
+    [navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:titleLabel]];
 }
 
 -(void)showActivityIndicator
