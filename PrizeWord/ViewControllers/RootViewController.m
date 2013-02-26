@@ -416,7 +416,17 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     {
         [[GlobalData globalData].fbSession close];
         [GlobalData globalData].fbSession = nil;
+        [FBSession setActiveSession:nil];
     }
+    
+    // vkontakte logout
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [navController popToRootViewControllerAnimated:YES];
 }
 
