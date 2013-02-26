@@ -490,14 +490,27 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 {
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         [self hideActivityIndicator];
-        [self switchSetViewToBought:puzzleSetView];
-        [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
-        NSError * error;
-        [[AppDelegate currentDelegate].managedObjectContext save:&error];
-        if (error != nil) {
-            NSLog(@"error: %@", error.description);
+        if (response.statusCode == 200)
+        {
+            NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            [self switchSetViewToBought:puzzleSetView];
+            [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
+            NSError * error;
+            [[AppDelegate currentDelegate].managedObjectContext save:&error];
+            if (error != nil) {
+                NSLog(@"error: %@", error.description);
+            }
+        }
+        else
+        {
+            NSString * message = [[[SBJsonParser new] objectWithData:receivedData] objectForKey:@"message"];
+            if (message == nil)
+            {
+                message = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+            }
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
