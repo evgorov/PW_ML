@@ -8,6 +8,7 @@
 
 #import "PrizeWordNavigationController.h"
 #import "PrizeWordNavigationBar.h"
+#import "AppDelegate.h"
 
 @interface PrizeWordNavigationController ()
 
@@ -47,6 +48,15 @@
     }
 }
 
+-(UIViewController *)popViewControllerAnimated:(BOOL)animated
+{
+    if (UIDeviceOrientationIsLandscape([AppDelegate currentDelegate].viewOrientation))
+    {
+        [[AppDelegate currentDelegate] setOrientation:UIDeviceOrientationPortrait];
+    }
+    return [super popViewControllerAnimated:animated];  
+}
+
 -(NSArray *)popToRootViewControllerAnimated:(BOOL)animated
 {
     NSArray * popped = [super popToRootViewControllerAnimated:animated];
@@ -73,6 +83,7 @@
     {
         [viewController viewWillAppear:animated];
     }
+    [[AppDelegate currentDelegate] orientationChanged:nil];
 }
 
 -(void)handleBackTap:(UIButton *)sender

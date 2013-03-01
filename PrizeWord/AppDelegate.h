@@ -23,12 +23,18 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+
 @property (readonly) BOOL isIPad;
+@property (readonly) UIDeviceOrientation viewOrientation;
+@property (readonly) UIDeviceOrientation deviceOrientation;
 
 + (AppDelegate *)currentDelegate;
 + (GameLogic *)gameLogic;
 + (id<SKPaymentTransactionObserver>)storeObserver;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (void)orientationChanged:(NSNotification *)note;
+- (void)setOrientation:(UIDeviceOrientation)targetOrientation;
+
 
 @end

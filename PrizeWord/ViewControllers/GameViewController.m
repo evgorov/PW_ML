@@ -29,6 +29,7 @@
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 -(void)animateFinalScreenAppears:(id)sender;
 
+
 @end
 
 @implementation GameViewController
@@ -74,6 +75,35 @@
     finalFlipNumbers = [NSArray arrayWithObjects:finalFlipNumber0, finalFlipNumber1, finalFlipNumber2, finalFlipNumber3, finalFlipNumber4, nil];
 
     [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
+    
+
+}
+
+- (void)viewDidUnload {
+    viewTime = nil;
+    pauseOverlay = nil;
+    pauseSwtMusic = nil;
+    pauseSwtSound = nil;
+    pauseImgProgressbar = nil;
+    pauseTxtProgress = nil;
+    finalOverlay = nil;
+    pauseSwtMusic = nil;
+    pauseSwtSound = nil;
+    lblFinalBaseScore = nil;
+    lblFinalTimeBonus = nil;
+    finalFlipNumber4 = nil;
+    finalFlipNumber3 = nil;
+    finalFlipNumber2 = nil;
+    finalFlipNumber1 = nil;
+    finalFlipNumber0 = nil;
+    finalFlipNumbers = nil;
+    finalShareView = nil;
+    
+	UIDevice *device = [UIDevice currentDevice];					//Get the device object
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
+	[nc removeObserver:self name:UIDeviceOrientationDidChangeNotification object:device];
+    
+    [super viewDidUnload];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -93,6 +123,8 @@
     UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
     [playPauseView addSubview:btnPlay];
     [playPauseView addSubview:btnPause];
+    [btnPlay addTarget:self action:@selector(handlePlayClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnPause addTarget:self action:@selector(handlePauseClick:) forControlEvents:UIControlEventTouchUpInside];
     playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
                                        [PrizeWordNavigationBar containerWithView:playPauseView]];
     [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
@@ -137,6 +169,7 @@
     hintButtonItem = nil;
 }
 
+/*
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     if ([AppDelegate currentDelegate].isIPad)
@@ -145,7 +178,7 @@
     }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown;
 }
-
+*/
 -(NSUInteger)supportedInterfaceOrientations
 {
     if ([AppDelegate currentDelegate].isIPad)
@@ -155,10 +188,7 @@
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
--(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return [[UIApplication sharedApplication] statusBarOrientation];
-}
+
 
 - (IBAction)handlePauseClick:(UIButton *)sender
 {
@@ -431,28 +461,6 @@
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:@"-1" forKey:@"hints_change"];
     [request runSilent];
-}
-
-- (void)viewDidUnload {
-    viewTime = nil;
-    pauseOverlay = nil;
-    pauseSwtMusic = nil;
-    pauseSwtSound = nil;
-    pauseImgProgressbar = nil;
-    pauseTxtProgress = nil;
-    finalOverlay = nil;
-    pauseSwtMusic = nil;
-    pauseSwtSound = nil;
-    lblFinalBaseScore = nil;
-    lblFinalTimeBonus = nil;
-    finalFlipNumber4 = nil;
-    finalFlipNumber3 = nil;
-    finalFlipNumber2 = nil;
-    finalFlipNumber1 = nil;
-    finalFlipNumber0 = nil;
-    finalFlipNumbers = nil;
-    finalShareView = nil;
-    [super viewDidUnload];
 }
 
 -(void)animateFinalScreenAppears:(id)sender

@@ -16,6 +16,7 @@
 #import "Facebook.h"
 #import "PrizewordStoreObserver.h"
 #import "ExternalImage.h"
+#import "GameViewController.h"
 
 @implementation AppDelegate
 
@@ -26,6 +27,8 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize isIPad = _isIPad;
+@synthesize viewOrientation;
+@synthesize deviceOrientation;
 
 static AppDelegate * currentInstance = nil;
 static GameLogic * sharedGameLogic = nil;
@@ -51,10 +54,14 @@ static PrizewordStoreObserver * storeObserver = nil;
     _isIPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
     
     [application setStatusBarHidden:YES];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _window.autoresizesSubviews = YES;
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
     _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
+    _navController.view.autoresizesSubviews = YES;
     _rootViewController = [[RootViewController alloc] initWithNavigationController:_navController];
+//    _rootViewController.view.clipsToBounds = YES;
+    _rootViewController.view.autoresizesSubviews = YES;
     self.window.rootViewController = _rootViewController;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
@@ -67,6 +74,14 @@ static PrizewordStoreObserver * storeObserver = nil;
     [[SKPaymentQueue defaultQueue] addTransactionObserver:storeObserver];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    
+    //----- SETUP DEVICE ORIENTATION CHANGE NOTIFICATION -----
+	UIDevice *device = [UIDevice currentDevice];					//Get the device object
+	[device beginGeneratingDeviceOrientationNotifications];			//Tell it to start monitoring the accelerometer for orientation
+    deviceOrientation = device.orientation;
+    viewOrientation = UIDeviceOrientationPortrait;
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
+	[nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:device];
     
     return YES;
 }
@@ -105,6 +120,89 @@ static PrizewordStoreObserver * storeObserver = nil;
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [ExternalImage clearCache];
+}
+
+
+-(void)orientationChanged:(NSNotification *)note
+{
+    if (note != nil)
+    {
+        deviceOrientation = [[note object] orientation];
+    }
+    
+    UIDeviceOrientation targetOrientation = deviceOrientation;
+    
+    if (![self isIPad] || ![[_navController topViewController] isKindOfClass:[GameViewController class]])
+    {
+        if (UIDeviceOrientationIsLandscape(targetOrientation))
+        {
+            if (UIDeviceOrientationIsLandscape(viewOrientation))
+            {
+                targetOrientation = UIDeviceOrientationPortrait;
+            }
+            else
+            {
+                targetOrientation = viewOrientation;
+            }
+        }
+    }
+    
+    [self setOrientation:targetOrientation];
+}
+
+- (void)setOrientation:(UIDeviceOrientation)targetOrientation
+{
+    if (viewOrientation != targetOrientation)
+    {
+        NSLog(@"change orientation from %d to %d", viewOrientation, targetOrientation);
+        viewOrientation = targetOrientation;
+        switch (targetOrientation)
+        {
+            case UIDeviceOrientationPortrait:
+            {
+                                    [UIView animateWithDuration:0.5f animations:^{
+                _window.transform = CGAffineTransformIdentity;
+                _rootViewController.view.frame = _window.frame;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortrait;
+                                    }];
+            }
+                break;
+                
+            case UIDeviceOrientationPortraitUpsideDown:
+            {
+                                    [UIView animateWithDuration:0.5f animations:^{
+                _window.transform = CGAffineTransformMakeRotation(M_PI);
+                _rootViewController.view.frame = _window.frame;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortraitUpsideDown;
+                                    }];
+            }
+                break;
+                
+            case UIDeviceOrientationLandscapeLeft:
+            {
+                                    [UIView animateWithDuration:0.5f animations:^{
+                _window.transform = CGAffineTransformMakeRotation(-M_PI_2);
+                _rootViewController.view.frame = _window.frame;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+                                    }];
+            }
+                break;
+                
+            case UIDeviceOrientationLandscapeRight:
+            {
+                [UIView animateWithDuration:0.5f animations:^{
+                _window.transform = CGAffineTransformMakeRotation(M_PI_2);
+                _rootViewController.view.frame = _window.frame;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
+                                    }];
+            }
+                break;
+                
+                
+            default:
+                break;
+        }
+    }
 }
 
 - (void)saveContext
