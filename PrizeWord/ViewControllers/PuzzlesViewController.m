@@ -259,7 +259,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             return;
         }
         
-        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:NO showUnsolved:YES];
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:YES showUnsolved:YES];
         CGSize newSize = puzzleSetView.frame.size;
         CGSize oldSize = oldView.frame.size;
         puzzleSetView.frame = CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height);
@@ -325,7 +325,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         [subview removeFromSuperview];
     }
     for (PuzzleSetData * puzzleSet in monthSets) {
-        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:0 showSolved:NO showUnsolved:YES];
+        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:0 showSolved:YES showUnsolved:YES];
         puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
         yOffset += puzzleSetView.frame.size.height;
         [currentPuzzlesView addSubview:puzzleSetView];
