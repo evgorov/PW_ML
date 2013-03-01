@@ -133,6 +133,31 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [super viewDidUnload];
 }
 
+-(void)orientationChanged:(UIDeviceOrientation)orientation
+{
+        if (_currentOverlay != nil && _currentOverlay.superview == overlayContainer)
+        {
+            [UIView animateWithDuration:0.5f animations:^{
+                if ([AppDelegate currentDelegate].isIPad)
+                {
+                    overlayContainer.frame = CGRectMake(0, 70, self.view.bounds.size.width, self.view.bounds.size.height - 70);
+                }
+                else
+                {
+                    overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
+                }
+                _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            }];
+        }
+        else if (_currentOverlay != nil && _currentOverlay.superview == fullscreenOverlayContainer)
+        {
+            [UIView animateWithDuration:0.5f animations:^{
+                fullscreenOverlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+                _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            }];
+        }
+}
+
 -(void)didReceiveMemoryWarning
 {
     /*
@@ -337,7 +362,6 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     
     _currentOverlay = overlayView;
     [fullscreenOverlayContainer addSubview:_currentOverlay];
-    overlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     
     _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2 - fullscreenOverlayContainer.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
     [UIView animateWithDuration:0.5 animations:^{
