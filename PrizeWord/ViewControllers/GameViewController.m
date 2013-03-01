@@ -75,8 +75,6 @@
     finalFlipNumbers = [NSArray arrayWithObjects:finalFlipNumber0, finalFlipNumber1, finalFlipNumber2, finalFlipNumber3, finalFlipNumber4, nil];
 
     [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
-    
-
 }
 
 - (void)viewDidUnload {
@@ -98,10 +96,6 @@
     finalFlipNumber0 = nil;
     finalFlipNumbers = nil;
     finalShareView = nil;
-    
-	UIDevice *device = [UIDevice currentDevice];					//Get the device object
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
-	[nc removeObserver:self name:UIDeviceOrientationDidChangeNotification object:device];
     
     [super viewDidUnload];
 }
@@ -173,16 +167,12 @@
 {
     NSLog(@"nav bar: %f %f", self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
     NSLog(@"nav con: %f %f", self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
-    UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
-    [playPauseView addSubview:btnPlay];
-    [playPauseView addSubview:btnPause];
-    [btnPlay addTarget:self action:@selector(handlePlayClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnPause addTarget:self action:@selector(handlePauseClick:) forControlEvents:UIControlEventTouchUpInside];
-    playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
-                     [PrizeWordNavigationBar containerWithView:playPauseView]];
-    [self.navigationItem setLeftBarButtonItem:playPauseItem animated:NO];
-    hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
-    [self.navigationItem setRightBarButtonItem:hintButtonItem animated:NO];
+    if ([textField isFirstResponder])
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_FOCUS_CHANGE andData:nil]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
+        [textField resignFirstResponder];
+    }
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -341,6 +331,10 @@
     NSDictionary * userInfo = aNotification.userInfo;
     CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     endFrame = [self.view convertRect:endFrame toView:nil];
+    if (UIDeviceOrientationIsLandscape([AppDelegate currentDelegate].viewOrientation))
+    {
+        endFrame = CGRectMake(endFrame.origin.y, endFrame.origin.y, endFrame.size.height, endFrame.size.width);
+    }
     
     UIViewAnimationCurve animationCurve = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
     double animationDuration = [(NSNumber *)[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
