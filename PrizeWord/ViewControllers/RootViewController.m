@@ -22,6 +22,10 @@
 #import "APIRequest.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "SBJsonParser.h"
+#import "GPUImageView.h"
+#import "GPUImageFastBlurFilter.h"
+#import "GPUImageGaussianBlurFilter.h"
+#import "GPUImageUIElement.h"
 
 @interface RootViewController (private)
 
@@ -109,6 +113,15 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
+    
+    gpuImageView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    uiElementInput = [[GPUImageUIElement alloc] initWithView:self.view];
+    
+    blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    blurFilter.blurSize = 5;
+
+    [uiElementInput addTarget:blurFilter];
+    [blurFilter addTarget:gpuImageView];
 }
 
 - (void)viewDidUnload
@@ -130,11 +143,14 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
     
     rulesCaption = nil;
+    gpuImageView = nil;
+    uiElementInput = nil;
     [super viewDidUnload];
 }
 
 -(void)orientationChanged:(UIDeviceOrientation)orientation
 {
+    
         if (_currentOverlay != nil && _currentOverlay.superview == overlayContainer)
         {
             [UIView animateWithDuration:0.5f animations:^{
@@ -147,6 +163,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
                     overlayContainer.frame = CGRectMake(0, self.view.frame.size.height - overlayContainer.frame.size.height, overlayContainer.frame.size.width, overlayContainer.frame.size.height);
                 }
                 _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            } completion:^(BOOL finished) {
+                gpuImageView.frame = CGRectMake(0, -overlayContainer.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+                [uiElementInput update];
             }];
         }
         else if (_currentOverlay != nil && _currentOverlay.superview == fullscreenOverlayContainer)
@@ -154,6 +173,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             [UIView animateWithDuration:0.5f animations:^{
                 fullscreenOverlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
                 _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            } completion:^(BOOL finished) {
+                gpuImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+                [uiElementInput update];
             }];
         }
 }
@@ -338,6 +360,10 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [self.view addSubview:overlayContainer];
     overlayContainer.clipsToBounds = YES;
     
+    gpuImageView.frame = CGRectMake(0, -overlayContainer.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    [overlayContainer insertSubview:gpuImageView atIndex:0];
+    [uiElementInput update];
+    
     _currentOverlay = overlayView;
     [overlayContainer addSubview:_currentOverlay];
     _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
@@ -359,7 +385,11 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     fullscreenOverlayContainer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [self.view addSubview:fullscreenOverlayContainer];
     fullscreenOverlayContainer.clipsToBounds = YES;
-    
+
+    gpuImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [fullscreenOverlayContainer insertSubview:gpuImageView atIndex:0];
+    [uiElementInput update];
+
     _currentOverlay = overlayView;
     [fullscreenOverlayContainer addSubview:_currentOverlay];
     

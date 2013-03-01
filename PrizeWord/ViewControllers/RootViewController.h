@@ -13,6 +13,10 @@
 #import "PrizeWordViewController.h"
 
 @class PrizeWordNavigationController;
+@class GPUImageUIElement;
+@class GPUImageView;
+@class GPUImageGaussianBlurFilter;
+@class GPUImageFastBlurFilter;
 
 @interface RootViewController : PrizeWordViewController<EventListenerDelegate, UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
@@ -41,6 +45,10 @@
     IBOutlet UIView *fullscreenOverlayContainer;
     
     UIPopoverController * avatarPopover;
+    
+    GPUImageUIElement * uiElementInput;
+    GPUImageView * gpuImageView;
+    GPUImageGaussianBlurFilter * blurFilter;
 }
 
 @property (readonly) BOOL isMenuHidden;
