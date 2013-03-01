@@ -82,7 +82,7 @@ static PrizewordStoreObserver * storeObserver = nil;
 	UIDevice *device = [UIDevice currentDevice];					//Get the device object
 	[device beginGeneratingDeviceOrientationNotifications];			//Tell it to start monitoring the accelerometer for orientation
     deviceOrientation = device.orientation;
-    viewOrientation = UIDeviceOrientationPortrait;
+    viewOrientation = -1;
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
 	[nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:device];
     
@@ -191,7 +191,7 @@ static PrizewordStoreObserver * storeObserver = nil;
                                     [UIView animateWithDuration:0.5f animations:^{
                 _window.transform = CGAffineTransformMakeRotation(-M_PI_2);
                                         _window.frame = CGRectMake(0, 0, 1024, 1024);
-                                        _rootViewController.view.frame = CGRectMake(0, 0, 1024, 768);
+                                        _rootViewController.view.frame = CGRectMake(0, 256, 1024, 768);
                                     }];
             }
                 break;
@@ -202,7 +202,7 @@ static PrizewordStoreObserver * storeObserver = nil;
                 [UIView animateWithDuration:0.5f animations:^{
                     _window.transform = CGAffineTransformMakeRotation(M_PI_2);
                     _window.frame = CGRectMake(0, 0, 1024, 1024);
-                    _rootViewController.view.frame = CGRectMake(0, 0, 1024, 768);
+                    _rootViewController.view.frame = CGRectMake(0, 256, 1024, 768);
                                     }];
             }
                 break;
