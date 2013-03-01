@@ -169,16 +169,22 @@
     hintButtonItem = nil;
 }
 
-/*
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+-(void)orientationChanged:(UIDeviceOrientation)orientation
 {
-    if ([AppDelegate currentDelegate].isIPad)
-    {
-        return toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
-    }
-    return toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown;
+    NSLog(@"nav bar: %f %f", self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
+    NSLog(@"nav con: %f %f", self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
+    UIView * playPauseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnPause.frame.size.width, btnPause.frame.size.height)];
+    [playPauseView addSubview:btnPlay];
+    [playPauseView addSubview:btnPause];
+    [btnPlay addTarget:self action:@selector(handlePlayClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnPause addTarget:self action:@selector(handlePauseClick:) forControlEvents:UIControlEventTouchUpInside];
+    playPauseItem = [[UIBarButtonItem alloc] initWithCustomView:
+                     [PrizeWordNavigationBar containerWithView:playPauseView]];
+    [self.navigationItem setLeftBarButtonItem:playPauseItem animated:NO];
+    hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
+    [self.navigationItem setRightBarButtonItem:hintButtonItem animated:NO];
 }
-*/
+
 -(NSUInteger)supportedInterfaceOrientations
 {
     if ([AppDelegate currentDelegate].isIPad)

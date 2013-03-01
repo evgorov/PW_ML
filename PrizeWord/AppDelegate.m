@@ -60,8 +60,11 @@ static PrizewordStoreObserver * storeObserver = nil;
     _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
     _navController.view.autoresizesSubviews = YES;
     _rootViewController = [[RootViewController alloc] initWithNavigationController:_navController];
-//    _rootViewController.view.clipsToBounds = YES;
+    _rootViewController.view.clipsToBounds = YES;
     _rootViewController.view.autoresizesSubviews = YES;
+    
+    _rootViewController.view.transform = CGAffineTransformIdentity;
+
     self.window.rootViewController = _rootViewController;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
@@ -156,44 +159,50 @@ static PrizewordStoreObserver * storeObserver = nil;
     {
         NSLog(@"change orientation from %d to %d", viewOrientation, targetOrientation);
         viewOrientation = targetOrientation;
+        NSLog(@"window frame: %f %f %f %f", _window.frame.origin.x, _window.frame.origin.y, _window.frame.size.width, _window.frame.size.height);
+        CGSize frameSize = _isIPad ? CGSizeMake(768, 1024) : CGSizeMake(320, 480);
         switch (targetOrientation)
         {
             case UIDeviceOrientationPortrait:
             {
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortrait;
                                     [UIView animateWithDuration:0.5f animations:^{
                 _window.transform = CGAffineTransformIdentity;
+                _window.frame = CGRectMake(0, 0, frameSize.width, frameSize.height);
                 _rootViewController.view.frame = _window.frame;
-                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortrait;
                                     }];
             }
                 break;
                 
             case UIDeviceOrientationPortraitUpsideDown:
             {
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortraitUpsideDown;
                                     [UIView animateWithDuration:0.5f animations:^{
                 _window.transform = CGAffineTransformMakeRotation(M_PI);
+                                        _window.frame = CGRectMake(0, 0, frameSize.width, frameSize.height);
                 _rootViewController.view.frame = _window.frame;
-                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationPortraitUpsideDown;
                                     }];
             }
                 break;
                 
             case UIDeviceOrientationLandscapeLeft:
             {
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                                     [UIView animateWithDuration:0.5f animations:^{
                 _window.transform = CGAffineTransformMakeRotation(-M_PI_2);
-                _rootViewController.view.frame = _window.frame;
-                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+                                        _window.frame = CGRectMake(0, 0, 1024, 1024);
+                                        _rootViewController.view.frame = CGRectMake(0, 0, 1024, 768);
                                     }];
             }
                 break;
                 
             case UIDeviceOrientationLandscapeRight:
             {
-                [UIView animateWithDuration:0.5f animations:^{
-                _window.transform = CGAffineTransformMakeRotation(M_PI_2);
-                _rootViewController.view.frame = _window.frame;
                 [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
+                [UIView animateWithDuration:0.5f animations:^{
+                    _window.transform = CGAffineTransformMakeRotation(M_PI_2);
+                    _window.frame = CGRectMake(0, 0, 1024, 1024);
+                    _rootViewController.view.frame = CGRectMake(0, 0, 1024, 768);
                                     }];
             }
                 break;
@@ -201,6 +210,12 @@ static PrizewordStoreObserver * storeObserver = nil;
                 
             default:
                 break;
+        }
+        
+        [_rootViewController orientationChanged:viewOrientation];
+        if ([_navController.topViewController isKindOfClass:[PrizeWordViewController class]])
+        {
+            [(PrizeWordViewController *)_navController.topViewController orientationChanged:viewOrientation];
         }
     }
 }

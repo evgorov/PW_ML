@@ -68,7 +68,6 @@
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return NO;
-    return toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown;
 }
 
 -(BOOL)shouldAutorotate
@@ -76,9 +75,8 @@
     return NO;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+-(void)orientationChanged:(UIDeviceOrientation)orientation
 {
-    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
 @end

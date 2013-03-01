@@ -16,4 +16,6 @@
 -(void)showActivityIndicator;
 -(void)hideActivityIndicator;
 
+-(void)orientationChanged:(UIDeviceOrientation)orientation;
+
 @end

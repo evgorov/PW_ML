@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PrizeWordNavigationBar : UINavigationBar
-{
-    UIInterfaceOrientation orientation;
-}
 
 +(UIView *)containerWithView:(UIView *)innerView;
 

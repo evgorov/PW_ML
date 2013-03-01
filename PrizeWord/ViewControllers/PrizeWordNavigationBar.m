@@ -7,6 +7,7 @@
 //
 
 #import "PrizeWordNavigationBar.h"
+#import "AppDelegate.h"
 
 @interface PrizeWordNavigationBar (private)
 
@@ -31,7 +32,6 @@ static UIImage * backgroundImage = nil;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        orientation = [[UIApplication sharedApplication] statusBarOrientation];
         [self loadNavigationBarImage];
         self.clipsToBounds = NO;
     }
@@ -42,7 +42,6 @@ static UIImage * backgroundImage = nil;
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        orientation = [[UIApplication sharedApplication] statusBarOrientation];
         [self loadNavigationBarImage];
         self.clipsToBounds = NO;
     }
@@ -51,7 +50,7 @@ static UIImage * backgroundImage = nil;
 
 -(void)loadNavigationBarImage
 {
-    if (UIInterfaceOrientationIsPortrait(orientation))
+    if (UIInterfaceOrientationIsPortrait([AppDelegate currentDelegate].viewOrientation))
     {
         backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
     }
@@ -64,17 +63,19 @@ static UIImage * backgroundImage = nil;
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
+    [self loadNavigationBarImage];
     return CGSizeMake(backgroundImage.size.width, backgroundImage.size.height * 116 / 123);
 }
 
 - (void)drawRect:(CGRect)rect
 {
-    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) != UIInterfaceOrientationIsPortrait(orientation))
-    {
-        orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        [self loadNavigationBarImage];
-    }
+    [self loadNavigationBarImage];
     [backgroundImage drawInRect:CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height)];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"nav bar touch");
 }
 
 @end
