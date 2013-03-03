@@ -7,7 +7,7 @@ module WallPublisher
       HTTParty.get('https://api.vk.com/method/wall.post',
                    query: {
                      access_token: access_token,
-                     message: 'message',
+                     message: message,
                      attachmments: attachmments
                    },
                    timeout: 10)
