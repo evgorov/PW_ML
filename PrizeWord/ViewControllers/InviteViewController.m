@@ -29,6 +29,8 @@
 -(void)inviteAllVKUsers;
 -(void)inviteAllFBUsers;
 
+-(NSString *)userpicForData:(NSDictionary *)userData;
+
 -(NSDictionary*)parseURLParams:(NSString *)query;
 
 @end
@@ -152,7 +154,15 @@
                         userView.btnAdd.tag = 0;
                         [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
                         userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                        [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
+                        NSString * userpicURL = [self userpicForData:friendData];
+                        if (userpicURL == nil)
+                        {
+                            [userView.imgAvatar clear];
+                        }
+                        else
+                        {
+                            [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:userpicURL]];
+                        }
                         [container insertSubview:userView atIndex:0];
                         height += userView.frame.size.height * friendsData.count;
                         userView.tag = 0;
@@ -251,12 +261,12 @@
     if (vkFriends != nil && vkFriends.count > 0)
     {
         [self showActivityIndicator];
-        NSString * ids = @"";
+        NSMutableString * ids = [NSMutableString new];
         for (NSDictionary * friendData in vkFriends)
         {
             if (!([(NSNumber *)[friendData objectForKey:@"invite_sent"] boolValue] || [(NSNumber *)[friendData objectForKey:@"invite_used"] boolValue]))
             {
-                ids = ids.length > 0 ? [ids stringByAppendingFormat:@",%@", [friendData objectForKey:@"id"]] : [friendData objectForKey:@"id"];
+                [ids appendFormat:(ids.length > 0 ? @",%@" : @"%@"), [friendData objectForKey:@"id"]];
             }
         }
         APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
@@ -354,7 +364,16 @@
         newView.lblName.text = [userData objectForKey:@"first_name"];
         newView.lblSurname.text = [userData objectForKey:@"last_name"];
         newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
-        [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:[userData objectForKey:@"userpic"]]];
+        NSString * userpicURL = [self userpicForData:userData];
+        if (userpicURL == nil)
+        {
+            [newView.imgAvatar clear];
+        }
+        else
+        {
+            [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:userpicURL]];
+        }
+
         newView.frame = CGRectMake(0, firstView.frame.origin.y - newView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
         [container insertSubview:newView atIndex:0];
         [views insertObject:newView atIndex:0];
@@ -380,7 +399,15 @@
         newView.lblName.text = [userData objectForKey:@"first_name"];
         newView.lblSurname.text = [userData objectForKey:@"last_name"];
         newView.btnAdd.enabled = [(NSString *)[userData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
-        [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:[userData objectForKey:@"userpic"]]];
+        NSString * userpicURL = [self userpicForData:userData];
+        if (userpicURL == nil)
+        {
+            [newView.imgAvatar clear];
+        }
+        else
+        {
+            [newView.imgAvatar loadImageFromURL:[NSURL URLWithString:userpicURL]];
+        }
         newView.frame = CGRectMake(0, lastView.frame.origin.y + lastView.frame.size.height, newView.frame.size.width, newView.frame.size.height);
         [container insertSubview:newView atIndex:0];
         [views addObject:newView];
@@ -493,6 +520,21 @@
     NSLog(@"dialog should open external url: %@", url.description);
     return YES;
     
+}
+
+
+-(NSString *)userpicForData:(NSDictionary *)userData
+{
+    NSString * userpicString = [userData objectForKey:@"userpic"];
+    if (userpicString == nil || userpicString == (id)[NSNull null])
+    {
+        userpicString = [userData objectForKey:@"photo_medium"];
+    }
+    if (userpicString == (id)[NSNull null])
+    {
+        userpicString = nil;
+    }
+    return userpicString;
 }
 
 -(NSDictionary*)parseURLParams:(NSString *)query

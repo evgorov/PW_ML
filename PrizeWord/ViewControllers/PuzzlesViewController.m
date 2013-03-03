@@ -89,12 +89,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 - (void)viewDidUnload
 {
-    if (productsRequest != nil)
-    {
-        productsRequest.delegate = nil;
-        [productsRequest cancel];
-        productsRequest = nil;
-    }
     newsView = nil;
     currentPuzzlesView = nil;
     hintsView = nil;
@@ -154,6 +148,13 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_ERROR];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
+
+    if (productsRequest != nil)
+    {
+        productsRequest.delegate = nil;
+        [productsRequest cancel];
+        productsRequest = nil;
+    }
 }
 
 #pragma mark EventListenerDelegate
@@ -450,7 +451,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         }
         for (SKProduct * product in response.products)
         {
-            if ([product.productIdentifier rangeOfString:puzzleSetView.puzzleSetData.set_id].location != NSNotFound)
+            if ([product.productIdentifier rangeOfString:puzzleSetView.puzzleSetData.set_id options:NSCaseInsensitiveSearch].location != NSNotFound)
             {
                 NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
                 [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];

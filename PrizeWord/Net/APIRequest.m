@@ -19,6 +19,8 @@
 
 @synthesize params = _params;
 
+static NSMutableSet * apiRequests = nil;
+
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)success failCallback:(FailCallback)fail
 {
     self = [super init];
@@ -49,6 +51,20 @@
 {
     return [[APIRequest alloc] initWithMethod:@"PUT" command:command successCallback:successCallback failCallback:failCallback];
 }
+
++(void)cancelAll
+{
+    if (apiRequests != nil)
+    {
+        NSSet * toCancel = [apiRequests copy];
+        [apiRequests removeAllObjects];
+        for (APIRequest * request in toCancel)
+        {
+            [request cancel];
+        }
+    }
+}
+
 
 -(void)prepareRequest
 {
@@ -124,6 +140,11 @@
     silentMode = NO;
     [self prepareRequest];
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    if (apiRequests == nil)
+    {
+        apiRequests = [NSMutableSet new];
+    }
+    [apiRequests addObject:self];
 }
 
 -(void)runSilent
@@ -132,6 +153,20 @@
     [self prepareRequest];
     NSLog(@"request: %@", request.URL.description);
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    if (apiRequests == nil)
+    {
+        apiRequests = [NSMutableSet new];
+    }
+    [apiRequests addObject:self];
+}
+
+-(void)cancel
+{
+    if (apiRequests != nil)
+    {
+        [apiRequests removeObject:self];
+    }
+    [connection cancel];
 }
 
 #pragma mark NSURLConnectionDelegate
@@ -148,6 +183,10 @@
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    if (apiRequests != nil)
+    {
+        [apiRequests removeObject:self];
+    }
     NSLog(@"didFailWithError: %@", error.description);
     [receivedData setLength:0];
     if (silentMode)
@@ -182,6 +221,10 @@
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSLog(@"connectionDidFinishLoading");
+    if (apiRequests != nil)
+    {
+        [apiRequests removeObject:self];
+    }
     successCallback(httpResponse, receivedData);
 }
 
