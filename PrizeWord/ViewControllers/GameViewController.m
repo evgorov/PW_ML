@@ -467,7 +467,7 @@
 {
     CGRect shareFrame = finalShareView.frame;
     shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
-    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         finalShareView.frame = shareFrame;
     } completion:^(BOOL finished) {
         lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.base_score unsignedIntValue]];

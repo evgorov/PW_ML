@@ -281,24 +281,35 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             NSLog(@"news update success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             
             NSDictionary * messages = [[SBJsonParser new] objectWithData:receivedData];
-            newsLbl1.text = [messages objectForKey:@"message1"];
-            newsLbl2.text = [messages objectForKey:@"message2"];
-            newsLbl3.text = [messages objectForKey:@"message3"];
-            if ([messages objectForKey:@"message1"] == nil)
+            NSMutableArray * messagesArray = [NSMutableArray new];
+            if ([messages objectForKey:@"message1"] != (id)[NSNull null])
+            {
+                [messagesArray addObject:[messages objectForKey:@"message1"]];
+            }
+            if ([messages objectForKey:@"message2"] != (id)[NSNull null])
+            {
+                [messagesArray addObject:[messages objectForKey:@"message2"]];
+            }
+            if ([messages objectForKey:@"message3"] != (id)[NSNull null])
+            {
+                [messagesArray addObject:[messages objectForKey:@"message3"]];
+            }
+            newsPaginator.numberOfPages = messagesArray.count;
+            if (messagesArray.count == 0)
             {
                 [self resizeView:newsView newHeight:0 animated:YES];
             }
-            else if ([messages objectForKey:@"message2"] == nil)
+            if (messagesArray.count >= 1)
             {
-                newsPaginator.numberOfPages = 1;
+                newsLbl1.text = [messagesArray objectAtIndex:0];
             }
-            else if ([messages objectForKey:@"message3"] == nil)
+            if (messagesArray.count >= 2)
             {
-                newsPaginator.numberOfPages = 2;
+                newsLbl2.text = [messagesArray objectAtIndex:1];
             }
-            else
+            if (messagesArray.count >= 3)
             {
-                newsPaginator.numberOfPages = 3;
+                newsLbl3.text = [messagesArray objectAtIndex:2];
             }
             [newsScrollView setContentSize:CGSizeMake(newsPaginator.numberOfPages * newsScrollView.frame.size.width, newsScrollView.frame.size.height)];
         }
