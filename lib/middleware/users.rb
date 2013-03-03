@@ -5,6 +5,7 @@ require 'model/user_data'
 require 'model/user_score'
 require 'model/service_message'
 require 'itunes_receipt_verifier'
+require 'wall_publisher'
 
 module Middleware
   class Users < Sinatra::Base
@@ -166,7 +167,7 @@ module Middleware
 
     post '/vkontakte/share' do
       env['token_auth'].authorize!
-      WallPublisher.post(current_user['vkontakte_access_token'], params['message'])
+      WallPublisher.post(current_user['vkontakte_access_token'], params['message'], params['attachmments'])
     end
 
     post '/link_accounts' do
