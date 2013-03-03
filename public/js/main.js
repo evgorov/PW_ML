@@ -882,7 +882,7 @@ var UsersView = Backbone.View.extend({
   tagName: 'div',
   rowTemplate: (function(){
               var items = _([
-                   '=name', '=surname', '=email', 'print(created_at.split(" ")[0])',
+                   '=name', '=surname', 'print(created_at.split(" ")[0])',
                    '=solved', '=month_score', '=high_score', '=hints'
                  ]).map(function(o){return '<td><%' + o + '%></td>';});
                return _.template('<tr>' + items.join('') + '</tr>');
@@ -993,9 +993,9 @@ var ServiceMessageView = Backbone.View.extend({
   },
 
   render: function(){
-    this.$el.find('[role="service-message-text1"]').text(this.model.get('message1'));
-    this.$el.find('[role="service-message-text2"]').text(this.model.get('message2'));
-    this.$el.find('[role="service-message-text3"]').text(this.model.get('message3'));
+    this.$el.find('[role="service-message-text1"]').text(this.model.get('message1') || "");
+    this.$el.find('[role="service-message-text2"]').text(this.model.get('message2') || "");
+    this.$el.find('[role="service-message-text3"]').text(this.model.get('message3') || "");
   },
 
   updateServiceMessage: function(e){
