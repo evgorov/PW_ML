@@ -993,15 +993,15 @@ var ServiceMessageView = Backbone.View.extend({
   },
 
   render: function(){
-    this.$el.find('[role="service-message-text1"]').text(this.model.get('message1') || "");
-    this.$el.find('[role="service-message-text2"]').text(this.model.get('message2') || "");
-    this.$el.find('[role="service-message-text3"]').text(this.model.get('message3') || "");
+    this.$el.find('[role="service-message-text1"]').val(this.model.get('message1') || "");
+    this.$el.find('[role="service-message-text2"]').val(this.model.get('message2') || "");
+    this.$el.find('[role="service-message-text3"]').val(this.model.get('message3') || "");
   },
 
   updateServiceMessage: function(e){
-    this.model.set('message1', this.$el.find('[role="service-message-text1"]').text());
-    this.model.set('message2', this.$el.find('[role="service-message-text2"]').text());
-    this.model.set('message3', this.$el.find('[role="service-message-text3"]').text());
+    this.model.set('message1', this.$el.find('[role="service-message-text1"]').val());
+    this.model.set('message2', this.$el.find('[role="service-message-text2"]').val());
+    this.model.set('message3', this.$el.find('[role="service-message-text3"]').val());
   },
 
   saveServiceMessage: function(){

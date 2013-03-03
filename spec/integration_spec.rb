@@ -433,7 +433,8 @@ describe 'Integration spec' do
     put '/service_messages', {
                               session_key: session_key,
                               message1: 'new message',
-                              message2: 'another message'
+                              message2: 'another message',
+                              message3: ''
                             }
     last_response.status.should == 200
     last_response_should_be_json

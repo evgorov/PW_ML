@@ -23,6 +23,7 @@ module Middleware
     put '/service_messages' do
       authorize!
       messages = params.extract('message1', 'message2', 'message3')
+      messages.delete_if { |k,v| v.empty? }
       ServiceMessage.storage(env['redis']).messages = messages
       messages.to_json
     end
