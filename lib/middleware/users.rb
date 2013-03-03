@@ -103,11 +103,12 @@ module Middleware
     post '/sets/:id/buy' do
       env['token_auth'].authorize!
 
-      unless self.class.settings.environment == :test
-        ItunesReceiptVerifier.verify!(params['receipt_data'] || params['receipt-data'], params['id'])
-      end
-
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
+
+      if puzzle_set['type'] != 'free' && self.class.settings.environment != :test
+        ItunesReceiptVerifier.verify!(params['receipt_data'] || params['receipt-data'],
+                                      "ru.aipmedia.ios.prizeword.#{params['id']}")
+      end
 
       user = current_user
       user['sets'] ||= []
