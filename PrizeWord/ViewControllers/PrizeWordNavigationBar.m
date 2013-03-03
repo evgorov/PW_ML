@@ -50,13 +50,13 @@ static UIImage * backgroundImage = nil;
 
 -(void)loadNavigationBarImage
 {
-    if (UIInterfaceOrientationIsPortrait([AppDelegate currentDelegate].viewOrientation))
+    if (UIInterfaceOrientationIsLandscape([AppDelegate currentDelegate].viewOrientation))
     {
-        backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
+        backgroundImage = [UIImage imageNamed:@"navigationbar_bg_landscape"];
     }
     else
     {
-        backgroundImage = [UIImage imageNamed:@"navigationbar_bg_landscape"];
+        backgroundImage = [UIImage imageNamed:@"navigationbar_bg"];
     }
     self.backgroundColor = [UIColor clearColor];
 }
