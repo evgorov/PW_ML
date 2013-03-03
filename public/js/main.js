@@ -975,7 +975,7 @@ var DashboardView = Backbone.View.extend({
 /* Service message */
 
 var ServiceMessage = Backbone.Model.extend({
-  url: '/service_message',
+  url: '/service_messages',
   isNew: function(){ return false; }
 });
 
@@ -983,7 +983,7 @@ var ServiceMessageView = Backbone.View.extend({
   tagName: 'div',
 
   events: {
-    'change [role="service-message-text"]' : 'updateServiceMessage',
+    'change [role^="service-message-text"]' : 'updateServiceMessage',
     'click [role="save-service-message"]': 'saveServiceMessage'
   },
 
@@ -993,11 +993,15 @@ var ServiceMessageView = Backbone.View.extend({
   },
 
   render: function(){
-    this.$el.find('[role="service-message-text"]').text(this.model.get('service_message'));
+    this.$el.find('[role="service-message-text1"]').text(this.model.get('message1'));
+    this.$el.find('[role="service-message-text2"]').text(this.model.get('message2'));
+    this.$el.find('[role="service-message-text3"]').text(this.model.get('message3'));
   },
 
   updateServiceMessage: function(e){
-    this.model.set('service_message', $(e.target).val());
+    this.model.set('message1', this.$el.find('[role="service-message-text1"]').text());
+    this.model.set('message2', this.$el.find('[role="service-message-text2"]').text());
+    this.model.set('message3', this.$el.find('[role="service-message-text3"]').text());
   },
 
   saveServiceMessage: function(){

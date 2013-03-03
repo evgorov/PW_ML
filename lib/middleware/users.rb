@@ -24,10 +24,14 @@ module Middleware
       { me: current_user }.to_json
     end
 
-    get '/service_message' do
+    get '/service_messages' do
       env['token_auth'].authorize!
-      message = ServiceMessage.storage(env['redis']).message
-      { service_message: message }.to_json
+      m = ServiceMessage.storage(env['redis']).messages
+      {
+        message1: m['message1'],
+        message2: m['message2'],
+        message3: m['message3']
+      }.to_json
     end
 
     post '/me' do

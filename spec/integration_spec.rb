@@ -422,24 +422,34 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
 
-    get '/service_message', { session_key: session_key }
+    get '/service_messages', { session_key: session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['service_message'].should == ""
+    response_data['message1'].should == nil
+    response_data['message2'].should == nil
+    response_data['message3'].should == nil
 
-    put '/service_message', { session_key: session_key, service_message: 'new message' }
+    put '/service_messages', {
+                              session_key: session_key,
+                              message1: 'new message',
+                              message2: 'another message'
+                            }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['service_message'].should == "new message"
+    response_data['message1'].should == 'new message'
+    response_data['message2'].should == 'another message'
+    response_data['message3'].should == nil
 
 
-    get '/service_message', { session_key: session_key }
+    get '/service_messages', { session_key: session_key }
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['service_message'].should == "new message"
+    response_data['message1'].should == 'new message'
+    response_data['message2'].should == 'another message'
+    response_data['message3'].should == nil
   end
 
   it '/puzzles can list all puzzles' do

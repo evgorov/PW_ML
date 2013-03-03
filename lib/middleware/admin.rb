@@ -20,11 +20,11 @@ module Middleware
       end
     end
 
-    put '/service_message' do
+    put '/service_messages' do
       authorize!
-      service_message = ServiceMessage.storage(env['redis'])
-      service_message.message = params['service_message']
-      { service_message: service_message.message }.to_json
+      messages = params.extract('message1', 'message2', 'message3')
+      ServiceMessage.storage(env['redis']).messages = messages
+      messages.to_json
     end
 
     get '/users/paginate' do

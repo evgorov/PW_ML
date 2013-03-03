@@ -1,4 +1,5 @@
 require 'storage'
+require 'json'
 
 class ServiceMessage
 
@@ -10,12 +11,16 @@ class ServiceMessage
     @storage = storage.namespace('ServiceMessage')
   end
 
-  def message=(message)
-    @storage.set('message', message)
+  def messages=(messages)
+    @storage.set('message', messages.to_json)
   end
 
-  def message
-    @storage.get('message') || ""
+  def messages
+    if m = @storage.get('message')
+      JSON.parse(m)
+    else
+      {}
+    end
   end
 end
 
