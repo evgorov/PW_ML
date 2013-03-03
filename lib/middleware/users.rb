@@ -167,7 +167,7 @@ module Middleware
 
     post '/vkontakte/share' do
       env['token_auth'].authorize!
-      WallPublisher.post(current_user['vkontakte_access_token'], params['message'], params['attachmments'])
+      WallPublisher.post(current_user['vkontakte_access_token'], params['message'], params['attachmments']).to_json
     end
 
     post '/link_accounts' do
