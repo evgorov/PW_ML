@@ -16,7 +16,7 @@
 @class GameField;
 @class FlipNumberView;
 @class PuzzleData;
-@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, FBRequestDelegate, UIWebViewDelegate>
+@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, FBRequestDelegate>
 {
     GameField * gameField;
     UITextField * textField;
