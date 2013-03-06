@@ -96,11 +96,14 @@ static NSMutableDictionary * cache = nil;
 -(void)connectionDidFinishLoading:(NSURLConnection *)conn
 {
     UIImage * loadedImage = [UIImage imageWithData:receivedData];
-    if (cache == nil)
+    if (loadedImage != nil)
     {
-        cache = [NSMutableDictionary new];
+        if (cache == nil)
+        {
+            cache = [NSMutableDictionary new];
+        }
+        [cache setObject:loadedImage forKey:imageURL.absoluteString];
     }
-    [cache setObject:loadedImage forKey:imageURL.absoluteString];
     self.image = loadedImage;
     connection = nil;
 }

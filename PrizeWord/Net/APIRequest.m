@@ -105,10 +105,11 @@ static NSMutableSet * apiRequests = nil;
                 // add image data
                 NSData *imageData = UIImageJPEGRepresentation((UIImage *)obj, 1.0f);
                 if (imageData) {
-                    NSString * base64Encoded = [imageData base64EncodedString];
-                    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
-                    [body appendData:[[NSString stringWithFormat:@"%@\r\n", base64Encoded] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"image.jpg\"\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                    [body appendData:imageData];
+                    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
                 }
             }
             else if ([obj isKindOfClass:[NSData class]])

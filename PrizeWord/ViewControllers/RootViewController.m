@@ -910,8 +910,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [self hideActivityIndicator];
         [self imagePickerControllerDidCancel:picker];
     }];
-    [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [saveAvatarRequest.params setObject:mainMenuAvatar.image forKey:@"userpic"];
+    [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [saveAvatarRequest runSilent];
 }
 
