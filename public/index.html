@@ -20,6 +20,7 @@
         <li><a href="#tab2" data-toggle="tab">Пользователи</a></li>
         <li><a href="#tab3" data-toggle="tab">Сеты</a></li>
         <li><a href="#tab4" data-toggle="tab">Объявления</a></li>
+        <li><a href="#tab5" data-toggle="tab">Коэффициент</a></li>
         <li class="pull-right logout" role="logout"><span class="muted">Пользователь: </span><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
       </ul>
       <div class="tab-content">
@@ -84,6 +85,29 @@
                <textarea class="input-xxlarge service-message-text" role="service-message-text3"></textarea>
              </div>
              <button type="submit" class="btn btn-primary" role="save-service-message">Сохранить</button>
+           </div>
+         </div>
+       </div>
+       <div class="tab-pane" id="tab5" class="coefficients" role="coefficients">
+         <div class="row">
+           <div class="span12">
+             <div>
+               <label class="">Коэффициент за время:</label>
+               <input type="text" class="input-block-level input-medium" role="time-bonus" required />
+               <label class="">Бонус за приглашенного друга:</label>
+               <input type="text" class="input-block-level input-medium" role="friend-bonus" required />
+               <label class="">Очки за бесплатный сканворд:</label>
+               <input type="text" class="input-block-level input-medium" role="free-base-score" required />
+               <label class="">Очки за золотой сканворд:</label>
+               <input type="text" class="input-block-level input-medium" role="gold-base-score" required />
+               <label class="">Очки за бриллиантовый сканворд:</label>
+               <input type="text" class="input-block-level input-medium" role="brilliant-base-score" required />
+               <label class="">Очки за серебряный1 сканворд:</label>
+               <input type="text" class="input-block-level input-medium" role="silver1-base-score" required />
+               <label class="">Очки за серебряный2 сканворд:</label>
+               <input type="text" class="input-block-level input-medium" role="silver2-base-score" required />
+             </div>
+             <button type="submit" class="btn btn-primary" role="save-coefficients">Сохранить</button>
            </div>
          </div>
        </div>

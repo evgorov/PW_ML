@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'model/puzzle_set'
 require 'model/service_message'
+require 'model/coefficients'
 
 module Middleware
   class Admin < Sinatra::Base
@@ -26,6 +27,14 @@ module Middleware
       messages.delete_if { |k,v| v.empty? }
       ServiceMessage.storage(env['redis']).messages = messages
       messages.to_json
+    end
+
+    put '/coefficients' do
+      authorize!
+      coefficients = Hash[params.map{ |k,v| [k, v.to_i] }]
+      coefficients.delete('session_key')
+      Coefficients.storage(env['redis']).coefficients = coefficients
+      coefficients.to_json
     end
 
     get '/users/paginate' do

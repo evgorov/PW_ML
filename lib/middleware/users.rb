@@ -4,6 +4,7 @@ require 'model/user'
 require 'model/user_data'
 require 'model/user_score'
 require 'model/service_message'
+require 'model/coefficients'
 require 'itunes_receipt_verifier'
 require 'wall_publisher'
 
@@ -168,6 +169,11 @@ module Middleware
     post '/vkontakte/share' do
       env['token_auth'].authorize!
       WallPublisher.post(current_user['vkontakte_access_token'], params['message'], params['attachmments']).to_json
+    end
+
+    get '/coefficients' do
+      env['token_auth'].authorize!
+      Coefficients.storage(env['redis']).coefficients.to_json
     end
 
     post '/link_accounts' do

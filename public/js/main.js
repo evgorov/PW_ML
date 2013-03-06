@@ -1010,15 +1010,68 @@ var ServiceMessageView = Backbone.View.extend({
 });
 
 
+/* Coefficients */
+
+var Coefficients = Backbone.Model.extend({
+  url: '/coefficients',
+  isNew: function(){ return false; }
+});
+
+var CoefficientsView = Backbone.View.extend({
+  tagName: 'div',
+
+  events: {
+    'change [role="time-bonus"]'           : 'updateCoefficients',
+    'change [role="friend-bonus"]'         : 'updateCoefficients',
+    'change [role="free-base-score"]'      : 'updateCoefficients',
+    'change [role="gold-base-score"]'      : 'updateCoefficients',
+    'change [role="brilliant-base-score"]' : 'updateCoefficients',
+    'change [role="silver1-base-score"]'   : 'updateCoefficients',
+    'change [role="silver2-base-score"]'   : 'updateCoefficients',
+    'click [role="save-coefficients"]'     : 'saveCoefficients'
+  },
+
+  initialize: function(){
+    this.model.on('change', this.render, this);
+    this.model.fetch();
+  },
+
+  render: function(){
+    this.$el.find('[role="time-bonus"]').val(this.model.get("time-bonus") || "");
+    this.$el.find('[role="friend-bonus"]').val(this.model.get("friend-bonus") || "");
+    this.$el.find('[role="free-base-score"]').val(this.model.get("free-base-score") || "");
+    this.$el.find('[role="gold-base-score"]').val(this.model.get("gold-base-score") || "");
+    this.$el.find('[role="brilliant-base-score"]').val(this.model.get("brilliant-base-score") || "");
+    this.$el.find('[role="silver1-base-score"]').val(this.model.get("silver1-base-score") || "");
+    this.$el.find('[role="silver2-base-score"]').val(this.model.get("silver2-base-score") || "");
+  },
+
+  updateCoefficients: function(e){
+    this.model.set("time-bonus", this.$el.find('[role="time-bonus"]').val());
+    this.model.set("friend-bonus", this.$el.find('[role="friend-bonus"]').val());
+    this.model.set("free-base-score", this.$el.find('[role="free-base-score"]').val());
+    this.model.set("gold-base-score", this.$el.find('[role="gold-base-score"]').val());
+    this.model.set("brilliant-base-score", this.$el.find('[role="brilliant-base-score"]').val());
+    this.model.set("silver1-base-score", this.$el.find('[role="silver1-base-score"]').val());
+    this.model.set("silver2-base-score", this.$el.find('[role="silver2-base-score"]').val());
+  },
+
+  saveCoefficients: function(){
+    this.model.save();
+  }
+});
+
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView;
+
 $(function(){
   currentUser = new CurrentUser();
   formSigninView = new FormSigninView({ model: currentUser,
                                         el: $('[role="form-signin-container"]')[0] });
   logoutView = new LogoutView({ model: currentUser,
                                 el: $('[role="logout"]')[0] });
+
   users = new Users;
   usersView = new UsersView({ el: $('[role="users"]')[0], collection: users });
 
@@ -1031,5 +1084,11 @@ $(function(){
                                                 el: $('[role="service-message"]')[0],
                                                 model: new ServiceMessage()
                                               });
+
+  coefficientsView = new CoefficientsView({
+                                            el: $('[role="coefficients"]')[0],
+                                            model: new Coefficients()
+                                          });
+
   $('[role="loading-spinner"]').hide();
 });

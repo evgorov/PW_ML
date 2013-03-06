@@ -261,7 +261,6 @@ describe 'Integration spec' do
   it 'lists puzzles for user' do
     admin_user
     post '/login', email: user_in_storage['email'], password: user_in_storage_password
-
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
@@ -451,6 +450,36 @@ describe 'Integration spec' do
     response_data['message1'].should == 'new message'
     response_data['message2'].should == 'another message'
     response_data['message3'].should == nil
+  end
+
+  it 'admin user can change PUT /coefficients and users get /coefficients' do
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+
+    put('/coefficients',
+         {
+          score: 10,
+          another_score: 20,
+          session_key: session_key
+        })
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['score'].should == 10
+    response_data['another_score'].should == 20
+    response_data['session_key'].should == nil
+
+    get('/coefficients', session_key: session_key)
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data['score'].should == 10
+    response_data['another_score'].should == 20
+    response_data['session_key'].should == nil
   end
 
   it '/puzzles can list all puzzles' do
