@@ -109,6 +109,7 @@
 		F250914316BA200A0045621E /* InviteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914216BA20080045621E /* InviteCellView.xib */; };
 		F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914416BA21B80045621E /* InviteCellView~ipad.xib */; };
 		F250914816BA22FE0045621E /* InviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F250914716BA22FC0045621E /* InviteCellView.m */; };
+		F26B992716E7454C008E117B /* NSString_Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString_Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -806,6 +807,8 @@
 		F250914416BA21B80045621E /* InviteCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "InviteCellView~ipad.xib"; path = "Views/InviteCellView~ipad.xib"; sourceTree = "<group>"; };
 		F250914616BA22FB0045621E /* InviteCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteCellView.h; path = Views/InviteCellView.h; sourceTree = "<group>"; };
 		F250914716BA22FC0045621E /* InviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteCellView.m; path = Views/InviteCellView.m; sourceTree = "<group>"; };
+		F26B992516E74513008E117B /* NSString_Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSString_Utils.h; sourceTree = "<group>"; };
+		F26B992616E7454C008E117B /* NSString_Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_Utils.m; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -2358,6 +2361,8 @@
 				F2D6270B165DF80900EF6E8A /* main.m */,
 				F2D6270D165DF80900EF6E8A /* PrizeWord-Prefix.pch */,
 				F2868CCB166CB362003F0686 /* ReleaseNotes.txt */,
+				F26B992516E74513008E117B /* NSString_Utils.h */,
+				F26B992616E7454C008E117B /* NSString_Utils.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3465,6 +3470,7 @@
 				F2FD00F916E1307B005144A3 /* GPUImageWhiteBalanceFilter.m in Sources */,
 				F2FD00FA16E1307B005144A3 /* GPUImageXYDerivativeFilter.m in Sources */,
 				F2FD00FB16E1307B005144A3 /* GPUImageZoomBlurFilter.m in Sources */,
+				F26B992716E7454C008E117B /* NSString_Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

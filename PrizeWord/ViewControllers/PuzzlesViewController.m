@@ -21,6 +21,7 @@
 #import "SBJson.h"
 #import "AppDelegate.h"
 #import <StoreKit/StoreKit.h>
+#import "NSString_Utils.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -454,7 +455,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         if (!puzzleSetView.puzzleSetData.bought.boolValue)
         {
             int minScore = puzzleSetView.puzzleSetData.minScore;
-            puzzleSetView.lblScore.text = [NSString stringWithFormat:@"%d", minScore];
+            puzzleSetView.lblScore.text = [NSString stringWithFormat:@" %@", [NSString digitString:minScore]];
         }
     }
 }

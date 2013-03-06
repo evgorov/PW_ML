@@ -10,6 +10,7 @@
 #import "BadgeView.h"
 #import "AppDelegate.h"
 #import "PuzzleSetData.h"
+#import "NSString_Utils.h"
 
 NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
@@ -27,7 +28,6 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 -(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
 -(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 -(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved;
--(NSString *)stringWithScore:(int)score;
 
 @end
 
@@ -182,7 +182,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:minScore]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:minScore]];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, 200, _lblScore.frame.size.height);
     _lblScore.text = scoreString;
     
@@ -215,7 +215,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     _imgStar.frame = CGRectMake(_lblText2.frame.origin.x + _lblText2.frame.size.width, _lblText2.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:puzzleSetData.score]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText2.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
@@ -233,7 +233,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     _imgStar.frame = CGRectMake(_imgScoreBg.frame.origin.x + _imgStar.frame.size.width / 2, _imgStar.frame.origin.y, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
-    NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:puzzleSetData.score]];
+    NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
     _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblScore.frame.origin.y, scoreSize.width, scoreSize.height);
     _lblScore.text = scoreString;
@@ -348,23 +348,5 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, 303, 105);
     }
 }
-
--(NSString *)stringWithScore:(int)score
-{
-    if (score < 1000)
-    {
-        return [NSString stringWithFormat:@"%d", score];
-    }
-    if (score < 1000000)
-    {
-        return [NSString stringWithFormat:@"%d %03d", score/1000, score % 1000];
-    }
-    if (score < 1000000000)
-    {
-        return [NSString stringWithFormat:@"%d %03d %03d", score/1000000, (score % 1000000) / 1000, score % 1000];
-    }
-    return [NSString stringWithFormat:@"%d %03d %03d %03d", score/1000000000, (score % 1000000000) / 1000000, (score % 1000000) / 1000, score % 1000];
-}
-
 
 @end
