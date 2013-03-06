@@ -2283,11 +2283,6 @@
 		F2D626EE165DF80800EF6E8A = {
 			isa = PBXGroup;
 			children = (
-				F2FD010416E1332F005144A3 /* CoreVideo.framework */,
-				F2FD010216E132FA005144A3 /* AVFoundation.framework */,
-				F2FD010016E132D9005144A3 /* CoreMedia.framework */,
-				F2FD00FE16E132C3005144A3 /* CoreImage.framework */,
-				F2FD00FC16E132B7005144A3 /* OpenGLES.framework */,
 				F21FCF7A16C6596C0022119B /* Default-Landscape@2x~ipad.png */,
 				F21FCF7816C6595E0022119B /* Default-Landscape~ipad.png */,
 				F21FCF7616C659560022119B /* Default-Portrait@2x~ipad.png */,
@@ -2317,6 +2312,11 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F2FD010416E1332F005144A3 /* CoreVideo.framework */,
+				F2FD010216E132FA005144A3 /* AVFoundation.framework */,
+				F2FD010016E132D9005144A3 /* CoreMedia.framework */,
+				F2FD00FE16E132C3005144A3 /* CoreImage.framework */,
+				F2FD00FC16E132B7005144A3 /* OpenGLES.framework */,
 				F2C52D5016D0EB8600871649 /* StoreKit.framework */,
 				F235D0A016BEC1510066664F /* MobileCoreServices.framework */,
 				F250913416B739D10045621E /* AdSupport.framework */,

@@ -48,6 +48,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 -(void)updateArchive:(NSData *)receivedData;
 -(void)updateMonthSets:(NSArray*)monthSets;
+-(void)updateBaseScores;
 -(void)updateHintButton:(UIButton*)button withProduct:(SKProduct*)product;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
@@ -116,13 +117,13 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_FAILED];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_ERROR];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
     
     [self showActivityIndicator];
     [[GlobalData globalData] loadMe];
-    [[GlobalData globalData] loadMonthSets:^{
-        [self hideActivityIndicator];
-        [self updateMonthSets:[GlobalData globalData].monthSets];
-    }];
+    [[GlobalData globalData] loadCoefficients];
+    [[GlobalData globalData] loadMonthSets];
     
     APIRequest * request = [APIRequest getRequest:@"puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self updateArchive:receivedData];
@@ -148,6 +149,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_ERROR];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
 
     if (productsRequest != nil)
     {
@@ -271,6 +274,15 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         [oldView removeFromSuperview];
         [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
     }
+    else if (event.type == EVENT_MONTH_SETS_UPDATED)
+    {
+        [self hideActivityIndicator];
+        [self updateMonthSets:[GlobalData globalData].monthSets];
+    }
+    else if (event.type == EVENT_COEFFICIENTS_UPDATED)
+    {
+        [self updateBaseScores];
+    }
 }
 
 #pragma mark update news, update and bought puzzles
@@ -336,7 +348,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
-    for (PuzzleSetData * puzzleSet in monthSets) {
+    for (PuzzleSetData * puzzleSet in monthSets)
+    {
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:0 showSolved:YES showUnsolved:YES];
         puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
         yOffset += puzzleSetView.frame.size.height;
@@ -427,6 +440,23 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
     }];
     [self resizeView:archiveView newHeight:yOffset animated:YES];
+}
+
+-(void)updateBaseScores
+{
+    for (id subview in currentPuzzlesView.subviews)
+    {
+        if (![subview isKindOfClass:[PuzzleSetView class]])
+        {
+            continue;
+        }
+        PuzzleSetView * puzzleSetView = subview;
+        if (!puzzleSetView.puzzleSetData.bought.boolValue)
+        {
+            int minScore = puzzleSetView.puzzleSetData.minScore;
+            puzzleSetView.lblScore.text = [NSString stringWithFormat:@"%d", minScore];
+        }
+    }
 }
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response

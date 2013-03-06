@@ -24,6 +24,8 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
 @synthesize currentYear = _currentYear;
 @synthesize fbSession = _fbSession;
 
+#pragma mark initialization
+
 +(GlobalData *)globalData
 {
     static GlobalData * _globalData = nil;
@@ -49,7 +51,65 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
     return self;
 }
 
--(void)loadMonthSets:(void(^)())onComplete
+#pragma mark getters
+-(int)baseScoreForType:(PuzzleSetType)type
+{
+    NSNumber * value = nil;
+    switch (type)
+    {
+        case PUZZLESET_FREE:
+            value = [coefficients objectForKey:@"free-base-score"];
+            break;
+            
+        case PUZZLESET_SILVER:
+            value = [coefficients objectForKey:@"silver1-base-score"];
+            break;
+            
+        case PUZZLESET_SILVER2:
+            value = [coefficients objectForKey:@"silver2-base-score"];
+            break;
+            
+        case PUZZLESET_GOLD:
+            value = [coefficients objectForKey:@"gold-base-score"];
+            break;
+            
+        case PUZZLESET_BRILLIANT:
+            value = [coefficients objectForKey:@"brilliant-base-score"];
+            break;
+            
+        default:
+            break;
+    }
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+-(int)scoreForFriend
+{
+    NSNumber * value = [coefficients objectForKey:@"friend-bonus"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+-(int)scoreForTime
+{
+    NSNumber * value = [coefficients objectForKey:@"time-bonus"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+#pragma mark public methods
+
+-(void)loadMonthSets
 {
     APIRequest * request = [APIRequest getRequest:@"sets_available" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
@@ -64,10 +124,10 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
             [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id]];
         }
         _monthSets = [NSArray arrayWithArray:sets];
-        onComplete();
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");
-        onComplete();
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request runSilent];
@@ -95,6 +155,32 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         }
     } failCallback:^(NSError *error) {
         NSLog(@"me error: %@", error.description);
+    }];
+    [request.params setObject:_sessionKey forKey:@"session_key"];
+    [request runSilent];
+}
+
+-(void)loadCoefficients
+{
+    APIRequest * request = [APIRequest getRequest:@"coefficients" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        if (response.statusCode == 200)
+        {
+            [self parseDateFromResponse:response];
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            NSLog(@"coefficients: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            if (data != nil)
+            {
+                coefficients = data;
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_COEFFICIENTS_UPDATED]];
+            }
+        }
+        else
+        {
+            NSLog(@"coefficients response: %@", response.description);
+        }
+    } failCallback:^(NSError *error) {
+        NSLog(@"coefficients error: %@", error.description);
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request runSilent];

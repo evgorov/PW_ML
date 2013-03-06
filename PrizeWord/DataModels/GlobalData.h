@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "Facebook.h"
+#import "PuzzleSetData.h"
 
 @class UserData;
 
 @interface GlobalData : NSObject
+{
+    NSDictionary * coefficients;
+}
 
 +(GlobalData *)globalData;
 
@@ -22,8 +26,13 @@
 @property () int currentMonth;
 @property () int currentYear;
 
--(void)loadMonthSets:(void(^)())onComplete;
+-(int)baseScoreForType:(PuzzleSetType)type;
+-(int)scoreForFriend;
+-(int)scoreForTime;
+
+-(void)loadMonthSets;
 -(void)loadMe;
+-(void)loadCoefficients;
 -(void)parseDateFromResponse:(NSHTTPURLResponse *)response;
 
 @end

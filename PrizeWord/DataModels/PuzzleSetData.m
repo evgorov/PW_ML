@@ -10,6 +10,7 @@
 #import "PuzzleData.h"
 #import "TileData.h"
 #import "AppDelegate.h"
+#import "GlobalData.h"
 
 @implementation PuzzleSetData
 
@@ -121,11 +122,7 @@
 
 -(int)minScore
 {
-    int value = 0;
-    for (PuzzleData * puzzle in self.puzzles) {
-        value += [puzzle.base_score intValue];
-    }
-    return value;
+    return [[GlobalData globalData] baseScoreForType:self.type.intValue] * self.puzzles.count;
 }
 
 -(NSArray *)orderedPuzzles

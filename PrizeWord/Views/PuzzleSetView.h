@@ -22,7 +22,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imgBar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgStar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgScoreBg;
-@property (strong, nonatomic) IBOutlet UILabel * lblCaption;
+@property (strong, nonatomic) IBOutlet UILabel *lblCaption;
 @property (strong, nonatomic) IBOutlet UILabel *lblCount;
 @property (strong, nonatomic) IBOutlet UILabel *lblScore;
 @property (strong, nonatomic) IBOutlet UILabel *lblPercent;

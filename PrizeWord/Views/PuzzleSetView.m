@@ -183,8 +183,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [self stringWithScore:minScore]];
-    CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
-    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, scoreSize.width, scoreSize.height);
+    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, 200, _lblScore.frame.size.height);
     _lblScore.text = scoreString;
     
     _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
