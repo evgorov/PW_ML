@@ -39,6 +39,7 @@ module Middleware
     post '/me' do
       env['token_auth'].authorize!
       user = env['token_auth'].user
+      params[:userpic] = env['Uploader.uploaded_files'][:userpic]
 
       user_data = user.user_data
       user_data.merge_fields_user_can_change!(params)
