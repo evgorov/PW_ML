@@ -220,7 +220,7 @@
         
         NSDictionary * userData = [vkFriends objectAtIndex:idx];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"400" forKey:@"score"];
+        [request.params setObject:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend] forKey:@"score"];
         [request.params setObject:[NSString stringWithFormat:@"friend_vk#%@", [userData objectForKey:@"id"]] forKey:@"source"];
         [request runSilent];
         
@@ -493,7 +493,7 @@
                         
                         NSDictionary * userData = [fbFriends objectAtIndex:inviteView.tag];
                         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                        [request.params setObject:@"400" forKey:@"score"];
+                        [request.params setObject:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend] forKey:@"score"];
                         [request.params setObject:[NSString stringWithFormat:@"friend_fb#%@", [userData objectForKey:@"id"]] forKey:@"source"];
                         [request runSilent];
                     }

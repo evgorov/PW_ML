@@ -526,7 +526,7 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
-    int scoreForPuzzle = [_puzzle.base_score intValue] + 1000 * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
+    int scoreForPuzzle = [[GlobalData globalData] baseScoreForType:_puzzle.puzzleSet.type.intValue] + [[GlobalData globalData] scoreForTime] * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
     [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
     [_puzzle synchronize];
 

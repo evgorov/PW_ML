@@ -21,7 +21,6 @@
 @dynamic name;
 @dynamic user_id;
 @dynamic issuedAt;
-@dynamic base_score;
 @dynamic time_given;
 @dynamic time_left;
 @dynamic height;
@@ -63,20 +62,6 @@
         NSDateFormatter * dateFormatter = [NSDateFormatter new];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
-    }
-    id base_scoreData = [dict objectForKey:@"base_score"];
-    if ([base_scoreData isKindOfClass:[NSString class]])
-    {
-        NSString * base_scoreString = base_scoreData;
-        [puzzle setBase_score:[NSNumber numberWithInt:[base_scoreString intValue]]];
-    }
-    else
-    {
-        [puzzle setBase_score:[dict objectForKey:@"base_score"]];
-    }
-    if (puzzle.base_score == nil)
-    {
-        [puzzle setBase_score:[NSNumber numberWithInt:0]];
     }
     id time_givenData = [dict objectForKey:@"time_given"];
     if ([time_givenData isKindOfClass:[NSString class]])

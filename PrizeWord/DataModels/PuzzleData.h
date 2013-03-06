@@ -18,7 +18,6 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * user_id;
 @property (nonatomic, retain) NSDate * issuedAt;
-@property (nonatomic, retain) NSNumber * base_score;
 @property (nonatomic, retain) NSNumber * time_given;
 @property (nonatomic, retain) NSNumber * time_left;
 @property (nonatomic, retain) NSNumber * height;

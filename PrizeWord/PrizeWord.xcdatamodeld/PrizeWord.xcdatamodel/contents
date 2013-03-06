@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Puzzle" representedClassName="PuzzleData" syncable="YES">
-        <attribute name="base_score" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="height" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <attribute name="issuedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -34,7 +33,7 @@
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="225"/>
+        <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="210"/>
         <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="135"/>
         <element name="Question" positionX="-6336" positionY="-15786" width="128" height="180"/>
     </elements>

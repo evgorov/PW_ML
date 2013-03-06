@@ -47,6 +47,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         _fbSession = nil;
         _currentMonth = 0;
         _currentYear = 2013;
+        coefficients = nil;
     }
     return self;
 }

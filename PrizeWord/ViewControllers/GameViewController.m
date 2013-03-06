@@ -493,8 +493,9 @@
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         finalShareView.frame = shareFrame;
     } completion:^(BOOL finished) {
-        lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.base_score unsignedIntValue]];
-        lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - [puzzleData.base_score unsignedIntValue]];
+        int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
+        lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", baseScore];
+        lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - baseScore];
         uint score = [puzzleData.score unsignedIntValue];
         for (int i = 0; i < 5; ++i)
         {
