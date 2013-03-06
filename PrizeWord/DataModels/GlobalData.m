@@ -14,6 +14,7 @@
 #import "EventManager.h"
 
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
+NSString * COEFFICIENTS_KEY = @"coefficients";
 
 @implementation GlobalData
 
@@ -45,9 +46,13 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
         _loggedInUser = nil;
         _monthSets = nil;
         _fbSession = nil;
-        _currentMonth = 0;
-        _currentYear = 2013;
-        coefficients = nil;
+        NSDate * currentDate = [NSDate date];
+        NSCalendar * calendar = [NSCalendar currentCalendar];
+        NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:currentDate];
+
+        _currentMonth = [components month] - 1;
+        _currentYear = [components year];
+        coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
     }
     return self;
 }
@@ -173,6 +178,7 @@ NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul
             if (data != nil)
             {
                 coefficients = data;
+                [[NSUserDefaults standardUserDefaults] setObject:coefficients forKey:COEFFICIENTS_KEY];
                 [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_COEFFICIENTS_UPDATED]];
             }
         }
