@@ -36,10 +36,11 @@ module Middleware
       }.to_json
     end
 
+    # FIXME: This really should be PUT '/me'
     post '/me' do
       env['token_auth'].authorize!
       user = env['token_auth'].user
-      params[:userpic] = env['Uploader.uploaded_files'][:userpic]
+      params['userpic'] = env['Uploader.uploaded_files']['userpic']
 
       user_data = user.user_data
       user_data.merge_fields_user_can_change!(params)

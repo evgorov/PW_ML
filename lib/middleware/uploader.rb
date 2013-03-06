@@ -34,6 +34,7 @@ module Middleware
       path = "#{digest}.#{uploaded_file[:type].split('/').last}"
       to = File.join(@options[:save_to], path)
       FileUtils.mv(content.path, to) unless File.exist?(to)
+      FileUtils.chmod(0755, to)
       path
     end
 

@@ -39,7 +39,7 @@ module Middleware
 
     post '/signup' do
       validate_signup_params!
-      params[:userpic] = env['Uploader.uploaded_files'][:userpic]
+      params['userpic'] = env['Uploader.uploaded_files']['userpic']
       user = UserFactory.create_user(env['redis'], params)
       session_key = env['token_auth'].create_token(user)
       { session_key: session_key, me: user.user_data }.to_json
