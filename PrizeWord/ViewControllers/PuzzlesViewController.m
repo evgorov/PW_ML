@@ -166,10 +166,10 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 {
     if (event.type == EVENT_PRODUCT_BOUGHT)
     {
-        NSLog(@"EVENT_PRODUCT_BOUGHT");
         [self hideActivityIndicator];
         
         SKPaymentTransaction * paymentTransaction = event.data;
+        NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
 
         if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
@@ -190,7 +190,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 if ([subview isKindOfClass:[PuzzleSetView class]])
                 {
                     PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
-                    if ([puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
+                    NSLog(@"check productIdentifier: %@ %@ %@", puzzleSetView.puzzleSetData.set_id, puzzleSetView.product.productIdentifier, paymentTransaction.payment.productIdentifier);
+                    if (puzzleSetView.product != nil && puzzleSetView.product.productIdentifier != nil && [puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
                     {
                         [self handleSetBoughtWithView:puzzleSetView withTransaction:paymentTransaction];
                         break;
@@ -369,6 +370,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 [puzzleSetView.btnBuy setTitle:@"" forState:UIControlStateNormal];
                 hasUnbought = YES;
                 [productsIds addObject:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]];
+                NSLog(@"requested: %@%@", PRODUCTID_PREFIX, puzzleSet.set_id);
             }
         }
     }
@@ -488,7 +490,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
                 [formatter setLocale:product.priceLocale];
                 NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-                NSLog(@"product %@: %@", product.localizedTitle, localizedMoneyString);
+                NSLog(@"product %@ %@ %@: %@", puzzleSetView.puzzleSetData.set_id, product.productIdentifier, product.localizedTitle, localizedMoneyString);
                 
                 [puzzleSetView.btnBuy setTitle:localizedMoneyString forState:UIControlStateNormal];
                 puzzleSetView.product = product;
@@ -532,6 +534,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
 {
     [self showActivityIndicator];
+    NSLog(@"buy set: %@ %@", puzzleSetView.puzzleSetData.set_id, transaction.payment.productIdentifier);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
         if (response.statusCode == 200)
@@ -607,6 +610,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)handleBuyClick:(id)sender
 {
     PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
+    NSLog(@"buy click: %@", setView.puzzleSetData.set_id);
     [self showActivityIndicator];
     
     if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)

@@ -56,10 +56,12 @@
         if (transaction.transactionState == SKPaymentTransactionStatePurchased || transaction.transactionState == SKPaymentTransactionStateRestored)
         {
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PRODUCT_BOUGHT andData:transaction]];
+            [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
         }
         else if (transaction.transactionState == SKPaymentTransactionStateFailed)
         {
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PRODUCT_FAILED andData:transaction]];
+            [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
         }
     }
 }
@@ -76,6 +78,7 @@
     {
         SKProduct * product = event.data;
         SKPayment * payment = [SKPayment paymentWithProduct:product];
+        NSLog(@"enqueue product request: %@", payment.productIdentifier);
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
 }
