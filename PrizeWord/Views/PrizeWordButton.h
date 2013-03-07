@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class FISound;
+
 @interface PrizeWordButton : UIButton
+{
+    FISound * clickSound;
+}
 
 @end

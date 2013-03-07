@@ -22,6 +22,7 @@
 #import "AppDelegate.h"
 #import <StoreKit/StoreKit.h>
 #import "NSString_Utils.h"
+#import "FISoundEngine.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -85,6 +86,9 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     hintsProducts = [NSMutableArray arrayWithObjects:[NSNull null], [NSNull null], [NSNull null], nil];
     
     productsRequest = nil;
+    
+    buySetSound = [[FISoundEngine sharedEngine] soundNamed:@"buy_set.caf" error:nil];
+    toggleSetSound = [[FISoundEngine sharedEngine] soundNamed:@"toggle_set.caf" error:nil];
     
     [self updateNews];
 }
@@ -170,6 +174,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         
         SKPaymentTransaction * paymentTransaction = event.data;
         NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
+        [buySetSound play];
 
         if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
@@ -633,6 +638,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
     btnShowMore.selected = !btnShowMore.selected;
     CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
+    [toggleSetSound play];
     
     [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
 }

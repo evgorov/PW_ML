@@ -23,6 +23,7 @@
 #import "FlipNumberView.h"
 #import "SocialNetworks.h"
 #import "PrizeWordButton.h"
+#import "FISoundEngine.h"
 
 @interface GameViewController (private)
 
@@ -41,6 +42,10 @@
     if (self)
     {
         gameField = gameField_;
+        FISoundEngine * se = [FISoundEngine sharedEngine];
+        puzzleSolvedSound = [se soundNamed:@"puzzle_solved.caf" error:nil];
+        typeSounds = [NSArray arrayWithObjects:[se soundNamed:@"type_1.caf" error:nil], [se soundNamed:@"type_2.caf" error:nil], [se soundNamed:@"type_3.caf" error:nil], nil];
+        countingSound = [se soundNamed:@"counting.caf" error:nil];
     }
     return self;
 }
@@ -426,6 +431,8 @@
     }
     else if (event.type == EVENT_GAME_REQUEST_COMPLETE)
     {
+        [puzzleSolvedSound play];
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
             puzzleData = event.data;
             for (int i = 0; i < 5; ++i)
@@ -455,6 +462,8 @@
         {
             letter = @"е";
         }
+        [(FISound *)[typeSounds objectAtIndex:(rand() % 3)] play];
+        
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUSH_LETTER andData:letter]];
     }
     return YES;
@@ -498,6 +507,8 @@
         lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", baseScore];
         lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - baseScore];
         uint score = [puzzleData.score unsignedIntValue];
+        // TODO :: loop counting
+        [countingSound play];
         for (int i = 0; i < 5; ++i)
         {
             [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * (4 - i) + score % 10)];

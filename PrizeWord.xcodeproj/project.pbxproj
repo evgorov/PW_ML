@@ -120,8 +120,18 @@
 		F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914416BA21B80045621E /* InviteCellView~ipad.xib */; };
 		F250914816BA22FE0045621E /* InviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F250914716BA22FC0045621E /* InviteCellView.m */; };
 		F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */; };
-		F268D52316E8C99F00F0FA0F /* interface_button.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52216E8C83800F0FA0F /* interface_button.caf */; };
 		F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */; };
+		F268D53216E9012300F0FA0F /* buy_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52416E8E8A500F0FA0F /* buy_set.caf */; };
+		F268D53316E9012500F0FA0F /* counting.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52516E8E8A500F0FA0F /* counting.caf */; };
+		F268D53416E9012700F0FA0F /* interface_button.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52616E8E8A500F0FA0F /* interface_button.caf */; };
+		F268D53516E9012900F0FA0F /* push_notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52716E8E8A500F0FA0F /* push_notification.caf */; };
+		F268D53616E9013400F0FA0F /* puzzle_solved.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */; };
+		F268D53716E9013700F0FA0F /* question_answered.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52916E8E8A500F0FA0F /* question_answered.caf */; };
+		F268D53816E9013900F0FA0F /* sidebar.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52A16E8E8A500F0FA0F /* sidebar.caf */; };
+		F268D53916E9013B00F0FA0F /* toggle_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52B16E8E8A500F0FA0F /* toggle_set.caf */; };
+		F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52C16E8E8A500F0FA0F /* type_1.caf */; };
+		F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52D16E8E8A500F0FA0F /* type_2.caf */; };
+		F268D53C16E9014000F0FA0F /* type_3.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52E16E8E8A500F0FA0F /* type_3.caf */; };
 		F26B992716E7454C008E117B /* NSString_Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString_Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
@@ -840,7 +850,6 @@
 		F250914616BA22FB0045621E /* InviteCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteCellView.h; path = Views/InviteCellView.h; sourceTree = "<group>"; };
 		F250914716BA22FC0045621E /* InviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteCellView.m; path = Views/InviteCellView.m; sourceTree = "<group>"; };
 		F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		F268D52216E8C83800F0FA0F /* interface_button.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = interface_button.caf; path = sounds/interface_button.caf; sourceTree = "<group>"; };
 		F268D52416E8E8A500F0FA0F /* buy_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = buy_set.caf; path = sounds/buy_set.caf; sourceTree = "<group>"; };
 		F268D52516E8E8A500F0FA0F /* counting.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = counting.caf; path = sounds/counting.caf; sourceTree = "<group>"; };
 		F268D52616E8E8A500F0FA0F /* interface_button.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = interface_button.caf; path = sounds/interface_button.caf; sourceTree = "<group>"; };
@@ -1690,7 +1699,6 @@
 				F268D52C16E8E8A500F0FA0F /* type_1.caf */,
 				F268D52D16E8E8A500F0FA0F /* type_2.caf */,
 				F268D52E16E8E8A500F0FA0F /* type_3.caf */,
-				F268D52216E8C83800F0FA0F /* interface_button.caf */,
 			);
 			name = sounds;
 			sourceTree = "<group>";
@@ -2918,6 +2926,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F268D53516E9012900F0FA0F /* push_notification.caf in Resources */,
+				F268D53416E9012700F0FA0F /* interface_button.caf in Resources */,
+				F268D53816E9013900F0FA0F /* sidebar.caf in Resources */,
+				F268D53916E9013B00F0FA0F /* toggle_set.caf in Resources */,
+				F268D53316E9012500F0FA0F /* counting.caf in Resources */,
+				F268D53716E9013700F0FA0F /* question_answered.caf in Resources */,
+				F268D53216E9012300F0FA0F /* buy_set.caf in Resources */,
+				F268D53616E9013400F0FA0F /* puzzle_solved.caf in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
 				F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */,
@@ -2937,8 +2953,11 @@
 				F2868C971669F992003F0686 /* header_play_btn@2x.png in Resources */,
 				F2868C981669F992003F0686 /* header_play_btn_down@2x.png in Resources */,
 				F2868C9F1669FD21003F0686 /* DINPro-Black.otf in Resources */,
+				F268D53C16E9014000F0FA0F /* type_3.caf in Resources */,
+				F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */,
 				F2868CA01669FD21003F0686 /* DINPro-Bold.otf in Resources */,
 				F2868CA11669FD21003F0686 /* DINPro-Light.otf in Resources */,
+				F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */,
 				F2868CA21669FD21003F0686 /* DINPro-Medium.otf in Resources */,
 				F2868CA31669FD21003F0686 /* DINPro-Regular.otf in Resources */,
 				F2868CAE166A22CE003F0686 /* header_hint_btn_down@2x~ipad.png in Resources */,
@@ -3349,7 +3368,6 @@
 				F2FD005E16E1307B005144A3 /* lookup_miss_etikate.png in Resources */,
 				F2FD005F16E1307B005144A3 /* lookup_soft_elegance_1.png in Resources */,
 				F2FD006016E1307B005144A3 /* lookup_soft_elegance_2.png in Resources */,
-				F268D52316E8C99F00F0FA0F /* interface_button.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,6 +20,7 @@
     TileData * currentQuestion;
     NSMutableSet * questions;
     BOOL saveQuestionAsNew;
+    FISound * questionSound;
 }
 
 @property (readonly) PuzzleData * puzzle;

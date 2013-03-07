@@ -11,6 +11,8 @@
 #import <StoreKit/SKProductsRequest.h>
 #import "EventListenerDelegate.h"
 
+@class FISound;
+
 @interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate>
 {
     IBOutlet UIView *newsView;
@@ -33,6 +35,9 @@
     IBOutlet UILabel *lblHintsLeft;
     NSMutableArray * hintsProducts;
     SKProductsRequest * productsRequest;
+    
+    FISound * buySetSound;
+    FISound * toggleSetSound;
 }
 
 @end

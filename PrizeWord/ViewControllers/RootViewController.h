@@ -17,6 +17,7 @@
 @class GPUImageView;
 @class GPUImageGaussianBlurFilter;
 @class GPUImageFastBlurFilter;
+@class FISound;
 
 @interface RootViewController : PrizeWordViewController<EventListenerDelegate, UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
@@ -49,6 +50,8 @@
     GPUImageUIElement * uiElementInput;
     GPUImageView * gpuImageView;
     GPUImageGaussianBlurFilter * blurFilter;
+    
+    FISound * sidebarSound;
 }
 
 @property (readonly) BOOL isMenuHidden;

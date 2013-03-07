@@ -16,7 +16,7 @@
 @class GameField;
 @class FlipNumberView;
 @class PuzzleData;
-@class PrizeWordButton;
+@class FISound;
 
 @interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, FBRequestDelegate>
 {
@@ -49,6 +49,10 @@
 
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;
+    
+    FISound * puzzleSolvedSound;
+    NSArray * typeSounds;
+    FISound * countingSound;
 }
 
 -(id)initWithGameField:(GameField *)gameField;

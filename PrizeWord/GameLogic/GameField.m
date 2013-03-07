@@ -18,6 +18,7 @@
 #import "GlobalData.h"
 #import "UserData.h"
 #import "SBJsonParser.h"
+#import "FISoundEngine.h"
 
 @interface GameField (private)
 
@@ -66,6 +67,9 @@
                 [tiles addObject:tile];
             }
         }
+        
+        questionSound = [[FISoundEngine sharedEngine] soundNamed:@"question_answered.caf" error:nil];
+        
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_TAP];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUSH_LETTER];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_POP_LETTER];
@@ -427,6 +431,7 @@
     }
     else
     {
+        [questionSound play];
         [self checkOtherQuestions];
     }
     return YES;

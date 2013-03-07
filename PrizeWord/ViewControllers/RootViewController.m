@@ -26,6 +26,7 @@
 #import "GPUImageFastBlurFilter.h"
 #import "GPUImageGaussianBlurFilter.h"
 #import "GPUImageUIElement.h"
+#import "FISoundEngine.h"
 
 @interface RootViewController (private)
 
@@ -60,6 +61,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     {
         navController = navigationController;
         _isMenuHidden = YES;
+        sidebarSound = [[FISoundEngine sharedEngine] soundNamed:@"sidebar.caf" error:nil];
     }
     return self;
 }
@@ -288,6 +290,8 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     _isMenuHidden = NO;
     if (animated)
     {
+        [sidebarSound play];
+        
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView animateWithDuration:0.3 animations:^{
             mainMenuView.frame = CGRectMake(0, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
@@ -318,6 +322,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     _isMenuHidden = YES;
     if (animated)
     {
+        [sidebarSound play];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView animateWithDuration:0.3 animations:^{
             mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
