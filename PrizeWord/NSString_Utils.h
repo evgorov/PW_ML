@@ -11,5 +11,7 @@
 @interface NSString (Utils)
 
 +(NSString *)digitString:(int)value;
++(NSString *)declesion:(int)number oneString:(NSString *)one twoString:(NSString *)two fiveString:(NSString *)five;
+
 
 @end

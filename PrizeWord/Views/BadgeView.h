@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "PuzzleData.h"
+#import "PrizeWordButton.h"
 
-@interface BadgeView : UIButton
+@interface BadgeView : PrizeWordButton
 {
     int badgeNumber;
     IBOutlet UIImageView *imgBg;

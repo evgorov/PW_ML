@@ -14,7 +14,7 @@
 @interface PrizeWordNavigationController ()
 
 -(UIBarButtonItem *)backButtonItem;
--(void)handleBackTap:(UIButton *)sender;
+-(void)handleBackTap:(id)sender;
 
 @end
 
@@ -34,7 +34,7 @@
 {
     UIImage * backButtonBg = [UIImage imageNamed:@"nav_back_btn"];
     UIImage * backButtonDownBg = [UIImage imageNamed:@"nav_back_btn_down"];
-    UIButton * backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, backButtonBg.size.width, backButtonBg.size.height)];
+    PrizeWordButton * backButton = [[PrizeWordButton alloc] initWithFrame:CGRectMake(0, 0, backButtonBg.size.width, backButtonBg.size.height)];
     [backButton setBackgroundImage:backButtonBg forState:UIControlStateNormal];
     [backButton setBackgroundImage:backButtonDownBg forState:UIControlStateHighlighted];
     [backButton addTarget:self action:@selector(handleBackTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -90,7 +90,7 @@
     [[AppDelegate currentDelegate] orientationChanged:nil];
 }
 
--(void)handleBackTap:(UIButton *)sender
+-(void)handleBackTap:(id)sender
 {
     [self popViewControllerAnimated:YES];
 }

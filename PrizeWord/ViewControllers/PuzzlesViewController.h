@@ -27,9 +27,9 @@
 
     IBOutlet UILabel *puzzlesViewCaption;
 
-    IBOutlet UIButton *btnBuyHint1;
-    IBOutlet UIButton *btnBuyHint2;
-    IBOutlet UIButton *btnBuyHint3;
+    IBOutlet PrizeWordButton *btnBuyHint1;
+    IBOutlet PrizeWordButton *btnBuyHint2;
+    IBOutlet PrizeWordButton *btnBuyHint3;
     IBOutlet UILabel *lblHintsLeft;
     NSMutableArray * hintsProducts;
     SKProductsRequest * productsRequest;

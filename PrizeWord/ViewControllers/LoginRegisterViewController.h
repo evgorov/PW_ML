@@ -22,8 +22,8 @@
     
     IBOutlet UIDatePicker * datePicker;
     IBOutlet UIView * datePickerView;
-    IBOutlet UIButton * btnBirthday;
-    IBOutlet UIButton *btnAvatar;
+    IBOutlet PrizeWordButton * btnBirthday;
+    IBOutlet PrizeWordButton *btnAvatar;
     
     UIView * activeResponder;
     UIImage * avatar;

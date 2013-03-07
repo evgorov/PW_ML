@@ -67,7 +67,7 @@
     
     UIImage * inviteAllImage = [UIImage imageNamed:@"invite_invite_all_btn"];
     UIImage * inviteAllHighlightedImage = [UIImage imageNamed:@"invite_invite_all_btn_down"];
-    UIButton * inviteAllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, inviteAllImage.size.width, inviteAllImage.size.height)];
+    PrizeWordButton * inviteAllButton = [[PrizeWordButton alloc] initWithFrame:CGRectMake(0, 0, inviteAllImage.size.width, inviteAllImage.size.height)];
     [inviteAllButton setBackgroundImage:inviteAllImage forState:UIControlStateNormal];
     [inviteAllButton setBackgroundImage:inviteAllHighlightedImage forState:UIControlStateHighlighted];
     [inviteAllButton addTarget:self action:@selector(handleInviteAllClick:) forControlEvents:UIControlEventTouchUpInside];

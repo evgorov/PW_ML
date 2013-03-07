@@ -575,7 +575,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [rulesView addSubview:rulesPageControl];
         for (int i = 0; i != pages; ++i)
         {
-            UIButton * pageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            PrizeWordButton * pageButton = [PrizeWordButton buttonWithType:UIButtonTypeCustom];
             pageButton.selected = (i == 0);
             pageButton.adjustsImageWhenHighlighted = NO;
             pageButton.enabled = YES;
@@ -596,7 +596,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     navController.topViewController.title = NSLocalizedString(@"TITLE_RULES", nil);
     UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
     UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-    UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
+    PrizeWordButton * menuButton = [[PrizeWordButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
     [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
     [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
     [menuButton addTarget:self action:@selector(handleRulesMenuClick:) forControlEvents:UIControlEventTouchUpInside];

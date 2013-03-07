@@ -22,6 +22,7 @@
 #import "PuzzleSetData.h"
 #import "FlipNumberView.h"
 #import "SocialNetworks.h"
+#import "PrizeWordButton.h"
 
 @interface GameViewController (private)
 
@@ -186,7 +187,7 @@
 
 
 
-- (IBAction)handlePauseClick:(UIButton *)sender
+- (IBAction)handlePauseClick:(id)sender
 {
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];

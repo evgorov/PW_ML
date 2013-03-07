@@ -14,7 +14,7 @@
     IBOutlet UIView *puzzlesView;
     
     IBOutlet UIView *invitesView;
-    IBOutlet UIButton *btnInvite;
+    IBOutlet PrizeWordButton *btnInvite;
     IBOutlet UILabel *lblInvitesScore;
     IBOutlet UILabel *lblInvitesFriendsCount;
     IBOutlet UILabel *lblInvitesFriendsLabel;

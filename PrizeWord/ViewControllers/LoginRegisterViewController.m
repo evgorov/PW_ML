@@ -149,7 +149,7 @@
     }
 }
 
-- (IBAction)handleRegisterClick:(UIButton *)sender
+- (IBAction)handleRegisterClick:(id)sender
 {
     [activeResponder resignFirstResponder];
     [self handleDatePickerDoneClick:self];

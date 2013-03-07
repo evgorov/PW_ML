@@ -16,14 +16,16 @@
 @class GameField;
 @class FlipNumberView;
 @class PuzzleData;
+@class PrizeWordButton;
+
 @interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, FBRequestDelegate>
 {
     GameField * gameField;
     UITextField * textField;
     IBOutlet GameFieldView * gameFieldView;
-    IBOutlet UIButton * btnPause;
-    IBOutlet UIButton * btnPlay;
-    IBOutlet UIButton * btnHint;
+    IBOutlet PrizeWordButton * btnPause;
+    IBOutlet PrizeWordButton * btnPlay;
+    IBOutlet PrizeWordButton * btnHint;
     IBOutlet UILabel * lblTime;
     IBOutlet UIView * viewTime;
     IBOutlet UIView *pauseOverlay;

@@ -28,8 +28,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *lblPercent;
 @property (strong, nonatomic) IBOutlet UILabel *lblText1;
 @property (strong, nonatomic) IBOutlet UILabel *lblText2;
-@property (strong, nonatomic) IBOutlet UIButton *btnBuy;
-@property (strong, nonatomic) IBOutlet UIButton *btnShowMore;
+@property (strong, nonatomic) IBOutlet PrizeWordButton *btnBuy;
+@property (strong, nonatomic) IBOutlet PrizeWordButton *btnShowMore;
 @property (nonatomic, readonly) NSMutableArray * badges;
 @property (strong, nonatomic) SKProduct * product;
 

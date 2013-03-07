@@ -50,7 +50,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)updateArchive:(NSData *)receivedData;
 -(void)updateMonthSets:(NSArray*)monthSets;
 -(void)updateBaseScores;
--(void)updateHintButton:(UIButton*)button withProduct:(SKProduct*)product;
+-(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
 
@@ -519,7 +519,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [self hideActivityIndicator];
 }
 
--(void)updateHintButton:(UIButton*)button withProduct:(SKProduct*)product
+-(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product
 {
     [hintsProducts replaceObjectAtIndex:button.tag withObject:product];
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -743,7 +743,12 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     {
         if (badgeView.puzzle.progress < 1)
         {
+            badgeView.userInteractionEnabled = YES;
             [badgeView addTarget:self action:@selector(handleBadgeClick:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else
+        {
+            badgeView.userInteractionEnabled = NO;
         }
     }
 }

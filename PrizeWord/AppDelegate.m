@@ -17,6 +17,8 @@
 #import "PrizewordStoreObserver.h"
 #import "ExternalImage.h"
 #import "GameViewController.h"
+#import "FISoundEngine.h"
+#import <AVFoundation/AVFoundation.h>
 
 @implementation AppDelegate
 
@@ -48,6 +50,8 @@ static PrizewordStoreObserver * storeObserver = nil;
 {
     return storeObserver;
 }
+
+#pragma mark UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -85,6 +89,13 @@ static PrizewordStoreObserver * storeObserver = nil;
     viewOrientation = -1;
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
 	[nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:device];
+    
+    // initialize sound engine
+    [FISoundEngine sharedEngine];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAudioSessionInterruption:)
+                                                 name:AVAudioSessionInterruptionNotification
+                                               object:[AVAudioSession sharedInstance]];
     
     return YES;
 }
@@ -125,6 +136,7 @@ static PrizewordStoreObserver * storeObserver = nil;
     [ExternalImage clearCache];
 }
 
+#pragma mark orientation handling
 
 -(void)orientationChanged:(NSNotification *)note
 {
@@ -219,6 +231,7 @@ static PrizewordStoreObserver * storeObserver = nil;
         }
     }
 }
+
 
 - (void)saveContext
 {
@@ -332,5 +345,28 @@ static PrizewordStoreObserver * storeObserver = nil;
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+#pragma mark Sound Engine
+- (void)handleAudioSessionInterruption: (NSNotification*) event
+{
+    NSUInteger type = [[[event userInfo] objectForKey:AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
+    switch (type) {
+        case AVAudioSessionInterruptionTypeBegan:
+            NSLog(@"Audio interruption began, suspending sound engine.");
+            [[FISoundEngine sharedEngine] setSuspended:YES];
+            break;
+        case AVAudioSessionInterruptionTypeEnded:
+            if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+                NSLog(@"Audio interruption ended, resuming sound engine.");
+                [[FISoundEngine sharedEngine] setSuspended:NO];
+            } else {
+                // Have to wait for the app to become active, otherwise
+                // the audio session won’t resume correctly.
+            }
+            break;
+    }
+}
+
+
 
 @end

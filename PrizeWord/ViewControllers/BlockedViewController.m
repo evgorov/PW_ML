@@ -10,6 +10,7 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "AppDelegate.h"
+#import "PrizeWordButton.h"
 
 @interface BlockedViewController (private)
 
@@ -68,7 +69,7 @@ static int VERTICAL_SPACE = 23;
     {
         UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
         UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-        UIButton * menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
+        PrizeWordButton * menuButton = [[PrizeWordButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
         [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
         [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
         [menuButton addTarget:self action:@selector(handleMenuClick:) forControlEvents:UIControlEventTouchUpInside];

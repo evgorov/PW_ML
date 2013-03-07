@@ -29,8 +29,8 @@
     IBOutlet ExternalImage *mainMenuAvatar;
     IBOutlet UILabel *mainMenuMaxScore;
     IBOutlet UILabel *mainMenuYourResult;
-    IBOutlet UIButton *btnScore;
-    IBOutlet UIButton *btnRating;
+    IBOutlet PrizeWordButton *btnScore;
+    IBOutlet PrizeWordButton *btnRating;
     IBOutlet UIView *rulesView;
 
     PrizeWordNavigationController * navController;

@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
+		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
+		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
+		F20F0F0A16E8C1B6009AEEE6 /* FISampleFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EF116E8C1B6009AEEE6 /* FISampleFormat.m */; };
+		F20F0F0B16E8C1B6009AEEE6 /* FISound.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EF316E8C1B6009AEEE6 /* FISound.m */; };
+		F20F0F0C16E8C1B6009AEEE6 /* FISoundContext.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EF516E8C1B6009AEEE6 /* FISoundContext.m */; };
+		F20F0F0E16E8C1B6009AEEE6 /* FISoundDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EF816E8C1B6009AEEE6 /* FISoundDevice.m */; };
+		F20F0F1016E8C1B6009AEEE6 /* FISoundEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EFB16E8C1B6009AEEE6 /* FISoundEngine.m */; };
+		F20F0F1116E8C1B6009AEEE6 /* FISoundSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EFD16E8C1B6009AEEE6 /* FISoundSource.m */; };
+		F20F0F1916E8C3C8009AEEE6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20F0F1816E8C3C8009AEEE6 /* OpenAL.framework */; };
 		F21FCF6E16C03FF70022119B /* menu_bg_tile@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F21FCF6A16C03FF70022119B /* menu_bg_tile@2x.jpg */; };
 		F21FCF6F16C03FF70022119B /* menu_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F21FCF6B16C03FF70022119B /* menu_bg@2x.png */; };
 		F21FCF7016C03FF70022119B /* menu_bg_tile@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F21FCF6C16C03FF70022119B /* menu_bg_tile@2x~ipad.jpg */; };
@@ -109,6 +119,9 @@
 		F250914316BA200A0045621E /* InviteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914216BA20080045621E /* InviteCellView.xib */; };
 		F250914516BA21B80045621E /* InviteCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F250914416BA21B80045621E /* InviteCellView~ipad.xib */; };
 		F250914816BA22FE0045621E /* InviteCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = F250914716BA22FC0045621E /* InviteCellView.m */; };
+		F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */; };
+		F268D52316E8C99F00F0FA0F /* interface_button.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52216E8C83800F0FA0F /* interface_button.caf */; };
+		F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */; };
 		F26B992716E7454C008E117B /* NSString_Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString_Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
@@ -668,6 +681,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
+		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
+		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
+		F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISampleBuffer.m; sourceTree = "<group>"; };
+		F20F0EED16E8C1B6009AEEE6 /* FISampleDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleDecoder.h; sourceTree = "<group>"; };
+		F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISampleDecoder.m; sourceTree = "<group>"; };
+		F20F0EF016E8C1B6009AEEE6 /* FISampleFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleFormat.h; sourceTree = "<group>"; };
+		F20F0EF116E8C1B6009AEEE6 /* FISampleFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISampleFormat.m; sourceTree = "<group>"; };
+		F20F0EF216E8C1B6009AEEE6 /* FISound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISound.h; sourceTree = "<group>"; };
+		F20F0EF316E8C1B6009AEEE6 /* FISound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISound.m; sourceTree = "<group>"; };
+		F20F0EF416E8C1B6009AEEE6 /* FISoundContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISoundContext.h; sourceTree = "<group>"; };
+		F20F0EF516E8C1B6009AEEE6 /* FISoundContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISoundContext.m; sourceTree = "<group>"; };
+		F20F0EF716E8C1B6009AEEE6 /* FISoundDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISoundDevice.h; sourceTree = "<group>"; };
+		F20F0EF816E8C1B6009AEEE6 /* FISoundDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISoundDevice.m; sourceTree = "<group>"; };
+		F20F0EFA16E8C1B6009AEEE6 /* FISoundEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISoundEngine.h; sourceTree = "<group>"; };
+		F20F0EFB16E8C1B6009AEEE6 /* FISoundEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISoundEngine.m; sourceTree = "<group>"; };
+		F20F0EFC16E8C1B6009AEEE6 /* FISoundSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISoundSource.h; sourceTree = "<group>"; };
+		F20F0EFD16E8C1B6009AEEE6 /* FISoundSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FISoundSource.m; sourceTree = "<group>"; };
+		F20F0F1816E8C3C8009AEEE6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		F21FCF6A16C03FF70022119B /* menu_bg_tile@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "menu_bg_tile@2x.jpg"; sourceTree = "<group>"; };
 		F21FCF6B16C03FF70022119B /* menu_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_bg@2x.png"; sourceTree = "<group>"; };
 		F21FCF6C16C03FF70022119B /* menu_bg_tile@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "menu_bg_tile@2x~ipad.jpg"; sourceTree = "<group>"; };
@@ -807,6 +839,21 @@
 		F250914416BA21B80045621E /* InviteCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "InviteCellView~ipad.xib"; path = "Views/InviteCellView~ipad.xib"; sourceTree = "<group>"; };
 		F250914616BA22FB0045621E /* InviteCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InviteCellView.h; path = Views/InviteCellView.h; sourceTree = "<group>"; };
 		F250914716BA22FC0045621E /* InviteCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InviteCellView.m; path = Views/InviteCellView.m; sourceTree = "<group>"; };
+		F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F268D52216E8C83800F0FA0F /* interface_button.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = interface_button.caf; path = sounds/interface_button.caf; sourceTree = "<group>"; };
+		F268D52416E8E8A500F0FA0F /* buy_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = buy_set.caf; path = sounds/buy_set.caf; sourceTree = "<group>"; };
+		F268D52516E8E8A500F0FA0F /* counting.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = counting.caf; path = sounds/counting.caf; sourceTree = "<group>"; };
+		F268D52616E8E8A500F0FA0F /* interface_button.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = interface_button.caf; path = sounds/interface_button.caf; sourceTree = "<group>"; };
+		F268D52716E8E8A500F0FA0F /* push_notification.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = push_notification.caf; path = sounds/push_notification.caf; sourceTree = "<group>"; };
+		F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = puzzle_solved.caf; path = sounds/puzzle_solved.caf; sourceTree = "<group>"; };
+		F268D52916E8E8A500F0FA0F /* question_answered.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = question_answered.caf; path = sounds/question_answered.caf; sourceTree = "<group>"; };
+		F268D52A16E8E8A500F0FA0F /* sidebar.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sidebar.caf; path = sounds/sidebar.caf; sourceTree = "<group>"; };
+		F268D52B16E8E8A500F0FA0F /* toggle_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = toggle_set.caf; path = sounds/toggle_set.caf; sourceTree = "<group>"; };
+		F268D52C16E8E8A500F0FA0F /* type_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_1.caf; path = sounds/type_1.caf; sourceTree = "<group>"; };
+		F268D52D16E8E8A500F0FA0F /* type_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_2.caf; path = sounds/type_2.caf; sourceTree = "<group>"; };
+		F268D52E16E8E8A500F0FA0F /* type_3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_3.caf; path = sounds/type_3.caf; sourceTree = "<group>"; };
+		F268D52F16E8E8D000F0FA0F /* PrizeWordButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordButton.h; path = Views/PrizeWordButton.h; sourceTree = "<group>"; };
+		F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordButton.m; path = Views/PrizeWordButton.m; sourceTree = "<group>"; };
 		F26B992516E74513008E117B /* NSString_Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSString_Utils.h; sourceTree = "<group>"; };
 		F26B992616E7454C008E117B /* NSString_Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_Utils.m; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
@@ -1580,6 +1627,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */,
+				F20F0F1916E8C3C8009AEEE6 /* OpenAL.framework in Frameworks */,
 				F2FD010516E1332F005144A3 /* CoreVideo.framework in Frameworks */,
 				F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */,
 				F2FD010116E132D9005144A3 /* CoreMedia.framework in Frameworks */,
@@ -1602,6 +1651,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F20F0EE716E8C1B6009AEEE6 /* Finch */ = {
+			isa = PBXGroup;
+			children = (
+				F20F0EE816E8C1B6009AEEE6 /* FIError.h */,
+				F20F0EE916E8C1B6009AEEE6 /* FIError.m */,
+				F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */,
+				F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */,
+				F20F0EED16E8C1B6009AEEE6 /* FISampleDecoder.h */,
+				F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */,
+				F20F0EF016E8C1B6009AEEE6 /* FISampleFormat.h */,
+				F20F0EF116E8C1B6009AEEE6 /* FISampleFormat.m */,
+				F20F0EF216E8C1B6009AEEE6 /* FISound.h */,
+				F20F0EF316E8C1B6009AEEE6 /* FISound.m */,
+				F20F0EF416E8C1B6009AEEE6 /* FISoundContext.h */,
+				F20F0EF516E8C1B6009AEEE6 /* FISoundContext.m */,
+				F20F0EF716E8C1B6009AEEE6 /* FISoundDevice.h */,
+				F20F0EF816E8C1B6009AEEE6 /* FISoundDevice.m */,
+				F20F0EFA16E8C1B6009AEEE6 /* FISoundEngine.h */,
+				F20F0EFB16E8C1B6009AEEE6 /* FISoundEngine.m */,
+				F20F0EFC16E8C1B6009AEEE6 /* FISoundSource.h */,
+				F20F0EFD16E8C1B6009AEEE6 /* FISoundSource.m */,
+			);
+			path = Finch;
+			sourceTree = "<group>";
+		};
+		F20F0F1516E8C1FC009AEEE6 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F268D52416E8E8A500F0FA0F /* buy_set.caf */,
+				F268D52516E8E8A500F0FA0F /* counting.caf */,
+				F268D52616E8E8A500F0FA0F /* interface_button.caf */,
+				F268D52716E8E8A500F0FA0F /* push_notification.caf */,
+				F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */,
+				F268D52916E8E8A500F0FA0F /* question_answered.caf */,
+				F268D52A16E8E8A500F0FA0F /* sidebar.caf */,
+				F268D52B16E8E8A500F0FA0F /* toggle_set.caf */,
+				F268D52C16E8E8A500F0FA0F /* type_1.caf */,
+				F268D52D16E8E8A500F0FA0F /* type_2.caf */,
+				F268D52E16E8E8A500F0FA0F /* type_3.caf */,
+				F268D52216E8C83800F0FA0F /* interface_button.caf */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
 		F21FCF9A16C8AB410022119B /* NSData_Base64 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1666,6 +1759,7 @@
 		F2848E0A16AA73B50041C1D5 /* third-party */ = {
 			isa = PBXGroup;
 			children = (
+				F20F0EE716E8C1B6009AEEE6 /* Finch */,
 				F2FDFF1C16E1307A005144A3 /* GPUImage */,
 				F21FCF9A16C8AB410022119B /* NSData_Base64 */,
 				F235D0A216C020D20066664F /* DeprecatedHeaders */,
@@ -2130,6 +2224,8 @@
 				F21FCF8516C686F20022119B /* FlipNumberView.m */,
 				F21FCF9716C764200022119B /* ExternalImage.h */,
 				F21FCF9816C764200022119B /* ExternalImage.m */,
+				F268D52F16E8E8D000F0FA0F /* PrizeWordButton.h */,
+				F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2315,6 +2411,8 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */,
+				F20F0F1816E8C3C8009AEEE6 /* OpenAL.framework */,
 				F2FD010416E1332F005144A3 /* CoreVideo.framework */,
 				F2FD010216E132FA005144A3 /* AVFoundation.framework */,
 				F2FD010016E132D9005144A3 /* CoreMedia.framework */,
@@ -2338,6 +2436,7 @@
 		F2D62705165DF80900EF6E8A /* PrizeWord */ = {
 			isa = PBXGroup;
 			children = (
+				F20F0F1516E8C1FC009AEEE6 /* sounds */,
 				F2848E0016A5E61E0041C1D5 /* Net */,
 				F2868C79166683C8003F0686 /* DataModels */,
 				F2950249166206CD00DACFBA /* assets */,
@@ -3250,6 +3349,7 @@
 				F2FD005E16E1307B005144A3 /* lookup_miss_etikate.png in Resources */,
 				F2FD005F16E1307B005144A3 /* lookup_soft_elegance_1.png in Resources */,
 				F2FD006016E1307B005144A3 /* lookup_soft_elegance_2.png in Resources */,
+				F268D52316E8C99F00F0FA0F /* interface_button.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3471,6 +3571,16 @@
 				F2FD00FA16E1307B005144A3 /* GPUImageXYDerivativeFilter.m in Sources */,
 				F2FD00FB16E1307B005144A3 /* GPUImageZoomBlurFilter.m in Sources */,
 				F26B992716E7454C008E117B /* NSString_Utils.m in Sources */,
+				F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */,
+				F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */,
+				F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */,
+				F20F0F0A16E8C1B6009AEEE6 /* FISampleFormat.m in Sources */,
+				F20F0F0B16E8C1B6009AEEE6 /* FISound.m in Sources */,
+				F20F0F0C16E8C1B6009AEEE6 /* FISoundContext.m in Sources */,
+				F20F0F0E16E8C1B6009AEEE6 /* FISoundDevice.m in Sources */,
+				F20F0F1016E8C1B6009AEEE6 /* FISoundEngine.m in Sources */,
+				F20F0F1116E8C1B6009AEEE6 /* FISoundSource.m in Sources */,
+				F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

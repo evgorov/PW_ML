@@ -31,7 +31,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)handleMainMenuClick:(UIButton *)sender
+- (IBAction)handleMainMenuClick:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
