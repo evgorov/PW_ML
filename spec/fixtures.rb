@@ -39,7 +39,7 @@ shared_context 'fixtures' do
       'dynamics' => 0,
       'hints' => 0,
       'birthdate' => '1873-11-12',
-      'userpic' => 'image data',
+      'userpic' => nil,
       'providers' => [],
       'city' => 'London'
     }

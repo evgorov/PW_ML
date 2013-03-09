@@ -485,7 +485,6 @@ describe 'Integration spec' do
   it '/puzzles can list all puzzles' do
     admin_user
     post '/login', email: user_in_storage['email'], password: user_in_storage_password
-
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
@@ -677,5 +676,26 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     response_data['me']['month_score'].should == 600
+  end
+
+  it '/register_device adds device to list of avialible devices' do
+    post '/signup', valid_user_data
+    post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+    post '/register_device', session_key: session_key, id: 'device1'
+    last_response.status.should == 200
+
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+    get '/devices', session_key: session_key
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data.first['id'].should == 'device1'
   end
 end

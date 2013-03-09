@@ -67,6 +67,7 @@ class BasicModel
   end
 
   def all(page = 1)
+    page = 1 if page == 0
     self.collection_for_key('all', page)
   end
 

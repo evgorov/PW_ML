@@ -5,6 +5,7 @@ require 'model/user_data'
 require 'model/user_score'
 require 'model/service_message'
 require 'model/coefficients'
+require 'model/device'
 require 'itunes_receipt_verifier'
 require 'wall_publisher'
 
@@ -124,6 +125,12 @@ module Middleware
       user.save
 
       puzzle_set.to_json
+    end
+
+    post '/register_device' do
+      env['token_auth'].authorize!
+      Device.new.storage(env['redis']).tap{ |o| o['id'] = params['id'] }.save
+      { 'message' => 'ok' }.to_json
     end
 
     get '/puzzles' do
