@@ -34,7 +34,17 @@ describe 'Integration spec' do
   end
 
   before(:each) do
-    Redis.new.flushdb
+    r = Redis.new
+    r.flushdb
+    Coefficients.storage(r).coefficients = {
+      "brilliant-base-score" => 3000,
+      "free-base-score" => 1000,
+      "friend-bonus" => 1000,
+      "gold-base-score" => 2000,
+      "silver1-base-score" => 1500,
+      "silver2-base-score" => 1500,
+      "time-bonus" => 50
+    }
   end
 
   include_context 'fixtures'
@@ -610,6 +620,12 @@ describe 'Integration spec' do
       id = response_data.first['id']
       id.should_not == nil
       response_data.first['status'].should == 'invite_used'
+
+      get("/me", { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      response_data['me']['month_score'].should == 1000
     end
   end
 

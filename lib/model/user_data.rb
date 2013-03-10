@@ -1,6 +1,7 @@
 require 'json'
 require 'ext/hash'
 require 'model/basic_model'
+require 'model/invited_user'
 require 'friends_fetcher'
 
 class UserData < BasicModel
@@ -124,10 +125,37 @@ class UserData < BasicModel
   def invite(provider, friend_id)
     friends = self["#{provider}_friends"]
     return false if !friends[friend_id] || friends[friend_id]['status'] != 'uninvited'
+    invited_user_add(provider, friend_id)
     friends[friend_id]['status'] = 'invite_sent'
   end
 
+  def score_invite(provider, friend_id)
+    invited_user_id = invited_user_id(provider, friend_id)
+    score = Coefficients.storage(@storage).coefficients['friend-bonus']
+    InvitedUser.storage(@storage).load(invited_user_id)['invited_by'].each do |id|
+      self.class.storage(@storage).load(id).tap{ |o| o['month_score'] += score }.save
+    end
+    true
+  rescue BasicModel::NotFound
+    false
+  end
+
   private
+
+  def invited_user_id(provider, friend_id)
+    "#{provider}##{friend_id}"
+  end
+
+  def invited_user_add(provider, friend_id)
+    invited_user_id = invited_user_id(provider, friend_id)
+    invited_user = begin
+             InvitedUser.storage(@storage).load(invited_user_id)
+           rescue BasicModel::NotFound
+             InvitedUser.storage(@storage).tap{ |o| o['id'] = invited_user_id }
+           end
+    invited_user['invited_by'] << self['id']
+    invited_user.save
+  end
 
   def set_defaults!
     self.merge!({

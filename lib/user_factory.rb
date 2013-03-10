@@ -36,6 +36,7 @@ module UserFactory
         user_data.storage(storage).save
         u['user_data_id'] = user_data.id
         u.storage(storage).save
+        user_data.score_invite('facebook', fb_data['id'])
       end
     end
 
@@ -60,6 +61,7 @@ module UserFactory
         user_data.storage(storage).save
         u['user_data_id'] = user_data.id
         u.storage(storage).save
+        user_data.score_invite('facebook', vk_data['uid'])
       end
     end
 
