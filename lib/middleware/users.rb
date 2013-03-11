@@ -172,7 +172,12 @@ module Middleware
       halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
       env['token_auth'].authorize!
       current_user.fetch_friends(params['provider'])
-      params['ids'].split(',').each { |id| current_user.invite(params['provider'], id) }
+      params['ids'].split(',').each do |id|
+        current_user.invite(params['provider'], id)
+        if params['provider'] == 'vkontakte'
+          WallPublisher.post_other(current_user['vkontakte_access_token'], id, 'join me to play prizeword', nil)
+        end
+      end
       current_user.save
       { "message" => "ok" }.to_json
     end

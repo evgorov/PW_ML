@@ -2,6 +2,45 @@
 http_interactions:
 - request:
     method: get
+    uri: https://api.vk.com/method/wall.post?access_token=access_token&attachmments=&message=join%20me%20to%20play%20prizeword&owner_id=54321
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sat, 02 Feb 2013 20:04:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '477'
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze3
+      Set-Cookie:
+      - remixlang=0; expires=Wed, 12-Feb-2014 18:39:29 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: US-ASCII
+      string: ! '{"error":{"error_code":20,"error_msg":"Permission to perform this
+        action is denied for non-standalone applications: you should request token
+        using blank.html page","request_params":[{"key":"oauth","value":"1"},{"key":"method","value":"wall.post"},{"key":"access_token","value":"c1f2927a659696535a2f63658c7eed8ec9712bf1cfdcf5395b08d64e969c6e43c18c447383c39e5903f96"},{"key":"message","value":"message"},{"key":"attachmments","value":"http:\/\/imgs.xkcd.com\/comics\/tar.png"}]}}'
+    http_version: !!null
+  recorded_at: Sat, 02 Feb 2013 20:04:45 GMT
+- request:
+    method: get
     uri: https://api.vk.com/method/getProfiles.json?access_token=access_token&fields=photo_medium,first_name,last_name,city
     body:
       encoding: US-ASCII
