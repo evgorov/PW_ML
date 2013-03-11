@@ -66,7 +66,7 @@
                                                                            FBSessionState status,
                                                                            NSError *error) {
                 [viewController hideActivityIndicator];
-                if (error == nil)
+                if (error == nil && (status == FBSessionStateOpen ||status == FBSessionStateOpenTokenExtended) && session.accessToken != nil)
                 {
                     [GlobalData globalData].fbSession = session;
                     [self finalizeAuthorizationWithToken:session.accessToken forProvider:@"facebook" andViewController:viewController];
@@ -143,6 +143,17 @@
             {
                 [viewController showActivityIndicator];
                 APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+                    NSString * message = [data objectForKey:@"message"];
+                    if (message == nil)
+                    {
+                        message = @"Неизвестная ошибка на сервере";
+                    }
+                    if (response.statusCode >= 400 && response.statusCode < 500)
+                    {
+                        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertView show];
+                    }
                     NSLog(@"link account success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                     [viewController hideActivityIndicator];
                     successCallback();

@@ -93,7 +93,18 @@
 -(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
 {
     [self hideActivityIndicator];
-    if (response.statusCode == 200)
+    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+    NSString * message = [data objectForKey:@"message"];
+    if (message == nil)
+    {
+        message = @"Неизвестная ошибка на сервере";
+    }
+    if (response.statusCode >= 400 && response.statusCode < 500)
+    {
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+    else if (response.statusCode == 200)
     {
 //        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         [[GlobalData globalData] parseDateFromResponse:response];
