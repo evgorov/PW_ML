@@ -71,6 +71,11 @@ class BasicModel
     self.collection_for_key('all', page)
   end
 
+  def all_in_batches(&blk)
+    page, items = 0, []
+    items.each(&blk) while !(items = self.all(page += 1)).empty?
+  end
+
   def size
     self.collection_size_for_key('all');
   end

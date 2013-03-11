@@ -171,16 +171,7 @@ class UserData < BasicModel
 
   def load_external_attributes
     self['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
-    current_position = @storage.zrevrank('rating', self['id']).to_i + 1
-    @storage.set("#{self['id']}#position#{current_period}", current_position)
-    # if user misses couple of monthes, it will get higher dynamics
-    previous_position = @storage.get("#{self['id']}#position#{previous_position}")
-    self['position'] = current_position || 9999
-    self['dynamics'] = if !previous_position
-                         0
-                       else
-                         current_position.to_i - previous_position.to_i
-                       end
+    self['position'] = @storage.zrevrank('rating', self['id']).to_i + 1
   end
 
   def save_external_attributes
@@ -189,10 +180,5 @@ class UserData < BasicModel
 
   def current_period
     "#{Time.now.year}##{Time.now.month}"
-  end
-
-  def previous_period
-    time = Time.now - 60 * 60 * 24 * 31
-    "#{time.year}##{time.month}"
   end
 end
