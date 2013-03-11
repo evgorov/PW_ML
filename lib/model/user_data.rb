@@ -50,7 +50,7 @@ class UserData < BasicModel
 
       # merge friends
       result.to_hash.keys.grep(/_friends/).each do |k|
-        result[k] = (other[k] || {}}).merge!(self[k]) { |k, h1, h2| h1['status'] =~ /\Ainvite/ ? h1 : h2 }
+        result[k] = (other[k] || {}).merge!(self[k]) { |k, h1, h2| h1['status'] =~ /\Ainvite/ ? h1 : h2 }
       end
 
       # merge scores
