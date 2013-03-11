@@ -110,6 +110,14 @@ static PrizewordStoreObserver * storeObserver = nil;
         [(AVAudioSession *)[AVAudioSession sharedInstance] setDelegate:self];
     }
     
+    // show rules once
+    BOOL notFirstTime = [[NSUserDefaults standardUserDefaults] boolForKey:@"not-first-time"];
+    if (!notFirstTime)
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"not-first-time"];
+        [_rootViewController showRules];
+    }
+    
     return YES;
 }
 

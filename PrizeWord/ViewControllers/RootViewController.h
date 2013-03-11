@@ -66,5 +66,6 @@
 -(void)showOverlay:(UIView *)overlayView;
 -(void)showFullscreenOverlay:(UIView *)overlayView;
 -(void)hideOverlay;
+-(void)showRules;
 
 @end

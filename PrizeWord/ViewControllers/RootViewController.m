@@ -448,6 +448,77 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     }];
 }
 
+-(void)showRules
+{
+    int pages = 5;
+    if (rulesScrollView.subviews.count < pages)
+    {
+        //        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
+        rulesScrollView.backgroundColor = [UIColor clearColor];
+        rulesScrollView.scrollEnabled = NO;
+        rulesScrollView.showsHorizontalScrollIndicator = YES;
+        rulesScrollView.showsVerticalScrollIndicator = NO;
+        rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
+        
+        for (int i = 0; i != pages; ++i)
+        {
+            UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
+            pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
+            [rulesScrollView addSubview:pageView];
+        }
+        
+    }
+    if (rulesPageControl == nil)
+    {
+        UIImage * paginatorEmptyImage = [UIImage imageNamed:@"rules_pagecontrol_empty"];
+        UIImage * paginatorFullImage = [UIImage imageNamed:@"rules_pagecontrol_full"];
+        UIImage * pagecontrolBgImage = [UIImage imageNamed:@"rules_pagecontrol_bg"];
+        
+        UISwipeGestureRecognizer * rulesRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesPrev:)];
+        rulesRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        UISwipeGestureRecognizer * rulesLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesNext:)];
+        rulesLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        UITapGestureRecognizer * rulesTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)];
+        [rulesScrollView setGestureRecognizers:[NSArray arrayWithObjects:rulesLeftGestureRecognizer, rulesRightGestureRecognizer, rulesTapGestureRecognizer, nil]];
+        
+        //        [rulesView addSubview:rulesScrollView];
+        
+        if ([pagecontrolBgImage respondsToSelector:@selector(resizableImageWithCapInsets:)])
+        {
+            pagecontrolBgImage = [pagecontrolBgImage resizableImageWithCapInsets:UIEdgeInsetsMake(pagecontrolBgImage.size.height / 2 - 1, pagecontrolBgImage.size.width / 2 - 1, pagecontrolBgImage.size.height / 2, pagecontrolBgImage.size.width / 2)];
+        }
+        else
+        {
+            pagecontrolBgImage = [pagecontrolBgImage stretchableImageWithLeftCapWidth:(pagecontrolBgImage.size.width / 2 - 1) topCapHeight:(pagecontrolBgImage.size.height / 2 - 1)];
+        }
+        rulesPageControl = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
+        float pageControlDefaultWidth = rulesPageControl.frame.size.width;
+        float pagecontrolWidth = 1.5f * pages * paginatorEmptyImage.size.width + pageControlDefaultWidth;
+        rulesPageControl.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - rulesPageControl.frame.size.height, pagecontrolWidth, rulesPageControl.frame.size.height);
+        rulesPageControl.userInteractionEnabled = YES;
+        [rulesPageControl addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)]];
+        [rulesView addSubview:rulesPageControl];
+        for (int i = 0; i != pages; ++i)
+        {
+            PrizeWordButton * pageButton = [PrizeWordButton buttonWithType:UIButtonTypeCustom];
+            pageButton.selected = (i == 0);
+            pageButton.adjustsImageWhenHighlighted = NO;
+            pageButton.enabled = YES;
+            pageButton.userInteractionEnabled = YES;
+            [pageButton setBackgroundImage:paginatorEmptyImage forState:UIControlStateNormal];
+            [pageButton setBackgroundImage:paginatorFullImage forState:UIControlStateSelected];
+            [pageButton addTarget:self action:@selector(handlePageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            pageButton.frame = CGRectMake(pageControlDefaultWidth / 2 + paginatorEmptyImage.size.width / 4 + 1.5f * i * paginatorEmptyImage.size.width, (rulesPageControl.frame.size.height - paginatorEmptyImage.size.height) / 2, paginatorEmptyImage.size.width, paginatorEmptyImage.size.height);
+            pageButton.tag = i;
+            [rulesPageControl addSubview:pageButton];
+        }
+    }
+    [self showFullscreenOverlay:rulesView];
+}
+
+
+#pragma mark handlers
+
 - (IBAction)handleAvatarClick:(id)sender
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
@@ -542,70 +613,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 - (IBAction)handleRulesClick:(id)sender
 {
-    int pages = 5;
-    if (rulesScrollView.subviews.count < pages)
-    {
-        //        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
-        rulesScrollView.backgroundColor = [UIColor clearColor];
-        rulesScrollView.scrollEnabled = NO;
-        rulesScrollView.showsHorizontalScrollIndicator = YES;
-        rulesScrollView.showsVerticalScrollIndicator = NO;
-        rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
-        
-        for (int i = 0; i != pages; ++i)
-        {
-            UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
-            pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
-            [rulesScrollView addSubview:pageView];
-        }
-        
-    }
-    if (rulesPageControl == nil)
-    {
-        UIImage * paginatorEmptyImage = [UIImage imageNamed:@"rules_pagecontrol_empty"];
-        UIImage * paginatorFullImage = [UIImage imageNamed:@"rules_pagecontrol_full"];
-        UIImage * pagecontrolBgImage = [UIImage imageNamed:@"rules_pagecontrol_bg"];
-
-        UISwipeGestureRecognizer * rulesRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesPrev:)];
-        rulesRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        UISwipeGestureRecognizer * rulesLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesNext:)];
-        rulesLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-        UITapGestureRecognizer * rulesTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)];
-        [rulesScrollView setGestureRecognizers:[NSArray arrayWithObjects:rulesLeftGestureRecognizer, rulesRightGestureRecognizer, rulesTapGestureRecognizer, nil]];
-        
-//        [rulesView addSubview:rulesScrollView];
-
-        if ([pagecontrolBgImage respondsToSelector:@selector(resizableImageWithCapInsets:)])
-        {
-            pagecontrolBgImage = [pagecontrolBgImage resizableImageWithCapInsets:UIEdgeInsetsMake(pagecontrolBgImage.size.height / 2 - 1, pagecontrolBgImage.size.width / 2 - 1, pagecontrolBgImage.size.height / 2, pagecontrolBgImage.size.width / 2)];
-        }
-        else
-        {
-            pagecontrolBgImage = [pagecontrolBgImage stretchableImageWithLeftCapWidth:(pagecontrolBgImage.size.width / 2 - 1) topCapHeight:(pagecontrolBgImage.size.height / 2 - 1)];
-        }
-        rulesPageControl = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
-        float pageControlDefaultWidth = rulesPageControl.frame.size.width;
-        float pagecontrolWidth = 1.5f * pages * paginatorEmptyImage.size.width + pageControlDefaultWidth;
-        rulesPageControl.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - rulesPageControl.frame.size.height, pagecontrolWidth, rulesPageControl.frame.size.height);
-        rulesPageControl.userInteractionEnabled = YES;
-        [rulesPageControl addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)]];
-        [rulesView addSubview:rulesPageControl];
-        for (int i = 0; i != pages; ++i)
-        {
-            PrizeWordButton * pageButton = [PrizeWordButton buttonWithType:UIButtonTypeCustom];
-            pageButton.selected = (i == 0);
-            pageButton.adjustsImageWhenHighlighted = NO;
-            pageButton.enabled = YES;
-            pageButton.userInteractionEnabled = YES;
-            [pageButton setBackgroundImage:paginatorEmptyImage forState:UIControlStateNormal];
-            [pageButton setBackgroundImage:paginatorFullImage forState:UIControlStateSelected];
-            [pageButton addTarget:self action:@selector(handlePageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-            pageButton.frame = CGRectMake(pageControlDefaultWidth / 2 + paginatorEmptyImage.size.width / 4 + 1.5f * i * paginatorEmptyImage.size.width, (rulesPageControl.frame.size.height - paginatorEmptyImage.size.height) / 2, paginatorEmptyImage.size.width, paginatorEmptyImage.size.height);
-            pageButton.tag = i;
-            [rulesPageControl addSubview:pageButton];
-        }
-    }
-    [self showFullscreenOverlay:rulesView];
+    [self showRules];
 }
 
 - (IBAction)handleRestoreClick:(id)sender
