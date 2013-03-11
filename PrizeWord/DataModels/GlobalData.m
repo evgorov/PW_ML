@@ -69,7 +69,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 -(void)setDeviceToken:(NSString *)deviceToken
 {
     _deviceToken = deviceToken;
-    if (_sessionKey != nil)
+    if (_deviceToken != nil && _sessionKey != nil)
     {
         [self registerDeviceToken];
     }
@@ -78,7 +78,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 -(void)setSessionKey:(NSString *)sessionKey
 {
     _sessionKey = sessionKey;
-    if (_deviceToken != nil)
+    if (_deviceToken != nil && _sessionKey != nil)
     {
         [self registerDeviceToken];
     }

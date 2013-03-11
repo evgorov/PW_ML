@@ -13,11 +13,13 @@
 #import "PrizeWordViewController.h"
 
 @class PrizeWordNavigationController;
+@class FISound;
+/*
 @class GPUImageUIElement;
 @class GPUImageView;
 @class GPUImageGaussianBlurFilter;
 @class GPUImageFastBlurFilter;
-@class FISound;
+*/
 
 @interface RootViewController : PrizeWordViewController<EventListenerDelegate, UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
@@ -46,11 +48,11 @@
     IBOutlet UIView *fullscreenOverlayContainer;
     
     UIPopoverController * avatarPopover;
-    
+/*
     GPUImageUIElement * uiElementInput;
     GPUImageView * gpuImageView;
     GPUImageGaussianBlurFilter * blurFilter;
-    
+*/
     FISound * sidebarSound;
 }
 
