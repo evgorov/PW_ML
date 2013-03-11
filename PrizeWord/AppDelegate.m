@@ -19,6 +19,8 @@
 #import "GameViewController.h"
 #import "FISoundEngine.h"
 #import <AVFoundation/AVFoundation.h>
+#import "APIRequest.h"
+#import "NSData+Utils.h"
 
 @implementation AppDelegate
 
@@ -80,7 +82,11 @@ static PrizewordStoreObserver * storeObserver = nil;
     storeObserver = [PrizewordStoreObserver new];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:storeObserver];
     
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    BOOL remoteNotificationDisabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"remote-notifications-disabled"];
+    if (!remoteNotificationDisabled)
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    }
     
     //----- SETUP DEVICE ORIENTATION CHANGE NOTIFICATION -----
 	UIDevice *device = [UIDevice currentDevice];					//Get the device object
@@ -134,6 +140,16 @@ static PrizewordStoreObserver * storeObserver = nil;
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [ExternalImage clearCache];
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [GlobalData globalData].deviceToken = [deviceToken hexadecimalString];
+}
+
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@", error.description);
 }
 
 #pragma mark orientation handling

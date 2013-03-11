@@ -132,7 +132,8 @@
 		F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52C16E8E8A500F0FA0F /* type_1.caf */; };
 		F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52D16E8E8A500F0FA0F /* type_2.caf */; };
 		F268D53C16E9014000F0FA0F /* type_3.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52E16E8E8A500F0FA0F /* type_3.caf */; };
-		F26B992716E7454C008E117B /* NSString_Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString_Utils.m */; };
+		F268D54716EDCA0800F0FA0F /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F268D54616EDCA0800F0FA0F /* NSData+Utils.m */; };
+		F26B992716E7454C008E117B /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString+Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
 		F279AE2A1688679200424267 /* PuzzleSetView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE291688679200424267 /* PuzzleSetView~ipad.xib */; };
@@ -863,8 +864,10 @@
 		F268D52E16E8E8A500F0FA0F /* type_3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_3.caf; path = sounds/type_3.caf; sourceTree = "<group>"; };
 		F268D52F16E8E8D000F0FA0F /* PrizeWordButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrizeWordButton.h; path = Views/PrizeWordButton.h; sourceTree = "<group>"; };
 		F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordButton.m; path = Views/PrizeWordButton.m; sourceTree = "<group>"; };
-		F26B992516E74513008E117B /* NSString_Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSString_Utils.h; sourceTree = "<group>"; };
-		F26B992616E7454C008E117B /* NSString_Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_Utils.m; sourceTree = "<group>"; };
+		F268D54516EDCA0800F0FA0F /* NSData+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Utils.h"; sourceTree = "<group>"; };
+		F268D54616EDCA0800F0FA0F /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
+		F26B992516E74513008E117B /* NSString+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		F26B992616E7454C008E117B /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
 		F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_arrow_northeast_right@2x.png"; sourceTree = "<group>"; };
 		F279AE291688679200424267 /* PuzzleSetView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PuzzleSetView~ipad.xib"; path = "Views/PuzzleSetView~ipad.xib"; sourceTree = "<group>"; };
@@ -2468,8 +2471,10 @@
 				F2D6270B165DF80900EF6E8A /* main.m */,
 				F2D6270D165DF80900EF6E8A /* PrizeWord-Prefix.pch */,
 				F2868CCB166CB362003F0686 /* ReleaseNotes.txt */,
-				F26B992516E74513008E117B /* NSString_Utils.h */,
-				F26B992616E7454C008E117B /* NSString_Utils.m */,
+				F26B992516E74513008E117B /* NSString+Utils.h */,
+				F26B992616E7454C008E117B /* NSString+Utils.m */,
+				F268D54516EDCA0800F0FA0F /* NSData+Utils.h */,
+				F268D54616EDCA0800F0FA0F /* NSData+Utils.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3588,7 +3593,7 @@
 				F2FD00F916E1307B005144A3 /* GPUImageWhiteBalanceFilter.m in Sources */,
 				F2FD00FA16E1307B005144A3 /* GPUImageXYDerivativeFilter.m in Sources */,
 				F2FD00FB16E1307B005144A3 /* GPUImageZoomBlurFilter.m in Sources */,
-				F26B992716E7454C008E117B /* NSString_Utils.m in Sources */,
+				F26B992716E7454C008E117B /* NSString+Utils.m in Sources */,
 				F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */,
 				F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */,
 				F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */,
@@ -3599,6 +3604,7 @@
 				F20F0F1016E8C1B6009AEEE6 /* FISoundEngine.m in Sources */,
 				F20F0F1116E8C1B6009AEEE6 /* FISoundSource.m in Sources */,
 				F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */,
+				F268D54716EDCA0800F0FA0F /* NSData+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

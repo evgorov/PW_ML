@@ -21,7 +21,7 @@
 #import "SBJson.h"
 #import "AppDelegate.h"
 #import <StoreKit/StoreKit.h>
-#import "NSString_Utils.h"
+#import "NSString+Utils.h"
 #import "FISoundEngine.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};

@@ -10,7 +10,7 @@
 #import "BadgeView.h"
 #import "AppDelegate.h"
 #import "PuzzleSetData.h"
-#import "NSString_Utils.h"
+#import "NSString+Utils.h"
 
 NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};

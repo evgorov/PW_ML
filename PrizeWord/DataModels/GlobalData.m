@@ -16,6 +16,12 @@
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
 NSString * COEFFICIENTS_KEY = @"coefficients";
 
+@interface GlobalData (private)
+
+-(void)registerDeviceToken;
+
+@end
+
 @implementation GlobalData
 
 @synthesize sessionKey = _sessionKey;
@@ -24,6 +30,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 @synthesize currentMonth = _currentMonth;
 @synthesize currentYear = _currentYear;
 @synthesize fbSession = _fbSession;
+@synthesize deviceToken = _deviceToken;
 
 #pragma mark initialization
 
@@ -46,6 +53,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         _loggedInUser = nil;
         _monthSets = nil;
         _fbSession = nil;
+        _deviceToken = nil;
         NSDate * currentDate = [NSDate date];
         NSCalendar * calendar = [NSCalendar currentCalendar];
         NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:currentDate];
@@ -55,6 +63,25 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
     }
     return self;
+}
+
+#pragma mark setters
+-(void)setDeviceToken:(NSString *)deviceToken
+{
+    _deviceToken = deviceToken;
+    if (_sessionKey != nil)
+    {
+        [self registerDeviceToken];
+    }
+}
+
+-(void)setSessionKey:(NSString *)sessionKey
+{
+    _sessionKey = sessionKey;
+    if (_deviceToken != nil)
+    {
+        [self registerDeviceToken];
+    }
 }
 
 #pragma mark getters
@@ -214,6 +241,20 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
             break;
         }
     }
+}
+
+#pragma mark private methods
+
+-(void)registerDeviceToken
+{
+    APIRequest * request = [APIRequest postRequest:@"register_device" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSLog(@"register_device: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+    } failCallback:^(NSError *error) {
+        NSLog(@"register_device fail: %@", error.description);
+    }];
+    [request.params setObject:_sessionKey forKey:@"session_key"];
+    [request.params setObject:_deviceToken forKey:@"id"];
+    [request runSilent];
 }
 
 @end

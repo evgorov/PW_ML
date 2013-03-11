@@ -6,7 +6,7 @@
 //
 //
 
-#include "NSString_Utils.h"
+#include "NSString+Utils.h"
 
 @implementation NSString (Utils)
 

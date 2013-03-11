@@ -19,10 +19,11 @@
 
 +(GlobalData *)globalData;
 
-@property (nonatomic, strong) NSString * sessionKey;
-@property (nonatomic, strong) UserData * loggedInUser;
-@property (nonatomic, strong) NSArray * monthSets;
-@property (nonatomic, strong) FBSession * fbSession;
+@property (nonatomic) NSString * sessionKey;
+@property (nonatomic) UserData * loggedInUser;
+@property (nonatomic) NSArray * monthSets;
+@property (nonatomic) FBSession * fbSession;
+@property (nonatomic) NSString * deviceToken;
 @property () int currentMonth;
 @property () int currentYear;
 
