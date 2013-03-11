@@ -211,19 +211,6 @@
             }
         }
         
-        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            [[GlobalData globalData] loadMe];
-        } failCallback:^(NSError *error) {
-            NSLog(@"score error! %@", error.description);
-        }];
-        
-        NSDictionary * userData = [vkFriends objectAtIndex:idx];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend] forKey:@"score"];
-        [request.params setObject:[NSString stringWithFormat:@"friend_vk#%@", [userData objectForKey:@"id"]] forKey:@"source"];
-        [request runSilent];
-        
     } failCallback:^(NSError *error) {
         NSLog(@"invite failed: %@", error.description);
         [self hideActivityIndicator];
@@ -484,18 +471,6 @@
                     if ([userIds rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.tag] objectForKey:@"id"]].location != NSNotFound)
                     {
                         inviteView.btnAdd.enabled = NO;
-                        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                            [[GlobalData globalData] loadMe];
-                        } failCallback:^(NSError *error) {
-                            NSLog(@"score error! %@", error.description);
-                        }];
-                        
-                        NSDictionary * userData = [fbFriends objectAtIndex:inviteView.tag];
-                        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                        [request.params setObject:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend] forKey:@"score"];
-                        [request.params setObject:[NSString stringWithFormat:@"friend_fb#%@", [userData objectForKey:@"id"]] forKey:@"source"];
-                        [request runSilent];
                     }
                 }
             }
