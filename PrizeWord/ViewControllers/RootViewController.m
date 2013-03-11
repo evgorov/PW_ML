@@ -605,26 +605,12 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             [rulesPageControl addSubview:pageButton];
         }
     }
-    if (![AppDelegate currentDelegate].isIPad)
-    {
-        [self hideMenuAnimated:YES];
-    }
-    [self showOverlay:rulesView];
-    navController.topViewController.title = NSLocalizedString(@"TITLE_RULES", nil);
-    UIImage * menuImage = [UIImage imageNamed:@"menu_btn"];
-    UIImage * menuHighlightedImage = [UIImage imageNamed:@"menu_btn_down"];
-    PrizeWordButton * menuButton = [[PrizeWordButton alloc] initWithFrame:CGRectMake(0, 0, menuImage.size.width, menuImage.size.height)];
-    [menuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-    [menuButton setBackgroundImage:menuHighlightedImage forState:UIControlStateHighlighted];
-    [menuButton addTarget:self action:@selector(handleRulesMenuClick:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem * menuItem = [[UIBarButtonItem alloc] initWithCustomView:
-                [PrizeWordNavigationBar containerWithView:menuButton]];
-    [navController.topViewController.navigationItem setLeftBarButtonItem:menuItem animated:YES];
-    
+    [self showFullscreenOverlay:rulesView];
 }
 
 - (IBAction)handleRestoreClick:(id)sender
 {
+    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
 - (IBAction)handleVKSwitchChange:(id)sender
