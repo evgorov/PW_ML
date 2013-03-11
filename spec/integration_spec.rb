@@ -676,22 +676,51 @@ describe 'Integration spec' do
     post '/score', session_key: session_key2, score: 150, solved: 10, source: 'reason2'
 
     post '/link_accounts', { session_key1: session_key1, session_key2: session_key2 }
-    last_response.status.should == 200
+    last_response.status.should == 403
     last_response_should_be_json
+  end
 
-    post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+  it '/link_accounts for registered and facebook accounts' do
+    VCR.use_cassette('facebook_success_login') do
+      get '/facebook/login'
+      last_response.status.should == 302
+      # Here we assume user logs in into facebook and aproves our app
+      get '/facebook/authorize', { code: 'AQALG4kdgy528xTY0KlG-WlKG9vzMyOZ3TGUhquw_yWMVYa0E7o0dyBvSd9uNFigtbhQaIMX7i33pL2G9DhIhIBk1LgEUfwALggMCXnT7ZFW-B7iS0_0giZEGllyJQgvpJPyLAXykWGMXt3S2l-Cm7AyEA9DsbmB646QhZVtIiKL-cGH9aS7omfCMgRpKZewJkbLvjdR7pfG5k6YT1iYAth6' }
+      last_response_should_be_json
+      last_response.status.should == 200
+      response_data = JSON.parse(last_response.body)
+      session_key1 = response_data['session_key']
 
-    get '/me', { session_key: session_key1 }
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    response_data['me']['month_score'].should == 600
 
-    get '/me', { session_key: session_key2 }
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    response_data['me']['month_score'].should == 600
+      post '/signup', another_valid_user_data
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      session_key2 = response_data['session_key']
+
+      post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+      post '/score', session_key: session_key1, score: 100, solved: 10, source: 'reason2'
+      post '/score', session_key: session_key2, score: 150, solved: 10, source: 'reason3'
+      post '/score', session_key: session_key2, score: 150, solved: 10, source: 'reason2'
+
+      post '/link_accounts', { session_key1: session_key1, session_key2: session_key2 }
+      last_response.status.should == 200
+      last_response_should_be_json
+
+      post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+
+      get '/me', { session_key: session_key1 }
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      response_data['me']['month_score'].should == 600
+
+      get '/me', { session_key: session_key2 }
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      response_data['me']['month_score'].should == 600
+    end
   end
 
   it '/register_device adds device to list of avialible devices' do

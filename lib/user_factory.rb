@@ -76,6 +76,7 @@ module UserFactory
         u['password'] = data.delete('password')
         user_data = UserData.new
         user_data.merge_fields_user_can_change!(data)
+        user_data['registration_id'] = u.id
         user_data.storage(storage).save
         u['user_data_id'] = user_data.id
         u.storage(storage).save

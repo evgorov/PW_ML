@@ -15,7 +15,7 @@ class UserData < BasicModel
 
   def before_save
     super
-    self['providers'] = %w[facebook vkontakte].map{ |o|
+    self['providers'] = %w[facebook vkontakte registration].map{ |o|
       {
         'provider_name' => o,
         'provider_id' => self["#{o}_id"],

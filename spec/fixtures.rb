@@ -40,7 +40,7 @@ shared_context 'fixtures' do
       'hints' => 0,
       'birthdate' => '1873-11-12',
       'userpic' => nil,
-      'providers' => [],
+      'providers' => [{"provider_name"=>"registration", "provider_id"=>"registered#sherlock@example.org", "provider_token"=>nil}],
       'city' => 'London'
     }
   }

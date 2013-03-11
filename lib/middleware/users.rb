@@ -22,6 +22,8 @@ module Middleware
       content_type 'application/json'
     end
 
+    error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
+
     get '/me' do
       env['token_auth'].authorize!
       { me: current_user }.to_json
@@ -186,11 +188,18 @@ module Middleware
     end
 
     post '/link_accounts' do
-      user1 = env['token_auth'].get_user_by_session_key(params['session_key1'])
-      user2 = env['token_auth'].get_user_by_session_key(params['session_key2'])
+      user1 = env['token_auth'].get_user_by_session_key(params['session_key1']) rescue nil
+      user2 = env['token_auth'].get_user_by_session_key(params['session_key2']) rescue nil
       halt(403, { 'message' => 'cannot authorize session_key1'}.to_json) unless user1
       halt(403, { 'message' => 'cannot authorize session_key2'}.to_json) unless user2
       user_data1, user_data2 = user1.user_data, user2.user_data
+
+      providers1 = user_data1['providers'].map { |o| o['provider_name'] }
+      providers2 = user_data2['providers'].map { |o| o['provider_name'] }
+
+      unless (providers = (providers1 & providers2)).empty?
+        halt(403, { 'message' => "target user already has some providers: #{providers.join}"}.to_json)
+      end
 
       user_data1.merge!(user_data2)
       user_data1.save

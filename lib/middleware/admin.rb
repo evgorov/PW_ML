@@ -21,6 +21,8 @@ module Middleware
       end
     end
 
+    error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
+
     put '/service_messages' do
       authorize_admin!
       messages = params.extract('message1', 'message2', 'message3')
