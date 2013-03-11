@@ -13,7 +13,7 @@
 @class PrizeWordNavigationController;
 @class RootViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AVAudioSessionDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (readonly, strong, nonatomic) PrizeWordNavigationController *navController;

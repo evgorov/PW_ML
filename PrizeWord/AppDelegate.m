@@ -98,10 +98,17 @@ static PrizewordStoreObserver * storeObserver = nil;
     
     // initialize sound engine
     [FISoundEngine sharedEngine];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleAudioSessionInterruption:)
-                                                 name:AVAudioSessionInterruptionNotification
-                                               object:[AVAudioSession sharedInstance]];
+    if ([[UIDevice currentDevice].systemVersion compare:@"6.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleAudioSessionInterruption:)
+                                                     name:AVAudioSessionInterruptionNotification
+                                                   object:[AVAudioSession sharedInstance]];
+    }
+    else
+    {
+        [(AVAudioSession *)[AVAudioSession sharedInstance] setDelegate:self];
+    }
     
     return YES;
 }
@@ -215,22 +222,22 @@ static PrizewordStoreObserver * storeObserver = nil;
                 
             case UIDeviceOrientationLandscapeLeft:
             {
-                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
                                     [UIView animateWithDuration:0.5f animations:^{
-                _window.transform = CGAffineTransformMakeRotation(-M_PI_2);
-                                        _window.frame = CGRectMake(0, 0, 1024, 1024);
-                                        _rootViewController.view.frame = CGRectMake(0, 256, 1024, 768);
+                _window.transform = CGAffineTransformMakeRotation(M_PI_2);
+                _window.frame = CGRectMake(0, 0, 1024, 1024);
+                _rootViewController.view.frame = CGRectMake(0, 256, 1024, 768);
                                     }];
             }
                 break;
                 
             case UIDeviceOrientationLandscapeRight:
             {
-                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
+                [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                 [UIView animateWithDuration:0.5f animations:^{
-                    _window.transform = CGAffineTransformMakeRotation(M_PI_2);
+                    _window.transform = CGAffineTransformMakeRotation(-M_PI_2);
                     _window.frame = CGRectMake(0, 0, 1024, 1024);
-                    _rootViewController.view.frame = CGRectMake(0, 256, 1024, 768);
+                    _rootViewController.view.frame = CGRectMake(0, 0, 1024, 768);
                                     }];
             }
                 break;
@@ -383,6 +390,17 @@ static PrizewordStoreObserver * storeObserver = nil;
     }
 }
 
+-(void)beginInterruption
+{
+    NSLog(@"Audio interruption began, suspending sound engine.");
+    [[FISoundEngine sharedEngine] setSuspended:YES];
+}
+
+-(void)endInterruption
+{
+    NSLog(@"Audio interruption ended, resuming sound engine.");
+    [[FISoundEngine sharedEngine] setSuspended:NO];
+}
 
 
 @end
