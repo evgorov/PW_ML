@@ -75,6 +75,17 @@
     }
 }
 
+-(void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    float targetAlpha = enabled ? 1 : 0.3f;
+    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+        imgSlider.alpha = targetAlpha;
+        offView.alpha = targetAlpha;
+        onView.alpha = targetAlpha;
+    } completion:nil];
+}
+
 -(void)switchOnAnimated:(BOOL)animated
 {
     if (isOn)

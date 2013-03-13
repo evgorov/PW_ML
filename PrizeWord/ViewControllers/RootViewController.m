@@ -289,7 +289,9 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     [btnRating addSubview:lblRatingSuffix];
     
     [mainMenuFBSwitch setOn:([GlobalData globalData].loggedInUser.fbProvider != nil) animated:YES];
+    [mainMenuFBSwitch setEnabled:([GlobalData globalData].loggedInUser.fbProvider == nil)];
     [mainMenuVKSwitch setOn:([GlobalData globalData].loggedInUser.vkProvider != nil) animated:YES];
+    [mainMenuVKSwitch setEnabled:([GlobalData globalData].loggedInUser.vkProvider == nil)];
 }
 
 -(void)showMenuAnimated:(BOOL)animated
@@ -626,6 +628,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     NSLog(@"handleVKSwitch");
     if (mainMenuVKSwitch.isOn)
     {
+        mainMenuVKSwitch.enabled = NO;
         [SocialNetworks loginVkontakteWithViewController:self andCallback:^{
             NSLog(@"vk authorization complete");
             [[GlobalData globalData] loadMe];
@@ -638,6 +641,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     NSLog(@"handleFBSwitch");
     if (mainMenuFBSwitch.isOn)
     {
+        mainMenuFBSwitch.enabled = NO;
         [SocialNetworks loginFacebookWithViewController:self andCallback:^{
             NSLog(@"fb authorization complete");
             [[GlobalData globalData] loadMe];
