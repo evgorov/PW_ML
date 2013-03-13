@@ -222,8 +222,6 @@ int HEADER_HEIGHT = 24;
     if ([user.user_id compare:[GlobalData globalData].loggedInUser.user_id] == NSOrderedSame)
     {
         cell.imgBackground.image = [UIImage imageNamed:@"rating_cell_me_bg.png"];
-        cell.lblSurname.text = @"Я";
-        cell.lblName.text = @"";
     }
     else
     {

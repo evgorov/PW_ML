@@ -6,7 +6,7 @@
 
 */
 
-"TITLE_PUZZLES" = "Мои сканворды";
+"TITLE_PUZZLES" = "Сканворды";
 "TITLE_REGISTRATION" = "Регистрация";
 "TITLE_ENTER" = "Вход";
 "TITLE_RECOVER" = "Забыли пароль";
@@ -15,6 +15,6 @@
 "TITLE_RULES" = "Правила";
 
 "TITLE_USE_HINT" = "Подсказка";
-"QUESTION_USE_HINT" = "Вы действительно хотети воспользоваться подсказкой?";
+"QUESTION_USE_HINT" = "Вы действительно хотите воспользоваться подсказкой?";
 "BUTTON_CANCEL" = "Нет";
 "BUTTON_USE_HINT" = "Да";

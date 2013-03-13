@@ -91,6 +91,9 @@
         self.userInteractionEnabled = YES;
         UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
         [self addGestureRecognizer:tapRecognizer];
+        
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     }
     return self;
 }
@@ -102,6 +105,9 @@
     questionLabel = nil;
     overlay = nil;
     arrow = nil;
+    
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
 }
 
 -(void)handleEvent:(Event *)event
@@ -128,6 +134,27 @@
             }
             break;
         }
+            
+        case EVENT_GAME_REQUEST_PAUSE:
+            if (!questionLabel.hidden)
+            {
+                [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+                    
+                    questionLabel.alpha = 0;
+                } completion:nil];
+            }
+            break;
+            
+        case EVENT_GAME_REQUEST_RESUME:
+            if (!questionLabel.hidden)
+            {
+                [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
+                    
+                    questionLabel.alpha = 1;
+                } completion:nil];
+            }
+            break;
+            
             
         default:
             break;

@@ -133,6 +133,8 @@
 		F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52D16E8E8A500F0FA0F /* type_2.caf */; };
 		F268D53C16E9014000F0FA0F /* type_3.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52E16E8E8A500F0FA0F /* type_3.caf */; };
 		F268D54716EDCA0800F0FA0F /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F268D54616EDCA0800F0FA0F /* NSData+Utils.m */; };
+		F268D55116F0903900F0FA0F /* login_register_ava_frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D54F16F0903900F0FA0F /* login_register_ava_frame@2x.png */; };
+		F268D55216F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D55016F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png */; };
 		F26B992716E7454C008E117B /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString+Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
@@ -866,6 +868,8 @@
 		F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrizeWordButton.m; path = Views/PrizeWordButton.m; sourceTree = "<group>"; };
 		F268D54516EDCA0800F0FA0F /* NSData+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Utils.h"; sourceTree = "<group>"; };
 		F268D54616EDCA0800F0FA0F /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
+		F268D54F16F0903900F0FA0F /* login_register_ava_frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_ava_frame@2x.png"; sourceTree = "<group>"; };
+		F268D55016F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_ava_frame@2x~ipad.png"; sourceTree = "<group>"; };
 		F26B992516E74513008E117B /* NSString+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
 		F26B992616E7454C008E117B /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
@@ -2355,6 +2359,8 @@
 				F2B83B3B1673945B007C4596 /* login_register_ava_btn_down@2x~ipad.png */,
 				F2B83B3C1673945B007C4596 /* login_register_ava_btn@2x.png */,
 				F2B83B3D1673945B007C4596 /* login_register_ava_btn@2x~ipad.png */,
+				F268D54F16F0903900F0FA0F /* login_register_ava_frame@2x.png */,
+				F268D55016F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png */,
 				F2B83B3E1673945B007C4596 /* login_register_bg@2x.jpg */,
 				F2B83B3F1673945B007C4596 /* login_register_bg@2x~ipad.jpg */,
 				F2B83B401673945B007C4596 /* login_register_btn_down@2x.png */,
@@ -3373,6 +3379,8 @@
 				F2FD005E16E1307B005144A3 /* lookup_miss_etikate.png in Resources */,
 				F2FD005F16E1307B005144A3 /* lookup_soft_elegance_1.png in Resources */,
 				F2FD006016E1307B005144A3 /* lookup_soft_elegance_2.png in Resources */,
+				F268D55116F0903900F0FA0F /* login_register_ava_frame@2x.png in Resources */,
+				F268D55216F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
