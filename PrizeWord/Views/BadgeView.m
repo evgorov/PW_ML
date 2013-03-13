@@ -26,7 +26,6 @@
     {
         badgeNumber = number;
         _puzzle = puzzle;
-        [puzzle synchronize];
         
         NSString * badgesImageName = puzzle.progress == 1 ? @"puzzles_badges_done_" : @"puzzles_badges_";
         UIImage * badgesUIImage;
@@ -110,6 +109,7 @@
             lblScore.frame = CGRectMake(start + space + imgStar.frame.size.width, lblScore.frame.origin.y, scoreSize.width, lblScore.frame.size.height);
             imgStar.frame = CGRectMake(start, imgStar.frame.origin.y, imgStar.frame.size.width, imgStar.frame.size.height);
         }
+        [puzzle synchronize];
     }
 }
 

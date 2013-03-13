@@ -179,7 +179,18 @@
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
 {
     [self hideActivityIndicator];
-    if (response.statusCode == 200)
+    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+    NSString * message = [data objectForKey:@"message"];
+    if (message == nil)
+    {
+        message = @"Неизвестная ошибка на сервере";
+    }
+    if (response.statusCode >= 400 && response.statusCode < 500)
+    {
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+    else if (response.statusCode == 200)
     {
         NSLog(@"signup complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
@@ -193,7 +204,7 @@
     else
     {
         NSLog(@"signup failed! %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Ошибка %d", response.statusCode] message:message delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
         alert.tag = 1;
         [alert show];
     }

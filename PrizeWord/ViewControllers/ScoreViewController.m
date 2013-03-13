@@ -76,6 +76,12 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     [[GlobalData globalData] loadMe];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    // TODO :: remove all friend views
+}
+
 - (IBAction)handleInviteClick:(id)sender
 {
     UINavigationController * navController = self.navigationController;
@@ -122,7 +128,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             lblInvitesFriendsCount.text = [NSString stringWithFormat:@"%d ", invitedFriends];
             lblInvitesFriendsCount.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x, lblInvitesFriendsCount.frame.origin.y, [lblInvitesFriendsCount.text sizeWithFont:lblInvitesFriendsCount.font].width, lblInvitesFriendsCount.frame.size.height);
             lblInvitesFriendsLabel.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x + lblInvitesFriendsCount.frame.size.width, lblInvitesFriendsLabel.frame.origin.y, lblInvitesFriendsLabel.frame.size.width, lblInvitesFriendsLabel.frame.size.height);
-            lblInvitesScore.text = [NSString stringWithFormat:@"%d", invitedFriends * 400];
+            lblInvitesScore.text = [NSString stringWithFormat:@"%d", invitedFriends * [GlobalData globalData].scoreForFriend];
         }
         else
         {
