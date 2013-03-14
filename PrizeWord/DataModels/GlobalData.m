@@ -156,7 +156,12 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         {
             [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id]];
         }
-        _monthSets = [NSArray arrayWithArray:sets];
+        _monthSets = [sets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            PuzzleSetData * set1 = obj1;
+            PuzzleSetData * set2 = obj2;
+            
+            return [set1.type compare:set2.type];
+        }];
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");

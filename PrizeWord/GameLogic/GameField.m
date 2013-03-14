@@ -81,9 +81,25 @@
 
 -(id)initWithData:(PuzzleData *)puzzleData
 {
-    int type = [puzzleData.puzzleSet.type intValue];
-    if (type == PUZZLESET_SILVER2) {
-        type = PUZZLESET_SILVER;
+    LetterType type = LETTER_FREE;
+    switch ([puzzleData.puzzleSet.type intValue])
+    {
+        case PUZZLESET_BRILLIANT:
+            type = LETTER_BRILLIANT;
+            break;
+            
+        case PUZZLESET_GOLD:
+            type = LETTER_GOLD;
+            break;
+            
+        case PUZZLESET_SILVER:
+        case PUZZLESET_SILVER2:
+            type = LETTER_SILVER;
+            break;
+            
+        default:
+            type = LETTER_FREE;
+            break;
     }
     self = [self initWithTilesPerRow:[puzzleData.width unsignedIntValue] tilesPerCol:[puzzleData.height unsignedIntValue] andType:type];
     
