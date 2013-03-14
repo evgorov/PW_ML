@@ -24,6 +24,7 @@
 #import "SocialNetworks.h"
 #import "PrizeWordButton.h"
 #import "FISoundEngine.h"
+#import "NSString+Utils.h"
 
 @interface GameViewController (private)
 
@@ -270,7 +271,7 @@
 - (IBAction)handleShareClick:(id)sender
 {
     UIButton * button = sender;
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ и получил %d очков за это!", gameField.puzzle.name, gameField.puzzle.score.intValue];
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ и получил %d %@ за это!", gameField.puzzle.name, gameField.puzzle.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     // facebook
     if (button.tag == 0)
     {

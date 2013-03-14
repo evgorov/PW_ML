@@ -44,7 +44,7 @@ int HEADER_HEIGHT = 24;
     
     users = [NSMutableArray new];
 
-    self.title = [NSString stringWithFormat:@"%d-ой в рейтинге", [GlobalData globalData].loggedInUser.position];
+    self.title = [NSString stringWithFormat:@"%d-й в рейтинге", [GlobalData globalData].loggedInUser.position];
 }
 
 - (void)viewDidUnload {

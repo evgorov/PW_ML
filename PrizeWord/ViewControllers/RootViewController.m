@@ -23,6 +23,7 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "SBJsonParser.h"
 #import "FISoundEngine.h"
+#import "NSString+Utils.h"
 /*
 #import "GPUImageView.h"
 #import "GPUImageFastBlurFilter.h"
@@ -219,7 +220,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 -(void)updateUserInfo
 {
     NSLog(@"update user info");
-    mainMenuMaxScore.text = [NSString stringWithFormat:@"%d очков", [GlobalData globalData].loggedInUser.high_score];
+    mainMenuMaxScore.text = [NSString stringWithFormat:@"%d %@", [GlobalData globalData].loggedInUser.high_score, [NSString declesion:[GlobalData globalData].loggedInUser.high_score oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     mainMenuUserName.text = [NSString stringWithFormat:@"%@ %@", [GlobalData globalData].loggedInUser.first_name, [GlobalData globalData].loggedInUser.last_name];
     [mainMenuAvatar clear];
     if ([GlobalData globalData].loggedInUser.userpic != nil) {
@@ -261,7 +262,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     lblScoreSuffix.shadowColor = [UIColor colorWithRed:36/255.f green:31/255.f blue:26/255.f alpha:1];
     lblScoreSuffix.backgroundColor = [UIColor clearColor];
     lblScoreSuffix.shadowOffset = CGSizeMake(0, -1);
-    lblScoreSuffix.text = @"очков";
+    lblScoreSuffix.text = [NSString declesion:[GlobalData globalData].loggedInUser.month_score oneString:@"очко" twoString:@"очка" fiveString:@"очков"];
     [btnScore addSubview:lblScoreSuffix];
     
     NSString * rating = [NSString stringWithFormat:@"%d-й ", [GlobalData globalData].loggedInUser.position];
