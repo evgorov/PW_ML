@@ -43,10 +43,28 @@
     NSError *error = nil;
     NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
     
+    NSNumber * time_given = nil;
+    id time_givenData = [dict objectForKey:@"time_given"];
+    if ([time_givenData isKindOfClass:[NSString class]])
+    {
+        NSString * time_givenString = time_givenData;
+        time_given = [NSNumber numberWithInt:[time_givenString intValue]];
+    }
+    else
+    {
+        time_given = [dict objectForKey:@"time_given"];
+    }
+    if (time_given == nil)
+    {
+        // 15 minutes
+        time_given = [NSNumber numberWithInt:900];
+    }
+
     PuzzleData * puzzle;
     if (puzzles == nil || puzzles.count == 0)
     {
         puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+        [puzzle setTime_left:time_given];
     }
     else
     {
@@ -56,6 +74,7 @@
     [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
     [puzzle setName:[dict objectForKey:@"name"]];
     [puzzle setUser_id:userId];
+    [puzzle setTime_given:time_given];
     NSString * dateString = [dict objectForKey:@"issuedAt"];
     if (dateString != nil)
     {
@@ -63,21 +82,6 @@
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
     }
-    id time_givenData = [dict objectForKey:@"time_given"];
-    if ([time_givenData isKindOfClass:[NSString class]])
-    {
-        NSString * time_givenString = time_givenData;
-        [puzzle setTime_given:[NSNumber numberWithInt:[time_givenString intValue]]];
-    }
-    else
-    {
-        [puzzle setTime_given:[dict objectForKey:@"time_given"]];
-    }
-    if (puzzle.time_given == nil)
-    {
-        [puzzle setTime_given:[NSNumber numberWithInt:60000]];
-    }
-//    [puzzle setTime_left:[dict objectForKey:@"time_left"]];
 //    [puzzle setSolved:[dict objectForKey:@"solved"]];
 //    [puzzle setScore:[dict objectForKey:@"score"]];
     [puzzle setHeight:[dict objectForKey:@"height"]];
@@ -145,17 +149,17 @@
             BOOL needUpdateServer = NO;
             BOOL wasUpdatedLocal = NO;
             
-            if (solvedScore.intValue > self.score.intValue)
+            if (solvedScore != nil && solvedScore.intValue > self.score.intValue)
             {
                 self.score = solvedScore;
                 wasUpdatedLocal = YES;
             }
             
-            if (solvedTimeLeft.intValue > self.time_left.intValue)
+            if (solvedTimeLeft == nil || solvedTimeLeft.intValue > self.time_left.intValue)
             {
                 needUpdateServer = YES;
             }
-            else if (solvedTimeLeft.intValue < self.time_left.intValue)
+            else if (solvedTimeLeft != nil && solvedTimeLeft.intValue < self.time_left.intValue)
             {
                 self.time_left = solvedTimeLeft;
                 wasUpdatedLocal = YES;

@@ -7,7 +7,7 @@
         <attribute name="puzzle_id" attributeType="String" syncable="YES"/>
         <attribute name="score" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="time_given" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="time_left" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="time_left" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <relationship name="puzzleSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PuzzleSet" inverseName="puzzles" inverseEntity="PuzzleSet" syncable="YES"/>

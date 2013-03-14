@@ -45,7 +45,6 @@
     IBOutlet FlipNumberView *finalFlipNumber1;
     IBOutlet FlipNumberView *finalFlipNumber0;
     NSArray * finalFlipNumbers;
-    PuzzleData * puzzleData;
 
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;

@@ -221,6 +221,7 @@
 - (IBAction)handlePauseNext:(id)sender
 {
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
+    [gameField.puzzle synchronize];
     PuzzleData * puzzle = gameField.puzzle;
     PuzzleSetData * puzzleSet = puzzle.puzzleSet;
     BOOL selectNext = NO;
@@ -261,6 +262,7 @@
 
 - (IBAction)handlePauseMenu:(id)sender
 {
+    [gameField.puzzle synchronize];
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -268,7 +270,7 @@
 - (IBAction)handleShareClick:(id)sender
 {
     UIButton * button = sender;
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ и получил %d очков за это!", puzzleData.name, puzzleData.score.intValue];
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ и получил %d очков за это!", gameField.puzzle.name, gameField.puzzle.score.intValue];
     // facebook
     if (button.tag == 0)
     {
@@ -407,6 +409,7 @@
     {
         int gameTime = [GameLogic sharedLogic].gameTime;
         lblTime.text = [NSString stringWithFormat:@"%02d:%02d", gameTime / 60, gameTime % 60];
+        gameField.puzzle.time_left = [NSNumber numberWithInt:gameField.puzzle.time_given.intValue - gameTime];
     }
     else if (event.type == EVENT_GAME_REQUEST_PAUSE)
     {
@@ -419,6 +422,7 @@
         [self.navigationItem setLeftBarButtonItem:playPauseItem];
         [self.navigationItem setRightBarButtonItem:hintButtonItem];
         [self.navigationItem setTitleView:[PrizeWordNavigationBar containerWithView:viewTime]];
+        [gameField.puzzle synchronize];
     }
     else if (event.type == EVENT_GAME_REQUEST_RESUME)
     {
@@ -434,7 +438,6 @@
         [puzzleSolvedSound play];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-            puzzleData = event.data;
             for (int i = 0; i < 5; ++i)
             {
                 [[finalFlipNumbers objectAtIndex:i] reset];
@@ -442,7 +445,7 @@
             finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 242 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
             lblFinalBaseScore.text = @"0";
             lblFinalTimeBonus.text = @"0";
-            [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:event.data repeats:NO];
             
             [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
         });
@@ -498,6 +501,9 @@
 
 -(void)animateFinalScreenAppears:(id)sender
 {
+    NSTimer * timer = sender;
+    PuzzleData * puzzleData = timer.userInfo;
+    
     CGRect shareFrame = finalShareView.frame;
     shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{

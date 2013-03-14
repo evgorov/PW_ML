@@ -85,7 +85,8 @@
                 [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
             }
             gameState = GAMESTATE_PLAYING;
-            _gameTime = 0;
+            NSLog(@"start game. time given: %d, time left: %d", puzzle.time_given.intValue, puzzle.time_left.intValue);
+            _gameTime = puzzle.time_given.intValue - puzzle.time_left.intValue;
         }
             break;
 
