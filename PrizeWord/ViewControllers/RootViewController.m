@@ -24,6 +24,8 @@
 #import "SBJsonParser.h"
 #import "FISoundEngine.h"
 #import "NSString+Utils.h"
+#import <QuartzCore/CALayer.h>
+
 /*
 #import "GPUImageView.h"
 #import "GPUImageFastBlurFilter.h"
@@ -51,6 +53,10 @@
 @end
 
 NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"апреле", @"мае", @"июне", @"июле", @"августе", @"сентябре", @"октябре", @"ноябре", @"декабре"};
+
+const int RULES_PAGES = 9;
+NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересные сканворды и призовые баллы! Разгадывайте каждый месяц и участвуйте в рейтинге! Каждый месяц лидеры рейтинга получают денежный приз! Подробности на www.prize-word.com", @"Чтобы разгадать сканворд, нажмите на иконку в меню «Мои сканворды». Нажатие на клетку с вопросом выделит слово. Вписывайте буквы с помощью клавиатуры. Регулируйте размер поля.", @"Правильное слово будет выделено фоном и звуковым сигналом. Если слово набрано неверно, клетка с вопросом будет выделена красным цветом. Буквы в пересечениях набирать не нужно!", @"В главном меню вы видите все сканворды месяца. Самые дорогие – Бриллиантовые  на самом верху. Это самые сложные сканворды, но они приносят больше всего баллов – минимум 8 999 за каждый!", @"Следующие – Золотые сканворды – принесут не меньше 5 999 за каждый, а Серебряные – не меньше 3 999 за один разгаданный сканворд. Внизу – Бесплатные сканворды, баллов не дают!", @"Еще ниже расположены Подсказки. Одна подсказка – одно слово, которое будет вписано автоматически. Разгадайте сканворд быстрее, чем за 15 минут, и получите дополнительные баллы!", @"Нажатие на кнопку «Меню» покажет ваш текущий рейтинг, лучший результат месяца и позволит пригласить в игру друзей. Каждый скачавший игру друг принесет вам дополнительные баллы!", @"Рейтинг, это сумма баллов, набранных за месяц. Он фиксируется первого числа каждого месяца, в момент появления новых сканвордов.  Лидеры рейтинга каждый месяц получают денежный приз!", @"В новом месяце – новый рейтинг!\nОбщайтесь с игроками и узнавайте все о призах на нашем сайте www.prize-word.com\nPrizeWord – увлекательно, азартно, полезно!"};
+
 
 @implementation RootViewController
 
@@ -453,17 +459,16 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
 
 -(void)showRules
 {
-    int pages = 5;
-    if (rulesScrollView.subviews.count < pages)
+    if (rulesScrollView.subviews.count < RULES_PAGES)
     {
         //        rulesScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, rulesView.frame.size.width, rulesView.frame.size.height - pagecontrolBgImage.size.height)];
         rulesScrollView.backgroundColor = [UIColor clearColor];
         rulesScrollView.scrollEnabled = NO;
         rulesScrollView.showsHorizontalScrollIndicator = YES;
         rulesScrollView.showsVerticalScrollIndicator = NO;
-        rulesScrollView.contentSize = CGSizeMake(pages * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
+        rulesScrollView.contentSize = CGSizeMake(RULES_PAGES * rulesScrollView.frame.size.width, rulesScrollView.frame.size.height);
         
-        for (int i = 0; i != pages; ++i)
+        for (int i = 0; i != RULES_PAGES; ++i)
         {
             UIImageView * pageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rules_page_1"]];
             pageView.frame = CGRectMake(i * pageView.frame.size.width, 0, pageView.frame.size.width, pageView.frame.size.height);
@@ -496,12 +501,12 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         }
         rulesPageControl = [[UIImageView alloc] initWithImage:pagecontrolBgImage];
         float pageControlDefaultWidth = rulesPageControl.frame.size.width;
-        float pagecontrolWidth = 1.5f * pages * paginatorEmptyImage.size.width + pageControlDefaultWidth;
+        float pagecontrolWidth = 1.5f * RULES_PAGES * paginatorEmptyImage.size.width + pageControlDefaultWidth;
         rulesPageControl.frame = CGRectMake((rulesView.frame.size.width - pagecontrolWidth) / 2, rulesView.frame.size.height - rulesPageControl.frame.size.height, pagecontrolWidth, rulesPageControl.frame.size.height);
         rulesPageControl.userInteractionEnabled = YES;
         [rulesPageControl addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRulesTap:)]];
         [rulesView addSubview:rulesPageControl];
-        for (int i = 0; i != pages; ++i)
+        for (int i = 0; i != RULES_PAGES; ++i)
         {
             PrizeWordButton * pageButton = [PrizeWordButton buttonWithType:UIButtonTypeCustom];
             pageButton.selected = (i == 0);
@@ -515,6 +520,7 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
             pageButton.tag = i;
             [rulesPageControl addSubview:pageButton];
         }
+        [rulesCaption setText:RULES_TEXTS[0]];
     }
     [self showFullscreenOverlay:rulesView];
 }
@@ -757,8 +763,26 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
     
     for (UIButton * pageButton in pageButtons)
     {
+        if (pageButton.tag == currentPage && pageButton.selected)
+        {
+            return;
+        }
         pageButton.selected = (pageButton.tag == currentPage);
     }
+    
+    [rulesCaption.layer removeAllAnimations];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:^{
+        rulesCaption.alpha = 0;
+    } completion:^(BOOL finished) {
+        if (finished)
+        {
+            rulesCaption.text = RULES_TEXTS[currentPage];
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:^{
+                rulesCaption.alpha = 1;
+            } completion:nil];
+        }
+        
+    }];
 }
 
 -(void)handleSwipeLeft:(id)sender

@@ -251,6 +251,7 @@
 								<string key="NSFrame">{{14, 674}, {221, 46}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -475,20 +476,21 @@
 					<object class="IBUILabel" id="831791884">
 						<reference key="NSNextResponder" ref="442234148"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{50, 327}, {220, 63}}</string>
+						<string key="NSFrame">{{33, 319}, {254, 71}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">При покупке нового пакета вы можете увидеть количество сканвордов в нём и минимальное число очков, которое он потенциально принесёт</string>
+						<string key="IBUIText">При покупке нового пакета вы можете увидеть количество сканвордов в нём и минимальное число очков, которое он потенциально принесёт ещё больше текста</string>
 						<reference key="IBUITextColor" ref="1041894391"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<int key="IBUINumberOfLines">4</int>
+						<int key="IBUINumberOfLines">5</int>
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<string key="name">Helvetica</string>
@@ -502,12 +504,12 @@
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-						<double key="preferredMaxLayoutWidth">220</double>
+						<double key="preferredMaxLayoutWidth">254</double>
 					</object>
 					<object class="IBUIScrollView" id="520376216">
 						<reference key="NSNextResponder" ref="442234148"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{60, 20}, {203, 299}}</string>
+						<string key="NSFrame">{{59, 20}, {203, 299}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="831791884"/>
@@ -536,6 +538,7 @@
 				<string key="NSFrameSize">{320, 422}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -553,6 +556,7 @@
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -1116,70 +1120,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">RootViewController</string>
 					<string key="superclassName">PrizeWordViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="handleAvatarClick:">id</string>
-						<string key="handleFBSwitchChange:">id</string>
-						<string key="handleInviteClick:">id</string>
-						<string key="handleMyPuzzlesClick:">id</string>
-						<string key="handleNotificationSwitchChange:">id</string>
-						<string key="handleRatingClick:">id</string>
-						<string key="handleRestoreClick:">id</string>
-						<string key="handleRulesBgClick:">id</string>
-						<string key="handleRulesClick:">id</string>
-						<string key="handleScoreClick:">id</string>
-						<string key="handleSwitchUserClick:">id</string>
-						<string key="handleVKSwitchChange:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="handleAvatarClick:">
-							<string key="name">handleAvatarClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleFBSwitchChange:">
-							<string key="name">handleFBSwitchChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleInviteClick:">
-							<string key="name">handleInviteClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleMyPuzzlesClick:">
-							<string key="name">handleMyPuzzlesClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleNotificationSwitchChange:">
-							<string key="name">handleNotificationSwitchChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleRatingClick:">
-							<string key="name">handleRatingClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleRestoreClick:">
-							<string key="name">handleRestoreClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleRulesBgClick:">
-							<string key="name">handleRulesBgClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleRulesClick:">
-							<string key="name">handleRulesClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleScoreClick:">
-							<string key="name">handleScoreClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleSwitchUserClick:">
-							<string key="name">handleSwitchUserClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleVKSwitchChange:">
-							<string key="name">handleVKSwitchChange:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="btnRating">PrizeWordButton</string>
 						<string key="btnScore">PrizeWordButton</string>
