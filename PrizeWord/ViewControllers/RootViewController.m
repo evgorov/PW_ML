@@ -337,14 +337,14 @@ NSString * MONTHS3[] = {@"январе", @"феврале", @"марте", @"а�
         [sidebarSound play];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView animateWithDuration:0.3 animations:^{
-            mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
+//            mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
             navController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
             navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width, navController.navigationBar.frame.size.height);
         }];
     }
     else
     {
-        mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
+//        mainMenuView.frame = CGRectMake(-mainMenuView.frame.size.width, 0, mainMenuView.frame.size.width, mainMenuView.frame.size.height);
         navController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         navController.navigationBar.frame = CGRectMake(0, 0, self.view.frame.size.width, navController.navigationBar.frame.size.height);
     }
