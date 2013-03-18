@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
@@ -22,7 +23,9 @@ module Middleware
       content_type 'application/json'
     end
 
-    error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
+    error(BasicModel::NotFound) { halt(403, { message: 'Неправильное имя пользователя или пароль' }.to_json) }
+    error(ItunesReceiptVerifier::ItunesInvalidUserError) { halt(403, { message: 'Этот товар куплен для другого пользователя' }.to_json) }
+    error(ItunesReceiptVerifier::ItunesReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
 
     get '/me' do
       env['token_auth'].authorize!
@@ -117,7 +120,8 @@ module Middleware
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
 
       if puzzle_set['type'] != 'free' && self.class.settings.environment != :test
-        ItunesReceiptVerifier.verify!(params['receipt_data'] || params['receipt-data'],
+        receipt_data = params['receipt_data'] || params['receipt-data']
+        ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id,
                                       "ru.aipmedia.ios.prizeword.#{params['id']}")
       end
 
