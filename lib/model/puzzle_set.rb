@@ -1,6 +1,7 @@
 require 'json'
 require 'ext/hash'
 require 'model/basic_model'
+require 'securerandom'
 
 class PuzzleSet < BasicModel
 
@@ -21,6 +22,12 @@ class PuzzleSet < BasicModel
 
   def delete(*)
     super.tap { @storage.srem("PuzzleSets:#{self['year']}##{self['month']}", self['id']) }
+  end
+
+  def before_save
+    super
+    return unless self.to_hash.has_key?('puzzles')
+    self['puzzles'].each { |o| o['id'] = SecureRandom.uuid unless o.has_key?('id') }
   end
 
   def set_defaults!

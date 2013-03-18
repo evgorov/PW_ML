@@ -82,8 +82,19 @@ module Middleware
       { me: user }.to_json
     end
 
-    get '/sets_available' do
+    get '/user_puzzles' do
       env['token_auth'].authorize!
+      ids = params['ids'].split(',')
+      current_user['sets']
+        .map { |o| o['puzzles'] }
+        .flatten
+        .select { |o| ids.include?(o['id']) }
+        .to_json
+    end
+
+    get '/published_sets' do
+      env['token_auth'].authorize!
+      mode = (['short', 'full'] & [params['mode'], 'full']).first
       user_sets = if current_user['sets']
                     Hash[current_user['sets'].map{ |o| [o['id'], o]}]
                   else
@@ -96,10 +107,17 @@ module Middleware
         args << params['month'].to_i
       end
 
-      sets_available = PuzzleSet.storage(env['redis']).published_for(*args)
-      sets_available.each { |h| h['bought'] = !!user_sets[h['id']] }
+      puzzles = PuzzleSet.storage(env['redis']).published_for(*args)
+      puzzles = puzzles
+        .map(&:to_hash)
+        .map{ |o| user_sets[o['id']] || o}
+        .map{ |o| o['bought'] = !!user_sets[o['id']]; o }
 
-      sets_available.to_json
+      puzzles.each do |puzzle|
+       puzzle['puzzles'] = puzzle['puzzles'].map{ |o| o['id'] }
+      end if mode == 'short'
+
+      puzzles.to_json
     end
 
     get '/users' do
@@ -137,13 +155,6 @@ module Middleware
       env['token_auth'].authorize!
       Device.new.storage(env['redis']).tap{ |o| o['id'] = params['id'] }.save
       { 'message' => 'ok' }.to_json
-    end
-
-    get '/puzzles' do
-      env['token_auth'].authorize!
-      {
-        sets: current_user['sets'] || []
-      }.to_json
     end
 
     get '/puzzles/:id' do

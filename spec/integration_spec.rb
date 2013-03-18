@@ -268,7 +268,7 @@ describe 'Integration spec' do
     last_response.status.should == 401
   end
 
-  it 'lists puzzles for user' do
+  it 'lists sets for user' do
     admin_user
     post '/login', email: user_in_storage['email'], password: user_in_storage_password
     last_response.status.should == 200
@@ -292,10 +292,11 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     admin_set_id = response_data['id']
 
-    get('/sets_available', session_key: session_key)
+    get('/published_sets', mode: 'short', session_key: session_key)
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
+    response_data[0]['puzzles'][0]['name'].should == nil
     set_id = response_data[0]['id']
 
     post '/signup', valid_user_data
@@ -310,17 +311,20 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
 
-    get("/puzzles", { session_key: session_key })
+    get("/published_sets", { session_key: session_key })
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['sets'][0]['id'].should == set_id
-
-    get('/sets_available', session_key: session_key)
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
+    response_data[0]['puzzles'][0]['name'].should_not == nil
+    response_data[0]['id'].should == set_id
     response_data[0]['bought'].should == true
+    puzzle_id = response_data[0]['puzzles'][0]['id']
+
+    get("/user_puzzles", { session_key: session_key, ids: puzzle_id })
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    response_data[0]['name'].should == 'puzzle1'
   end
 
   it 'reset password cannot use same token twice' do
@@ -490,67 +494,6 @@ describe 'Integration spec' do
     response_data['score'].should == 10
     response_data['another_score'].should == 20
     response_data['session_key'].should == nil
-  end
-
-  it '/puzzles can list all puzzles' do
-    admin_user
-    post '/login', email: user_in_storage['email'], password: user_in_storage_password
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    session_key = response_data['session_key']
-
-    post('/sets',
-         {
-           year: Time.now.year,
-           month: Time.now.month,
-           name: 'Cool set',
-           published: 'true',
-           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
-           type: 'golden',
-           session_key: session_key
-         })
-
-
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    admin_set1_id = response_data['id']
-
-    post('/sets',
-         {
-           year: Time.now.year,
-           month: (Time.now - 60 * 60 * 24 * 31).month,
-           name: 'another Cool set',
-           published: 'true',
-           puzzles: [{ name: 'puzzle3' }, { name: 'puzzle4' }].to_json,
-           type: 'golden',
-           session_key: session_key
-         })
-
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    admin_set2_id = response_data['id']
-
-    post '/signup', valid_user_data
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    session_key = response_data['session_key']
-    user_id = response_data['me']['id']
-
-    post("/sets/#{admin_set1_id}/buy", { session_key: session_key })
-    last_response.status.should == 200
-    post("/sets/#{admin_set2_id}/buy", { session_key: session_key })
-    last_response.status.should == 200
-
-    get("/puzzles", { session_key: session_key })
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    response_data['sets'][0]['id'].should == admin_set2_id
-    response_data['sets'][1]['id'].should == admin_set1_id
   end
 
   it 'doesn\'t set invite_used when user is already registered' do
