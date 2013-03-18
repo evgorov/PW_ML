@@ -171,7 +171,6 @@ var Puzzle = Backbone.Model.extend({
   defaults: function(){
     return {
       questions: [],
-      "id": _.uniqueId('puzzle'),
       "name": _.uniqueId('Сканворд'),
       "issuedAt": (new Date).toISOString().split('T')[0],
       "base_score": 0,
