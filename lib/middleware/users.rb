@@ -67,7 +67,7 @@ module Middleware
       user['month_score'] += score
       user['solved'] += solved
       user.save
-      UserScore.storage(env['redis']).create(user, score, solved, source)
+      UserScore.storage(env['redis']).create(user.id, score, solved, source)
       { me: user }.to_json
     end
 

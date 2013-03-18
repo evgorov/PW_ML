@@ -134,6 +134,7 @@ class UserData < BasicModel
     score = Coefficients.storage(@storage).coefficients['friend-bonus']
     InvitedUser.storage(@storage).load(invited_user_id)['invited_by'].each do |id|
       self.class.storage(@storage).load(id).tap{ |o| o['month_score'] += score }.save
+      UserScore.storage(@storage).create(id, score, 0, "invite##{provider}##{friend_id}")
     end
     true
   rescue BasicModel::NotFound

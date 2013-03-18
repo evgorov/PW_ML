@@ -1,9 +1,9 @@
 require 'model/basic_model'
 
 class UserScore < BasicModel
-  def create(user, score, solved, source)
+  def create(user_id, score, solved, source)
     model = self.class.new.storage(@storage)
-    model['user_id'] = user.id
+    model['user_id'] = user_id
     model['score'] = score
     model['solved'] = solved
     model['source'] = source
