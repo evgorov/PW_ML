@@ -24,6 +24,7 @@
 @property (nonatomic) NSArray * monthSets;
 @property (nonatomic) FBSession * fbSession;
 @property (nonatomic) NSString * deviceToken;
+// in range [0, 11]
 @property () int currentMonth;
 @property () int currentYear;
 

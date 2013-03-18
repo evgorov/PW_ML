@@ -111,6 +111,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     newsLbl1 = nil;
     newsLbl2 = nil;
     newsLbl3 = nil;
+    puzzlesTimeLeftBg = nil;
+    puzzlesTimeLeftCaption = nil;
     [super viewDidUnload];
 }
 
@@ -386,6 +388,16 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
     }];
     [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
+    
+    // days left set-up
+    NSCalendar * calendar = [NSCalendar currentCalendar];
+    NSDate * currentDate = [NSDate new];
+    NSDateComponents * currentComponents = [calendar components:NSDayCalendarUnit fromDate:currentDate];
+    NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
+    int daysLeft = daysRange.location + daysRange.length - currentComponents.day;
+    puzzlesTimeLeftCaption.text = [NSString stringWithFormat:@"Ост. %d %@", daysLeft, [NSString declesion:daysLeft oneString:@"день" twoString:@"дня" fiveString:@"дней"]];
+    puzzlesTimeLeftCaption.hidden = NO;
+    puzzlesTimeLeftBg.hidden = NO;
     
     // request information about products
     [self showActivityIndicator];

@@ -28,6 +28,8 @@
     IBOutlet UIScrollView *newsScrollView;
 
     IBOutlet UILabel *puzzlesViewCaption;
+    IBOutlet UIImageView *puzzlesTimeLeftBg;
+    IBOutlet UILabel *puzzlesTimeLeftCaption;
 
     IBOutlet PrizeWordButton *btnBuyHint1;
     IBOutlet PrizeWordButton *btnBuyHint2;
