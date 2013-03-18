@@ -13,6 +13,7 @@
     IBOutlet UIView *offView;
     IBOutlet UIView *onView;
     IBOutlet UIImageView *imgSlider;
+    IBOutlet UIImageView *imgDisabled;
 }
 
 @property (readonly) BOOL isOn;

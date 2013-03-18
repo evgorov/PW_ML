@@ -7,6 +7,7 @@
 //
 
 #import "PrizeWordSwitchView.h"
+#import "AppDelegate.h"
 
 @implementation PrizeWordSwitchView
 
@@ -78,11 +79,12 @@
 -(void)setEnabled:(BOOL)enabled
 {
     [super setEnabled:enabled];
-    float targetAlpha = enabled ? 1 : 0.3f;
+    float targetAlpha = enabled ? 1 : 0;
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
         imgSlider.alpha = targetAlpha;
         offView.alpha = targetAlpha;
         onView.alpha = targetAlpha;
+        imgDisabled.alpha = 1 - targetAlpha;
     } completion:nil];
 }
 
@@ -93,19 +95,20 @@
         return;
     }
     isOn = YES;
+    float sliderX = [AppDelegate currentDelegate].isIPad ? 56 : 47;
     if (animated)
     {
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
             onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
             offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
-            imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+            imgSlider.frame = CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
         } completion:nil];
     }
     else
     {
         onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
         offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
-        imgSlider.frame = CGRectMake(self.frame.size.width - imgSlider.frame.size.width * 3 / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+        imgSlider.frame = CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
     }
 }
 
