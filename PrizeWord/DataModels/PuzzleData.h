@@ -27,6 +27,7 @@
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
++(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId;
 
 -(int)solved;
 -(float)progress;

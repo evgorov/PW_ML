@@ -553,15 +553,37 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [self showActivityIndicator];
     NSLog(@"buy set: %@ %@", puzzleSetView.puzzleSetData.set_id, transaction.payment.productIdentifier);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        [self hideActivityIndicator];
+        
         NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        [self switchSetViewToBought:puzzleSetView];
-        [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
-        NSError * error;
-        [[AppDelegate currentDelegate].managedObjectContext save:&error];
-        if (error != nil) {
-            NSLog(@"error: %@", error.description);
-        }
+        APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            [self hideActivityIndicator];
+
+            NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
+            for (NSDictionary * puzzleData in puzzlesData)
+            {
+                PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                if (puzzle != nil)
+                {
+                    [puzzleSetView.puzzleSetData addPuzzlesObject:puzzle];
+                }
+            }
+
+            [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
+            NSError * error;
+            [[AppDelegate currentDelegate].managedObjectContext save:&error];
+            if (error != nil) {
+                NSLog(@"error: %@", error.description);
+            }
+            [self switchSetViewToBought:puzzleSetView];
+        } failCallback:^(NSError *error) {
+            NSLog(@"puzzles error: %@", error.description);
+            [self hideActivityIndicator];
+        }];
+        
+        [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [puzzlesRequest.params setObject:puzzleSetView.puzzleSetData.puzzle_ids forKey:@"ids"];
+        [puzzlesRequest runUsingCache:NO silentMode:NO];
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
         [self hideActivityIndicator];

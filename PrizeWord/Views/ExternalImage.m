@@ -49,7 +49,7 @@ static NSMutableDictionary * cache = nil;
     else
     {
         receivedData = [NSMutableData new];
-        connection = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageAllowed timeoutInterval:10] delegate:self];
+        connection = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:10] delegate:self];
         [connection start];
     }
 }

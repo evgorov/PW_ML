@@ -37,7 +37,7 @@ static NSMutableDictionary * apiCache = nil;
         successCallback = success;
         failCallback = fail;
         _params = [NSMutableDictionary new];
-        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:20];
+        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
         request.HTTPMethod = httpMethod;
         receivedData = [NSMutableData new];
         useCache = NO;
@@ -97,14 +97,6 @@ static NSMutableDictionary * apiCache = nil;
                 [paramsString appendFormat:@"&%@=%@", key, obj];
             }
         }];
-        if (paramsString.length == 0)
-        {
-            [paramsString appendFormat:@"random=%d", rand()];
-        }
-        else
-        {
-            [paramsString appendFormat:@"&random=%d", rand()];
-        }
         request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
     else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
@@ -152,30 +144,19 @@ static NSMutableDictionary * apiCache = nil;
     }
 }
 
-/*
--(void)run
-{
-    useCache = NO;
-    silentMode = NO;
-    [self prepareRequest];
-    NSLog(@"request: %@", request.URL.description);
-    connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    [apiRequests addObject:self];
-}
-*/
-
 -(void)runUsingCache:(BOOL)_useCache silentMode:(BOOL)_silentMode
 {
     useCache = _useCache;
     silentMode = _silentMode;
     [self prepareRequest];
     NSLog(@"request: %@", request.URL.description);
-    NSDictionary * cachedData = [apiCache objectForKey:request.URL.path];
+    NSDictionary * cachedData = [apiCache objectForKey:request.URL.relativeString];
     if (cachedData != nil)
     {
         NSLog(@"load from cache");
         successCallback([cachedData objectForKey:@"response"], [cachedData objectForKey:@"data"]);
     }
+
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
     [apiRequests addObject:self];
 }
@@ -187,6 +168,11 @@ static NSMutableDictionary * apiCache = nil;
 }
 
 #pragma mark NSURLConnectionDelegate
+-(NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
+{
+    return nil;
+}
+
 -(BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
     NSLog(@"canAuthenticateAgainstProtectionSpace: %@", protectionSpace.description);
@@ -254,7 +240,7 @@ static NSMutableDictionary * apiCache = nil;
             }
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
-            NSLog(@"request %@ result: %d %@", request.URL.path, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"request %@ result: %d %@", request.URL.relativeString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             if (failCallback != nil)
             {
                 failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
@@ -263,7 +249,7 @@ static NSMutableDictionary * apiCache = nil;
         }
         if (httpResponse.statusCode >= 500 && httpResponse.statusCode < 600)
         {
-            NSLog(@"request %@ result: %d %@", request.URL.path, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"request %@ result: %d %@", request.URL.relativeString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             if (failCallback != nil)
             {
                 failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
@@ -274,14 +260,14 @@ static NSMutableDictionary * apiCache = nil;
     
     if (useCache)
     {
-        NSDictionary * cachedValue = [apiCache objectForKey:request.URL.path];
+        NSDictionary * cachedValue = [apiCache objectForKey:request.URL.relativeString];
         if (cachedValue != nil && [(NSHTTPURLResponse *)[cachedValue objectForKey:@"response"] statusCode] == httpResponse.statusCode && [(NSMutableData *)[cachedValue objectForKey:@"data"] isEqualToData:receivedData])
         {
             NSLog(@"cached response is actual");
             // already know actual data
             return;
         }
-        [apiCache setObject:[NSDictionary dictionaryWithObjectsAndKeys:httpResponse, @"response", receivedData, @"data", nil] forKey:request.URL.path];
+        [apiCache setObject:[NSDictionary dictionaryWithObjectsAndKeys:httpResponse, @"response", receivedData, @"data", nil] forKey:request.URL.relativeString];
     }
     if (successCallback != nil)
     {

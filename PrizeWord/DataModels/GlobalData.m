@@ -9,9 +9,11 @@
 #import "GlobalData.h"
 #import "APIRequest.h"
 #import "PuzzleSetData.h"
+#import "PuzzleData.h"
 #import "SBJson.h"
 #import "UserData.h"
 #import "EventManager.h"
+#import "AppDelegate.h"
 
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
 NSString * COEFFICIENTS_KEY = @"coefficients";
@@ -61,6 +63,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         _currentMonth = [components month] - 1;
         _currentYear = [components year];
         coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
+        puzzleIdToSet = [NSMutableDictionary new];
     }
     return self;
 }
@@ -81,6 +84,11 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     if (_deviceToken != nil && _sessionKey != nil)
     {
         [self registerDeviceToken];
+    }
+    // logout
+    if (sessionKey == nil)
+    {
+        [puzzleIdToSet removeAllObjects];
     }
 }
 
@@ -144,17 +152,37 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)loadMonthSets
 {
-    APIRequest * request = [APIRequest getRequest:@"sets_available" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         [self parseDateFromResponse:response];
         
-        NSLog(@"available sets: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"published_sets: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         NSMutableArray * sets = [NSMutableArray new];
         SBJsonParser * parser = [SBJsonParser new];
         NSArray * data = [parser objectWithData:receivedData];
+        NSMutableString * puzzleIdsString = [[NSMutableString alloc] initWithCapacity:1024];
         for (NSDictionary * setData in data)
         {
-            [sets addObject:[PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id]];
+            PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
+            [sets addObject:puzzleSet];
+            NSArray * puzzleIds = [setData objectForKey:@"puzzles"];
+            for (NSString * puzzleId in puzzleIds)
+            {
+                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:_loggedInUser.user_id];
+                if (puzzle == nil && puzzleSet.bought.boolValue)
+                {
+                    if (puzzleIdsString.length != 0)
+                    {
+                        [puzzleIdsString appendString:@","];
+                    }
+                    [puzzleIdsString appendString:puzzleId];
+                    [puzzleIdToSet setObject:puzzleSet forKey:puzzleId];
+                }
+                else
+                {
+                    [puzzle synchronize];
+                }
+            }
         }
         _monthSets = [sets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             PuzzleSetData * set1 = obj1;
@@ -162,12 +190,50 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
             
             return [set1.type compare:set2.type];
         }];
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
+        if (puzzleIdsString.length == 0)
+        {
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
+        }
+        else
+        {
+            NSLog(@"loading user_puzzles: %@", puzzleIdsString);
+            APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"user_puzzles: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                
+                NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
+                for (NSDictionary * puzzleData in puzzlesData)
+                {
+                    PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:_loggedInUser.user_id];
+                    if (puzzle != nil)
+                    {
+                        PuzzleSetData * puzzleSet = [puzzleIdToSet objectForKey:puzzle.puzzle_id];
+                        if (puzzleSet != nil)
+                        {
+                            [puzzleIdToSet removeObjectForKey:puzzle.puzzle_id];
+                            [puzzleSet addPuzzlesObject:puzzle];
+                        }
+                    }
+                }
+                
+                [[AppDelegate currentDelegate].managedObjectContext save:nil];
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
+                
+            } failCallback:^(NSError *error) {
+                NSLog(@"Error: cannot load puzzles for month sets!");
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
+            }];
+            [puzzlesRequest.params setObject:_sessionKey forKey:@"session_key"];
+            [puzzlesRequest.params setObject:puzzleIdsString forKey:@"ids"];
+            [puzzlesRequest runUsingCache:YES silentMode:YES];
+        }
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
+    [request.params setObject:[NSNumber numberWithInt:(_currentMonth + 1)] forKey:@"month"];
+    [request.params setObject:[NSNumber numberWithInt:_currentYear] forKey:@"year"];
+    [request.params setObject:@"short" forKey:@"mode"];
     [request runUsingCache:YES silentMode:YES];
 }
 

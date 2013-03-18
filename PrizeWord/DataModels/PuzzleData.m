@@ -105,6 +105,28 @@
     return puzzle;
 }
 
++(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId
+{
+    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+    
+    [request setEntity:puzzleEntity];
+    [request setFetchLimit:1];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", puzzleId, userId]];
+    
+    NSError *error = nil;
+    NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
+    
+    PuzzleData * puzzleData = nil;
+    if (puzzles != nil && puzzles.count > 0)
+    {
+        puzzleData = [puzzles objectAtIndex:0];
+    }
+    return puzzleData;
+}
+
 -(int)solved
 {
     int solvedQuestions = 0;

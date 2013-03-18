@@ -17,8 +17,10 @@
 @dynamic set_id;
 @dynamic user_id;
 @dynamic name;
+@dynamic puzzle_ids;
 @dynamic type;
 @dynamic bought;
+@dynamic puzzles_count;
 @dynamic puzzles;
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
@@ -74,13 +76,28 @@
     }
     
     NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
-    for (NSDictionary * puzzleData in puzzlesData) {
-        PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId];
-        [puzzleSet addPuzzlesObject:puzzle];
+    NSMutableString * puzzleIds = [NSMutableString new];
+    int puzzlesCount = 0;
+    for (id puzzleData in puzzlesData)
+    {
+        ++puzzlesCount;
+        if ([puzzleData isKindOfClass:[NSDictionary class]])
+        {
+            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId];
+            [puzzleSet addPuzzlesObject:puzzle];
+            [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzle.puzzle_id];
+        }
+        else if ([puzzleData isKindOfClass:[NSString class]])
+        {
+            [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzleData];
+        }
     }
+    [puzzleSet setPuzzles_count:[NSNumber numberWithInt:puzzlesCount]];
+    [puzzleSet setPuzzle_ids:puzzleIds];
     
     [managedObjectContext save:&error];
-    if (error != nil) {
+    if (error != nil)
+    {
         NSLog(@"DB error: %@", error.description);
     }
     
@@ -90,8 +107,10 @@
 -(int)solved
 {
     int value = 0;
-    for (PuzzleData * puzzle in self.puzzles) {
-        if (puzzle.solved == puzzle.questions.count) {
+    for (PuzzleData * puzzle in self.puzzles)
+    {
+        if (puzzle.solved == puzzle.questions.count)
+        {
             ++value;
         }
     }
@@ -100,15 +119,16 @@
 
 -(int)total
 {
-    return self.puzzles.count;
+    return self.puzzles_count.intValue;
 }
 
 -(float)percent
 {
-    if (self.puzzles.count == 0) {
+    if (self.puzzles_count.intValue == 0)
+    {
         return 1;
     }
-    return (float)[self solved] / self.puzzles.count;
+    return (float)[self solved] / self.puzzles_count.intValue;
 }
 
 -(int)score
@@ -122,7 +142,7 @@
 
 -(int)minScore
 {
-    return [[GlobalData globalData] baseScoreForType:self.type.intValue] * self.puzzles.count;
+    return [[GlobalData globalData] baseScoreForType:self.type.intValue] * self.puzzles_count.intValue;
 }
 
 -(NSArray *)orderedPuzzles
@@ -130,7 +150,7 @@
     return [[self.puzzles allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         PuzzleData * puzzle1 = obj1;
         PuzzleData * puzzle2 = obj2;
-        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id];
+        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id options:NSLiteralSearch|NSNumericSearch|NSCaseInsensitiveSearch];
     }];
 }
 

@@ -167,7 +167,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 
 -(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData
 {
-    int count = puzzleSetData.puzzles.count;
+    int count = puzzleSetData.total;
     int minScore = puzzleSetData.minScore;
     NSString * countString = [NSString stringWithFormat:@"%d", count];
     CGSize countSize = [countString sizeWithFont:_lblCount.font];

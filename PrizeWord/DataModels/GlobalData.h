@@ -15,6 +15,7 @@
 @interface GlobalData : NSObject
 {
     NSDictionary * coefficients;
+    NSMutableDictionary * puzzleIdToSet;
 }
 
 +(GlobalData *)globalData;

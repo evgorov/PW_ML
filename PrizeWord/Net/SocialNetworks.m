@@ -93,7 +93,7 @@
     
     UIWebView * vkWebView = [[UIWebView alloc] initWithFrame:viewController.view.frame];
     [viewController.view addSubview:vkWebView];
-    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]]];
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
     NSLog(@"request: %@", request.URL.path);
     vkWebView.delegate = self;
     vkWebView.hidden = YES;
