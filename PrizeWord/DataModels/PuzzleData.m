@@ -218,7 +218,7 @@
                 }];
                 [putRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
                 [putRequest.params setObject:data forKey:@"puzzle_data"];
-                [putRequest runSilent];
+                [putRequest runUsingCache:NO silentMode:YES];
             }
             
         }
@@ -227,7 +227,7 @@
     }];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:self.puzzle_id forKey:@"id"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 

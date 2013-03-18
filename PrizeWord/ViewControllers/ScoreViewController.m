@@ -144,7 +144,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     }];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:providerName forKey:@"provider_name"];
-    [request runSilent];
+    [request runUsingCache:YES silentMode:YES];
 }
 
 @end

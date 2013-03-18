@@ -127,62 +127,36 @@
     lastProvider = provider;
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/authorize", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [viewController hideActivityIndicator];
-        if (response.statusCode == 200)
+        [[GlobalData globalData] parseDateFromResponse:response];
+        NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * data = [parser objectWithData:receivedData];
+        if ([GlobalData globalData].sessionKey == nil)
         {
-            [[GlobalData globalData] parseDateFromResponse:response];
-            NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            if ([GlobalData globalData].sessionKey == nil)
-            {
-                [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
-                [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-                successCallback();
-            }
-            else
-            {
-                [viewController showActivityIndicator];
-                APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
-                    NSString * message = [data objectForKey:@"message"];
-                    if (message == nil)
-                    {
-                        message = @"Неизвестная ошибка на сервере";
-                    }
-                    if (response.statusCode >= 400 && response.statusCode < 500)
-                    {
-                        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        [alertView show];
-                    }
-                    NSLog(@"link account success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                    [viewController hideActivityIndicator];
-                    successCallback();
-                } failCallback:^(NSError *error) {
-                    [viewController hideActivityIndicator];
-                    NSLog(@"link accounts failed: %@", error.description);
-                }];
-                [linkRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key1"];
-                [linkRequest.params setObject:[data objectForKey:@"session_key"] forKey:@"session_key2"];
-                [linkRequest runSilent];
-            }
+            [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            successCallback();
         }
         else
         {
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSLog(@"error: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:[data objectForKey:@"message"] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-            alert.tag = 1;
-            [alert show];
+            [viewController showActivityIndicator];
+            APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"link account success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                [viewController hideActivityIndicator];
+                successCallback();
+            } failCallback:^(NSError *error) {
+                [viewController hideActivityIndicator];
+                NSLog(@"link accounts failed: %@", error.description);
+            }];
+            [linkRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key1"];
+            [linkRequest.params setObject:[data objectForKey:@"session_key"] forKey:@"session_key2"];
+            [linkRequest runUsingCache:NO silentMode:NO];
         }
     } failCallback:^(NSError *error) {
         [viewController hideActivityIndicator];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-        alert.tag = 1;
-        [alert show];
     }];
     [request.params setObject:accessToken forKey:@"access_token"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:NO];
 }
 
 #pragma mark UIAlertViewDelegate
@@ -250,7 +224,7 @@
         }];
         [apiRequest.params setObject:@"vkontakte" forKey:@"provider_name"];
         [apiRequest.params setObject:[request.URL.query substringFromIndex:[request.URL.query rangeOfString:@"="].location + 1] forKey:@"code"];
-        [apiRequest runSilent];
+        [apiRequest runUsingCache:NO silentMode:YES];
         
         return NO;
     }

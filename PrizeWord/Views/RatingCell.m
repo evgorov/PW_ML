@@ -30,6 +30,11 @@
     [super awakeFromNib];
     _lblName.font = [UIFont fontWithName:@"DINPro-Bold" size:[[AppDelegate currentDelegate] isIPad] ? 20 : 17];
     _lblSurname.font = _lblName.font;
+    
+    CALayer* maskLayer = [CALayer layer];
+    maskLayer.frame = CGRectMake(0, 0, _imgPhoto.frame.size.width, _imgPhoto.frame.size.height);
+    maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"rating_cell_photo_mask.png"] CGImage];
+    _imgPhoto.layer.mask = maskLayer;
 }
 
 @end

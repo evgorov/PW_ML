@@ -21,7 +21,6 @@
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
--(void)handleSignupFailed:(NSError *)error;
 -(void)handleBackgroundTap:(id)sender;
 
 -(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType;
@@ -156,9 +155,7 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"signup" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleSignupComplete:response receivedData:receivedData];
-    } failCallback:^(NSError *error) {
-        [self handleSignupFailed:error];
-    }];
+    } failCallback:nil];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -173,50 +170,20 @@
     {
         [request.params setObject:avatar forKey:@"userpic"];
     }
-    [request runSilent];
+    [request runUsingCache:NO silentMode:NO];
 }
 
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
 {
     [self hideActivityIndicator];
-    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
-    NSString * message = [data objectForKey:@"message"];
-    if (message == nil)
-    {
-        message = @"Неизвестная ошибка на сервере";
-    }
-    if (response.statusCode >= 400 && response.statusCode < 500)
-    {
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-    else if (response.statusCode == 200)
-    {
-        NSLog(@"signup complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * dict = [parser objectWithData:receivedData];
-        [GlobalData globalData].sessionKey = [dict objectForKey:@"session_key"];
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
-        UINavigationController * navController = self.navigationController;
-        [navController popViewControllerAnimated:NO];
-        [navController pushViewController:[PuzzlesViewController new] animated:YES];
-    }
-    else
-    {
-        NSLog(@"signup failed! %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Ошибка %d", response.statusCode] message:message delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-        alert.tag = 1;
-        [alert show];
-    }
-}
-
--(void)handleSignupFailed:(NSError *)error
-{
-    [self hideActivityIndicator];
-    NSLog(@"signup failed! %@", error.description);
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Ошибка соединения с сервером. Попробуйте ещё раз." delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-    alert.tag = 0;
-    [alert show];
+    NSLog(@"signup complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+    SBJsonParser * parser = [SBJsonParser new];
+    NSDictionary * dict = [parser objectWithData:receivedData];
+    [GlobalData globalData].sessionKey = [dict objectForKey:@"session_key"];
+    [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
+    UINavigationController * navController = self.navigationController;
+    [navController popViewControllerAnimated:NO];
+    [navController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
 -(void)handleDateChanged:(id)sender
@@ -324,15 +291,6 @@
     [self handleDatePickerDoneClick:sender];
 }
 
-#pragma mark UIAlertViewDelegate
-
--(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != alertView.cancelButtonIndex)
-    {
-        [self handleRegisterClick:nil];
-    }
-}
 
 #pragma mark select image source and start UIImagePickerController
 

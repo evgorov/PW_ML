@@ -8,6 +8,7 @@
 
 #import "InviteCellView.h"
 #import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation InviteCellView
 
@@ -22,6 +23,11 @@
     
     _lblName.font = [UIFont fontWithName:@"DINPro-Bold" size:[AppDelegate currentDelegate].isIPad ? 24 : 20];
     _lblSurname.font = _lblName.font;
+    
+    CALayer* maskLayer = [CALayer layer];
+    maskLayer.frame = CGRectMake(0, 0, _imgAvatar.frame.size.width, _imgAvatar.frame.size.height);
+    maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"rating_cell_photo_mask.png"] CGImage];
+    _imgAvatar.layer.mask = maskLayer;
 }
 
 @end

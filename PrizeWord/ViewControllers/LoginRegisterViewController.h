@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PrizeWordViewController.h"
 
-@interface LoginRegisterViewController : PrizeWordViewController<UITextFieldDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate>
+@interface LoginRegisterViewController : PrizeWordViewController<UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate>
 {
     IBOutlet UIScrollView * scrollView;
     IBOutlet UIImageView * imgBackground;

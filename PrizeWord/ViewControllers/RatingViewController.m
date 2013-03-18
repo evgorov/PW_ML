@@ -58,6 +58,7 @@ int HEADER_HEIGHT = 24;
     [super viewWillAppear:animated];
     [[GlobalData globalData] loadMe];
 
+    [self showActivityIndicator];
     APIRequest * request = [APIRequest getRequest:@"users" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData)
     {
         [users removeAllObjects];
@@ -88,8 +89,7 @@ int HEADER_HEIGHT = 24;
     [request.params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setValue:@"0" forKey:@"from"];
     [request.params setValue:@"100" forKey:@"limit"];
-    [request runSilent];
-    [self showActivityIndicator];
+    [request runUsingCache:YES silentMode:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated

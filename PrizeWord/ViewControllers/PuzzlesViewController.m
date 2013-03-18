@@ -140,7 +140,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:@"0" forKey:@"from"];
     [request.params setObject:@"100" forKey:@"limit"];
-    [request runSilent];
+    [request runUsingCache:YES silentMode:YES];
 
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
     
@@ -212,7 +212,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         NSLog(@"EVENT_PRODUCT_ERROR");
         [self hideActivityIndicator];
         NSError * error = event.data;
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:error.description delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.description delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
     else if (event.type == EVENT_PRODUCT_FAILED)
@@ -343,7 +343,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         NSLog(@"news update error: %@", error.description);
     }];
     [newsUpdateRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [newsUpdateRequest runSilent];
+    [newsUpdateRequest runUsingCache:YES silentMode:YES];
 }
 
 -(void)updateMonthSets:(NSArray *)monthSets
@@ -554,26 +554,13 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     NSLog(@"buy set: %@ %@", puzzleSetView.puzzleSetData.set_id, transaction.payment.productIdentifier);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
-        if (response.statusCode == 200)
-        {
-            NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            [self switchSetViewToBought:puzzleSetView];
-            [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
-            NSError * error;
-            [[AppDelegate currentDelegate].managedObjectContext save:&error];
-            if (error != nil) {
-                NSLog(@"error: %@", error.description);
-            }
-        }
-        else
-        {
-            NSString * message = [[[SBJsonParser new] objectWithData:receivedData] objectForKey:@"message"];
-            if (message == nil)
-            {
-                message = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
-            }
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
+        NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        [self switchSetViewToBought:puzzleSetView];
+        [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
+        NSError * error;
+        [[AppDelegate currentDelegate].managedObjectContext save:&error];
+        if (error != nil) {
+            NSLog(@"error: %@", error.description);
         }
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
@@ -586,7 +573,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     {
         [request.params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
     }
-    [request runSilent];
+    [request runUsingCache:NO silentMode:NO];
 }
 
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction
@@ -604,7 +591,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     }];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:[NSString stringWithFormat:@"%d", count] forKey:@"hints_change"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 #pragma mark user interaction

@@ -561,6 +561,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
 - (IBAction)handleSwitchUserClick:(id)sender
 {
     [self hideMenuAnimated:YES];
+    [APIRequest clearCache];
     [GlobalData globalData].loggedInUser = nil;
     [GlobalData globalData].sessionKey = nil;
     if ([GlobalData globalData].fbSession != nil)
@@ -954,7 +955,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     }];
     [saveAvatarRequest.params setObject:mainMenuAvatar.image forKey:@"userpic"];
     [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [saveAvatarRequest runSilent];
+    [saveAvatarRequest runUsingCache:NO silentMode:NO];
 }
 
 

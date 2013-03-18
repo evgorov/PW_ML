@@ -155,6 +155,7 @@ static PrizewordStoreObserver * storeObserver = nil;
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [ExternalImage clearCache];
+    [APIRequest clearCache];
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken

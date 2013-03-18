@@ -581,7 +581,7 @@
             [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
             [request.params setObject:@"1" forKey:@"solved"];
             [request.params setObject:_puzzle.puzzle_id forKey:@"source"];
-            [request runSilent];
+            [request runUsingCache:NO silentMode:YES];
             [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
         }
     }

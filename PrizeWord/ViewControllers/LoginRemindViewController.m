@@ -67,27 +67,26 @@
         }
         else
         {
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
+            NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
             NSString * message = [data objectForKey:@"message"];
             if (response.statusCode == 404)
             {
-                message = @"Пользователь с таким email не найден!";
+                message = NSLocalizedString(@"No user with this e-mail.", @"No user with this e-mail!");
             }
             else if (message == nil)
             {
                 message = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
             }
-                            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                             [alertView show];
         }
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }];
     [request.params setObject:txtEmail.text forKey:@"email"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)handleSent:(id)sender

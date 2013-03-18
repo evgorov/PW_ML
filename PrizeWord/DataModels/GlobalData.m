@@ -168,61 +168,47 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
-    [request runSilent];
+    [request runUsingCache:YES silentMode:YES];
 }
 
 -(void)loadMe
 {
     APIRequest * request = [APIRequest getRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        if (response.statusCode == 200)
+        [self parseDateFromResponse:response];
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * data = [parser objectWithData:receivedData];
+        NSLog(@"me: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+        if (newMe != nil)
         {
-            [self parseDateFromResponse:response];
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSLog(@"me: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            if (newMe != nil)
-            {
-                _loggedInUser = newMe;
-                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:_loggedInUser]];
-            }
-        }
-        else
-        {
-            NSLog(@"me response: %@", response.description);
+            _loggedInUser = newMe;
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:_loggedInUser]];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"me error: %@", error.description);
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)loadCoefficients
 {
     APIRequest * request = [APIRequest getRequest:@"coefficients" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        if (response.statusCode == 200)
+        [self parseDateFromResponse:response];
+        SBJsonParser * parser = [SBJsonParser new];
+        NSDictionary * data = [parser objectWithData:receivedData];
+        NSLog(@"coefficients: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        if (data != nil)
         {
-            [self parseDateFromResponse:response];
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSLog(@"coefficients: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            if (data != nil)
-            {
-                coefficients = data;
-                [[NSUserDefaults standardUserDefaults] setObject:coefficients forKey:COEFFICIENTS_KEY];
-                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_COEFFICIENTS_UPDATED]];
-            }
-        }
-        else
-        {
-            NSLog(@"coefficients response: %@", response.description);
+            coefficients = data;
+            [[NSUserDefaults standardUserDefaults] setObject:coefficients forKey:COEFFICIENTS_KEY];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_COEFFICIENTS_UPDATED]];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"coefficients error: %@", error.description);
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)parseDateFromResponse:(NSHTTPURLResponse *)response
@@ -259,7 +245,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request.params setObject:_deviceToken forKey:@"id"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 @end

@@ -318,29 +318,12 @@
         if ([GlobalData globalData].loggedInUser.vkProvider != nil)
         {
             APIRequest * request = [APIRequest postRequest:@"vkontakte/share" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                if (response.statusCode == 200)
-                {
-                    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else
-                {
-                    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
-                    NSString * errorMessage = [data objectForKey:@"message"];
-                    if (errorMessage == (id)[NSNull null] || errorMessage == nil)
-                    {
-                        errorMessage = @"Неизвестная ошибка";
-                    }
-                    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:errorMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-            } failCallback:^(NSError *error) {
-                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:error.description delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
-            }];
+            } failCallback:nil];
             [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
             [request.params setObject:message forKey:@"message"];
-            [request runSilent];
+            [request runUsingCache:NO silentMode:NO];
         }
         else
         {
@@ -492,12 +475,10 @@
         [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
-    } failCallback:^(NSError *error) {
-        
-    }];
+    } failCallback:nil];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:@"-1" forKey:@"hints_change"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)animateFinalScreenAppears:(id)sender

@@ -8,6 +8,7 @@
 
 #import "APIRequest.h"
 #import "NSData+Base64.h"
+#import "SBJsonParser.h"
 
 @interface APIRequest (private)
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
@@ -20,18 +21,26 @@
 @synthesize params = _params;
 
 static NSMutableSet * apiRequests = nil;
+static NSMutableDictionary * apiCache = nil;
 
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)success failCallback:(FailCallback)fail
 {
     self = [super init];
     if (self)
     {
+        if (apiRequests == nil)
+        {
+            apiRequests = [NSMutableSet new];
+            apiCache = [NSMutableDictionary new];
+        }
+        
         successCallback = success;
         failCallback = fail;
         _params = [NSMutableDictionary new];
-        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:10];
+        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:20];
         request.HTTPMethod = httpMethod;
         receivedData = [NSMutableData new];
+        useCache = NO;
     }
     return self;
 }
@@ -65,6 +74,13 @@ static NSMutableSet * apiRequests = nil;
     }
 }
 
++(void)clearCache
+{
+    if (apiCache != nil)
+    {
+        [apiCache removeAllObjects];
+    }
+}
 
 -(void)prepareRequest
 {
@@ -136,37 +152,37 @@ static NSMutableSet * apiRequests = nil;
     }
 }
 
+/*
 -(void)run
 {
+    useCache = NO;
     silentMode = NO;
-    [self prepareRequest];
-    connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    if (apiRequests == nil)
-    {
-        apiRequests = [NSMutableSet new];
-    }
-    [apiRequests addObject:self];
-}
-
--(void)runSilent
-{
-    silentMode = YES;
     [self prepareRequest];
     NSLog(@"request: %@", request.URL.description);
     connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    if (apiRequests == nil)
+    [apiRequests addObject:self];
+}
+*/
+
+-(void)runUsingCache:(BOOL)_useCache silentMode:(BOOL)_silentMode
+{
+    useCache = _useCache;
+    silentMode = _silentMode;
+    [self prepareRequest];
+    NSLog(@"request: %@", request.URL.description);
+    NSDictionary * cachedData = [apiCache objectForKey:request.URL.path];
+    if (cachedData != nil)
     {
-        apiRequests = [NSMutableSet new];
+        NSLog(@"load from cache");
+        successCallback([cachedData objectForKey:@"response"], [cachedData objectForKey:@"data"]);
     }
+    connection = [NSURLConnection connectionWithRequest:request delegate:self];
     [apiRequests addObject:self];
 }
 
 -(void)cancel
 {
-    if (apiRequests != nil)
-    {
-        [apiRequests removeObject:self];
-    }
+    [apiRequests removeObject:self];
     [connection cancel];
 }
 
@@ -184,13 +200,15 @@ static NSMutableSet * apiRequests = nil;
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    if (apiRequests != nil)
-    {
-        [apiRequests removeObject:self];
-    }
+    [apiRequests removeObject:self];
     NSLog(@"didFailWithError: %@", error.description);
     [receivedData setLength:0];
-    if (silentMode)
+    if (!silentMode)
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Connection error", @"Connection error") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    if (failCallback != nil)
     {
         failCallback(error);
     }
@@ -222,11 +240,53 @@ static NSMutableSet * apiRequests = nil;
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSLog(@"connectionDidFinishLoading");
-    if (apiRequests != nil)
+    [apiRequests removeObject:self];
+    
+    if (!silentMode)
     {
-        [apiRequests removeObject:self];
+        if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 500)
+        {
+            NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+            NSString * message = [data objectForKey:@"message"];
+            if (message == nil)
+            {
+                message = NSLocalizedString(@"Unknown error", @"Unknown error on server");
+            }
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            NSLog(@"request %@ result: %d %@", request.URL.path, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            if (failCallback != nil)
+            {
+                failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
+            }
+            return;
+        }
+        if (httpResponse.statusCode >= 500 && httpResponse.statusCode < 600)
+        {
+            NSLog(@"request %@ result: %d %@", request.URL.path, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            if (failCallback != nil)
+            {
+                failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
+            }
+            return;
+        }
     }
-    successCallback(httpResponse, receivedData);
+    
+    if (useCache)
+    {
+        NSDictionary * cachedValue = [apiCache objectForKey:request.URL.path];
+        if (cachedValue != nil && [(NSHTTPURLResponse *)[cachedValue objectForKey:@"response"] statusCode] == httpResponse.statusCode && [(NSMutableData *)[cachedValue objectForKey:@"data"] isEqualToData:receivedData])
+        {
+            NSLog(@"cached response is actual");
+            // already know actual data
+            return;
+        }
+        [apiCache setObject:[NSDictionary dictionaryWithObjectsAndKeys:httpResponse, @"response", receivedData, @"data", nil] forKey:request.URL.path];
+    }
+    if (successCallback != nil)
+    {
+        successCallback(httpResponse, receivedData);
+    }
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response

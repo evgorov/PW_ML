@@ -22,6 +22,7 @@ typedef void(^FailCallback)(NSError * error);
     SuccessCallback successCallback;
     FailCallback failCallback;
     BOOL silentMode;
+    BOOL useCache;
 }
 
 @property (nonatomic, retain) NSMutableDictionary * params;
@@ -30,9 +31,10 @@ typedef void(^FailCallback)(NSError * error);
 +(APIRequest *)postRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 +(APIRequest *)putRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 +(void)cancelAll;
++(void)clearCache;
 
--(void)run;
--(void)runSilent;
+//-(void)run;
+-(void)runUsingCache:(BOOL)useCache silentMode:(BOOL)silentMode;
 -(void)cancel;
 
 @end

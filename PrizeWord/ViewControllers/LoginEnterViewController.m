@@ -77,61 +77,30 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"login" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleEnterComplete:response receivedData:receivedData];
-    } failCallback:^(NSError *error) {
-        [self handleEnterFailed:error];
-    }];
+    } failCallback:nil];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     [request.params setObject:txtEmail.text forKey:@"email"];
     [request.params setObject:txtPassword.text forKey:@"password"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:NO];
 }
 
 
 -(void)handleEnterComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData
 {
     [self hideActivityIndicator];
-    NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
-    NSString * message = [data objectForKey:@"message"];
-    if (message == nil)
-    {
-        message = @"Неизвестная ошибка на сервере";
-    }
-    if (response.statusCode >= 400 && response.statusCode < 500)
-    {
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-    else if (response.statusCode == 200)
-    {
-//        NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        [[GlobalData globalData] parseDateFromResponse:response];
-        NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
-        [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
-        UINavigationController * navController = self.navigationController;
-        [navController popViewControllerAnimated:NO];
-        [navController pushViewController:[PuzzlesViewController new] animated:YES];
-    }
-    else
-    {
-        NSLog(@"login failed! %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%d", response.statusCode] message:[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-        alert.tag = 1;
-        [alert show];
-    }
+    NSLog(@"login complete! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+    [[GlobalData globalData] parseDateFromResponse:response];
+    NSDictionary * json = [[SBJsonParser new] objectWithData:receivedData];
+    [GlobalData globalData].sessionKey = [json objectForKey:@"session_key"];;
+    [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[json objectForKey:@"me"]];
+    UINavigationController * navController = self.navigationController;
+    [navController popViewControllerAnimated:NO];
+    [navController pushViewController:[PuzzlesViewController new] animated:YES];
 }
 
--(void)handleEnterFailed:(NSError *)error
-{
-    [self hideActivityIndicator];
-    NSLog(@"login failed! %@", error.description);
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Ошибка соединения с сервером. Попробуйте ещё раз." delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-    alert.tag = 0;
-    [alert show];
-}
 
 - (IBAction)handleForgetClick:(id)sender
 {
@@ -160,14 +129,6 @@
         [self handleEnterClick:self];
     }
     return YES;
-}
-
--(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != alertView.cancelButtonIndex)
-    {
-        [self handleEnterClick:nil];
-    }
 }
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification

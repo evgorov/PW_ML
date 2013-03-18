@@ -18,3 +18,8 @@
 "QUESTION_USE_HINT" = "Вы действительно хотите воспользоваться подсказкой?";
 "BUTTON_CANCEL" = "Нет";
 "BUTTON_USE_HINT" = "Да";
+
+"Error" = "Error";
+"Connection error" = "Ошибка соединения с сервером.";
+"Unknown error" = "Неизвестная ошибка на сервере.";
+"No user with this e-mail." = "Пользователь с таким email не найден.";

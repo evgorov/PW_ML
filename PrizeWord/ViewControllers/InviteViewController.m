@@ -136,61 +136,41 @@
         APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
             [updateInProgress removeObjectForKey:provider];
-            if (response.statusCode == 200)
+            NSLog(@"%@/friends: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            float height = headerView.frame.size.height;
+            SBJsonParser * parser = [SBJsonParser new];
+            NSArray * friendsData = [parser objectWithData:receivedData];
+            for (NSDictionary * friendData in friendsData)
             {
-                NSLog(@"%@/friends: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                float height = headerView.frame.size.height;
-                SBJsonParser * parser = [SBJsonParser new];
-                NSArray * friendsData = [parser objectWithData:receivedData];
-                for (NSDictionary * friendData in friendsData)
+                //UserData * user = [UserData userDataWithDictionary:friendData];
+                if (views.count == 0)
                 {
-                    //UserData * user = [UserData userDataWithDictionary:friendData];
-                    if (views.count == 0)
+                    InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
+                    userView.lblName.text = [friendData objectForKey:@"first_name"];
+                    userView.lblSurname.text = [friendData objectForKey:@"last_name"];
+                    userView.btnAdd.enabled = [(NSString *)[friendData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
+                    userView.btnAdd.tag = 0;
+                    [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
+                    userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
+                    NSString * userpicURL = [self userpicForData:friendData];
+                    [userView.imgAvatar clear];
+                    if (userpicURL != nil)
                     {
-                        InviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"InviteCellView" owner:self options:nil] objectAtIndex:0];
-                        userView.lblName.text = [friendData objectForKey:@"first_name"];
-                        userView.lblSurname.text = [friendData objectForKey:@"last_name"];
-                        userView.btnAdd.enabled = [(NSString *)[friendData objectForKey:@"status"] compare:@"uninvited"] == NSOrderedSame;
-                        userView.btnAdd.tag = 0;
-                        [userView.btnAdd addTarget:self action:@selector(handleAddClick:) forControlEvents:UIControlEventTouchUpInside];
-                        userView.frame = CGRectMake(0, height, userView.frame.size.width, userView.frame.size.height);
-                        NSString * userpicURL = [self userpicForData:friendData];
-                        if (userpicURL == nil)
-                        {
-                            [userView.imgAvatar clear];
-                        }
-                        else
-                        {
-                            [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:userpicURL]];
-                        }
-                        [container insertSubview:userView atIndex:0];
-                        height += userView.frame.size.height * friendsData.count;
-                        userView.tag = 0;
-                        [views addObject:userView];
+                        [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:userpicURL]];
                     }
-                    [data addObject:friendData];
+                    [container insertSubview:userView atIndex:0];
+                    height += userView.frame.size.height * friendsData.count;
+                    userView.tag = 0;
+                    [views addObject:userView];
                 }
-                [self resizeView:container newHeight:height animated:YES];
-                [self updateContainer:container withViews:views andData:data];
+                [data addObject:friendData];
             }
-            else
-            {
-                SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * data = [parser objectWithData:receivedData];
-                NSString * message = data == nil ? ([[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]) : [data objectForKey:@"message"];
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:message delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-                alert.tag = [provider compare:@"facebook"] == NSOrderedSame ? TAG_FACEBOOK : TAG_VKONTAKTE;
-                [alert show];
-            }
-        } failCallback:^(NSError *error) {
-            [self hideActivityIndicator];
-            [updateInProgress removeObjectForKey:provider];
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка сервера" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-            alert.tag = [provider compare:@"facebook"] == NSOrderedSame ? TAG_FACEBOOK : TAG_VKONTAKTE;
-            [alert show];
-        }];
+            [self resizeView:container newHeight:height animated:YES];
+            [self updateContainer:container withViews:views andData:data];
+
+        } failCallback:nil];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request runSilent];
+        [request runUsingCache:YES silentMode:NO];
     }
 }
 
@@ -218,7 +198,7 @@
     NSDictionary * userData = [vkFriends objectAtIndex:idx];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:[userData objectForKey:@"id"] forKey:@"ids"];
-    [request runSilent];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)inviteFBUser:(int)idx
@@ -273,7 +253,7 @@
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [request.params setObject:ids forKey:@"ids"];
-        [request runSilent];
+        [request runUsingCache:NO silentMode:YES];
     }
 }
 
@@ -480,7 +460,7 @@
         }];
         [request.params setObject:userIds forKey:@"ids"];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request runSilent];
+        [request runUsingCache:NO silentMode:YES];
     }
 }
 

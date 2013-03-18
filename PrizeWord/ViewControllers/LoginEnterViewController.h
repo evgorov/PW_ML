@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PrizeWordViewController.h"
 
-@interface LoginEnterViewController : PrizeWordViewController<UITextFieldDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface LoginEnterViewController : PrizeWordViewController<UITextFieldDelegate, UIGestureRecognizerDelegate>
 {
     IBOutlet UIScrollView *scrollView;
     IBOutlet UITextField *txtEmail;
