@@ -666,7 +666,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 - (IBAction)handleNewsPaginatorChange:(id)sender
 {
-    NSLog(@"paginator: %d", newsPaginator.currentPage);
     [newsScrollView setContentOffset:CGPointMake(newsPaginator.currentPage * newsScrollView.frame.size.width, 0) animated:YES];
 }
 

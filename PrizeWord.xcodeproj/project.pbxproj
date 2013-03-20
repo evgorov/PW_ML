@@ -137,6 +137,9 @@
 		F268D55216F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D55016F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png */; };
 		F268D56916F6D9A900F0FA0F /* switch_disabled@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D56716F6D9A900F0FA0F /* switch_disabled@2x~ipad.png */; };
 		F268D56A16F6D9A900F0FA0F /* switch_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D56816F6D9A900F0FA0F /* switch_disabled@2x.png */; };
+		F268D57616F9A9F500F0FA0F /* NewsPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F268D57516F9A9F500F0FA0F /* NewsPageControl.m */; };
+		F268D57B16F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D57716F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png */; };
+		F268D57C16F9AB0D00F0FA0F /* puzzles_news_page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F268D57816F9AB0D00F0FA0F /* puzzles_news_page@2x.png */; };
 		F26B992716E7454C008E117B /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B992616E7454C008E117B /* NSString+Utils.m */; };
 		F279AE2316884F5300424267 /* PuzzleSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F279AE2216884F5300424267 /* PuzzleSetView.xib */; };
 		F279AE261688650600424267 /* tile_arrow_northeast_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE251688650500424267 /* tile_arrow_northeast_right@2x.png */; };
@@ -874,6 +877,10 @@
 		F268D55016F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_register_ava_frame@2x~ipad.png"; sourceTree = "<group>"; };
 		F268D56716F6D9A900F0FA0F /* switch_disabled@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_disabled@2x~ipad.png"; sourceTree = "<group>"; };
 		F268D56816F6D9A900F0FA0F /* switch_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_disabled@2x.png"; sourceTree = "<group>"; };
+		F268D57416F9A9F500F0FA0F /* NewsPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsPageControl.h; path = Views/NewsPageControl.h; sourceTree = "<group>"; };
+		F268D57516F9A9F500F0FA0F /* NewsPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsPageControl.m; path = Views/NewsPageControl.m; sourceTree = "<group>"; };
+		F268D57716F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_page_current@2x.png"; sourceTree = "<group>"; };
+		F268D57816F9AB0D00F0FA0F /* puzzles_news_page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_page@2x.png"; sourceTree = "<group>"; };
 		F26B992516E74513008E117B /* NSString+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
 		F26B992616E7454C008E117B /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		F279AE2216884F5300424267 /* PuzzleSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PuzzleSetView.xib; path = Views/PuzzleSetView.xib; sourceTree = "<group>"; };
@@ -1922,6 +1929,8 @@
 		F286E31D167C6B9400FF5E83 /* puzzles */ = {
 			isa = PBXGroup;
 			children = (
+				F268D57716F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png */,
+				F268D57816F9AB0D00F0FA0F /* puzzles_news_page@2x.png */,
 				F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */,
 				F247C326168AF71D00A81D16 /* puzzles_set_month_bg@2x.png */,
 				F2FDD9E91685B25B0013D069 /* puzzles_archive_showmore_btn_down@2x~ipad.png */,
@@ -2247,6 +2256,8 @@
 				F21FCF9816C764200022119B /* ExternalImage.m */,
 				F268D52F16E8E8D000F0FA0F /* PrizeWordButton.h */,
 				F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */,
+				F268D57416F9A9F500F0FA0F /* NewsPageControl.h */,
+				F268D57516F9A9F500F0FA0F /* NewsPageControl.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3389,6 +3400,8 @@
 				F268D55216F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png in Resources */,
 				F268D56916F6D9A900F0FA0F /* switch_disabled@2x~ipad.png in Resources */,
 				F268D56A16F6D9A900F0FA0F /* switch_disabled@2x.png in Resources */,
+				F268D57B16F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png in Resources */,
+				F268D57C16F9AB0D00F0FA0F /* puzzles_news_page@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3621,6 +3634,7 @@
 				F20F0F1116E8C1B6009AEEE6 /* FISoundSource.m in Sources */,
 				F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */,
 				F268D54716EDCA0800F0FA0F /* NSData+Utils.m in Sources */,
+				F268D57616F9A9F500F0FA0F /* NewsPageControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
