@@ -603,6 +603,61 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
+					<object class="IBUIButton" id="807855330">
+						<reference key="NSNextResponder" ref="444050116"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{349, 351}, {218, 75}}</string>
+						<reference key="NSSuperview" ref="444050116"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="505668409"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="123354968"/>
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">final_next_btn_down@2x~ipad.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">final_next_btn@2x~ipad.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="320014664"/>
+						<reference key="IBUIFont" ref="383768078"/>
+					</object>
+					<object class="IBUIButton" id="117817270">
+						<reference key="NSNextResponder" ref="444050116"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{215, 351}, {121, 75}}</string>
+						<reference key="NSSuperview" ref="444050116"/>
+						<reference key="NSNextKeyView" ref="807855330"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="505668409"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="123354968"/>
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">final_menu_btn_down@2x~ipad.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">final_menu_btn@2x~ipad.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="320014664"/>
+						<reference key="IBUIFont" ref="383768078"/>
+					</object>
 					<object class="IBUILabel" id="986066198">
 						<reference key="NSNextResponder" ref="444050116"/>
 						<int key="NSvFlags">292</int>
@@ -659,61 +714,6 @@
 						<reference key="IBUIFontDescription" ref="536122358"/>
 						<reference key="IBUIFont" ref="393316559"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-					</object>
-					<object class="IBUIButton" id="807855330">
-						<reference key="NSNextResponder" ref="444050116"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{349, 351}, {218, 75}}</string>
-						<reference key="NSSuperview" ref="444050116"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="505668409"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="123354968"/>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">final_next_btn_down@2x~ipad.png</string>
-						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">final_next_btn@2x~ipad.png</string>
-						</object>
-						<reference key="IBUIFontDescription" ref="320014664"/>
-						<reference key="IBUIFont" ref="383768078"/>
-					</object>
-					<object class="IBUIButton" id="117817270">
-						<reference key="NSNextResponder" ref="444050116"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{215, 351}, {121, 75}}</string>
-						<reference key="NSSuperview" ref="444050116"/>
-						<reference key="NSNextKeyView" ref="807855330"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="505668409"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="123354968"/>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">final_menu_btn_down@2x~ipad.png</string>
-						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">final_menu_btn@2x~ipad.png</string>
-						</object>
-						<reference key="IBUIFontDescription" ref="320014664"/>
-						<reference key="IBUIFont" ref="383768078"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{768, 620}</string>
@@ -1094,9 +1094,9 @@
 							<reference ref="604446285"/>
 							<reference ref="774892259"/>
 							<reference ref="337939845"/>
-							<reference ref="986066198"/>
 							<reference ref="807855330"/>
 							<reference ref="117817270"/>
+							<reference ref="986066198"/>
 							<reference ref="666851768"/>
 							<reference ref="280037914"/>
 						</array>

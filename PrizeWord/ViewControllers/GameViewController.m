@@ -488,20 +488,56 @@
     
     CGRect shareFrame = finalShareView.frame;
     shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
+    
+    int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
+    lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", baseScore];
+    lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - baseScore];
+    lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
+    lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
+    
+    lblFinalBaseScore.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+    lblFinalBaseScore.hidden = YES;
+    lblFinalTimeBonus.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+    lblFinalTimeBonus.hidden = YES;
     [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         finalShareView.frame = shareFrame;
     } completion:^(BOOL finished) {
-        int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
-        lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", baseScore];
-        lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - baseScore];
-        uint score = [puzzleData.score unsignedIntValue];
-        // TODO :: loop counting
-        [countingSound play];
-        for (int i = 0; i < 5; ++i)
-        {
-            [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * (4 - i) + score % 10)];
-            score /= 10;
-        }
+        
+        lblFinalBaseScore.hidden = NO;
+        [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            lblFinalBaseScore.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                lblFinalBaseScore.transform = CGAffineTransformMakeScale(1, 1);
+            } completion:nil];
+        }];
+
+        [UIView animateWithDuration:0.25f delay:0.5f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            lblFinalTimeBonus.hidden = NO;
+            lblFinalTimeBonus.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
+            } completion:^(BOOL finished) {
+                uint score = [puzzleData.score unsignedIntValue];
+                // TODO :: loop counting
+                [countingSound play];
+                int lastI = 0;
+                for (int i = 0; i < 5; ++i)
+                {
+                    if (score > 0)
+                    {
+                        [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * i + score % 10)];
+                        lastI = i;
+                        score /= 10;
+                    }
+                    else
+                    {
+                        [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * lastI)];
+                    }
+                }
+            }];
+        }];
     }];
 }
 
