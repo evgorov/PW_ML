@@ -26,13 +26,6 @@
 #import "NSString+Utils.h"
 #import <QuartzCore/CALayer.h>
 
-/*
-#import "GPUImageView.h"
-#import "GPUImageFastBlurFilter.h"
-#import "GPUImageGaussianBlurFilter.h"
-#import "GPUImageUIElement.h"
-*/
-
 @interface RootViewController (private)
 
 -(void)updateUserInfo;
@@ -155,10 +148,8 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
     
     rulesCaption = nil;
-/*
-    gpuImageView = nil;
-    uiElementInput = nil;
-*/
+
+    mainMenuAvatarActivityIndicator = nil;
     [super viewDidUnload];
 }
 
@@ -932,7 +923,9 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     [mainMenuAvatar cancelLoading];
     mainMenuAvatar.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
     
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
+    [mainMenuAvatarActivityIndicator startAnimating];
+    [self imagePickerControllerDidCancel:picker];
     
     APIRequest * saveAvatarRequest = [APIRequest postRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         NSLog(@"update me result: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -945,13 +938,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
             {
                 [GlobalData globalData].loggedInUser = newUser;
             }
-            [self hideActivityIndicator];
-            [self imagePickerControllerDidCancel:picker];
+            [mainMenuAvatarActivityIndicator stopAnimating];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"update me error: %@", error.description);
-        [self hideActivityIndicator];
-        [self imagePickerControllerDidCancel:picker];
+        [mainMenuAvatarActivityIndicator stopAnimating];
     }];
     [saveAvatarRequest.params setObject:mainMenuAvatar.image forKey:@"userpic"];
     [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];

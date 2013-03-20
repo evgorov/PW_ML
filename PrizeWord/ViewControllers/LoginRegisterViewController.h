@@ -20,6 +20,10 @@
     IBOutlet UITextField * tfPasswordRepeat;
     IBOutlet UITextField * tfCity;
     
+    IBOutlet UILabel *lblEmail;
+    IBOutlet UILabel *lblPassword;
+    IBOutlet UILabel *lblPasswordRepeat;
+    
     IBOutlet UIDatePicker * datePicker;
     IBOutlet UIView * datePickerView;
     IBOutlet PrizeWordButton * btnBirthday;

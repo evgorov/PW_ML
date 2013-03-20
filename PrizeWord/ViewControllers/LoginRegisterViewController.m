@@ -23,11 +23,19 @@
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData;
 -(void)handleBackgroundTap:(id)sender;
 
+-(void)recolorAllToOK;
+-(BOOL)checkInputsAndRecolor;
+
 -(void)startCameraControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType;
 
 @end
 
 @implementation LoginRegisterViewController
+
+UIColor * COLOR_ERROR;
+UIColor * COLOR_OK;
+NSRegularExpression * EMAIL_REGEXP;
+
 
 - (void)viewDidLoad
 {
@@ -45,12 +53,11 @@
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
-}
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    COLOR_ERROR = [UIColor colorWithRed:1 green:85/255.0f blue:85/255.0f alpha:1];
+    COLOR_OK = [UIColor colorWithRed:194/255.0f green:184/255.0f blue:176/255.0f alpha:1];
+    EMAIL_REGEXP = [[NSRegularExpression alloc] initWithPattern:@"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -59,6 +66,7 @@
     activeResponder = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self recolorAllToOK];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -86,6 +94,9 @@
     
     datePickerView = nil;
     btnAvatar = nil;
+    lblEmail = nil;
+    lblPassword = nil;
+    lblPasswordRepeat = nil;
     [super viewDidUnload];
 }
 
@@ -152,6 +163,14 @@
 {
     [activeResponder resignFirstResponder];
     [self handleDatePickerDoneClick:self];
+    
+    if (![self checkInputsAndRecolor])
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Недопустимые значения полей." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"signup" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleSignupComplete:response receivedData:receivedData];
@@ -291,6 +310,48 @@
     [self handleDatePickerDoneClick:sender];
 }
 
+-(void)recolorAllToOK
+{
+    lblEmail.textColor = COLOR_OK;
+    lblPassword.textColor = COLOR_OK;
+    lblPasswordRepeat.textColor = COLOR_OK;
+    [tfName setValue:COLOR_OK forKeyPath:@"_placeholderLabel.textColor"];
+    [tfSurname setValue:COLOR_OK forKeyPath:@"_placeholderLabel.textColor"];
+}
+
+-(BOOL)checkInputsAndRecolor
+{
+    [self recolorAllToOK];
+    
+    BOOL hasInvalid = NO;
+    
+    int numberOfMatches = [EMAIL_REGEXP numberOfMatchesInString:tfEmail.text options:0 range:NSMakeRange(0, tfEmail.text.length)];
+    if (numberOfMatches == 0)
+    {
+        lblEmail.textColor = COLOR_ERROR;
+        hasInvalid = YES;
+    }
+    
+    if ([tfPassword.text compare:tfPasswordRepeat.text] != NSOrderedSame || tfPassword.text.length == 0)
+    {
+        lblPassword.textColor = COLOR_ERROR;
+        lblPasswordRepeat.textColor = COLOR_ERROR;
+        hasInvalid = YES;
+    }
+    
+    if (tfName.text.length == 0)
+    {
+        [tfName setValue:COLOR_ERROR forKeyPath:@"_placeholderLabel.textColor"];
+        hasInvalid = YES;
+    }
+    
+    if (tfSurname.text.length == 0)
+    {
+        [tfSurname setValue:COLOR_ERROR forKeyPath:@"_placeholderLabel.textColor"];
+        hasInvalid = YES;
+    }
+    return !hasInvalid;
+}
 
 #pragma mark select image source and start UIImagePickerController
 

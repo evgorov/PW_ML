@@ -33,6 +33,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 @synthesize currentYear = _currentYear;
 @synthesize fbSession = _fbSession;
 @synthesize deviceToken = _deviceToken;
+@synthesize products = _products;
 
 #pragma mark initialization
 
@@ -64,6 +65,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         _currentYear = [components year];
         coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
         puzzleIdToSet = [NSMutableDictionary new];
+        _products = [NSMutableDictionary new];
     }
     return self;
 }

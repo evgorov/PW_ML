@@ -19,7 +19,12 @@
 "BUTTON_CANCEL" = "Нет";
 "BUTTON_USE_HINT" = "Да";
 
-"Error" = "Error";
+"Select source" = "Выберите источник";
+"Camera" = "Камера";
+"Gallery" = "Галерея";
+"Cancel" = "Отмена";
+
+"Error" = "Ошибка";
 "Connection error" = "Ошибка соединения с сервером.";
 "Unknown error" = "Неизвестная ошибка на сервере.";
 "No user with this e-mail." = "Пользователь с таким email не найден.";

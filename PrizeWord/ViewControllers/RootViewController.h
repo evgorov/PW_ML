@@ -14,12 +14,6 @@
 
 @class PrizeWordNavigationController;
 @class FISound;
-/*
-@class GPUImageUIElement;
-@class GPUImageView;
-@class GPUImageGaussianBlurFilter;
-@class GPUImageFastBlurFilter;
-*/
 
 @interface RootViewController : PrizeWordViewController<EventListenerDelegate, UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
@@ -30,6 +24,7 @@
     IBOutlet PrizeWordSwitchView *mainMenuNotificationsSwitch;
     IBOutlet UILabel *mainMenuUserName;
     IBOutlet ExternalImage *mainMenuAvatar;
+    IBOutlet UIActivityIndicatorView *mainMenuAvatarActivityIndicator;
     IBOutlet UILabel *mainMenuMaxScore;
     IBOutlet UILabel *mainMenuYourResult;
     IBOutlet PrizeWordButton *btnScore;
@@ -48,11 +43,7 @@
     IBOutlet UIView *fullscreenOverlayContainer;
     
     UIPopoverController * avatarPopover;
-/*
-    GPUImageUIElement * uiElementInput;
-    GPUImageView * gpuImageView;
-    GPUImageGaussianBlurFilter * blurFilter;
-*/
+
     FISound * sidebarSound;
 }
 

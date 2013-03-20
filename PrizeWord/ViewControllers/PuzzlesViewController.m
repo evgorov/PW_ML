@@ -55,6 +55,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
 
+-(void)setupKnownPrices;
+
 @end
 
 @implementation PuzzlesViewController
@@ -399,8 +401,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     puzzlesTimeLeftCaption.hidden = NO;
     puzzlesTimeLeftBg.hidden = NO;
     
+    [self setupKnownPrices];
     // request information about products
-    [self showActivityIndicator];
     [productsIds addObject:PRODUCTID_HINTS10];
     [productsIds addObject:PRODUCTID_HINTS20];
     [productsIds addObject:PRODUCTID_HINTS30];
@@ -481,6 +483,15 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
+    for (SKProduct * product in response.products)
+    {
+        [[GlobalData globalData].products setObject:product forKey:product.productIdentifier];
+    }
+    [self setupKnownPrices];
+}
+
+-(void)setupKnownPrices
+{
     // update sets' prices
     for (UIView * subview in currentPuzzlesView.subviews)
     {
@@ -499,53 +510,44 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             [puzzleSetView.btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
             continue;
         }
-        for (SKProduct * product in response.products)
+        SKProduct * product = [[GlobalData globalData].products objectForKey:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSetView.puzzleSetData.set_id]];
+        if (product != nil)
         {
-            if ([product.productIdentifier rangeOfString:puzzleSetView.puzzleSetData.set_id options:NSCaseInsensitiveSearch].location != NSNotFound)
-            {
-                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                [formatter setLocale:product.priceLocale];
-                NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-                NSLog(@"product %@ %@ %@: %@", puzzleSetView.puzzleSetData.set_id, product.productIdentifier, product.localizedTitle, localizedMoneyString);
-                
-                [puzzleSetView.btnBuy setTitle:localizedMoneyString forState:UIControlStateNormal];
-                puzzleSetView.product = product;
-                break;
-            }
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+            [formatter setLocale:product.priceLocale];
+            NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+            
+            [puzzleSetView.btnBuy setTitle:localizedMoneyString forState:UIControlStateNormal];
+            puzzleSetView.product = product;
         }
     }
     
     // update hints' prices
-    for (SKProduct * product in response.products)
-    {
-        if ([product.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
-        {
-            [self updateHintButton:btnBuyHint1 withProduct:product];
-        }
-        else if ([product.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
-        {
-            [self updateHintButton:btnBuyHint2 withProduct:product];
-        }
-        else if ([product.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
-        {
-            [self updateHintButton:btnBuyHint3 withProduct:product];
-        }
-    }
-
-    [self hideActivityIndicator];
+    SKProduct * product = [[GlobalData globalData].products objectForKey:PRODUCTID_HINTS10];
+    [self updateHintButton:btnBuyHint1 withProduct:product];
+    product = [[GlobalData globalData].products objectForKey:PRODUCTID_HINTS20];
+    [self updateHintButton:btnBuyHint2 withProduct:product];
+    product = [[GlobalData globalData].products objectForKey:PRODUCTID_HINTS30];
+    [self updateHintButton:btnBuyHint3 withProduct:product];
 }
 
 -(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product
 {
-    [hintsProducts replaceObjectAtIndex:button.tag withObject:product];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [formatter setLocale:product.priceLocale];
-    NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-    NSLog(@"product %@: %@", product.localizedTitle, localizedMoneyString);
-    
-    [button setTitle:localizedMoneyString forState:UIControlStateNormal];
+    if (product != nil)
+    {
+        [hintsProducts replaceObjectAtIndex:button.tag withObject:product];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setLocale:product.priceLocale];
+        NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+        
+        [button setTitle:localizedMoneyString forState:UIControlStateNormal];
+    }
+    else
+    {
+        [button setTitle:@"" forState:UIControlStateNormal];
+    }
 }
 
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
