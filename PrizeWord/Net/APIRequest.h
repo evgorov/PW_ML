@@ -33,7 +33,6 @@ typedef void(^FailCallback)(NSError * error);
 +(void)cancelAll;
 +(void)clearCache;
 
-//-(void)run;
 -(void)runUsingCache:(BOOL)useCache silentMode:(BOOL)silentMode;
 -(void)cancel;
 

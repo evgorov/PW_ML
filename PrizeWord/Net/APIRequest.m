@@ -150,10 +150,10 @@ static NSMutableDictionary * apiCache = nil;
     silentMode = _silentMode;
     [self prepareRequest];
     NSLog(@"request: %@", request.URL.description);
-    NSDictionary * cachedData = [apiCache objectForKey:request.URL.relativeString];
+    NSDictionary * cachedData = [apiCache objectForKey:request.URL.absoluteString];
     if (cachedData != nil)
     {
-        NSLog(@"load from cache");
+        NSLog(@"load from cache: %@", request.URL.absoluteString);
         successCallback([cachedData objectForKey:@"response"], [cachedData objectForKey:@"data"]);
     }
 
@@ -240,7 +240,7 @@ static NSMutableDictionary * apiCache = nil;
             }
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
-            NSLog(@"request %@ result: %d %@", request.URL.relativeString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"request %@ result: %d %@", request.URL.absoluteString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             if (failCallback != nil)
             {
                 failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
@@ -249,7 +249,7 @@ static NSMutableDictionary * apiCache = nil;
         }
         if (httpResponse.statusCode >= 500 && httpResponse.statusCode < 600)
         {
-            NSLog(@"request %@ result: %d %@", request.URL.relativeString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"request %@ result: %d %@", request.URL.absoluteString, httpResponse.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             if (failCallback != nil)
             {
                 failCallback([NSError errorWithDomain:NSLocalizedString(@"Unknown error", @"Unknown error on server") code:httpResponse.statusCode userInfo:nil]);
@@ -260,14 +260,14 @@ static NSMutableDictionary * apiCache = nil;
     
     if (useCache)
     {
-        NSDictionary * cachedValue = [apiCache objectForKey:request.URL.relativeString];
+        NSDictionary * cachedValue = [apiCache objectForKey:request.URL.absoluteString];
         if (cachedValue != nil && [(NSHTTPURLResponse *)[cachedValue objectForKey:@"response"] statusCode] == httpResponse.statusCode && [(NSMutableData *)[cachedValue objectForKey:@"data"] isEqualToData:receivedData])
         {
             NSLog(@"cached response is actual");
             // already know actual data
             return;
         }
-        [apiCache setObject:[NSDictionary dictionaryWithObjectsAndKeys:httpResponse, @"response", receivedData, @"data", nil] forKey:request.URL.relativeString];
+        [apiCache setObject:[NSDictionary dictionaryWithObjectsAndKeys:httpResponse, @"response", receivedData, @"data", nil] forKey:request.URL.absoluteString];
     }
     if (successCallback != nil)
     {
