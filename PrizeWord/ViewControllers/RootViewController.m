@@ -921,11 +921,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     int minDimension = width < height ? width : height;
     CGRect subrect = CGRectMake((width - minDimension) / 2, (height - minDimension) / 2, minDimension, minDimension);
     [mainMenuAvatar cancelLoading];
-    mainMenuAvatar.image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    UIImage * image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    mainMenuAvatar.image = image;
     
 //    [self showActivityIndicator];
     [mainMenuAvatarActivityIndicator startAnimating];
-    [self imagePickerControllerDidCancel:picker];
     
     APIRequest * saveAvatarRequest = [APIRequest postRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         NSLog(@"update me result: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -938,15 +938,17 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
             {
                 [GlobalData globalData].loggedInUser = newUser;
             }
+            [self updateUserInfo];
             [mainMenuAvatarActivityIndicator stopAnimating];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"update me error: %@", error.description);
         [mainMenuAvatarActivityIndicator stopAnimating];
     }];
-    [saveAvatarRequest.params setObject:mainMenuAvatar.image forKey:@"userpic"];
+    [saveAvatarRequest.params setObject:image forKey:@"userpic"];
     [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [saveAvatarRequest runUsingCache:NO silentMode:NO];
+    [self imagePickerControllerDidCancel:picker];
 }
 
 
