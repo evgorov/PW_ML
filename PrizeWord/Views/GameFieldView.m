@@ -17,6 +17,7 @@
 @interface GameFieldView (private)
 
 -(void)switchFocusToTile:(TileData *)tile;
+-(void)scrollTo:(CGPoint)targetPosition;
 -(void)handlePinch:(id)sender;
 -(void)handleTap:(id)sender;
 
@@ -33,6 +34,7 @@
         scrollView.bounces = YES;
         [self addSubview:scrollView];
         tiles = [NSMutableArray new];
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
         scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
         fieldView = [UIView new];
         fieldView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
@@ -151,16 +153,27 @@
     [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     float dx = scrollView.frame.size.width - scrollView.contentSize.width;
     float dy = scrollView.frame.size.height - scrollView.contentSize.height;
-    if (dx > 0 || dy > 0)
-    {
-        scrollView.contentOffset = CGPointMake(dx > 0 ? (-dx) / 2 : scrollView.contentOffset.x, dy > 0 ? (-dy) / 2 : scrollView.contentOffset.y);
-    }
+    scrollView.contentInset = UIEdgeInsetsMake(dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0, dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0);
 }
 
 -(void)switchFocusToTile:(TileData *)tile
 {
     focusedTile = tile;
     [self refreshFocus];
+}
+
+-(void)scrollTo:(CGPoint)targetPosition
+{
+    if (targetPosition.x > scrollView.contentSize.width + scrollView.contentInset.right - scrollView.frame.size.width)
+        targetPosition.x = scrollView.contentSize.width + scrollView.contentInset.right - scrollView.frame.size.width;
+    if (targetPosition.y > scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height)
+        targetPosition.y = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.frame.size.height;
+    if (targetPosition.x < -scrollView.contentInset.left)
+        targetPosition.x = -scrollView.contentInset.left;
+    if (targetPosition.y < -scrollView.contentInset.top)
+        targetPosition.y = -scrollView.contentInset.top;
+    [scrollView setContentOffset:scrollView.contentOffset animated:NO];
+    [scrollView setContentOffset:targetPosition animated:YES];
 }
 
 -(void)refreshFocus
@@ -170,16 +183,7 @@
         int tileHeight = [GameTileView tileHeight];
         int offsetX = kTileOffset + focusedTile.x * tileWidth + tileWidth / 2 - scrollView.frame.size.width / 2;
         int offsetY = kTileOffset + focusedTile.y * tileHeight + tileHeight / 2 - scrollView.frame.size.height / 2;
-        if (offsetX > scrollView.contentSize.width - scrollView.frame.size.width)
-            offsetX = scrollView.contentSize.width - scrollView.frame.size.width;
-        if (offsetY > scrollView.contentSize.height - scrollView.frame.size.height)
-            offsetY = scrollView.contentSize.height - scrollView.frame.size.height;
-        if (offsetX < 0)
-            offsetX = 0;
-        if (offsetY < 0)
-            offsetY = 0;
-        [scrollView setContentOffset:scrollView.contentOffset animated:NO];
-        [scrollView setContentOffset:CGPointMake(offsetX, offsetY) animated:YES];
+        [self scrollTo:CGPointMake(offsetX, offsetY)];
     }
 }
 
@@ -236,12 +240,14 @@
             [scrollView setZoomScale:1 animated:YES];
             touchPosition.x -= scrollView.frame.size.width / 2;
             touchPosition.y -= scrollView.frame.size.height / 2;
+            [self scrollTo:touchPosition];
+            /*
             if (touchPosition.x < 0) touchPosition.x = 0;
             if (touchPosition.y < 0) touchPosition.y = 0;
             if (touchPosition.x > scrollView.contentSize.width - scrollView.frame.size.width) touchPosition.x = scrollView.contentSize.width - scrollView.frame.size.width;
             if (touchPosition.y > scrollView.contentSize.height - scrollView.frame.size.height) touchPosition.y = scrollView.contentSize.height - scrollView.frame.size.height;
             [scrollView setContentOffset:touchPosition];
-            scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+             */
             pinchGestureRecognizer.enabled = YES;
             tapGestureRecognizer.enabled = NO;
         }

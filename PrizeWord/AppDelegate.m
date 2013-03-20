@@ -178,6 +178,10 @@ static PrizewordStoreObserver * storeObserver = nil;
     }
     
     UIDeviceOrientation targetOrientation = deviceOrientation;
+    if (targetOrientation != UIDeviceOrientationLandscapeLeft && targetOrientation != UIDeviceOrientationLandscapeRight && targetOrientation != UIDeviceOrientationPortrait && targetOrientation != UIDeviceOrientationPortraitUpsideDown)
+    {
+        targetOrientation = viewOrientation;
+    }
     
     if (![self isIPad] || ![[_navController topViewController] isKindOfClass:[GameViewController class]])
     {
