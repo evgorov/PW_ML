@@ -174,7 +174,9 @@ NSRegularExpression * EMAIL_REGEXP;
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"signup" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleSignupComplete:response receivedData:receivedData];
-    } failCallback:nil];
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+    }];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
