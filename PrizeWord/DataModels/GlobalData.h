@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Facebook.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "PuzzleSetData.h"
 
 @class UserData;
@@ -23,7 +23,6 @@
 @property (nonatomic) NSString * sessionKey;
 @property (nonatomic) UserData * loggedInUser;
 @property (nonatomic) NSArray * monthSets;
-@property (nonatomic) FBSession * fbSession;
 @property (nonatomic) NSString * deviceToken;
 @property (nonatomic) NSMutableDictionary * products;
 // in range [0, 11]

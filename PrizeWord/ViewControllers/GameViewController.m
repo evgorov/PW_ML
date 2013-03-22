@@ -25,6 +25,7 @@
 #import "PrizeWordButton.h"
 #import "FISoundEngine.h"
 #import "NSString+Utils.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface GameViewController (private)
 
@@ -32,6 +33,7 @@
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 -(void)animateFinalScreenAppears:(id)sender;
 
+-(NSDictionary*)parseURLParams:(NSString *)query;
 
 @end
 
@@ -277,33 +279,57 @@
     // facebook
     if (button.tag == 0)
     {
-        Facebook * facebook;
-        
-        if ([GlobalData globalData].fbSession != nil)
+        if ([FBSession activeSession] != nil)
         {
-            facebook = [[Facebook alloc]
-                        initWithAppId:[GlobalData globalData].fbSession.appID
-                        andDelegate:nil];
+            // Put together the dialog parameters
+            NSMutableDictionary *params =
+            [NSMutableDictionary dictionaryWithObjectsAndKeys:
+             @"PrizeWord", @"name",
+             message, @"caption",
+             @"http://prize-word.ru", @"link",
+             nil];
+            [self showActivityIndicator];
             
-            // Store the Facebook session information
-            facebook.accessToken = [GlobalData globalData].fbSession.accessToken;
-            facebook.expirationDate = [GlobalData globalData].fbSession.expirationDate;
+            // Invoke the dialog
+            [FBWebDialogs presentFeedDialogModallyWithSession:nil
+                                                   parameters:params
+                                                      handler:
+             ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                 [self hideActivityIndicator];
+                 
+                 if (error) {
+                     // Case A: Error launching the dialog or publishing story.
+                     NSLog(@"Error publishing story.");
+                 } else {
+                     if (result == FBWebDialogResultDialogNotCompleted) {
+                         // Case B: User clicked the "x" icon
+                         NSLog(@"User canceled story publishing.");
+                         UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при публикации" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                         [alertView show];
+                     } else {
+                         // Case C: Dialog shown and the user clicks Cancel or Share
+                         NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                         if (![urlParams valueForKey:@"post_id"]) {
+                             // User clicked the Cancel button
+                             NSLog(@"User canceled story publishing.");
+                         } else {
+                             // User clicked the Share button
+                             NSString *postID = [urlParams valueForKey:@"post_id"];
+                             
+                             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                             [alertView show];
+                             
+                             NSLog(@"Posted story, id: %@", postID);
+                         }
+                     }
+                 }
+             }];
 
-            NSMutableDictionary* params = [[NSMutableDictionary alloc]
-                                           initWithCapacity:2];
-            [params setObject:@"PrizeWord" forKey:@"name"];
-            [params setObject:message forKey:@"message"];
-            [facebook requestWithGraphPath:@"me/feed"
-                                 andParams:params
-                             andHttpMethod:@"POST"
-                               andDelegate:self];
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
         }
         else
         {
             [SocialNetworks loginFacebookWithViewController:[AppDelegate currentDelegate].rootViewController andCallback:^{
-                if ([GlobalData globalData].fbSession != nil)
+                if ([FBSession activeSession] != nil)
                 {
                     [self handleShareClick:sender];
                 }
@@ -543,18 +569,23 @@
     }];
 }
 
-#pragma mark FBRequestDelegate
+#pragma mark helpers
 
--(void)request:(FBRequest *)request didFailWithError:(NSError *)error
+-(NSDictionary*)parseURLParams:(NSString *)query
 {
-    NSLog(@"share error: %@", error.description);
-    [self hideActivityIndicator];
-}
-
--(void)request:(FBRequest *)request didLoad:(id)result
-{
-    NSLog(@"share complete: %@", result);
-    [self hideActivityIndicator];
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs)
+    {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [[kv objectAtIndex:1]
+         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [params setObject:val forKey:[[kv objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSLog(@"params: %@=%@", [[kv objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [[kv objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
+    }
+    return params;
 }
 
 

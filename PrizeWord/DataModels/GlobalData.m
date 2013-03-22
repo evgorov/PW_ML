@@ -31,7 +31,6 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 @synthesize monthSets = _monthSets;
 @synthesize currentMonth = _currentMonth;
 @synthesize currentYear = _currentYear;
-@synthesize fbSession = _fbSession;
 @synthesize deviceToken = _deviceToken;
 @synthesize products = _products;
 
@@ -55,7 +54,6 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         _sessionKey = nil;
         _loggedInUser = nil;
         _monthSets = nil;
-        _fbSession = nil;
         _deviceToken = nil;
         NSDate * currentDate = [NSDate date];
         NSCalendar * calendar = [NSCalendar currentCalendar];

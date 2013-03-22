@@ -13,7 +13,7 @@
 #import "LoginMainViewController.h"
 #import "RootViewController.h"
 #import "GlobalData.h"
-#import "Facebook.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "PrizewordStoreObserver.h"
 #import "ExternalImage.h"
 #import "GameViewController.h"
@@ -149,7 +149,7 @@ static PrizewordStoreObserver * storeObserver = nil;
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
     [TileImageHelper uninitHelper];
-    [[GlobalData globalData].fbSession close];
+    [[FBSession activeSession] closeAndClearTokenInformation];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application

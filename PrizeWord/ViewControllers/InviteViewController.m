@@ -13,7 +13,7 @@
 #import "GlobalData.h"
 #import "SBJsonParser.h"
 #import "InviteCellView.h"
-#import "Facebook.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #define TAG_VKONTAKTE 1
 #define TAG_FACEBOOK 2
@@ -31,6 +31,7 @@
 
 -(NSString *)userpicForData:(NSDictionary *)userData;
 
+-(void)handleFacebookDialogResult:(FBWebDialogResult)result resultURL:(NSURL *)resultURL error:(NSError *)error;
 -(NSDictionary*)parseURLParams:(NSString *)query;
 
 @end
@@ -91,7 +92,6 @@
     vkFriendsViews = nil;
     fbFriendsViews = nil;
     
-    facebook = nil;
     [super viewDidUnload];
 }
 
@@ -207,20 +207,19 @@
     
     NSDictionary * userData = [fbFriends objectAtIndex:idx];
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                   @"PrizeWord Hello!", @"title",
+                                   @"PrizeWord", @"title",
                                    @"Come check out PrizeWord.",  @"message",
                                    [userData objectForKey:@"id"], @"to",
                                    nil];
+
+  
+    [self showActivityIndicator];
     
-    facebook = [[Facebook alloc]
-                     initWithAppId:FBSession.activeSession.appID
-                     andDelegate:nil];
-    
-    // Store the Facebook session information
-    facebook.accessToken = FBSession.activeSession.accessToken;
-    facebook.expirationDate = FBSession.activeSession.expirationDate;
-    
-    [facebook dialog:@"apprequests" andParams:params andDelegate:self];
+    // Invoke the dialog
+    [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:@"Come check out PrizeWord." title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+         [self hideActivityIndicator];
+         [self handleFacebookDialogResult:result resultURL:resultURL error:error];
+     }];
 }
 
 -(void)inviteAllVKUsers
@@ -279,20 +278,16 @@
         }
         NSLog(@"invite fb friends: %@", usersString);
         NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       @"PrizeWord Hello!", @"title",
+                                       @"PrizeWord", @"title",
                                        @"Come check out PrizeWord.",  @"message",
                                        usersString, @"to",
                                        nil];
-        
-        facebook = [[Facebook alloc]
-                    initWithAppId:FBSession.activeSession.appID
-                    andDelegate:nil];
-        
-        // Store the Facebook session information
-        facebook.accessToken = FBSession.activeSession.accessToken;
-        facebook.expirationDate = FBSession.activeSession.expirationDate;
-        
-        [facebook dialog:@"apprequests" andParams:params andDelegate:self];
+
+        // Invoke the dialog
+        [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:@"Come check out PrizeWord." title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+            [self hideActivityIndicator];
+            [self handleFacebookDialogResult:result resultURL:resultURL error:error];
+        }];
     }
 }
 
@@ -402,82 +397,6 @@
     }
 }
 
--(void)dialog:(FBDialog *)dialog didFailWithError:(NSError *)error
-{
-    [self hideActivityIndicator];
-    NSLog(@"dialog error: %@", error.description);
-}
-
--(void)dialogDidComplete:(FBDialog *)dialog
-{
-    NSLog(@"dialogDidComplete");
-}
-
--(void)dialogDidNotCompleteWithUrl:(NSURL *)url
-{
-    NSLog(@"dialogDidNotCompleteWithURL: %@", url.description);
-}
-
--(void)dialogCompleteWithUrl:(NSURL *)url
-{
-    NSLog(@"dialog complete with URL: %@", url.description);
-    
-    NSDictionary * params = [self parseURLParams:url.query];
-    if ([params objectForKey:@"request"] == nil)
-    {
-        [self hideActivityIndicator];
-    }
-    else
-    {
-        NSMutableString * userIds = [NSMutableString new];
-        [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([(NSString *)key rangeOfString:@"to"].location == 0)
-            {
-                if (userIds.length != 0)
-                {
-                    [userIds appendString:@","];
-                }
-                [userIds appendFormat:@"%@", obj];
-            }
-        }];
-        NSLog(@"userIds: %@", userIds);
-        APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            [self hideActivityIndicator];
-            for (UIView * subview in fbView.subviews) {
-                if ([subview isKindOfClass:[InviteCellView class]])
-                {
-                    InviteCellView * inviteView = (InviteCellView *)subview;
-                    if ([userIds rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.tag] objectForKey:@"id"]].location != NSNotFound)
-                    {
-                        inviteView.btnAdd.enabled = NO;
-                    }
-                }
-            }
-        } failCallback:^(NSError *error) {
-            NSLog(@"invite failed: %@", error.description);
-            [self hideActivityIndicator];
-        }];
-        [request.params setObject:userIds forKey:@"ids"];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request runUsingCache:NO silentMode:YES];
-    }
-}
-
--(void)dialogDidNotComplete:(FBDialog *)dialog
-{
-    [self hideActivityIndicator];
-    NSLog(@"dialog did not complete: %@", dialog.description);
-}
-
--(BOOL)dialog:(FBDialog *)dialog shouldOpenURLInExternalBrowser:(NSURL *)url
-{
-    NSLog(@"dialog should open external url: %@", url.description);
-    return YES;
-    
-}
-
-
 -(NSString *)userpicForData:(NSDictionary *)userData
 {
     NSString * userpicString = [userData objectForKey:@"userpic"];
@@ -490,6 +409,64 @@
         userpicString = nil;
     }
     return userpicString;
+}
+
+-(void)handleFacebookDialogResult:(FBWebDialogResult)result resultURL:(NSURL *)resultURL error:(NSError *)error
+{
+    if (error) {
+        // Case A: Error launching the dialog or publishing story.
+        NSLog(@"Error inviting.");
+    } else {
+        if (result == FBWebDialogResultDialogNotCompleted) {
+            // Case B: User clicked the "x" icon
+            NSLog(@"User canceled inviting.");
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при приглашении друга" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            // Case C: Dialog shown and the user clicks Cancel or Share
+            NSDictionary * params = [self parseURLParams:resultURL.query];
+            if ([params objectForKey:@"request"] == nil)
+            {
+                [self hideActivityIndicator];
+            }
+            else
+            {
+                [self showActivityIndicator];
+                NSMutableString * userIds = [NSMutableString new];
+                [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                    if ([(NSString *)key rangeOfString:@"to"].location == 0)
+                    {
+                        if (userIds.length != 0)
+                        {
+                            [userIds appendString:@","];
+                        }
+                        [userIds appendFormat:@"%@", obj];
+                    }
+                }];
+                NSLog(@"userIds: %@", userIds);
+                APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                    NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                    [self hideActivityIndicator];
+                    for (UIView * subview in fbView.subviews) {
+                        if ([subview isKindOfClass:[InviteCellView class]])
+                        {
+                            InviteCellView * inviteView = (InviteCellView *)subview;
+                            if ([userIds rangeOfString:[(NSDictionary *)[fbFriends objectAtIndex:inviteView.tag] objectForKey:@"id"]].location != NSNotFound)
+                            {
+                                inviteView.btnAdd.enabled = NO;
+                            }
+                        }
+                    }
+                } failCallback:^(NSError *error) {
+                    NSLog(@"invite failed: %@", error.description);
+                    [self hideActivityIndicator];
+                }];
+                [request.params setObject:userIds forKey:@"ids"];
+                [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+                [request runUsingCache:NO silentMode:YES];
+            }
+        }
+    }
 }
 
 -(NSDictionary*)parseURLParams:(NSString *)query

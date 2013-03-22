@@ -10,7 +10,7 @@
 #import "GlobalData.h"
 #import "PrizeWordViewController.h"
 #import "APIRequest.h"
-#import "Facebook.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "SBJsonParser.h"
 #import "UserData.h"
 
@@ -50,40 +50,27 @@
 {
     lastViewController = viewController;
     successCallback = callback;
-    if ([GlobalData globalData].fbSession == nil || ![GlobalData globalData].fbSession.isOpen || [[GlobalData globalData].fbSession.expirationDate compare:[NSDate new]] == NSOrderedDescending)
+    if ([FBSession activeSession] == nil || ![FBSession activeSession].isOpen || [FBSession activeSession].state != FBSessionStateCreatedTokenLoaded || [[FBSession activeSession].accessTokenData.expirationDate compare:[NSDate new]] == NSOrderedDescending)
     {
         // create a fresh session object
-        [GlobalData globalData].fbSession = [[FBSession alloc] initWithPermissions:[NSArray arrayWithObjects:@"read_stream", @"publish_stream", nil]];
-        [FBSession setActiveSession:[GlobalData globalData].fbSession];
-        
-        // if we don't have a cached token, a call to open here would cause UX for login to
-        // occur; we don't want that to happen unless the user clicks the login button, and so
-        // we check here to make sure we have a token before calling open
-        if ([GlobalData globalData].fbSession.state != FBSessionStateCreatedTokenLoaded)
-        {
-            // even though we had a cached token, we need to login to make the session usable
-            [[GlobalData globalData].fbSession openWithCompletionHandler:^(FBSession *session,
-                                                                           FBSessionState status,
-                                                                           NSError *error) {
-                [viewController hideActivityIndicator];
-                if (error == nil && (status == FBSessionStateOpen ||status == FBSessionStateOpenTokenExtended) && session.accessToken != nil)
-                {
-                    [GlobalData globalData].fbSession = session;
-                    [self finalizeAuthorizationWithToken:session.accessToken forProvider:@"facebook" andViewController:viewController];
-                }
-                else
-                {
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-                    alert.tag = 0;
-                    [alert show];
-                }
-            }];
-            
-            [viewController showActivityIndicator];
-            return;
-        }
+        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"read_stream", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+            [viewController hideActivityIndicator];
+            if (error == nil && (status == FBSessionStateOpen ||status == FBSessionStateOpenTokenExtended) && session.accessTokenData.accessToken != nil)
+            {
+                [self finalizeAuthorizationWithToken:session.accessTokenData.accessToken forProvider:@"facebook" andViewController:viewController];
+            }
+            else if (error != nil)
+            {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.description delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+                alert.tag = 0;
+                [alert show];
+            }
+        }];
     }
-    [self finalizeAuthorizationWithToken:[GlobalData globalData].fbSession.accessToken forProvider:@"facebook" andViewController:viewController];
+    else
+    {
+        [self finalizeAuthorizationWithToken:[FBSession activeSession].accessTokenData.accessToken forProvider:@"facebook" andViewController:viewController];
+    }
 }
 
 -(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback

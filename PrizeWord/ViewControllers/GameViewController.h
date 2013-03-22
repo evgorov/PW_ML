@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "EventListenerDelegate.h"
 #import "PrizeWordSwitchView.h"
-#import "Facebook.h"
 #import "PrizeWordViewController.h"
 
 @class GameFieldView;
@@ -18,7 +17,7 @@
 @class PuzzleData;
 @class FISound;
 
-@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, FBRequestDelegate>
+@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
     GameField * gameField;
     UITextField * textField;

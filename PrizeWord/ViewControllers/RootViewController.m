@@ -553,14 +553,13 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
 {
     [self hideMenuAnimated:YES];
     [APIRequest clearCache];
-    [GlobalData globalData].loggedInUser = nil;
-    [GlobalData globalData].sessionKey = nil;
-    if ([GlobalData globalData].fbSession != nil)
+    if ([FBSession activeSession] != nil)
     {
-        [[GlobalData globalData].fbSession close];
-        [GlobalData globalData].fbSession = nil;
+        [[FBSession activeSession] closeAndClearTokenInformation];
         [FBSession setActiveSession:nil];
     }
+    [GlobalData globalData].loggedInUser = nil;
+    [GlobalData globalData].sessionKey = nil;
     
     // vkontakte logout
     NSHTTPCookie *cookie;
