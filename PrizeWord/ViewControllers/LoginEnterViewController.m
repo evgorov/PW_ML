@@ -77,7 +77,9 @@
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"login" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleEnterComplete:response receivedData:receivedData];
-    } failCallback:nil];
+    } failCallback:^(NSError *error) {
+        [self hideActivityIndicator];
+    }];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];

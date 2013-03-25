@@ -168,7 +168,9 @@
             [self resizeView:container newHeight:height animated:YES];
             [self updateContainer:container withViews:views andData:data];
 
-        } failCallback:nil];
+        } failCallback:^(NSError *error) {
+            [self hideActivityIndicator];
+        }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [request runUsingCache:YES silentMode:NO];
     }
