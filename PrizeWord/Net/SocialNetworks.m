@@ -134,6 +134,7 @@
             } failCallback:^(NSError *error) {
                 [viewController hideActivityIndicator];
                 NSLog(@"link accounts failed: %@", error.description);
+                [[GlobalData globalData] loadMe];
             }];
             [linkRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key1"];
             [linkRequest.params setObject:[data objectForKey:@"session_key"] forKey:@"session_key2"];
