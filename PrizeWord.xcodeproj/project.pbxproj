@@ -500,6 +500,17 @@
 		F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2D62711165DF80900EF6E8A /* PrizeWord.xcdatamodeld */; };
 		F2D6271D165DF8FE00EF6E8A /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2D6271B165DF8FE00EF6E8A /* RootViewController.m */; };
 		F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2D6271C165DF8FE00EF6E8A /* RootViewController.xib */; };
+		F2F207131700DC3200351B8A /* login_change_btn_done@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F2070F1700DC3200351B8A /* login_change_btn_done@2x~ipad.png */; };
+		F2F207141700DC3200351B8A /* login_change_bg@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2F207101700DC3200351B8A /* login_change_bg@2x~ipad.jpg */; };
+		F2F207151700DC3200351B8A /* login_change_btn_done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F207111700DC3200351B8A /* login_change_btn_done@2x.png */; };
+		F2F207161700DC3200351B8A /* login_change_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2F207121700DC3200351B8A /* login_change_bg@2x.jpg */; };
+		F2F2071B1700DE0B00351B8A /* login_change_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2F207171700DE0B00351B8A /* login_change_bg.jpg */; };
+		F2F2071C1700DE0C00351B8A /* login_change_btn_done.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F207181700DE0B00351B8A /* login_change_btn_done.png */; };
+		F2F2071D1700DE0C00351B8A /* login_change_bg~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2F207191700DE0B00351B8A /* login_change_bg~ipad.jpg */; };
+		F2F2071E1700DE0C00351B8A /* login_change_btn_done~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F2071A1700DE0B00351B8A /* login_change_btn_done~ipad.png */; };
+		F2F207221700DE6B00351B8A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2F207201700DE6B00351B8A /* ChangePasswordViewController.m */; };
+		F2F207231700DE6B00351B8A /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F207211700DE6B00351B8A /* ChangePasswordViewController.xib */; };
+		F2F207251700EA7000351B8A /* ChangePasswordViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F207241700EA7000351B8A /* ChangePasswordViewController~ipad.xib */; };
 		F2FD00FD16E132B7005144A3 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD00FC16E132B7005144A3 /* OpenGLES.framework */; };
 		F2FD010116E132D9005144A3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010016E132D9005144A3 /* CoreMedia.framework */; };
 		F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010216E132FA005144A3 /* AVFoundation.framework */; };
@@ -1101,6 +1112,18 @@
 		F2D6271A165DF8FE00EF6E8A /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = ViewControllers/RootViewController.h; sourceTree = "<group>"; };
 		F2D6271B165DF8FE00EF6E8A /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = ViewControllers/RootViewController.m; sourceTree = "<group>"; };
 		F2D6271C165DF8FE00EF6E8A /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RootViewController.xib; path = ViewControllers/RootViewController.xib; sourceTree = "<group>"; };
+		F2F2070F1700DC3200351B8A /* login_change_btn_done@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done@2x~ipad.png"; sourceTree = "<group>"; };
+		F2F207101700DC3200351B8A /* login_change_bg@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_change_bg@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F2F207111700DC3200351B8A /* login_change_btn_done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done@2x.png"; sourceTree = "<group>"; };
+		F2F207121700DC3200351B8A /* login_change_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_change_bg@2x.jpg"; sourceTree = "<group>"; };
+		F2F207171700DE0B00351B8A /* login_change_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = login_change_bg.jpg; sourceTree = "<group>"; };
+		F2F207181700DE0B00351B8A /* login_change_btn_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_change_btn_done.png; sourceTree = "<group>"; };
+		F2F207191700DE0B00351B8A /* login_change_bg~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_change_bg~ipad.jpg"; sourceTree = "<group>"; };
+		F2F2071A1700DE0B00351B8A /* login_change_btn_done~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done~ipad.png"; sourceTree = "<group>"; };
+		F2F2071F1700DE6B00351B8A /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChangePasswordViewController.h; path = ViewControllers/ChangePasswordViewController.h; sourceTree = "<group>"; };
+		F2F207201700DE6B00351B8A /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChangePasswordViewController.m; path = ViewControllers/ChangePasswordViewController.m; sourceTree = "<group>"; };
+		F2F207211700DE6B00351B8A /* ChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChangePasswordViewController.xib; path = ViewControllers/ChangePasswordViewController.xib; sourceTree = "<group>"; };
+		F2F207241700EA7000351B8A /* ChangePasswordViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ChangePasswordViewController~ipad.xib"; path = "ViewControllers/ChangePasswordViewController~ipad.xib"; sourceTree = "<group>"; };
 		F2FD00FC16E132B7005144A3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F2FD010016E132D9005144A3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F2FD010216E132FA005144A3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1791,6 +1814,14 @@
 		F2B83ADC166FDA74007C4596 /* login */ = {
 			isa = PBXGroup;
 			children = (
+				F2F207171700DE0B00351B8A /* login_change_bg.jpg */,
+				F2F207181700DE0B00351B8A /* login_change_btn_done.png */,
+				F2F207191700DE0B00351B8A /* login_change_bg~ipad.jpg */,
+				F2F2071A1700DE0B00351B8A /* login_change_btn_done~ipad.png */,
+				F2F2070F1700DC3200351B8A /* login_change_btn_done@2x~ipad.png */,
+				F2F207101700DC3200351B8A /* login_change_bg@2x~ipad.jpg */,
+				F2F207111700DC3200351B8A /* login_change_btn_done@2x.png */,
+				F2F207121700DC3200351B8A /* login_change_bg@2x.jpg */,
 				F286E2DF16779E9800FF5E83 /* login_remind_bg@2x.jpg */,
 				F286E2E016779E9800FF5E83 /* login_remind_bg@2x~ipad.jpg */,
 				F286E2E116779E9800FF5E83 /* login_remind_send_btn_down@2x.png */,
@@ -2002,6 +2033,10 @@
 				F286E3E9167E377200FF5E83 /* RatingViewController.m */,
 				F286E3EA167E377700FF5E83 /* RatingViewController.xib */,
 				F2FDDA2216867AA40013D069 /* RatingViewController~ipad.xib */,
+				F2F2071F1700DE6B00351B8A /* ChangePasswordViewController.h */,
+				F2F207201700DE6B00351B8A /* ChangePasswordViewController.m */,
+				F2F207211700DE6B00351B8A /* ChangePasswordViewController.xib */,
+				F2F207241700EA7000351B8A /* ChangePasswordViewController~ipad.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -2500,6 +2535,16 @@
 				F268D56A16F6D9A900F0FA0F /* switch_disabled@2x.png in Resources */,
 				F268D57B16F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png in Resources */,
 				F268D57C16F9AB0D00F0FA0F /* puzzles_news_page@2x.png in Resources */,
+				F2F207131700DC3200351B8A /* login_change_btn_done@2x~ipad.png in Resources */,
+				F2F207141700DC3200351B8A /* login_change_bg@2x~ipad.jpg in Resources */,
+				F2F207151700DC3200351B8A /* login_change_btn_done@2x.png in Resources */,
+				F2F207161700DC3200351B8A /* login_change_bg@2x.jpg in Resources */,
+				F2F2071B1700DE0B00351B8A /* login_change_bg.jpg in Resources */,
+				F2F2071C1700DE0C00351B8A /* login_change_btn_done.png in Resources */,
+				F2F2071D1700DE0C00351B8A /* login_change_bg~ipad.jpg in Resources */,
+				F2F2071E1700DE0C00351B8A /* login_change_btn_done~ipad.png in Resources */,
+				F2F207231700DE6B00351B8A /* ChangePasswordViewController.xib in Resources */,
+				F2F207251700EA7000351B8A /* ChangePasswordViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2578,6 +2623,7 @@
 				F268D53116E8E8D000F0FA0F /* PrizeWordButton.m in Sources */,
 				F268D54716EDCA0800F0FA0F /* NSData+Utils.m in Sources */,
 				F268D57616F9A9F500F0FA0F /* NewsPageControl.m in Sources */,
+				F2F207221700DE6B00351B8A /* ChangePasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

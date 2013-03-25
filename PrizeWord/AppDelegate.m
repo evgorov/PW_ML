@@ -12,6 +12,7 @@
 #import "PrizeWordNavigationController.h"
 #import "LoginMainViewController.h"
 #import "RootViewController.h"
+#import "ChangePasswordViewController.h"
 #import "GlobalData.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "PrizewordStoreObserver.h"
@@ -110,6 +111,11 @@ static PrizewordStoreObserver * storeObserver = nil;
         [(AVAudioSession *)[AVAudioSession sharedInstance] setDelegate:self];
     }
     
+    NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    if (url != nil && [url.scheme compare:@"prizeword" options:NSCaseInsensitiveSearch])
+    {
+        return YES;
+    }
     // show rules once
     BOOL notFirstTime = [[NSUserDefaults standardUserDefaults] boolForKey:@"not-first-time"];
     if (!notFirstTime)
@@ -297,8 +303,18 @@ static PrizewordStoreObserver * storeObserver = nil;
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    // attempt to extract a token from the url
-    return [FBSession.activeSession handleOpenURL:url];
+    if ([url.scheme compare:@"prizeword" options:NSCaseInsensitiveSearch] == NSOrderedSame)
+    {
+        NSString * token = url.path;
+        NSLog(@"password reset token: %@", token);
+        [_navController pushViewController:[[ChangePasswordViewController alloc] initWithToken:token] animated:YES];
+        return YES;
+    }
+    else
+    {
+        // attempt to extract a token from the url
+        return [FBSession.activeSession handleOpenURL:url];
+    }
 }
 
 #pragma mark - Core Data stack
