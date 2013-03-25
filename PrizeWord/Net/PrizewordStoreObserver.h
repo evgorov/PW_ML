@@ -12,4 +12,6 @@
 
 @interface PrizewordStoreObserver : NSObject<SKPaymentTransactionObserver, EventListenerDelegate>
 
+@property () BOOL shouldIgnoreWarnings;
+
 @end

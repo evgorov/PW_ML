@@ -14,11 +14,14 @@
 
 @implementation PrizewordStoreObserver
 
+@synthesize shouldIgnoreWarnings;
+
 -(id)init
 {
     self = [super init];
     if (self)
     {
+        shouldIgnoreWarnings = NO;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_REQUEST_PRODUCT];
     }
     return self;
@@ -50,6 +53,8 @@
 -(void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
     NSLog(@"paymentQueue updatedTransactions");
+    
+    shouldIgnoreWarnings = NO;
     
     for (SKPaymentTransaction * transaction in transactions)
     {

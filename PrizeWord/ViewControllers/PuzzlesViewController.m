@@ -23,6 +23,7 @@
 #import <StoreKit/StoreKit.h>
 #import "NSString+Utils.h"
 #import "FISoundEngine.h"
+#import "PrizewordStoreObserver.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -560,32 +561,36 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             [self hideActivityIndicator];
-
-            NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
-            for (NSDictionary * puzzleData in puzzlesData)
+            
+            if (response.statusCode == 200)
             {
-                PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
-                if (puzzle != nil)
+                NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
+                for (NSDictionary * puzzleData in puzzlesData)
                 {
-                    [puzzleSetView.puzzleSetData addPuzzlesObject:puzzle];
+                    PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                    if (puzzle != nil)
+                    {
+                        [puzzleSetView.puzzleSetData addPuzzlesObject:puzzle];
+                    }
                 }
+                
+                [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
+                NSError * error;
+                [[AppDelegate currentDelegate].managedObjectContext save:&error];
+                if (error != nil) {
+                    NSLog(@"error: %@", error.description);
+                }
+                [self switchSetViewToBought:puzzleSetView];
             }
-
-            [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
-            NSError * error;
-            [[AppDelegate currentDelegate].managedObjectContext save:&error];
-            if (error != nil) {
-                NSLog(@"error: %@", error.description);
-            }
-            [self switchSetViewToBought:puzzleSetView];
         } failCallback:^(NSError *error) {
+            [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
             NSLog(@"puzzles error: %@", error.description);
             [self hideActivityIndicator];
         }];
         
         [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [puzzlesRequest.params setObject:puzzleSetView.puzzleSetData.puzzle_ids forKey:@"ids"];
-        [puzzlesRequest runUsingCache:NO silentMode:NO];
+        [puzzlesRequest runUsingCache:NO silentMode:[(PrizewordStoreObserver *)[AppDelegate storeObserver] shouldIgnoreWarnings]];
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
         [self hideActivityIndicator];
