@@ -215,7 +215,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         NSLog(@"EVENT_PRODUCT_ERROR");
         [self hideActivityIndicator];
         NSError * error = event.data;
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.description delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.domain delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
     else if (event.type == EVENT_PRODUCT_FAILED)
@@ -558,12 +558,14 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            [self hideActivityIndicator];
-            
-            if (response.statusCode == 200)
-            {
+        [self hideActivityIndicator];
+        if (response.statusCode == 200)
+        {
+            [self showActivityIndicator];
+            APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                [self hideActivityIndicator];
+                
                 NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
                 for (NSDictionary * puzzleData in puzzlesData)
                 {
@@ -581,16 +583,33 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                     NSLog(@"error: %@", error.description);
                 }
                 [self switchSetViewToBought:puzzleSetView];
+            } failCallback:^(NSError *error) {
+                [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
+                NSLog(@"puzzles error: %@", error.description);
+                [self hideActivityIndicator];
+            }];
+            
+            [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+            [puzzlesRequest.params setObject:puzzleSetView.puzzleSetData.puzzle_ids forKey:@"ids"];
+            [puzzlesRequest runUsingCache:NO silentMode:NO];
+        }
+        else if (![(PrizewordStoreObserver *)[AppDelegate storeObserver] shouldIgnoreWarnings])
+        {
+            if (response.statusCode >= 400 && response.statusCode < 500)
+            {
+                [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
+                NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+                NSString * message = [data objectForKey:@"message"];
+                if (message == nil)
+                {
+                    message = NSLocalizedString(@"Unknown error", @"Unknown error on server");
+                }
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+                return;
             }
-        } failCallback:^(NSError *error) {
-            [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
-            NSLog(@"puzzles error: %@", error.description);
-            [self hideActivityIndicator];
-        }];
-        
-        [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [puzzlesRequest.params setObject:puzzleSetView.puzzleSetData.puzzle_ids forKey:@"ids"];
-        [puzzlesRequest runUsingCache:NO silentMode:[(PrizewordStoreObserver *)[AppDelegate storeObserver] shouldIgnoreWarnings]];
+            
+        }
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
         [self hideActivityIndicator];
@@ -602,7 +621,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     {
         [request.params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
     }
-    [request runUsingCache:NO silentMode:NO];
+    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction
