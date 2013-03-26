@@ -12,7 +12,9 @@
 {
     IBOutlet UIView *vkView;
     IBOutlet UIView *fbView;
+    IBOutlet UIView *placeholderView;
     IBOutlet UIImageView *headerView;
+    IBOutlet UILabel *lblPlaceholder;
 
     UIBarButtonItem * inviteAllItem;
     NSMutableArray * vkFriends;

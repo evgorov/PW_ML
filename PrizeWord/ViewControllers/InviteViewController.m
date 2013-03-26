@@ -14,6 +14,7 @@
 #import "SBJsonParser.h"
 #import "InviteCellView.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "AppDelegate.h"
 
 #define TAG_VKONTAKTE 1
 #define TAG_FACEBOOK 2
@@ -51,6 +52,8 @@
     fbFriends = [NSMutableArray new];
     vkFriendsViews = [NSMutableArray new];
     fbFriendsViews = [NSMutableArray new];
+    
+    lblPlaceholder.font = [UIFont fontWithName:@"DINPro-Bold" size:[AppDelegate currentDelegate].isIPad ? 18 : 14];
 
     if ([GlobalData globalData].loggedInUser.vkProvider != nil)
     {
@@ -59,6 +62,10 @@
     if ([GlobalData globalData].loggedInUser.fbProvider != nil)
     {
         [self addFramedView:fbView];
+    }
+    if ([GlobalData globalData].loggedInUser.vkProvider == nil && [GlobalData globalData].loggedInUser.fbProvider == nil)
+    {
+        [self addFramedView:placeholderView];
     }
 }
 
@@ -76,8 +83,14 @@
                 [PrizeWordNavigationBar containerWithView:inviteAllButton]];
     [self.navigationItem setRightBarButtonItem:inviteAllItem animated:animated];
     
-    [self updateData:vkFriends withViews:vkFriendsViews container:vkView andProvider:@"vkontakte"];
-    [self updateData:fbFriends withViews:fbFriendsViews container:fbView andProvider:@"facebook"];
+    if ([GlobalData globalData].loggedInUser.vkProvider != nil)
+    {
+        [self updateData:vkFriends withViews:vkFriendsViews container:vkView andProvider:@"vkontakte"];
+    }
+    if ([GlobalData globalData].loggedInUser.fbProvider != nil)
+    {
+        [self updateData:fbFriends withViews:fbFriendsViews container:fbView andProvider:@"facebook"];
+    }
 }
 
 - (void)viewDidUnload
@@ -92,6 +105,8 @@
     vkFriendsViews = nil;
     fbFriendsViews = nil;
     
+    placeholderView = nil;
+    lblPlaceholder = nil;
     [super viewDidUnload];
 }
 
