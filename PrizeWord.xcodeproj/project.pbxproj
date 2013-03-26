@@ -127,7 +127,6 @@
 		F268D53616E9013400F0FA0F /* puzzle_solved.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */; };
 		F268D53716E9013700F0FA0F /* question_answered.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52916E8E8A500F0FA0F /* question_answered.caf */; };
 		F268D53816E9013900F0FA0F /* sidebar.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52A16E8E8A500F0FA0F /* sidebar.caf */; };
-		F268D53916E9013B00F0FA0F /* toggle_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52B16E8E8A500F0FA0F /* toggle_set.caf */; };
 		F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52C16E8E8A500F0FA0F /* type_1.caf */; };
 		F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52D16E8E8A500F0FA0F /* type_2.caf */; };
 		F268D53C16E9014000F0FA0F /* type_3.caf in Resources */ = {isa = PBXBuildFile; fileRef = F268D52E16E8E8A500F0FA0F /* type_3.caf */; };
@@ -511,6 +510,8 @@
 		F2F207221700DE6B00351B8A /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2F207201700DE6B00351B8A /* ChangePasswordViewController.m */; };
 		F2F207231700DE6B00351B8A /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F207211700DE6B00351B8A /* ChangePasswordViewController.xib */; };
 		F2F207251700EA7000351B8A /* ChangePasswordViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2F207241700EA7000351B8A /* ChangePasswordViewController~ipad.xib */; };
+		F2F2075817021F2600351B8A /* close_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = F2F2075617021CD100351B8A /* close_set.caf */; };
+		F2F2075917021F2900351B8A /* open_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = F2F2075717021CD100351B8A /* open_set.caf */; };
 		F2FD00FD16E132B7005144A3 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD00FC16E132B7005144A3 /* OpenGLES.framework */; };
 		F2FD010116E132D9005144A3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010016E132D9005144A3 /* CoreMedia.framework */; };
 		F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010216E132FA005144A3 /* AVFoundation.framework */; };
@@ -682,7 +683,6 @@
 		F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = puzzle_solved.caf; path = sounds/puzzle_solved.caf; sourceTree = "<group>"; };
 		F268D52916E8E8A500F0FA0F /* question_answered.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = question_answered.caf; path = sounds/question_answered.caf; sourceTree = "<group>"; };
 		F268D52A16E8E8A500F0FA0F /* sidebar.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sidebar.caf; path = sounds/sidebar.caf; sourceTree = "<group>"; };
-		F268D52B16E8E8A500F0FA0F /* toggle_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = toggle_set.caf; path = sounds/toggle_set.caf; sourceTree = "<group>"; };
 		F268D52C16E8E8A500F0FA0F /* type_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_1.caf; path = sounds/type_1.caf; sourceTree = "<group>"; };
 		F268D52D16E8E8A500F0FA0F /* type_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_2.caf; path = sounds/type_2.caf; sourceTree = "<group>"; };
 		F268D52E16E8E8A500F0FA0F /* type_3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = type_3.caf; path = sounds/type_3.caf; sourceTree = "<group>"; };
@@ -1124,6 +1124,8 @@
 		F2F207201700DE6B00351B8A /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChangePasswordViewController.m; path = ViewControllers/ChangePasswordViewController.m; sourceTree = "<group>"; };
 		F2F207211700DE6B00351B8A /* ChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChangePasswordViewController.xib; path = ViewControllers/ChangePasswordViewController.xib; sourceTree = "<group>"; };
 		F2F207241700EA7000351B8A /* ChangePasswordViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ChangePasswordViewController~ipad.xib"; path = "ViewControllers/ChangePasswordViewController~ipad.xib"; sourceTree = "<group>"; };
+		F2F2075617021CD100351B8A /* close_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = close_set.caf; path = sounds/close_set.caf; sourceTree = "<group>"; };
+		F2F2075717021CD100351B8A /* open_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = open_set.caf; path = sounds/open_set.caf; sourceTree = "<group>"; };
 		F2FD00FC16E132B7005144A3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F2FD010016E132D9005144A3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F2FD010216E132FA005144A3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1215,6 +1217,8 @@
 		F20F0F1516E8C1FC009AEEE6 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				F2F2075617021CD100351B8A /* close_set.caf */,
+				F2F2075717021CD100351B8A /* open_set.caf */,
 				F268D52416E8E8A500F0FA0F /* buy_set.caf */,
 				F268D52516E8E8A500F0FA0F /* counting.caf */,
 				F268D52616E8E8A500F0FA0F /* interface_button.caf */,
@@ -1222,7 +1226,6 @@
 				F268D52816E8E8A500F0FA0F /* puzzle_solved.caf */,
 				F268D52916E8E8A500F0FA0F /* question_answered.caf */,
 				F268D52A16E8E8A500F0FA0F /* sidebar.caf */,
-				F268D52B16E8E8A500F0FA0F /* toggle_set.caf */,
 				F268D52C16E8E8A500F0FA0F /* type_1.caf */,
 				F268D52D16E8E8A500F0FA0F /* type_2.caf */,
 				F268D52E16E8E8A500F0FA0F /* type_3.caf */,
@@ -2092,14 +2095,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F268D53C16E9014000F0FA0F /* type_3.caf in Resources */,
+				F2F2075917021F2900351B8A /* open_set.caf in Resources */,
+				F2F2075817021F2600351B8A /* close_set.caf in Resources */,
 				F268D53516E9012900F0FA0F /* push_notification.caf in Resources */,
 				F268D53416E9012700F0FA0F /* interface_button.caf in Resources */,
 				F268D53816E9013900F0FA0F /* sidebar.caf in Resources */,
-				F268D53916E9013B00F0FA0F /* toggle_set.caf in Resources */,
 				F268D53316E9012500F0FA0F /* counting.caf in Resources */,
 				F268D53716E9013700F0FA0F /* question_answered.caf in Resources */,
 				F268D53216E9012300F0FA0F /* buy_set.caf in Resources */,
 				F268D53616E9013400F0FA0F /* puzzle_solved.caf in Resources */,
+				F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */,
 				F2D6271E165DF8FE00EF6E8A /* RootViewController.xib in Resources */,
 				F2950233165DFF7900DACFBA /* GameViewController.xib in Resources */,
 				F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */,
@@ -2119,11 +2125,8 @@
 				F2868C971669F992003F0686 /* header_play_btn@2x.png in Resources */,
 				F2868C981669F992003F0686 /* header_play_btn_down@2x.png in Resources */,
 				F2868C9F1669FD21003F0686 /* DINPro-Black.otf in Resources */,
-				F268D53C16E9014000F0FA0F /* type_3.caf in Resources */,
-				F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */,
 				F2868CA01669FD21003F0686 /* DINPro-Bold.otf in Resources */,
 				F2868CA11669FD21003F0686 /* DINPro-Light.otf in Resources */,
-				F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */,
 				F2868CA21669FD21003F0686 /* DINPro-Medium.otf in Resources */,
 				F2868CA31669FD21003F0686 /* DINPro-Regular.otf in Resources */,
 				F2868CAE166A22CE003F0686 /* header_hint_btn_down@2x~ipad.png in Resources */,
@@ -2181,6 +2184,7 @@
 				F2B83B6C1673945B007C4596 /* login_register_datepicker_done_btn@2x.png in Resources */,
 				F2B83B6D1673945B007C4596 /* login_register_datepicker_pane_bg@2x.png in Resources */,
 				F2B83B6E1673945B007C4596 /* login_register_register_btn_down@2x.png in Resources */,
+				F268D53B16E9013E00F0FA0F /* type_2.caf in Resources */,
 				F2B83B6F1673945B007C4596 /* login_register_register_btn_down@2x~ipad.png in Resources */,
 				F2B83B701673945B007C4596 /* login_register_register_btn@2x.png in Resources */,
 				F2B83B711673945B007C4596 /* login_register_register_btn@2x~ipad.png in Resources */,

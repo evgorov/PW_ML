@@ -91,7 +91,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     productsRequest = nil;
     
     buySetSound = [[FISoundEngine sharedEngine] soundNamed:@"buy_set.caf" error:nil];
-    toggleSetSound = [[FISoundEngine sharedEngine] soundNamed:@"toggle_set.caf" error:nil];
+    openSetSound = [[FISoundEngine sharedEngine] soundNamed:@"open_set.caf" error:nil];
+    closeSetSound = [[FISoundEngine sharedEngine] soundNamed:@"close_set.caf" error:nil];
     
     [self updateNews];
 }
@@ -179,7 +180,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         
         SKPaymentTransaction * paymentTransaction = event.data;
         NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
-        [buySetSound play];
 
         if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
@@ -561,6 +561,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         [self hideActivityIndicator];
         if (response.statusCode == 200)
         {
+            [buySetSound play];
             [self showActivityIndicator];
             APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -582,6 +583,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 if (error != nil) {
                     NSLog(@"error: %@", error.description);
                 }
+                [closeSetSound play];
                 [self switchSetViewToBought:puzzleSetView];
             } failCallback:^(NSError *error) {
                 [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
@@ -685,7 +687,14 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
     btnShowMore.selected = !btnShowMore.selected;
     CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
-    [toggleSetSound play];
+    if (btnShowMore.selected)
+    {
+        [openSetSound play];
+    }
+    else
+    {
+        [closeSetSound play];
+    }
     
     [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
 }

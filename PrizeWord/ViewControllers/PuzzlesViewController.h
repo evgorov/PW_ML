@@ -39,7 +39,8 @@
     SKProductsRequest * productsRequest;
     
     FISound * buySetSound;
-    FISound * toggleSetSound;
+    FISound * openSetSound;
+    FISound * closeSetSound;
 }
 
 @end
