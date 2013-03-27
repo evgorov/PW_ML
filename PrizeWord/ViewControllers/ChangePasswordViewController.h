@@ -8,7 +8,7 @@
 
 #import "PrizeWordViewController.h"
 
-@interface ChangePasswordViewController : PrizeWordViewController <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ChangePasswordViewController : PrizeWordViewController <UITextFieldDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
     IBOutlet UIScrollView *scrollView;
     IBOutlet UITextField *tfPassword;
@@ -17,9 +17,10 @@
     UIView * activeResponder;
     
     NSString * token;
+    BOOL showMenu;
 }
 
--(id)initWithToken:(NSString *)token;
+-(id)initWithToken:(NSString *)token showMenu:(BOOL)showMenu;
 -(IBAction)handleDoneClick:(id)sender;
 
 @end

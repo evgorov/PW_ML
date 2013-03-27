@@ -114,6 +114,7 @@ static PrizewordStoreObserver * storeObserver = nil;
     NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
     if (url != nil && [url.scheme compare:@"prizeword" options:NSCaseInsensitiveSearch])
     {
+        NSLog(@"application did launched with URL: %@", url.absoluteString);
         return YES;
     }
     // show rules once
@@ -305,9 +306,9 @@ static PrizewordStoreObserver * storeObserver = nil;
          annotation:(id)annotation {
     if ([url.scheme compare:@"prizeword" options:NSCaseInsensitiveSearch] == NSOrderedSame)
     {
-        NSString * token = url.path;
-        NSLog(@"password reset token: %@", token);
-        [_navController pushViewController:[[ChangePasswordViewController alloc] initWithToken:token] animated:YES];
+        NSString * token = [url.absoluteString substringFromIndex:12];
+        NSLog(@"password reset token: %@, absolute string: %@", token, url.absoluteString);
+        [_navController pushViewController:[[ChangePasswordViewController alloc] initWithToken:token showMenu:!_rootViewController.isMenuHidden] animated:YES];
         return YES;
     }
     else

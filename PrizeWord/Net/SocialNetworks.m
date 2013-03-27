@@ -227,6 +227,8 @@
     NSLog(@"login failed: %@", error.description);
     [webView removeFromSuperview];
     [lastViewController hideActivityIndicator];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView

@@ -8,6 +8,8 @@
 
 #import "ChangePasswordViewController.h"
 #import "APIRequest.h"
+#import "AppDelegate.h"
+#import "RootViewController.h"
 
 @interface ChangePasswordViewController (private)
 
@@ -22,12 +24,13 @@
 
 #pragma mark UIViewController lifecycle
 
--(id)initWithToken:(NSString *)token_
+-(id)initWithToken:(NSString *)token_ showMenu:(BOOL)showMenu_
 {
     self = [super init];
     if (self)
     {
         token = token_;
+        showMenu = showMenu_;
     }
     return self;
 }
@@ -60,6 +63,8 @@
     activeResponder = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [[AppDelegate currentDelegate].rootViewController hideMenuAnimated:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -73,6 +78,11 @@
     activeResponder = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    if (showMenu)
+    {
+        [[AppDelegate currentDelegate].rootViewController showMenuAnimated:animated];
+    }
 }
 
 #pragma mark action handlers
@@ -96,6 +106,8 @@
     APIRequest * request = [APIRequest postRequest:@"password_reset" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
         NSLog(@"password_reset success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Смена пароля" message:@"Новый пароль успешно установлен! Теперь вы можете войти с помощью своего e-mail и нового пароля." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
         NSLog(@"password_reset fail: %@", error.description);
@@ -178,6 +190,13 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

@@ -68,7 +68,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 {
     [super viewDidLoad];
     
-    self.title = @"Сканворды";
+    self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen woth puzzles");
     puzzlesViewCaption.text = @"Сканворды за ...";   
     
     UISwipeGestureRecognizer * newsRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsPrev:)];
