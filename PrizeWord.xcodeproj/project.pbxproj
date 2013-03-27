@@ -516,6 +516,7 @@
 		F2F2075F1702317400351B8A /* login_change_btn_done_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F2075B1702317400351B8A /* login_change_btn_done_down@2x.png */; };
 		F2F207601702317400351B8A /* login_change_btn_done_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F2075C1702317400351B8A /* login_change_btn_done_down@2x~ipad.png */; };
 		F2F207611702317400351B8A /* login_change_btn_done_down~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F2075D1702317400351B8A /* login_change_btn_done_down~ipad.png */; };
+		F2F207631702EB3500351B8A /* secondary_ding.caf in Resources */ = {isa = PBXBuildFile; fileRef = F2F207621702EB2D00351B8A /* secondary_ding.caf */; };
 		F2FD00FD16E132B7005144A3 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD00FC16E132B7005144A3 /* OpenGLES.framework */; };
 		F2FD010116E132D9005144A3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010016E132D9005144A3 /* CoreMedia.framework */; };
 		F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FD010216E132FA005144A3 /* AVFoundation.framework */; };
@@ -1134,6 +1135,7 @@
 		F2F2075B1702317400351B8A /* login_change_btn_done_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done_down@2x.png"; sourceTree = "<group>"; };
 		F2F2075C1702317400351B8A /* login_change_btn_done_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done_down@2x~ipad.png"; sourceTree = "<group>"; };
 		F2F2075D1702317400351B8A /* login_change_btn_done_down~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_change_btn_done_down~ipad.png"; sourceTree = "<group>"; };
+		F2F207621702EB2D00351B8A /* secondary_ding.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = secondary_ding.caf; path = sounds/secondary_ding.caf; sourceTree = "<group>"; };
 		F2FD00FC16E132B7005144A3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F2FD010016E132D9005144A3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F2FD010216E132FA005144A3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1225,6 +1227,7 @@
 		F20F0F1516E8C1FC009AEEE6 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				F2F207621702EB2D00351B8A /* secondary_ding.caf */,
 				F2F2075617021CD100351B8A /* close_set.caf */,
 				F2F2075717021CD100351B8A /* open_set.caf */,
 				F268D52416E8E8A500F0FA0F /* buy_set.caf */,
@@ -2157,6 +2160,7 @@
 				F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */,
 				F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */,
 				F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */,
+				F2F207631702EB3500351B8A /* secondary_ding.caf in Resources */,
 				F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */,
 				F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */,
 				F2868CDA166EF4E4003F0686 /* PrizeWordNavigationController.xib in Resources */,

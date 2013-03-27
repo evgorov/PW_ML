@@ -51,6 +51,7 @@
     FISound * puzzleSolvedSound;
     NSArray * typeSounds;
     FISound * countingSound;
+    FISound * secondaryDingSound;
 }
 
 -(id)initWithGameField:(GameField *)gameField;

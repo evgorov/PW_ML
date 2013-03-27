@@ -49,6 +49,7 @@
         puzzleSolvedSound = [se soundNamed:@"puzzle_solved.caf" error:nil];
         typeSounds = [NSArray arrayWithObjects:[se soundNamed:@"type_1.caf" error:nil], [se soundNamed:@"type_2.caf" error:nil], [se soundNamed:@"type_3.caf" error:nil], nil];
         countingSound = [se soundNamed:@"counting.caf" error:nil];
+        secondaryDingSound = [se soundNamed:@"secondary_ding.caf" error:nil];
     }
     return self;
 }
@@ -544,6 +545,7 @@
         
         lblFinalBaseScore.hidden = NO;
         [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [secondaryDingSound play];
             lblFinalBaseScore.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -552,6 +554,7 @@
         }];
 
         [UIView animateWithDuration:0.25f delay:0.5f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [secondaryDingSound play];
             lblFinalTimeBonus.hidden = NO;
             lblFinalTimeBonus.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
         } completion:^(BOOL finished) {
