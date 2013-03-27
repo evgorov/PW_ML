@@ -53,7 +53,7 @@
     if ([FBSession activeSession] == nil || ![FBSession activeSession].isOpen || [FBSession activeSession].state != FBSessionStateCreatedTokenLoaded || [[FBSession activeSession].accessTokenData.expirationDate compare:[NSDate new]] == NSOrderedDescending)
     {
         // create a fresh session object
-        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"read_stream", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        [FBSession openActiveSessionWithReadPermissions:[NSArray arrayWithObjects:@"read_stream", nil] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             [viewController hideActivityIndicator];
             if (error == nil && (status == FBSessionStateOpen ||status == FBSessionStateOpenTokenExtended) && session.accessTokenData.accessToken != nil)
             {
