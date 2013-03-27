@@ -82,7 +82,7 @@
         }
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.domain delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }];
     [request.params setObject:txtEmail.text forKey:@"email"];

@@ -215,7 +215,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         NSLog(@"EVENT_PRODUCT_ERROR");
         [self hideActivityIndicator];
         NSError * error = event.data;
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.domain delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
     else if (event.type == EVENT_PRODUCT_FAILED)
