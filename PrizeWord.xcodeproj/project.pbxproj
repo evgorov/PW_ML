@@ -424,6 +424,14 @@
 		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
 		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F295025616631F6500DACFBA /* TileData.m in Sources */ = {isa = PBXBuildFile; fileRef = F295025516631F6400DACFBA /* TileData.m */; };
+		F29BAE20170C911600D22FCC /* rules_btn_close_down.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE1E170C911600D22FCC /* rules_btn_close_down.png */; };
+		F29BAE21170C911600D22FCC /* rules_btn_close.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE1F170C911600D22FCC /* rules_btn_close.png */; };
+		F29BAE28170C96AE00D22FCC /* rules_btn_close_down@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE22170C96AE00D22FCC /* rules_btn_close_down@2x~ipad.png */; };
+		F29BAE29170C96AE00D22FCC /* rules_btn_close@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE23170C96AE00D22FCC /* rules_btn_close@2x~ipad.png */; };
+		F29BAE2A170C96AE00D22FCC /* rules_btn_close_down~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE24170C96AE00D22FCC /* rules_btn_close_down~ipad.png */; };
+		F29BAE2B170C96AE00D22FCC /* rules_btn_close~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE25170C96AE00D22FCC /* rules_btn_close~ipad.png */; };
+		F29BAE2C170C96AE00D22FCC /* rules_btn_close_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE26170C96AE00D22FCC /* rules_btn_close_down@2x.png */; };
+		F29BAE2D170C96AE00D22FCC /* rules_btn_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F29BAE27170C96AE00D22FCC /* rules_btn_close@2x.png */; };
 		F2A22DE61664853100CF7859 /* tile_letter_empty_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */; };
 		F2A22DE71664853100CF7859 /* tile_letter_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */; };
 		F2A22DE81664853100CF7859 /* tile_letter_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */; };
@@ -1033,6 +1041,14 @@
 		F2950252166316AD00DACFBA /* GameFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameFieldView.m; path = Views/GameFieldView.m; sourceTree = "<group>"; };
 		F295025416631F6400DACFBA /* TileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileData.h; path = GameLogic/TileData.h; sourceTree = "<group>"; };
 		F295025516631F6400DACFBA /* TileData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TileData.m; path = GameLogic/TileData.m; sourceTree = "<group>"; };
+		F29BAE1E170C911600D22FCC /* rules_btn_close_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rules_btn_close_down.png; sourceTree = "<group>"; };
+		F29BAE1F170C911600D22FCC /* rules_btn_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rules_btn_close.png; sourceTree = "<group>"; };
+		F29BAE22170C96AE00D22FCC /* rules_btn_close_down@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close_down@2x~ipad.png"; sourceTree = "<group>"; };
+		F29BAE23170C96AE00D22FCC /* rules_btn_close@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close@2x~ipad.png"; sourceTree = "<group>"; };
+		F29BAE24170C96AE00D22FCC /* rules_btn_close_down~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close_down~ipad.png"; sourceTree = "<group>"; };
+		F29BAE25170C96AE00D22FCC /* rules_btn_close~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close~ipad.png"; sourceTree = "<group>"; };
+		F29BAE26170C96AE00D22FCC /* rules_btn_close_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close_down@2x.png"; sourceTree = "<group>"; };
+		F29BAE27170C96AE00D22FCC /* rules_btn_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_btn_close@2x.png"; sourceTree = "<group>"; };
 		F2A22DDD1664853100CF7859 /* tile_letter_empty_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty_input@2x.png"; sourceTree = "<group>"; };
 		F2A22DDE1664853100CF7859 /* tile_letter_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_empty@2x.png"; sourceTree = "<group>"; };
 		F2A22DDF1664853100CF7859 /* tile_letter_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_letter_input@2x.png"; sourceTree = "<group>"; };
@@ -1623,6 +1639,14 @@
 		F286E3C5167DD7BC00FF5E83 /* rules */ = {
 			isa = PBXGroup;
 			children = (
+				F29BAE22170C96AE00D22FCC /* rules_btn_close_down@2x~ipad.png */,
+				F29BAE23170C96AE00D22FCC /* rules_btn_close@2x~ipad.png */,
+				F29BAE24170C96AE00D22FCC /* rules_btn_close_down~ipad.png */,
+				F29BAE25170C96AE00D22FCC /* rules_btn_close~ipad.png */,
+				F29BAE26170C96AE00D22FCC /* rules_btn_close_down@2x.png */,
+				F29BAE27170C96AE00D22FCC /* rules_btn_close@2x.png */,
+				F29BAE1E170C911600D22FCC /* rules_btn_close_down.png */,
+				F29BAE1F170C911600D22FCC /* rules_btn_close.png */,
 				F2FDDA1A16867A470013D069 /* rules_page_1@2x~ipad.png */,
 				F2FDDA1B16867A470013D069 /* rules_pagecontrol_empty@2x~ipad.png */,
 				F2FDDA1C16867A470013D069 /* rules_pagecontrol_full@2x~ipad.png */,
@@ -2569,6 +2593,14 @@
 				F2F2075F1702317400351B8A /* login_change_btn_done_down@2x.png in Resources */,
 				F2F207601702317400351B8A /* login_change_btn_done_down@2x~ipad.png in Resources */,
 				F2F207611702317400351B8A /* login_change_btn_done_down~ipad.png in Resources */,
+				F29BAE20170C911600D22FCC /* rules_btn_close_down.png in Resources */,
+				F29BAE21170C911600D22FCC /* rules_btn_close.png in Resources */,
+				F29BAE28170C96AE00D22FCC /* rules_btn_close_down@2x~ipad.png in Resources */,
+				F29BAE29170C96AE00D22FCC /* rules_btn_close@2x~ipad.png in Resources */,
+				F29BAE2A170C96AE00D22FCC /* rules_btn_close_down~ipad.png in Resources */,
+				F29BAE2B170C96AE00D22FCC /* rules_btn_close~ipad.png in Resources */,
+				F29BAE2C170C96AE00D22FCC /* rules_btn_close_down@2x.png in Resources */,
+				F29BAE2D170C96AE00D22FCC /* rules_btn_close@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

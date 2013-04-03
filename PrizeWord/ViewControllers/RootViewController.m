@@ -671,6 +671,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     [self hideOverlay];
 }
 
+- (IBAction)handleRulesCloseClick:(id)sender
+{
+    [self hideOverlay];
+}
+
 -(void)handlePageButtonClick:(id)sender
 {
     NSArray * pageButtons = nil;
