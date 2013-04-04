@@ -2135,6 +2135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F268D53C16E9014000F0FA0F /* type_3.caf in Resources */,
+				F2F207631702EB3500351B8A /* secondary_ding.caf in Resources */,
 				F2F2075917021F2900351B8A /* open_set.caf in Resources */,
 				F2F2075817021F2600351B8A /* close_set.caf in Resources */,
 				F268D53516E9012900F0FA0F /* push_notification.caf in Resources */,
@@ -2184,7 +2185,6 @@
 				F2868CCC166CB362003F0686 /* ReleaseNotes.txt in Resources */,
 				F2868CCE166CB5B1003F0686 /* ReleaseNotesViewController~ipad.xib in Resources */,
 				F2868CD6166DC83D003F0686 /* tile_arrow_north_left@2x.png in Resources */,
-				F2F207631702EB3500351B8A /* secondary_ding.caf in Resources */,
 				F2868CD7166DC83D003F0686 /* tile_arrow_north_up@2x.png in Resources */,
 				F2868CD8166DC83D003F0686 /* tile_arrow_northwest_right@2x.png in Resources */,
 				F2868CDA166EF4E4003F0686 /* PrizeWordNavigationController.xib in Resources */,
