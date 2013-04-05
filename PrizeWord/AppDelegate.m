@@ -62,10 +62,14 @@ static PrizewordStoreObserver * storeObserver = nil;
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    NSLog(@"screen size: %f %f", _window.frame.size.width, _window.frame.size.height);
     _window.autoresizesSubviews = YES;
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
-    _navController.viewControllers = [NSArray arrayWithObject:[LoginMainViewController new]];
     _navController.view.autoresizesSubviews = YES;
+    LoginMainViewController * loginMainViewController = [LoginMainViewController new];
+    loginMainViewController.view.frame = _navController.view.frame;
+    NSLog(@"login: %f %f", loginMainViewController.view.bounds.size.width, loginMainViewController.view.bounds.size.height);
+    _navController.viewControllers = [NSArray arrayWithObject:loginMainViewController];
     _rootViewController = [[RootViewController alloc] initWithNavigationController:_navController];
     _rootViewController.view.clipsToBounds = YES;
     _rootViewController.view.autoresizesSubviews = YES;
@@ -215,7 +219,7 @@ static PrizewordStoreObserver * storeObserver = nil;
         NSLog(@"change orientation from %d to %d", viewOrientation, targetOrientation);
         viewOrientation = targetOrientation;
         NSLog(@"window frame: %f %f %f %f", _window.frame.origin.x, _window.frame.origin.y, _window.frame.size.width, _window.frame.size.height);
-        CGSize frameSize = _isIPad ? CGSizeMake(768, 1024) : CGSizeMake(320, 480);
+        CGSize frameSize = _isIPad ? CGSizeMake(768, 1024) : ([UIScreen mainScreen].bounds.size.height == 568 ? CGSizeMake(320, 568) : CGSizeMake(320, 480));
         switch (targetOrientation)
         {
             case UIDeviceOrientationPortrait:

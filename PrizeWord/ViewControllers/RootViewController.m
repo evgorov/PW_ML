@@ -76,9 +76,18 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     mainMenuView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"menu_bg_tile.jpg"]];
     mainMenuYourResult.font = [UIFont fontWithName:@"DINPro-Bold" size:[AppDelegate currentDelegate].isIPad ? 18 : 15];
     mainMenuYourResult.text = [NSString stringWithFormat:@"Ваш результат в %@", MONTHS3[[GlobalData globalData].currentMonth]];
+    
+    // iPhone 5
+    if ([UIScreen mainScreen].bounds.size.height == 568)
+    {
+        CGRect frameRect = overlayContainer.frame;
+        frameRect.size.height = 568 - (480 - frameRect.size.height);
+        overlayContainer.frame = frameRect;
+    }
 
     
     [self.view addSubview:navController.view];
+    navController.view.frame = self.view.frame;
     if (_isMenuHidden)
     {
         [self hideMenuAnimated:NO];
@@ -117,16 +126,6 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
-/*
-    gpuImageView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    uiElementInput = [[GPUImageUIElement alloc] initWithView:self.view];
-    
-    blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
-    blurFilter.blurSize = 5;
-
-    [uiElementInput addTarget:blurFilter];
-    [blurFilter addTarget:gpuImageView];
-*/
 }
 
 - (void)viewDidUnload
@@ -151,6 +150,12 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
 
     mainMenuAvatarActivityIndicator = nil;
     [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSLog(@"root view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
 }
 
 -(void)orientationChanged:(UIDeviceOrientation)orientation

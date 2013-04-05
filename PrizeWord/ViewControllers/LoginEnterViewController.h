@@ -16,6 +16,7 @@
     IBOutlet UITextField *txtPassword;
     
     UIView * activeResponder;
+    float scrollViewDefaultHeight;
 }
 
 @end

@@ -64,6 +64,9 @@ static int VERTICAL_SPACE = 23;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    CGRect frameRect = scrollView.frame;
+    frameRect.size.height = self.view.frame.size.height;
+    scrollView.frame = frameRect;
     
     if (![AppDelegate currentDelegate].isIPad)
     {

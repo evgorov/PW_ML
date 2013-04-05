@@ -120,6 +120,7 @@
     [btnHint.titleLabel setFont:[UIFont fontWithName:@"DINPro-Black" size:18]];
     
     [gameFieldView setGameField:gameField];
+    gameFieldView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     textField = [UITextField new];
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.hidden = YES;

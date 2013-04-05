@@ -169,6 +169,7 @@
 		F279AE79168959F200424267 /* frame_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE66168959F200424267 /* frame_border@2x.png */; };
 		F279AE7C16895A1900424267 /* score_score_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE7A16895A1900424267 /* score_score_bg@2x~ipad.png */; };
 		F279AE7D16895A1900424267 /* score_score_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F279AE7B16895A1900424267 /* score_score_bg@2x.png */; };
+		F2840C5D170F1D400003F1F2 /* login_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F2840C5C170F1D3F0003F1F2 /* login_bg@2x.jpg */; };
 		F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0216A5E62C0041C1D5 /* APIRequest.m */; };
 		F2848E2516AA73B50041C1D5 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0D16AA73B50041C1D5 /* NSObject+SBJson.m */; };
 		F2848E2616AA73B50041C1D5 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E1016AA73B50041C1D5 /* SBJsonParser.m */; };
@@ -744,6 +745,7 @@
 		F279AE66168959F200424267 /* frame_border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border@2x.png"; sourceTree = "<group>"; };
 		F279AE7A16895A1900424267 /* score_score_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_score_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		F279AE7B16895A1900424267 /* score_score_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_score_bg@2x.png"; sourceTree = "<group>"; };
+		F2840C5C170F1D3F0003F1F2 /* login_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "login_bg@2x.jpg"; sourceTree = "<group>"; };
 		F2848E0116A5E62C0041C1D5 /* APIRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = APIRequest.h; path = Net/APIRequest.h; sourceTree = "<group>"; };
 		F2848E0216A5E62C0041C1D5 /* APIRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = APIRequest.m; path = Net/APIRequest.m; sourceTree = "<group>"; };
 		F2848E0C16AA73B50041C1D5 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
@@ -1852,6 +1854,7 @@
 		F2B83ADC166FDA74007C4596 /* login */ = {
 			isa = PBXGroup;
 			children = (
+				F2840C5C170F1D3F0003F1F2 /* login_bg@2x.jpg */,
 				F2F2075A1702317400351B8A /* login_change_btn_done_down.png */,
 				F2F2075B1702317400351B8A /* login_change_btn_done_down@2x.png */,
 				F2F2075C1702317400351B8A /* login_change_btn_done_down@2x~ipad.png */,
@@ -2601,6 +2604,7 @@
 				F29BAE2B170C96AE00D22FCC /* rules_btn_close~ipad.png in Resources */,
 				F29BAE2C170C96AE00D22FCC /* rules_btn_close_down@2x.png in Resources */,
 				F29BAE2D170C96AE00D22FCC /* rules_btn_close@2x.png in Resources */,
+				F2840C5D170F1D400003F1F2 /* login_bg@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,6 +30,15 @@
     return self;
 }
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    UIImageView * bgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_bg.jpg"]];
+    bgImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    bgImageView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.view insertSubview:bgImageView atIndex:0];
+}
+
 -(UIBarButtonItem *)backButtonItem
 {
     UIImage * backButtonBg = [UIImage imageNamed:@"nav_back_btn"];

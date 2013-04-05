@@ -15,6 +15,7 @@
     IBOutlet UITextField *tfPasswordRepeat;
     
     UIView * activeResponder;
+    float scrollViewDefaultHeight;
     
     NSString * token;
     BOOL showMenu;

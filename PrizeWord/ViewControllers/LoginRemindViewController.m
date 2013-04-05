@@ -32,12 +32,13 @@
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
+    scrollViewDefaultHeight = scrollView.frame.size.height;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    scrollView.contentSize = self.view.frame.size;
+    scrollView.contentSize = scrollView.frame.size;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -126,7 +127,7 @@
     
     [UIView setAnimationCurve:animationCurve];
     [UIView animateWithDuration:animationDuration animations:^{
-        scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        scrollView.frame = CGRectMake(0, (self.view.frame.size.height - scrollViewDefaultHeight) / 2, self.view.frame.size.width, scrollViewDefaultHeight);
     }];
 }
 

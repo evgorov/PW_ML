@@ -35,6 +35,7 @@
     scrollView.autoresizesSubviews = NO;
     scrollView.bounces = NO;
     scrollView.contentSize = self.view.frame.size;
+    scrollViewDefaultHeight = scrollView.bounds.size.height;
     UITapGestureRecognizer * tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
     tapGestureRecognizer.numberOfTouchesRequired = 1;
@@ -158,7 +159,7 @@
         
         [UIView setAnimationCurve:animationCurve];
         [UIView animateWithDuration:animationDuration animations:^{
-            scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            scrollView.frame = CGRectMake(0, (self.view.frame.size.height - scrollViewDefaultHeight) / 2, self.view.bounds.size.width, scrollViewDefaultHeight);
         }];
     activeResponder = nil;
 }

@@ -47,6 +47,7 @@
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
+    scrollViewDefaultHeight = scrollView.frame.size.height;
 }
 
 - (void)viewDidUnload
@@ -176,7 +177,7 @@
     
     [UIView setAnimationCurve:animationCurve];
     [UIView animateWithDuration:animationDuration animations:^{
-        scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        scrollView.frame = CGRectMake(0, (self.view.frame.size.height - scrollViewDefaultHeight) / 2, self.view.frame.size.width, scrollViewDefaultHeight);
     }];
     activeResponder = nil;
 }
