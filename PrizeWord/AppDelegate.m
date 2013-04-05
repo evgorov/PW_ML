@@ -62,13 +62,11 @@ static PrizewordStoreObserver * storeObserver = nil;
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    NSLog(@"screen size: %f %f", _window.frame.size.width, _window.frame.size.height);
     _window.autoresizesSubviews = YES;
     _navController = [[[NSBundle mainBundle] loadNibNamed:@"PrizeWordNavigationController" owner:self options:nil] objectAtIndex:0];
     _navController.view.autoresizesSubviews = YES;
     LoginMainViewController * loginMainViewController = [LoginMainViewController new];
     loginMainViewController.view.frame = _navController.view.frame;
-    NSLog(@"login: %f %f", loginMainViewController.view.bounds.size.width, loginMainViewController.view.bounds.size.height);
     _navController.viewControllers = [NSArray arrayWithObject:loginMainViewController];
     _rootViewController = [[RootViewController alloc] initWithNavigationController:_navController];
     _rootViewController.view.clipsToBounds = YES;

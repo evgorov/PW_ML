@@ -334,9 +334,8 @@
 								<nil key="IBUIHighlightedColor"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAwLjYwNzg0MzEzNzMgMC41MDU4ODIzNTI5IDAuOAA</bytes>
+									<bytes key="NSRGB">MCAwIDAgMC41AA</bytes>
 								</object>
-								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">

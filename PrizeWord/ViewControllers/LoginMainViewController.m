@@ -23,7 +23,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSLog(@"login main frame size: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 

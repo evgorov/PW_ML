@@ -17,6 +17,7 @@
 
 -(void)viewDidLoad
 {
+    [super viewDidLoad];
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     activityIndicator.hidesWhenStopped = YES;
     activityIndicator.userInteractionEnabled = NO;
@@ -28,12 +29,7 @@
 {
     [activityIndicator removeFromSuperview];
     activityIndicator = nil;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear");
+    [super viewDidUnload];
 }
 
 -(void)setTitle:(NSString *)title

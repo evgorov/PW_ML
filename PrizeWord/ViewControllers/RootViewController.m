@@ -152,12 +152,6 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
     [super viewDidUnload];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSLog(@"root view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
-}
-
 -(void)orientationChanged:(UIDeviceOrientation)orientation
 {
     
