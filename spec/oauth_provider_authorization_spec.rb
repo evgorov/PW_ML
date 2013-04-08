@@ -68,7 +68,7 @@ describe Middleware::OauthProviderAuthorization do
     @token_auth_strategy = stub(:token_auth_strategy)
     @token_auth_strategy.stub(create_token: 'session_key')
     @request = stub_token_request
-    @user = stub(:user)
+    @user = stub(:user).as_null_object
     @user.stub(to_json: '"USER_AS_JSON"')
     UserFactory.stub(:find_or_create_test_user).and_return(@user)
   end

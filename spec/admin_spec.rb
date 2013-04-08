@@ -1,3 +1,5 @@
+require 'model/user'
+require 'model/user_data'
 require 'middleware/admin'
 require 'rack/test'
 require 'json'
@@ -21,8 +23,7 @@ describe Middleware::Admin do
   it 'only admin can access administration endpoints' do
     token_auth = mock(:token_auth).as_null_object
     PuzzleSet.stub(new: stub.as_null_object)
-    user = stub(:user)
-    user.stub(:'[]' => 'user')
+    user = stub(:user).as_null_object
     token_auth.should_receive(:user).and_return(user)
     token_auth.should_receive(:unauthorized!)
     post('/sets',
@@ -108,7 +109,7 @@ describe Middleware::Admin do
     token_auth = mock(:token_auth).as_null_object
     user = mock(:user).as_null_object
     user.should_receive(:all).with(2)
-    User.should_receive(:storage).and_return(user)
+    UserData.should_receive(:storage).and_return(user)
 
     get('/users/paginate',
         { session_key: 'valid_session_key', page: 2 },

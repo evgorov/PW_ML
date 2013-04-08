@@ -19,6 +19,17 @@ class User < BasicModel
     UserData.storage(@storage).load(self['user_data_id'])
   end
 
+  def merge(other)
+    self.dup.merge!(other)
+  end
+
+  def merge!(other)
+    other = other.dup
+    password = other.delete('password')
+    @hash.merge!(other)
+    self['password'] = password
+    self
+  end
 
   def []=(key, value)
     case(key)
@@ -59,7 +70,7 @@ class User < BasicModel
 
   # Forceds simple format to prevent accidental password leakage
   def to_json(*a)
-    { id: self.id }
+    { id: self.id }.to_json(*a)
   end
 end
 

@@ -42,9 +42,9 @@ describe PuzzleSet do
   it '#published_for' do
     storage = mock(:storage).as_null_object
     storage.should_receive(:smembers).with("PuzzleSets:2012#10").and_return(['1', '2', '3'])
-    storage.should_receive(:get).with("1").and_return({ "published" => true }.to_json)
-    storage.should_receive(:get).with("2").and_return({ "published" => false }.to_json)
-    storage.should_receive(:get).with("3").and_return({ "published" => true }.to_json)
+    storage.should_receive(:get).with("1").and_return({ "published" => true, "created_at" => Time.now.to_s }.to_json)
+    storage.should_receive(:get).with("2").and_return({ "published" => false, "created_at" => Time.now.to_s }.to_json)
+    storage.should_receive(:get).with("3").and_return({ "published" => true, "created_at" => Time.now.to_s }.to_json)
     subject.storage(storage).published_for(2012, 10).size.should == 2
   end
 
