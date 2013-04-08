@@ -5,6 +5,7 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 require "bundler/setup"
 
 require 'rack/contrib/static_cache'
+require 'middleware/apn_pusher'
 require 'middleware/redis_middleware'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
@@ -70,6 +71,15 @@ vkontakte_options = {
 }
 vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkontakte', vkontakte_options)
 use Middleware::OauthProviderAuthorization, vkontakte_provider
+
+pusher_params = {
+  certificate: "/path/to/cert.pem",
+  passphrase:  "",
+  gateway:     "gateway.push.apple.com",
+  port:        2195,
+  retries:     3
+}
+use Middleware::APNPusher, pusher_params
 
 use Middleware::BasicRegistration
 use Middleware::PasswordReset

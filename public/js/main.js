@@ -1060,9 +1060,35 @@ var CoefficientsView = Backbone.View.extend({
   }
 });
 
+
+/* Notifications */
+
+var NotificationsView = Backbone.View.extend({
+  tagName: 'div',
+
+  events: {
+    'click [role="send-notification"]': 'sendNotification'
+  },
+
+  initialize: function(){
+  },
+
+  render: function(){
+  },
+
+  sendNotification: function(){
+    var $notificationText = this.$el.find('[role="notification-text"]'),
+        message = $notificationText.val();
+
+    $notificationText.val('');
+    Backbone.ajax({ data: { message: message }, type: 'POST', 'url': '/push_message' });
+  }
+});
+
+
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView, notificationsView;
 
 $(function(){
   currentUser = new CurrentUser();
@@ -1087,6 +1113,10 @@ $(function(){
   coefficientsView = new CoefficientsView({
                                             el: $('[role="coefficients"]')[0],
                                             model: new Coefficients()
+                                          });
+
+  notificationsView = new NotificationsView({
+                                            el: $('[role="notifications"]')[0]
                                           });
 
   $('[role="loading-spinner"]').hide();

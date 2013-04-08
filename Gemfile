@@ -10,6 +10,7 @@ group :app do
   gem 'unicode_utils'
   gem 'bcrypt-ruby', require: 'bcrypt'
   gem 'pony'
+  gem 'grocer'
 end
 
 group :test do
