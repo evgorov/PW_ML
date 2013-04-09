@@ -1,6 +1,7 @@
 /* Customize backbone */
 var currentUser;
 
+// set some global defaults for Backbone ajax
 Backbone.ajax = function(options){
   var sessionKey = currentUser.get('sessionKey');
   if(!sessionKey){
@@ -42,6 +43,17 @@ Backbone.ajax = function(options){
 
   return $.ajax.call($, options);
 };
+
+// Oh yeah thats dirty, dirty, dirty.
+function generateUUID(){
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+    });
+    return uuid;
+}
 
 /* Puzzle editor */
 
@@ -170,7 +182,8 @@ var Puzzle = Backbone.Model.extend({
 
   defaults: function(){
     return {
-      questions: [],
+      "id": generateUUID(),
+      "questions": [],
       "name": _.uniqueId('Сканворд'),
       "issuedAt": (new Date).toISOString().split('T')[0],
       "base_score": 0,
@@ -764,6 +777,7 @@ var PuzzleSetView = Backbone.View.extend({
   deletePuzzleSet: function(e){
     if(e && e.preventDefault) e.preventDefault();
     this.model.destroy();
+    this.remove();
   },
 
   editPuzzle: function(e){

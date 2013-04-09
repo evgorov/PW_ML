@@ -248,7 +248,9 @@
     <script type="text/template" id="set-view-template">
       <div class="span12 sets-set">
         <h3><%- name %> <% if(!published) { %><span class="label label-info va-super">Черновик</span><% }; %></h3>
-        <p><span class="muted">Apple id:</span> ru.aipmedia.ios.prizeword.<%- id %></p>
+          <% if(typeof(id) != 'undefined'){ %>
+            <p><span class="muted">Apple id:</span> ru.aipmedia.ios.prizeword.<%- id %></p>
+          <% }; %>
         <p><span class="muted">Тип:</span> <b><%- type %></b></p>
         <p>Сканворды:</p>
         <ul>
