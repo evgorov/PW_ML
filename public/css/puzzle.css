@@ -196,8 +196,16 @@
     background-position: -100px -50px;
 }
 
-[data-type="hint"][data-arrow="south-east:right"]:before{}
-[data-type="hint"][data-arrow="south-east:bottom"]:before{}
+[data-type="hint"][data-arrow="south-east:right"]:before{
+    top: 50px;
+    left: 50px;
+    background-position: 0 -200px;
+}
+[data-type="hint"][data-arrow="south-east:bottom"]:before{
+    top: 50px;
+    left: 50px;
+    background-position: 0 -150px;
+}
 
 [data-type="hint"][data-arrow="south:left"]:before{
     top: 50px;
@@ -591,6 +599,7 @@
 
 .arrow-control-hover [data-arrow-control="west:bottom"]{ left: 254px; top: 669px; }
 .arrow-control-hover [data-arrow-control="north:right"]{ left: 52px; top: 48px; }
+.arrow-control-hover [data-arrow-control="north-east:right"]{ left: 102px; top: 47px; }
 .arrow-control-hover [data-arrow-control="north-east:bottom"]{ left: 102px; top: 47px; }
 .arrow-control-hover [data-arrow-control="east:right"]{ left: 101px; top: 97px; }
 .arrow-control-hover [data-arrow-control="east:bottom"]{ left: 150px; top: 98px; }
