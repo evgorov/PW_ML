@@ -23,6 +23,14 @@
     {
         shouldIgnoreWarnings = NO;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_REQUEST_PRODUCT];
+        NSArray * transactions = [[SKPaymentQueue defaultQueue].transactions copy];
+        for (SKPaymentTransaction * transaction in transactions)
+        {
+            if (transaction.transactionState != SKPaymentTransactionStatePurchasing)
+            {
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+            }
+        }
     }
     return self;
 }
