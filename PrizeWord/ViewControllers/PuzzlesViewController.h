@@ -13,7 +13,7 @@
 
 @class FISound;
 
-@interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate>
+@interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate, UIScrollViewDelegate>
 {
     IBOutlet UIView *newsView;
     IBOutlet UILabel *newsLbl1;
@@ -37,6 +37,12 @@
     IBOutlet UILabel *lblHintsLeft;
     NSMutableArray * hintsProducts;
     SKProductsRequest * productsRequest;
+    
+    int archiveLastMonth;
+    int archiveLastYear;
+    BOOL archiveNeedLoading;
+    BOOL archiveLoading;
+    NSMutableArray * archivePuzzleSetViews;
     
     FISound * buySetSound;
     FISound * openSetSound;

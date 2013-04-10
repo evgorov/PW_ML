@@ -50,13 +50,15 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView;
 
 -(void)updateArchive:(NSData *)receivedData;
--(void)updateMonthSets:(NSArray*)monthSets;
+-(void)updateMonthSets:(NSArray *)monthSets;
 -(void)updateBaseScores;
 -(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
 
 -(void)setupKnownPrices;
+
+-(void)loadArchive;
 
 @end
 
@@ -94,6 +96,14 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     openSetSound = [[FISoundEngine sharedEngine] soundNamed:@"open_set.caf" error:nil];
     closeSetSound = [[FISoundEngine sharedEngine] soundNamed:@"close_set.caf" error:nil];
     
+    archivePuzzleSetViews = [NSMutableArray new];
+    archiveLastMonth = [GlobalData globalData].currentMonth + 1;
+    archiveLastYear = [GlobalData globalData].currentYear;
+    archiveLoading = NO;
+    archiveNeedLoading = YES;
+    
+    scrollView.delegate = self;
+    
     [self updateNews];
 }
 
@@ -117,6 +127,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     newsLbl3 = nil;
     puzzlesTimeLeftBg = nil;
     puzzlesTimeLeftCaption = nil;
+    
+    archivePuzzleSetViews = nil;
     [super viewDidUnload];
 }
 
@@ -136,16 +148,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [[GlobalData globalData] loadCoefficients];
     [[GlobalData globalData] loadMonthSets];
     
-    APIRequest * request = [APIRequest getRequest:@"puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        [self updateArchive:receivedData];
-    } failCallback:^(NSError *error) {
-        NSLog(@"archive error: %@", error.description);
-    }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:@"0" forKey:@"from"];
-    [request.params setObject:@"100" forKey:@"limit"];
-    [request runUsingCache:YES silentMode:YES];
-
+    [self loadArchive];
+    
     lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
     
     NSLog(@"puzzles view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
@@ -417,11 +421,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 -(void)updateArchive:(NSData *)receivedData
 {
     NSLog(@"archive: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-    SBJsonParser * parser = [SBJsonParser new];
-    NSDictionary * data = [parser objectWithData:receivedData];
-    NSArray * setsData = [data objectForKey:@"sets"];
-    
-    int lastMonth = 0;
+    NSArray * setsData = [[SBJsonParser new] objectWithData:receivedData];
     
     float yOffset = archiveView.frame.size.height;
     while (archiveView.subviews.count > 2)
@@ -430,25 +430,26 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
-    
+
+    BOOL added = NO;
     for (NSDictionary * setData in setsData)
     {
         PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
-        puzzleSet.bought = [NSNumber numberWithBool:YES];
+        if (![puzzleSet.bought boolValue])
+        {
+            continue;
+        }
         int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
         int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];
         if (year == [GlobalData globalData].currentYear && month == ([GlobalData globalData].currentMonth + 1))
         {
             continue;
         }
-        if (lastMonth != month)
-        {
-            lastMonth = month;
-        }
-        else
+        if (added)
         {
             month = 0;
         }
+        added = YES;
 
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:month showSolved:YES showUnsolved:YES];
         [self activateBadges:puzzleSetView];
@@ -533,6 +534,49 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     [self updateHintButton:btnBuyHint2 withProduct:product];
     product = [[GlobalData globalData].products objectForKey:PRODUCTID_HINTS30];
     [self updateHintButton:btnBuyHint3 withProduct:product];
+}
+
+-(void)loadArchive
+{
+    if (!archiveLoading && archiveNeedLoading)
+    {
+        archiveNeedLoading = NO;
+        
+        NSCalendar * calendar = [NSCalendar currentCalendar];
+        NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[GlobalData globalData].loggedInUser.createdAt];
+        if ([components year] > archiveLastYear || ([components year] == archiveLastYear && [components month] >= archiveLastMonth))
+        {
+            return;
+        }
+
+        if (--archiveLastMonth < 1)
+        {
+            archiveLastMonth = 12;
+            --archiveLastYear;
+        }
+        
+        NSLog(@"loading archive for %d.%d", archiveLastMonth, archiveLastYear);
+        archiveLoading = YES;
+        
+        APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            [self updateArchive:receivedData];
+            archiveLoading = NO;
+            if (archiveNeedLoading)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self loadArchive];
+                });
+            }
+        } failCallback:^(NSError *error) {
+            NSLog(@"archive error: %@", error.description);
+            archiveLoading = NO;
+        }];
+        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [request.params setObject:[NSNumber numberWithInt:archiveLastMonth] forKey:@"month"];
+        [request.params setObject:[NSNumber numberWithInt:archiveLastYear] forKey:@"year"];
+        [request.params setObject:@"full" forKey:@"mode"];
+        [request runUsingCache:YES silentMode:YES];
+    }
 }
 
 -(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product
@@ -813,6 +857,21 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         {
             badgeView.userInteractionEnabled = NO;
         }
+    }
+}
+
+#pragma mark UIScrollViewDelegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView_
+{
+    if (scrollView_.contentOffset.y + scrollView_.frame.size.height + 100 > scrollView_.contentSize.height)
+    {
+        archiveNeedLoading = YES;
+        [self loadArchive];
+    }
+    else
+    {
+        archiveNeedLoading = NO;
     }
 }
 

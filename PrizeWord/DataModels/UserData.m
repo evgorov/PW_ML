@@ -19,6 +19,7 @@
 @synthesize userpic = _userpic;
 @synthesize userpic_url = _userpic_url;
 @synthesize birthday = _birthday;
+@synthesize createdAt = _createdAt;
 @synthesize vkProvider = _vkProvider;
 @synthesize fbProvider = _fbProvider;
 
@@ -65,6 +66,16 @@
             NSDateFormatter * dateFormatter = [NSDateFormatter new];
             [dateFormatter setDateFormat:@"yyyy-MM-dd"];
             _birthday = [dateFormatter dateFromString:dateString];
+        }
+        
+        dateString = [dict objectForKey:@"created_at"];
+        _createdAt = nil;
+        if (dateString != nil)
+        {
+            NSDateFormatter * dateFormatter = [NSDateFormatter new];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            _createdAt = [dateFormatter dateFromString:[dateString substringToIndex:[dateString rangeOfString:@" "].location]];
+            NSLog(@"%@", [dateFormatter stringFromDate:_createdAt]);
         }
 
         _vkProvider = nil;

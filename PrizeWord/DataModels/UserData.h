@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSString * userpic_url;
 @property (nonatomic, strong) UIImage * userpic;
 @property (nonatomic, strong) NSDate * birthday;
+@property (nonatomic, strong) NSDate * createdAt;
 @property (nonatomic, strong) NSDictionary * vkProvider;
 @property (nonatomic, strong) NSDictionary * fbProvider;
 
