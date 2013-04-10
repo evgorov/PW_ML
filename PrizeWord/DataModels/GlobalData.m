@@ -178,8 +178,9 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
                     [puzzleIdsString appendString:puzzleId];
                     [puzzleIdToSet setObject:puzzleSet forKey:puzzleId];
                 }
-                else
+                else if (puzzle != nil)
                 {
+                    [puzzleSet addPuzzlesObject:puzzle];
                     [puzzle synchronize];
                 }
             }

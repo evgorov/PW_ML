@@ -237,6 +237,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     else if (event.type == EVENT_PUZZLE_SYNCHRONIZED)
     {
         PuzzleData * puzzleData = event.data;
+        NSLog(@"handle puzzle %@ synchronization", puzzleData.name);
+        /*
         if (puzzleData.progress < 1)
         {
             for (UIView * view in currentPuzzlesView.subviews)
@@ -261,6 +263,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
             
             return;
         }
+        */
         
         PuzzleSetView * oldView = nil;
         for (UIView * view in currentPuzzlesView.subviews)

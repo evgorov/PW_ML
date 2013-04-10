@@ -464,6 +464,11 @@
         [puzzleSolvedSound play];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+            if (gameField.puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                return;
+            }
             for (int i = 0; i < 5; ++i)
             {
                 [[finalFlipNumbers objectAtIndex:i] reset];

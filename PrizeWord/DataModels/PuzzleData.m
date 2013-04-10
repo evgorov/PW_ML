@@ -124,6 +124,7 @@
     {
         puzzleData = [puzzles objectAtIndex:0];
     }
+    NSLog(@"loaded puzzle: %@ %@ %d", puzzleData.name, puzzleData.score, puzzleData.solved);
     return puzzleData;
 }
 
@@ -220,6 +221,7 @@
                     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
                 }
             }
+            
             if (needUpdateServer)
             {
                 NSMutableArray * solvedQuestions = [NSMutableArray new];

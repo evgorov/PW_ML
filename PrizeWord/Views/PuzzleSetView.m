@@ -183,7 +183,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:minScore]];
-    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblCount.frame.origin.y, 200, _lblScore.frame.size.height);
+    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText1.frame.origin.y, 200, _lblText1.frame.size.height);
     _lblScore.text = scoreString;
     
     _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
@@ -208,6 +208,12 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
     
+    if (puzzleSetData.type.intValue == PUZZLESET_FREE)
+    {
+        _lblText2.hidden = YES;
+        _imgStar.hidden = YES;
+        _lblScore.hidden = YES;
+    }
     NSString * text2 = @"Набрано ";
     CGSize text2Size = [text2 sizeWithFont:_lblText2.font];
     _lblText2.frame = CGRectMake(_lblText2.frame.origin.x, _lblText2.frame.origin.y, text2Size.width, text2Size.height);
