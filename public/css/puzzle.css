@@ -525,7 +525,9 @@
 
 [data-arrow-control="south-east:right"]{}
 
-[data-arrow-control="south-east:bottom"]{}
+[data-arrow-control="south-east:bottom"]{
+    background-position: -50px -100px;
+}
 
 [data-arrow-control="south:left"]{
     background-position: -50px -100px;
@@ -594,6 +596,7 @@
 .arrow-control-hover [data-arrow-control="east:bottom"]{ left: 150px; top: 98px; }
 .arrow-control-hover [data-arrow-control="south:right"]{ left: 51px; top: 195px; }
 .arrow-control-hover [data-arrow-control="south:bottom"]{ left: 51px; top: 145px; }
+.arrow-control-hover [data-arrow-control="south-east:bottom"]{ left: 51px; top: 145px; }
 .arrow-control-hover [data-arrow-control="south-west:right"]{ left: 0px; top: 146px; }
 .arrow-control-hover [data-arrow-control="west:bottom"]{ left: 0px; top: 97px; }
 .arrow-control-hover [data-arrow-control="north-west:bottom"]{ left:0px; top: 49px; }
