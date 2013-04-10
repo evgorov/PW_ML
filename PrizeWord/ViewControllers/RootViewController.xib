@@ -451,7 +451,7 @@
 				</array>
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="326372848"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -505,7 +505,7 @@
 					<object class="IBUIScrollView" id="520376216">
 						<reference key="NSNextResponder" ref="442234148"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{59, 78}, {203, 299}}</string>
+						<string key="NSFrame">{{59, 78}, {202, 298}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -966,8 +966,8 @@
 						<reference key="object" ref="442234148"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="831791884"/>
-							<reference ref="520376216"/>
 							<reference ref="572834609"/>
+							<reference ref="520376216"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
