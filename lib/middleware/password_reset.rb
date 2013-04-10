@@ -36,8 +36,7 @@ module Middleware
 
     get '/password_reset' do
       token = params['token']
-      halt(404) if !token || !redis.get(token)
-      erb :password_reset, locals: { token: token }
+      redirect "prizeword://#{token}"
     end
 
     post '/password_reset' do

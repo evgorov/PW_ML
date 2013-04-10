@@ -218,7 +218,7 @@ module Middleware
       providers2 = user_data2['providers'].map { |o| o['provider_name'] }
 
       unless (providers = (providers1 & providers2)).empty?
-        halt(403, { 'message' => "target user already has some providers: #{providers.join}"}.to_json)
+        halt(403, { 'message' => "Ошибка! Этот аккаунт уже привязан к другой учетной записи" }.to_json)
       end
 
       user_data1.merge!(user_data2)

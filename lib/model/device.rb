@@ -22,6 +22,8 @@ class Device < BasicModel
                              device_token: token,
                              alert:        message,
                              expiry:       Time.now + 60*60,
+                             badge:        0,
+                             sound:        "push.caf",
                              )
   end
 

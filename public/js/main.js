@@ -289,7 +289,7 @@ var FieldView = Backbone.View.extend({
       _(properties).each(function(v,k) { $token.attr('data-' + k, v); });
     } else {
       $token.attr('data-type', 'empty');
-      $token.attr('data-current', 'false');      
+      $token.attr('data-current', 'false');
     }
 
     if(properties && (properties.type === 'hint' || properties.hasHint)){
@@ -749,8 +749,14 @@ var PuzzleSetView = Backbone.View.extend({
 
   startEditing: function(){
     this.editing = true;
+    if(!this.model.get('published')) this._intervalId = setInterval(_.bind(this.model.save, this.model), 30000);
     this.model.pushState();
     this.render();
+  },
+
+  stopEditing: function(){
+    if(typeof(this._intervalId) !== 'undefined') clearInterval(this._intervalId);
+    this.editing = false;
   },
 
   addPuzzle: function(e){
@@ -795,7 +801,7 @@ var PuzzleSetView = Backbone.View.extend({
 
   cancelSet: function(e){
     if(e && e.preventDefault) e.preventDefault();
-    this.editing = false;
+    this.stopEditing();
     this.model.popState();
     this.render();
   },
@@ -803,7 +809,7 @@ var PuzzleSetView = Backbone.View.extend({
   saveSet: function(e){
     if(e && e.preventDefault) e.preventDefault();
     this.model.save();
-    this.editing = false;
+    this.stopEditing();
     this.render();
     this.model.clearState();
   },
@@ -812,7 +818,7 @@ var PuzzleSetView = Backbone.View.extend({
     if(e && e.preventDefault) e.preventDefault();
     this.model.set('published', true);
     this.model.save();
-    this.editing = false;
+    this.stopEditing();
     this.render();
     this.model.clearState();
   }

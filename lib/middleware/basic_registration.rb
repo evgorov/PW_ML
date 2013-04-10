@@ -34,7 +34,7 @@ module Middleware
       end
     end
 
-    error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
+    error(BasicModel::NotFound) { halt(403, { message: 'Логин или пароль набраны неверно. Пожалуйста, попробуйте еще раз.' }.to_json) }
     error(BasicModel::InvalidState) { halt(403, { message: 'User with this email is already registered' }.to_json) }
 
     post '/signup' do
