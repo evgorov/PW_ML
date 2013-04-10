@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
