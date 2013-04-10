@@ -132,7 +132,7 @@
   position: absolute;
   width: 50px;
   height: 50px;
-  background-image: url(../img/puzzle-background.jpg);
+  background-image: url('../img/puzzle-background.jpg?v=2');
   background-size: 400px;
   z-index: 1;
   content: '';
