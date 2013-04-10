@@ -132,7 +132,7 @@
   position: absolute;
   width: 50px;
   height: 50px;
-  background-image: url('../img/puzzle-background.jpg?v=2');
+  background-image: url('../img/puzzle-background.jpg?v=3');
   background-size: 400px;
   z-index: 1;
   content: '';
@@ -161,7 +161,12 @@
 }
 
 [data-type="hint"][data-arrow="north-east:top"]:before{}
-[data-type="hint"][data-arrow="north-east:right"]:before{}
+
+[data-type="hint"][data-arrow="north-east:right"]:before{
+    top: -50px;
+    left: 50px;
+    background-position: -50px -200px;
+}
 
 [data-type="hint"][data-arrow="north-east:bottom"]:before{
     top: -50px;
@@ -505,7 +510,9 @@
 
 [data-arrow-control="north-east:top"]{}
 
-[data-arrow-control="north-east:right"]{}
+[data-arrow-control="north-east:right"]{
+    background-position: -50px -200px;
+}
 
 [data-arrow-control="north-east:bottom"]{
     background-position: -250px -50px;
@@ -531,10 +538,12 @@
     background-position: -100px -50px;
 }
 
-[data-arrow-control="south-east:right"]{}
+[data-arrow-control="south-east:right"]{
+    background-position: 0 -200px;
+}
 
 [data-arrow-control="south-east:bottom"]{
-    background-position: -50px -100px;
+    background-position: 0 -150px;
 }
 
 [data-arrow-control="south:left"]{
@@ -599,13 +608,14 @@
 
 .arrow-control-hover [data-arrow-control="west:bottom"]{ left: 254px; top: 669px; }
 .arrow-control-hover [data-arrow-control="north:right"]{ left: 52px; top: 48px; }
-.arrow-control-hover [data-arrow-control="north-east:right"]{ left: 102px; top: 47px; }
+.arrow-control-hover [data-arrow-control="north-east:right"]{ left: 150px; top: 47px; }
 .arrow-control-hover [data-arrow-control="north-east:bottom"]{ left: 102px; top: 47px; }
 .arrow-control-hover [data-arrow-control="east:right"]{ left: 101px; top: 97px; }
 .arrow-control-hover [data-arrow-control="east:bottom"]{ left: 150px; top: 98px; }
 .arrow-control-hover [data-arrow-control="south:right"]{ left: 51px; top: 195px; }
 .arrow-control-hover [data-arrow-control="south:bottom"]{ left: 51px; top: 145px; }
-.arrow-control-hover [data-arrow-control="south-east:bottom"]{ left: 51px; top: 145px; }
+.arrow-control-hover [data-arrow-control="south-east:bottom"]{ left: 101px; top: 145px; }
+.arrow-control-hover [data-arrow-control="south-east:right"]{ left: 150px; top: 145px; }
 .arrow-control-hover [data-arrow-control="south-west:right"]{ left: 0px; top: 146px; }
 .arrow-control-hover [data-arrow-control="west:bottom"]{ left: 0px; top: 97px; }
 .arrow-control-hover [data-arrow-control="north-west:bottom"]{ left:0px; top: 49px; }
