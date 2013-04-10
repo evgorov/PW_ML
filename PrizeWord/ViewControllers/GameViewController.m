@@ -277,22 +277,23 @@
 - (IBAction)handleShareClick:(id)sender
 {
     UIButton * button = sender;
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ и получил %d %@ за это!", gameField.puzzle.name, gameField.puzzle.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
+    int mins = (int)([GameLogic sharedLogic].gameTime / 60);
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ за %d %@ и получил за это %d %@!", gameField.puzzle.name, mins, [NSString declesion:mins oneString:@"минуту" twoString:@"минуты" fiveString:@"минут"], gameField.puzzle.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     // facebook
     if (button.tag == 0)
     {
-        if ([FBSession activeSession] != nil)
+        if ([[FBSession activeSession] isOpen])
         {
             // Put together the dialog parameters
             NSMutableDictionary *params =
             [NSMutableDictionary dictionaryWithObjectsAndKeys:
              @"PrizeWord", @"name",
              message, @"caption",
-             @"http://prize-word.ru", @"link",
+             @"http://prize-word.com", @"link",
              nil];
             [self showActivityIndicator];
             
-            [[FBSession activeSession] reauthorizeWithPublishPermissions:[NSArray arrayWithObjects:@"public_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
+            [[FBSession activeSession] reauthorizeWithPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
                 if (error == nil)
                 {
                     NSLog(@"reauthorizeWithPublishPermissions success");

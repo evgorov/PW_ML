@@ -18,6 +18,7 @@
 
 -(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
 -(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
+-(void)logout;
 -(NSDictionary*)parseURLParams:(NSString *)query;
 -(void)finalizeAuthorizationWithToken:(NSString *)accessToken forProvider:(NSString *)provider andViewController:(PrizeWordViewController *)viewController;
 
@@ -25,7 +26,7 @@
 
 @implementation SocialNetworks
 
-+(SocialNetworks *)socialNetwokrs
++(SocialNetworks *)socialNetworks
 {
     static SocialNetworks * _socialNetwokrs = nil;
     static dispatch_once_t onceToken;
@@ -37,40 +38,52 @@
 
 +(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback
 {
-    [[SocialNetworks socialNetwokrs] loginFacebookWithViewController:viewController andCallback:callback];
+    [[SocialNetworks socialNetworks] loginFacebookWithViewController:viewController andCallback:callback];
 }
 
 +(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback
 {
-    [[SocialNetworks socialNetwokrs] loginVkontakteWithViewController:viewController andCallback:callback];
+    [[SocialNetworks socialNetworks] loginVkontakteWithViewController:viewController andCallback:callback];
 }
 
++(void)logout
+{
+    [[SocialNetworks socialNetworks] logout];
+}
+
+
+
+#pragma mark private
 
 -(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback
 {
     lastViewController = viewController;
     successCallback = callback;
-    if ([FBSession activeSession] == nil || ![FBSession activeSession].isOpen || [FBSession activeSession].state != FBSessionStateCreatedTokenLoaded || [[FBSession activeSession].accessTokenData.expirationDate compare:[NSDate new]] == NSOrderedDescending)
+    NSLog(@"create new facebook session");
+    if ([[FBSession activeSession] isOpen])
     {
-        // create a fresh session object
-        [FBSession openActiveSessionWithReadPermissions:[NSArray arrayWithObjects:@"read_stream", nil] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-            [viewController hideActivityIndicator];
-            if (error == nil && (status == FBSessionStateOpen ||status == FBSessionStateOpenTokenExtended) && session.accessTokenData.accessToken != nil)
-            {
-                [self finalizeAuthorizationWithToken:session.accessTokenData.accessToken forProvider:@"facebook" andViewController:viewController];
-            }
-            else if (error != nil)
-            {
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-                alert.tag = 0;
-                [alert show];
-            }
-        }];
+        [[FBSession activeSession] close];
     }
-    else
-    {
-        [self finalizeAuthorizationWithToken:[FBSession activeSession].accessTokenData.accessToken forProvider:@"facebook" andViewController:viewController];
-    }
+    [FBSession setActiveSession:[[FBSession alloc] init]];
+    [viewController showActivityIndicator];
+    // create a fresh session object
+    [FBSession openActiveSessionWithReadPermissions:[NSArray arrayWithObjects:@"read_stream", nil] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        NSLog(@"facebook completion handler");
+        [lastViewController hideActivityIndicator];
+        if (error == nil && (status == FBSessionStateOpen || status == FBSessionStateOpenTokenExtended) && session.accessTokenData.accessToken != nil)
+        {
+            [self finalizeAuthorizationWithToken:session.accessTokenData.accessToken forProvider:@"facebook" andViewController:viewController];
+            return;
+        }
+        
+        if (error != nil)
+        {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
+            alert.tag = 0;
+            [alert show];
+        }
+        [FBSession setActiveSession:nil];
+    }];
 }
 
 -(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback
@@ -88,7 +101,24 @@
     
 }
 
-#pragma mark private
+-(void)logout
+{
+    if ([FBSession activeSession] != nil)
+    {
+        [[FBSession activeSession] closeAndClearTokenInformation];
+        [FBSession setActiveSession:nil];
+    }
+    [GlobalData globalData].loggedInUser = nil;
+    [GlobalData globalData].sessionKey = nil;
+    
+    // vkontakte logout
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 -(NSDictionary*)parseURLParams:(NSString *)query
 {

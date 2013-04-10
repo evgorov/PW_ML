@@ -20,9 +20,10 @@
     void (^successCallback)();
 }
 
-+(SocialNetworks *)socialNetwokrs;
++(SocialNetworks *)socialNetworks;
 
 +(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
 +(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
++(void)logout;
 
 @end

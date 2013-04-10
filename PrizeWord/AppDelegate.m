@@ -22,6 +22,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "APIRequest.h"
 #import "NSData+Utils.h"
+#import "SocialNetworks.h"
 
 @implementation AppDelegate
 
@@ -158,7 +159,7 @@ static PrizewordStoreObserver * storeObserver = nil;
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
     [TileImageHelper uninitHelper];
-    [[FBSession activeSession] closeAndClearTokenInformation];
+    [SocialNetworks logout];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application

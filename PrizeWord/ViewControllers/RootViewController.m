@@ -552,21 +552,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"PrizeWord – это интересны
 {
     [self hideMenuAnimated:YES];
     [APIRequest clearCache];
-    if ([FBSession activeSession] != nil)
-    {
-        [[FBSession activeSession] closeAndClearTokenInformation];
-        [FBSession setActiveSession:nil];
-    }
-    [GlobalData globalData].loggedInUser = nil;
-    [GlobalData globalData].sessionKey = nil;
-    
-    // vkontakte logout
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]) {
-        [storage deleteCookie:cookie];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [SocialNetworks logout];
     
     [navController popToRootViewControllerAnimated:YES];
 }
