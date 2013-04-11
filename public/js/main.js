@@ -271,16 +271,16 @@ var FieldView = Backbone.View.extend({
                                      'position': 'relative'
                                     });
     // Add coordinates ruler
-    for(x = 1; x <= width + 1; x++){
-      $container.append($('<div>').attr('data-x', x).attr('data-y', 0).attr('title', x - 1).addClass('ruler'));
+    for(x = 0; x <= width; x++){
+      $container.append($('<div>').attr('data-x', x).attr('data-y', 0).attr('title', x).addClass('ruler'));
     }
-    for(y = 1; y <= height + 1; y++){
-      $container.append($('<div>').attr('data-x', 0).attr('data-y', y).attr('title', y - 1).addClass('ruler'));
+    for(y = 1; y <= height; y++){
+      $container.append($('<div>').attr('data-x', 0).attr('data-y', y).attr('title', y).addClass('ruler'));
     }
-    
+
     // Tokens
-    for(x = 2; x <= width + 1; x++){
-      for(y = 2; y <= height + 1; y++){
+    for(x = 1; x <= width; x++){
+      for(y = 1; y <= height; y++){
         var $token = $('<div>').attr('data-x', x).attr('data-y', y).addClass('token');
         this.coordinates[[x, y].join(':')] = $token;
         this.setTokenFromCoordinates($token, x, y);
@@ -331,8 +331,8 @@ var FieldView = Backbone.View.extend({
                          y: parseInt(ui.helper.attr('data-y'))
                        },
                        destination: {
-                         x: Math.round(ui.position.left / self.boxWidth) + 1,
-                         y: Math.round(ui.position.top / self.boxHeight) + 1
+                         x: Math.round(ui.position.left / self.boxWidth),
+                         y: Math.round(ui.position.top / self.boxHeight)
                        }
                      });
       }
