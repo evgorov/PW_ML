@@ -37,6 +37,10 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
     int yOffset = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
+        if (puzzleSet.type.intValue == PUZZLESET_FREE)
+        {
+            continue;
+        }
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetCompleteViewWithData:puzzleSet];
         puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
         yOffset += puzzleSetView.frame.size.height;
