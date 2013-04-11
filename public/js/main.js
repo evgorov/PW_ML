@@ -263,15 +263,24 @@ var FieldView = Backbone.View.extend({
 
   render: function() {
     var height = this.model.get('height'),
-        width = this.model.get('width');
+        width = this.model.get('width'),
+        x, y;
     this.coordinates = {};
     var $container = $('<div>').css({'height': height * this.boxHeight + 'px',
                                      'width': width * this.boxWidth + 'px',
                                      'position': 'relative'
                                     });
-
-    for(var x = 1; x <= width; x++){
-      for(var y = 1; y <= height; y++){
+    // Add coordinates ruler
+    for(x = 1; x <= width + 1; x++){
+      $container.append($('<div>').attr('data-x', x).attr('data-y', 0).attr('title', x - 1).addClass('ruler'));
+    }
+    for(y = 1; y <= height + 1; y++){
+      $container.append($('<div>').attr('data-x', 0).attr('data-y', y).attr('title', y - 1).addClass('ruler'));
+    }
+    
+    // Tokens
+    for(x = 2; x <= width + 1; x++){
+      for(y = 2; y <= height + 1; y++){
         var $token = $('<div>').attr('data-x', x).attr('data-y', y).addClass('token');
         this.coordinates[[x, y].join(':')] = $token;
         this.setTokenFromCoordinates($token, x, y);
@@ -339,6 +348,7 @@ var PuzzleView = Backbone.View.extend({
   rowTemplate: _.template($('#simple-puzzle-view-template').html()),
 
   events: {
+    'click [role="print-set"]': 'printSet',
     'click [role="add_question"]': 'addQuestion',
     'click [role="delete_question"]': 'deleteQuestion',
     'keyup .question *': 'changeQuestion',
@@ -507,6 +517,16 @@ var PuzzleView = Backbone.View.extend({
     coord.top = $(document).scrollTop();
     this.$el.parent().offset(coord);
     this.$el.parent().show('fast');
+  },
+
+  printSet: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    html2canvas(this.$el.find('[role="field"] > div')[0],
+                {
+                  onrendered: function(canvas) {
+                    window.open(canvas.toDataURL("image/png"));
+                  }
+                });
   }
 });
 

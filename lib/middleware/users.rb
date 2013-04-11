@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'time'
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
@@ -184,7 +185,7 @@ module Middleware
     end
 
     post '/:provider/invite' do
-      halt(403, { 'message' => 'missing ids'}.to_json) unless params['ids']
+      halt(403, { 'message' => 'missing ids' }.to_json) unless params['ids']
       env['token_auth'].authorize!
       current_user.fetch_friends(params['provider'])
       params['ids'].split(',').each do |id|
@@ -195,6 +196,15 @@ module Middleware
       end
       current_user.save
       { "message" => "ok" }.to_json
+    end
+
+    get '/:provider/invited_friends_this_month' do
+      env['token_auth'].authorize!
+      current_user["#{params['provider']}_friends"].values.select{ |o|
+        o['invited_at'] &&
+        Time.parse(o['invited_at']).month == Time.now.month &&
+        Time.parse(o['invited_at']).year == Time.now.year
+      }.to_json
     end
 
     post '/vkontakte/share' do

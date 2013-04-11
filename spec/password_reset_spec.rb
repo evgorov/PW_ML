@@ -42,6 +42,7 @@ describe Middleware::PasswordReset do
 
     before(:each) do
       user.stub(:[]).with('email'){ 'registered@example.org' }
+      user.stub(:[]).with('name'){ 'Petrov' }
       user.stub(:load_by_key).with('registered@example.org'){ user }
       RegisteredUser.stub(storage: user)
       Pony.stub(:mail)
@@ -71,36 +72,12 @@ describe Middleware::PasswordReset do
       last_response.status.should == 200
     end
 
-    it 'GET /password_reset return 404 if token is not passed' do
-      get('/password_reset',
-           { },
-           { 'redis' => redis })
-      last_response.status.should == 404
-    end
-
-    it 'GET /password_reset return 404 if token not found' do
-      redis.should_receive(:get).with('not_valid_token').and_return(nil)
-      get('/password_reset',
-           { token: 'not_valid_token' },
-           { 'redis' => redis })
-      last_response.status.should == 404
-    end
-
-    it 'GET /password_reset return 200 and html for valid token' do
-      redis.should_receive(:get).with('valid_token').and_return('registered@example.org')
+    it 'GET /password_reset return 302 for valid token' do
       get('/password_reset',
            { token: 'valid_token' },
            { 'redis' => redis })
-      last_response.status.should == 200
-      last_response.body.should_not == ""
-    end
-
-    it 'POST /password_reset return 404 if token not found' do
-      redis.should_receive(:get).with('not_valid_token').and_return(nil)
-      post('/password_reset',
-           { token: 'not_valid_token', password: 'new_password' },
-           { 'redis' => redis })
-      last_response.status.should == 404
+      last_response.status.should == 302
+      last_response.location.should == 'prizeword://valid_token'
     end
 
     it 'POST /password_reset return 200 and html for valid token' do

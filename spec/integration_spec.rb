@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'middleware/redis_middleware'
 require 'middleware/password_reset'
 require 'middleware/counter'
@@ -339,9 +340,6 @@ describe 'Integration spec' do
     last_response_should_be_json
     last_response.body.should_not =~ /#{token}/ # developer sanity check
 
-    get '/password_reset', token: token
-    last_response.status.should == 200
-
     post '/password_reset', token: token, password: 'new_password'
     last_response.status.should == 200
 
@@ -563,6 +561,13 @@ describe 'Integration spec' do
       id = response_data.first['id']
       id.should_not == nil
       response_data.first['status'].should == 'invite_used'
+      response_data.first['invited_at'].should_not == nil
+
+      get('/facebook/invited_friends_this_month', { session_key: session_key })
+      last_response.status.should == 200
+      last_response_should_be_json
+      response_data = JSON.parse(last_response.body)
+      response_data.size.should == 1
 
       get("/me", { session_key: session_key })
       last_response.status.should == 200

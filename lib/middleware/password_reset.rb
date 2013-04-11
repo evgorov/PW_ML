@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'sinatra/base'
 require 'json'
 require 'securerandom'
@@ -13,8 +15,8 @@ module Middleware
     error(BasicModel::NotFound) { halt(404) }
 
     helpers do
-      def generate_html_body(token)
-        Tilt.new(self.class.views + '/email_template.erb').render(nil, token: token)
+      def generate_html_body(token, name)
+        Tilt.new(self.class.views + '/email_template.erb', default_encoding: 'utf-8').render(nil, token: token, name: name)
       end
 
       def redis
@@ -29,7 +31,7 @@ module Middleware
       Pony.mail(to: user['email'],
                 from: 'noreply@prizeword.ru',
                 subject: 'Prizeword password reset',
-                html_body: generate_html_body(token))
+                html_body: generate_html_body(token, user['name']))
       content_type 'application/json'
       { 'message' => 'Email sent' }.to_json
     end

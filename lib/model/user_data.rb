@@ -133,7 +133,10 @@ class UserData < BasicModel
     invited_user_id = invited_user_id(provider, friend_id)
     score = Coefficients.storage(@storage).coefficients['friend-bonus']
     InvitedUser.storage(@storage).load(invited_user_id)['invited_by'].each do |id|
-      self.class.storage(@storage).load(id).tap{ |o| o['month_score'] += score }.save
+      u = self.class.storage(@storage).load(id)
+      u['month_score'] += score
+      u["#{provider}_friends"].values.find{ |o| o['id'] == friend_id }['invited_at'] = Time.now.to_s
+      u.save
       UserScore.storage(@storage).create(id, score, 0, "invite##{provider}##{friend_id}")
     end
     true
