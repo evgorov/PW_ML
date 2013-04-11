@@ -81,13 +81,8 @@
 
 [data-type="hint"]{
   cursor:move;
-/*
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-*/
-    background-position: 0px 0px;
+  background-position: 0px 0px;
 }
-
 
 [data-type="hint"]:hover{
   height: 100px;
@@ -97,6 +92,10 @@
   margin-left: -25px;
   margin-top: -25px;
     background-position: 0px 0px;
+}
+[data-type="hint"].ui-draggable-dragging{
+  height: 50px!important;
+  width: 50px!important;
 }
 [data-type="hint"]:hover:after{
   z-index: 5;
@@ -121,7 +120,6 @@
 [data-current="true"]:before{
     opacity: 0;
 }
-
 [data-type="hint"]:after{
   content: attr(data-value);
   word-wrap: break-word;

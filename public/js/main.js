@@ -322,7 +322,7 @@ var FieldView = Backbone.View.extend({
       helper: 'clone',
       snap: '.token',
       addClasses: false,
-      snapTolerance: 5,
+      snapTolerance: 0,
       zIndex: 100,
       stop: function(event, ui){
         self.trigger('tokenMoved', {
