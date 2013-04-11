@@ -100,7 +100,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     }
     [self showActivityIndicator];
     [updateInProgress setObject:[NSNumber numberWithBool:YES] forKey:providerName];
-    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", providerName] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/invited_friends_this_month", providerName] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];
         [updateInProgress removeObjectForKey:providerName];
         NSLog(@"updateInvited %@ complete: %@", providerName, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -111,11 +111,6 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             NSArray * friendsData = [parser objectWithData:receivedData];
             for (NSDictionary * friendData in friendsData)
             {
-                NSString * status = [friendData objectForKey:@"status"];
-                if ([status compare:@"invite_scored"] != NSOrderedSame)
-                {
-                    continue;
-                }
                 ScoreInviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
                 userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
                 [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
@@ -139,7 +134,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
             NSString * message = data == nil ? ([[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]) : [data objectForKey:@"message"];
-            NSLog(@"error: %@", message);
+            NSLog(@"score for friends error: %@", message);
         }
     } failCallback:^(NSError *error) {
         [self hideActivityIndicator];
