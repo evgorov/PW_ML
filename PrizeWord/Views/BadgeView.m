@@ -52,8 +52,8 @@
         }
         badgesUIImage = [UIImage imageNamed:badgesImageName];
         CGImageRef badgesImage = badgesUIImage.CGImage;
-        float badgeWidth = CGImageGetWidth(badgesImage) / 8;
-        float badgeHeight = CGImageGetHeight(badgesImage) / 4;
+        int badgeWidth = CGImageGetWidth(badgesImage) / 8;
+        int badgeHeight = CGImageGetHeight(badgesImage) / 4;
         number--;
         
         CGImageRef badgeCGImage = CGImageCreateWithImageInRect(badgesImage, CGRectMake((number % 8) * badgeWidth, (number / 8) * badgeHeight, badgeWidth, badgeHeight));
@@ -88,6 +88,11 @@
         {
             lblScore.hidden = NO;
             imgStar.hidden = NO;
+            if (puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
+            {
+                lblScore.hidden = YES;
+                imgStar.hidden = YES;
+            }
             
             lblPercent.hidden = YES;
             imgProgress.hidden = YES;
