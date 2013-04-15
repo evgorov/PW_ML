@@ -23,7 +23,7 @@
 .field {
     height: 100%;
     width: 100%;
-    max-height: 500px;
+    max-height: 600px;
     overflow: auto;
     margin-bottom: 20px;
 }
@@ -52,7 +52,7 @@
     position: absolute;
     width: 50px;
     height: 50px;
-    background-image: url(../img/puzzle-background.jpg);
+    background-image: url(../img/puzzle-background.jpg?v=5);
     background-size: 400px;
     cursor: pointer;
     background-position: -100px -200px;
@@ -112,8 +112,10 @@
   top: 15px;
   text-align: center;
 }
+
 [data-type="hint"]:hover:before{
-    display: none;
+    margin-left: 25px;
+    margin-top: 25px;
 }
 
 
@@ -146,7 +148,7 @@
   position: absolute;
   width: 50px;
   height: 50px;
-  background-image: url('../img/puzzle-background.jpg?v=3');
+  background-image: url('../img/puzzle-background.jpg?v=5');
   background-size: 400px;
   z-index: 1;
   content: '';
@@ -254,7 +256,11 @@
     background-position: -100px -100px;
 }
 
-[data-type="hint"][data-arrow="south-west:bottom"]:before{}
+[data-type="hint"][data-arrow="south-west:bottom"]:before{
+    left: -50px;
+    top: 50px;
+    background-position: 0 -250px;
+}
 
 [data-type="hint"][data-arrow="west:left"]:before{
     left: -50px;
@@ -473,6 +479,12 @@
     overflow: auto;
 }
 
+#interface thead td{
+    padding-top: 25px;
+    padding-bottom: 25px;
+    opacity: 0.8;
+}
+
 #interface .question{
     margin-bottom: 20px;
 }
@@ -504,7 +516,7 @@
 [data-arrow-control]{
   width: 50px;
   height: 50px;
-  background-image: url(../img/puzzle-background.jpg);
+  background-image: url(../img/puzzle-background.jpg?v=5);
   background-size: 400px;
   z-index: 1;
   content: '';
@@ -586,7 +598,9 @@
     background-position: -100px -100px;
 }
 
-[data-arrow-control="south-west:bottom"]{}
+[data-arrow-control="south-west:bottom"]{
+    background-position: 0px -250px;
+}
 
 [data-arrow-control="west:left"]{
     background-position: -150px -150px;
@@ -635,6 +649,7 @@
 .arrow-control-hover [data-arrow-control="south-east:bottom"]{ left: 101px; top: 145px; }
 .arrow-control-hover [data-arrow-control="south-east:right"]{ left: 150px; top: 145px; }
 .arrow-control-hover [data-arrow-control="south-west:right"]{ left: 0px; top: 146px; }
+.arrow-control-hover [data-arrow-control="south-west:bottom"]{ left: 0px; top: 195px; }
 .arrow-control-hover [data-arrow-control="west:bottom"]{ left: 0px; top: 97px; }
 .arrow-control-hover [data-arrow-control="north-west:bottom"]{ left:0px; top: 49px; }
 .arrow-control-hover [data-arrow-control="north-west:right"]{ left: 0px; top: 0px; }

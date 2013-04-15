@@ -266,9 +266,10 @@ var FieldView = Backbone.View.extend({
         width = this.model.get('width'),
         x, y;
     this.coordinates = {};
-    var $container = $('<div>').css({'height': height * this.boxHeight + 'px',
-                                     'width': width * this.boxWidth + 'px',
-                                     'position': 'relative'
+    var $container = $('<div>').css({
+                                      'height': (height + 1) * this.boxHeight + 'px',
+                                      'width': (width + 1) * this.boxWidth + 'px',
+                                      'position': 'relative'
                                     });
     // Add coordinates ruler
     for(x = 0; x <= width; x++){
@@ -432,9 +433,12 @@ var PuzzleView = Backbone.View.extend({
   },
 
   rotateQuestion: function(x, y){
-    var $s = this.findQuestion(x, y).find('select');
-    $s.val($s.find(':selected + option').val());
+    var $q = this.findQuestion(x, y);
+    var $s = $q.find('select');
+    var val = $s.find(':selected + option').val();
+    $s.val(val);
     $s.change();
+    $q.find('[role="current-arrow"]').attr('data-arrow-control', val);
   },
 
   moveQuestion: function(e){
