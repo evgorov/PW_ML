@@ -39,7 +39,7 @@
 
 @implementation InviteViewController
 
-NSString * INVITE_MESSAGE = @"Приглашаю тебя в PrizeWord – увлекательную игру для iPhone! Разгадывай больше сканвордов! Первые три места получают денежные призы!";
+NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!";
 
 - (void)viewDidLoad
 {
