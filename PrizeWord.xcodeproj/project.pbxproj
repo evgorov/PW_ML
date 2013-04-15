@@ -218,6 +218,8 @@
 		F2840CC017158E190003F1F2 /* rules_page_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840C9017158E180003F1F2 /* rules_page_4@2x.png */; };
 		F2840CC117158E190003F1F2 /* rules_page_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840C9117158E180003F1F2 /* rules_page_3@2x.png */; };
 		F2840CC217158E190003F1F2 /* rules_page_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840C9217158E180003F1F2 /* rules_page_2@2x.png */; };
+		F2840CDA171C2A700003F1F2 /* puzzles_news_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840CD8171C2A700003F1F2 /* puzzles_news_bg.png */; };
+		F2840CDB171C2A700003F1F2 /* puzzles_news_bg~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840CD9171C2A700003F1F2 /* puzzles_news_bg~ipad.png */; };
 		F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0216A5E62C0041C1D5 /* APIRequest.m */; };
 		F2848E2516AA73B50041C1D5 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0D16AA73B50041C1D5 /* NSObject+SBJson.m */; };
 		F2848E2616AA73B50041C1D5 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E1016AA73B50041C1D5 /* SBJsonParser.m */; };
@@ -840,6 +842,8 @@
 		F2840C9017158E180003F1F2 /* rules_page_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_page_4@2x.png"; sourceTree = "<group>"; };
 		F2840C9117158E180003F1F2 /* rules_page_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_page_3@2x.png"; sourceTree = "<group>"; };
 		F2840C9217158E180003F1F2 /* rules_page_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_page_2@2x.png"; sourceTree = "<group>"; };
+		F2840CD8171C2A700003F1F2 /* puzzles_news_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_news_bg.png; sourceTree = "<group>"; };
+		F2840CD9171C2A700003F1F2 /* puzzles_news_bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_bg~ipad.png"; sourceTree = "<group>"; };
 		F2848E0116A5E62C0041C1D5 /* APIRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = APIRequest.h; path = Net/APIRequest.h; sourceTree = "<group>"; };
 		F2848E0216A5E62C0041C1D5 /* APIRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = APIRequest.m; path = Net/APIRequest.m; sourceTree = "<group>"; };
 		F2848E0C16AA73B50041C1D5 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
@@ -1521,6 +1525,8 @@
 		F286E31D167C6B9400FF5E83 /* puzzles */ = {
 			isa = PBXGroup;
 			children = (
+				F2840CD8171C2A700003F1F2 /* puzzles_news_bg.png */,
+				F2840CD9171C2A700003F1F2 /* puzzles_news_bg~ipad.png */,
 				F268D57716F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png */,
 				F268D57816F9AB0D00F0FA0F /* puzzles_news_page@2x.png */,
 				F247C325168AF71D00A81D16 /* puzzles_set_month_bg@2x~ipad.png */,
@@ -2789,6 +2795,8 @@
 				F2840CC017158E190003F1F2 /* rules_page_4@2x.png in Resources */,
 				F2840CC117158E190003F1F2 /* rules_page_3@2x.png in Resources */,
 				F2840CC217158E190003F1F2 /* rules_page_2@2x.png in Resources */,
+				F2840CDA171C2A700003F1F2 /* puzzles_news_bg.png in Resources */,
+				F2840CDB171C2A700003F1F2 /* puzzles_news_bg~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

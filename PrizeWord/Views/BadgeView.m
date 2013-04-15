@@ -82,7 +82,7 @@
                 image = [image stretchableImageWithLeftCapWidth:(imageSize.width / 2) topCapHeight:(imageSize.height / 2)];
             }
             imgProgress.image = image;
-            imgProgress.frame = CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height);
+            imgProgress.frame = CGRectIntegral(CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height));
         }
         else
         {
@@ -111,8 +111,8 @@
             CGSize scoreSize = [lblScore.text sizeWithFont:lblScore.font];
             float space = 5;
             float start = (self.frame.size.width - (imgStar.frame.size.width + scoreSize.width + space)) / 2;
-            lblScore.frame = CGRectMake(start + space + imgStar.frame.size.width, lblScore.frame.origin.y, scoreSize.width, lblScore.frame.size.height);
-            imgStar.frame = CGRectMake(start, imgStar.frame.origin.y, imgStar.frame.size.width, imgStar.frame.size.height);
+            lblScore.frame = CGRectIntegral(CGRectMake(start + space + imgStar.frame.size.width, lblScore.frame.origin.y, scoreSize.width, lblScore.frame.size.height));
+            imgStar.frame = CGRectIntegral(CGRectMake(start, imgStar.frame.origin.y, imgStar.frame.size.width, imgStar.frame.size.height));
         }
         [puzzle synchronize];
     }

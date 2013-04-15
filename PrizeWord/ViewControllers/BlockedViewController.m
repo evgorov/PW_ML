@@ -131,7 +131,7 @@ static int VERTICAL_SPACE = 23;
 {
     int contentHeight = contentView.frame.size.height;
     float frameOffset = (self.view.frame.size.width - view.frame.size.width) / 2;
-    view.frame = CGRectMake(frameOffset, contentHeight + VERTICAL_SPACE / 2, view.frame.size.width, view.frame.size.height);
+    view.frame = CGRectIntegral(CGRectMake(frameOffset, contentHeight + VERTICAL_SPACE / 2, view.frame.size.width, view.frame.size.height));
     
     UIImage * border = [UIImage imageNamed:@"frame_border"];
     if ([border respondsToSelector:@selector(resizableImageWithCapInsets:)])
@@ -151,21 +151,21 @@ static int VERTICAL_SPACE = 23;
     [view addSubview:borderView];
     [contentView addSubview:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
-    contentView.frame = CGRectMake(0, 0, self.view.frame.size.width, contentHeight);
+    contentView.frame = CGRectIntegral(CGRectMake(0, 0, self.view.frame.size.width, contentHeight));
     scrollView.contentSize = contentView.frame.size;
 }
 
 -(void)addSimpleView:(UIView *)view
 {
     int contentHeight = contentView.frame.size.height;
-    float frameOffset = (self.view.frame.size.width - view.frame.size.width) / 2;
-    view.frame = CGRectMake(frameOffset, contentHeight + VERTICAL_SPACE / 2, view.frame.size.width, view.frame.size.height);
+    int frameOffset = (self.view.frame.size.width - view.frame.size.width) / 2;
+    view.frame = CGRectIntegral(CGRectMake(frameOffset, contentHeight + VERTICAL_SPACE / 2, view.frame.size.width, view.frame.size.height));
     
     view.clipsToBounds = NO;
     view.autoresizesSubviews = YES;
     [contentView addSubview:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
-    contentView.frame = CGRectMake(0, 0, self.view.frame.size.width, contentHeight);
+    contentView.frame = CGRectIntegral(CGRectMake(0, 0, self.view.frame.size.width, contentHeight));
     scrollView.contentSize = contentView.frame.size;
 }
 
@@ -193,13 +193,13 @@ static int VERTICAL_SPACE = 23;
         }
         else if (yOffset != 0)
         {
-            subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height);
+            subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height));
         }
     }
     
     if (yOffset != 0)
     {
-        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset);
+        contentView.frame = CGRectIntegral(CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset));
         scrollView.contentSize = contentView.frame.size;
         [view removeFromSuperview];
     }
@@ -217,13 +217,13 @@ static int VERTICAL_SPACE = 23;
         }
         else if (yOffset != 0)
         {
-            subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height);
+            subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y + yOffset, subview.frame.size.width, subview.frame.size.height));
         }
     }
     
     if (yOffset != 0)
     {
-        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset);
+        contentView.frame = CGRectIntegral(CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + yOffset));
         scrollView.contentSize = contentView.frame.size;
         [view removeFromSuperview];
     }
@@ -264,18 +264,18 @@ static int VERTICAL_SPACE = 23;
                 [UIView animateWithDuration:0.3 animations:^{
                     if (borderView != nil)
                     {
-                        borderView.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta);
+                        borderView.frame = CGRectIntegral(CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta));
                     }
-                    subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
+                    subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height));
                 }];
             }
             else
             {
                 if (borderView != nil)
                 {
-                    borderView.frame = CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta);
+                    borderView.frame = CGRectIntegral(CGRectMake(borderView.frame.origin.x, borderView.frame.origin.y, borderView.frame.size.width, borderView.frame.size.height + delta));
                 }
-                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height);
+                subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, height));
             }
         }
         else if (delta != 0)
@@ -283,24 +283,24 @@ static int VERTICAL_SPACE = 23;
             if (animated)
             {
                 [UIView animateWithDuration:0.3 animations:^{
-                    subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height);
+                    subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height));
                 }];
             }
             else
             {
-                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height);
+                subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height));
             }
         }
     }
     if (animated)
     {
         [UIView animateWithDuration:0.3 animations:^{
-            contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta);
+            contentView.frame = CGRectIntegral(CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta));
         }];
     }
     else
     {
-        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta);
+        contentView.frame = CGRectIntegral(CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height + delta));
     }
     scrollView.contentSize = CGSizeMake(scrollView.contentSize.width, scrollView.contentSize.height + delta);
 }

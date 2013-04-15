@@ -75,7 +75,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         if (_badges != nil && _badges.count > 0)
         {
             BadgeView * lastBadge = [_badges lastObject];
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
+            self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2));
             _fullSize = self.frame.size;
         }
     }
@@ -135,12 +135,13 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     } else if (type == PUZZLESET_FREE) {
         _lblCaption.text = @"Бесплатный";
     }
+    _lblCaption.frame = CGRectIntegral(_lblCaption.frame);
     
     if (month == 0)
     {
         imgMonthBg.hidden = YES;
         lblMonth.hidden = YES;
-        imgDelimeter.frame = CGRectMake(0, imgDelimeter.frame.origin.y, self.frame.size.width, imgDelimeter.frame.size.height);
+        imgDelimeter.frame = CGRectIntegral(CGRectMake(0, imgDelimeter.frame.origin.y, self.frame.size.width, imgDelimeter.frame.size.height));
     }
     else
     {
@@ -159,9 +160,9 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
             image = [image stretchableImageWithLeftCapWidth:(imageSize.width / 2) topCapHeight:(imageSize.height / 2)];
         }
         imgMonthBg.image = image;
-        imgMonthBg.frame = CGRectMake(imgMonthBg.frame.origin.x, imgMonthBg.frame.origin.y, image.size.width + [monthText sizeWithFont:lblMonth.font].width - [defaultMonthText sizeWithFont:lblMonth.font].width, imgMonthBg.frame.size.height);
+        imgMonthBg.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x, imgMonthBg.frame.origin.y, image.size.width + [monthText sizeWithFont:lblMonth.font].width - [defaultMonthText sizeWithFont:lblMonth.font].width, imgMonthBg.frame.size.height));
         lblMonth.text = monthText;
-        imgDelimeter.frame = CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, imgDelimeter.frame.origin.y, self.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), imgDelimeter.frame.size.height);
+        imgDelimeter.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, imgDelimeter.frame.origin.y, self.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), imgDelimeter.frame.size.height));
     }
 }
 
@@ -171,19 +172,19 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     int minScore = puzzleSetData.minScore;
     NSString * countString = [NSString stringWithFormat:@"%d", count];
     CGSize countSize = [countString sizeWithFont:_lblCount.font];
-    _lblCount.frame = CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height);
+    _lblCount.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height));
     _lblCount.text = countString;
     
     NSString * text = [NSString stringWithFormat:((puzzleSetData.type.intValue == PUZZLESET_FREE) ? @" %@ " : @" %@, минимум "), [NSString declesion:count oneString:@"сканворд" twoString:@"сканворда" fiveString:@"сканвордов"]];
     CGSize textSize = [text sizeWithFont:_lblText1.font];
-    _lblText1.frame = CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height);
+    _lblText1.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height));
     _lblText1.text = text;
     
     
-    _imgStar.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
+    _imgStar.frame = CGRectIntegral(CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height));
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:minScore]];
-    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText1.frame.origin.y, 200, _lblText1.frame.size.height);
+    _lblScore.frame = CGRectIntegral(CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText1.frame.origin.y, 200, _lblText1.frame.size.height));
     _lblScore.text = scoreString;
     
     _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
@@ -216,14 +217,14 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
     NSString * text2 = @"Набрано ";
     CGSize text2Size = [text2 sizeWithFont:_lblText2.font];
-    _lblText2.frame = CGRectMake(_lblText2.frame.origin.x, _lblText2.frame.origin.y, text2Size.width, text2Size.height);
+    _lblText2.frame = CGRectIntegral(CGRectMake(_lblText2.frame.origin.x, _lblText2.frame.origin.y, text2Size.width, text2Size.height));
     _lblText2.text = text2;
     
-    _imgStar.frame = CGRectMake(_lblText2.frame.origin.x + _lblText2.frame.size.width, _lblText2.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height);
+    _imgStar.frame = CGRectIntegral(CGRectMake(_lblText2.frame.origin.x + _lblText2.frame.size.width, _lblText2.frame.origin.y + _imgStar.frame.size.height / 4, _imgStar.frame.size.width, _imgStar.frame.size.height));
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
-    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText2.frame.origin.y, scoreSize.width, scoreSize.height);
+    _lblScore.frame = CGRectIntegral(CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblText2.frame.origin.y, scoreSize.width, scoreSize.height));
     _lblScore.text = scoreString;
 }
 
@@ -237,11 +238,11 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
     
-    _imgStar.frame = CGRectMake(_imgScoreBg.frame.origin.x + _imgStar.frame.size.width / 2, _imgStar.frame.origin.y, _imgStar.frame.size.width, _imgStar.frame.size.height);
+    _imgStar.frame = CGRectIntegral(CGRectMake(_imgScoreBg.frame.origin.x + _imgStar.frame.size.width / 2, _imgStar.frame.origin.y, _imgStar.frame.size.width, _imgStar.frame.size.height));
     
     NSString * scoreString = [NSString stringWithFormat:@" %@", [NSString digitString:puzzleSetData.score]];
     CGSize scoreSize = [scoreString sizeWithFont:_lblScore.font];
-    _lblScore.frame = CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblScore.frame.origin.y, scoreSize.width, scoreSize.height);
+    _lblScore.frame = CGRectIntegral(CGRectMake(_imgStar.frame.origin.x + _imgStar.frame.size.width, _lblScore.frame.origin.y, scoreSize.width, scoreSize.height));
     _lblScore.text = scoreString;
     _lblScore.textColor = [UIColor whiteColor];
     _lblScore.shadowColor = [UIColor blackColor];
@@ -266,7 +267,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         }
         BadgeView * badgeView;
         badgeView = [BadgeView badgeForPuzzle:puzzleData andNumber:badgeIdx];
-        badgeView.frame = CGRectMake(_lblText1.frame.origin.x + (_badges.count % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (_badges.count / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height);
+        badgeView.frame = CGRectIntegral(CGRectMake(_lblText1.frame.origin.x + (_badges.count % badgesPerRow) * badgeView.frame.size.width * 1.2, _btnBuy.frame.origin.y + _btnBuy.frame.size.height / 2 + (_badges.count / badgesPerRow) * badgeView.frame.size.height * 1.2, badgeView.frame.size.width, badgeView.frame.size.height));
         badgeView.tag = badgeIdx - 1;
         [self addSubview:badgeView];
         [_badges addObject:badgeView];
@@ -287,16 +288,16 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 {
     NSString * text = @"Разгадано ";
     CGSize textSize = [text sizeWithFont:_lblText1.font];
-    _lblText1.frame = CGRectMake(_lblText2.frame.origin.x, _lblText1.frame.origin.y, textSize.width, textSize.height);
+    _lblText1.frame = CGRectIntegral(CGRectMake(_lblText2.frame.origin.x, _lblText1.frame.origin.y, textSize.width, textSize.height));
     _lblText1.text = text;
     
     NSString * countString = [NSString stringWithFormat:@"%d/%d ", solved, count];
     CGSize countSize = [countString sizeWithFont:_lblCount.font];
-    _lblCount.frame = CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y, countSize.width, countSize.height);
+    _lblCount.frame = CGRectIntegral(CGRectMake(_lblText1.frame.origin.x + _lblText1.frame.size.width, _lblText1.frame.origin.y, countSize.width, countSize.height));
     _lblCount.text = countString;
     
     UIImageView * progressbarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_set_progressbar_bg"]];
-    progressbarView.frame = CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y + 4, progressbarView.frame.size.width, progressbarView.frame.size.height);
+    progressbarView.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y + 4, progressbarView.frame.size.width, progressbarView.frame.size.height));
     [self addSubview:progressbarView];
     
     UIImage * imgProgress = [UIImage imageNamed:@"puzzles_set_progressbar"];
@@ -320,7 +321,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     
     NSString * percentString = [NSString stringWithFormat:@" %d%%", (int)(100 * progress)];
     CGSize percentSize = [percentString sizeWithFont:_lblPercent.font];
-    _lblPercent.frame = CGRectMake(progressbarView.frame.origin.x + progressbarView.frame.size.width, _lblPercent.frame.origin.y, percentSize.width, percentSize.height);
+    _lblPercent.frame = CGRectIntegral(CGRectMake(progressbarView.frame.origin.x + progressbarView.frame.size.width, _lblPercent.frame.origin.y, percentSize.width, percentSize.height));
     _lblPercent.text = percentString;
 }
 
@@ -346,12 +347,12 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     if (_badges.count > 0)
     {
         BadgeView * lastBadge = [_badges lastObject];
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
+        self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2));
         _fullSize = self.frame.size;
     }
     else
     {
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, 303, 105);
+        self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, 303, 105));
     }
 }
 

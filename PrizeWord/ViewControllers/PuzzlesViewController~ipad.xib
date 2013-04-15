@@ -40,6 +40,7 @@
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{480, 954}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -68,7 +69,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">puzzles_news_bg@2x~ipad.png</string>
+							<string key="NSResourceName">puzzles_news_bg~ipad.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="411654318">
@@ -118,6 +119,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{155, 100}, {170, 36}}</string>
 						<reference key="NSSuperview" ref="221264550"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="97148886">
 							<int key="NSColorSpace">3</int>
@@ -322,6 +324,7 @@
 								<int key="NSvFlags">-2147483356</int>
 								<string key="NSFrame">{{350, 3}, {78, 21}}</string>
 								<reference key="NSSuperview" ref="850303364"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="97148886"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -486,6 +489,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{250, 117}, {90, 40}}</string>
 						<reference key="NSSuperview" ref="658280758"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">2</int>
@@ -521,6 +525,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{443, 60}</string>
 						<reference key="NSSuperview" ref="959300778"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">1</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -576,6 +581,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{72, 6}, {219, 38}}</string>
 						<reference key="NSSuperview" ref="526283808"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="97148886"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -1095,7 +1101,7 @@
 			<string key="puzzles_buy_hint_btn@2x~ipad.png">{180, 80}</string>
 			<string key="puzzles_buy_hint_btn_down@2x~ipad.png">{180, 80}</string>
 			<string key="puzzles_hints_bg@2x~ipad.png">{886, 402}</string>
-			<string key="puzzles_news_bg@2x~ipad.png">{884, 232}</string>
+			<string key="puzzles_news_bg~ipad.png">{442, 116}</string>
 			<string key="puzzles_news_close_btn@2x~ipad.png">{66, 66}</string>
 			<string key="puzzles_news_close_btn_down@2x~ipad.png">{66, 66}</string>
 			<string key="puzzles_set_br@2x.png">{104, 52}</string>
