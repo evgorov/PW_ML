@@ -96,7 +96,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     openSetSound = [[FISoundEngine sharedEngine] soundNamed:@"open_set.caf" error:nil];
     closeSetSound = [[FISoundEngine sharedEngine] soundNamed:@"close_set.caf" error:nil];
     
-    archivePuzzleSetViews = [NSMutableArray new];
     archiveLastMonth = [GlobalData globalData].currentMonth + 1;
     archiveLastYear = [GlobalData globalData].currentYear;
     archiveLoading = NO;
@@ -128,7 +127,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     puzzlesTimeLeftBg = nil;
     puzzlesTimeLeftCaption = nil;
     
-    archivePuzzleSetViews = nil;
     [super viewDidUnload];
 }
 
@@ -238,32 +236,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     {
         PuzzleData * puzzleData = event.data;
         NSLog(@"handle puzzle %@ synchronization", puzzleData.name);
-        /*
-        if (puzzleData.progress < 1)
-        {
-            for (UIView * view in currentPuzzlesView.subviews)
-            {
-                if (![view isKindOfClass:[PuzzleSetView class]])
-                {
-                    continue;
-                }
-                PuzzleSetView * puzzleSetView = (PuzzleSetView *)view;
-                if ([puzzleSetView.puzzleSetData.set_id compare:puzzleData.puzzleSet.set_id] == NSOrderedSame)
-                {
-                    for (BadgeView * badge in puzzleSetView.badges)
-                    {
-                        if ([badge.puzzle.puzzle_id compare:puzzleData.puzzle_id] == NSOrderedSame)
-                        {
-                            [badge updateWithPuzzle:puzzleData];
-                        }
-                    }
-                    break;
-                }
-            }
-            
-            return;
-        }
-        */
         
         PuzzleSetView * oldView = nil;
         for (UIView * view in currentPuzzlesView.subviews)
@@ -279,21 +251,55 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 break;
             }
         }
-        if (oldView == nil)
+        if (oldView != nil)
         {
+            // current puzzles
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:YES showUnsolved:YES];
+            CGSize newSize = puzzleSetView.frame.size;
+            CGSize oldSize = oldView.frame.size;
+            puzzleSetView.frame = CGRectIntegral(CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height));
+            [currentPuzzlesView insertSubview:puzzleSetView aboveSubview:oldView];
+            [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+            [self activateBadges:puzzleSetView];
+            
+            [oldView removeFromSuperview];
+            [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
             return;
         }
+        else
+        {
+            // archive puzzles
+            for (UIView * view in archiveView.subviews)
+            {
+                if (![view isKindOfClass:[PuzzleSetView class]])
+                {
+                    continue;
+                }
+                PuzzleSetView * puzzleSetView = (PuzzleSetView *)view;
+                if ([puzzleSetView.puzzleSetData.set_id compare:puzzleData.puzzleSet.set_id] == NSOrderedSame)
+                {
+                    oldView = puzzleSetView;
+                    break;
+                }
+            }
+            if (oldView == nil)
+            {
+                return;
+            }
+            PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:oldView.month showSolved:YES showUnsolved:YES];
+            CGSize newSize = puzzleSetView.frame.size;
+            CGSize oldSize = oldView.frame.size;
+            puzzleSetView.frame = CGRectIntegral(CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height));
+            [archiveView insertSubview:puzzleSetView aboveSubview:oldView];
+            [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+            [self activateBadges:puzzleSetView];
+            
+            [oldView removeFromSuperview];
+            [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
+            return;
+            
+        }
         
-        PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:YES showUnsolved:YES];
-        CGSize newSize = puzzleSetView.frame.size;
-        CGSize oldSize = oldView.frame.size;
-        puzzleSetView.frame = CGRectIntegral(CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height));
-        [currentPuzzlesView insertSubview:puzzleSetView aboveSubview:oldView];
-        [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self activateBadges:puzzleSetView];
-        
-        [oldView removeFromSuperview];
-        [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
     }
     else if (event.type == EVENT_MONTH_SETS_UPDATED)
     {

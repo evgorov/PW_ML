@@ -4,6 +4,7 @@
 
 @property(strong) NSBundle *soundBundle;
 @property(assign, nonatomic, getter = isSuspended) BOOL suspended;
+@property(assign, nonatomic) BOOL muted;
 
 + (id) sharedEngine;
 

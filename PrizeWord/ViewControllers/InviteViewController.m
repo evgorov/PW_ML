@@ -39,6 +39,8 @@
 
 @implementation InviteViewController
 
+NSString * INVITE_MESSAGE = @"Приглашаю тебя в PrizeWord – увлекательную игру для iPhone! Разгадывай больше сканвордов! Первые три места получают денежные призы!";
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -151,7 +153,6 @@
         APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             [self hideActivityIndicator];
             [updateInProgress removeObjectForKey:provider];
-            NSLog(@"%@/friends: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
             float height = headerView.frame.size.height;
             SBJsonParser * parser = [SBJsonParser new];
             NSArray * friendsData = [parser objectWithData:receivedData];
@@ -223,11 +224,10 @@
     [self showActivityIndicator];
     
     NSDictionary * userData = [fbFriends objectAtIndex:idx];
-    NSString * message = @"Дорогой друг! Я приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды в своем смартфоне, участвуй в рейтинге, побеждай!\n\n\
-    Первые три места рейтинга получают денежные призы! Каждый месяц новый рейтинг и новые интересные сканворды!";
+
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    @"PrizeWord", @"title",
-                                   message,  @"message",
+                                   INVITE_MESSAGE,  @"message",
                                    [userData objectForKey:@"id"], @"to",
                                    nil];
 
@@ -235,7 +235,7 @@
     [self showActivityIndicator];
     
     // Invoke the dialog
-    [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:message title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+    [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:INVITE_MESSAGE title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
          [self hideActivityIndicator];
          [self handleFacebookDialogResult:result resultURL:resultURL error:error];
      }];
@@ -296,16 +296,15 @@
             }
         }
         NSLog(@"invite fb friends: %@", usersString);
-        NSString * message = @"Дорогой друг! Я приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды в своем смартфоне, участвуй в рейтинге, побеждай!\n\n\
-        Первые три места рейтинга получают денежные призы! Каждый месяц новый рейтинг и новые интересные сканворды!";
+
         NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        @"PrizeWord", @"title",
-                                       message,  @"message",
+                                       INVITE_MESSAGE,  @"message",
                                        usersString, @"to",
                                        nil];
 
         // Invoke the dialog
-        [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:message title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+        [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession] message:INVITE_MESSAGE title:@"PrizeWord" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
             [self hideActivityIndicator];
             [self handleFacebookDialogResult:result resultURL:resultURL error:error];
         }];

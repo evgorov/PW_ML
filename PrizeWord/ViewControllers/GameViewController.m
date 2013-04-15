@@ -61,12 +61,15 @@
     [pauseSwtMusic.superview addSubview:switchView];
     [pauseSwtMusic removeFromSuperview];
     pauseSwtMusic = switchView;
+    [pauseSwtMusic addTarget:self action:@selector(handlePauseMusicSwitch:) forControlEvents:UIControlEventValueChanged];
+    [pauseSwtMusic setEnabled:NO];
     
     switchView = [PrizeWordSwitchView switchView];
     switchView.frame = pauseSwtSound.frame;
     [pauseSwtSound.superview addSubview:switchView];
     [pauseSwtSound removeFromSuperview];
     pauseSwtSound = switchView;
+    [pauseSwtSound addTarget:self action:@selector(handlePauseSoundSwitch:) forControlEvents:UIControlEventValueChanged];
     
     pauseMaxProgress = pauseImgProgressbar.frame.size.width;
     UIImage * imgProgress = [UIImage imageNamed:@"pause_progressbar"];
@@ -149,6 +152,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    BOOL soundMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"sound-mute"];
+    [pauseSwtSound setOn:!soundMute animated:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -272,6 +278,18 @@
     [gameField.puzzle synchronize];
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)handlePauseMusicSwitch:(id)sender
+{
+}
+
+- (IBAction)handlePauseSoundSwitch:(id)sender
+{
+    BOOL mute = !pauseSwtSound.isOn;
+    NSLog(@"mute: %c", mute);
+    [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"sound-mute"];
+    [[FISoundEngine sharedEngine] setMuted:mute];
 }
 
 - (IBAction)handleShareClick:(id)sender

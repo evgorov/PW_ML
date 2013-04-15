@@ -2,6 +2,7 @@
 #import "FISampleDecoder.h"
 #import "FISampleBuffer.h"
 #import "FISoundSource.h"
+#import "FISoundEngine.h"
 
 @interface FISound ()
 @property(strong) NSArray *voices;
@@ -44,6 +45,10 @@
 
 - (void) play
 {
+    if ([[FISoundEngine sharedEngine] muted])
+    {
+        return;
+    }
     _currentVoiceIndex = (_currentVoiceIndex + 1) % [_voices count];
     [(FISoundSource*) [_voices objectAtIndex:_currentVoiceIndex] play];
 }

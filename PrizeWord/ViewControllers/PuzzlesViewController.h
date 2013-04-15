@@ -42,7 +42,6 @@
     int archiveLastYear;
     BOOL archiveNeedLoading;
     BOOL archiveLoading;
-    NSMutableArray * archivePuzzleSetViews;
     
     FISound * buySetSound;
     FISound * openSetSound;

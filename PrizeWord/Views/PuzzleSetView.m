@@ -50,12 +50,14 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 @synthesize puzzleSetData = _puzzleSetData;
 @synthesize shortSize = _shortSize;
 @synthesize fullSize = _fullSize;
+@synthesize month = _month;
 
 -(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     if (self)
     {
         _puzzleSetData = puzzleSetData;
+        _month = month;
         
         self.autoresizesSubviews = NO;
         self.clipsToBounds = YES;
@@ -87,6 +89,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     if (self)
     {
         _puzzleSetData = puzzleSetData;
+        _month = 0;
         
         self.autoresizesSubviews = NO;
         self.clipsToBounds = YES;

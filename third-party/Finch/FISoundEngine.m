@@ -8,6 +8,7 @@
 @end
 
 @implementation FISoundEngine
+@synthesize muted;
 
 #pragma mark Initialization
 
@@ -73,5 +74,6 @@
         }
     }
 }
+
 
 @end

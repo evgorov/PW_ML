@@ -101,7 +101,9 @@ static PrizewordStoreObserver * storeObserver = nil;
 	[nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:device];
     
     // initialize sound engine
-    [FISoundEngine sharedEngine];
+    BOOL soundMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"sound-mute"];
+    [[FISoundEngine sharedEngine] setMuted:soundMute];
+    
     if ([[UIDevice currentDevice].systemVersion compare:@"6.0" options:NSNumericSearch] != NSOrderedAscending)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self

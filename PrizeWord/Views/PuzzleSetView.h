@@ -36,6 +36,7 @@
 @property (nonatomic, readonly) PuzzleSetData * puzzleSetData;
 @property (nonatomic, readonly) CGSize shortSize;
 @property (nonatomic, readonly) CGSize fullSize;
+@property (readonly) int month;
 
 +(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 
