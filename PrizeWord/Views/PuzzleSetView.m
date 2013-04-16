@@ -194,6 +194,8 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     if (puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         [_btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
+        _lblScore.hidden = YES;
+        _imgStar.hidden = YES;
     }
     else
     {

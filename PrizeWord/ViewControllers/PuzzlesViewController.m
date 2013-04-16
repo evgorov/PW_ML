@@ -616,10 +616,10 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         [self hideActivityIndicator];
         if (response.statusCode == 200)
         {
-            [buySetSound play];
             [self showActivityIndicator];
             APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                [buySetSound play];
                 [self hideActivityIndicator];
                 
                 NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];

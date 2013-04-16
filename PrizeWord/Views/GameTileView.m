@@ -228,6 +228,10 @@
             questionLabel.textColor = [UIColor colorWithRed:0.235 green:0.243 blue:0.271 alpha:1];
         }
         questionLabel.hidden = NO;
+        if (questionLabel.superview != self)
+        {
+            [self addSubview:questionLabel];
+        }
 
         if (tileData.state == TILE_QUESTION_NEW)
         {
@@ -250,6 +254,7 @@
         }
         questionLabel.text = @"";
         questionLabel.hidden = YES;
+        [questionLabel removeFromSuperview];
         [self hideArrow];
     }
     
