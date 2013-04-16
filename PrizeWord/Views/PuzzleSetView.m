@@ -320,7 +320,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     {
         progress = (float)solved / count;
     }
-    UIImageView * progressbar = [[UIImageView alloc] initWithFrame:CGRectMake(1, 0, (progressbarView.frame.size.width - 2) * progress, imageSize.height)];
+    UIImageView * progressbar = [[UIImageView alloc] initWithFrame:CGRectMake(1, 1, (progressbarView.frame.size.width - 2) * progress, imageSize.height)];
     progressbar.image = imgProgress;
     [progressbarView addSubview:progressbar];
     

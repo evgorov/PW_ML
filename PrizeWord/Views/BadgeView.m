@@ -82,7 +82,7 @@
                 image = [image stretchableImageWithLeftCapWidth:(imageSize.width / 2) topCapHeight:(imageSize.height / 2)];
             }
             imgProgress.image = image;
-            imgProgress.frame = CGRectIntegral(CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height));
+            imgProgress.frame = CGRectIntegral(CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y + 1, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height));
         }
         else
         {
