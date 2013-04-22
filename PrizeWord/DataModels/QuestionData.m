@@ -143,7 +143,9 @@
     }
     
     [question setUser_id:userId];
-    [question setAnswer:[dict objectForKey:@"answer"]];
+    NSString * answer = [dict objectForKey:@"answer"];
+    [question setAnswer:[answer stringByReplacingOccurrencesOfString:@"ё" withString:@"е"]];
+    
     [question setAnswer_positionAsString:[dict objectForKey:@"answer_position"]];
     [question setColumn:[dict objectForKey:@"column"]];
     [question setQuestion_text:[dict objectForKey:@"question_text"]];
