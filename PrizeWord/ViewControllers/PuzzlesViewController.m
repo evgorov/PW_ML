@@ -403,7 +403,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     
     UIView * frame = [currentPuzzlesView.subviews objectAtIndex:1];
     [UIView animateWithDuration:0.3 animations:^{
-        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
+        frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
     }];
     [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
     
@@ -464,7 +464,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         [self activateBadges:puzzleSetView];
         [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
         puzzleSetView.btnShowMore.selected = NO;
-        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.shortSize.height);
+        puzzleSetView.frame = CGRectIntegral(CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.shortSize.height));
         yOffset += puzzleSetView.shortSize.height;
         
         [archiveView addSubview:puzzleSetView];
@@ -472,7 +472,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     
     UIView * frame = [archiveView.subviews objectAtIndex:1];
     [UIView animateWithDuration:0.3 animations:^{
-        frame.frame = CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2);
+        frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
     }];
     [self resizeView:archiveView newHeight:yOffset animated:YES];
 }
@@ -827,22 +827,22 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 continue;
             }
             [UIView animateWithDuration:0.3 animations:^{
-                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, subview.frame.size.height + (newSize.height - oldSize.height));
+                subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, subview.frame.size.height + (newSize.height - oldSize.height)));
             }];
             continue;
         }
         if (subview == innerView)
         {
             delta = newSize.height - oldSize.height;
-            subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height);
+            subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height));
             [UIView animateWithDuration:0.3 animations:^{
-                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height + delta);
+                subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y, subview.frame.size.width, oldSize.height + delta));
             }];
         }
         else if (delta != 0)
         {
             [UIView animateWithDuration:0.3 animations:^{
-                subview.frame = CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height);
+                subview.frame = CGRectIntegral(CGRectMake(subview.frame.origin.x, subview.frame.origin.y + delta, subview.frame.size.width, subview.frame.size.height));
             }];
         }
     }

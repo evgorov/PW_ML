@@ -561,7 +561,7 @@
                 break;
             }
         }
-        if (!isArchivePuzzle)
+        if (!isArchivePuzzle && _puzzle.puzzleSet.type.intValue != PUZZLESET_FREE)
         {
             APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);

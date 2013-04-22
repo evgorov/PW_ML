@@ -101,7 +101,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         if (_badges.count > 0)
         {
             BadgeView * lastBadge = [_badges lastObject];
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2);
+            self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2));
             _fullSize = self.frame.size;
         }
     }
