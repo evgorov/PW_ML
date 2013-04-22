@@ -233,7 +233,7 @@
                     }
                 }
                 
-                NSString * data = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
+                NSString * dataString = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
                 
                 APIRequest * putRequest = [APIRequest putRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id]  successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                     NSLog(@"put puzzle %@: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -241,7 +241,7 @@
                     NSLog(@"puz puzzle %@ failed: %@", self.puzzle_id, error.description);
                 }];
                 [putRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [putRequest.params setObject:data forKey:@"puzzle_data"];
+                [putRequest.params setObject:dataString forKey:@"puzzle_data"];
                 [putRequest runUsingCache:NO silentMode:YES];
             }
             

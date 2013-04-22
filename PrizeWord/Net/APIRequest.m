@@ -37,7 +37,7 @@ static NSMutableDictionary * apiCache = nil;
         successCallback = success;
         failCallback = fail;
         _params = [NSMutableDictionary new];
-        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:30];
         request.HTTPMethod = httpMethod;
         receivedData = [NSMutableData new];
         useCache = NO;
@@ -84,7 +84,7 @@ static NSMutableDictionary * apiCache = nil;
 
 -(void)prepareRequest
 {
-    if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame || [request.HTTPMethod compare:@"PUT"] == NSOrderedSame)
+    if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame)
     {
         NSMutableString * paramsString = [NSMutableString new];
         [_params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -99,7 +99,7 @@ static NSMutableDictionary * apiCache = nil;
         }];
         request.URL = [NSURL URLWithString:[NSString stringWithFormat:@"?%@", [paramsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL:request.URL];
     }
-    else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame) {
+    else if ([request.HTTPMethod compare:@"POST"] == NSOrderedSame || [request.HTTPMethod compare:@"PUT"] == NSOrderedSame) {
         NSString * boundary = @"qpojw49j023n4fn1983cdh10239cn";
         // set Content-Type in HTTP header
         NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
