@@ -300,76 +300,84 @@
     // facebook
     if (button.tag == 0)
     {
-        if ([[FBSession activeSession] isOpen])
-        {
-            // Put together the dialog parameters
-            NSMutableDictionary *params =
-            [NSMutableDictionary dictionaryWithObjectsAndKeys:
-             @"PrizeWord", @"name",
-             message, @"caption",
-             @"http://prize-word.com", @"link",
-             nil];
-            [self showActivityIndicator];
-            
-            [[FBSession activeSession] reauthorizeWithPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
-                if (error == nil)
-                {
-                    NSLog(@"reauthorizeWithPublishPermissions success");
-                    // Invoke the dialog
-                    [FBWebDialogs presentFeedDialogModallyWithSession:session
-                                                           parameters:params
-                                                              handler:
-                     ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-                         [self hideActivityIndicator];
-                         
-                         if (error) {
-                             // Case A: Error launching the dialog or publishing story.
-                             NSLog(@"Error publishing story.");
+        // Put together the dialog parameters
+        NSMutableDictionary *params =
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:
+         @"PrizeWord", @"name",
+         message, @"caption",
+         @"http://prize-word.com", @"link",
+         nil];
+        
+        void (^publishHandler)(FBSession *session, NSError *error) = ^(FBSession *session, NSError *error) {
+            [self hideActivityIndicator];
+            if (error == nil)
+            {
+                NSLog(@"reauthorizeWithPublishPermissions success");
+                // Invoke the dialog
+                [FBWebDialogs presentFeedDialogModallyWithSession:session
+                                                       parameters:params
+                                                          handler:
+                 ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                     [self hideActivityIndicator];
+                     
+                     if (error) {
+                         // Case A: Error launching the dialog or publishing story.
+                         NSLog(@"Error publishing story.");
+                     } else {
+                         if (result == FBWebDialogResultDialogNotCompleted) {
+                             // Case B: User clicked the "x" icon
+                             NSLog(@"User canceled story publishing.");
+                             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при публикации" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                             [alertView show];
                          } else {
-                             if (result == FBWebDialogResultDialogNotCompleted) {
-                                 // Case B: User clicked the "x" icon
+                             // Case C: Dialog shown and the user clicks Cancel or Share
+                             NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                             if (![urlParams valueForKey:@"post_id"]) {
+                                 // User clicked the Cancel button
                                  NSLog(@"User canceled story publishing.");
-                                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при публикации" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                 [alertView show];
                              } else {
-                                 // Case C: Dialog shown and the user clicks Cancel or Share
-                                 NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
-                                 if (![urlParams valueForKey:@"post_id"]) {
-                                     // User clicked the Cancel button
-                                     NSLog(@"User canceled story publishing.");
-                                 } else {
-                                     // User clicked the Share button
-                                     NSString *postID = [urlParams valueForKey:@"post_id"];
-                                     
-                                     UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                     [alertView show];
-                                     
-                                     NSLog(@"Posted story, id: %@", postID);
-                                 }
+                                 // User clicked the Share button
+                                 NSString *postID = [urlParams valueForKey:@"post_id"];
+                                 
+                                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                 [alertView show];
+                                 
+                                 NSLog(@"Posted story, id: %@", postID);
                              }
                          }
-                     }];
-                }
-                else
-                {
-                    NSLog(@"facebook publish stream openning error: %@", error);
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alert show];
-                }
-            }];
+                     }
+                 }];
+            }
+            else
+            {
+                NSLog(@"facebook publish stream openning error: %@", error);
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+        };
+        
+        void (^loginHandler)(FBSession *session, FBSessionState state, NSError *error) = ^(FBSession *session, FBSessionState state, NSError *error) {
+            [self hideActivityIndicator];
+            if (error == nil && (state == FBSessionStateOpen || state == FBSessionStateOpenTokenExtended))
+            {
+                publishHandler(session, error);
+                return;
+            }
+            if (error != nil)
+            {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+        };
+        
+        [self showActivityIndicator];
+        if ([[FBSession activeSession] isOpen])
+        {
+            [[FBSession activeSession] requestNewPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:publishHandler];
         }
         else
         {
-            [SocialNetworks loginFacebookWithViewController:[AppDelegate currentDelegate].rootViewController andCallback:^{
-                if ([FBSession activeSession] != nil)
-                {
-                    [self handleShareClick:sender];
-                }
-                else
-                {
-                    NSLog(@"Error while facebook login");
-                }
-            }];
+            [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:loginHandler];
         }
     }
     // vkontakte
