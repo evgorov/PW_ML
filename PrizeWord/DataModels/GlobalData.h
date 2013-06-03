@@ -36,6 +36,7 @@
 -(void)loadMonthSets;
 -(void)loadMe;
 -(void)loadCoefficients;
+-(void)sendSavedScores;
 -(void)parseDateFromResponse:(NSHTTPURLResponse *)response;
 
 @end

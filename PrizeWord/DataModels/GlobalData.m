@@ -278,6 +278,44 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     [request runUsingCache:NO silentMode:YES];
 }
 
+-(void)sendSavedScores
+{
+    NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+    
+    if (savedScore == nil || savedScore.count == 0)
+    {
+        return;
+    }
+    
+    for (NSString * key in savedScore)
+    {
+        NSMutableDictionary * params = [[savedScore objectForKey:savedScore] mutableCopy];
+        [params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
+
+        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            
+            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+            [savedScore removeObjectForKey:[params objectForKey:@"source"]];
+            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
+            
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            if (userData != nil)
+            {
+                [GlobalData globalData].loggedInUser = userData;
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
+            }
+        } failCallback:^(NSError *error) {
+            NSLog(@"score error! %@", error.description);
+        }];
+        
+        request.params = params;
+        [request runUsingCache:NO silentMode:YES];
+    }
+}
+
 -(void)parseDateFromResponse:(NSHTTPURLResponse *)response
 {
     NSString * dateString = [response.allHeaderFields objectForKey:@"Date"];

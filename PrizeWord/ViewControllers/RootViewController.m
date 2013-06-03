@@ -301,6 +301,8 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [mainMenuFBSwitch setEnabled:([GlobalData globalData].loggedInUser.fbProvider == nil)];
     [mainMenuVKSwitch setOn:([GlobalData globalData].loggedInUser.vkProvider != nil) animated:YES];
     [mainMenuVKSwitch setEnabled:([GlobalData globalData].loggedInUser.vkProvider == nil)];
+    
+    [[GlobalData globalData] sendSavedScores];
 }
 
 -(void)showMenuAnimated:(BOOL)animated

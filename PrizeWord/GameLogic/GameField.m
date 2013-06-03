@@ -563,8 +563,20 @@
         }
         if (!isArchivePuzzle && _puzzle.puzzleSet.type.intValue != PUZZLESET_FREE)
         {
+            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+            if (savedScore == nil)
+            {
+                savedScore = [NSMutableDictionary new];
+            }
+            [savedScore setValue:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", scoreForPuzzle], @"score", @"1", @"solved", _puzzle.puzzle_id, @"source", nil] forKey:_puzzle.puzzle_id];
+            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
             APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+
+                NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+                [savedScore removeObjectForKey:_puzzle.puzzle_id];
+                [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
+
                 SBJsonParser * parser = [SBJsonParser new];
                 NSDictionary * data = [parser objectWithData:receivedData];
                 UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
