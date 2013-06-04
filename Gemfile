@@ -11,6 +11,7 @@ group :app do
   gem 'bcrypt-ruby', require: 'bcrypt'
   gem 'pony'
   gem 'grocer'
+  gem 'unicorn'
 end
 
 group :test do
