@@ -1,4 +1,4 @@
-APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
+APP_ROOT = File.expand_path(File.dirname(__FILE__))
 
 worker_processes 4
 working_directory APP_ROOT
