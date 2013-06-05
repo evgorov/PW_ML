@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define SERVER_ENDPOINT @"http://ec2-54-247-173-247.eu-west-1.compute.amazonaws.com/"
+#define SERVER_ENDPOINT @"http://api.prize-word.com/"
 
 typedef void(^SuccessCallback)(NSHTTPURLResponse * response, NSData * receivedData);
 typedef void(^FailCallback)(NSError * error);
