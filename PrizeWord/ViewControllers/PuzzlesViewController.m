@@ -414,8 +414,8 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
     int daysLeft = daysRange.location + daysRange.length - currentComponents.day;
     puzzlesTimeLeftCaption.text = [NSString stringWithFormat:@"Ост. %d %@", daysLeft, [NSString declesion:daysLeft oneString:@"день" twoString:@"дня" fiveString:@"дней"]];
-    puzzlesTimeLeftCaption.hidden = NO;
-    puzzlesTimeLeftBg.hidden = NO;
+    puzzlesTimeLeftCaption.hidden = daysLeft > 5;
+    puzzlesTimeLeftBg.hidden = daysLeft > 5;
     
     [self setupKnownPrices];
     // request information about products
@@ -429,7 +429,6 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 -(void)updateArchive:(NSData *)receivedData
 {
-    NSLog(@"archive: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSArray * setsData = [[SBJsonParser new] objectWithData:receivedData];
     
     float yOffset = archiveView.frame.size.height;
