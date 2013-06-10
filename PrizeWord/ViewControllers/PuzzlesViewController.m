@@ -32,6 +32,9 @@ NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.ios.prizeword.hints10";
 NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.ios.prizeword.hints20";
 NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
+// default in IB
+const int TAG_STATIC_VIEWS = 0;
+const int TAG_DYNAMIC_VIEWS = 101;
 
 @interface PuzzlesViewController ()
 
@@ -255,6 +258,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         {
             // current puzzles
             PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:0 showSolved:YES showUnsolved:YES];
+            puzzleSetView.tag = TAG_DYNAMIC_VIEWS;
             CGSize newSize = puzzleSetView.frame.size;
             CGSize oldSize = oldView.frame.size;
             puzzleSetView.frame = CGRectIntegral(CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height));
@@ -287,15 +291,20 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
                 return;
             }
             PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleData.puzzleSet month:oldView.month showSolved:YES showUnsolved:YES];
+            puzzleSetView.tag = TAG_DYNAMIC_VIEWS;
             CGSize newSize = puzzleSetView.frame.size;
             CGSize oldSize = oldView.frame.size;
             puzzleSetView.frame = CGRectIntegral(CGRectMake(0, oldView.frame.origin.y, puzzleSetView.frame.size.width, oldSize.height));
             [archiveView insertSubview:puzzleSetView aboveSubview:oldView];
             [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+            puzzleSetView.btnShowMore.selected = NO;
             [self activateBadges:puzzleSetView];
             
             [oldView removeFromSuperview];
-            [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
+            if (fabs(oldSize.height - newSize.height) < 0.01)
+            {
+                [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
+            }
             return;
             
         }
@@ -370,14 +379,23 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
     NSMutableSet * productsIds = [NSMutableSet new];
 
     float yOffset = currentPuzzlesView.frame.size.height;
-    while (currentPuzzlesView.subviews.count > 2) {
-        UIView * subview = [currentPuzzlesView.subviews objectAtIndex:currentPuzzlesView.subviews.count-1];
+    NSMutableArray * subviewsToDelete = [NSMutableArray arrayWithCapacity:currentPuzzlesView.subviews.count];
+    for (UIView * subview in currentPuzzlesView.subviews)
+    {
+        if (subview.tag == TAG_DYNAMIC_VIEWS)
+        {
+            [subviewsToDelete addObject:subview];
+        }
+    }
+    for (UIView * subview in subviewsToDelete)
+    {
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
     for (PuzzleSetData * puzzleSet in monthSets)
     {
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:0 showSolved:YES showUnsolved:YES];
+        puzzleSetView.tag = TAG_DYNAMIC_VIEWS;
         puzzleSetView.frame = CGRectIntegral(CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height));
         yOffset += puzzleSetView.frame.size.height;
         [currentPuzzlesView addSubview:puzzleSetView];
@@ -429,12 +447,20 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
 
 -(void)updateArchive:(NSData *)receivedData
 {
+    NSLog(@"update archive");
     NSArray * setsData = [[SBJsonParser new] objectWithData:receivedData];
     
     float yOffset = archiveView.frame.size.height;
-    while (archiveView.subviews.count > 2)
+    NSMutableArray * subviewToDelete = [NSMutableArray arrayWithCapacity:archiveView.subviews.count];
+    for (UIView * subview in archiveView.subviews)
     {
-        UIView * subview = [archiveView.subviews objectAtIndex:archiveView.subviews.count-1];
+        if (subview.tag == TAG_DYNAMIC_VIEWS)
+        {
+            [subviewToDelete addObject:subview];
+        }
+    }
+    for (UIView * subview in subviewToDelete)
+    {
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
@@ -460,6 +486,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         added = YES;
 
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSet month:month showSolved:YES showUnsolved:YES];
+        puzzleSetView.tag = TAG_DYNAMIC_VIEWS;
         [self activateBadges:puzzleSetView];
         [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
         puzzleSetView.btnShowMore.selected = NO;
@@ -474,6 +501,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
         frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
     }];
     [self resizeView:archiveView newHeight:yOffset animated:YES];
+    NSLog(@"update archive finish");
 }
 
 -(void)updateBaseScores
