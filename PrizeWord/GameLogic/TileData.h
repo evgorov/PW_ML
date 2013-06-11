@@ -37,7 +37,8 @@ typedef enum LetterType {
 
 @property () uint x;
 @property () uint y;
-@property () TileState state;
+@property (nonatomic, setter = setState:) TileState state;
+@property () TileState prevState;
 // for questions and start letters
 @property () uint answerPosition;
 // for questions only
@@ -50,5 +51,7 @@ typedef enum LetterType {
 
 -(id)initWithPositionX:(uint)x y:(uint)y;
 -(int)currentLetterIdx;
+
+-(void)setState:(TileState)state;
 
 @end

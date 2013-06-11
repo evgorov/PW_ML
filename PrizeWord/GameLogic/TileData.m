@@ -14,6 +14,7 @@
 @synthesize x = _x;
 @synthesize y = _y;
 @synthesize state = _state;
+@synthesize prevState = _prevState;
 @synthesize question = _question;
 @synthesize answer = _answer;
 @synthesize answerPosition = _answerPosition;
@@ -29,6 +30,7 @@
         _x = x;
         _y = y;
         _state = TILE_LETTER_EMPTY;
+        _prevState = _state;
         _question = @"";
         _answer = @"";
         _answerPosition = (kAnswerPositionNorth | kAnswerPositionTop);
@@ -49,12 +51,19 @@
     return index;
 }
 
+-(void)setState:(TileState)state
+{
+    _prevState = _state;
+    _state = state;
+}
+
 -(id)copy
 {
     TileData * newData = [TileData new];
     newData.x = _x;
     newData.y = _y;
     newData.state = _state;
+    newData.prevState = _prevState;
     newData.question = _question;
     newData.answer = _answer;
     newData.answerPosition = _answerPosition;

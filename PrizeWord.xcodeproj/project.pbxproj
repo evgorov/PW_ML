@@ -470,7 +470,6 @@
 		F2950238165E016400DACFBA /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950237165E016400DACFBA /* EventManager.m */; };
 		F295023B165E036800DACFBA /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = F295023A165E036800DACFBA /* Event.m */; };
 		F2950241165EADC500DACFBA /* GameLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950240165EADC500DACFBA /* GameLogic.m */; };
-		F2950248166203B100DACFBA /* GameTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950247166203B100DACFBA /* GameTileView.m */; };
 		F295024F16620B5700DACFBA /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = F295024E16620B5700DACFBA /* GameField.m */; };
 		F2950253166316AD00DACFBA /* GameFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2950252166316AD00DACFBA /* GameFieldView.m */; };
 		F295025616631F6500DACFBA /* TileData.m in Sources */ = {isa = PBXBuildFile; fileRef = F295025516631F6400DACFBA /* TileData.m */; };
@@ -1132,8 +1131,6 @@
 		F295023D165EAA0C00DACFBA /* EventListenerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventListenerDelegate.h; path = EventSystem/EventListenerDelegate.h; sourceTree = "<group>"; };
 		F295023F165EADC500DACFBA /* GameLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLogic.h; path = GameLogic/GameLogic.h; sourceTree = "<group>"; };
 		F2950240165EADC500DACFBA /* GameLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameLogic.m; path = GameLogic/GameLogic.m; sourceTree = "<group>"; };
-		F2950246166203B100DACFBA /* GameTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameTileView.h; path = Views/GameTileView.h; sourceTree = "<group>"; };
-		F2950247166203B100DACFBA /* GameTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameTileView.m; path = Views/GameTileView.m; sourceTree = "<group>"; };
 		F295024D16620B5700DACFBA /* GameField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameField.h; path = GameLogic/GameField.h; sourceTree = "<group>"; };
 		F295024E16620B5700DACFBA /* GameField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameField.m; path = GameLogic/GameField.m; sourceTree = "<group>"; };
 		F2950251166316AD00DACFBA /* GameFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameFieldView.h; path = Views/GameFieldView.h; sourceTree = "<group>"; };
@@ -1872,8 +1869,6 @@
 		F29502451662036E00DACFBA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F2950246166203B100DACFBA /* GameTileView.h */,
-				F2950247166203B100DACFBA /* GameTileView.m */,
 				F2950251166316AD00DACFBA /* GameFieldView.h */,
 				F2950252166316AD00DACFBA /* GameFieldView.m */,
 				F2868CC0166B6964003F0686 /* TileImageHelper.h */,
@@ -2816,7 +2811,6 @@
 				F2950238165E016400DACFBA /* EventManager.m in Sources */,
 				F295023B165E036800DACFBA /* Event.m in Sources */,
 				F2950241165EADC500DACFBA /* GameLogic.m in Sources */,
-				F2950248166203B100DACFBA /* GameTileView.m in Sources */,
 				F295024F16620B5700DACFBA /* GameField.m in Sources */,
 				F2950253166316AD00DACFBA /* GameFieldView.m in Sources */,
 				F295025616631F6500DACFBA /* TileData.m in Sources */,

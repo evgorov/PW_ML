@@ -15,15 +15,8 @@
 @interface GameFieldView : UIView<EventListenerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 {
     UIScrollView * scrollView;
-    UIView * fieldView;
-    UIImageView * borderTopLeft;
-    UIImageView * borderBottomLeft;
-    UIImageView * borderTopRight;
-    UIImageView * borderBottomRight;
-    NSMutableArray * tiles;
+
     TileData * focusedTile;
-    uint tilesPerRow;
-    uint tilesPerCol;
     
     UIPinchGestureRecognizer * pinchGestureRecognizer;
     UITapGestureRecognizer * tapGestureRecognizer;
