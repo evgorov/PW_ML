@@ -124,7 +124,7 @@ module Middleware
 
     get '/users' do
       result = {}
-      users = UserData.storage(env['redis']).users_by_rating(params['page'].to_i).map(&:to_hash).map{ |o| o.extract('providers', 'email', 'hints', 'birthdate')}
+      users = UserData.storage(env['redis']).users_by_rating(params['page'].to_i).map(&:to_hash).map{ |o| o.except('providers', 'email', 'hints', 'birthdate')}
       result['users'] = users
       result['me'] = current_user if env['token_auth'].authorized?
       result.to_json
