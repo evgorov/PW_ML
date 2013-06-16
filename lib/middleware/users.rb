@@ -1,5 +1,6 @@
 #encoding: utf-8
 require 'time'
+require 'ext/hash'
 require 'sinatra/base'
 require 'user_factory'
 require 'model/user'
@@ -123,7 +124,8 @@ module Middleware
 
     get '/users' do
       result = {}
-      result['users'] = UserData.storage(env['redis']).users_by_rating(params['page'].to_i)
+      users = UserData.storage(env['redis']).users_by_rating(params['page'].to_i).map(&:to_hash).map{ |o| o.extract('providers', 'email', 'hints', 'birthdate')}
+      result['users'] = users
       result['me'] = current_user if env['token_auth'].authorized?
       result.to_json
     end
