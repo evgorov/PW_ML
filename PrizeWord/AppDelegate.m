@@ -24,6 +24,11 @@
 #import "NSData+Utils.h"
 #import "SocialNetworks.h"
 
+#warning change FacebookDisplayName before release
+#warning change FacebookAppID before release
+#warning change URL scheme before release
+#warning change Bundle ID before release
+
 @implementation AppDelegate
 
 @synthesize window = _window;

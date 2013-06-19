@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */; };
+		6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7991771FBEC003D57B6 /* Security.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -610,6 +612,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		6B3CC7991771FBEC003D57B6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1153,7 +1157,7 @@
 		F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_wrong@2x.png"; sourceTree = "<group>"; };
 		F2A22DEF166487C400CF7859 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F2A22DF116648AAA00CF7859 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Users/mahmood1/Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../../../../../../Users/sko/Documents/FacebookSDK/FacebookSDK.framework; sourceTree = SDKROOT; };
 		F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginMainViewController.h; path = ViewControllers/LoginMainViewController.h; sourceTree = "<group>"; };
 		F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginMainViewController.m; path = ViewControllers/LoginMainViewController.m; sourceTree = "<group>"; };
 		F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginMainViewController.xib; path = ViewControllers/LoginMainViewController.xib; sourceTree = "<group>"; };
@@ -1288,6 +1292,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */,
+				6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */,
 				F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */,
 				F20F0F1916E8C3C8009AEEE6 /* OpenAL.framework in Frameworks */,
 				F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */,
@@ -2105,6 +2111,8 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B3CC7991771FBEC003D57B6 /* Security.framework */,
+				6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */,
 				F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */,
 				F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */,
 				F20F0F1816E8C3C8009AEEE6 /* OpenAL.framework */,
@@ -2955,7 +2963,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
 					"\"$(SRCROOT)\"",
-					/Users/mahmood1/Documents/FacebookSDK,
+					"$(HOME)/Documents/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -2976,7 +2984,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
 					"\"$(SRCROOT)\"",
-					/Users/mahmood1/Documents/FacebookSDK,
+					"$(HOME)/Documents/FacebookSDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";

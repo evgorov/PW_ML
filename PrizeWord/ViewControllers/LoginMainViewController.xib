@@ -157,7 +157,7 @@
 								<int key="NSvFlags">300</int>
 								<string key="NSFrame">{{26, 395}, {269, 53}}</string>
 								<reference key="NSSuperview" ref="190065395"/>
-								<reference key="NSNextKeyView" ref="363024422"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -177,26 +177,6 @@
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">login_register_btn@2x.png</string>
 								</object>
-								<reference key="IBUIFontDescription" ref="366053859"/>
-								<reference key="IBUIFont" ref="383385555"/>
-							</object>
-							<object class="IBUIButton" id="363024422">
-								<reference key="NSNextResponder" ref="190065395"/>
-								<int key="NSvFlags">300</int>
-								<string key="NSFrame">{{102, 462}, {116, 18}}</string>
-								<reference key="NSSuperview" ref="190065395"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">Release Notes</string>
-								<reference key="IBUIHighlightedTitleColor" ref="326700737"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="912776437"/>
 								<reference key="IBUIFontDescription" ref="366053859"/>
 								<reference key="IBUIFont" ref="383385555"/>
 							</object>
@@ -270,15 +250,6 @@
 					</object>
 					<int key="connectionID">10</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">handleReleaseNotesClick:</string>
-						<reference key="source" ref="363024422"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">14</int>
-				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -319,7 +290,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="376654979"/>
 							<reference ref="640448949"/>
-							<reference ref="363024422"/>
 							<reference ref="663925943"/>
 							<reference ref="99822004"/>
 						</array>
@@ -345,11 +315,6 @@
 						<reference key="object" ref="640448949"/>
 						<reference key="parent" ref="190065395"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">13</int>
-						<reference key="object" ref="363024422"/>
-						<reference key="parent" ref="190065395"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -358,8 +323,6 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="13.CustomClassName">PrizeWordButton</string>
-				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.CustomClassName">PrizeWordButton</string>

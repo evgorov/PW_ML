@@ -327,7 +327,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     APIRequest * newsUpdateRequest = [APIRequest getRequest:@"service_messages" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         if (response.statusCode == 200)
         {
-            NSLog(@"news update success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"news update success");
             
             NSDictionary * messages = [[SBJsonParser new] objectWithData:receivedData];
             NSMutableArray * messagesArray = [NSMutableArray new];
@@ -364,7 +364,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         else
         {
-            NSLog(@"news update failed: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"news update failed: %d", response.statusCode);
         }
     } failCallback:^(NSError *error) {
         NSLog(@"news update error: %@", error.description);
@@ -639,13 +639,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
     NSLog(@"buy set: %@ %@", puzzleSetView.puzzleSetData.set_id, transaction.payment.productIdentifier);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
-        NSLog(@"set bought! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"set bought! %@", puzzleSetView.puzzleSetData.set_id);
         [self hideActivityIndicator];
         if (response.statusCode == 200)
         {
             [self showActivityIndicator];
             APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                NSLog(@"puzzles loaded! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                NSLog(@"puzzles loaded!");
                 [buySetSound play];
                 [self hideActivityIndicator];
                 

@@ -138,7 +138,7 @@ static NSMutableDictionary * apiCache = nil;
         
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
-        NSLog(@"POST request data: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+//        NSLog(@"POST request data: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
 
         [request setHTTPBody:body];
     }
@@ -149,7 +149,7 @@ static NSMutableDictionary * apiCache = nil;
     useCache = _useCache;
     silentMode = _silentMode;
     [self prepareRequest];
-    NSLog(@"request: %@", request.URL.description);
+//    NSLog(@"request: %@", request.URL.description);
     NSDictionary * cachedData = [apiCache objectForKey:request.URL.absoluteString];
     if (cachedData != nil)
     {
