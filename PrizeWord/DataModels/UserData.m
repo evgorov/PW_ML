@@ -60,21 +60,26 @@
             }
         }
         NSString * dateString = [dict objectForKey:@"birthday"];
+        NSDateFormatter * dateFormatter = [NSDateFormatter new];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         _birthday = nil;
-        if (dateString != nil)
+        if (dateString != nil && dateString.length > 0)
         {
-            NSDateFormatter * dateFormatter = [NSDateFormatter new];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
             _birthday = [dateFormatter dateFromString:dateString];
         }
         
         dateString = [dict objectForKey:@"created_at"];
         _createdAt = nil;
-        if (dateString != nil)
+        if (dateString != nil && dateString.length > 0)
         {
-            NSDateFormatter * dateFormatter = [NSDateFormatter new];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-            _createdAt = [dateFormatter dateFromString:[dateString substringToIndex:[dateString rangeOfString:@" "].location]];
+            if ([dateString rangeOfString:@" "].location != NSNotFound)
+            {
+                _createdAt = [dateFormatter dateFromString:[dateString substringToIndex:[dateString rangeOfString:@" "].location]];
+            }
+            else
+            {
+                _createdAt = [dateFormatter dateFromString:dateString];
+            }
             NSLog(@"%@", [dateFormatter stringFromDate:_createdAt]);
         }
 
@@ -117,5 +122,56 @@
     return [[UserData alloc] initWithDictionary:dict];
 }
 
+-(NSDictionary *)dictionaryRepresentation
+{
+    NSMutableArray * providers = [NSMutableArray new];
+    if (_vkProvider != nil)
+    {
+        [providers addObject:_vkProvider];
+    }
+    if (_fbProvider != nil)
+    {
+        [providers addObject:_fbProvider];
+    }
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  _first_name, @"name",
+                                  _last_name, @"surname",
+                                  _email, @"email",
+                                  _user_id, @"id",
+                                  _city, @"city",
+                                  providers, @"providers",
+                                  [NSNumber numberWithInt:_position], @"position",
+                                  [NSNumber numberWithInt:_solved], @"solved",
+                                  [NSNumber numberWithInt:_month_score], @"month_score",
+                                  [NSNumber numberWithInt:_high_score], @"high_score",
+                                  [NSNumber numberWithInt:_dynamics], @"dynamics",
+                                  [NSNumber numberWithInt:_hints], @"hints",
+                                  [NSNumber numberWithBool:_invited], @"invite_sent",
+                                  nil];
+    
+    if (_userpic != nil)
+    {
+        [dict setObject:[UIImageJPEGRepresentation(_userpic, 1) base64EncodedString] forKey:@"userpic"];
+    }
+    else if (_userpic_url != nil)
+    {
+        [dict setObject:_userpic_url forKey:@"userpic"];
+    }
+    NSString * birthdayString = [dateFormatter stringFromDate:_birthday];
+    if (birthdayString != nil)
+    {
+        [dict setObject:birthdayString forKey:@"birthday"];
+    }
+    NSString * createdAtString = [dateFormatter stringFromDate:_createdAt];
+    if (createdAtString != nil)
+    {
+        [dict setObject:createdAtString forKey:@"created_at"];
+    }
+        
+    return dict;
+}
 
 @end

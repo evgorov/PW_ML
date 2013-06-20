@@ -99,7 +99,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     openSetSound = [[FISoundEngine sharedEngine] soundNamed:@"open_set.caf" error:nil];
     closeSetSound = [[FISoundEngine sharedEngine] soundNamed:@"close_set.caf" error:nil];
     
-    archiveLastMonth = [GlobalData globalData].currentMonth + 1;
+    archiveLastMonth = [GlobalData globalData].currentMonth;
     archiveLastYear = [GlobalData globalData].currentYear;
     archiveLoading = NO;
     archiveNeedLoading = YES;
@@ -143,6 +143,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
     
     [self showActivityIndicator];
     [[GlobalData globalData] loadMe];
@@ -169,6 +170,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PUZZLE_SYNCHRONIZED];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
 
     if (productsRequest != nil)
     {
@@ -207,7 +209,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 if ([subview isKindOfClass:[PuzzleSetView class]])
                 {
                     PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
-                    NSLog(@"check productIdentifier: %@ %@ %@", puzzleSetView.puzzleSetData.set_id, puzzleSetView.product.productIdentifier, paymentTransaction.payment.productIdentifier);
+//                    NSLog(@"check productIdentifier: %@ %@ %@", puzzleSetView.puzzleSetData.set_id, puzzleSetView.product.productIdentifier, paymentTransaction.payment.productIdentifier);
                     if (puzzleSetView.product != nil && puzzleSetView.product.productIdentifier != nil && [puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
                     {
                         [self handleSetBoughtWithView:puzzleSetView withTransaction:paymentTransaction];
@@ -319,6 +321,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
     {
         [self updateBaseScores];
     }
+    else if (event.type == EVENT_ME_UPDATED)
+    {
+        UserData * me = event.data;
+        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", me.hints];
+    }
 }
 
 #pragma mark update news, update and bought puzzles
@@ -417,7 +424,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }
         }
     }
-    puzzlesViewCaption.text = [NSString stringWithFormat:@"Сканворды за %@", MONTHS2[[GlobalData globalData].currentMonth]];
+    puzzlesViewCaption.text = [NSString stringWithFormat:@"Сканворды за %@", MONTHS2[[GlobalData globalData].currentMonth - 1]];
     
     UIView * frame = [currentPuzzlesView.subviews objectAtIndex:1];
     [UIView animateWithDuration:0.3 animations:^{
@@ -475,7 +482,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         int month = [(NSNumber *)[setData objectForKey:@"month"] intValue];
         int year = [(NSNumber *)[setData objectForKey:@"year"] intValue];
-        if (year == [GlobalData globalData].currentYear && month == ([GlobalData globalData].currentMonth + 1))
+        if (year == [GlobalData globalData].currentYear && month == [GlobalData globalData].currentMonth)
         {
             continue;
         }
@@ -636,7 +643,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
 {
     [self showActivityIndicator];
-    NSLog(@"buy set: %@ %@", puzzleSetView.puzzleSetData.set_id, transaction.payment.productIdentifier);
+    NSLog(@"buy set: %@", puzzleSetView.puzzleSetData.set_id);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         NSLog(@"set bought! %@", puzzleSetView.puzzleSetData.set_id);

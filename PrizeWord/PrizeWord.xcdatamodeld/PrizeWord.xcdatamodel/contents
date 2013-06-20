@@ -15,12 +15,14 @@
     </entity>
     <entity name="PuzzleSet" representedClassName="PuzzleSetData" syncable="YES">
         <attribute name="bought" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="puzzle_ids" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="puzzles_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="set_id" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="puzzles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="puzzleSet" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
     <entity name="Question" representedClassName="QuestionData" syncable="YES">
@@ -36,7 +38,7 @@
     </entity>
     <elements>
         <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="210"/>
-        <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="165"/>
+        <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="195"/>
         <element name="Question" positionX="-6336" positionY="-15786" width="128" height="180"/>
     </elements>
 </model>

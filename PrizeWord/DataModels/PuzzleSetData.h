@@ -31,8 +31,11 @@ PuzzleSetType;
 @property (nonatomic, retain) NSNumber * bought;
 @property (nonatomic, retain) NSNumber * puzzles_count;
 @property (nonatomic, retain) NSSet *puzzles;
+@property (nonatomic, retain) NSNumber * month;
+@property (nonatomic, retain) NSNumber * year;
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
++(NSArray *)puzzleSetsForMonth:(int)month year:(int)year;
 
 -(int)solved;
 -(int)total;

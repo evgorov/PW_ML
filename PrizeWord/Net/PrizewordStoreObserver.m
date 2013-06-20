@@ -89,10 +89,17 @@
 {
     if (event.type == EVENT_REQUEST_PRODUCT)
     {
-        SKProduct * product = event.data;
-        SKPayment * payment = [SKPayment paymentWithProduct:product];
-        NSLog(@"enqueue product request: %@", payment.productIdentifier);
-        [[SKPaymentQueue defaultQueue] addPayment:payment];
+        if (event.data != [NSNull null])
+        {
+            SKProduct * product = event.data;
+            SKPayment * payment = [SKPayment paymentWithProduct:product];
+            NSLog(@"enqueue product request: %@", payment.productIdentifier);
+            [[SKPaymentQueue defaultQueue] addPayment:payment];
+        }
+        else
+        {
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PRODUCT_ERROR andData:[NSError errorWithDomain:NSLocalizedString(@"Connection error", @"Connection error") code:400 userInfo:nil]]];
+        }
     }
 }
 

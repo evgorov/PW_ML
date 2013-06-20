@@ -59,7 +59,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         NSCalendar * calendar = [NSCalendar currentCalendar];
         NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:currentDate];
 
-        _currentMonth = [components month] - 1;
+        _currentMonth = [components month];
         _currentYear = [components year];
         coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
         puzzleIdToSet = [NSMutableDictionary new];
@@ -91,6 +91,12 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     {
         [puzzleIdToSet removeAllObjects];
     }
+}
+
+-(void)setLoggedInUser:(UserData *)loggedInUser
+{
+    _loggedInUser = loggedInUser;
+    [[NSUserDefaults standardUserDefaults] setObject:[loggedInUser dictionaryRepresentation] forKey:@"user-data"];
 }
 
 #pragma mark getters
@@ -200,7 +206,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         {
             NSLog(@"loading user_puzzles: %@", puzzleIdsString);
             APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                NSLog(@"user_puzzles: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                NSLog(@"user_puzzles loaded");
                 
                 NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
                 for (NSDictionary * puzzleData in puzzlesData)
@@ -230,10 +236,18 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         }
     } failCallback:^(NSError *error) {
         NSLog(@"Error: cannot load month sets!");
+        
+        NSArray * sets = [PuzzleSetData puzzleSetsForMonth:_currentMonth year:_currentYear];
+        _monthSets = [sets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            PuzzleSetData * set1 = obj1;
+            PuzzleSetData * set2 = obj2;
+
+            return [set1.type compare:set2.type];
+        }];
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
-    [request.params setObject:[NSNumber numberWithInt:(_currentMonth + 1)] forKey:@"month"];
+    [request.params setObject:[NSNumber numberWithInt:_currentMonth] forKey:@"month"];
     [request.params setObject:[NSNumber numberWithInt:_currentYear] forKey:@"year"];
     [request.params setObject:@"short" forKey:@"mode"];
     [request runUsingCache:YES silentMode:YES];
@@ -245,16 +259,22 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         [self parseDateFromResponse:response];
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * data = [parser objectWithData:receivedData];
-        [[NSUserDefaults standardUserDefaults] setObject:[data objectForKey:@"me"] forKey:@"user-data"];
         NSLog(@"me: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         if (newMe != nil)
         {
-            _loggedInUser = newMe;
+            [self setLoggedInUser:newMe];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:_loggedInUser]];
         }
     } failCallback:^(NSError *error) {
         NSLog(@"me error: %@", error.description);
+        NSDictionary * data = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"user-data"];
+        UserData * newMe = [UserData userDataWithDictionary:data];
+        if (newMe != nil)
+        {
+            [self setLoggedInUser:newMe];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:_loggedInUser]];
+        }
     }];
     [request.params setObject:_sessionKey forKey:@"session_key"];
     [request runUsingCache:NO silentMode:YES];
@@ -280,40 +300,58 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     [request runUsingCache:NO silentMode:YES];
 }
 
--(void)sendSavedScores
+-(void)repeatUncompleteOperations
 {
-    NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+    NSString * savedScoreKey = [NSString stringWithFormat:@"savedScore%@", _loggedInUser.user_id];
+    NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
     
-    if (savedScore == nil || savedScore.count == 0)
+    if (savedScore != nil && savedScore.count > 0)
     {
-        return;
+        for (NSString * key in savedScore)
+        {
+            NSMutableDictionary * params = [[savedScore objectForKey:key] mutableCopy];
+            [params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
+            
+            APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                
+                NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
+                [savedScore removeObjectForKey:[params objectForKey:@"source"]];
+                [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:savedScoreKey];
+                
+                SBJsonParser * parser = [SBJsonParser new];
+                NSDictionary * data = [parser objectWithData:receivedData];
+                UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+                if (userData != nil)
+                {
+                    [GlobalData globalData].loggedInUser = userData;
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
+                }
+            } failCallback:^(NSError *error) {
+                NSLog(@"score error! %@", error.description);
+            }];
+            
+            request.params = params;
+            [request runUsingCache:NO silentMode:YES];
+        }
     }
     
-    for (NSString * key in savedScore)
+    NSString * savedHintsKey = [NSString stringWithFormat:@"savedHints%@", _loggedInUser.user_id];
+    int savedHints = [[NSUserDefaults standardUserDefaults] integerForKey:savedHintsKey];
+    
+    if (savedHints != 0)
     {
-        NSMutableDictionary * params = [[savedScore objectForKey:savedScore] mutableCopy];
-        [params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
-
-        APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            
-            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
-            [savedScore removeObjectForKey:[params objectForKey:@"source"]];
-            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
-            
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:savedHintsKey];
+        APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
-            UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            if (userData != nil)
-            {
-                [GlobalData globalData].loggedInUser = userData;
-                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
-            }
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:[GlobalData globalData].loggedInUser]];
         } failCallback:^(NSError *error) {
-            NSLog(@"score error! %@", error.description);
+            [[NSUserDefaults standardUserDefaults] setInteger:savedHints forKey:savedHintsKey];
         }];
-        
-        request.params = params;
+        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [request.params setObject:[NSString stringWithFormat:@"%d", savedHints] forKey:@"hints_change"];
         [request runUsingCache:NO silentMode:YES];
     }
 }
@@ -325,8 +363,8 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     {
         return;
     }
-    for (int month = 0; month < 12; ++month) {
-        if ([dateString rangeOfString:MONTHS_ENG[month]].location != NSNotFound)
+    for (int month = 1; month <= 12; ++month) {
+        if ([dateString rangeOfString:MONTHS_ENG[month - 1]].location != NSNotFound)
         {
             _currentMonth = month;
             break;

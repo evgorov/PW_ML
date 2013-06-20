@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -312,7 +312,7 @@
 							<object class="IBUIView" id="337597729">
 								<reference key="NSNextResponder" ref="326372848"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{168, 550}, {93, 33}}</string>
+								<string key="NSFrame">{{168, 550}, {93, 32}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="646658199"/>
@@ -323,7 +323,7 @@
 							<object class="IBUIView" id="646658199">
 								<reference key="NSNextResponder" ref="326372848"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{168, 605}, {93, 33}}</string>
+								<string key="NSFrame">{{168, 605}, {93, 32}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="216611098"/>
@@ -334,7 +334,7 @@
 							<object class="IBUIView" id="216611098">
 								<reference key="NSNextResponder" ref="326372848"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{168, 688}, {93, 33}}</string>
+								<string key="NSFrame">{{168, 688}, {93, 32}}</string>
 								<reference key="NSSuperview" ref="326372848"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="139618897"/>
@@ -486,7 +486,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="442234148">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIScrollView" id="951027967">
@@ -494,7 +494,6 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{100, 153}, {568, 747}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="30701066"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -506,7 +505,6 @@
 						<int key="NSvFlags">264</int>
 						<string key="NSFrame">{{75, 902}, {619, 84}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -538,7 +536,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{332, 38}, {104, 50}}</string>
 						<reference key="NSSuperview" ref="442234148"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="951027967"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -564,8 +561,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{768, 1024}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="378817175"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="150350127"/>
@@ -576,11 +571,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="711602173">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{768, 954}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -593,11 +586,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="68724940">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{768, 1024}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -1158,25 +1149,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PrizeWordSwitchView</string>
 					<string key="superclassName">UIControl</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="handleSwipeLeft:">id</string>
-						<string key="handleSwipeRight:">id</string>
-						<string key="handleTapGesture:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="handleSwipeLeft:">
-							<string key="name">handleSwipeLeft:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleSwipeRight:">
-							<string key="name">handleSwipeRight:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="handleTapGesture:">
-							<string key="name">handleTapGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="imgDisabled">UIImageView</string>
 						<string key="imgSlider">UIImageView</string>

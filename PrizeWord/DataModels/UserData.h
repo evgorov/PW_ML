@@ -34,5 +34,6 @@
 @property () int hints;
 @property () BOOL invited;
 
+-(NSDictionary *)dictionaryRepresentation;
 
 @end

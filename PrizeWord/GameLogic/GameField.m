@@ -570,19 +570,20 @@
         [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
         if (!isArchivePuzzle && _puzzle.puzzleSet.type.intValue != PUZZLESET_FREE)
         {
-            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+            NSString * savedScoreKey = [NSString stringWithFormat:@"savedScore%@", [GlobalData globalData].loggedInUser.user_id];
+            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
             if (savedScore == nil)
             {
                 savedScore = [NSMutableDictionary new];
             }
             [savedScore setValue:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", scoreForPuzzle], @"score", @"1", @"solved", _puzzle.puzzle_id, @"source", nil] forKey:_puzzle.puzzle_id];
-            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
+            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:savedScoreKey];
             APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
 
-                NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
+                NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
                 [savedScore removeObjectForKey:_puzzle.puzzle_id];
-                [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:@"savedScore"];
+                [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:savedScoreKey];
 
                 SBJsonParser * parser = [SBJsonParser new];
                 NSDictionary * data = [parser objectWithData:receivedData];
@@ -601,7 +602,11 @@
             [request.params setObject:@"1" forKey:@"solved"];
             [request.params setObject:_puzzle.puzzle_id forKey:@"source"];
             [request runUsingCache:NO silentMode:YES];
-            [GlobalData globalData].loggedInUser.month_score += scoreForPuzzle;
+            
+            UserData * userData = [GlobalData globalData].loggedInUser;
+            userData.month_score += scoreForPuzzle;
+            [GlobalData globalData].loggedInUser = userData;
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
         }
     }
 

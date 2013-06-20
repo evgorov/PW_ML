@@ -302,7 +302,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [mainMenuVKSwitch setOn:([GlobalData globalData].loggedInUser.vkProvider != nil) animated:YES];
     [mainMenuVKSwitch setEnabled:([GlobalData globalData].loggedInUser.vkProvider == nil)];
     
-    [[GlobalData globalData] sendSavedScores];
+    [[GlobalData globalData] repeatUncompleteOperations];
 }
 
 -(void)showMenuAnimated:(BOOL)animated

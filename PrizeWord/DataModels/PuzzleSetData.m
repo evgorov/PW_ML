@@ -22,6 +22,8 @@
 @dynamic bought;
 @dynamic puzzles_count;
 @dynamic puzzles;
+@dynamic month;
+@dynamic year;
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
@@ -74,6 +76,9 @@
     {
         [puzzleSet setBought:[NSNumber numberWithBool:YES]];
     }
+    NSArray * idParts = [(NSString *)[dict objectForKey:@"id"] componentsSeparatedByString:@"_"];
+    [puzzleSet setYear:[NSNumber numberWithInt:[(NSString *)idParts[0] intValue]]];
+    [puzzleSet setMonth:[NSNumber numberWithInt:[(NSString *)idParts[1] intValue]]];
     
     NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
     NSMutableString * puzzleIds = [NSMutableString new];
@@ -102,6 +107,20 @@
     }
     
     return puzzleSet;
+}
+
++(NSArray *)puzzleSetsForMonth:(int)month year:(int)year
+{
+    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *puzzleSetEntity = [NSEntityDescription entityForName:@"PuzzleSet" inManagedObjectContext:managedObjectContext];
+    
+    [request setEntity:puzzleSetEntity];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(month = %d) AND (year = %d)", month, year]];
+    
+    NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:nil];
+    return puzzleSets;
 }
 
 -(int)solved

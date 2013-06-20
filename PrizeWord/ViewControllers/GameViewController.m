@@ -62,6 +62,8 @@ extern NSString * PRODUCTID_HINTS10;
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+    
     PrizeWordSwitchView * switchView = [PrizeWordSwitchView switchView];
     switchView.frame = pauseSwtMusic.frame;
     [pauseSwtMusic.superview addSubview:switchView];
@@ -599,12 +601,23 @@ extern NSString * PRODUCTID_HINTS10;
             [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
             [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
-        } failCallback:nil];
+        } failCallback:^(NSError *error) {
+            UserData * loggedInUser = [GlobalData globalData].loggedInUser;
+            loggedInUser.hints--;
+            [GlobalData globalData].loggedInUser = loggedInUser;
+            [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
+            NSString * savedHintsKey = [NSString stringWithFormat:@"savedHints%@", [GlobalData globalData].loggedInUser.user_id];
+            int savedHints = [[NSUserDefaults standardUserDefaults] integerForKey:savedHintsKey];
+            savedHints--;
+            [[NSUserDefaults standardUserDefaults] setInteger:savedHints forKey:savedHintsKey];
+            
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+        }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [request.params setObject:@"-1" forKey:@"hints_change"];
         [request runUsingCache:NO silentMode:YES];
     }
-    else
+    else if (alertView.tag == TAG_BUYHINTS)
     {
         [self showActivityIndicator];
         SKProductsRequest * productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObject:PRODUCTID_HINTS10]];
