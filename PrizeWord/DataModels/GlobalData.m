@@ -81,6 +81,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 -(void)setSessionKey:(NSString *)sessionKey
 {
     _sessionKey = sessionKey;
+    [[NSUserDefaults standardUserDefaults] setObject:sessionKey forKey:@"session-key"];
     if (_deviceToken != nil && _sessionKey != nil)
     {
         [self registerDeviceToken];
@@ -156,7 +157,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         
         [self parseDateFromResponse:response];
         
-        NSLog(@"published_sets: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"published_sets loaded");
         NSMutableArray * sets = [NSMutableArray new];
         SBJsonParser * parser = [SBJsonParser new];
         NSArray * data = [parser objectWithData:receivedData];
@@ -244,6 +245,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         [self parseDateFromResponse:response];
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * data = [parser objectWithData:receivedData];
+        [[NSUserDefaults standardUserDefaults] setObject:[data objectForKey:@"me"] forKey:@"user-data"];
         NSLog(@"me: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         if (newMe != nil)

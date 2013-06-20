@@ -547,12 +547,13 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
-    int scoreForPuzzle = [[GlobalData globalData] baseScoreForType:_puzzle.puzzleSet.type.intValue] + [[GlobalData globalData] scoreForTime] * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
-    [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
+    [[AppDelegate currentDelegate].managedObjectContext save:nil];
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
     {
+        int scoreForPuzzle = [[GlobalData globalData] baseScoreForType:_puzzle.puzzleSet.type.intValue] + [[GlobalData globalData] scoreForTime] * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
+        
         BOOL isArchivePuzzle = YES;
         for (PuzzleSetData * puzzleSetData in [GlobalData globalData].monthSets) {
             if ([_puzzle.puzzleSet.set_id compare:puzzleSetData.set_id] == NSOrderedSame)
@@ -561,6 +562,12 @@
                 break;
             }
         }
+
+        if (isArchivePuzzle)
+        {
+            scoreForPuzzle = 0;
+        }
+        [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
         if (!isArchivePuzzle && _puzzle.puzzleSet.type.intValue != PUZZLESET_FREE)
         {
             NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"savedScore"] mutableCopy];
