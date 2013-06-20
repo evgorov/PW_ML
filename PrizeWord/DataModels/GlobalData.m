@@ -339,17 +339,16 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     NSString * savedHintsKey = [NSString stringWithFormat:@"savedHints%@", _loggedInUser.user_id];
     int savedHints = [[NSUserDefaults standardUserDefaults] integerForKey:savedHintsKey];
     
+#warning ensure, what hints were decreased only once!
     if (savedHints != 0)
     {
-        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:savedHintsKey];
         APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithData:receivedData];
+            [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:savedHintsKey];
             [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:[GlobalData globalData].loggedInUser]];
-        } failCallback:^(NSError *error) {
-            [[NSUserDefaults standardUserDefaults] setInteger:savedHints forKey:savedHintsKey];
-        }];
+        } failCallback:nil];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
         [request.params setObject:[NSString stringWithFormat:@"%d", savedHints] forKey:@"hints_change"];
         [request runUsingCache:NO silentMode:YES];
