@@ -94,12 +94,12 @@ class UserData < BasicModel
     self.merge!(clean_hash)
   end
 
-  def to_hash(*a)
-    @hash.extract(*FIELDS_USER_CAN_SEE).to_hash(*a)
+  def as_json(*a)
+    @hash.extract(*FIELDS_USER_CAN_SEE)
   end
 
   def to_json(*a)
-    self.to_hash.to_json(*a)
+    self.as_json(*a).to_json(*a)
   end
 
   def fetch_friends(provider)

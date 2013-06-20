@@ -211,7 +211,7 @@ describe 'Integration spec' do
   end
 
   it 'basic rating' do
-    20.times { |i| post '/signup', valid_user_data.merge('email' => "email#{i}@example.org") }
+    20.times { |i| post '/signup', valid_user_data.merge('name' => "name#{i}", 'email' => "email#{i}@example.org") }
 
     post '/login', email: 'email4@example.org', password: valid_user_data['password']
     last_response.status.should == 200
@@ -247,14 +247,14 @@ describe 'Integration spec' do
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data['users'][0]['email'].should == 'email4@example.org'
+    response_data['users'][0]['name'].should == 'name4'
     response_data['users'][0]['solved'].should == 10
     response_data['users'][0]['position'].should == 1
-    response_data['users'][1]['email'].should == 'email2@example.org'
+    response_data['users'][1]['name'].should == 'name2'
     response_data['users'][1]['position'].should == 2
-    response_data['users'][2]['email'].should == 'email10@example.org'
+    response_data['users'][2]['name'].should == 'name10'
     response_data['users'][2]['position'].should == 3
-    response_data['users'][3]['email'].should == 'email1@example.org'
+    response_data['users'][3]['name'].should == 'name1'
     response_data['users'][3]['position'].should == 4
   end
 
