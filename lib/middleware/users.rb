@@ -87,7 +87,7 @@ module Middleware
     get '/user_puzzles' do
       env['token_auth'].authorize!
       ids = params['ids'].split(',')
-      current_user['sets']
+      (current_user['sets'] || [])
         .map { |o| o['puzzles'] }
         .flatten
         .select { |o| ids.include?(o['id']) }
