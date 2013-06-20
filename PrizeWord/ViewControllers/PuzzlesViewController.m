@@ -667,6 +667,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 }
                 [closeSetSound play];
                 [self switchSetViewToBought:puzzleSetView];
+                NSLog(@"view for puzzles created!");
             } failCallback:^(NSError *error) {
                 [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
                 NSLog(@"puzzles error: %@", error.description);

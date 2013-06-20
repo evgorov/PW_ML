@@ -96,12 +96,12 @@
         QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
         [puzzle addQuestionsObject:question];
     }
-    
+/*
     [managedObjectContext save:&error];
     if (error != nil) {
         NSLog(@"DB error: %@", error.description);
     }
-    
+*/    
     return puzzle;
 }
 

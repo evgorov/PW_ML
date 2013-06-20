@@ -153,11 +153,12 @@
     [question setColumnAsUint:(question.columnAsUint - 1)];
     [question setRowAsUint:(question.rowAsUint - 1)];
     
+/*
     [managedObjectContext save:&error];
     if (error != nil) {
         NSLog(@"DB error: %@", error.description);
     }
-    
+*/    
     return question;
 }
 
