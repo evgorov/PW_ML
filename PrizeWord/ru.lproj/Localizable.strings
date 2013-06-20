@@ -20,6 +20,10 @@
 "BUTTON_CANCEL" = "Нет";
 "BUTTON_USE_HINT" = "Да";
 
+"TITLE_BUY_HINTS" = "Подсказка";
+"QUESTION_BUY_HINTS" = "У Вас закончились подсказки! Желаете ли приобрести 10 подсказок?";
+"BUTTON_BUY_HINTS" = "Да";
+
 "Select source" = "Выберите источник";
 "Camera" = "Камера";
 "Gallery" = "Галерея";

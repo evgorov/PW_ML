@@ -26,6 +26,11 @@
 #import "FISoundEngine.h"
 #import "NSString+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <StoreKit/StoreKit.h>
+
+const int TAG_USEHINT = 100;
+const int TAG_BUYHINTS = 101;
+extern NSString * PRODUCTID_HINTS10;
 
 @interface GameViewController (private)
 
@@ -56,6 +61,7 @@
 
 -(void)viewDidLoad
 {
+    [super viewDidLoad];
     PrizeWordSwitchView * switchView = [PrizeWordSwitchView switchView];
     switchView.frame = pauseSwtMusic.frame;
     [pauseSwtMusic.superview addSubview:switchView];
@@ -149,6 +155,9 @@
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_TIME_CHANGED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_BOUGHT];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_ERROR];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_FAILED];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -170,6 +179,9 @@
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_TIME_CHANGED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_BOUGHT];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_ERROR];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];
     [textField removeFromSuperview];
     textField = nil;
     gameFieldView = nil;
@@ -226,6 +238,13 @@
             [textField resignFirstResponder];
             
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_USE_HINT", nil) message:NSLocalizedString(@"QUESTION_USE_HINT", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_USE_HINT", nil), nil];
+            alertView.tag = TAG_USEHINT;
+            [alertView show];
+        }
+        else
+        {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_BUY_HINTS", nil) message:NSLocalizedString(@"QUESTION_BUY_HINTS", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_BUY_HINTS", nil), nil];
+            alertView.tag = TAG_BUYHINTS;
             [alertView show];
         }
     }
@@ -507,6 +526,36 @@
             [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
         });
     }
+    else if (event.type == EVENT_PRODUCT_ERROR || event.type == EVENT_PRODUCT_FAILED)
+    {
+        [self hideActivityIndicator];
+        [textField becomeFirstResponder];
+    }
+    else if (event.type == EVENT_PRODUCT_BOUGHT)
+    {
+        SKPaymentTransaction * paymentTransaction = event.data;
+        NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
+        
+        if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
+        {
+            APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                SBJsonParser * parser = [SBJsonParser new];
+                NSDictionary * dict = [parser objectWithData:receivedData];
+                [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
+                [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
+                [self hideActivityIndicator];
+                [self handleHintClick:nil];
+            } failCallback:^(NSError *error) {
+                [self hideActivityIndicator];
+                [textField becomeFirstResponder];
+                NSLog(@"hints error: %@", error.description);
+            }];
+            [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+            [request.params setObject:[NSString stringWithFormat:@"%d", 10] forKey:@"hints_change"];
+            [request runUsingCache:NO silentMode:YES];
+        }
+    }
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -542,16 +591,26 @@
         [textField becomeFirstResponder];
         return;
     }
-    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-        [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
-    } failCallback:nil];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:@"-1" forKey:@"hints_change"];
-    [request runUsingCache:NO silentMode:YES];
+    if (alertView.tag == TAG_USEHINT)
+    {
+        APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:receivedData];
+            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
+        } failCallback:nil];
+        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [request.params setObject:@"-1" forKey:@"hints_change"];
+        [request runUsingCache:NO silentMode:YES];
+    }
+    else
+    {
+        [self showActivityIndicator];
+        SKProductsRequest * productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObject:PRODUCTID_HINTS10]];
+        productRequest.delegate = self;
+        [productRequest start];
+    }
 }
 
 -(void)animateFinalScreenAppears:(id)sender
@@ -635,5 +694,26 @@
     return params;
 }
 
+#pragma mark SKProductRequestDelegate
+
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error
+{
+    [self hideActivityIndicator];
+    [textField becomeFirstResponder];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Connection error", @"Connection error") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    if (response.products.count > 0)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:[response.products lastObject]]];
+    }
+    else
+    {
+        [self hideActivityIndicator];
+        [textField becomeFirstResponder];
+    }
+}
 
 @end

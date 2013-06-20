@@ -10,6 +10,7 @@
 #import "EventListenerDelegate.h"
 #import "PrizeWordSwitchView.h"
 #import "PrizeWordViewController.h"
+#import <StoreKit/SKProductsRequest.h>
 
 @class GameFieldView;
 @class GameField;
@@ -17,7 +18,7 @@
 @class PuzzleData;
 @class FISound;
 
-@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+@interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, SKProductsRequestDelegate>
 {
     GameField * gameField;
     UITextField * textField;
