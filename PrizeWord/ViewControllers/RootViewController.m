@@ -618,6 +618,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 - (IBAction)handleRestoreClick:(id)sender
 {
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    [[GlobalData globalData] loadMe];
 }
 
 - (IBAction)handleVKSwitchChange:(id)sender
