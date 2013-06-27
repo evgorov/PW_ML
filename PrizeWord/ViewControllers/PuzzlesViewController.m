@@ -738,8 +738,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (IBAction)handleNewsCloseClick:(id)sender
 {
-    newsView.autoresizesSubviews = NO;
-    newsView.clipsToBounds = YES;
     [self resizeView:newsView newHeight:0 animated:YES];
 }
 

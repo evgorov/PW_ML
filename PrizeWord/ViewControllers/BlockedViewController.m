@@ -161,8 +161,6 @@ static int VERTICAL_SPACE = 23;
     int frameOffset = (self.view.frame.size.width - view.frame.size.width) / 2;
     view.frame = CGRectIntegral(CGRectMake(frameOffset, contentHeight + VERTICAL_SPACE / 2, view.frame.size.width, view.frame.size.height));
     
-    view.clipsToBounds = NO;
-    view.autoresizesSubviews = YES;
     [contentView addSubview:view];
     contentHeight += view.frame.size.height + VERTICAL_SPACE;
     contentView.frame = CGRectIntegral(CGRectMake(0, 0, self.view.frame.size.width, contentHeight));
