@@ -23,6 +23,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (readonly, nonatomic) AVAudioPlayer * backgroundMusicPlayer;
 
 @property (readonly) BOOL isIPad;
 @property (readonly) UIDeviceOrientation viewOrientation;

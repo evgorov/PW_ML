@@ -33,7 +33,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = [NSString stringWithFormat:@"%d в %@", [GlobalData globalData].loggedInUser.month_score, MONTHS_IN[[GlobalData globalData].currentMonth]];
+    self.title = [NSString stringWithFormat:@"%d в %@", [GlobalData globalData].loggedInUser.month_score, MONTHS_IN[[GlobalData globalData].currentMonth - 1]];
 
     int yOffset = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {

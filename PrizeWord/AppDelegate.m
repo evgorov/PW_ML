@@ -37,6 +37,7 @@
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+@synthesize backgroundMusicPlayer = _backgroundMusicPlayer;
 @synthesize isIPad = _isIPad;
 @synthesize viewOrientation;
 @synthesize deviceOrientation;
@@ -119,6 +120,18 @@ static PrizewordStoreObserver * storeObserver = nil;
     else
     {
         [(AVAudioSession *)[AVAudioSession sharedInstance] setDelegate:self];
+    }
+    
+    // initialize background music
+    BOOL musicMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"music-mute"];
+    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"background_music" ofType:@"mp3"];
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+    _backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:nil];
+    _backgroundMusicPlayer.numberOfLoops = -1; //infinite
+    
+    if (!musicMute)
+    {
+        [_backgroundMusicPlayer play];
     }
     
     NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];

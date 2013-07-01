@@ -70,7 +70,6 @@ extern NSString * PRODUCTID_HINTS10;
     [pauseSwtMusic removeFromSuperview];
     pauseSwtMusic = switchView;
     [pauseSwtMusic addTarget:self action:@selector(handlePauseMusicSwitch:) forControlEvents:UIControlEventValueChanged];
-    [pauseSwtMusic setEnabled:NO];
     
     switchView = [PrizeWordSwitchView switchView];
     switchView.frame = pauseSwtSound.frame;
@@ -165,7 +164,9 @@ extern NSString * PRODUCTID_HINTS10;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     BOOL soundMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"sound-mute"];
+    BOOL musicMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"music-mute"];
     [pauseSwtSound setOn:!soundMute animated:animated];
+    [pauseSwtMusic setOn:!musicMute animated:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -303,12 +304,21 @@ extern NSString * PRODUCTID_HINTS10;
 
 - (IBAction)handlePauseMusicSwitch:(id)sender
 {
+    BOOL mute = !pauseSwtMusic.isOn;
+    [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"music-mute"];
+    if (mute)
+    {
+        [[AppDelegate currentDelegate].backgroundMusicPlayer pause];
+    }
+    else
+    {
+        [[AppDelegate currentDelegate].backgroundMusicPlayer play];
+    }
 }
 
 - (IBAction)handlePauseSoundSwitch:(id)sender
 {
     BOOL mute = !pauseSwtSound.isOn;
-    NSLog(@"mute: %c", mute);
     [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"sound-mute"];
     [[FISoundEngine sharedEngine] setMuted:mute];
 }
