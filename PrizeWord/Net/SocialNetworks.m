@@ -82,6 +82,10 @@
             alert.tag = 0;
             [alert show];
         }
+        if (successCallback != nil)
+        {
+            successCallback();
+        }
         [FBSession setActiveSession:nil];
     }];
 }
@@ -217,6 +221,10 @@
     {
         [lastViewController hideActivityIndicator];
         [webView removeFromSuperview];
+        if (successCallback != nil)
+        {
+            successCallback();
+        }
         return NO;
     }
     else if ([request.URL.path compare:@"/vkontakte/authorize"] == NSOrderedSame)

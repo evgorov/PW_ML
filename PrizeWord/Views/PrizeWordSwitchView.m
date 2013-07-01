@@ -25,6 +25,9 @@
         swipeRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
         self.gestureRecognizers = [NSArray arrayWithObjects:tapGestureRecognizer, swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
         isOn = YES;
+        self.backgroundColor = [UIColor clearColor];
+        self.autoresizesSubviews = NO;
+        self.clipsToBounds = NO;
     }
     return self;
 }
@@ -99,16 +102,16 @@
     if (animated)
     {
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
-            onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-            offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
-            imgSlider.frame = CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+            onView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
+            offView.frame = CGRectIntegral(CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height));
+            imgSlider.frame = CGRectIntegral(CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
         } completion:nil];
     }
     else
     {
-        onView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        offView.frame = CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height);
-        imgSlider.frame = CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+        onView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
+        offView.frame = CGRectIntegral(CGRectMake(self.frame.size.width, 0, 0, self.frame.size.height));
+        imgSlider.frame = CGRectIntegral(CGRectMake(sliderX, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
     }
 }
 
@@ -122,16 +125,16 @@
     if (animated)
     {
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
-            onView.frame = CGRectMake(0, 0, 0, self.frame.size.height);
-            offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-            imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+            onView.frame = CGRectIntegral(CGRectMake(0, 0, 0, self.frame.size.height));
+            offView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
+            imgSlider.frame = CGRectIntegral(CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
         } completion:nil];
     }
     else
     {
-        onView.frame = CGRectMake(0, 0, 0, self.frame.size.height);
-        offView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        imgSlider.frame = CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height);
+        onView.frame = CGRectIntegral(CGRectMake(0, 0, 0, self.frame.size.height));
+        offView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
+        imgSlider.frame = CGRectIntegral(CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
     }
 }
 
