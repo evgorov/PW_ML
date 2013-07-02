@@ -745,6 +745,10 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     BadgeView * badge = (BadgeView *)sender;
     PuzzleData * puzzle = badge.puzzle;
+    if (puzzle.puzzleSet.month.intValue != [GlobalData globalData].currentMonth || puzzle.puzzleSet.year.intValue != [GlobalData globalData].currentYear)
+    {
+        archiveNeedLoading = YES;
+    }
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
 }

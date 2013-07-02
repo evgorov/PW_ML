@@ -87,7 +87,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     mainMenuView.contentSize = mainMenuBg.frame.size;
     mainMenuView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"menu_bg_tile.jpg"]];
     mainMenuYourResult.font = [UIFont fontWithName:@"DINPro-Bold" size:[AppDelegate currentDelegate].isIPad ? 18 : 15];
-    mainMenuYourResult.text = [NSString stringWithFormat:@"Ваш результат в %@", MONTHS3[[GlobalData globalData].currentMonth]];
+    mainMenuYourResult.text = [NSString stringWithFormat:@"Ваш результат в %@", MONTHS3[[GlobalData globalData].currentMonth - 1]];
     
     // iPhone 5
     if ([UIScreen mainScreen].bounds.size.height == 568)

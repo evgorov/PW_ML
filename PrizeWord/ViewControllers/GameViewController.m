@@ -645,8 +645,8 @@ extern NSString * PRODUCTID_HINTS10;
     shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
     
     int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
-    lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", baseScore];
-    lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] - baseScore];
+    lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? 0 : baseScore];
+    lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? [puzzleData.score unsignedIntValue] : ([puzzleData.score unsignedIntValue] - baseScore)];
     lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
