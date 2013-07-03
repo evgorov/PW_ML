@@ -180,6 +180,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    scrollView.contentOffset = CGPointZero;
+}
+
 #pragma mark EventListenerDelegate
 -(void)handleEvent:(Event *)event
 {
@@ -303,7 +310,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             [self activateBadges:puzzleSetView];
             
             [oldView removeFromSuperview];
-            if (fabs(oldSize.height - newSize.height) < 0.01)
+            if (fabs(oldSize.height - newSize.height) > 0.01)
             {
                 [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
             }
@@ -748,6 +755,8 @@ const int TAG_DYNAMIC_VIEWS = 101;
     if (puzzle.puzzleSet.month.intValue != [GlobalData globalData].currentMonth || puzzle.puzzleSet.year.intValue != [GlobalData globalData].currentYear)
     {
         archiveNeedLoading = YES;
+        archiveLastMonth = [GlobalData globalData].currentMonth;
+        archiveLastYear = [GlobalData globalData].currentYear;
     }
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
