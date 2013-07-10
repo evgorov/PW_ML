@@ -76,7 +76,7 @@
             return;
         }
         
-        if (error != nil)
+        if (error != nil && error.code != 2) // Cancel
         {
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
             alert.tag = 0;
@@ -107,13 +107,14 @@
 
 -(void)logout
 {
+    [GlobalData globalData].loggedInUser = nil;
+    [GlobalData globalData].sessionKey = nil;
+    
     if ([FBSession activeSession] != nil)
     {
         [[FBSession activeSession] closeAndClearTokenInformation];
         [FBSession setActiveSession:nil];
     }
-    [GlobalData globalData].loggedInUser = nil;
-    [GlobalData globalData].sessionKey = nil;
     
     // vkontakte logout
     NSHTTPCookie *cookie;

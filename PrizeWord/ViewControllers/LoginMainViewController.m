@@ -66,16 +66,22 @@
 - (IBAction)handleFacebookClick:(id)sender
 {
     [SocialNetworks loginFacebookWithViewController:self andCallback:^{
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        if ([GlobalData globalData].sessionKey != nil)
+        {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        }
     }];
 }
 
 - (IBAction)handleVKClick:(id)sender
 {
     [SocialNetworks loginVkontakteWithViewController:self andCallback:^{
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        if ([GlobalData globalData].sessionKey != nil)
+        {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController pushViewController:[PuzzlesViewController new] animated:YES];
+        }
     }];
 }
 
