@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/org/omich/velo/constants/Strings.java=UTF-8
+encoding//src/org/omich/velo/db/DbHelper.java=UTF-8
+encoding//src/org/omich/velo/errors/OmOutOfMemoryException.java=UTF-8
+encoding//src/org/omich/velo/errors/OmRuntimeException.java=UTF-8

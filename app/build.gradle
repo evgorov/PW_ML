@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.4'
+    }
+}
+apply plugin: 'android'
+
+dependencies {
+    compile project(':libs:project-androidsupportv4')
+    compile project(':libs:thirdparty:actionbarsherlock-gradle')
+    compile project(':libs:project-annotations')
+    compile project(':libs:project-log')
+    compile project(':libs:project-events')
+    compile project(':libs:project-activity')
+    compile project(':libs:project-bcops')
+    compile project(':libs:project-lists')
+    compile project(':libs:project-sherlock')
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 17
+    }
+}

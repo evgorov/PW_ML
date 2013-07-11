@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/org/omich/velo/bcops/BcTaskHelper.java=UTF-8
+encoding//src/org/omich/velo/bcops/BcToaster.java=UTF-8
+encoding//src/org/omich/velo/bcops/IBcBaseTask.java=UTF-8
+encoding//src/org/omich/velo/bcops/IBcToaster.java=UTF-8
+encoding//src/org/omich/velo/bcops/ICancelledInfo.java=UTF-8
+encoding//src/org/omich/velo/bcops/client/BcConnector.java=UTF-8
+encoding//src/org/omich/velo/bcops/client/BcEventHelper.java=UTF-8
+encoding//src/org/omich/velo/bcops/client/IBcConnector.java=UTF-8
+encoding//src/org/omich/velo/bcops/log/BcTaskException.java=UTF-8
+encoding//src/org/omich/velo/bcops/log/ErrorParcelable.java=UTF-8
+encoding//src/org/omich/velo/bcops/log/ParcException.java=UTF-8
+encoding//src/org/omich/velo/bcops/simple/BcService.java=UTF-8
+encoding//src/org/omich/velo/bcops/simple/IBcTask.java=UTF-8

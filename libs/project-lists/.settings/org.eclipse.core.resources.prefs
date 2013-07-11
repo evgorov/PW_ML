@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//src/org/omich/velo/lists/ArraySlowSource.java=UTF-8
+encoding//src/org/omich/velo/lists/ILoadingQueue.java=UTF-8
+encoding//src/org/omich/velo/lists/ISlowSource.java=UTF-8
+encoding//src/org/omich/velo/lists/KeepViewAdapter.java=UTF-8
+encoding//src/org/omich/velo/lists/KeepViewHolderAdapter.java=UTF-8
+encoding//src/org/omich/velo/lists/ListsRuntimeException.java=UTF-8
+encoding//src/org/omich/velo/lists/LoadingQueue.java=UTF-8
+encoding//src/org/omich/velo/lists/SlowAdapter.java=UTF-8
+encoding//src/org/omich/velo/lists/SlowSourceAdapter.java=UTF-8
+encoding//src/org/omich/velo/lists/TrippleSource.java=UTF-8
