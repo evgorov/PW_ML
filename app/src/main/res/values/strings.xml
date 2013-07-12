@@ -3,8 +3,9 @@
 
     <string name="app_name">PrizeWord</string>
     <string name="action_settings">Settings</string>
-
     <string name="login_fragment_title">Login</string>
     <string name="crosswords_fragment_title">Crosswords</string>
+    <string name="title_activity_one_crossword">Crossword</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

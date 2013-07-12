@@ -12,8 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".navigation.NavigationActivity"
             android:label="@string/app_name" >
@@ -22,6 +21,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".crossword.view.OneCrosswordActivity"
+            android:label="@string/title_activity_one_crossword" >
         </activity>
     </application>
 

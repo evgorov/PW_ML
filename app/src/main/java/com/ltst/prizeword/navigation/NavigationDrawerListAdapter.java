@@ -11,9 +11,6 @@ import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
 
-/**
- * Created by naghtarr on 7/11/13.
- */
 public class NavigationDrawerListAdapter extends ArrayAdapter<NavigationDrawerItem>
 {
     private int mItemResourceId;

@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.crossword.CrosswordsFragment;
+import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.LoginFragment;
 
 import org.omich.velo.constants.Strings;
