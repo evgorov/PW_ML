@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             >
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Назад"
+                android:layout_gravity="center_vertical|left"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical|center"
+            android:layout_marginTop="100dp">
+        <EditText
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:background="#dedede"
+                />
+
+        <EditText
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:background="#dedede"
+                />
+        <Button
+                android:id="@+id/button2"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:text="Войти"
+                android:layout_marginTop="20dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Забыли пароль?"
+                android:clickable="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>
