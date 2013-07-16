@@ -141,4 +141,5 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
     {
         return mFragments.get(position) != null;
     }
+
 }
