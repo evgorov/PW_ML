@@ -1,73 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/lin"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="match_parent"
+             android:background="@drawable/login_bg2x">
 
+    <ScrollView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical|center">
 
-    <FrameLayout
-            android:id="@+id/authorization"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-        <LinearLayout
+        <FrameLayout
+                android:id="@+id/authorization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center"
-                android:orientation="horizontal">
+                android:background="@drawable/login_main_bg2x"
+                >
 
-            <Button
-                    android:id="@+id/button1"
-                    android:layout_width="115dp"
-                    android:layout_height="60dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Facebook"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:orientation="horizontal">
 
-            <Button
-                    android:id="@+id/button2"
-                    android:layout_width="115dp"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="VK"/>
-        </LinearLayout>
+                <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_fb_btn"/>
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="30dp">
+                <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/login_vk_btn"/>
+            </LinearLayout>
 
-            <Button
-                    android:id="@+id/enter"
-                    android:layout_width="265dp"
-                    android:layout_height="50dp"
-                    android:text="Войти"
-                    android:layout_marginBottom="3dp"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="30dp">
 
-            <Button
-                    android:id="@+id/button4"
-                    android:layout_width="265dp"
-                    android:layout_height="50dp"
-                    android:text="Зарегистрироваться"
-                    android:layout_marginTop="3dp"/>
+                <Button
+                        android:id="@+id/enter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:background="@drawable/login_enter_btn"/>
 
-        </LinearLayout>
-    </FrameLayout>
+                <Button
+                        android:id="@+id/button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/reg_but_bg"/>
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </ScrollView>
 
     <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:contentDescription="logo"
             android:gravity="center"
             />
 
-    <FrameLayout
-            android:id="@+id/forFrag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ></FrameLayout>
+
 </FrameLayout>

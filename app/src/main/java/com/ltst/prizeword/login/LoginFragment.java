@@ -42,21 +42,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener {
     @Nonnull
     Button mAuthorization;
 
-    public interface onSomeEventListener {
-        public void someEvent(AuthoFragment frag);
-    }
-    onSomeEventListener someEventListener;
-
-    public void OnAttach(Activity activity){
-        super.onAttach(activity);
-        try{someEventListener=(onSomeEventListener)activity;
-        }catch(ClassCastException e){
-            throw new ClassCastException((activity).toString()+"must ipmplement onsomeeventlistener");
-
-        }
-    }
-
-
     @SuppressWarnings("unchecked")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +63,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.enter:
-                someEventListener.someEvent(fr);
+
                 break;
             default:
                 break;
