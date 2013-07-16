@@ -13,7 +13,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String TEST_DATABASE_NAME = "testapp.db";
     private static final int    DATABASE_VERSION = 1;
 
-    private static final @Nonnull String TNAME_PUZZLES = "puzzles"
+    private static final @Nonnull String TNAME_PUZZLES = "puzzles";
 
     private final @Nonnull Context mContext;
 
