@@ -23,45 +23,39 @@ import static android.view.View.OnClickListener;
 /**
  * Created by naghtarr on 7/11/13.
  */
-public class LoginFragment extends SherlockFragment implements OnClickListener {
-    public static final
-    @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.login.LoginFragment";
-    public static final
-    @Nonnull
-    String FRAGMENT_CLASSNAME = LoginFragment.class.getName();
+public class LoginFragment extends SherlockFragment implements OnClickListener
+{
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.LoginFragment";
+    public static final @Nonnull String FRAGMENT_CLASSNAME = LoginFragment.class.getName();
 
-    private
-    @Nonnull
-    FragmentManager mFragmentManager;
+    private @Nonnull FragmentManager mFragmentManager;
 
-    private
-    @Nonnull
-    AuthoFragment fr;
-    private
-    @Nonnull
-    Button mAuthorization;
+    private @Nonnull AuthoFragment fr;
+    private @Nonnull Button mAuthorization;
 
     @SuppressWarnings("unchecked")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View v = inflater.inflate(R.layout.login_fragment_layout, container, false);
         mAuthorization = (Button) v.findViewById(R.id.enter);
-        fr  = new AuthoFragment();
+        fr = new AuthoFragment();
 
         return v;
     }
 
-    public void onActivityCreated(Bundle saveInstanceState) {
+    public void onActivityCreated(Bundle saveInstanceState)
+    {
         mAuthorization.setOnClickListener(this);
         super.onActivityCreated(saveInstanceState);
     }
 
 
-
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
             case R.id.enter:
 
                 break;
