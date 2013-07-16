@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.ltst.prizeword.app.NavigationDrawerItem;
+
 import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
@@ -44,15 +46,19 @@ public class NavigationDrawerListAdapter extends ArrayAdapter<NavigationDrawerIt
             holder = (ViewHolder) convertView.getTag();
         }
 
-        NavigationDrawerItem item = getItem(position);
+        final NavigationDrawerItem item = getItem(position);
         if(item != null)
-            holder.textView.setText(item.getTitle());
+        {
+            if(!item.isHidden())
+                holder.textView.setText(item.getTitle());
+        }
         convertView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                mItemClickHandler.handle(position);
+                if(!item.isHidden())
+                    mItemClickHandler.handle(position);
             }
         });
         return convertView;

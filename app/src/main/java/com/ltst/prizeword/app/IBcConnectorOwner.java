@@ -1,4 +1,4 @@
-package com.ltst.prizeword.navigation;
+package com.ltst.prizeword.app;
 
 import org.omich.velo.bcops.client.IBcConnector;
 
