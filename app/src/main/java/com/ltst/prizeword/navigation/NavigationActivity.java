@@ -17,13 +17,19 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.LoginFragment;
 
+import org.omich.velo.bcops.client.BcConnector;
+import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
 
-public class NavigationActivity extends SherlockFragmentActivity implements INavigationDrawerActivity<NavigationDrawerItem>
+public class NavigationActivity extends SherlockFragmentActivity
+        implements INavigationDrawerActivity<NavigationDrawerItem>,
+                    IBcConnectorOwner
 {
+    private @Nonnull IBcConnector mBcConnector;
+
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
@@ -36,6 +42,8 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        mBcConnector = new BcConnector(this);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
@@ -142,4 +150,12 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         return mFragments.get(position) != null;
     }
 
+    //==== IBcConnectorOwner ==============================================
+
+    @Nonnull
+    @Override
+    public IBcConnector getBcConnector()
+    {
+        return null;
+    }
 }
