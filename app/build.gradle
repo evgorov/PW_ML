@@ -18,6 +18,7 @@ dependencies {
     compile project(':libs:project-bcops')
     compile project(':libs:project-lists')
     compile project(':libs:project-sherlock')
+    compile project(':libs:thirdparty:project-vk')
 }
 
 android {

@@ -89,7 +89,7 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
 
     @Nonnull
     @Override
-    public List<NavigationDrawerItem> getNavigationDrawerItems()
+    public List<NavigationDrawerItem>  getNavigationDrawerItems()
     {
         if(mDrawerItems == null)
         {
