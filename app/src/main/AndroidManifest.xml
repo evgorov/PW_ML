@@ -26,6 +26,10 @@
             android:name=".crossword.view.OneCrosswordActivity"
             android:label="@string/title_activity_one_crossword" >
         </activity>
+        <activity
+            android:name=".vk.VkLoginActivity"
+            android:label="@string/title_activity_vk" >
+        </activity>
     </application>
 
 </manifest>

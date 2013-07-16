@@ -7,6 +7,8 @@
     <string name="vk_login_fragment_title">Vk login</string>
     <string name="crosswords_fragment_title">Crosswords</string>
     <string name="title_activity_one_crossword">Crossword</string>
+    <string name="title_activity_vk">Vkontakte</string>
     <string name="hello_world">Hello world!</string>
+    <string name="VK_API_ID">2904017"</string>
 
 </resources>
