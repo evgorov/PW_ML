@@ -1,7 +1,9 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties
 public class RestUserData
 {
     private @JsonProperty("name") String mName;
@@ -135,5 +137,21 @@ public class RestUserData
     public void setHints(int hints)
     {
         mHints = hints;
+    }
+
+    @JsonIgnoreProperties
+    class RestUserDataHolder
+    {
+        private @JsonProperty("me") RestUserData mUserData;
+
+        RestUserData getUserData()
+        {
+            return mUserData;
+        }
+
+        void setUserData(RestUserData userData)
+        {
+            mUserData = userData;
+        }
     }
 }
