@@ -18,6 +18,9 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final @Nonnull String TNAME_PUZZLE_DATA  = "puzzleData";
     private static final @Nonnull String TNAME_PUZZLE_QUESTIONS  = "puzzleQuestions";
 
+    private static final @Nonnull String TNAME_IMAGES            = "images";
+    private static final @Nonnull String TNAME_USERS             = "users";
+
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
             + ColsPuzzleSets.ID             + " integer not null primary key autoincrement, "
@@ -71,6 +74,30 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + " foreign key (" + ColsPuzzleQuestions.PUZZLE_DATA_ID + ") references "
             + TNAME_PUZZLE_DATA + " (" + ColsPuzzleData.ID + ") on delete cascade)";
 
+    private static final String CREATE_IMAGES_QUERY = "create table "
+            + TNAME_IMAGES + "("
+            + ColsImages.ID                + " integer not null primary key autoincrement, "
+            + ColsImages.KEY               + " text not null unique, "
+            + ColsImages.IMAGE             + " blob)";
+
+    private static final String CREATE_USERS_QUERY = "create table "
+            + TNAME_USERS + "("
+            + ColsUsers.ID                  + " integer not null primary key autoincrement, "
+            + ColsUsers.NAME                + " text not null, "
+            + ColsUsers.SURNAME             + " text not null, "
+            + ColsUsers.EMAIL               + " text not null, "
+            + ColsUsers.PROVIDER            + " text not null, "
+            + ColsUsers.BIRTHDATE           + " text not null default \"\", "
+            + ColsUsers.CITY                + " text not null, "
+            + ColsUsers.SOLVED              + " integer not null default 0, "
+            + ColsUsers.POSITION            + " integer not null default 0, "
+            + ColsUsers.MONTH_SCORE         + " integer not null default 0, "
+            + ColsUsers.HIGH_SCORE          + " integer not null default 0, "
+            + ColsUsers.DYNAMICS            + " integer not null default 0, "
+            + ColsUsers.HINTS               + " integer not null default 0, "
+            + ColsUsers.PREVIEW_URL	        + " text not null, "
+            + ColsUsers.PREVIEW_KEY	        + " text not null)";
+
     private static final class ColsPuzzleSets
     {
         public static final @Nonnull String ID              = "_id";
@@ -118,6 +145,32 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String QUESTION_TEXT   = "questionText";
         public static final @Nonnull String ANSWER          = "answer";
         public static final @Nonnull String ANSWER_POSITION = "answerPosition";
+    }
+
+    private static final class ColsUsers
+    {
+        public static final @Nonnull String ID              = "_id";
+        public static final @Nonnull String NAME            = "name";
+        public static final @Nonnull String SURNAME         = "surname";
+        public static final @Nonnull String EMAIL           = "email";
+        public static final @Nonnull String PROVIDER        = "provider";
+        public static final @Nonnull String BIRTHDATE       = "birthdate";
+        public static final @Nonnull String CITY            = "city";
+        public static final @Nonnull String SOLVED          = "solved";
+        public static final @Nonnull String POSITION        = "position";
+        public static final @Nonnull String MONTH_SCORE     = "monthScore";
+        public static final @Nonnull String HIGH_SCORE      = "highScore";
+        public static final @Nonnull String DYNAMICS        = "dynamics";
+        public static final @Nonnull String HINTS           = "hints";
+        public static final @Nonnull String PREVIEW_URL     = "previewUrl";
+        public static final @Nonnull String PREVIEW_KEY     = "previewKey";
+    }
+
+    public static final class ColsImages
+    {
+        public static final @Nonnull String ID              = "_id";
+        public static final @Nonnull String KEY             = "key";
+        public static final @Nonnull String IMAGE           = "image";
     }
 
     // ===============================================
@@ -209,6 +262,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        db.execSQL(CREATE_USERS_QUERY);
+        db.execSQL(CREATE_IMAGES_QUERY);
         db.execSQL(CREATE_PUZZLE_SETS_QUERY);
         db.execSQL(CREATE_PUZZLES_QUERY);
         db.execSQL(CREATE_PUZZLE_DATA_QUERY);
