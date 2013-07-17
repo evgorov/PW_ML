@@ -8,6 +8,8 @@
     <string name="crosswords_fragment_title">Crosswords</string>
     <string name="authorization_fragment_title">Autorization</string>
 
+    <string name="registration_fragment_title">Registration</string>
+
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="hello_world">Hello world!</string>
 

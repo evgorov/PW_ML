@@ -14,9 +14,10 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.authorization.AuthorizationFragment;
+import com.ltst.prizeword.login.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.LoginFragment;
+import com.ltst.prizeword.login.RegisterFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerActivity;
 import com.ltst.prizeword.navigation.NavigationDrawerListAdapter;
@@ -110,6 +111,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItems;
     }
@@ -162,6 +164,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.crosswords_fragment_title);
         else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
             title = res.getString(R.string.authorization_fragment_title);
+        else if(id.equals(RegisterFragment.FRAGMENT_ID))
+            title = res.getString(R.string.registration_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {
