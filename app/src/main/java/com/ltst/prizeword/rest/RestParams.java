@@ -18,9 +18,9 @@ public class RestParams
     public static final @Nonnull String VK_LOGIN_URL = String.format(PROVIDER_LOGIN, VK_PROVIDER);
 
     public static final @Nonnull String VK_TOKEN_URL = "https://oauth.vk.com/blank.html";
-    public static final @Nonnull String FB_TOKEN_URL = "http://api.prize-word.com/facebook/authorize";
+    public static final @Nonnull String FB_TOKEN_URL = "http://api.prize-word.com/facebook/authorize#";
 
-    public static final @Nonnull String VK_AUTORITHE_URL = String.format(PROVIDER_AUTORITHE,VK_PROVIDER);
-    public static final @Nonnull String FB_AUTORITHE_URL = String.format(PROVIDER_AUTORITHE,FB_PROVIDER);
+    public static final @Nonnull String VK_AUTORITHE_URL = String.format(PROVIDER_AUTORITHE,VK_PROVIDER)+"?access_token=";
+    public static final @Nonnull String FB_AUTORITHE_URL = String.format(PROVIDER_AUTORITHE,FB_PROVIDER)+"?access_token=";
 
 }

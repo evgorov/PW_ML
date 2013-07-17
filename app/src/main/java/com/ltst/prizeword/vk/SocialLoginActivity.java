@@ -97,10 +97,15 @@ public class SocialLoginActivity extends SherlockActivity {
                     Intent intent=new Intent();
                     intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
                     intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
-                    Log.d(VkAccount.LOG_TAG, "SUBSEND RESULT!");
                     setResult(SherlockActivity.RESULT_OK, intent);
                     Log.d(VkAccount.LOG_TAG, "SEND RESULT!");
-                    loadUrl(RestParams.VK_AUTORITHE_URL+"="+RestParams.VK_API_ID);
+
+                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
+                        loadUrl(RestParams.VK_AUTORITHE_URL+auth[0]);
+                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
+                        loadUrl(RestParams.FB_AUTORITHE_URL+auth[0]);
+                    else
+                        return;
                 }
                 else {
                     finish();
@@ -109,7 +114,7 @@ public class SocialLoginActivity extends SherlockActivity {
             if(url.startsWith(RestParams.VK_AUTORITHE_URL) || url.startsWith(RestParams.FB_AUTORITHE_URL))
             {
                 Log.d(VkAccount.LOG_TAG, "GET AUTORITHED PAGE! ");
-                finish();
+//                finish();
             }
         } catch (Exception e) {
             Log.d(VkAccount.LOG_TAG, "EXCEPTION! " + e.toString());
