@@ -35,7 +35,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 16.07.13.
@@ -49,7 +48,7 @@ public class VkLoginFragment extends SherlockFragment {
 
     private final int REQUEST_LOGIN = 1;
 
-    private @Nonnull String FORMAT_BIRTHDAY = "dd.MM.yyyy";
+//    private @Nonnull String FORMAT_BIRTHDAY = "dd.MM.yyyy";
 
     private @Nonnull Button mButtonLogin;
     private @Nonnull Button mButtonExit;
@@ -57,7 +56,7 @@ public class VkLoginFragment extends SherlockFragment {
     private @Nonnull ImageView mImage;
     private @Nonnull Context mContext;
 
-    private @Nullable Api api;
+//    private @Nullable Api api;
     private @Nonnull VkAccount account = new VkAccount();
 
 
@@ -86,9 +85,9 @@ public class VkLoginFragment extends SherlockFragment {
         //Восстановление сохранённой сессии
         account.restore(mContext);
 
-        //Если сессия есть создаём API для обращения к серверу
-        if(account.access_token!=null)
-            api=new Api(account.access_token, res.getString(R.string.VK_API_ID));
+//        //Если сессия есть создаём API для обращения к серверу
+//        if(account.access_token!=null)
+//            api=new Api(account.access_token, res.getString(R.string.VK_API_ID));
 
         showButtons();
 
@@ -113,12 +112,13 @@ public class VkLoginFragment extends SherlockFragment {
     private void launchLoginActivity()
     {
         @Nonnull Intent intent = new Intent(mContext, VkLoginActivity.class);
+        intent.putExtra(VkLoginActivity.PROVEDER_ID, FRAGMENT_ID);
         startActivityForResult(intent, REQUEST_LOGIN);
     }
 
     private void closeLoginActivity()
     {
-        api=null;
+//        api=null;
         account.access_token=null;
         account.user_id=0;
         account.save(mContext);
@@ -127,27 +127,29 @@ public class VkLoginFragment extends SherlockFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(LOG_TAG, "COME!");
+        Log.d(LOG_TAG, "COME ANSWER!");
         if (requestCode == REQUEST_LOGIN) {
             if (resultCode == SherlockActivity.RESULT_OK) {
+                Log.d(LOG_TAG, "SUSSECCFULLY AUTORITHED!");
                 //авторизовались успешно
                 Resources res = this.getResources();
-                account.access_token=data.getStringExtra("token");
-                account.user_id=data.getLongExtra("user_id", 0);
+                account.access_token=data.getStringExtra(VkAccount.ACCOUNT_ACCESS_TOKEN);
+                account.user_id=data.getLongExtra(VkAccount.ACCOUNT_USER_ID, 0);
                 account.save(mContext);
-                api=new Api(account.access_token, res.getString(R.string.VK_API_ID));
+//                api=new Api(account.access_token, res.getString(R.string.VK_API_ID));
                 showButtons();
             }
         }
     }
 
     void showButtons(){
-        if(api!=null){
+//        if(api!=null){
+        if(account.access_token!=null){
             mButtonLogin.setVisibility(View.GONE);
             mButtonExit.setVisibility(View.VISIBLE);
             mTextInfo.setVisibility(View.VISIBLE);
             mImage.setVisibility(View.VISIBLE);
-            mTextInfo.setText(getInfo());
+//            mTextInfo.setText(getInfo());
         }else{
             mButtonLogin.setVisibility(View.VISIBLE);
             mButtonExit.setVisibility(View.GONE);
@@ -156,27 +158,27 @@ public class VkLoginFragment extends SherlockFragment {
         }
     }
 
-    private int getAge (int _year, int _month, int _day) {
+//    private int getAge (int _year, int _month, int _day) {
+//
+//        GregorianCalendar cal = new GregorianCalendar();
+//        int y, m, d, a;
+//
+//        y = cal.get(Calendar.YEAR);
+//        m = cal.get(Calendar.MONTH) + 1;
+//        d = cal.get(Calendar.DAY_OF_MONTH);
+//        cal.set(_year, _month, _day);
+//        a = y - cal.get(Calendar.YEAR);
+//        if ((m < cal.get(Calendar.MONTH))
+//                || ((m == cal.get(Calendar.MONTH)) && (d < cal
+//                .get(Calendar.DAY_OF_MONTH)))) {
+//            --a;
+//        }
+//        if(a < 0)
+//            throw new IllegalArgumentException("Age < 0");
+//        return a;
+//    }
 
-        GregorianCalendar cal = new GregorianCalendar();
-        int y, m, d, a;
-
-        y = cal.get(Calendar.YEAR);
-        m = cal.get(Calendar.MONTH) + 1;
-        d = cal.get(Calendar.DAY_OF_MONTH);
-        cal.set(_year, _month, _day);
-        a = y - cal.get(Calendar.YEAR);
-        if ((m < cal.get(Calendar.MONTH))
-                || ((m == cal.get(Calendar.MONTH)) && (d < cal
-                .get(Calendar.DAY_OF_MONTH)))) {
-            --a;
-        }
-        if(a < 0)
-            throw new IllegalArgumentException("Age < 0");
-        return a;
-    }
-
-    private String getInfo(){
+//    private String getInfo(){
 //        String text = null;
 //        Collection<Long> uids = new ArrayList<Long>();
 //        uids.add(account.user_id);
@@ -230,6 +232,6 @@ public class VkLoginFragment extends SherlockFragment {
 //            text = e.toString();
 //        }
 //        return text;
-        return "some text";
-    }
+//        return "some text";
+//    }
 }

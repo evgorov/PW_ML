@@ -1,7 +1,6 @@
 package com.ltst.prizeword.vk;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +10,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.rest.RestParams;
 import com.perm.kate.api.Auth;
 
 import javax.annotation.Nonnull;
@@ -23,9 +21,13 @@ import javax.annotation.Nonnull;
  */
 public class VkLoginActivity extends SherlockActivity {
 
-    private String LOG_TAG = "vkontakte";
+    static public final @Nonnull String PROVEDER_ID = "prov_id";
+
+    private @Nonnull String LOG_TAG = "vkontakte";
 
     private @Nonnull WebView mWebView;
+
+    private String pProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,15 @@ public class VkLoginActivity extends SherlockActivity {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.removeAllCookie();
 
-        Resources res = this.getResources();
-        String url = Auth.getUrl(res.getString(R.string.VK_API_ID), Auth.getSettings());
-        mWebView.loadUrl(url);
+        Bundle extras = getIntent().getExtras();
+        pProviderId = extras.getString(PROVEDER_ID);
+        Log.d(LOG_TAG, "PROVIDER_ID = "+pProviderId);
+
+        if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
+            loadUrl(RestParams.VK_LOGIN_URL);
+        else
+            loadUrl(RestParams.FB_LOGIN_URL);
+
     }
 
     private class VkWebViewClient extends WebViewClient {
@@ -56,25 +64,47 @@ public class VkLoginActivity extends SherlockActivity {
             super.onPageStarted(view, url, favicon);
             parseUrl(url);
         }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+    }
+
+    private void loadUrl(String url){
+        mWebView.loadUrl(url);
     }
 
     private void parseUrl(@Nonnull String url) {
         try {
             if(url==null)
                 return;
-            if(url.startsWith(Auth.redirect_url))
+            Log.d(LOG_TAG, "PARSE URL = "+url);
+            if(url.startsWith(RestParams.VK_TOKEN_URL) || url.startsWith(RestParams.FB_TOKEN_URL))
             {
                 if(!url.contains("error=")){
-                    String[] auth=Auth.parseRedirectUrl(url);
-//                    Intent intent=new Intent(VkLoginActivity.this, NavigationActivity.class);
+//                    String[] auth = Auth.parseRedirectUrl(url);
+                    String[] auth;
+                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
+                        auth = VkParser.parseVkRedirectUrl(url);
+                    else
+                        auth = VkParser.parseFbRedirectUrl(url);
+
                     Intent intent=new Intent();
                     intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
                     intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
                     Log.d(LOG_TAG, "SUBSEND RESULT!");
                     setResult(SherlockActivity.RESULT_OK, intent);
-//                    startActivityForResult(intent, SherlockFragmentActivity.RESULT_OK);
                     Log.d(LOG_TAG, "SEND RESULT!");
+                    loadUrl(RestParams.VK_AUTORITHE_URL+"="+RestParams.VK_API_ID);
                 }
+                else {
+                    finish();
+                }
+            }
+            if(url.startsWith(RestParams.VK_AUTORITHE_URL) || url.startsWith(RestParams.FB_AUTORITHE_URL))
+            {
+                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
                 finish();
             }
         } catch (Exception e) {
