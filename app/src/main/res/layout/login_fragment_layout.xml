@@ -3,24 +3,65 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@drawable/login_bg_tile"
-                >
+        >
+
     <ImageView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:background="@drawable/login_enter_top_shadow"
-        />
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/login_enter_top_shadow"
+            />
 
     <ScrollView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical|center">
+            android:layout_gravity="center_vertical|center"
+            >
 
         <FrameLayout
-                android:id="@+id/authorization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/login_main_bg2x"
+                android:layout_gravity="center_vertical|center"
                 >
+
+
+            <FrameLayout
+                    android:id="@+id/authorization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:background="@drawable/login_main_bg"
+                    >
+
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="20dp">
+
+                    <Button
+                            android:id="@+id/enter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:background="@drawable/login_enter_btn"/>
+
+                    <Button
+                            android:id="@+id/button4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/login_register_btn"/>
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:background="@drawable/login_main_under_button"/>
 
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -32,50 +73,20 @@
                         android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="7dp"
+
                         android:background="@drawable/login_fb_btn"/>
 
                 <Button
                         android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="7dp"
+
                         android:background="@drawable/login_vk_btn"/>
             </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="30dp">
-
-                <Button
-                        android:id="@+id/enter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:background="@drawable/login_enter_btn"/>
-
-                <Button
-                        android:id="@+id/button4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:background="@drawable/reg_but_bg"/>
-
-            </LinearLayout>
         </FrameLayout>
-
     </ScrollView>
-
-    <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="logo"
-            android:gravity="center"
-            />
 
 
 </FrameLayout>
