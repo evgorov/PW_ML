@@ -1,4 +1,4 @@
-package com.ltst.prizeword.navigation;
+package com.ltst.prizeword.app;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,16 +14,27 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.authorization.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.LoginFragment;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.navigation.INavigationDrawerActivity;
+import com.ltst.prizeword.navigation.NavigationDrawerListAdapter;
 
+import org.omich.velo.bcops.client.BcConnector;
+import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
 
-public class NavigationActivity extends SherlockFragmentActivity implements INavigationDrawerActivity<NavigationDrawerItem>
+public class NavigationActivity extends SherlockFragmentActivity
+        implements INavigationDrawerActivity<NavigationDrawerItem>,
+        IFragmentsHolderActivity,
+        IBcConnectorOwner
 {
+    private @Nonnull IBcConnector mBcConnector;
+
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
@@ -36,6 +47,8 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        mBcConnector = new BcConnector(this);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
@@ -43,7 +56,7 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
 
-        selectNavigationFragment(0);
+        selectNavigationFragmentByPosition(0);
     }
 
     @Override
@@ -82,7 +95,7 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
             @Override
             public void handle(int i)
             {
-                selectNavigationFragment(i);
+                selectNavigationFragmentByPosition(i);
             }
         };
     }
@@ -94,14 +107,17 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         if(mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
-            initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(CrosswordsFragment.FRAGMENT_ID,  CrosswordsFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItems;
     }
 
+    // ==== IFragmentsHolderActivity =================================
+
     @Override
-    public void selectNavigationFragment(int position)
+    public void selectNavigationFragmentByPosition(int position)
     {
         if(!isFragmentInitialized(position))
         {
@@ -119,9 +135,24 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         setTitle(mDrawerItems.get(position).getTitle());
     }
 
+    @Override
+    public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
+    {
+        int size = mDrawerItems.size();
+        for (int i = 0; i < size; i++)
+        {
+            NavigationDrawerItem item = mDrawerItems.get(i);
+            if(fragmentClassname.equals(item.getFragmentClassName()))
+            {
+                selectNavigationFragmentByPosition(i);
+                break;
+            }
+        }
+    }
+
     // ==================================================
 
-    private void initFragmentToList(@Nonnull String id, @Nonnull String classname)
+    private void initFragmentToList(@Nonnull String id, @Nonnull String classname, boolean hidden)
     {
         String title = Strings.EMPTY;
         Resources res = getResources();
@@ -129,10 +160,12 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
             title = res.getString(R.string.login_fragment_title);
         else if(id.equals(CrosswordsFragment.FRAGMENT_ID))
             title = res.getString(R.string.crosswords_fragment_title);
+        else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
+            title = res.getString(R.string.authorization_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {
-            NavigationDrawerItem item = new NavigationDrawerItem(title, classname);
+            NavigationDrawerItem item = new NavigationDrawerItem(title, classname, hidden);
             mDrawerItems.add(item);
         }
     }
@@ -142,4 +175,12 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         return mFragments.get(position) != null;
     }
 
+    //==== IBcConnectorOwner ==============================================
+
+    @Nonnull
+    @Override
+    public IBcConnector getBcConnector()
+    {
+        return null;
+    }
 }

@@ -1,19 +1,18 @@
-package com.ltst.prizeword.navigation;
+package com.ltst.prizeword.app;
 
 import javax.annotation.Nonnull;
 
-/**
- * Created by naghtarr on 7/11/13.
- */
 public class NavigationDrawerItem
 {
     private @Nonnull String mTitle;
     private @Nonnull String mFragmentClassName;
+    private boolean mIsHidden;
 
-    public NavigationDrawerItem(@Nonnull String title, @Nonnull String fragmentClassName)
+    public NavigationDrawerItem(@Nonnull String title, @Nonnull String fragmentClassName, boolean isHidden)
     {
         mTitle = title;
         mFragmentClassName = fragmentClassName;
+        mIsHidden = isHidden;
     }
 
     @Nonnull
@@ -36,6 +35,16 @@ public class NavigationDrawerItem
     public void setFragmentClassName(@Nonnull String fragmentClassName)
     {
         mFragmentClassName = fragmentClassName;
+    }
+
+    public boolean isHidden()
+    {
+        return mIsHidden;
+    }
+
+    public void setHidden(boolean mIsHidden)
+    {
+        this.mIsHidden = mIsHidden;
     }
 
     @Override
