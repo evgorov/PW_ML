@@ -187,6 +187,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public IBcConnector getBcConnector()
     {
-        return null;
+        return mBcConnector;
     }
 }

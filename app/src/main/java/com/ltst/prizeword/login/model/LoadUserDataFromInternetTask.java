@@ -20,13 +20,18 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadUserDataFromInternetTask.sessionToken";
     public static final @Nonnull String BF_PROVIDER_NAME = "LoadUserDataFromInternetTask.providerName";
+    public static final @Nonnull String BF_ACCESS_TOKEN = "LoadUserDataFromInternetTask.accessToken";
 
     public static @Nonnull
-    Intent createIntent(@Nonnull String sessionToken, @Nonnull String providerName)
+    Intent createIntent(@Nullable String sessionKey, @Nullable String providerName, @Nullable String accessToken)
     {
         Intent intent = new Intent();
-        intent.putExtra(BF_SESSION_KEY, sessionToken);
-        intent.putExtra(BF_PROVIDER_NAME, providerName);
+        if(sessionKey != null)
+            intent.putExtra(BF_SESSION_KEY, sessionKey);
+        if(providerName != null)
+            intent.putExtra(BF_PROVIDER_NAME, providerName);
+        if (accessToken != null)
+            intent.putExtra(BF_ACCESS_TOKEN, accessToken);
         return intent;
     }
 
@@ -37,8 +42,9 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         Bundle extras = env.extras;
         if(extras == null)
             return null;
-        String sessionKey = extras.getString(BF_SESSION_KEY);
-        String providerName = extras.getString(BF_PROVIDER_NAME);
+        @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
+        @Nullable String providerName = extras.getString(BF_PROVIDER_NAME);
+        @Nullable String accessToken = extras.getString(BF_ACCESS_TOKEN);
 
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
@@ -48,19 +54,40 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         }
         else
         {
-
-            RestUserData response = loadFromInternet(sessionKey);
-
-            if(response != null)
+            if(sessionKey != null)
             {
-                UserData userData = parseResponse(providerName, response);
-                env.dbw.putUser(userData);
+                RestUserData response = loadRestUserDataFromInternet(sessionKey);
+
+                if(response != null)
+                {
+                    UserData userData = parseUserData(providerName, response);
+                    env.dbw.putUser(userData);
+                    //@TODO
+                    //return env.dbw.getUserFromDatabase()
+                }
+            }
+            if (accessToken != null && providerName != null)
+            {
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderFromInternet(providerName, accessToken);
+                if (holder != null)
+                {
+//                    UserData userData = parseUserData(providerName, holder.getUserData());
+//                    env.dbw.putUser(userData);
+                   return getSessionKeyFromInternet(holder);
+                }
             }
         }
         return null;
     }
 
-    private @Nullable RestUserData loadFromInternet(@Nonnull String sessionKey)
+    public static @Nullable Bundle getSessionKeyFromInternet(RestUserData.RestUserDataHolder holder)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString(BF_SESSION_KEY, holder.getSessionKey());
+        return bundle;
+    }
+
+    private @Nullable RestUserData loadRestUserDataFromInternet(@Nonnull String sessionKey)
     {
         try
         {
@@ -74,7 +101,21 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         }
     }
 
-    public static @Nonnull UserData parseResponse(@Nonnull String provider, @Nonnull RestUserData response)
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderFromInternet(@Nonnull String provider, @Nonnull String accessToken)
+    {
+        try
+        {
+            IRestClient client = RestClient.create();
+            return client.getSessionKey(provider, accessToken);
+        }
+        catch(Throwable e)
+        {
+            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            return null;
+        }
+    }
+
+    public static @Nonnull UserData parseUserData(@Nonnull String provider, @Nonnull RestUserData response)
     {
         return new UserData(0, response.getName(), response.getSurname(),
                 response.getEmail(), provider, response.getBirthDate(), response.getCity(),
