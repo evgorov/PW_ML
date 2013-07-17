@@ -19,6 +19,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.authorization.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
+import com.ltst.prizeword.facebook.FbLoginFragment;
 import com.ltst.prizeword.login.LoginFragment;
 import com.ltst.prizeword.vk.VkLoginFragment;
 
@@ -111,6 +112,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(VkLoginFragment.FRAGMENT_ID,  VkLoginFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(FbLoginFragment.FRAGMENT_ID,  FbLoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItems;
@@ -164,6 +166,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.crosswords_fragment_title);
         else if(id.equals(VkLoginFragment.FRAGMENT_ID))
             title = res.getString(R.string.vk_login_fragment_title);
+        else if(id.equals(FbLoginFragment.FRAGMENT_ID))
+            title = res.getString(R.string.fb_login_fragment_title);
         else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
             title = res.getString(R.string.authorization_fragment_title);
 
