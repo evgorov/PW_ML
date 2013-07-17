@@ -16,5 +16,4 @@ public interface INavigationDrawerActivity<T>
     public int getDrawerItemTextViewResourceId();
     public @Nonnull IListenerInt getDrawerItemClickHandler();
     public @Nonnull List<T> getNavigationDrawerItems();
-    public void selectNavigationFragment(int position);
 }

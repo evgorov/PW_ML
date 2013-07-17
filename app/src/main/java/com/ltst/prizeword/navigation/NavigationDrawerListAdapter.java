@@ -44,15 +44,19 @@ public class NavigationDrawerListAdapter extends ArrayAdapter<NavigationDrawerIt
             holder = (ViewHolder) convertView.getTag();
         }
 
-        NavigationDrawerItem item = getItem(position);
+        final NavigationDrawerItem item = getItem(position);
         if(item != null)
-            holder.textView.setText(item.getTitle());
+        {
+            if(!item.isHidden())
+                holder.textView.setText(item.getTitle());
+        }
         convertView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                mItemClickHandler.handle(position);
+                if(!item.isHidden())
+                    mItemClickHandler.handle(position);
             }
         });
         return convertView;

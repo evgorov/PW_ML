@@ -3,9 +3,19 @@
 
     <string name="app_name">PrizeWord</string>
     <string name="action_settings">Settings</string>
+
     <string name="login_fragment_title">Login</string>
     <string name="crosswords_fragment_title">Crosswords</string>
+    <string name="authorization_fragment_title">Autorization</string>
+
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="hello_world">Hello world!</string>
 
+
+
+    <string name="register_screen_email">E-mail*</string>
+    <string name="register_screen_pass">Пароль*</string>
+    <string name="register_screen_retry_pass">Повторите пароль</string>
+    <string name="register_screen_date_born">Дата рождения</string>
+    <string name="register_screen_city">Город</string>
 </resources>
