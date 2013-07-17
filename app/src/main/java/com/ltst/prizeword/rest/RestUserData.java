@@ -142,6 +142,7 @@ public class RestUserData
     @JsonIgnoreProperties
     class RestUserDataHolder
     {
+        private @JsonProperty("session_key") String mSessionKey;
         private @JsonProperty("me") RestUserData mUserData;
 
         RestUserData getUserData()
@@ -152,6 +153,16 @@ public class RestUserData
         void setUserData(RestUserData userData)
         {
             mUserData = userData;
+        }
+
+        String getSessionKey()
+        {
+            return mSessionKey;
+        }
+
+        void setSessionKey(String sessionKey)
+        {
+            mSessionKey = sessionKey;
         }
     }
 }
