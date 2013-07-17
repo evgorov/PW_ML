@@ -10,23 +10,20 @@ import com.ltst.prizeword.R;
 
 import javax.annotation.Nonnull;
 
-/**
- * Created by Kostrof on 15.07.13.
- */
-public class AuthoFragment extends SherlockFragment{
+public class AuthorizationFragment extends SherlockFragment
+{
     public static final
     @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.authorization.AuthoFragment";
+    String FRAGMENT_ID = "com.ltst.prizeword.authorization.AuthorizationFragment";
     public static final
     @Nonnull
-    String FRAGMENT_CLASSNAME = AuthoFragment.class.getName();
+    String FRAGMENT_CLASSNAME = AuthorizationFragment.class.getName();
 
     @SuppressWarnings("unchecked")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.autho_fragment_layout, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View v = inflater.inflate(R.layout.authorization_fragment_layout, container, false);
         return v;
     }
-
-
 }
