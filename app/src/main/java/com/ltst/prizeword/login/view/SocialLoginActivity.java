@@ -26,6 +26,7 @@ import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -134,6 +135,16 @@ public class SocialLoginActivity extends SherlockActivity
                         }
                     };
 
+                    loader.update(new IListenerVoid()
+                    {
+                        @Override
+                        public void handle()
+                        {
+                            Log.i(VkAccount.LOG_TAG, "handling");
+                            finish();
+                        }
+                    });
+
 //                    Intent intent=new Intent();
 //                    intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
 //                    intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
@@ -188,6 +199,9 @@ public class SocialLoginActivity extends SherlockActivity
         @Override
         protected void handleData(@Nullable Bundle result)
         {
+            if(result == null)
+                return;
+
             @Nullable String sessionKey = result.getString(LoadUserDataFromInternetTask.BF_SESSION_KEY);
             if(sessionKey != null)
             {

@@ -3,12 +3,14 @@ package com.ltst.prizeword.rest;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.List;
+
 @JsonIgnoreProperties
 public class RestUserData
 {
     private @JsonProperty("name") String mName;
     private @JsonProperty("surname") String mSurname;
-    private @JsonProperty("userpic_url") String mUserpicUrl;
+    private @JsonProperty("userpic") String mUserpicUrl;
     private @JsonProperty("email") String mEmail;
     private @JsonProperty("birthdate") String mBirthDate;
     private @JsonProperty("city") String mCity;
@@ -18,6 +20,31 @@ public class RestUserData
     private @JsonProperty("high_score") int mHighScore;
     private @JsonProperty("dynamics") int mDynamics;
     private @JsonProperty("hints") int mHints;
+    private @JsonProperty("providers") List<RestUserProvider> mProviders;
+    private @JsonProperty("created_at") String createdAt;
+    private @JsonProperty("id") String id;
+
+    public  RestUserData(){}
+
+    public String getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
     public String getName()
     {
@@ -139,11 +166,67 @@ public class RestUserData
         mHints = hints;
     }
 
+    public List<RestUserProvider> getProviders()
+    {
+        return mProviders;
+    }
+
+    public void setProviders(List<RestUserProvider> providers)
+    {
+        mProviders = providers;
+    }
+
+
+
     @JsonIgnoreProperties
-    public class RestUserDataHolder
+    public static class RestUserProvider
+    {
+        private @JsonProperty("provider_id") String id;
+        private @JsonProperty("provider_name") String name;
+        private @JsonProperty("provider_token") String token;
+
+        public RestUserProvider(){}
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public void setId(String id)
+        {
+            this.id = id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        public String getToken()
+        {
+            return token;
+        }
+
+        public void setToken(String token)
+        {
+            this.token = token;
+        }
+    }
+
+    @JsonIgnoreProperties
+    public static class RestUserDataHolder
     {
         private @JsonProperty("session_key") String mSessionKey;
         private @JsonProperty("me") RestUserData mUserData;
+
+        public RestUserDataHolder()
+        {
+        }
 
         public RestUserData getUserData()
         {
