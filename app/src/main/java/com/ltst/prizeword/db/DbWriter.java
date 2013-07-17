@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import javax.annotation.Nonnull;
 
-public class DbWriter
+public class DbWriter implements IDbWriter
 {
     public final @Nonnull SQLiteDatabase mDb;
 

@@ -1,14 +1,12 @@
 package com.ltst.prizeword.navigation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.authorization.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
-import com.ltst.prizeword.login.LoginFragment;
+import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.vk.VkLoginFragment;
 
 import org.omich.velo.bcops.client.BcConnector;
