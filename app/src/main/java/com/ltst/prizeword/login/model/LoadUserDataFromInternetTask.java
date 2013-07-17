@@ -55,8 +55,8 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
 
             if(response != null)
             {
-                UserData poll = parseResponse(providerName, response);
-//                env.dbw.putOnePoll(poll);
+                UserData userData = parseResponse(providerName, response);
+                env.dbw.putUser(userData);
             }
         }
         return null;
