@@ -1,4 +1,4 @@
-package com.ltst.prizeword.vk;
+package com.ltst.prizeword.login.model;
 
 import android.util.Log;
 

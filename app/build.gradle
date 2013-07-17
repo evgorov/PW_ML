@@ -9,6 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':libs:project-androidsupportv4')
     compile project(':libs:thirdparty:actionbarsherlock-gradle')
     compile project(':libs:project-annotations')

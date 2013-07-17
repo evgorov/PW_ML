@@ -1,4 +1,4 @@
-package com.ltst.prizeword.facebook;
+package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.vk.SocialLoginActivity;
-import com.ltst.prizeword.vk.VkAccount;
+import com.ltst.prizeword.login.facebook.FbAccount;
+import com.ltst.prizeword.login.vk.VkAccount;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
  */
 public class FbLoginFragment extends SherlockFragment {
 
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.facebook.FbLoginFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.FbLoginFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = FbLoginFragment.class.getName();
 
     private final int REQUEST_LOGIN = 1;
@@ -38,7 +38,8 @@ public class FbLoginFragment extends SherlockFragment {
     private @Nonnull Context mContext;
 
     //    private @Nullable Api api;
-    private @Nonnull FbAccount account = new FbAccount();
+    private @Nonnull
+    com.ltst.prizeword.login.facebook.FbAccount account = new FbAccount();
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.ltst.prizeword.vk;
+package com.ltst.prizeword.login.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,8 +11,9 @@ import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.facebook.FbLoginFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.login.model.SocialParser;
+import com.ltst.prizeword.login.vk.VkAccount;
 
 import javax.annotation.Nonnull;
 
@@ -114,7 +115,7 @@ public class SocialLoginActivity extends SherlockActivity {
             if(url.startsWith(RestParams.VK_AUTORITHE_URL) || url.startsWith(RestParams.FB_AUTORITHE_URL))
             {
                 Log.d(VkAccount.LOG_TAG, "GET AUTORITHED PAGE! ");
-//                finish();
+                finish();
             }
         } catch (Exception e) {
             Log.d(VkAccount.LOG_TAG, "EXCEPTION! " + e.toString());

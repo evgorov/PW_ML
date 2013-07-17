@@ -13,13 +13,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String TEST_DATABASE_NAME = "testapp.db";
     private static final int    DATABASE_VERSION = 1;
 
-    private static final @Nonnull String TNAME_PUZZLE_SETS  = "puzzleSets";
-    private static final @Nonnull String TNAME_PUZZLES      = "puzzles";
-    private static final @Nonnull String TNAME_PUZZLE_DATA  = "puzzleData";
-    private static final @Nonnull String TNAME_PUZZLE_QUESTIONS  = "puzzleQuestions";
+    public static final @Nonnull String TNAME_PUZZLE_SETS  = "puzzleSets";
+    public static final @Nonnull String TNAME_PUZZLES      = "puzzles";
+    public static final @Nonnull String TNAME_PUZZLE_DATA  = "puzzleData";
+    public static final @Nonnull String TNAME_PUZZLE_QUESTIONS  = "puzzleQuestions";
 
-    private static final @Nonnull String TNAME_IMAGES            = "images";
-    private static final @Nonnull String TNAME_USERS             = "users";
+    public static final @Nonnull String TNAME_IMAGES            = "images";
+    public static final @Nonnull String TNAME_USERS             = "users";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
@@ -98,7 +98,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.PREVIEW_URL	        + " text not null, "
             + ColsUsers.PREVIEW_KEY	        + " text not null)";
 
-    private static final class ColsPuzzleSets
+    public static final class ColsPuzzleSets
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String NAME            = "name";
@@ -110,7 +110,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String SCORE           = "score";
     }
 
-    private static final class ColsPuzzles
+    public static final class ColsPuzzles
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String SET_ID          = "setId";
@@ -124,7 +124,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String IS_SOLVED       = "isSolved";
     }
 
-    private static final class ColsPuzzleData
+    public static final class ColsPuzzleData
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String PUZZLE_ID       = "puzzleId";
@@ -134,7 +134,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String HEIGHT          = "height";
     }
 
-    private static final class ColsPuzzleQuestions
+    public static final class ColsPuzzleQuestions
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String PUZZLE_DATA_ID  = "puzzleDataId";
@@ -147,7 +147,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String ANSWER_POSITION = "answerPosition";
     }
 
-    private static final class ColsUsers
+    public static final class ColsUsers
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String NAME            = "name";

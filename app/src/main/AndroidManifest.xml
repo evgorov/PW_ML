@@ -32,7 +32,7 @@
             android:label="@string/title_activity_one_crossword" >
         </activity>
         <activity
-            android:name=".vk.SocialLoginActivity">
+            android:name=".login.view.SocialLoginActivity">
         </activity>
 
     </application>
