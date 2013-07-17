@@ -9,6 +9,7 @@
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="title_activity_vk">Vkontakte</string>
     <string name="hello_world">Hello world!</string>
-    <string name="VK_API_ID">2904017"</string>
+    <string name="VK_API_ID">3392295"</string>
+    <string name="FB_API_ID">390010757745933"</string>
 
 </resources>

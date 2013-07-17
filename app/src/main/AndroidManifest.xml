@@ -30,6 +30,9 @@
             android:name=".vk.VkLoginActivity"
             android:label="@string/title_activity_vk" >
         </activity>
+
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
 </manifest>

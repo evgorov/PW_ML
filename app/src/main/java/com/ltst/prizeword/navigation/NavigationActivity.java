@@ -1,12 +1,14 @@
 package com.ltst.prizeword.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -146,4 +148,8 @@ public class NavigationActivity extends SherlockFragmentActivity implements INav
         return mFragments.get(position) != null;
     }
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d("vkontakte", "COME2!");
+//    }
 }

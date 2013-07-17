@@ -11,4 +11,29 @@
             android:text="Login"
             android:id="@+id/vk_login_button"
             android:layout_gravity="center"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+        <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_launcher"
+                android:id="@+id/vk_photo"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/vk_info"
+                android:text="Info"/>
+    </LinearLayout>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:id="@+id/vk_exit_button"
+            android:layout_gravity="center"/>
 </LinearLayout>
