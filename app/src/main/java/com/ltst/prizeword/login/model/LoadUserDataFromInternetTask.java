@@ -13,6 +13,8 @@ import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
+import java.security.KeyRep;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -76,6 +78,10 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
 
     public static @Nonnull UserData parseResponse(@Nonnull String provider, @Nonnull RestUserData response)
     {
-        
+        return new UserData(0, response.getName(), response.getSurname(),
+                response.getEmail(), provider, response.getBirthDate(), response.getCity(),
+                response.getSolved(), response.getPosition(), response.getMonthScore(),
+                response.getHighScore(), response.getDynamics(), response.getHints(),
+                response.getUserpicUrl(), null);
     }
 }

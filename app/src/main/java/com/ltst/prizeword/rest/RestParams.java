@@ -19,7 +19,7 @@ public class RestParams
 
 
     public static final @Nonnull String SESSION_KEY = "session_key";
-    public static final @Nonnull String GET_USER_DATA_URL = API_URL + "/me" + addParam(SESSION_KEY);
+    public static final @Nonnull String GET_USER_DATA_URL = API_URL + "/me" + SYM_PARAM + addParam(SESSION_KEY);
 
     private static @Nonnull String addParam(@Nonnull String name)
     {
