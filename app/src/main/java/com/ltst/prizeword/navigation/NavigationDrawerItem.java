@@ -1,4 +1,4 @@
-package com.ltst.prizeword.app;
+package com.ltst.prizeword.navigation;
 
 import javax.annotation.Nonnull;
 

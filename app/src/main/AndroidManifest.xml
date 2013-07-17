@@ -19,7 +19,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".app.NavigationActivity"
+            android:name=".navigation.NavigationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

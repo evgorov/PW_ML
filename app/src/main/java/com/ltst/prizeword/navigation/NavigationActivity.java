@@ -1,4 +1,4 @@
-package com.ltst.prizeword.app;
+package com.ltst.prizeword.navigation;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,12 +14,10 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.authorization.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.LoginFragment;
-import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
-import com.ltst.prizeword.navigation.INavigationDrawerActivity;
-import com.ltst.prizeword.navigation.NavigationDrawerListAdapter;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
