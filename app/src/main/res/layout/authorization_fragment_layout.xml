@@ -30,6 +30,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:background="@drawable/nav_back_but"/>
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/authorization_fragment_title"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center_vertical|center"/>
 
         </FrameLayout>
 
