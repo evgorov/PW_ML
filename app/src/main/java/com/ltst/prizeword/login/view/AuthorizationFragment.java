@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +15,15 @@ import android.widget.ImageButton;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.navigation.INavigationBackPress;
 
 import javax.annotation.Nonnull;
 
-public class AuthorizationFragment extends SherlockFragment implements View.OnClickListener
+public class AuthorizationFragment extends SherlockFragment
+        implements View.OnClickListener, INavigationBackPress
 {
+    private @Nonnull String LOG_TAG = "autorization";
+
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.AuthorizationFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = AuthorizationFragment.class.getName();
 
@@ -61,13 +67,15 @@ public class AuthorizationFragment extends SherlockFragment implements View.OnCl
             case R.id.login_forget_btn:
                 break;
             case R.id.login_back_button:
-//                Intent intent = new Intent(this, LoginFragment.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
                 mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackKeyPress() {
+        mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 }
