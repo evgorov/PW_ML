@@ -1,0 +1,31 @@
+diff a/app/src/main/res/layout/login_fragment_layout.xml b/app/src/main/res/layout/login_fragment_layout.xml	(rejected hunks)
+@@ -14,22 +14,29 @@
+      <ScrollView
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+ -            android:layout_gravity="center_vertical|center">
+ +            android:layout_gravity="center_vertical|center"
+ +            >
+  
+          <FrameLayout
+ -                android:id="@+id/authorization"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+ -                android:background="@drawable/login_main_bg"
+ +                android:layout_gravity="center_vertical|center"
+                  >
+  
+++<<<<<<< HEAD
+++=======
++             <ImageView
++                 android:layout_height="wrap_content"
++                 android:layout_width="wrap_content"
++                 android:background="@drawable/login_main_under_button"/>
+++>>>>>>> 2bab8e267a052e2d27ee833aecf5c66d541a3cce
+  
+ -            <LinearLayout
+ +            <FrameLayout
+ +                    android:id="@+id/authorization"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical|center"
