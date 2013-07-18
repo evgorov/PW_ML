@@ -68,15 +68,52 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestUserData.RestUserDataHolder getSessionKeyBySignUp(@Nonnull String email, @Nonnull String name, @Nonnull String surname, @Nonnull String password, @Nullable String birthdate, @Nullable String city, @Nullable byte[] userpic)
+    public RestUserData.RestUserDataHolder getSessionKeyBySignUp(@Nonnull String email,
+                                                                 @Nonnull String name,
+                                                                 @Nonnull String surname,
+                                                                 @Nonnull String password,
+                                                                 @Nullable String birthdate,
+                                                                 @Nullable String city,
+                                                                 @Nullable byte[] userpic)
     {
-        return null;
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        urlVariables.put(RestParams.NAME, name);
+        urlVariables.put(RestParams.SURNAME, surname);
+        urlVariables.put(RestParams.PASSWORD, password);
+        @Nonnull String url = RestParams.URL_SIGN_UP;
+        if(birthdate != null)
+        {
+            urlVariables.put(RestParams.BIRTHDATE, birthdate);
+            url += RestParams.addParam(RestParams.BIRTHDATE, false);
+        }
+        if(city != null)
+        {
+            urlVariables.put(RestParams.CITY, city);
+            url += RestParams.addParam(RestParams.CITY, false);
+        }
+        if (userpic != null)
+        {
+            urlVariables.put(RestParams.USERPIC, userpic);
+            url += RestParams.addParam(RestParams.USERPIC, false);
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
     }
 
     @Nullable
     @Override
     public RestUserData.RestUserDataHolder getSessionKeyByLogin(@Nonnull String email, @Nonnull String password)
     {
-        return null;
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        urlVariables.put(RestParams.PASSWORD, password);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        return restTemplate.exchange(RestParams.URL_LOGIN, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
     }
 }
