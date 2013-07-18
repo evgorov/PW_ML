@@ -31,13 +31,13 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        @Nullable UserData exitingUser = findExistingUser(user.email);
+        @Nullable UserData exitingUser = getReader().getUserByEmail(user.email);
         if(exitingUser == null)
         {
             putNewUser(user, providers);
         }
         else
-            updateExistingUser(user, providers);
+            updateExistingUser(exitingUser.id, user, providers);
     }
 
     private void putNewUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
@@ -77,7 +77,7 @@ public class DbWriter extends  DbReader implements IDbWriter
         {
             mDb.insert(TNAME_USERS, null, cvUser);
 
-            UserData createdUser = findExistingUser(user.email);
+            UserData createdUser = getReader().getUserByEmail(user.email);
             if (cvProviders != null)
             {
                 for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
@@ -98,18 +98,65 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
     }
 
-    private void updateExistingUser(UserData user, List<UserProvider> providers)
+    private void updateExistingUser(long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-    }
+        @Nullable UserData existingUser = getReader().getUserById(id);
+        @Nullable List<UserProvider> existingProviders = getReader().getUserProvidersByUserId(id);
+        if (existingUser == null)
+        {
+            return;
+        }
 
-    private @Nullable UserData findExistingUser(@Nonnull String email)
-    {
-        IDbReader reader = getReader();
-        return reader.getUserByEmail(email);
-    }
+        ContentValues cvUser = new ContentValues();
+        cvUser.put(ColsUsers.NAME, user.name);
+        cvUser.put(ColsUsers.SURNAME, user.surname);
+        cvUser.put(ColsUsers.EMAIL, user.email);
+        cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
+        cvUser.put(ColsUsers.CITY, user.city);
+        cvUser.put(ColsUsers.SOLVED, user.solved);
+        cvUser.put(ColsUsers.POSITION, user.position);
+        cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
+        cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
+        cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
+        cvUser.put(ColsUsers.HINTS, user.hints);
+        cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
 
-    private @Nullable List<UserProvider> findUserProviders(@Nonnull String email)
-    {
-        return null;
+        @Nullable List<ContentValues> cvProviders = null;
+        if (providers != null)
+        {
+            cvProviders = new ArrayList<ContentValues>(providers.size());
+            for (Iterator<UserProvider> iterator = providers.iterator(); iterator.hasNext(); )
+            {
+                UserProvider prov =  iterator.next();
+                ContentValues cv = new ContentValues();
+                cv.put(ColsProviders.NAME, prov.name);
+                cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
+                cv.put(ColsProviders.TOKEN, prov.providerToken);
+                cvProviders.add(cv);
+            }
+        }
+
+        mDb.beginTransaction();
+        try
+        {
+            mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
+            if (cvProviders != null)
+            {
+                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                {
+                    ContentValues cvProv =  iterator.next();
+                    mDb.update(TNAME_PROVIDERS, cvProv, ColsProviders.USER_ID + "=" + id, null);
+                }
+            }
+        }
+        catch (Throwable e)
+        {
+            Log.e(e);
+        }
+        finally
+        {
+            mDb.endTransaction();
+        }
+
     }
 }
