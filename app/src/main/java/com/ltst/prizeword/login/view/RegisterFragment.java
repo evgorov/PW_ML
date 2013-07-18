@@ -10,9 +10,6 @@ import com.ltst.prizeword.R;
 
 import javax.annotation.Nonnull;
 
-/**
- * Created by Kostrof on 16.07.13.
- */
 public class RegisterFragment extends SherlockFragment implements View.OnClickListener
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.RegisterFragment";

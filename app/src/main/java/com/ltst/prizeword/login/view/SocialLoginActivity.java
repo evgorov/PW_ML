@@ -11,11 +11,11 @@ import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
@@ -25,7 +25,6 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -68,11 +67,11 @@ public class SocialLoginActivity extends SherlockActivity
         Log.d(VkAccount.LOG_TAG, "PROVIDER_ID = "+pProviderId);
 
         if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID)) {
-            loadUrl(RestParams.VK_LOGIN_URL);
+            loadUrl(RestParams.URL_VK_LOGIN);
             setTitle(R.string.vk_login_fragment_title);
         }
         else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID)) {
-            loadUrl(RestParams.FB_LOGIN_URL);
+            loadUrl(RestParams.URL_FB_LOGIN);
             setTitle(R.string.fb_login_fragment_title);
         }
 
@@ -100,7 +99,7 @@ public class SocialLoginActivity extends SherlockActivity
             if(url==null)
                 return;
             Log.d(VkAccount.LOG_TAG, "PARSE URL = "+url);
-            if(url.startsWith(RestParams.VK_TOKEN_URL) || url.startsWith(RestParams.FB_TOKEN_URL))
+            if(url.startsWith(RestParams.URL_VK_TOKEN) || url.startsWith(RestParams.URL_FB_TOKEN))
             {
                 if(!url.contains("error=")){
 //                    String[] auth = Auth.parseRedirectUrl(url);
@@ -131,7 +130,7 @@ public class SocialLoginActivity extends SherlockActivity
                         protected Intent createIntent()
                         {
                             String provider = VK ? RestParams.VK_PROVIDER : FB ?  RestParams.FB_PROVIDER : null;
-                            return LoadUserDataFromInternetTask.createIntent(null, provider, access_token);
+                            return LoadSessionKeyTask.createProviderIntent(provider, access_token);
                         }
                     };
 
@@ -152,9 +151,9 @@ public class SocialLoginActivity extends SherlockActivity
 //                    Log.d(VkAccount.LOG_TAG, "SEND RESULT!");
 //
 //                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.VK_AUTORITHE_URL+auth[0]);
+//                        loadUrl(RestParams.URL_VK_AUTORITHE+auth[0]);
 //                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.FB_AUTORITHE_URL+auth[0]);
+//                        loadUrl(RestParams.URL_FB_AUTORITHE+auth[0]);
 //                    else
 //                        return;
                 }
@@ -162,7 +161,7 @@ public class SocialLoginActivity extends SherlockActivity
                     finish();
                 }
             }
-            if(url.startsWith(RestParams.VK_AUTORITHE_URL) || url.startsWith(RestParams.FB_AUTORITHE_URL))
+            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
             {
                 Log.d(VkAccount.LOG_TAG, "GET AUTORITHED PAGE! ");
                 finish();
@@ -186,7 +185,7 @@ public class SocialLoginActivity extends SherlockActivity
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
-            return LoadUserDataFromInternetTask.class;
+            return LoadSessionKeyTask.class;
         }
 
         @Nonnull
@@ -202,7 +201,7 @@ public class SocialLoginActivity extends SherlockActivity
             if(result == null)
                 return;
 
-            @Nullable String sessionKey = result.getString(LoadUserDataFromInternetTask.BF_SESSION_KEY);
+            @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
             if(sessionKey != null)
             {
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(SocialLoginActivity.this);

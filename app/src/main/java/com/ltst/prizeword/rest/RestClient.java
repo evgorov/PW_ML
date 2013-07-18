@@ -1,10 +1,13 @@
 package com.ltst.prizeword.rest;
 
 import org.omich.velo.constants.Strings;
+import org.omich.velo.net.Network;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,24 +41,24 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.GET_USER_DATA_URL, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+        RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
         return holder.getUserData();
     }
 
     @Nullable
     @Override
-    public RestUserData.RestUserDataHolder getSessionKey(@Nonnull String provider, @Nonnull String access_token)
+    public RestUserData.RestUserDataHolder getSessionKeyByProvider(@Nonnull String provider, @Nonnull String access_token)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.ACCESS_TOKEN, access_token);
         @Nonnull String url = Strings.EMPTY;
         if(provider.equals(RestParams.VK_PROVIDER))
         {
-            url = RestParams.VK_AUTORITHE_URL;
+            url = RestParams.URL_VK_AUTORITHE;
         }
         else if(provider.equals(RestParams.FB_PROVIDER))
         {
-            url = RestParams.FB_AUTORITHE_URL;
+            url = RestParams.URL_FB_AUTORITHE;
         }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
@@ -64,5 +67,75 @@ public class RestClient implements IRestClient
             return restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
         else
             return null;
+    }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder getSessionKeyBySignUp(@Nonnull String email,
+                                                                 @Nonnull String name,
+                                                                 @Nonnull String surname,
+                                                                 @Nonnull String password,
+                                                                 @Nullable String birthdate,
+                                                                 @Nullable String city,
+                                                                 @Nullable byte[] userpic)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        urlVariables.put(RestParams.NAME, name);
+        urlVariables.put(RestParams.SURNAME, surname);
+        urlVariables.put(RestParams.PASSWORD, password);
+        @Nonnull String url = RestParams.URL_SIGN_UP;
+        if(birthdate != null)
+        {
+            urlVariables.put(RestParams.BIRTHDATE, birthdate);
+            url += RestParams.addParam(RestParams.BIRTHDATE, false);
+        }
+        if(city != null)
+        {
+            urlVariables.put(RestParams.CITY, city);
+            url += RestParams.addParam(RestParams.CITY, false);
+        }
+        if (userpic != null)
+        {
+            urlVariables.put(RestParams.USERPIC, userpic);
+            url += RestParams.addParam(RestParams.USERPIC, false);
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+    }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder getSessionKeyByLogin(@Nonnull String email, @Nonnull String password)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        urlVariables.put(RestParams.PASSWORD, password);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        return restTemplate.exchange(RestParams.URL_LOGIN, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+    }
+
+    @Override
+    public HttpStatus forgotPassword(@Nonnull String email)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_FORGOT_PASSWORD, String.class, urlVariables);
+        return entity.getStatusCode();
+    }
+
+    @Override
+    public HttpStatus resetPassword(@Nonnull String token, @Nonnull String newPassword)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.PASSWORD_TOKEN, token);
+        urlVariables.put(RestParams.PASSWORD, newPassword);
+        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_RESET_PASSWORD, String.class, urlVariables);
+        return entity.getStatusCode();
     }
 }
