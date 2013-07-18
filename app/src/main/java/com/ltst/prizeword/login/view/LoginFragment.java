@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.login.AuthorizationFragment;
-import com.ltst.prizeword.login.RegisterFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 
 import javax.annotation.Nonnull;

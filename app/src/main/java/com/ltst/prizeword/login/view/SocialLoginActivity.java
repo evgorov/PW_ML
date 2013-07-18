@@ -15,6 +15,7 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
@@ -129,7 +130,7 @@ public class SocialLoginActivity extends SherlockActivity
                         protected Intent createIntent()
                         {
                             String provider = VK ? RestParams.VK_PROVIDER : FB ?  RestParams.FB_PROVIDER : null;
-                            return LoadUserDataFromInternetTask.createIntent(null, provider, access_token);
+                            return LoadSessionKeyTask.createProviderIntent(provider, access_token);
                         }
                     };
 
@@ -184,7 +185,7 @@ public class SocialLoginActivity extends SherlockActivity
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
-            return LoadUserDataFromInternetTask.class;
+            return LoadSessionKeyTask.class;
         }
 
         @Nonnull
@@ -200,7 +201,7 @@ public class SocialLoginActivity extends SherlockActivity
             if(result == null)
                 return;
 
-            @Nullable String sessionKey = result.getString(LoadUserDataFromInternetTask.BF_SESSION_KEY);
+            @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
             if(sessionKey != null)
             {
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(SocialLoginActivity.this);
