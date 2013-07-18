@@ -17,6 +17,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.login.vk.VkAccount;
+import com.ltst.prizeword.rest.RestParams;
 
 import javax.annotation.Nonnull;
 
@@ -95,7 +96,7 @@ com.ltst.prizeword.login.vk.VkAccount account = new VkAccount();
     private void launchLoginActivity()
     {
         @Nonnull Intent intent = new Intent(mContext, SocialLoginActivity.class);
-        intent.putExtra(SocialLoginActivity.PROVEDER_ID, FRAGMENT_ID);
+        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
         startActivityForResult(intent, REQUEST_LOGIN);
     }
 

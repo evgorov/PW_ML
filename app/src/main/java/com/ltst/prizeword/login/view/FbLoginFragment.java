@@ -18,6 +18,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.login.facebook.FbAccount;
 import com.ltst.prizeword.login.vk.VkAccount;
+import com.ltst.prizeword.rest.RestParams;
 
 import javax.annotation.Nonnull;
 
@@ -90,7 +91,7 @@ public class FbLoginFragment extends SherlockFragment {
     private void launchLoginActivity()
     {
         @Nonnull Intent intent = new Intent(mContext, SocialLoginActivity.class);
-        intent.putExtra(SocialLoginActivity.PROVEDER_ID, FRAGMENT_ID);
+        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
         startActivityForResult(intent, REQUEST_LOGIN);
     }
 

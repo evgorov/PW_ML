@@ -41,7 +41,7 @@ public class SocialLoginActivity extends SherlockActivity
 
     private @Nonnull WebView mWebView;
 
-    private String pProviderId;
+    private @Nonnull String pProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +65,11 @@ public class SocialLoginActivity extends SherlockActivity
         pProviderId = extras.getString(PROVEDER_ID);
         Log.d(VkAccount.LOG_TAG, "PROVIDER_ID = "+pProviderId);
 
-        if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID)) {
+        if(pProviderId.equals(RestParams.VK_PROVIDER)) {
             loadUrl(RestParams.URL_VK_LOGIN);
             setTitle(R.string.vk_login_fragment_title);
         }
-        else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID)) {
+        else if(pProviderId.equals(RestParams.FB_PROVIDER)) {
             loadUrl(RestParams.URL_FB_LOGIN);
             setTitle(R.string.fb_login_fragment_title);
         }
@@ -105,12 +105,12 @@ public class SocialLoginActivity extends SherlockActivity
                     String[] auth;
                     boolean isVK = false;
                     boolean isFb = false;
-                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
+                    if(pProviderId.equals(RestParams.VK_PROVIDER))
                     {
                         auth = SocialParser.parseVkRedirectUrl(url);
                         isVK = true;
                     }
-                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
+                    else if(pProviderId.equals(RestParams.FB_PROVIDER))
                     {
                         auth = SocialParser.parseFbRedirectUrl(url);
                         isFb = true;
@@ -142,19 +142,6 @@ public class SocialLoginActivity extends SherlockActivity
                             finish();
                         }
                     });
-
-//                    Intent intent=new Intent();
-//                    intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
-//                    intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
-//                    setResult(SherlockActivity.RESULT_OK, intent);
-//                    Log.d(VkAccount.LOG_TAG, "SEND RESULT!");
-//
-//                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.URL_VK_AUTORITHE+auth[0]);
-//                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.URL_FB_AUTORITHE+auth[0]);
-//                    else
-//                        return;
                 }
                 else {
                     finish();
