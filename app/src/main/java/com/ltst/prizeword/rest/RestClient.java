@@ -38,24 +38,24 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.GET_USER_DATA_URL, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+        RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
         return holder.getUserData();
     }
 
     @Nullable
     @Override
-    public RestUserData.RestUserDataHolder getSessionKey(@Nonnull String provider, @Nonnull String access_token)
+    public RestUserData.RestUserDataHolder getSessionKeyByProvider(@Nonnull String provider, @Nonnull String access_token)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.ACCESS_TOKEN, access_token);
         @Nonnull String url = Strings.EMPTY;
         if(provider.equals(RestParams.VK_PROVIDER))
         {
-            url = RestParams.VK_AUTORITHE_URL;
+            url = RestParams.URL_VK_AUTORITHE;
         }
         else if(provider.equals(RestParams.FB_PROVIDER))
         {
-            url = RestParams.FB_AUTORITHE_URL;
+            url = RestParams.URL_FB_AUTORITHE;
         }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
@@ -64,5 +64,19 @@ public class RestClient implements IRestClient
             return restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
         else
             return null;
+    }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder getSessionKeyBySignUp(@Nonnull String email, @Nonnull String name, @Nonnull String surname, @Nonnull String password, @Nullable String birthdate, @Nullable String city, @Nullable byte[] userpic)
+    {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder getSessionKeyByLogin(@Nonnull String email, @Nonnull String password)
+    {
+        return null;
     }
 }

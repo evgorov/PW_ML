@@ -106,7 +106,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         try
         {
             IRestClient client = RestClient.create();
-            return client.getSessionKey(provider, accessToken);
+            return client.getSessionKeyByProvider(provider, accessToken);
         }
         catch(Throwable e)
         {
