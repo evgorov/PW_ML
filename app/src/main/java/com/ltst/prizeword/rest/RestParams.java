@@ -59,6 +59,10 @@ public class RestParams
     public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
 
+    // === URL parsing for launching app via http link (forgot password case)
+
+    public static final @Nonnull String PARAM_PARSE_URL = "url";
+
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)

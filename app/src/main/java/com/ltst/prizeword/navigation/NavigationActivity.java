@@ -1,16 +1,17 @@
 package com.ltst.prizeword.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ListView;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +19,22 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
+import com.ltst.prizeword.login.view.ForgetPassFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.login.view.ResetPassFragment;
+import com.ltst.prizeword.rest.RestParams;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class NavigationActivity extends SherlockFragmentActivity
         implements INavigationDrawerActivity<NavigationDrawerItem>,
@@ -47,14 +54,16 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
-    private int mCurrentSelectedFragmentPosition;
+    private int mCurrentSelectedFragmentPosition = 0;
+    private @Nullable String mUrlPassedToResetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_navigation);
         mBcConnector = new BcConnector(this);
-
+        checkLauchingAppByLink();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
@@ -62,7 +71,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
 
-        selectNavigationFragmentByPosition(0);
+        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
     }
 
     @Override
@@ -113,10 +122,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         if(mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
+            // login, auth fragments
             initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
-            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
-            initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
+            // crossword
+            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
         }
         return mDrawerItems;
     }
@@ -128,12 +141,17 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         if(!isFragmentInitialized(position))
         {
-            Fragment fr = Fragment.instantiate(this, mDrawerItems.get(position).getFragmentClassName());
+            String classname = mDrawerItems.get(position).getFragmentClassName();
+            Fragment fr = Fragment.instantiate(this, classname);
             mFragments.append(position, fr);
         }
 
+        String classname = mDrawerItems.get(position).getFragmentClassName();
         mCurrentSelectedFragmentPosition = position;
         Fragment fr = mFragments.get(position);
+
+        addParamsToFragmentByClassname(classname, fr);
+
         mFragmentManager.beginTransaction()
                         .replace(R.id.navigation_content_frame, fr)
                         .commit();
@@ -156,6 +174,17 @@ public class NavigationActivity extends SherlockFragmentActivity
                 selectNavigationFragmentByPosition(i);
                 break;
             }
+        }
+    }
+
+    private void addParamsToFragmentByClassname(@Nonnull String classname, @Nonnull Fragment fragment)
+    {
+        Bundle bundle = new Bundle();
+        if(classname.equals(ResetPassFragment.FRAGMENT_CLASSNAME))
+        {
+            if(mUrlPassedToResetPassword != null)
+                bundle.putString(ResetPassFragment.BF_PASSED_URL, mUrlPassedToResetPassword);
+            fragment.setArguments(bundle);
         }
     }
 
@@ -186,6 +215,31 @@ public class NavigationActivity extends SherlockFragmentActivity
         return mFragments.get(position) != null;
     }
 
+    private void checkLauchingAppByLink()
+    {
+        @Nullable Intent intent  = getIntent();
+        if (intent == null)
+            return;
+        if (intent.getAction() != Intent.ACTION_VIEW)
+            return;
+
+        @Nullable String url = intent.getDataString();
+        if(url == null)
+            return;
+        URI uri = URI.create(url);
+        List<NameValuePair> values = URLEncodedUtils.parse(uri, "UTF-8");
+        for (NameValuePair value : values)
+        {
+            if(value.getName().equals(RestParams.PARAM_PARSE_URL))
+            {
+                selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
+                mUrlPassedToResetPassword = value.getValue();
+                break;
+            }
+        }
+
+    }
+
     //==== IBcConnectorOwner ==============================================
 
     @Nonnull
@@ -196,7 +250,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     // ==================== BACK_PRESS ==============================
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
