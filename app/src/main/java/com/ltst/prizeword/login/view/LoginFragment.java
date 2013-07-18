@@ -31,6 +31,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull Button mAuthorizationVkButton;
     private @Nonnull Button mAuthorizationFbButton;
     private @Nonnull Button mAuthorizationButton;
+    private @Nonnull Button mRegistrationButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
 
     @Override
@@ -47,6 +48,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mAuthorizationVkButton = (Button) v.findViewById(R.id.enter_with_vk_btn);
         mAuthorizationFbButton = (Button) v.findViewById(R.id.enter_with_fb_btn);
         mAuthorizationButton = (Button) v.findViewById(R.id.enter_to_authorization_btn);
+        mRegistrationButton = (Button) v.findViewById(R.id.enter_to_registration_btn);
         return v;
     }
 
@@ -56,6 +58,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mAuthorizationButton.setOnClickListener(this);
         mAuthorizationVkButton.setOnClickListener(this);
         mAuthorizationFbButton.setOnClickListener(this);
+        mRegistrationButton.setOnClickListener(this);
         super.onActivityCreated(saveInstanceState);
     }
 
@@ -78,6 +81,9 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 startActivityForResult(intent, REQUEST_LOGIN_VK);
                 break;
             case R.id.enter_to_authorization_btn:
+                mFragmentHolder.selectNavigationFragmentByClassname(AuthorizationFragment.FRAGMENT_CLASSNAME);
+                break;
+            case R.id.enter_to_registration_btn:
                 mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
                 break;
             default:

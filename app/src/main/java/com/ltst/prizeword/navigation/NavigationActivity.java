@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.login.AuthorizationFragment;
+import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
@@ -32,6 +34,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         IFragmentsHolderActivity,
         IBcConnectorOwner
 {
+
+    public static final @Nonnull String LOG_TAG = "prizeword";
+
     private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull DrawerLayout mDrawerLayout;
@@ -41,6 +46,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
+
+    private int mCurrentSelectedFragmentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +132,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             mFragments.append(position, fr);
         }
 
+        mCurrentSelectedFragmentPosition = position;
         Fragment fr = mFragments.get(position);
         mFragmentManager.beginTransaction()
                         .replace(R.id.navigation_content_frame, fr)
@@ -144,6 +152,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             NavigationDrawerItem item = mDrawerItems.get(i);
             if(fragmentClassname.equals(item.getFragmentClassName()))
             {
+                mCurrentSelectedFragmentPosition = i;
                 selectNavigationFragmentByPosition(i);
                 break;
             }
@@ -184,5 +193,23 @@ public class NavigationActivity extends SherlockFragmentActivity
     public IBcConnector getBcConnector()
     {
         return mBcConnector;
+    }
+
+    // ==================== BACK_PRESS ==============================
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+            if(fr instanceof INavigationBackPress){
+                ((INavigationBackPress)fr).onBackKeyPress();
+            }
+            else {
+                return super.onKeyDown(keyCode, event);
+            }
+        }
+        return true;
     }
 }

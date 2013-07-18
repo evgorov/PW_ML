@@ -52,7 +52,7 @@
                             android:background="@drawable/login_enter_btn"/>
 
                     <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/enter_to_registration_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
