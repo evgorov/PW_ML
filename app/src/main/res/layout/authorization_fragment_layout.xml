@@ -58,6 +58,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_enter_edittext1_bg"
                             android:layout_gravity="center_horizontal"
+                            android:singleLine="true"
                             android:layout_marginTop="100dp"
 
                             />
@@ -73,6 +74,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_enter_edittext2_bg"
+                            android:singleLine="true"
                             android:layout_gravity="center_horizontal"
 
 

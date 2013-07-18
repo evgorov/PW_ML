@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -127,7 +128,15 @@ public class AuthorizationFragment extends SherlockFragment
             public void handle()
             {
                 Log.i(LOG_TAG, "handling");
-                mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+                String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, "");
+                Log.i(LOG_TAG, "SESSIONKEY = "+sessionKey);
+                if(sessionKey.isEmpty()){
+                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                }
             }
         });
 
@@ -159,12 +168,15 @@ public class AuthorizationFragment extends SherlockFragment
             if(result == null)
                 return;
 
-            @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
-            if(result != null){
-                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
-                spref.commit();
-                Log.i(LOG_TAG, "SESSION KEY = " + sessionKey);
+            @Nonnull String statusCode = result.getString(LoadSessionKeyTask.BF_STATUS_CODE);
+            if(statusCode != RestParams.SC_AURORIZE_ERROR){
+                @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
+                if(result != null){
+                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+                    spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
+                    spref.commit();
+                    Log.i(LOG_TAG, "SESSION KEY = " + sessionKey);
+                }
             }
         }
 

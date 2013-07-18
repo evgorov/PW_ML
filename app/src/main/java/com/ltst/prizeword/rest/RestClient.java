@@ -63,8 +63,11 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestUserData.RestUserDataHolder> holder =
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+        holder.getBody().setStatusCode(String.valueOf(holder.getStatusCode().value()));
         if(!url.equals(Strings.EMPTY))
-            return restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+            return holder.getBody();
         else
             return null;
     }

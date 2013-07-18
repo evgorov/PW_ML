@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 public class LoadSessionKeyTask implements DbService.IDbTask
 {
+    public static final @Nonnull String BF_STATUS_CODE = "LoadSessionKeyTask.statusCode";
     public static final @Nonnull String BF_SESSION_KEY = "LoadSessionKeyTask.sessionToken";
     public static final @Nonnull String BF_PROVIDER_NAME = "LoadSessionKeyTask.providerName";
     public static final @Nonnull String BF_ACCESS_TOKEN = "LoadSessionKeyTask.accessToken";
@@ -116,6 +117,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
     {
         Bundle bundle = new Bundle();
         bundle.putString(BF_SESSION_KEY, holder.getSessionKey());
+        bundle.putString(BF_STATUS_CODE, holder.getStatusCode());
         return bundle;
     }
 }
