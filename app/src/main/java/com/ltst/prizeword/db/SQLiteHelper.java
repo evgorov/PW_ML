@@ -86,7 +86,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.ID                  + " integer not null primary key autoincrement, "
             + ColsUsers.NAME                + " text not null, "
             + ColsUsers.SURNAME             + " text not null, "
-            + ColsUsers.EMAIL               + " text not null, "
+            + ColsUsers.EMAIL               + " text not null unique, "
             + ColsUsers.BIRTHDATE           + " text not null default \"\", "
             + ColsUsers.CITY                + " text not null, "
             + ColsUsers.SOLVED              + " integer not null default 0, "

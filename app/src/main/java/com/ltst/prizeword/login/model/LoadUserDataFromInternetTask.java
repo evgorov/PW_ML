@@ -13,13 +13,17 @@ import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class LoadUserDataFromInternetTask implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY = "LoadUserDataFromInternetTask.sessionToken";
-
+    public static final @Nonnull String BF_SESSION_KEY = "LoadUserDataFromInternetTask.sessionKey";
+    public static final @Nonnull String BF_USER_DATA = "LoadUserDataFromInternetTask.userData";
 
     public static @Nonnull
     Intent createIntent(@Nonnull String sessionKey)
@@ -50,10 +54,10 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
 
             if(response != null)
             {
-//                UserData userData = parseUserData(response);
-//                env.dbw.putUser(userData);
-                //@TODO
-                //return env.dbw.getUserFromDatabase()
+                @Nonnull UserData userData = parseUserData(response);
+                @Nullable List<UserProvider> providerData = parseProviderData(response);
+                env.dbw.putUser(userData, providerData);
+                return getUserDataFromDatabase(env, userData.email);
             }
         }
         return null;
@@ -80,6 +84,22 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         }
     }
 
+    private @Nullable
+    List<UserProvider> parseProviderData(RestUserData response)
+    {
+        List<RestUserData.RestUserProvider> providers = response.getProviders();
+        if(providers == null)
+            return null;
+        List<UserProvider> data = new ArrayList<UserProvider>(providers.size());
+        for (Iterator<RestUserData.RestUserProvider> iterator = providers.iterator(); iterator.hasNext(); )
+        {
+            RestUserData.RestUserProvider providerRest =  iterator.next();
+            UserProvider provider = new UserProvider(0, providerRest.getName(), providerRest.getId(), providerRest.getToken(), 0);
+            data.add(provider);
+        }
+        return data;
+    }
+
 
     public static @Nonnull UserData parseUserData(@Nonnull RestUserData response)
     {
@@ -88,5 +108,13 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 response.getSolved(), response.getPosition(), response.getMonthScore(),
                 response.getHighScore(), response.getDynamics(), response.getHints(),
                 response.getUserpicUrl(), null);
+    }
+
+    public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env, @Nonnull String email)
+    {
+        Bundle bundle = new Bundle();
+        UserData data = env.dbw.getUserByEmail(email);
+        bundle.putParcelable(BF_USER_DATA, data);
+        return bundle;
     }
 }
