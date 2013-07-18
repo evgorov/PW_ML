@@ -20,6 +20,7 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
+import com.ltst.prizeword.login.view.ForgetPassFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
@@ -123,6 +124,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItems;
     }
@@ -179,6 +181,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.authorization_fragment_title);
         else if(id.equals(RegisterFragment.FRAGMENT_ID))
             title = res.getString(R.string.registration_fragment_title);
+        else if(id.equals(ForgetPassFragment.FRAGMENT_ID))
+            title = res.getString(R.string.forgetpass_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {
