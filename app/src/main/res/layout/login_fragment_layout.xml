@@ -45,7 +45,7 @@
                         android:layout_marginBottom="20dp">
 
                     <Button
-                            android:id="@+id/enter"
+                            android:id="@+id/enter_to_authorization_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="3dp"
@@ -74,7 +74,7 @@
                     android:orientation="horizontal">
 
                 <Button
-                        android:id="@+id/button1"
+                        android:id="@+id/enter_with_fb_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="7dp"
@@ -82,7 +82,7 @@
                         android:background="@drawable/login_fb_btn"/>
 
                 <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/enter_with_vk_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
