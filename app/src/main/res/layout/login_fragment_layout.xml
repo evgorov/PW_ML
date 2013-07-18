@@ -2,28 +2,65 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@drawable/login_bg_tile">
+             android:background="@drawable/login_bg_tile"
+        >
 
     <ImageView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="@drawable/login_enter_top_shadow"
             />
+
     <ScrollView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical|center">
+            android:layout_gravity="center_vertical|center"
+            >
 
         <FrameLayout
-                android:id="@+id/authorization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/login_main_bg"
+                android:layout_gravity="center_vertical|center"
                 >
+
+
+            <FrameLayout
+                    android:id="@+id/authorization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    android:background="@drawable/login_main_bg"
+                    >
+
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="20dp">
+
+                    <Button
+                            android:id="@+id/enter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:background="@drawable/login_enter_btn"/>
+
+                    <Button
+                            android:id="@+id/button4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/login_register_btn"/>
+
+                </LinearLayout>
+            </FrameLayout>
 
             <ImageView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical|center"
                     android:background="@drawable/login_main_under_button"/>
 
             <LinearLayout
@@ -32,49 +69,24 @@
                     android:layout_gravity="center_vertical|center"
                     android:orientation="horizontal">
 
-
                 <Button
-                        android:id="@+id/enter_with_fb_btn"
+                        android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="7dp"
+
                         android:background="@drawable/login_fb_btn"/>
 
                 <Button
-                        android:id="@+id/enter_with_vk_btn"
+                        android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="7dp"
+
                         android:background="@drawable/login_vk_btn"/>
-
             </LinearLayout>
-
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="30dp">
-
-                <Button
-                        android:id="@+id/enter_to_authorization_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:background="@drawable/login_enter_btn"/>
-
-                <Button
-                        android:id="@+id/enter_to_registration_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:background="@drawable/login_reg_btn"/>
-
-            </LinearLayout>
-
         </FrameLayout>
-
     </ScrollView>
+
 
 </FrameLayout>
