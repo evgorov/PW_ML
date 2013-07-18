@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 
 public class LoadUserDataFromInternetTask implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY = "LoadUserDataFromInternetTask.sessionToken";
-
+    public static final @Nonnull String BF_SESSION_KEY = "LoadUserDataFromInternetTask.sessionKey";
+    public static final @Nonnull String BF_USER_DATA = "LoadUserDataFromInternetTask.userData";
 
     public static @Nonnull
     Intent createIntent(@Nonnull String sessionKey)
@@ -57,8 +57,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 @Nonnull UserData userData = parseUserData(response);
                 @Nullable List<UserProvider> providerData = parseProviderData(response);
                 env.dbw.putUser(userData, providerData);
-                //@TODO
-                //return env.dbw.getUserFromDatabase()
+                return getUserDataFromDatabase(env, userData.email);
             }
         }
         return null;
@@ -109,5 +108,13 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 response.getSolved(), response.getPosition(), response.getMonthScore(),
                 response.getHighScore(), response.getDynamics(), response.getHints(),
                 response.getUserpicUrl(), null);
+    }
+
+    public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env, @Nonnull String email)
+    {
+        Bundle bundle = new Bundle();
+        UserData data = env.dbw.getUserByEmail(email);
+        bundle.putParcelable(BF_USER_DATA, data);
+        return bundle;
     }
 }

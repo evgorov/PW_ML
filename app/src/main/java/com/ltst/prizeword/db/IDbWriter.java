@@ -8,7 +8,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public interface IDbWriter
+public interface IDbWriter extends IDbReader
 {
     void putUser(@Nonnull UserData user, @Nullable List<UserProvider> providers);
 }
