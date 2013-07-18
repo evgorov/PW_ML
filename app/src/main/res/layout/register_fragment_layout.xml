@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="@drawable/login_bg_tile"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             android:background="@drawable/login_bg_tile"
         >
+
     <ImageView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -17,191 +18,218 @@
             android:orientation="vertical"
             >
 
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:orientation="horizontal"
-            android:background="@drawable/navigationbar_bg">
-
-        <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:background="@drawable/nav_back_but"/>
-
-    </FrameLayout>
-
-    <ScrollView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            >
-
         <FrameLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/login_register_bg2x">
-
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal">
-
-                <LinearLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:minWidth="100dp">
-
-                    <FrameLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="41dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="15dp">
-
-                        <ImageView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical|center"
-                                android:background="@drawable/login_register_ava_but"/>
-
-                        <ImageView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical|center"
-                                android:background="@drawable/login_register_ava_frame2x"/>
-                    </FrameLayout>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="@string/register_screen_email"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="9dp"
-                            android:layout_marginTop="45dp"/>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="@string/register_screen_pass"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="9dp"
-                            android:layout_marginTop="25dp"/>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:singleLine="false"
-                            android:text="@string/register_screen_retry_pass"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="9dp"
-                            android:layout_marginTop="25dp"/>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:singleLine="false"
-                            android:text="@string/register_screen_date_born"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="9dp"
-                            android:layout_marginTop="35dp"/>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="@string/register_screen_city"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="9dp"
-                            android:layout_marginTop="40dp"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="right">
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="38dp"
-                            android:layout_marginRight="20dp"
-                            />
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginRight="20dp"
-                            />
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="22dp"
-                            android:layout_marginRight="20dp"
-
-                            />
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginRight="20dp"
-
-                            />
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginRight="20dp"/>
-
-                    <Button
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/login_register_date_btn"/>
-
-                    <EditText
-                            android:layout_width="200dp"
-                            android:layout_height="36dp"
-                            android:background="#dedede"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="13dp"
-                            android:layout_marginRight="20dp"/>
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_gravity="top"
+                android:orientation="horizontal"
+                android:background="@drawable/navigationbar_bg">
 
             <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/login_register_register_but"/>
+                    android:layout_gravity="center_vertical|left"
+                    android:background="@drawable/nav_back_but"/>
 
         </FrameLayout>
-    </ScrollView>
+
+        <ScrollView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+
+                >
+
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/login_register_main_bg">
+
+                <FrameLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="25dp">
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                        <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="9dp"
+                                >
+
+                            <FrameLayout
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    >
+
+                                <ImageView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_gravity="center_vertical|center"
+                                        android:background="@drawable/login_register_ava_bg"/>
+
+                                <ImageView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_gravity="center_vertical|center"
+                                        android:background="@drawable/login_register_ava_but"/>
+
+                                <ImageView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_gravity="center_vertical|center"
+                                        android:background="@drawable/login_register_ava_frame2x"/>
+                            </FrameLayout>
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:text="@string/register_screen_email"
+                                    android:layout_marginTop="40dp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_gravity="center"
+                                    />
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:text="@string/register_screen_pass"
+                                    android:layout_marginTop="25dp"
+                                    android:textColor="@android:color/white"
+                                    android:layout_gravity="right"
+                                    />
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_marginTop="25dp"
+                                    android:textColor="@android:color/white"
+                                    android:text="@string/register_screen_retry_pass"
+                                    android:singleLine="false"
+                                    android:layout_gravity="right"
+                                    />
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:singleLine="false"
+                                    android:layout_marginTop="45dp"
+                                    android:textColor="@android:color/white"
+                                    android:text="@string/register_screen_date_born"
+                                    />
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_marginTop="30dp"
+                                    android:textColor="@android:color/white"
+                                    android:text="@string/register_screen_city"
+                                    />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="6dp"
+
+
+                                >
+
+                            <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/login_register_edittext_top"
+                                    />
+
+                            <ImageView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                            <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/login_register_edittext_bottom"
+                                    />
+
+                            <EditText
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/login_register_edittext_top"
+                                    />
+
+                            <ImageView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                            <EditText
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:background="@drawable/login_register_textedit_2_2"
+
+                                    />
+
+                            <ImageView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                            <EditText
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:background="@drawable/login_register_edittext_bottom"
+                                    />
+
+                            <Button
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/login_register_date_btn"/>
+
+                            <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/login_register_edittext_3_1"
+                                    android:layout_gravity="right"
+                                    />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                </FrameLayout>
+
+                <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:background="@drawable/login_register_register_but"/>
+            </FrameLayout>
+        </ScrollView>
 
     </LinearLayout>
+
     <FrameLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
