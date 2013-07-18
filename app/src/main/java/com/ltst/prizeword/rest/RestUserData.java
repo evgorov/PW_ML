@@ -223,6 +223,7 @@ public class RestUserData
     {
         private @JsonProperty("session_key") String mSessionKey;
         private @JsonProperty("me") RestUserData mUserData;
+        private String StatusCode;
 
         public RestUserDataHolder()
         {
@@ -246,6 +247,14 @@ public class RestUserData
         public void setSessionKey(String sessionKey)
         {
             mSessionKey = sessionKey;
+        }
+
+        public String getStatusCode() {
+            return StatusCode;
+        }
+
+        public void setStatusCode(String statusCode) {
+            StatusCode = statusCode;
         }
     }
 }

@@ -17,6 +17,8 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -77,6 +79,10 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
+        Log.d(LOG_TAG, "DESTROY");
+        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+        spref.commit();
         super.onDestroy();
     }
 
@@ -253,7 +259,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        
+
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
             if(fr instanceof INavigationBackPress){
