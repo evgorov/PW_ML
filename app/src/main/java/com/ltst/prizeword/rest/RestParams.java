@@ -28,6 +28,8 @@ public class RestParams
     public static final @Nonnull String USERPIC = "userpic";
     public static final @Nonnull String CITY = "city";
 
+    public static final @Nonnull String PASSWORD_TOKEN = "token";
+
     // == API URLS ==
 
     public static final @Nonnull String URL_API = "http://api.prize-word.com";
@@ -42,7 +44,11 @@ public class RestParams
     public static final @Nonnull String URL_LOGIN = URL_API + "/login"
                                                             + addParam(EMAIL, true)
                                                             + addParam(PASSWORD, false);
+
     public static final @Nonnull String URL_GET_USER_DATA = URL_API + "/me" + addParam(SESSION_KEY, true);
+
+    public static final @Nonnull String URL_FORGOT_PASSWORD = URL_API + "/forgot_password" + addParam(EMAIL, true);
+    public static final @Nonnull String URL_RESET_PASSWORD = URL_API + "/password_reset" + addParam(PASSWORD_TOKEN, true) + addParam(PASSWORD, false);
 
     // == SOCIAL URLS ==
 
@@ -53,11 +59,10 @@ public class RestParams
     public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
 
-
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)
     {
-        return name + ((firstParam) ? SYM_PARAM : SYM_AND_PARAM) + SYM_PARAM_SETTER + SYM_BRACET_LEFT + name + SYM_BRACET_RIGHT;
+        return ((firstParam) ? SYM_PARAM : SYM_AND_PARAM) + name + SYM_PARAM_SETTER + SYM_BRACET_LEFT + name + SYM_BRACET_RIGHT;
     }
 }

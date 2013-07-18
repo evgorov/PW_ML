@@ -29,7 +29,6 @@ public class DbWriter implements IDbWriter
         cv.put(ColsUsers.NAME, user.name);
         cv.put(ColsUsers.SURNAME, user.surname);
         cv.put(ColsUsers.EMAIL, user.email);
-        cv.put(ColsUsers.PROVIDER, user.provider);
         cv.put(ColsUsers.BIRTHDATE, user.bithdate);
         cv.put(ColsUsers.CITY, user.city);
         cv.put(ColsUsers.SOLVED, user.solved);

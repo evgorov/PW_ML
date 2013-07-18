@@ -14,7 +14,6 @@ public class UserData implements Parcelable
     public @Nonnull String name;
     public @Nonnull String surname;
     public @Nonnull String email;
-    public @Nonnull String provider;
     public @Nonnull String bithdate;
     public @Nonnull String city;
     public int solved;
@@ -30,7 +29,6 @@ public class UserData implements Parcelable
                     @Nonnull String name,
                     @Nonnull String surname,
                     @Nonnull String email,
-                    @Nonnull String provider,
                     @Nonnull String bithdate,
                     @Nonnull String city,
                     int solved,
@@ -46,7 +44,6 @@ public class UserData implements Parcelable
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.provider = provider;
         this.bithdate = bithdate;
         this.city = city;
         this.solved = solved;
@@ -91,7 +88,7 @@ public class UserData implements Parcelable
                 pngImage = null;
             }
             return new UserData(id, name, surname,
-                                email, provider, birthdate, city,
+                                email, birthdate, city,
                                 solved, position, monthScore, highScore,
                                 dynamics, hints, previewUrl, pngImage);
         }
@@ -115,7 +112,6 @@ public class UserData implements Parcelable
         dest.writeString(name);
         dest.writeString(surname);
         dest.writeString(email);
-        dest.writeString(provider);
         dest.writeString(bithdate);
         dest.writeString(city);
         dest.writeInt(solved);

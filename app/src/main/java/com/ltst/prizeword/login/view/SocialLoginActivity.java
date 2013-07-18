@@ -15,10 +15,9 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
-import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
+import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
-import com.ltst.prizeword.login.vk.VkAccount;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -34,6 +33,7 @@ import javax.annotation.Nullable;
  */
 public class SocialLoginActivity extends SherlockActivity
 {
+    final private @Nonnull String LOG_TAG = "vkontakte";
 
     static public final @Nonnull String PROVEDER_ID = "prov_id";
 
@@ -63,7 +63,7 @@ public class SocialLoginActivity extends SherlockActivity
 
         Bundle extras = getIntent().getExtras();
         pProviderId = extras.getString(PROVEDER_ID);
-        Log.d(VkAccount.LOG_TAG, "PROVIDER_ID = "+pProviderId);
+        Log.d(LOG_TAG, "PROVIDER_ID = "+pProviderId);
 
         if(pProviderId.equals(RestParams.VK_PROVIDER)) {
             loadUrl(RestParams.URL_VK_LOGIN);
@@ -97,7 +97,7 @@ public class SocialLoginActivity extends SherlockActivity
         try {
             if(url==null)
                 return;
-            Log.d(VkAccount.LOG_TAG, "PARSE URL = "+url);
+            Log.d(LOG_TAG, "PARSE URL = "+url);
             if(url.startsWith(RestParams.URL_VK_TOKEN) || url.startsWith(RestParams.URL_FB_TOKEN))
             {
                 if(!url.contains("error=")){
@@ -129,7 +129,7 @@ public class SocialLoginActivity extends SherlockActivity
                         protected Intent createIntent()
                         {
                             String provider = VK ? RestParams.VK_PROVIDER : FB ?  RestParams.FB_PROVIDER : null;
-                            return LoadUserDataFromInternetTask.createIntent(null, provider, access_token);
+                            return LoadSessionKeyTask.createProviderIntent(provider, access_token);
                         }
                     };
 
@@ -138,7 +138,7 @@ public class SocialLoginActivity extends SherlockActivity
                         @Override
                         public void handle()
                         {
-                            Log.i(VkAccount.LOG_TAG, "handling");
+                            Log.i(LOG_TAG, "handling");
                             finish();
                         }
                     });
@@ -149,11 +149,11 @@ public class SocialLoginActivity extends SherlockActivity
             }
             if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
             {
-                Log.d(VkAccount.LOG_TAG, "GET AUTORITHED PAGE! ");
+                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
                 finish();
             }
         } catch (Exception e) {
-            Log.d(VkAccount.LOG_TAG, "EXCEPTION! " + e.toString());
+            Log.d(LOG_TAG, "EXCEPTION! " + e.toString());
             e.printStackTrace();
         }
     }
@@ -171,7 +171,7 @@ public class SocialLoginActivity extends SherlockActivity
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
-            return LoadUserDataFromInternetTask.class;
+            return LoadSessionKeyTask.class;
         }
 
         @Nonnull
@@ -187,7 +187,7 @@ public class SocialLoginActivity extends SherlockActivity
             if(result == null)
                 return;
 
-            @Nullable String sessionKey = result.getString(LoadUserDataFromInternetTask.BF_SESSION_KEY);
+            @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
             if(sessionKey != null)
             {
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(SocialLoginActivity.this);
