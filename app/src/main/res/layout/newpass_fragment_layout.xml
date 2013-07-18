@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/login_bg_tile">
+
+    <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/login_enter_top_shadow"
+            />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:orientation="horizontal"
+                android:background="@drawable/navigationbar_bg">
+
+            <Button
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:background="@drawable/nav_back_but"/>
+
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="@string/newpass_fragment_title"
+                    android:layout_gravity="center_vertical|center"/>
+
+        </FrameLayout>
+
+        <ScrollView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center">
+
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/login_remind_newpass_main_bg">
+
+                <LinearLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical|center">
+
+                    <EditText
+                            android:id="@+id/login_change_pass_newpass_text"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="170dp"
+                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
+
+                    <EditText
+                            android:id="@+id/login_change_pass_confirm_text"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
+
+                    <Button
+                            android:id="@+id/login_change_pass_btn"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_changepass_but"/>
+
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

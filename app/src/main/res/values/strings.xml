@@ -11,6 +11,7 @@
     <string name="crosswords_fragment_title">Crosswords</string>
     <string name="authorization_fragment_title">Вход</string>
     <string name="forgetpass_fragment_title">Забыли пароль</string>
+    <string name="newpass_fragment_title">Восстановление пароля</string>
     <string name="registration_fragment_title">Registration</string>
 
     <string name="title_activity_one_crossword">Crossword</string>
