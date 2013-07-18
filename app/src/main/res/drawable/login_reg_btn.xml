@@ -5,5 +5,5 @@
           android:state_pressed="true" />
     <item android:drawable="@drawable/login_register_btn_down"
           android:state_focused="true" />
-    <item android:drawable="@drawable/login_register_btn" />
+    <item android:drawable="@drawable/login_reg_btn" />
 </selector>
