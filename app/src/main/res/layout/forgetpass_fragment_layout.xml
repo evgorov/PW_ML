@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
+             android:layout_height="match_parent"
+             android:background="@drawable/bg_dark_tile">
+    <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/login_enter_top_shadow"
+            />
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/login_bg2x">
+            >
 
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:orientation="horizontal"
-                android:background="@drawable/navigationbar_bg2x">
+                android:background="@drawable/navigationbar_bg">
 
             <Button
                     android:id="@+id/button1"
@@ -30,23 +35,16 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center">
 
-            <FrameLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content">
-
                 <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-
-                        android:background="@drawable/login_remind_bg2x">
-
+                        android:background="@drawable/login_remind_bg">
 
                     <EditText
-                            android:layout_width="250dp"
-                            android:layout_height="40dp"
-
-                            android:background="#dedede"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/login_remind_edittext_bg"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="230dp"
                             />
@@ -61,14 +59,13 @@
 
 
                 </FrameLayout>
-            </FrameLayout>
+
         </ScrollView>
     </LinearLayout>
 
     <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-
             android:background="@drawable/bg_black_tile2x"
             android:visibility="gone">
 
@@ -77,10 +74,11 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/login_remind_sent_bg2x"
+
                 >
 
             <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"

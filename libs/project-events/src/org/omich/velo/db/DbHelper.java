@@ -29,7 +29,7 @@ public class DbHelper
 	public static final @Nonnull String CREATE_INDEX_TEMPLATE = "create index %1$s_index on %2$s (%1$s)"; //$NON-NLS-1$
 	
 	/**
-	 * Итератор курсора. Используется в методе iterateCursorAndClose
+	 *Итератор курсора. Используется в методе iterateCursorAndClose
 	 */
 	abstract public static class CursorIterator implements INistener<Cursor>
 	{

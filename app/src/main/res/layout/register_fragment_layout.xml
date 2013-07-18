@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/login_bg2x"
+              android:background="@drawable/bg_dark_tile"
         >
 
     <FrameLayout
@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:orientation="horizontal"
-            android:background="@drawable/navigationbar_bg2x">
+            android:background="@drawable/navigationbar_bg">
 
         <Button
                 android:id="@+id/button1"
