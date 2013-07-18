@@ -63,9 +63,18 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         }
         else
         {
+            if (email != null && password != null)
+            {
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignIn(email, password);
+                if (holder != null)
+                {
+                    return getSessionKeyFromInternet(holder);
+                }
+            }
+
             if (accessToken != null && providerName != null)
             {
-                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderFromInternet(providerName, accessToken);
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderByProvider(providerName, accessToken);
                 if (holder != null)
                 {
                     return getSessionKeyFromInternet(holder);
@@ -75,12 +84,26 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         return null;
     }
 
-    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderFromInternet(@Nonnull String provider, @Nonnull String accessToken)
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderByProvider(@Nonnull String provider, @Nonnull String accessToken)
     {
         try
         {
             IRestClient client = RestClient.create();
             return client.getSessionKeyByProvider(provider, accessToken);
+        }
+        catch(Throwable e)
+        {
+            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            return null;
+        }
+    }
+
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignIn(@Nonnull String email, @Nonnull String password)
+    {
+        try
+        {
+            IRestClient client = RestClient.create();
+            return client.getSessionKeyByLogin(email, password);
         }
         catch(Throwable e)
         {
