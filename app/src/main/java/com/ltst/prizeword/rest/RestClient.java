@@ -1,10 +1,13 @@
 package com.ltst.prizeword.rest;
 
 import org.omich.velo.constants.Strings;
+import org.omich.velo.net.Network;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -115,5 +118,24 @@ public class RestClient implements IRestClient
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         return restTemplate.exchange(RestParams.URL_LOGIN, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+    }
+
+    @Override
+    public HttpStatus forgotPassword(@Nonnull String email)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.EMAIL, email);
+        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_FORGOT_PASSWORD, String.class, urlVariables);
+        return entity.getStatusCode();
+    }
+
+    @Override
+    public HttpStatus resetPassword(@Nonnull String token, @Nonnull String newPassword)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.PASSWORD_TOKEN, token);
+        urlVariables.put(RestParams.PASSWORD, newPassword);
+        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_RESET_PASSWORD, String.class, urlVariables);
+        return entity.getStatusCode();
     }
 }
