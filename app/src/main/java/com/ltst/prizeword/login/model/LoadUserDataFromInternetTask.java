@@ -13,6 +13,10 @@ import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -50,8 +54,9 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
 
             if(response != null)
             {
-//                UserData userData = parseUserData(response);
-//                env.dbw.putUser(userData);
+                @Nonnull UserData userData = parseUserData(response);
+                @Nullable List<UserProvider> providerData = parseProviderData(response);
+                env.dbw.putUser(userData, providerData);
                 //@TODO
                 //return env.dbw.getUserFromDatabase()
             }
@@ -78,6 +83,22 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
             Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
         }
+    }
+
+    private @Nullable
+    List<UserProvider> parseProviderData(RestUserData response)
+    {
+        List<RestUserData.RestUserProvider> providers = response.getProviders();
+        if(providers == null)
+            return null;
+        List<UserProvider> data = new ArrayList<UserProvider>(providers.size());
+        for (Iterator<RestUserData.RestUserProvider> iterator = providers.iterator(); iterator.hasNext(); )
+        {
+            RestUserData.RestUserProvider providerRest =  iterator.next();
+            UserProvider provider = new UserProvider(0, providerRest.getName(), providerRest.getId(), providerRest.getToken(), 0);
+            data.add(provider);
+        }
+        return data;
     }
 
 
