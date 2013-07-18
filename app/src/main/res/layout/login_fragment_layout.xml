@@ -2,8 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@drawable/login_bg2x">
+             android:background="@drawable/login_bg_tile">
 
+    <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/login_enter_top_shadow"
+            />
     <ScrollView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -13,14 +18,20 @@
                 android:id="@+id/authorization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/login_main_bg2x"
+                android:background="@drawable/login_main_bg"
                 >
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/login_main_under_button"
 
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center"
                     android:orientation="horizontal">
+
 
                 <Button
                         android:id="@+id/enter_with_fb_btn"
@@ -35,7 +46,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/login_vk_btn"/>
+
             </LinearLayout>
+
 
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -56,20 +69,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:background="@drawable/reg_but_bg"/>
+                        android:background="@drawable/login_reg_btn"/>
 
             </LinearLayout>
+
         </FrameLayout>
 
     </ScrollView>
-
-    <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="logo"
-            android:gravity="center"
-            />
 
 
 </FrameLayout>
