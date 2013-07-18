@@ -29,7 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
-                    android:background="@drawable/nav_back_btn"/>
+                    android:background="@drawable/nav_back_but"/>
 
         </FrameLayout>
 
@@ -82,14 +82,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"
                             android:layout_marginTop="15dp"
-                            android:background="@drawable/login_enter_enter_btn"/>
+                            android:background="@drawable/login_enter_but"/>
 
                     <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"
                             android:layout_marginTop="20dp"
-                            android:background="@drawable/login_forget_btn"
+                            android:background="@drawable/login_forget_but"
                             />
                 </LinearLayout>
             </FrameLayout>
