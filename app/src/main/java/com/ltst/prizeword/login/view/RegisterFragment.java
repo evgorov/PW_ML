@@ -1,5 +1,7 @@
 package com.ltst.prizeword.login.view;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,22 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.RegisterFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RegisterFragment.class.getName();
+
+    private @Nonnull Context mContext;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext = (Context) activity;
+    }
+
     public View OnCreateVeiw(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.register_fragment_layout, container, false);
         return v;
     }
+
     @Override public void onClick(View view)
     {
 

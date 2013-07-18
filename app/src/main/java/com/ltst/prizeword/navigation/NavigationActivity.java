@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.login.AuthorizationFragment;
+import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
