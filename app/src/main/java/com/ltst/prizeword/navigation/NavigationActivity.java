@@ -200,7 +200,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        
+
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
             if(fr instanceof INavigationBackPress){
