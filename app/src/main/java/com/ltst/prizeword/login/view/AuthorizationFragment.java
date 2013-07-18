@@ -1,20 +1,20 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
@@ -32,6 +32,7 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
+import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -107,6 +108,21 @@ public class AuthorizationFragment extends SherlockFragment
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
+    protected void showErrorAlertDalog(){
+        Resources res = mContext.getResources();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+        alertDialogBuilder.setTitle(res.getString(R.string.error));
+        alertDialogBuilder.setMessage(res.getString(R.string.login_enter_error_msg));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setNegativeButton(res.getString(R.string.ok_bnt_title),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 
     protected void enterLogin(@Nonnull String email, @Nonnull String password){
 
@@ -132,7 +148,10 @@ public class AuthorizationFragment extends SherlockFragment
                 String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, "");
                 Log.i(LOG_TAG, "SESSIONKEY = "+sessionKey);
                 if(sessionKey.isEmpty()){
-                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
+
+                        showErrorAlertDalog();
+
+//                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
                 }
                 else {
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
