@@ -139,6 +139,11 @@ public class SocialLoginActivity extends SherlockActivity
                         public void handle()
                         {
                             Log.i(LOG_TAG, "handling");
+                            Intent intent=new Intent();
+//                            intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
+//                            intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
+                            setResult(SherlockActivity.RESULT_OK, intent);
+
                             finish();
                         }
                     });
@@ -147,11 +152,11 @@ public class SocialLoginActivity extends SherlockActivity
                     finish();
                 }
             }
-            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
-            {
-                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
-                finish();
-            }
+//            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
+//            {
+//                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
+//                finish();
+//            }
         } catch (Exception e) {
             Log.d(LOG_TAG, "EXCEPTION! " + e.toString());
             e.printStackTrace();

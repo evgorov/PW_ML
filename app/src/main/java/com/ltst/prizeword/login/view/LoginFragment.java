@@ -1,5 +1,6 @@
 package com.ltst.prizeword.login.view;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 
 import android.app.Activity;
@@ -21,6 +22,8 @@ import static android.view.View.OnClickListener;
 
 public class LoginFragment extends SherlockFragment implements OnClickListener
 {
+    public static final int REQUEST_LOGIN_VK = 1;
+    public static final int REQUEST_LOGIN_FB = 2;
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.LoginFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = LoginFragment.class.getName();
 
@@ -66,15 +69,13 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 //Для facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
-//        startActivityForResult(intent, REQUEST_LOGIN);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_LOGIN_FB);
                 break;
             case R.id.enter_with_vk_btn:
                 //Для вконтакте
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
-//        startActivityForResult(intent, REQUEST_LOGIN);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_LOGIN_VK);
                 break;
             case R.id.enter_to_authorization_btn:
                 mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
@@ -86,6 +87,16 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGIN_FB) {
+            if (resultCode == SherlockFragmentActivity.RESULT_OK) {
+                //успешно авторизовались в facebook
+            }
+        }
+        else
+        if (requestCode == REQUEST_LOGIN_VK) {
+            if (resultCode == SherlockFragmentActivity.RESULT_OK) {
+                //успешно авторизовались в vkontakte
+            }
+        }
     }
 }
