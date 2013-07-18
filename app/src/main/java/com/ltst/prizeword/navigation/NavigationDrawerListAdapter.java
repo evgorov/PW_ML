@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.ltst.prizeword.app.NavigationDrawerItem;
-
 import org.omich.velo.handlers.IListenerInt;
 
 import javax.annotation.Nonnull;
