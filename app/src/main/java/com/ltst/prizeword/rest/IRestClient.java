@@ -1,5 +1,7 @@
 package com.ltst.prizeword.rest;
 
+import org.springframework.http.HttpStatus;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -11,4 +13,7 @@ public interface IRestClient
                                                 @Nonnull String surname, @Nonnull String password,
                                                 @Nullable String birthdate, @Nullable String city, @Nullable byte[] userpic);
     @Nullable RestUserData.RestUserDataHolder getSessionKeyByLogin(@Nonnull String email, @Nonnull String password);
+
+    HttpStatus forgotPassword(@Nonnull String email);
+    HttpStatus resetPassword(@Nonnull String token,  @Nonnull String newPassword);
 }
