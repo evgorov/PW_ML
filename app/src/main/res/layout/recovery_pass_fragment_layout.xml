@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:orientation="vertical"
-             android:background="@drawable/login_bg_tile"
-        >
+             android:background="@drawable/login_bg_tile">
 
     <ImageView
             android:layout_height="wrap_content"
@@ -25,32 +23,31 @@
                 android:background="@drawable/navigationbar_bg">
 
             <Button
-                    android:id="@+id/login_back_button"
+                    android:id="@+id/button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:background="@drawable/nav_back_but"/>
+
             <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="@string/authorization_fragment_title"
                     android:textColor="@android:color/white"
+                    android:text="@string/newpass_fragment_title"
                     android:layout_gravity="center_vertical|center"/>
 
         </FrameLayout>
-
 
         <ScrollView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center">
 
-
             <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/login_enter_main_bg">
+                    android:background="@drawable/login_remind_newpass_main_bg">
 
                 <LinearLayout
                         android:layout_height="match_parent"
@@ -59,51 +56,33 @@
                         android:layout_gravity="center_vertical|center">
 
                     <EditText
-                            android:id="@+id/login_email_etext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/login_enter_edittext1_bg"
-                            android:layout_gravity="center_horizontal"
-                            android:singleLine="true"
-                            android:layout_marginTop="100dp"
-
-                            />
-
-                    <ImageView
+                            android:id="@+id/login_change_pass_newpass_text"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@drawable/login_enter_linesahdow_between_edittext"/>
+                            android:layout_marginTop="170dp"
+                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <EditText
-                            android:id="@+id/login_passwd_etext"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/login_change_pass_confirm_text"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/login_enter_edittext2_bg"
-                            android:singleLine="true"
-                            android:layout_gravity="center_horizontal"
-
-
-                            />
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <Button
-                            android:id="@+id/login_enter_enter_btn"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/login_change_pass_btn"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/login_enter_but"/>
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_changepass_but"/>
 
-                    <ImageButton
-                            android:id="@+id/login_forget_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/login_forget_but"
-                            />
+
                 </LinearLayout>
+
             </FrameLayout>
+
         </ScrollView>
+
     </LinearLayout>
+
 </FrameLayout>

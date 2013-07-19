@@ -45,6 +45,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.login_fragment_layout, container, false);
+
         mAuthorizationVkButton = (Button) v.findViewById(R.id.enter_with_vk_btn);
         mAuthorizationFbButton = (Button) v.findViewById(R.id.enter_with_fb_btn);
         mAuthorizationButton = (Button) v.findViewById(R.id.enter_to_authorization_btn);
@@ -55,10 +56,12 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     public void onActivityCreated(Bundle saveInstanceState)
     {
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+
         mAuthorizationButton.setOnClickListener(this);
         mAuthorizationVkButton.setOnClickListener(this);
         mAuthorizationFbButton.setOnClickListener(this);
         mRegistrationButton.setOnClickListener(this);
+
         super.onActivityCreated(saveInstanceState);
     }
 
@@ -68,6 +71,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         @Nonnull Intent intent;
         switch (v.getId())
         {
+
             case R.id.enter_with_fb_btn:
                 //Для facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
@@ -88,6 +92,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 break;
             default:
                 break;
+
         }
     }
 

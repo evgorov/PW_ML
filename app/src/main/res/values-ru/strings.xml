@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="authorization_fragment_title">Вход</string>
+    <string name="forgetpass_fragment_title">Забыли пароль</string>
+    <string name="newpass_fragment_title">Восстановление пароля</string>
 </resources>

@@ -11,8 +11,10 @@
     <string name="crosswords_fragment_title">Crosswords</string>
     <string name="authorization_fragment_title">Autorization</string>
     <string name="resetpass_fragment_title">Reset Password</string>
+    <string name="forgetpass_fragment_title">Forget password</string>
+    <string name="newpass_fragment_title">Restore password</string>
+
     <string name="registration_fragment_title">Registration</string>
-    <string name="forgetpass_fragment_title">ForgotPass</string>
 
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="title_activity_vk">Vkontakte</string>

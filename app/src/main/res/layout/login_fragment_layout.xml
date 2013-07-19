@@ -23,10 +23,7 @@
                 android:layout_gravity="center_vertical|center"
                 >
 
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:background="@drawable/login_main_under_button"/>
+
 
             <FrameLayout
                     android:id="@+id/authorization"
@@ -49,14 +46,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="3dp"
-                            android:background="@drawable/login_enter_btn"/>
+                            android:background="@drawable/login_enter_but"/>
 
                     <Button
                             android:id="@+id/enter_to_registration_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
-                            android:background="@drawable/login_register_btn"/>
+                            android:background="@drawable/login_reg_but"/>
 
                 </LinearLayout>
             </FrameLayout>
@@ -87,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
 
-                        android:background="@drawable/login_vk_btn"/>
+                        android:background="@drawable/login_vk_but"/>
             </LinearLayout>
         </FrameLayout>
     </ScrollView>
