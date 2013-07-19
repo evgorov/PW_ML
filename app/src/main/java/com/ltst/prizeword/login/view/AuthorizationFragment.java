@@ -153,11 +153,9 @@ public class AuthorizationFragment extends SherlockFragment
                 Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
                 if (sessionKey.isEmpty())
                 {
-
                     showErrorAlertDalog();
-
-//                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
-                } else
+                }
+                else
                 {
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                 }
