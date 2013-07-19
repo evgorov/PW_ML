@@ -23,6 +23,7 @@ import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
+import com.ltst.prizeword.login.view.RecoveryPassFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
@@ -132,6 +133,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(RecoveryPassFragment.FRAGMENT_ID,RecoveryPassFragment.FRAGMENT_CLASSNAME,true);
+
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
         }
@@ -196,6 +199,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.resetpass_fragment_title);
         else if(id.equals(ForgetPassFragment.FRAGMENT_ID))
             title = res.getString(R.string.forgetpass_fragment_title);
+        else if(id.equals(RecoveryPassFragment.FRAGMENT_ID))
+            title = res.getString(R.string.recovery_pass_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {

@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 
 public class RecoveryPassFragment extends SherlockFragment implements View.OnClickListener
 {
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.RecoveryPassFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.RecoveryPassFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RecoveryPassFragment.class.getName();
 
     private @Nonnull android.content.Context mContext;

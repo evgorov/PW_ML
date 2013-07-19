@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 
 public class RegisterFragment extends SherlockFragment implements View.OnClickListener
 {
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.RegisterFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RegisterFragment.class.getName();
 
     private @Nonnull Context mContext;
@@ -24,6 +24,9 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = (Context) activity;
+    }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public View OnCreateVeiw(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

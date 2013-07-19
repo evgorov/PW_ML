@@ -19,9 +19,6 @@ import com.ltst.prizeword.navigation.INavigationBackPress;
 
 import javax.annotation.Nonnull;
 
-/**
- * Created by Kostrof on 16.07.13.
- */
 
 public class ForgetPassFragment extends SherlockFragment
         implements View.OnClickListener, INavigationBackPress
