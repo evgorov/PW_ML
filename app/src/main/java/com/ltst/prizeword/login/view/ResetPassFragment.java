@@ -1,16 +1,28 @@
 package com.ltst.prizeword.login.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.ModelUpdater;
+import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.ForgetPassCycleTask;
 import com.ltst.prizeword.rest.RestParams;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.omich.velo.bcops.BcBaseService;
+import org.omich.velo.bcops.IBcBaseTask;
+import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 
 import java.net.URI;
 import java.util.List;
@@ -26,18 +38,61 @@ public class ResetPassFragment extends SherlockFragment
     private static @Nullable String mPassedUrl;
     private static @Nullable String mPasswordToken;
 
+    private static @Nullable String mNewPassword;
+
+    private @Nonnull IBcConnector mBcConnector;
+
+    private @Nonnull EditText mNewPasswordInput;
+    private @Nonnull EditText mNewPasswordConfirmInput;
+    private @Nonnull Button mResetPasswordButton;
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.resetpass_fragment_layout, container, false);
-        return v;
-    }
+        mNewPasswordInput = (EditText) v.findViewById(R.id.resetpass_new_password);
+        mNewPasswordConfirmInput = (EditText) v.findViewById(R.id.resetpass_new_password_confirm);
+        mResetPasswordButton = (Button) v.findViewById(R.id.resetpass_new_password_reset_btn);
+        mResetPasswordButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final String pass = mNewPasswordInput.getText().toString();
+                String passConfirm = mNewPasswordConfirmInput.getText().toString();
+                final String token = mPasswordToken;
+                if(pass.equals(passConfirm))
+                {
+                    ForgetPassUpdater updater = new ForgetPassUpdater()
+                    {
+                        @Nonnull
+                        @Override
+                        protected Intent createIntent()
+                        {
+                            return ForgetPassCycleTask.createResetPasswordIntent(token, pass);
+                        }
+                    };
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
+                    updater.update(new IListenerVoid()
+                    {
+                        @Override
+                        public void handle()
+                        {
+
+                        }
+                    });
+                }
+            }
+        });
+        return v;
     }
 
     public void setUrl(@Nonnull String url)
@@ -62,6 +117,42 @@ public class ResetPassFragment extends SherlockFragment
                 mPasswordToken = value.getValue();
                 break;
             }
+        }
+    }
+
+    private abstract class ForgetPassUpdater extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return ForgetPassCycleTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            if (result == null)
+            {
+                return;
+            }
+
+            int statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
+
         }
     }
 }
