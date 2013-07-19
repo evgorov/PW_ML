@@ -10,95 +10,75 @@
             android:background="@drawable/login_enter_top_shadow"
             />
 
+
+    <ScrollView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical|center"
+            android:visibility="visible">
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center"
+                android:background="@drawable/login_remind_bg">
+
+            <EditText
+                    android:id="@+id/forgetpass_email_etext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_remind_edittext_bg"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="214dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:paddingLeft="10dp"
+                    android:textSize="18sp"
+                    android:textColorHint="@android:color/white"
+                    android:hint="e-mail"
+                    />
+
+            <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="70dp"
+                    android:background="@drawable/login_remind_send_but"/>
+
+
+        </FrameLayout>
+
+    </ScrollView>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="top"
+            android:orientation="horizontal"
+            android:background="@drawable/navigationbar_bg">
 
-        <FrameLayout
-                android:layout_width="match_parent"
+        <Button
+                android:id="@+id/forgetpass_back_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="horizontal"
-                android:background="@drawable/navigationbar_bg">
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/nav_back_but"/>
 
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal">
-
-                <Button
-                        android:id="@+id/forgetpass_back_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|left"
-                        android:background="@drawable/nav_back_but"/>
-
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:layout_marginLeft="20dp"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:text="@string/forgetpass_fragment_title"
-                        android:layout_gravity="center_vertical|center"/>
-            </LinearLayout>
-        </FrameLayout>
-
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-
-            <ScrollView
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="visible">
-
-                <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/login_remind_bg">
-
-                    <EditText
-                            android:id="@+id/forgetpass_email_etext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/login_remind_edittext_bg"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="214dp"
-                            android:singleLine="true"
-                            android:textColor="@android:color/white"
-                            android:paddingLeft="10dp"
-                            android:textSize="18sp"
-                            android:textColorHint="@android:color/white"
-                            android:hint="e-mail"
-                            />
-
-                    <Button
-                            android:id="@+id/button2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:layout_marginBottom="70dp"
-                            android:background="@drawable/login_remind_send_but"/>
-
-
-                </FrameLayout>
-
-            </ScrollView>
-
-
-        </FrameLayout>
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="@string/forgetpass_fragment_title"
+                android:layout_gravity="center_vertical|center"/>
     </LinearLayout>
 
 
     <FrameLayout
+            android:id="@+id/pass_send_done_frame"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="@drawable/forget_bg"

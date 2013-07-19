@@ -12,48 +12,18 @@
             android:background="@drawable/login_enter_top_shadow"
             />
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:visibility="visible"
             >
 
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="horizontal"
-                android:background="@drawable/navigationbar_bg">
-
-
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal">
-
-                <Button
-                        android:id="@+id/registration_nav_back_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|left"
-                        android:background="@drawable/nav_back_but"/>
-
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="Регистрация"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical|center"/>
-            </LinearLayout>
-        </FrameLayout>
 
         <ScrollView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical|center"
 
                 >
 
@@ -233,9 +203,11 @@
                                     />
 
                             <Button
+                                    android:id="@+id/register_date_born_btn"
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center"
+                                    android:textColor="@android:color/white"
                                     android:layout_marginTop="8dp"
                                     android:background="@drawable/login_register_date_btn"/>
 
@@ -265,30 +237,87 @@
             </FrameLayout>
         </ScrollView>
 
-    </LinearLayout>
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:orientation="horizontal"
+                android:background="@drawable/navigationbar_bg">
+
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/registration_nav_back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:background="@drawable/nav_back_but"/>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Регистрация"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical|center"/>
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
 
     <FrameLayout
+            android:id="@+id/date_picker_frame"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:gravity="bottom"
+            android:layout_gravity="bottom"
             android:visibility="gone"
             >
 
-        <FrameLayout
+        <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_gravity="bottom"
-                android:background="@drawable/login_register_datepicker_pane_bg2x">
+                android:orientation="vertical"
+                android:background="#ffffff"
+                android:layout_gravity="bottom">
 
-            <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
+            <FrameLayout
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center"
-                    android:background="@drawable/login_register_datepicker_done_but"/>
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/login_register_datepicker_pane_bg2x">
 
-        </FrameLayout>
+                <Button
+                        android:id="@+id/register_set_date_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center"
+                        android:background="@drawable/login_register_datepicker_done_but"/>
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+
+                    android:layout_gravity="center_horizontal">
+
+                <DatePicker
+                        android:id="@+id/datePicker1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:calendarViewShown="false"
+                        />
+            </FrameLayout>
+
+
+        </LinearLayout>
 
     </FrameLayout>
 </FrameLayout>
