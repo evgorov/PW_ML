@@ -51,16 +51,8 @@ public class ForgetPassCycleTask implements DbService.IDbTask
 
     private HttpStatus resetPassword(@Nonnull String passwordToken, @Nonnull String newPassword)
     {
-        try
-        {
-            IRestClient client = RestClient.create();
-            return client.resetPassword(passwordToken, newPassword);
-        }
-        catch(Throwable e)
-        {
-            Log.i("Can't load data from internet"); //$NON-NLS-1$
-            return null;
-        }
+        IRestClient client = RestClient.create();
+        return client.resetPassword(passwordToken, newPassword);
     }
 
     private Bundle packStatusToBundle(@Nonnull HttpStatus status)

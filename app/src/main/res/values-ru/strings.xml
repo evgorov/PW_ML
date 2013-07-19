@@ -4,4 +4,11 @@
     <string name="authorization_fragment_title">Вход</string>
     <string name="forgetpass_fragment_title">Забыли пароль</string>
     <string name="newpass_fragment_title">Восстановление пароля</string>
+
+    // ==== toast messages ====
+    <string name="msg_no_internet">Нет интернет соединения</string>
+    <string name="msg_unknown_error">Неизвестная ошибка</string>
+    <string name="msg_password_changed">Пароль изменен</string>
+    <string name="msg_password_empty">Пароль пустой</string>
+    <string name="msg_password_token_not_found">Токен не найден или уже использован</string>
 </resources>
