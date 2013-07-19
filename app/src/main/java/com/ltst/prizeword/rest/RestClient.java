@@ -1,6 +1,7 @@
 package com.ltst.prizeword.rest;
 
 import org.omich.velo.constants.Strings;
+import org.omich.velo.log.Log;
 import org.omich.velo.net.Network;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -119,13 +120,13 @@ public class RestClient implements IRestClient
         }
         catch (HttpClientErrorException e)
         {
-
+            Log.e(e.getMessage());
         }
         finally
         {
             if (holder == null)
             {
-                HttpStatus status = HttpStatus.valueOf(404);
+                HttpStatus status = HttpStatus.valueOf(403);
                 RestUserData.RestUserDataHolder ret = new RestUserData.RestUserDataHolder();
                 ret.setStatusCode(status);
                 return ret;
@@ -187,7 +188,7 @@ public class RestClient implements IRestClient
         {
             if (entity == null)
             {
-                HttpStatus status = HttpStatus.valueOf(404);
+                HttpStatus status = HttpStatus.valueOf(403);
                 return status;
             }
         }

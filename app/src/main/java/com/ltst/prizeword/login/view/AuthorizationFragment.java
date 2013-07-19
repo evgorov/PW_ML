@@ -1,11 +1,8 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -187,7 +184,7 @@ public class AuthorizationFragment extends SherlockFragment
                 return;
 
             int statusCode = result.getInt(LoadSessionKeyTask.BF_STATUS_CODE);
-            if (statusCode != RestParams.SC_UNATHORIZED)
+            if (statusCode != RestParams.SC_UNAUTHORIZED)
             {
                 @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
                 if (result != null)

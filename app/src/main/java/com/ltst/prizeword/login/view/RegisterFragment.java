@@ -24,6 +24,7 @@ import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -165,11 +166,17 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     break;
                 case RestParams.SC_FORBIDDEN:
-                    String msg = getResources().getString(R.string.msg_register_email_exists);
-                default:
-                    // @TODO диалоговое окно уже зарегистрирован
-                    msg = getResources().getString(R.string.msg_unknown_error);
+                {
+                    int msg_id = R.string.msg_register_email_exists;
+                    ErrorAlertDialog.showDialog(mContext, msg_id);
                     break;
+                }
+                default:
+                {
+                    int msg_id = R.string.msg_unknown_error;
+                    ErrorAlertDialog.showDialog(mContext, msg_id);
+                    break;
+                }
             }
         }
 

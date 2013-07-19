@@ -28,4 +28,5 @@
     <string name="msg_password_changed">Пароль изменен</string>
     <string name="msg_password_empty">Пароль пустой</string>
     <string name="msg_password_token_not_found">Токен не найден или уже использован</string>
+    <string name="msg_forget_password_error_email">Электронный адрес не зарегистрирован</string>
 </resources>

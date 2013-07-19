@@ -28,7 +28,7 @@ public class ErrorAlertDialog extends AlertDialog.Builder {
         mMessage = msg;
     }
 
-    public void setMessage(@Nonnull Integer idMsg){
+    public void setMessageResource(int idMsg){
         Resources res = mContext.getResources();
         mMessage = res.getString(idMsg);
     }
@@ -46,5 +46,12 @@ public class ErrorAlertDialog extends AlertDialog.Builder {
             }
         });
         return super.create();
+    }
+
+    public static void showDialog(@Nonnull Context context, int msgResId)
+    {
+        ErrorAlertDialog dialog = new ErrorAlertDialog(context);
+        dialog.setMessageResource(msgResId);
+        dialog.create().show();
     }
 }
