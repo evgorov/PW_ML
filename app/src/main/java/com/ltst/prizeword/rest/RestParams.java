@@ -68,6 +68,7 @@ public class RestParams
     // === URL parsing for launching app via http link (forgot password case)
 
     public static final @Nonnull String PARAM_PARSE_URL = "url";
+    public static final @Nonnull String PARAM_PARSE_TOKEN = "token";
 
     // ================
 

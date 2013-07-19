@@ -62,10 +62,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_navigation);
         mBcConnector = new BcConnector(this);
-        checkLauchingAppByLink();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
@@ -73,13 +71,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
 
+        checkLauchingAppByLink();
         selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
     }
 
     @Override
     protected void onDestroy()
     {
-        Log.d(LOG_TAG, "DESTROY");
         SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
         spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
         spref.commit();
@@ -152,11 +150,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             mFragments.append(position, fr);
         }
 
-        String classname = mDrawerItems.get(position).getFragmentClassName();
         mCurrentSelectedFragmentPosition = position;
         Fragment fr = mFragments.get(position);
-
-        addParamsToFragmentByClassname(classname, fr);
 
         mFragmentManager.beginTransaction()
                         .replace(R.id.navigation_content_frame, fr)
@@ -183,17 +178,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    private void addParamsToFragmentByClassname(@Nonnull String classname, @Nonnull Fragment fragment)
-    {
-        Bundle bundle = new Bundle();
-        if(classname.equals(ResetPassFragment.FRAGMENT_CLASSNAME))
-        {
-            if(mUrlPassedToResetPassword != null)
-                bundle.putString(ResetPassFragment.BF_PASSED_URL, mUrlPassedToResetPassword);
-            fragment.setArguments(bundle);
-        }
-    }
-
     // ==================================================
 
     private void initFragmentToList(@Nonnull String id, @Nonnull String classname, boolean hidden)
@@ -208,6 +192,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.authorization_fragment_title);
         else if(id.equals(RegisterFragment.FRAGMENT_ID))
             title = res.getString(R.string.registration_fragment_title);
+        else if(id.equals(ResetPassFragment.FRAGMENT_ID))
+            title = res.getString(R.string.resetpass_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {
@@ -238,8 +224,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             if(value.getName().equals(RestParams.PARAM_PARSE_URL))
             {
-                selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
                 mUrlPassedToResetPassword = value.getValue();
+                selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
+                ResetPassFragment fr = (ResetPassFragment) mFragments.get(mCurrentSelectedFragmentPosition);
+                fr.setUrl(mUrlPassedToResetPassword);
                 break;
             }
         }

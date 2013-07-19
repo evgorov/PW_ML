@@ -10,7 +10,7 @@
     <string name="fb_login_fragment_title">Facebook login</string>
     <string name="crosswords_fragment_title">Crosswords</string>
     <string name="authorization_fragment_title">Autorization</string>
-
+    <string name="resetpass_fragment_title">Reset Password</string>
     <string name="registration_fragment_title">Registration</string>
 
     <string name="title_activity_one_crossword">Crossword</string>
