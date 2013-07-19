@@ -80,6 +80,7 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
+
         super.onActivityCreated(savedInstanceState);
     }
 

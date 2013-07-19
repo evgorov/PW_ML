@@ -25,13 +25,28 @@
                 android:orientation="horizontal"
                 android:background="@drawable/navigationbar_bg">
 
-            <Button
-                    android:id="@+id/button1"
-                    android:layout_width="wrap_content"
+            <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:background="@drawable/nav_back_but"/>
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
 
+                <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:background="@drawable/nav_back_but"/>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Регистрация"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical|center"/>
+            </LinearLayout>
         </FrameLayout>
 
         <ScrollView
@@ -151,6 +166,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/login_register_edittext_top"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
+                                    android:textColorHint="@android:color/white"
+                                    android:hint="Имя*"
                                     />
 
                             <ImageView
@@ -163,6 +182,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/login_register_edittext_bottom"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
+                                    android:textColorHint="@android:color/white"
+                                    android:hint="Фамилия*"
                                     />
 
                             <EditText
@@ -170,6 +193,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:background="@drawable/login_register_edittext_top"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
                                     />
 
                             <ImageView
@@ -182,6 +207,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:background="@drawable/login_register_textedit_2_2"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
 
                                     />
 
@@ -195,6 +222,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:background="@drawable/login_register_edittext_bottom"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
                                     />
 
                             <Button
@@ -210,11 +239,12 @@
                                     android:layout_marginTop="8dp"
                                     android:background="@drawable/login_register_edittext_3_1"
                                     android:layout_gravity="right"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@android:color/white"
                                     />
                         </LinearLayout>
 
                     </LinearLayout>
-
 
 
                 </FrameLayout>
