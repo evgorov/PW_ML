@@ -62,15 +62,12 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginTop="170dp"
-<<<<<<< HEAD
                             android:singleLine="true"
                             android:paddingLeft="10dp"
                             android:textColor="@android:color/white"
                             android:hint="Новый пароль"
                             android:textColorHint="@android:color/white"
-=======
                             android:inputType="textPassword"
->>>>>>> cb044714afec4a2a75f6fbb30ecc94e815976fff
                             android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <EditText
@@ -78,15 +75,12 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginTop="10dp"
-<<<<<<< HEAD
                             android:singleLine="true"
                             android:paddingLeft="10dp"
                             android:textColor="@android:color/white"
                             android:hint="Еще раз"
                             android:textColorHint="@android:color/white"
-=======
                             android:inputType="textPassword"
->>>>>>> cb044714afec4a2a75f6fbb30ecc94e815976fff
                             android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <Button
