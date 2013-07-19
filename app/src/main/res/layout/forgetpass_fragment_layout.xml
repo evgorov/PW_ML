@@ -60,6 +60,7 @@
                         android:background="@drawable/login_remind_bg">
 
                     <EditText
+                            android:id="@+id/forgetpass_email_etext"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_remind_edittext_bg"
