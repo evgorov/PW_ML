@@ -2,6 +2,7 @@ package com.ltst.prizeword.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -223,7 +224,7 @@ public class RestUserData
     {
         private @JsonProperty("session_key") String mSessionKey;
         private @JsonProperty("me") RestUserData mUserData;
-        private String StatusCode;
+        private HttpStatus StatusCode;
 
         public RestUserDataHolder()
         {
@@ -249,11 +250,13 @@ public class RestUserData
             mSessionKey = sessionKey;
         }
 
-        public String getStatusCode() {
+        public HttpStatus getStatusCode()
+        {
             return StatusCode;
         }
 
-        public void setStatusCode(String statusCode) {
+        public void setStatusCode(HttpStatus statusCode)
+        {
             StatusCode = statusCode;
         }
     }

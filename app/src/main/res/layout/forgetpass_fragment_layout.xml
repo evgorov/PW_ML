@@ -22,21 +22,28 @@
                 android:orientation="horizontal"
                 android:background="@drawable/navigationbar_bg">
 
-
-            <Button
-                    android:id="@+id/forgetpass_back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:background="@drawable/nav_back_but"/>
-
-            <TextView
+            <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="@string/forgetpass_fragment_title"
-                    android:layout_gravity="center_vertical|center"/>
+                    android:orientation="horizontal">
 
+                <Button
+                        android:id="@+id/forgetpass_back_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:background="@drawable/nav_back_but"/>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="20dp"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:text="@string/forgetpass_fragment_title"
+                        android:layout_gravity="center_vertical|center"/>
+            </LinearLayout>
         </FrameLayout>
 
         <FrameLayout
@@ -48,15 +55,14 @@
 
             <ScrollView
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_horizontal"
                     android:visibility="visible">
 
                 <FrameLayout
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
                         android:background="@drawable/login_remind_bg">
 
                     <EditText
@@ -66,6 +72,12 @@
                             android:background="@drawable/login_remind_edittext_bg"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="214dp"
+                            android:singleLine="true"
+                            android:textColor="@android:color/white"
+                            android:paddingLeft="10dp"
+                            android:textSize="18sp"
+                            android:textColorHint="@android:color/white"
+                            android:hint="e-mail"
                             />
 
                     <Button
@@ -102,6 +114,7 @@
             <FrameLayout
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical|top"
                     >
 
                 <FrameLayout
@@ -110,8 +123,6 @@
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/login_remind_sent_bg"
                         >
-
-
 
 
                     <Button
@@ -125,6 +136,7 @@
                 </FrameLayout>
             </FrameLayout>
         </ScrollView>
+
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +149,9 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textColor="@android:color/white"
-                    android:text="@string/forgetpass_fragment_title"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:text="Пароль отправлен"
                     android:layout_gravity="center_vertical|center"/>
 
         </FrameLayout>

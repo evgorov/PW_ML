@@ -6,9 +6,10 @@ public class RestParams
 {
     // == Status codes ==
 
-    public static final @Nonnull String SC_AURORIZE_ERROR = "401";
-    public static final @Nonnull String SC_EMAIL_REGISTER_ERROR = "404";
-    public static final @Nonnull String SC_EMAIL_REGISTER_SUCCESS = "200";
+    public static final int SC_SUCCESS = 200;
+    public static final int SC_UNATHORIZED = 401;
+    public static final int SC_ERROR = 404;
+    public static final int SC_FORBIDDEN = 403;
 
     // == symbols ==
     public static final @Nonnull String VK_API_ID = "3392295";

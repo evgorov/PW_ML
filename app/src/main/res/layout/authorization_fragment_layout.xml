@@ -24,32 +24,42 @@
                 android:orientation="horizontal"
                 android:background="@drawable/navigationbar_bg">
 
-            <Button
-                    android:id="@+id/login_back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:background="@drawable/nav_back_but"/>
-            <TextView
+            <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="@string/authorization_fragment_title"
-                    android:textColor="@android:color/white"
-                    android:layout_gravity="center_vertical|center"/>
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/login_back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:background="@drawable/nav_back_but"/>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/authorization_fragment_title"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
         </FrameLayout>
 
 
         <ScrollView
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center">
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal">
 
 
             <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/login_enter_main_bg">
 
                 <LinearLayout
@@ -65,9 +75,11 @@
                             android:background="@drawable/login_enter_edittext1_bg"
                             android:layout_gravity="center_horizontal"
                             android:singleLine="true"
+                            android:textColor="@android:color/white"
                             android:layout_marginTop="100dp"
-
-                            />
+                            android:paddingLeft="10dp"
+                            android:textColorHint="@android:color/white"
+                            android:hint="e-mail"/>
 
                     <ImageView
                             android:layout_height="wrap_content"
@@ -82,7 +94,10 @@
                             android:background="@drawable/login_enter_edittext2_bg"
                             android:singleLine="true"
                             android:layout_gravity="center_horizontal"
-
+                            android:textColor="@android:color/white"
+                            android:paddingLeft="10dp"
+                            android:textColorHint="@android:color/white"
+                            android:hint="пароль"
 
                             />
 
@@ -104,6 +119,7 @@
                             />
                 </LinearLayout>
             </FrameLayout>
+
         </ScrollView>
     </LinearLayout>
 </FrameLayout>
