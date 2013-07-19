@@ -29,6 +29,7 @@
 
     <string name="error">Ошибка</string>
     <string name="login_enter_error_msg">Логин или пароль набраны неверно. Пожалуйста попробуйте еще раз.</string>
+    <string name="forget_password_error_email">Пользователь с таким email не найден.</string>
     <string name="ok_bnt_title">Ok</string>
     <string name="register_screen_email">E-mail*</string>
     <string name="register_screen_pass">Пароль*</string>

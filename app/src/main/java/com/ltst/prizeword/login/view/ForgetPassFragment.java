@@ -1,8 +1,11 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +23,8 @@ import com.ltst.prizeword.login.model.ForgetPassCycleTask;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -44,6 +49,8 @@ public class ForgetPassFragment extends SherlockFragment
     private @Nonnull Button mSendEmailButton;
     private @Nonnull Button mBackPressButton;
     private @Nonnull EditText mEmailEditText;
+    private @Nonnull View mSuccessAlert;
+    private @Nonnull View mSuccessButton;
 
     @Override
     public void onAttach(Activity activity) {
@@ -56,6 +63,7 @@ public class ForgetPassFragment extends SherlockFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         mSendEmailButton.setOnClickListener(this);
         mBackPressButton.setOnClickListener(this);
+        mSuccessButton.setOnClickListener(this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -63,26 +71,24 @@ public class ForgetPassFragment extends SherlockFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.d(LOG_TAG, "onCreateView");
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
         View v = inflater.inflate(R.layout.forgetpass_fragment_layout, container, false);
         mEmailEditText = (EditText) v.findViewById(R.id.forgetpass_email_etext);
         mBackPressButton = (Button) v.findViewById(R.id.forgetpass_back_btn);
         mSendEmailButton = (Button) v.findViewById(R.id.forgetpass_send_btn);
+        mSuccessAlert = (View) v.findViewById(R.id.forgetpass_success_send_alert);
+        mSuccessButton = (View) v.findViewById(R.id.forgetpass_success_send_ok_btn);
         return v;
     }
 
     @Override
     public void onClick(View view)
     {
-        Log.d(LOG_TAG, "onClick");
         switch (view.getId()){
             case R.id.forgetpass_back_btn:
                 onBackKeyPress();
                 break;
             case R.id.forgetpass_send_btn:
-                Log.d(LOG_TAG, "send");
-
                 final @Nonnull String email = mEmailEditText.getText().toString();
                 SessionForgotPassword session = new SessionForgotPassword() {
                     @Nonnull
@@ -98,6 +104,9 @@ public class ForgetPassFragment extends SherlockFragment
                         Log.d(LOG_TAG, "handle");
                     }
                 });
+                break;
+            case R.id.forgetpass_success_send_ok_btn:
+                mSuccessAlert.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -131,15 +140,21 @@ public class ForgetPassFragment extends SherlockFragment
 
         @Override
         protected void handleData(@Nullable Bundle result) {
-            Log.d(LOG_TAG, "come");
             if (result == null)
                 return;
 
             @Nonnull Integer statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
-            Log.d(LOG_TAG, "statusCode = " + statusCode);
-//            if (statusCode != RestParams.SC_AURORIZE_ERROR)
-//            {
-//            }
+            if (statusCode == RestParams.SC_SUCCESS)
+            {
+                mSuccessAlert.setVisibility(View.VISIBLE);
+            }
+            else
+//            if(statusCode != RestParams.SC_ERROR)
+            {
+                ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
+                alertDialogBuilder.setMessage(R.string.forget_password_error_email);
+                alertDialogBuilder.create().show();
+           }
         }
     }
 }
