@@ -58,9 +58,9 @@ public class ResetPassFragment extends SherlockFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.resetpass_fragment_layout, container, false);
-        mNewPasswordInput = (EditText) v.findViewById(R.id.resetpass_new_password);
-        mNewPasswordConfirmInput = (EditText) v.findViewById(R.id.resetpass_new_password_confirm);
-        mResetPasswordButton = (Button) v.findViewById(R.id.resetpass_new_password_reset_btn);
+        mNewPasswordInput = (EditText) v.findViewById(R.id.login_change_pass_newpass_text);
+        mNewPasswordConfirmInput = (EditText) v.findViewById(R.id.login_change_pass_confirm_text);
+        mResetPasswordButton = (Button) v.findViewById(R.id.login_change_pass_btn);
         mResetPasswordButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
