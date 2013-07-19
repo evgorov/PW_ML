@@ -76,7 +76,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
                 onBackKeyPress();
             }
         });
-        
+
         mResetPasswordButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
