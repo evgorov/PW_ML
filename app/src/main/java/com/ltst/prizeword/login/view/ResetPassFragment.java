@@ -15,6 +15,8 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.ForgetPassCycleTask;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.rest.RestParams;
 
 import org.apache.http.NameValuePair;
@@ -22,6 +24,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.net.URI;
@@ -30,7 +33,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ResetPassFragment extends SherlockFragment
+public class ResetPassFragment extends SherlockFragment implements INavigationBackPress
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.ResetPassFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = ResetPassFragment.class.getName();
@@ -45,12 +48,15 @@ public class ResetPassFragment extends SherlockFragment
     private @Nonnull EditText mNewPasswordInput;
     private @Nonnull EditText mNewPasswordConfirmInput;
     private @Nonnull Button mResetPasswordButton;
+    private @Nonnull Button mNavBackButton;
+    private @Nonnull IFragmentsHolderActivity mFragmentHolder;
 
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
+        mFragmentHolder = (IFragmentsHolderActivity) getActivity();
     }
 
     @SuppressWarnings("unchecked")
@@ -61,6 +67,16 @@ public class ResetPassFragment extends SherlockFragment
         mNewPasswordInput = (EditText) v.findViewById(R.id.login_change_pass_newpass_text);
         mNewPasswordConfirmInput = (EditText) v.findViewById(R.id.login_change_pass_confirm_text);
         mResetPasswordButton = (Button) v.findViewById(R.id.login_change_pass_btn);
+        mNavBackButton = (Button) v.findViewById(R.id.resetpass_nav_back_btn);
+        mNavBackButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onBackKeyPress();
+            }
+        });
+        
         mResetPasswordButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -69,7 +85,7 @@ public class ResetPassFragment extends SherlockFragment
                 final String pass = mNewPasswordInput.getText().toString();
                 String passConfirm = mNewPasswordConfirmInput.getText().toString();
                 final String token = mPasswordToken;
-                if(pass.equals(passConfirm))
+                if(pass.equals(passConfirm) && !pass.equals(Strings.EMPTY))
                 {
                     ForgetPassUpdater updater = new ForgetPassUpdater()
                     {
@@ -154,5 +170,11 @@ public class ResetPassFragment extends SherlockFragment
             int statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
 
         }
+    }
+
+    @Override
+    public void onBackKeyPress()
+    {
+        mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
     }
 }
