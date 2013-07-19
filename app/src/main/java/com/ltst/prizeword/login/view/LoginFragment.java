@@ -89,6 +89,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 break;
             case R.id.enter_to_registration_btn:
                 mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
+                //mFragmentHolder.selectNavigationFragmentByClassname(RecoveryPassFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
