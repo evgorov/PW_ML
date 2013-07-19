@@ -3,14 +3,13 @@ package com.ltst.prizeword.login.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,7 +19,6 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.ForgetPassCycleTask;
-import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.rest.RestParams;
@@ -29,6 +27,7 @@ import com.ltst.prizeword.tools.ErrorAlertDialog;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -106,7 +105,10 @@ public class ForgetPassFragment extends SherlockFragment
                 });
                 break;
             case R.id.forgetpass_success_send_ok_btn:
+                // Скрываем окно успешной отправки email;
                 mSuccessAlert.setVisibility(View.GONE);
+                //  переходим на другой фрагмент;
+                onBackKeyPress();
                 break;
             default:
                 break;
@@ -144,12 +146,18 @@ public class ForgetPassFragment extends SherlockFragment
                 return;
 
             @Nonnull Integer statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
+            Log.d(LOG_TAG, "STATUS_CODE = "+statusCode);
             if (statusCode == RestParams.SC_SUCCESS)
             {
+                // Показываем окно успешной отправки email;
                 mSuccessAlert.setVisibility(View.VISIBLE);
+                // скрываем клавиатуру;
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                // Очищаем поле email;
+                mEmailEditText.setText(Strings.EMPTY);
             }
             else
-//            if(statusCode != RestParams.SC_ERROR)
             {
                 ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
                 alertDialogBuilder.setMessage(R.string.forget_password_error_email);
