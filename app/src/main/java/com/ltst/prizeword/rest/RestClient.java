@@ -163,8 +163,38 @@ public class RestClient implements IRestClient
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.EMAIL, email);
-        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_FORGOT_PASSWORD, String.class, urlVariables);
-        return entity.getStatusCode();
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+
+        @Nullable ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(404);
+                return status;
+            }
+        }
+        if (entity != null)
+            return entity.getStatusCode();
+        else
+            return null;
     }
 
     @Override

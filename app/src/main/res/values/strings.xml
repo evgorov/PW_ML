@@ -25,6 +25,7 @@
 
     <string name="error">Error</string>
     <string name="login_enter_error_msg">Login or password are wrong. Try again.</string>
+
     <string name="ok_bnt_title">Ok</string>
     <string name="register_screen_name">Name*</string>
     <string name="register_screen_surname">Surname*</string>

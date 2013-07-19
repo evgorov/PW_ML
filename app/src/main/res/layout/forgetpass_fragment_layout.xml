@@ -81,7 +81,7 @@
                             />
 
                     <Button
-                            android:id="@+id/button2"
+                            android:id="@+id/forgetpass_send_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"
@@ -99,6 +99,7 @@
 
 
     <FrameLayout
+            android:id="@+id/forgetpass_success_send_alert"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="@drawable/forget_bg"
@@ -126,7 +127,7 @@
 
 
                     <Button
-                            android:id="@+id/forgetpass_send_btn"
+                            android:id="@+id/forgetpass_success_send_ok_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"

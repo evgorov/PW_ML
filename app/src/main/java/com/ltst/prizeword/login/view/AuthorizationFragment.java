@@ -27,6 +27,7 @@ import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -112,20 +113,9 @@ public class AuthorizationFragment extends SherlockFragment
 
     protected void showErrorAlertDalog()
     {
-        Resources res = mContext.getResources();
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-        alertDialogBuilder.setTitle(res.getString(R.string.error));
-        alertDialogBuilder.setMessage(res.getString(R.string.login_enter_error_msg));
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNegativeButton(res.getString(R.string.ok_bnt_title), new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
+        alertDialogBuilder.setMessage(R.string.login_enter_error_msg);
+        alertDialogBuilder.create().show();
     }
 
 
@@ -155,11 +145,9 @@ public class AuthorizationFragment extends SherlockFragment
                 Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
                 if (sessionKey.isEmpty())
                 {
-
                     showErrorAlertDalog();
-
-//                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
-                } else
+                }
+                else
                 {
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                 }
