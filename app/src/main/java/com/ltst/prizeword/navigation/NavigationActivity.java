@@ -41,7 +41,8 @@ import javax.annotation.Nullable;
 public class NavigationActivity extends SherlockFragmentActivity
         implements INavigationDrawerActivity<NavigationDrawerItem>,
         IFragmentsHolderActivity,
-        IBcConnectorOwner
+        IBcConnectorOwner,
+        INavigationDrawerHolder
 {
 
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -143,6 +144,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByPosition(int position)
     {
+        unlockDrawer();
         if(!isFragmentInitialized(position))
         {
             String classname = mDrawerItems.get(position).getFragmentClassName();
@@ -260,5 +262,25 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         }
         return true;
+    }
+
+    //==== INavigationDrawerHolder ==============================================
+
+    @Override
+    public void lockDrawerClosed()
+    {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public void lockDrawerOpened()
+    {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+    }
+
+    @Override
+    public void unlockDrawer()
+    {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

@@ -21,6 +21,7 @@ import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.ForgetPassCycleTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
@@ -45,6 +46,8 @@ public class ForgetPassFragment extends SherlockFragment
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull Context mContext;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
+
     private @Nonnull Button mSendEmailButton;
     private @Nonnull Button mBackPressButton;
     private @Nonnull EditText mEmailEditText;
@@ -56,6 +59,8 @@ public class ForgetPassFragment extends SherlockFragment
         super.onAttach(activity);
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
     @Override

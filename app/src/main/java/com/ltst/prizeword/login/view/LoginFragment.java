@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 
 import javax.annotation.Nonnull;
@@ -34,11 +35,16 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull Button mAuthorizationButton;
     private @Nonnull Button mRegistrationButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
+
 
     @Override
     public void onAttach(Activity activity) {
-        mContext = (Context) activity;
         super.onAttach(activity);
+        mContext = (Context) activity;
+        mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
     @SuppressWarnings("unchecked")
@@ -51,19 +57,12 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mAuthorizationFbButton = (Button) v.findViewById(R.id.enter_with_fb_btn);
         mAuthorizationButton = (Button) v.findViewById(R.id.enter_to_authorization_btn);
         mRegistrationButton = (Button) v.findViewById(R.id.enter_to_registration_btn);
-        return v;
-    }
-
-    public void onActivityCreated(Bundle saveInstanceState)
-    {
-        mFragmentHolder = (IFragmentsHolderActivity) getActivity();
 
         mAuthorizationButton.setOnClickListener(this);
         mAuthorizationVkButton.setOnClickListener(this);
         mAuthorizationFbButton.setOnClickListener(this);
         mRegistrationButton.setOnClickListener(this);
-
-        super.onActivityCreated(saveInstanceState);
+        return v;
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
@@ -52,6 +53,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull Button mEnterLoginButton;
     private @Nonnull ImageButton mForgetLoginButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
     @Override
     public void onAttach(Activity activity)
@@ -60,6 +62,8 @@ public class AuthorizationFragment extends SherlockFragment
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
     @SuppressWarnings("unchecked")

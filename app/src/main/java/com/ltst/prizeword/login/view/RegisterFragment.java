@@ -23,6 +23,7 @@ import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
@@ -47,6 +48,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
     private @Nonnull Button mNavBackButton;
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
     private @Nonnull EditText mNameInput;
     private @Nonnull EditText mSurnameInput;
@@ -62,6 +64,8 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
 
