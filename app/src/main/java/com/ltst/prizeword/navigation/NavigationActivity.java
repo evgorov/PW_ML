@@ -194,6 +194,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.registration_fragment_title);
         else if(id.equals(ResetPassFragment.FRAGMENT_ID))
             title = res.getString(R.string.resetpass_fragment_title);
+        else if(id.equals(ForgetPassFragment.FRAGMENT_ID))
+            title = res.getString(R.string.forgetpass_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {

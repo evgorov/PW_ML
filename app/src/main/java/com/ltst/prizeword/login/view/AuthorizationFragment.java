@@ -32,7 +32,6 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
-import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,7 +49,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull Context mContext;
     private @Nonnull EditText mEmailEditText;
     private @Nonnull EditText mPasswdlEditText;
-    private @Nonnull Button mBackButton;
+    private @Nonnull Button mBackPressButton;
     private @Nonnull Button mEnterLoginButton;
     private @Nonnull ImageButton mForgetLoginButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
@@ -65,11 +64,11 @@ public class AuthorizationFragment extends SherlockFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View v = inflater.inflate(R.layout.authorization_fragment_layout, container, false);
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+        View v = inflater.inflate(R.layout.authorization_fragment_layout, container, false);
         mEmailEditText = (EditText) v.findViewById(R.id.login_email_etext);
         mPasswdlEditText = (EditText) v.findViewById(R.id.login_passwd_etext);
-        mBackButton = (Button) v.findViewById(R.id.login_back_button);
+        mBackPressButton = (Button) v.findViewById(R.id.login_back_button);
         mEnterLoginButton = (Button) v.findViewById(R.id.login_enter_enter_btn);
         mForgetLoginButton = (ImageButton) v.findViewById(R.id.login_forget_btn);
         return v;
@@ -78,7 +77,7 @@ public class AuthorizationFragment extends SherlockFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
-        mBackButton.setOnClickListener(this);
+        mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
         super.onActivityCreated(savedInstanceState);
@@ -93,10 +92,10 @@ public class AuthorizationFragment extends SherlockFragment
                 enterLogin(email, passwordf);
                 break;
             case R.id.login_forget_btn:
-
+                mFragmentHolder.selectNavigationFragmentByClassname(ForgetPassFragment.FRAGMENT_CLASSNAME);
                 break;
             case R.id.login_back_button:
-                mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                onBackKeyPress();
                 break;
             default:
                 break;
@@ -114,11 +113,11 @@ public class AuthorizationFragment extends SherlockFragment
         alertDialogBuilder.setTitle(res.getString(R.string.error));
         alertDialogBuilder.setMessage(res.getString(R.string.login_enter_error_msg));
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNegativeButton(res.getString(R.string.ok_bnt_title),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        dialog.cancel();
-                    }
-                });
+        alertDialogBuilder.setNegativeButton(res.getString(R.string.ok_bnt_title), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
