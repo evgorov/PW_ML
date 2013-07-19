@@ -1,11 +1,11 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 
 
 public class ForgetPassFragment extends SherlockFragment
-        implements View.OnClickListener, INavigationBackPress
+        implements View.OnClickListener, View.OnKeyListener, INavigationBackPress
 {
     private final @Nonnull String LOG_TAG = "forgetpass";
 
@@ -63,6 +63,7 @@ public class ForgetPassFragment extends SherlockFragment
         mSendEmailButton.setOnClickListener(this);
         mBackPressButton.setOnClickListener(this);
         mSuccessButton.setOnClickListener(this);
+        mEmailEditText.setOnKeyListener(this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -80,6 +81,25 @@ public class ForgetPassFragment extends SherlockFragment
         return v;
     }
 
+    void sendEmail(){
+        final @Nonnull String email = mEmailEditText.getText().toString();
+        SessionForgotPassword session = new SessionForgotPassword() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return ForgetPassCycleTask.createForgotPasswordIntent(email);
+            }
+        };
+
+        session.update(new IListenerVoid(){
+            @Override
+            public void handle() {
+            }
+        });
+    }
+
+    // ======= LISTENERS =========================
+
     @Override
     public void onClick(View view)
     {
@@ -88,21 +108,7 @@ public class ForgetPassFragment extends SherlockFragment
                 onBackKeyPress();
                 break;
             case R.id.forgetpass_send_btn:
-                final @Nonnull String email = mEmailEditText.getText().toString();
-                SessionForgotPassword session = new SessionForgotPassword() {
-                    @Nonnull
-                    @Override
-                    protected Intent createIntent() {
-                        return ForgetPassCycleTask.createForgotPasswordIntent(email);
-                    }
-                };
-
-                session.update(new IListenerVoid(){
-                    @Override
-                    public void handle() {
-                        Log.d(LOG_TAG, "handle");
-                    }
-                });
+                sendEmail();
                 break;
             case R.id.forgetpass_success_send_ok_btn:
                 // Скрываем окно успешной отправки email;
@@ -119,6 +125,17 @@ public class ForgetPassFragment extends SherlockFragment
     public void onBackKeyPress() {
         mFragmentHolder.selectNavigationFragmentByClassname(AuthorizationFragment.FRAGMENT_CLASSNAME);
     }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            sendEmail();
+            return true;
+        }
+        return false;
+    }
+
+    // ========= SessionForgotPassword ================
 
     private abstract class SessionForgotPassword extends ModelUpdater<DbService.DbTaskEnv>
     {
