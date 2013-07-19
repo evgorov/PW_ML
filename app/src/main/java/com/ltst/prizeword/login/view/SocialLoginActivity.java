@@ -16,10 +16,8 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
-import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
-import com.ltst.prizeword.login.vk.VkAccount;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -35,6 +33,7 @@ import javax.annotation.Nullable;
  */
 public class SocialLoginActivity extends SherlockActivity
 {
+    final private @Nonnull String LOG_TAG = "vkontakte";
 
     static public final @Nonnull String PROVEDER_ID = "prov_id";
 
@@ -42,7 +41,7 @@ public class SocialLoginActivity extends SherlockActivity
 
     private @Nonnull WebView mWebView;
 
-    private String pProviderId;
+    private @Nonnull String pProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +63,13 @@ public class SocialLoginActivity extends SherlockActivity
 
         Bundle extras = getIntent().getExtras();
         pProviderId = extras.getString(PROVEDER_ID);
-        Log.d(VkAccount.LOG_TAG, "PROVIDER_ID = "+pProviderId);
+        Log.d(LOG_TAG, "PROVIDER_ID = "+pProviderId);
 
-        if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID)) {
+        if(pProviderId.equals(RestParams.VK_PROVIDER)) {
             loadUrl(RestParams.URL_VK_LOGIN);
             setTitle(R.string.vk_login_fragment_title);
         }
-        else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID)) {
+        else if(pProviderId.equals(RestParams.FB_PROVIDER)) {
             loadUrl(RestParams.URL_FB_LOGIN);
             setTitle(R.string.fb_login_fragment_title);
         }
@@ -98,7 +97,7 @@ public class SocialLoginActivity extends SherlockActivity
         try {
             if(url==null)
                 return;
-            Log.d(VkAccount.LOG_TAG, "PARSE URL = "+url);
+            Log.d(LOG_TAG, "PARSE URL = "+url);
             if(url.startsWith(RestParams.URL_VK_TOKEN) || url.startsWith(RestParams.URL_FB_TOKEN))
             {
                 if(!url.contains("error=")){
@@ -106,12 +105,12 @@ public class SocialLoginActivity extends SherlockActivity
                     String[] auth;
                     boolean isVK = false;
                     boolean isFb = false;
-                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
+                    if(pProviderId.equals(RestParams.VK_PROVIDER))
                     {
                         auth = SocialParser.parseVkRedirectUrl(url);
                         isVK = true;
                     }
-                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
+                    else if(pProviderId.equals(RestParams.FB_PROVIDER))
                     {
                         auth = SocialParser.parseFbRedirectUrl(url);
                         isFb = true;
@@ -139,35 +138,27 @@ public class SocialLoginActivity extends SherlockActivity
                         @Override
                         public void handle()
                         {
-                            Log.i(VkAccount.LOG_TAG, "handling");
+                            Log.i(LOG_TAG, "handling");
+                            Intent intent=new Intent();
+//                            intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
+//                            intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
+                            setResult(SherlockActivity.RESULT_OK, intent);
+
                             finish();
                         }
                     });
-
-//                    Intent intent=new Intent();
-//                    intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
-//                    intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
-//                    setResult(SherlockActivity.RESULT_OK, intent);
-//                    Log.d(VkAccount.LOG_TAG, "SEND RESULT!");
-//
-//                    if(pProviderId.equals(VkLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.URL_VK_AUTORITHE+auth[0]);
-//                    else if(pProviderId.equals(FbLoginFragment.FRAGMENT_ID))
-//                        loadUrl(RestParams.URL_FB_AUTORITHE+auth[0]);
-//                    else
-//                        return;
                 }
                 else {
                     finish();
                 }
             }
-            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
-            {
-                Log.d(VkAccount.LOG_TAG, "GET AUTORITHED PAGE! ");
-                finish();
-            }
+//            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
+//            {
+//                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
+//                finish();
+//            }
         } catch (Exception e) {
-            Log.d(VkAccount.LOG_TAG, "EXCEPTION! " + e.toString());
+            Log.d(LOG_TAG, "EXCEPTION! " + e.toString());
             e.printStackTrace();
         }
     }

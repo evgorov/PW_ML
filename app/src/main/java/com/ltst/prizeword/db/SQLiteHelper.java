@@ -19,6 +19,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final @Nonnull String TNAME_PUZZLE_QUESTIONS  = "puzzleQuestions";
 
     public static final @Nonnull String TNAME_IMAGES            = "images";
+    public static final @Nonnull String TNAME_PROVIDERS         = "providers";
     public static final @Nonnull String TNAME_USERS             = "users";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
@@ -85,8 +86,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.ID                  + " integer not null primary key autoincrement, "
             + ColsUsers.NAME                + " text not null, "
             + ColsUsers.SURNAME             + " text not null, "
-            + ColsUsers.EMAIL               + " text not null, "
-            + ColsUsers.PROVIDER            + " text not null, "
+            + ColsUsers.EMAIL               + " text not null unique, "
             + ColsUsers.BIRTHDATE           + " text not null default \"\", "
             + ColsUsers.CITY                + " text not null, "
             + ColsUsers.SOLVED              + " integer not null default 0, "
@@ -97,6 +97,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.HINTS               + " integer not null default 0, "
             + ColsUsers.PREVIEW_URL	        + " text not null, "
             + ColsUsers.PREVIEW_KEY	        + " text not null)";
+
+    private static final String CREATE_PROVIDERS_QUERY = "create table "
+            + TNAME_PROVIDERS + "("
+            + ColsProviders.ID              + " integer not null primary key autoincrement, "
+            + ColsProviders.NAME	        + " text not null, "
+            + ColsProviders.USER_ID	        + " integer not null, "
+            + ColsProviders.PROVIDER_ID	    + " text not null, "
+            + ColsProviders.TOKEN	        + " text not null,"
+            + " foreign key (" + ColsProviders.USER_ID + ") references "
+            + TNAME_USERS + " (" + ColsUsers.ID + ") on delete cascade)";
 
     public static final class ColsPuzzleSets
     {
@@ -153,7 +163,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String NAME            = "name";
         public static final @Nonnull String SURNAME         = "surname";
         public static final @Nonnull String EMAIL           = "email";
-        public static final @Nonnull String PROVIDER        = "provider";
         public static final @Nonnull String BIRTHDATE       = "birthdate";
         public static final @Nonnull String CITY            = "city";
         public static final @Nonnull String SOLVED          = "solved";
@@ -164,6 +173,15 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String HINTS           = "hints";
         public static final @Nonnull String PREVIEW_URL     = "previewUrl";
         public static final @Nonnull String PREVIEW_KEY     = "previewKey";
+    }
+
+    public static final class ColsProviders
+    {
+        public static final @Nonnull String ID              = "_id";
+        public static final @Nonnull String NAME            = "provider_name";
+        public static final @Nonnull String PROVIDER_ID     = "provider_id";
+        public static final @Nonnull String TOKEN           = "provider_token";
+        public static final @Nonnull String USER_ID         = "user_id";
     }
 
     public static final class ColsImages
@@ -263,6 +281,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public void onCreate(SQLiteDatabase db)
     {
         db.execSQL(CREATE_USERS_QUERY);
+        db.execSQL(CREATE_PROVIDERS_QUERY);
         db.execSQL(CREATE_IMAGES_QUERY);
         db.execSQL(CREATE_PUZZLE_SETS_QUERY);
         db.execSQL(CREATE_PUZZLES_QUERY);

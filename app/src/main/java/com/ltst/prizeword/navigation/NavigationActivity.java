@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,17 +16,14 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.login.AuthorizationFragment;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
+import com.ltst.prizeword.login.view.ForgetPassFragment;
 import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
-import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
-import com.ltst.prizeword.navigation.INavigationDrawerActivity;
-import com.ltst.prizeword.navigation.NavigationDrawerListAdapter;
 import com.ltst.prizeword.app.IBcConnectorOwner;
-import com.ltst.prizeword.crossword.view.CrosswordsFragment;
-import com.ltst.prizeword.login.view.FbLoginFragment;
-import com.ltst.prizeword.login.view.VkLoginFragment;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -38,6 +37,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         IFragmentsHolderActivity,
         IBcConnectorOwner
 {
+
+    public static final @Nonnull String LOG_TAG = "prizeword";
+
     private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull DrawerLayout mDrawerLayout;
@@ -47,6 +49,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
+
+    private int mCurrentSelectedFragmentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,10 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
+        Log.d(LOG_TAG, "DESTROY");
+        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+        spref.commit();
         super.onDestroy();
     }
 
@@ -114,10 +122,9 @@ public class NavigationActivity extends SherlockFragmentActivity
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
-            initFragmentToList(VkLoginFragment.FRAGMENT_ID,  VkLoginFragment.FRAGMENT_CLASSNAME, false);
-            initFragmentToList(FbLoginFragment.FRAGMENT_ID,  FbLoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItems;
     }
@@ -133,6 +140,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             mFragments.append(position, fr);
         }
 
+        mCurrentSelectedFragmentPosition = position;
         Fragment fr = mFragments.get(position);
         mFragmentManager.beginTransaction()
                         .replace(R.id.navigation_content_frame, fr)
@@ -152,6 +160,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             NavigationDrawerItem item = mDrawerItems.get(i);
             if(fragmentClassname.equals(item.getFragmentClassName()))
             {
+                mCurrentSelectedFragmentPosition = i;
                 selectNavigationFragmentByPosition(i);
                 break;
             }
@@ -168,14 +177,12 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.login_fragment_title);
         else if(id.equals(CrosswordsFragment.FRAGMENT_ID))
             title = res.getString(R.string.crosswords_fragment_title);
-        else if(id.equals(VkLoginFragment.FRAGMENT_ID))
-            title = res.getString(R.string.vk_login_fragment_title);
-        else if(id.equals(FbLoginFragment.FRAGMENT_ID))
-            title = res.getString(R.string.fb_login_fragment_title);
         else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
             title = res.getString(R.string.authorization_fragment_title);
         else if(id.equals(RegisterFragment.FRAGMENT_ID))
             title = res.getString(R.string.registration_fragment_title);
+        else if(id.equals(ForgetPassFragment.FRAGMENT_ID))
+            title = res.getString(R.string.forgetpass_fragment_title);
 
         if(!title.equals(Strings.EMPTY))
         {
@@ -196,5 +203,23 @@ public class NavigationActivity extends SherlockFragmentActivity
     public IBcConnector getBcConnector()
     {
         return mBcConnector;
+    }
+
+    // ==================== BACK_PRESS ==============================
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+            if(fr instanceof INavigationBackPress){
+                ((INavigationBackPress)fr).onBackKeyPress();
+            }
+            else {
+                return super.onKeyDown(keyCode, event);
+            }
+        }
+        return true;
     }
 }
