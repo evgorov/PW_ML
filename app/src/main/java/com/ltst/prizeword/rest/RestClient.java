@@ -151,8 +151,27 @@ public class RestClient implements IRestClient
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
 
-        ResponseEntity<String> entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
-        return entity.getStatusCode();
+        @Nullable ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(404);
+                return status;
+            }
+        }
+        if (entity != null)
+            return entity.getStatusCode();
+        else
+            return null;
     }
 
     @Override
