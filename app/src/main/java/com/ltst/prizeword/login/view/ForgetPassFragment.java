@@ -57,7 +57,6 @@ public class ForgetPassFragment extends SherlockFragment
         return v;
     }
 
-
     @Override
     public void onClick(View view)
     {

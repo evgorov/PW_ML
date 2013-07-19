@@ -23,7 +23,7 @@
                 android:background="@drawable/navigationbar_bg">
 
             <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/resetpass_nav_back_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
@@ -33,9 +33,13 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textColor="@android:color/white"
+<<<<<<< HEAD:app/src/main/res/layout/recovery_pass_fragment_layout.xml
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:text="@string/recovery_pass_fragment_title"
+=======
+                    android:text="@string/resetpass_fragment_title"
+>>>>>>> d204e1ceaaa0ed83178bfe4fc1708f34d83238bf:app/src/main/res/layout/resetpass_fragment_layout.xml
                     android:layout_gravity="center_vertical|center"/>
 
         </FrameLayout>
@@ -87,7 +91,6 @@
                             android:layout_width="wrap_content"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/login_changepass_but"/>
-
 
                 </LinearLayout>
 

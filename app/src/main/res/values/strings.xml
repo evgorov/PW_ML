@@ -9,9 +9,11 @@
     <string name="vk_login_fragment_title">Vk login</string>
     <string name="fb_login_fragment_title">Facebook login</string>
     <string name="crosswords_fragment_title">Crosswords</string>
-    <string name="authorization_fragment_title">Вход</string>
-    <string name="forgetpass_fragment_title">Забыли пароль</string>
-    <string name="recovery_pass_fragment_title">Восстановление пароля</string>
+    <string name="authorization_fragment_title">Autorization</string>
+    <string name="resetpass_fragment_title">Reset Password</string>
+    <string name="forgetpass_fragment_title">Forget password</string>
+    <string name="newpass_fragment_title">Restore password</string>
+
     <string name="registration_fragment_title">Registration</string>
 
     <string name="title_activity_one_crossword">Crossword</string>
