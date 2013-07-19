@@ -25,19 +25,14 @@
                 android:orientation="horizontal"
                 android:background="@drawable/navigationbar_bg">
 
-<<<<<<< HEAD
+
             <LinearLayout
-=======
-            <Button
-                    android:id="@+id/registration_nav_back_button"
-                    android:layout_width="wrap_content"
->>>>>>> d204e1ceaaa0ed83178bfe4fc1708f34d83238bf
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="horizontal">
 
                 <Button
-                        android:id="@+id/button1"
+                        android:id="@+id/registration_nav_back_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|left"
@@ -57,15 +52,15 @@
 
         <ScrollView
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
 
                 >
 
             <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/login_register_main_bg">
 
                 <FrameLayout
@@ -171,6 +166,7 @@
                             <EditText
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -187,6 +183,7 @@
                             <EditText
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -198,6 +195,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_marginTop="10dp"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -212,6 +210,7 @@
                             <EditText
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_textedit_2_2"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -227,6 +226,7 @@
                             <EditText
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -243,6 +243,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
+                                    android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_3_1"
                                     android:layout_gravity="right"
                                     android:paddingLeft="10dp"

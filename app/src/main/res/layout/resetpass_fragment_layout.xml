@@ -33,26 +33,22 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textColor="@android:color/white"
-<<<<<<< HEAD:app/src/main/res/layout/recovery_pass_fragment_layout.xml
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:text="@string/recovery_pass_fragment_title"
-=======
                     android:text="@string/resetpass_fragment_title"
->>>>>>> d204e1ceaaa0ed83178bfe4fc1708f34d83238bf:app/src/main/res/layout/resetpass_fragment_layout.xml
                     android:layout_gravity="center_vertical|center"/>
 
         </FrameLayout>
 
         <ScrollView
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center">
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal">
 
             <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/login_remind_newpass_main_bg">
 
                 <LinearLayout
