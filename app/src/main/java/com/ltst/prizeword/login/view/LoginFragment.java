@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.rest.RestParams;
 
@@ -102,12 +103,14 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         if (requestCode == REQUEST_LOGIN_FB) {
             if (resultCode == SherlockFragmentActivity.RESULT_OK) {
                 //успешно авторизовались в facebook
+                mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             }
         }
         else
         if (requestCode == REQUEST_LOGIN_VK) {
             if (resultCode == SherlockFragmentActivity.RESULT_OK) {
                 //успешно авторизовались в vkontakte
+                mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             }
         }
     }

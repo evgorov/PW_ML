@@ -19,27 +19,26 @@
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="title_activity_vk">Vkontakte</string>
     <string name="title_activity_fb">Facebook</string>
-    <string name="hello_world">Hello world!</string>
 
     <string name="VK_API_ID">3392295"</string>
     <string name="FB_API_ID">390010757745933"</string>
 
+    <string name="error">Error</string>
+    <string name="login_enter_error_msg">Login or password are wrong. Try again.</string>
 
-
-
-    <string name="error">Ошибка</string>
-    <string name="login_enter_error_msg">Логин или пароль набраны неверно. Пожалуйста попробуйте еще раз.</string>
-    <string name="forget_password_error_email">Пользователь с таким email не найден.</string>
     <string name="ok_bnt_title">Ok</string>
+    <string name="register_screen_name">Name*</string>
+    <string name="register_screen_surname">Surname*</string>
     <string name="register_screen_email">E-mail*</string>
-    <string name="register_screen_pass">Пароль*</string>
-    <string name="register_screen_retry_pass">Повторите пароль</string>
-    <string name="register_screen_date_born">Дата рождения</string>
-    <string name="register_screen_city">Город</string>
+    <string name="register_screen_pass">Password*</string>
+    <string name="register_screen_retry_pass">Repeat password</string>
+    <string name="register_screen_date_born">Birthdate</string>
+    <string name="register_screen_city">City</string>
 
     // ==== toast messages ====
     <string name="msg_no_internet">No Internet Connection</string>
     <string name="msg_unknown_error">Unknown Error</string>
+    <string name="msg_register_error">E-mail already registered</string>
     <string name="msg_password_changed">Password changed</string>
     <string name="msg_password_empty">Password field is empty</string>
     <string name="msg_password_token_not_found">Token not found or already used</string>
