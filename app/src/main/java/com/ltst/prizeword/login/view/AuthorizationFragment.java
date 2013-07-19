@@ -196,8 +196,8 @@ public class AuthorizationFragment extends SherlockFragment
             if (result == null)
                 return;
 
-            @Nonnull String statusCode = result.getString(LoadSessionKeyTask.BF_STATUS_CODE);
-            if (statusCode != RestParams.SC_AURORIZE_ERROR)
+            int statusCode = result.getInt(LoadSessionKeyTask.BF_STATUS_CODE);
+            if (statusCode != RestParams.SC_UNATHORIZED)
             {
                 @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
                 if (result != null)

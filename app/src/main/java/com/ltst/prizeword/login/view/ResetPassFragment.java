@@ -1,13 +1,17 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -38,7 +42,6 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.ResetPassFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = ResetPassFragment.class.getName();
 
-    private static @Nullable String mPassedUrl;
     private static @Nullable String mPasswordToken;
 
     private static @Nullable String mNewPassword;
@@ -82,7 +85,11 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
             @Override
             public void onClick(View v)
             {
-                final String pass = mNewPasswordInput.getText().toString();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                mNewPassword = mNewPasswordInput.getText().toString();
+                final String pass = mNewPassword;
                 String passConfirm = mNewPasswordConfirmInput.getText().toString();
                 final String token = mPasswordToken;
                 if(pass.equals(passConfirm) && !pass.equals(Strings.EMPTY))
@@ -111,29 +118,9 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
         return v;
     }
 
-    public void setUrl(@Nonnull String url)
+    public void setPasswordToken(@Nonnull String token)
     {
-        mPassedUrl = url;
-        parseToken();
-    }
-
-    private void parseToken()
-    {
-        if (mPassedUrl == null)
-        {
-            return;
-        }
-
-        URI uri = URI.create(mPassedUrl);
-        List<NameValuePair> values = URLEncodedUtils.parse(uri, "UTF-8");
-        for (NameValuePair value : values)
-        {
-            if(value.getName().equals(RestParams.PARAM_PARSE_TOKEN))
-            {
-                mPasswordToken = value.getValue();
-                break;
-            }
-        }
+        mPasswordToken = token;
     }
 
     private abstract class ForgetPassUpdater extends ModelUpdater<DbService.DbTaskEnv>
@@ -164,17 +151,35 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
         {
             if (result == null)
             {
+                Toast.makeText(getActivity(), R.string.msg_unknown_error, Toast.LENGTH_LONG).show();
                 return;
             }
 
+            String msg = Strings.EMPTY;
+            Resources res = getResources();
             int statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
-
+            switch (statusCode)
+            {
+                case RestParams.SC_SUCCESS:
+                    msg = res.getString(R.string.msg_password_changed);
+                    break;
+                case RestParams.SC_FORBIDDEN:
+                    msg = res.getString(R.string.msg_password_empty);
+                    break;
+                case RestParams.SC_ERROR:
+                    msg = res.getString(R.string.msg_password_token_not_found);
+                    break;
+                default:
+                    msg = res.getString(R.string.msg_unknown_error);
+                    break;
+            }
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onBackKeyPress()
     {
-        mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
+        mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 }

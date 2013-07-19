@@ -57,7 +57,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
     private int mCurrentSelectedFragmentPosition = 0;
-    private @Nullable String mUrlPassedToResetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,12 +224,12 @@ public class NavigationActivity extends SherlockFragmentActivity
         List<NameValuePair> values = URLEncodedUtils.parse(uri, "UTF-8");
         for (NameValuePair value : values)
         {
-            if(value.getName().equals(RestParams.PARAM_PARSE_URL))
+            if(value.getName().equals(RestParams.PARAM_PARSE_TOKEN))
             {
-                mUrlPassedToResetPassword = value.getValue();
+                String passwordToken = value.getValue();
                 selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
                 ResetPassFragment fr = (ResetPassFragment) mFragments.get(mCurrentSelectedFragmentPosition);
-                fr.setUrl(mUrlPassedToResetPassword);
+                fr.setPasswordToken(passwordToken);
                 break;
             }
         }

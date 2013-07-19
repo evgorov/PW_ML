@@ -12,6 +12,7 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class RestClient implements IRestClient
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         ResponseEntity<RestUserData.RestUserDataHolder> holder =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        holder.getBody().setStatusCode(String.valueOf(holder.getStatusCode().value()));
+        holder.getBody().setStatusCode(holder.getStatusCode());
         if(!url.equals(Strings.EMPTY))
             return holder.getBody();
         else
@@ -152,7 +153,25 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<String> entity = restTemplate.exchange(RestParams.URL_RESET_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
-        return entity.getStatusCode();
+        @Nullable ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_RESET_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(404);
+                return status;
+            }
+        }
+        if (entity != null)
+            return entity.getStatusCode();
+        else
+            return null;
     }
 }

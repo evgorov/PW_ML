@@ -117,7 +117,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
     {
         Bundle bundle = new Bundle();
         bundle.putString(BF_SESSION_KEY, holder.getSessionKey());
-        bundle.putString(BF_STATUS_CODE, holder.getStatusCode());
+        bundle.putInt(BF_STATUS_CODE, holder.getStatusCode().value());
         return bundle;
     }
 }

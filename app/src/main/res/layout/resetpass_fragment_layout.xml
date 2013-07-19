@@ -60,6 +60,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginTop="170dp"
+                            android:inputType="textPassword"
                             android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <EditText
@@ -67,6 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:inputType="textPassword"
                             android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
                     <Button
