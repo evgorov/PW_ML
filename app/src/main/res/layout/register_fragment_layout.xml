@@ -12,18 +12,48 @@
             android:background="@drawable/login_enter_top_shadow"
             />
 
-    <FrameLayout
-            android:layout_width="match_parent"
+    <LinearLayout
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible"
-            >
+            android:layout_width="match_parent"
+            android:orientation="vertical">
 
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:orientation="horizontal"
+                android:background="@drawable/navigationbar_bg">
+
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/registration_nav_back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:background="@drawable/nav_back_but"/>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Регистрация"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical|center"/>
+            </LinearLayout>
+        </FrameLayout>
 
         <ScrollView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_gravity="center_vertical|center"
+                android:layout_gravity=""
+                android:gravity="center"
 
                 >
 
@@ -248,39 +278,7 @@
                         android:background="@drawable/login_register_register_but"/>
             </FrameLayout>
         </ScrollView>
-
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="horizontal"
-                android:background="@drawable/navigationbar_bg">
-
-
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal">
-
-                <Button
-                        android:id="@+id/registration_nav_back_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|left"
-                        android:background="@drawable/nav_back_but"/>
-
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="Регистрация"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical|center"/>
-            </LinearLayout>
-        </FrameLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
             android:id="@+id/date_picker_frame"
