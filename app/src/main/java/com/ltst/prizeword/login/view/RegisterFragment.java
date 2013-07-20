@@ -3,6 +3,7 @@ package com.ltst.prizeword.login.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -79,6 +81,10 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
     private @Nonnull EditText mPasswordConfirmInput;
     private @Nonnull EditText mCityInput;
 
+    private @Nonnull TextView mEmailLabel;
+    private @Nonnull TextView mPassLabel;
+    private @Nonnull TextView mRetryPassLabel;
+
 
     @Override
     public void onAttach(Activity activity)
@@ -119,6 +125,9 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mPasswordConfirmInput = (EditText) v.findViewById(R.id.register_password_confirm_input);
         mCityInput = (EditText) v.findViewById(R.id.register_city_input);
 
+        mEmailLabel = (TextView) v.findViewById(R.id.register_label_email);
+        mPassLabel = (TextView) v.findViewById(R.id.register_label_pass);
+        mRetryPassLabel= (TextView) v.findViewById(R.id.register_label_retry_pass);
         return v;
     }
 
@@ -135,6 +144,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         if(!name.equals(Strings.EMPTY) && !surname.equals(Strings.EMPTY) && !email.equals(Strings.EMPTY)
                 && password.equals(passwordConfirm) && !password.equals(Strings.EMPTY))
         {
+            validateRegData(Color.WHITE);
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
@@ -158,6 +168,11 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                 }
             });
         }
+        else{
+            validateRegData(Color.RED);
+            showErrorAlertDalog();
+        }
+
 
     }
 
@@ -167,8 +182,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
+    protected void showErrorAlertDalog()
+    {
+        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
+        alertDialogBuilder.setMessage(R.string.register_screen_error_msg);
+        alertDialogBuilder.create().show();
+    }
 
-
+    protected void validateRegData(int color){
+        mNameInput.setHintTextColor(color);
+        mSurnameInput.setHintTextColor(color);
+        mEmailLabel.setTextColor(color);
+        mPassLabel.setTextColor(color);
+        mRetryPassLabel.setTextColor(color);
+    }
     @Override
     public void onClick(View v)
     {

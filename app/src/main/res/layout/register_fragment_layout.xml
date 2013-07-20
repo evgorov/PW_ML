@@ -106,6 +106,7 @@
                             </FrameLayout>
 
                             <TextView
+                                    android:id="@+id/register_label_email"
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
                                     android:text="@string/register_screen_email"
@@ -115,6 +116,7 @@
                                     />
 
                             <TextView
+                                    android:id="@+id/register_label_pass"
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
                                     android:text="@string/register_screen_pass"
@@ -124,6 +126,7 @@
                                     />
 
                             <TextView
+                                    android:id="@+id/register_label_retry_pass"
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
                                     android:layout_marginTop="25dp"

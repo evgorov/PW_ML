@@ -20,6 +20,7 @@
     <string name="register_screen_retry_pass">Повторите пароль</string>
     <string name="register_screen_date_born">Дата рождения</string>
     <string name="register_screen_city">Город</string>
+    <string name="register_screen_error_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще раз.</string>
 
     // ==== toast messages ====
     <string name="msg_no_internet">Нет интернет соединения</string>
