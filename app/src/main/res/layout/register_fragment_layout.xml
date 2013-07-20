@@ -17,336 +17,321 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-        <FrameLayout
-                android:layout_width="match_parent"
+
+        <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
+                android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:background="@drawable/navigationbar_bg">
 
+            <Button
+                    android:id="@+id/registration_nav_back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:background="@drawable/nav_back_but"/>
+
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="Регистрация"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical|center"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
+        </LinearLayout>
+
+        <ScrollView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:
+                >
 
             <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:orientation="horizontal">
-
-                <Button
-                        android:id="@+id/registration_nav_back_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|left"
-                        android:background="@drawable/nav_back_but"/>
-
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="Регистрация"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical|center"
-                        android:shadowColor="@android:color/black"
-                        android:shadowDy="2"
-                        android:shadowRadius="3"/>
-            </LinearLayout>
-        </FrameLayout>
-
-        <ScrollView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical|center"
-                android:gravity="center"
-
-                >
-
-            <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
                     android:background="@drawable/login_register_main_bg">
 
-                <FrameLayout
+                <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:layout_marginTop="25dp">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
+                        >
 
                     <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:orientation="horizontal"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
                             >
 
-                        <LinearLayout
+                        <FrameLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_marginLeft="9dp"
                                 >
 
-                            <FrameLayout
+                            <ImageView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    >
+                                    android:layout_gravity="center_vertical|center"
+                                    android:background="@drawable/login_register_ava_bg"/>
 
-                                <ImageView
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:layout_gravity="center_vertical|center"
-                                        android:background="@drawable/login_register_ava_bg"/>
-
-                                <ImageView
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:layout_gravity="center_vertical|center"
-                                        android:clickable="true"
-                                        android:background="@drawable/login_register_ava_but"/>
-
-                                <ImageView
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:layout_gravity="center_vertical|center"
-                                        android:background="@drawable/login_register_ava_frame2x"/>
-                            </FrameLayout>
-
-                            <TextView
-                                    android:id="@+id/register_label_email"
+                            <ImageView
                                     android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:text="@string/register_screen_email"
-                                    android:layout_marginTop="40dp"
-                                    android:textColor="@android:color/white"
-                                    android:layout_gravity="center"
-                                    />
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical|center"
+                                    android:clickable="true"
+                                    android:background="@drawable/login_register_ava_but"/>
 
-                            <TextView
-                                    android:id="@+id/register_label_pass"
+                            <ImageView
                                     android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:text="@string/register_screen_pass"
-                                    android:layout_marginTop="25dp"
-                                    android:textColor="@android:color/white"
-                                    android:layout_gravity="right"
-                                    />
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical|center"
+                                    android:background="@drawable/login_register_ava_frame2x"/>
+                        </FrameLayout>
 
-                            <TextView
-                                    android:id="@+id/register_label_retry_pass"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:layout_marginTop="25dp"
-                                    android:textColor="@android:color/white"
-                                    android:text="@string/register_screen_retry_pass"
-                                    android:singleLine="false"
-                                    android:layout_gravity="right"
-                                    />
-
-                            <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:singleLine="false"
-                                    android:layout_marginTop="45dp"
-                                    android:textColor="@android:color/white"
-                                    android:text="@string/register_screen_date_born"
-                                    />
-
-                            <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:layout_marginTop="30dp"
-                                    android:textColor="@android:color/white"
-                                    android:text="@string/register_screen_city"
-                                    />
-
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
+                        <TextView
+                                android:id="@+id/register_label_email"
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_marginLeft="6dp"
+                                android:layout_width="match_parent"
+                                android:text="@string/register_screen_email"
+                                android:layout_marginTop="45dp"
+                                android:textColor="@color/hint_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                android:gravity="right"
+                                />
 
+                        <TextView
+                                android:id="@+id/register_label_pass"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:text="@string/register_screen_pass"
+                                android:layout_marginTop="30dp"
+                                android:textColor="@color/hint_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                android:gravity="right"
+                                />
 
-                                >
+                        <TextView
+                                android:id="@+id/register_label_retry_pass"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="25dp"
+                                android:textColor="@color/hint_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:text="@string/register_screen_retry_pass"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                android:gravity="right"
+                                />
 
-                            <EditText
-                                    android:id="@+id/register_name_input"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:inputType="textCapWords"
-                                    android:background="@drawable/login_register_edittext_top"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    android:textColorHint="@color/abs__background_holo_dark"
-                                    android:hint="@string/register_screen_name"
-                                    />
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:singleLine="false"
+                                android:layout_marginTop="35dp"
+                                android:textColor="@color/hint_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:text="@string/register_screen_date_born"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                android:gravity="right"
+                                />
 
-                            <ImageView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/login_register_linebeetween_edittext"/>
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="35dp"
+                                android:textColor="@color/hint_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:text="@string/register_screen_city"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                android:gravity="right"
+                                />
 
-                            <EditText
-                                    android:id="@+id/register_surname_input"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:background="@drawable/login_register_edittext_bottom"
-                                    android:inputType="textCapWords"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    android:textColorHint="@color/hint_color"
-                                    android:hint="@string/register_screen_surname"
-                                    />
-
-                            <EditText
-                                    android:id="@+id/register_email_input"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:inputType="textEmailAddress"
-                                    android:background="@drawable/login_register_edittext_top"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    />
-
-                            <ImageView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/login_register_linebeetween_edittext"/>
-
-                            <EditText
-                                    android:id="@+id/register_password_input"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:inputType="textPassword"
-                                    android:background="@drawable/login_register_textedit_2_2"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-
-                                    />
-
-                            <ImageView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/login_register_linebeetween_edittext"/>
-
-                            <EditText
-                                    android:id="@+id/register_password_confirm_input"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:inputType="textPassword"
-                                    android:background="@drawable/login_register_edittext_bottom"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    />
-
-                            <Button
-                                    android:id="@+id/register_date_born_btn"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:textColor="@android:color/white"
-                                    android:layout_marginTop="8dp"
-                                    android:background="@drawable/login_register_date_but"/>
-
-                            <EditText
-                                    android:id="@+id/register_city_input"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
-                                    android:inputType="textCapWords"
-                                    android:background="@drawable/login_register_edittext_3_1"
-                                    android:layout_gravity="right"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    />
-                        </LinearLayout>
 
                     </LinearLayout>
 
 
-                </FrameLayout>
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="6dp"
+                            >
+
+                        <EditText
+                                android:id="@+id/register_name_input"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:inputType="textCapWords"
+                                android:background="@drawable/login_register_edittext_top"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@color/hint_color"
+                                android:hint="@string/register_screen_name"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                />
+
+                        <ImageView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                        <EditText
+                                android:id="@+id/register_surname_input"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:background="@drawable/login_register_edittext_bottom"
+                                android:inputType="textCapWords"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:textColorHint="@color/hint_color"
+                                android:hint="@string/register_screen_surname"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                />
+
+                        <EditText
+                                android:id="@+id/register_email_input"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:inputType="textEmailAddress"
+                                android:background="@drawable/login_register_edittext_top"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                />
+
+                        <ImageView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                        <EditText
+                                android:id="@+id/register_password_input"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:inputType="textPassword"
+                                android:background="@drawable/login_register_textedit_2_2"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+
+                                />
+
+                        <ImageView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/login_register_linebeetween_edittext"/>
+
+                        <EditText
+                                android:id="@+id/register_password_confirm_input"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:inputType="textPassword"
+                                android:background="@drawable/login_register_edittext_bottom"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                />
+
+                        <Button
+                                android:id="@+id/register_date_born_btn"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:paddingLeft="10dp"
+                                android:textAlignment="viewStart"
+                                android:background="@drawable/login_register_date_but"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"/>
+
+                        <EditText
+                                android:id="@+id/register_city_input"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:singleLine="true"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:inputType="textCapWords"
+                                android:background="@drawable/login_register_edittext_3_1"
+                                android:layout_gravity="right"
+                                android:paddingLeft="10dp"
+                                android:textColor="@android:color/white"
+                                android:shadowColor="@android:color/black"
+                                android:shadowDy="-1"
+                                android:shadowRadius="2"
+                                />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <Button
                         android:id="@+id/registration_finish_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginTop="25dp"
                         android:background="@drawable/login_register_register_but"/>
-            </FrameLayout>
+            </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 
-    <FrameLayout
-            android:id="@+id/date_picker_frame"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            >
-
-        <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:background="#ffffff"
-                android:layout_gravity="bottom">
-
-            <FrameLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/login_register_datepicker_pane_bg2x">
-
-                <Button
-                        android:id="@+id/register_set_date_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/login_register_datepicker_done_but"/>
-
-
-            </FrameLayout>
-
-            <FrameLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-
-                    android:layout_gravity="center_horizontal">
-
-                <DatePicker
-                        android:id="@+id/datePicker1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:calendarViewShown="false"
-                        />
-            </FrameLayout>
-
-
-        </LinearLayout>
-
-    </FrameLayout>
 </FrameLayout>

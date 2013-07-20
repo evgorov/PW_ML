@@ -53,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
 
-                >
+                android:fillViewport="false">
 
             <LinearLayout
                     android:layout_height="wrap_content"
@@ -77,7 +77,10 @@
                         android:layout_marginTop="88dp"
                         android:paddingLeft="10dp"
                         android:textColorHint="@color/hint_color"
-                        android:hint="e-mail"/>
+                        android:hint="e-mail"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDy="-1"
+                        android:shadowRadius="2"/>
 
                 <ImageView
                         android:layout_height="wrap_content"
@@ -96,6 +99,9 @@
                         android:paddingLeft="10dp"
                         android:textColorHint="@color/hint_color"
                         android:hint="пароль"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDy="-1"
+                        android:shadowRadius="2"
 
                         />
 
