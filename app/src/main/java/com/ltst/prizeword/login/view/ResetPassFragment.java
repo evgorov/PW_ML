@@ -21,6 +21,7 @@ import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.ForgetPassCycleTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 
 import org.apache.http.NameValuePair;
@@ -53,6 +54,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     private @Nonnull Button mResetPasswordButton;
     private @Nonnull Button mNavBackButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
     @Override
     public void onAttach(Activity activity)
@@ -60,6 +62,8 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
         super.onAttach(activity);
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
     @SuppressWarnings("unchecked")

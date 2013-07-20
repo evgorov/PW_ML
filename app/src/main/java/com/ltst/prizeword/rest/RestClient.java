@@ -1,6 +1,7 @@
 package com.ltst.prizeword.rest;
 
 import org.omich.velo.constants.Strings;
+import org.omich.velo.log.Log;
 import org.omich.velo.net.Network;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -112,7 +113,33 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+        ResponseEntity<RestUserData.RestUserDataHolder> holder = null;
+        try
+        {
+            holder = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            if (holder == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(403);
+                RestUserData.RestUserDataHolder ret = new RestUserData.RestUserDataHolder();
+                ret.setStatusCode(status);
+                return ret;
+            }
+        }
+
+        if(holder != null)
+        {
+            holder.getBody().setStatusCode(holder.getStatusCode());
+            return holder.getBody();
+        }
+        else
+            return null;
     }
 
     @Nullable
@@ -137,8 +164,38 @@ public class RestClient implements IRestClient
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.EMAIL, email);
-        ResponseEntity<String> entity = restTemplate.getForEntity(RestParams.URL_FORGOT_PASSWORD, String.class, urlVariables);
-        return entity.getStatusCode();
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+
+        @Nullable ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(403);
+                return status;
+            }
+        }
+        if (entity != null)
+            return entity.getStatusCode();
+        else
+            return null;
     }
 
     @Override

@@ -25,6 +25,14 @@ public class LoadSessionKeyTask implements DbService.IDbTask
     public static final @Nonnull String BF_EMAIL = "LoadSessionKeyTask.email";
     public static final @Nonnull String BF_PASSWORD = "LoadSessionKeyTask.password";
 
+    public static final @Nonnull String BF_NAME = "LoadSessionKeyTask.name";
+    public static final @Nonnull String BF_SURNAME = "LoadSessionKeyTask.surname";
+    public static final @Nonnull String BF_BIRTHDATE = "LoadSessionKeyTask.birthdate";
+    public static final @Nonnull String BF_CITY = "LoadSessionKeyTask.city";
+    public static final @Nonnull String BF_USERPIC = "LoadSessionKeyTask.userpic";
+
+    private static final @Nonnull String BF_SIGNUP_FLAG = "LoadSessionKeyTask.signUp";
+
     public static @Nonnull
     Intent createProviderIntent(@Nonnull String providerName, @Nonnull String accessToken)
     {
@@ -43,7 +51,38 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         return intent;
     }
 
-    @Nullable
+    public static @Nonnull
+    Intent createSignUpIntent(@Nonnull String email,
+                              @Nonnull String name,
+                              @Nonnull String surname,
+                              @Nonnull String password,
+                              @Nullable String birthdate,
+                              @Nullable String city,
+                              @Nullable byte[] userpic)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_EMAIL, email);
+        intent.putExtra(BF_NAME, name);
+        intent.putExtra(BF_SURNAME, surname);
+        intent.putExtra(BF_PASSWORD, password);
+        if (birthdate != null)
+        {
+            intent.putExtra(BF_BIRTHDATE, birthdate);
+        }
+        if (city != null)
+        {
+            intent.putExtra(BF_CITY, city);
+        }
+        if (userpic != null)
+        {
+            intent.putExtra(BF_USERPIC, userpic);
+        }
+        intent.putExtra(BF_SIGNUP_FLAG, true);
+        return intent;
+    }
+
+
+        @Nullable
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
@@ -56,6 +95,13 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         @Nullable String email = extras.getString(BF_EMAIL);
         @Nullable String password = extras.getString(BF_PASSWORD);
 
+        boolean signUpFlag = extras.getBoolean(BF_SIGNUP_FLAG);
+        @Nullable String name = extras.getString(BF_NAME);
+        @Nullable String surname = extras.getString(BF_SURNAME);
+        @Nullable String birthdate = extras.getString(BF_BIRTHDATE);
+        @Nullable String city = extras.getString(BF_CITY);
+        @Nullable byte[] userpic = extras.getByteArray(BF_USERPIC);
+
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
@@ -64,6 +110,16 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         }
         else
         {
+            if(signUpFlag && email != null && password != null && name != null && surname != null)
+            {
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignUp(email, name, surname,
+                                                                    password, birthdate, city, userpic);
+                if (holder != null)
+                {
+                    return getSessionKeyFromInternet(holder);
+                }
+            }
+
             if (email != null && password != null)
             {
                 RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignIn(email, password);
@@ -83,6 +139,26 @@ public class LoadSessionKeyTask implements DbService.IDbTask
             }
         }
         return null;
+    }
+
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignUp(@Nonnull String email,
+                                                                                     @Nonnull String name,
+                                                                                     @Nonnull String surname,
+                                                                                     @Nonnull String password,
+                                                                                     @Nullable String birthdate,
+                                                                                     @Nullable String city,
+                                                                                     @Nullable byte[] userpic)
+    {
+        try
+        {
+            IRestClient client = RestClient.create();
+            return client.getSessionKeyBySignUp(email, name, surname, password, birthdate, city, userpic);
+        }
+        catch(Throwable e)
+        {
+            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            return null;
+        }
     }
 
     private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderByProvider(@Nonnull String provider, @Nonnull String accessToken)

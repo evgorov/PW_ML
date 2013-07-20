@@ -134,14 +134,16 @@
                                 >
 
                             <EditText
+                                    android:id="@+id/register_name_input"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
+                                    android:inputType="textCapWords"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
                                     android:textColorHint="@android:color/white"
-                                    android:hint="Имя*"
+                                    android:hint="@string/register_screen_name"
                                     />
 
                             <ImageView
@@ -151,21 +153,25 @@
                                     android:background="@drawable/login_register_linebeetween_edittext"/>
 
                             <EditText
+                                    android:id="@+id/register_surname_input"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
                                     android:background="@drawable/login_register_edittext_bottom"
+                                    android:inputType="textCapWords"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
                                     android:textColorHint="@android:color/white"
-                                    android:hint="Фамилия*"
+                                    android:hint="@string/register_screen_surname"
                                     />
 
                             <EditText
+                                    android:id="@+id/register_email_input"
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:singleLine="true"
+                                    android:inputType="textEmailAddress"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -178,9 +184,11 @@
                                     android:background="@drawable/login_register_linebeetween_edittext"/>
 
                             <EditText
+                                    android:id="@+id/register_password_input"
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:singleLine="true"
+                                    android:inputType="textPassword"
                                     android:background="@drawable/login_register_textedit_2_2"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -194,9 +202,11 @@
                                     android:background="@drawable/login_register_linebeetween_edittext"/>
 
                             <EditText
+                                    android:id="@+id/register_password_confirm_input"
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:singleLine="true"
+                                    android:inputType="textPassword"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
@@ -212,10 +222,12 @@
                                     android:background="@drawable/login_register_date_btn"/>
 
                             <EditText
+                                    android:id="@+id/register_city_input"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:singleLine="true"
+                                    android:inputType="textCapWords"
                                     android:background="@drawable/login_register_edittext_3_1"
                                     android:layout_gravity="right"
                                     android:paddingLeft="10dp"
@@ -229,7 +241,7 @@
                 </FrameLayout>
 
                 <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/registration_finish_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|bottom"

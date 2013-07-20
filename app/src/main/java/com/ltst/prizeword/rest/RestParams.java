@@ -7,7 +7,7 @@ public class RestParams
     // == Status codes ==
 
     public static final int SC_SUCCESS = 200;
-    public static final int SC_UNATHORIZED = 401;
+    public static final int SC_UNAUTHORIZED = 401;
     public static final int SC_ERROR = 404;
     public static final int SC_FORBIDDEN = 403;
 

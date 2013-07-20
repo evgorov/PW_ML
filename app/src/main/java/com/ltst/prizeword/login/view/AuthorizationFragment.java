@@ -1,11 +1,8 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +23,9 @@ import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -54,6 +53,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull Button mEnterLoginButton;
     private @Nonnull ImageButton mForgetLoginButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
     @Override
     public void onAttach(Activity activity)
@@ -62,6 +62,8 @@ public class AuthorizationFragment extends SherlockFragment
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder.lockDrawerClosed();
     }
 
     @SuppressWarnings("unchecked")
@@ -112,20 +114,9 @@ public class AuthorizationFragment extends SherlockFragment
 
     protected void showErrorAlertDalog()
     {
-        Resources res = mContext.getResources();
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-        alertDialogBuilder.setTitle(res.getString(R.string.error));
-        alertDialogBuilder.setMessage(res.getString(R.string.login_enter_error_msg));
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNegativeButton(res.getString(R.string.ok_bnt_title), new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
+        alertDialogBuilder.setMessage(R.string.login_enter_error_msg);
+        alertDialogBuilder.create().show();
     }
 
 
@@ -155,11 +146,9 @@ public class AuthorizationFragment extends SherlockFragment
                 Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
                 if (sessionKey.isEmpty())
                 {
-
                     showErrorAlertDalog();
-
-//                    Toast.makeText(mContext, "ERROR!", Toast.LENGTH_LONG).show();
-                } else
+                }
+                else
                 {
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                 }
@@ -199,7 +188,7 @@ public class AuthorizationFragment extends SherlockFragment
                 return;
 
             int statusCode = result.getInt(LoadSessionKeyTask.BF_STATUS_CODE);
-            if (statusCode != RestParams.SC_UNATHORIZED)
+            if (statusCode != RestParams.SC_UNAUTHORIZED)
             {
                 @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
                 if (result != null)
