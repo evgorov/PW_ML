@@ -96,6 +96,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_width="wrap_content"
                                         android:layout_gravity="center_vertical|center"
+                                        android:clickable="true"
                                         android:background="@drawable/login_register_ava_but"/>
 
                                 <ImageView
@@ -252,7 +253,7 @@
                                     android:layout_gravity="center"
                                     android:textColor="@android:color/white"
                                     android:layout_marginTop="8dp"
-                                    android:background="@drawable/login_register_date_btn"/>
+                                    android:background="@drawable/login_register_date_but"/>
 
                             <EditText
                                     android:id="@+id/register_city_input"
