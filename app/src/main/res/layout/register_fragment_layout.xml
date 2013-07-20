@@ -45,14 +45,17 @@
                         android:layout_marginLeft="20dp"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_gravity="center_vertical|center"/>
+                        android:layout_gravity="center_vertical|center"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDy="2"
+                        android:shadowRadius="3"/>
             </LinearLayout>
         </FrameLayout>
 
         <ScrollView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_gravity=""
+                android:layout_gravity="center_vertical|center"
                 android:gravity="center"
 
                 >
@@ -172,11 +175,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:inputType="textCapWords"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
-                                    android:textColorHint="@android:color/white"
+                                    android:textColorHint="@color/abs__background_holo_dark"
                                     android:hint="@string/register_screen_name"
                                     />
 
@@ -191,11 +196,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:inputType="textCapWords"
                                     android:paddingLeft="10dp"
                                     android:textColor="@android:color/white"
-                                    android:textColorHint="@android:color/white"
+                                    android:textColorHint="@color/hint_color"
                                     android:hint="@string/register_screen_surname"
                                     />
 
@@ -205,6 +212,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:inputType="textEmailAddress"
                                     android:background="@drawable/login_register_edittext_top"
                                     android:paddingLeft="10dp"
@@ -222,6 +231,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:inputType="textPassword"
                                     android:background="@drawable/login_register_textedit_2_2"
                                     android:paddingLeft="10dp"
@@ -240,6 +251,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:inputType="textPassword"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:paddingLeft="10dp"
@@ -261,6 +274,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:singleLine="true"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
                                     android:inputType="textCapWords"
                                     android:background="@drawable/login_register_edittext_3_1"
                                     android:layout_gravity="right"

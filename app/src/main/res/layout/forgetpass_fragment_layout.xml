@@ -23,20 +23,7 @@
                 android:layout_gravity="center_vertical|center"
                 android:background="@drawable/login_remind_bg">
 
-            <EditText
-                    android:id="@+id/forgetpass_email_etext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/login_remind_edittext_bg"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="214dp"
-                    android:singleLine="true"
-                    android:textColor="@android:color/white"
-                    android:paddingLeft="10dp"
-                    android:textSize="18sp"
-                    android:textColorHint="@android:color/white"
-                    android:hint="e-mail"
-                    />
+
 
             <Button
                     android:id="@+id/button2"
@@ -57,8 +44,9 @@
                             android:singleLine="true"
                             android:textColor="@android:color/white"
                             android:paddingLeft="10dp"
-                            android:textSize="18sp"
-                            android:textColorHint="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColorHint="@color/hint_color"
                             android:hint="e-mail"
                             />
 
@@ -97,7 +85,10 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:text="@string/forgetpass_fragment_title"
-                android:layout_gravity="center_vertical|center"/>
+                android:layout_gravity="center_vertical|center"
+                android:shadowColor="@android:color/black"
+                android:shadowDy="2"
+                android:shadowRadius="3"/>
     </LinearLayout>
 
 
@@ -156,7 +147,10 @@
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:text="Пароль отправлен"
-                    android:layout_gravity="center_vertical|center"/>
+                    android:layout_gravity="center_vertical|center"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
 
         </FrameLayout>
     </FrameLayout>

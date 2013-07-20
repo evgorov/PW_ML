@@ -34,10 +34,12 @@
                         android:layout_width="wrap_content"
                         android:layout_marginTop="170dp"
                         android:singleLine="true"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         android:paddingLeft="10dp"
                         android:textColor="@android:color/white"
                         android:hint="Новый пароль"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hint_color"
                         android:inputType="textPassword"
                         android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
@@ -47,10 +49,12 @@
                         android:layout_width="wrap_content"
                         android:layout_marginTop="10dp"
                         android:singleLine="true"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         android:paddingLeft="10dp"
                         android:textColor="@android:color/white"
                         android:hint="Еще раз"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hint_color"
                         android:inputType="textPassword"
                         android:background="@drawable/login_remind_newpass_edittext_bg"/>
 
@@ -88,7 +92,10 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:text="@string/resetpass_fragment_title"
-                android:layout_gravity="center_vertical|center"/>
+                android:layout_gravity="center_vertical|center"
+                android:shadowColor="@android:color/black"
+                android:shadowDy="2"
+                android:shadowRadius="3"/>
 
     </LinearLayout>
 
