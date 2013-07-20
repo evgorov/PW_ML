@@ -102,7 +102,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mRegisterSetDateButton = (Button) v.findViewById(R.id.register_set_date_btn);
         mDatePickerFrame = (FrameLayout) v.findViewById(R.id.date_picker_frame);
         mDatePicker = (DatePicker)  v.findViewById(R.id.datePicker1);
-        mNavBackButton.setOnClickListener(new View.OnClickListener()
+
 
         mRegisterFinishButton = (Button) v.findViewById(R.id.registration_finish_button);
         mNavBackButton.setOnClickListener(this);
