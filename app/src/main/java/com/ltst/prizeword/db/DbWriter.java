@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -144,6 +145,25 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
+        mDb.beginTransaction();
+        ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
+        List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
+        try
+        {
+            mDb.insert(TNAME_PUZZLES, null, values);
+            for (ContentValues contentValues : questionCv)
+            {
+                mDb.insert(TNAME_PUZZLE_QUESTIONS, null, contentValues);
+            }
+        }
+        catch (Throwable e)
+        {
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            mDb.endTransaction();
+        }
 
     }
 
@@ -209,6 +229,41 @@ public class DbWriter extends  DbReader implements IDbWriter
                     builder.append(SET_PUZZLE_IDS_SEPARATOR);
             }
             cv.put(ColsPuzzleSets.PUZZLES_SERVER_IDS, builder.toString());
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<Puzzle> mPuzzleContentValuesCreator = new ContentValuesCreator<Puzzle>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable Puzzle object)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsPuzzles.SET_ID, object.setId);
+            cv.put(ColsPuzzles.SERVER_ID, object.serverId);
+            cv.put(ColsPuzzles.NAME, object.name);
+            cv.put(ColsPuzzles.ISSUED_AT, object.issuedAt);
+            cv.put(ColsPuzzles.BASE_SCORE, object.baseScore);
+            cv.put(ColsPuzzles.TIME_GIVEN, object.timeGiven);
+            cv.put(ColsPuzzles.TIME_LEFT, object.timeLeft);
+            cv.put(ColsPuzzles.SCORE, object.score);
+            cv.put(ColsPuzzles.IS_SOLVED, object.isSolved);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<PuzzleQuestion> mPuzzleQuestionContentValuesCreator = new ContentValuesCreator<PuzzleQuestion>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable PuzzleQuestion object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsPuzzleQuestions.PUZZLE_ID, object.puzzleId);
+            cv.put(ColsPuzzleQuestions.COLUMN, object.column);
+            cv.put(ColsPuzzleQuestions.ROW, object.row);
+            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.quesitonText);
+            cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
+            cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
             return cv;
         }
     };
