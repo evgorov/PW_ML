@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_remind_edittext_bg"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="170dp"
+                        android:layout_marginTop="134dp"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"

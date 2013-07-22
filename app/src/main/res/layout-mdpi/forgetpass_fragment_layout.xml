@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:background="@drawable/login_remind_bg">
                 <EditText
@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_remind_edittext_bg"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="170dp"
+                        android:layout_marginTop="134dp"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
