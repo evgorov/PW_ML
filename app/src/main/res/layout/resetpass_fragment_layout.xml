@@ -10,92 +10,87 @@
             android:background="@drawable/login_enter_top_shadow"
             />
 
-    <LinearLayout
-            android:layout_width="match_parent"
+
+    <ScrollView
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical|center">
 
         <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="horizontal"
-                android:background="@drawable/navigationbar_bg">
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/login_remind_newpass_main_bg">
 
-            <Button
-                    android:id="@+id/resetpass_nav_back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:background="@drawable/nav_back_but"/>
+            <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical|center">
 
-            <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="@string/resetpass_fragment_title"
-                    android:layout_gravity="center_vertical|center"/>
+                <EditText
+                        android:id="@+id/login_change_pass_newpass_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="170dp"
+                        android:singleLine="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/white"
+                        android:hint="Новый пароль"
+                        android:textColorHint="@android:color/white"
+                        android:inputType="textPassword"
+                        android:background="@drawable/login_remind_newpass_edittext_bg"/>
+
+                <EditText
+                        android:id="@+id/login_change_pass_confirm_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:singleLine="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/white"
+                        android:hint="Еще раз"
+                        android:textColorHint="@android:color/white"
+                        android:inputType="textPassword"
+                        android:background="@drawable/login_remind_newpass_edittext_bg"/>
+
+                <Button
+                        android:id="@+id/login_change_pass_btn"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/login_changepass_but"/>
+
+            </LinearLayout>
 
         </FrameLayout>
 
-        <ScrollView
+    </ScrollView>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="horizontal"
+            android:background="@drawable/navigationbar_bg">
+
+        <Button
+                android:id="@+id/resetpass_nav_back_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/nav_back_but"/>
 
-            <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/login_remind_newpass_main_bg">
-
-                <LinearLayout
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        android:layout_gravity="center_vertical|center">
-
-                    <EditText
-                            android:id="@+id/login_change_pass_newpass_text"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="170dp"
-                            android:singleLine="true"
-                            android:paddingLeft="10dp"
-                            android:textColor="@android:color/white"
-                            android:hint="Новый пароль"
-                            android:textColorHint="@android:color/white"
-                            android:inputType="textPassword"
-                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
-
-                    <EditText
-                            android:id="@+id/login_change_pass_confirm_text"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:singleLine="true"
-                            android:paddingLeft="10dp"
-                            android:textColor="@android:color/white"
-                            android:hint="Еще раз"
-                            android:textColorHint="@android:color/white"
-                            android:inputType="textPassword"
-                            android:background="@drawable/login_remind_newpass_edittext_bg"/>
-
-                    <Button
-                            android:id="@+id/login_change_pass_btn"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/login_changepass_but"/>
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-        </ScrollView>
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="@string/resetpass_fragment_title"
+                android:layout_gravity="center_vertical|center"/>
 
     </LinearLayout>
+
 
 </FrameLayout>

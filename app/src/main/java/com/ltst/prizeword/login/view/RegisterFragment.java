@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.DatePicker;
+import android.widget.FrameLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -33,10 +34,17 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RegisterFragment extends SherlockFragment implements INavigationBackPress, View.OnClickListener
+import static android.view.View.VISIBLE;
+
+public class RegisterFragment extends SherlockFragment implements View.OnClickListener, INavigationBackPress
 {
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
@@ -45,6 +53,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
     private @Nonnull Context mContext;
     private IBcConnector mBcConnector;
 
+    private @Nonnull Button mRegisterDateButton;
     private @Nonnull Button mNavBackButton;
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
@@ -56,6 +65,13 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
     private @Nonnull EditText mPasswordInput;
     private @Nonnull EditText mPasswordConfirmInput;
     private @Nonnull EditText mCityInput;
+
+    private @Nonnull Button mRegisterSetDateButton;
+    private @Nonnull FrameLayout mDatePickerFrame;
+    private @Nonnull DatePicker mDatePicker;
+    SimpleDateFormat format;
+    Date date;
+
 
     @Override
     public void onAttach(Activity activity)
@@ -85,6 +101,15 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mPasswordConfirmInput = (EditText) v.findViewById(R.id.register_password_confirm_input);
         mCityInput = (EditText) v.findViewById(R.id.register_city_input);
 
+        mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
+        mRegisterSetDateButton = (Button) v.findViewById(R.id.register_set_date_btn);
+        mDatePickerFrame = (FrameLayout) v.findViewById(R.id.date_picker_frame);
+        mDatePicker = (DatePicker)  v.findViewById(R.id.datePicker1);
+
+        mRegisterDateButton.setOnClickListener(this);
+        mRegisterSetDateButton.setOnClickListener(this);
+        String pattern = "yyyy-MM-dd";
+        format = new SimpleDateFormat(pattern);
         return v;
     }
 
@@ -142,6 +167,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                 break;
             case R.id.registration_finish_button:
                 performRegistration();
+                break;
+            case R.id.register_date_born_btn:
+                mDatePickerFrame.setVisibility(VISIBLE);
+                break;
+            case R.id.register_set_date_btn:
+                mDatePickerFrame.setVisibility(View.GONE);
+                try
+                {
+                    date=format.parse(mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+ mDatePicker.getDayOfMonth());
+                } catch (ParseException e)
+                {
+                    e.printStackTrace();
+                }
+                mRegisterDateButton.setText(format.format(date));
                 break;
         }
     }

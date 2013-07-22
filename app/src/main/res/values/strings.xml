@@ -35,6 +35,9 @@
     <string name="register_screen_date_born">Birthdate</string>
     <string name="register_screen_city">City</string>
 
+    <string name="login_screen_pass_hint">Password</string>
+    <string name="login_screen_email_hint">E-mail</string>
+
     // ==== toast messages ====
     <string name="msg_no_internet">No Internet Connection</string>
     <string name="msg_unknown_error">Unknown Error</string>
