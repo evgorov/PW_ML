@@ -13,6 +13,9 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
 
@@ -28,6 +31,8 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull Context mContext;
     private @Nonnull Button mCrossWordButton;
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull String mSessionKey;
+    private @Nonnull IPuzzleSetModel mPuzzleSetModel;
 
     // ==== Livecycle =================================
 
@@ -36,6 +41,8 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         super.onAttach(activity);
     }
 

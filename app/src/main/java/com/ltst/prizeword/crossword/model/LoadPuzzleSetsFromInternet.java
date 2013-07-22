@@ -27,14 +27,14 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
     public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
 
-    public final @Nonnull Intent createIntent(@Nonnull String sessionKey)
+    public static final @Nonnull Intent createIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         return intent;
     }
 
-    public final @Nullable List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
+    public static final @Nullable List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
     {
         if (bundle == null)
         {
@@ -104,6 +104,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
+        for (PuzzleSet set : sets)
+        {
+            set.isBought = false;
+        }
         return packToBundle(new ArrayList<PuzzleSet>(sets), RestParams.SC_SUCCESS);
     }
 }
