@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class Puzzle implements Parcelable
 {
@@ -22,10 +23,10 @@ public class Puzzle implements Parcelable
     public int timeLeft;
     public int score;
     public boolean isSolved;
-    public @Nonnull List<PuzzleQuestion> questions;
+    public @Nullable List<PuzzleQuestion> questions;
 
-    public Puzzle(long setId,
-                  long id,
+    public Puzzle(long id,
+                  long setId,
                   @Nonnull String serverId,
                   @Nonnull String name,
                   @Nonnull String issuedAt,
@@ -34,10 +35,10 @@ public class Puzzle implements Parcelable
                   int timeLeft,
                   int score,
                   boolean solved,
-                  @Nonnull List<PuzzleQuestion> questions)
+                  @Nullable List<PuzzleQuestion> questions)
     {
-        this.setId = setId;
         this.id = id;
+        this.setId = setId;
         this.serverId = serverId;
         this.name = name;
         this.issuedAt = issuedAt;

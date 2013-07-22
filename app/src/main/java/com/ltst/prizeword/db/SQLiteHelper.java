@@ -52,15 +52,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PUZZLE_QUESTIONS_QUERY = "create table "
             + TNAME_PUZZLE_QUESTIONS + "("
             + ColsPuzzleQuestions.ID                + " integer not null primary key autoincrement, "
-            + ColsPuzzleQuestions.PUZZLE_DATA_ID    + " integer not null, "
+            + ColsPuzzleQuestions.PUZZLE_ID + " integer not null, "
             + ColsPuzzleQuestions.COLUMN            + " integer not null, "
             + ColsPuzzleQuestions.ROW               + " integer not null, "
-            + ColsPuzzleQuestions.WIDTH             + " integer not null, "
-            + ColsPuzzleQuestions.HEIGHT            + " integer not null, "
             + ColsPuzzleQuestions.QUESTION_TEXT     + " text not null, "
             + ColsPuzzleQuestions.ANSWER            + " text not null, "
             + ColsPuzzleQuestions.ANSWER_POSITION   + " text not null, "
-            + " foreign key (" + ColsPuzzleQuestions.PUZZLE_DATA_ID + ") references "
+            + " foreign key (" + ColsPuzzleQuestions.PUZZLE_ID + ") references "
             + TNAME_PUZZLES + " (" + ColsPuzzles.ID + ") on delete cascade)";
 
     private static final String CREATE_IMAGES_QUERY = "create table "
@@ -137,11 +135,9 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final class ColsPuzzleQuestions
     {
         public static final @Nonnull String ID              = "_id";
-        public static final @Nonnull String PUZZLE_DATA_ID  = "puzzleDataId";
+        public static final @Nonnull String PUZZLE_ID = "puzzleDataId";
         public static final @Nonnull String COLUMN          = "column";
         public static final @Nonnull String ROW             = "row";
-        public static final @Nonnull String HEIGHT          = "height";
-        public static final @Nonnull String WIDTH           = "width";
         public static final @Nonnull String QUESTION_TEXT   = "questionText";
         public static final @Nonnull String ANSWER          = "answer";
         public static final @Nonnull String ANSWER_POSITION = "answerPosition";

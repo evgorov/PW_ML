@@ -3,6 +3,8 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -60,6 +62,32 @@ public class DbReader implements IDbReader
             ColsPuzzleSets.CREATED_AT,
             ColsPuzzleSets.IS_PUBLISHED,
             ColsPuzzleSets.PUZZLES_SERVER_IDS
+    };
+
+    public static final @Nonnull String[] FIELDS_P_PUZZLES =
+    {
+            ColsPuzzles.ID,
+            ColsPuzzles.SET_ID,
+            ColsPuzzles.SERVER_ID,
+            ColsPuzzles.NAME,
+            ColsPuzzles.ISSUED_AT,
+            ColsPuzzles.BASE_SCORE,
+            ColsPuzzles.TIME_GIVEN,
+            ColsPuzzles.TIME_LEFT,
+            ColsPuzzles.SCORE,
+            ColsPuzzles.IS_SOLVED
+    };
+
+    public static final @Nonnull String[] FIELDS_P_PUZZLE_QUESTIONS =
+    {
+            ColsPuzzleQuestions.ID,
+            ColsPuzzleQuestions.PUZZLE_ID,
+            ColsPuzzleQuestions.COLUMN,
+            ColsPuzzleQuestions.ROW,
+            ColsPuzzleQuestions.QUESTION_TEXT,
+            ColsPuzzleQuestions.ANSWER,
+            ColsPuzzleQuestions.ANSWER_POSITION
+
     };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -133,6 +161,57 @@ public class DbReader implements IDbReader
         @Nullable PuzzleSet set = createObjectByCursor(cursor, mPuzzleSetCreator);
         return set;
     }
+
+    @Nullable
+    @Override
+    public Puzzle getPuzzleById(long id)
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.ID, id);
+        Puzzle puzzle = createObjectByCursor(cursor, mPuzzleCreator);
+        if (puzzle != null)
+        {
+            puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+        }
+        return puzzle;
+    }
+
+    @Nullable
+    @Override
+    public Puzzle getPuzzleByServerId(@Nonnull String serverId)
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SERVER_ID, serverId);
+        Puzzle puzzle = createObjectByCursor(cursor, mPuzzleCreator);
+        if (puzzle != null)
+        {
+            puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+        }
+        return puzzle;
+    }
+
+    @Nullable
+    @Override
+    public List<Puzzle> getPuzzleListBySetId(long setId)
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID, setId);
+        List<Puzzle> puzzles = createTypedListByCursor(cursor, mPuzzleCreator);
+        for (Puzzle puzzle : puzzles)
+        {
+            if (puzzle != null)
+            {
+                puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+            }
+        }
+        return puzzles;
+    }
+
+    @Nullable
+    @Override
+    public List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId)
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_QUESTIONS, FIELDS_P_PUZZLE_QUESTIONS, ColsPuzzleQuestions.PUZZLE_ID, puzzleId);
+        return createTypedListByCursor(cursor, mPuzzleQuestionsCreator);
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
@@ -173,6 +252,40 @@ public class DbReader implements IDbReader
                     c.getInt(11),
                     c.getString(12),
                     null);
+        }
+    };
+
+    private ObjectCreatorByCursor<Puzzle> mPuzzleCreator = new ObjectCreatorByCursor<Puzzle>()
+    {
+        @Override
+        public Puzzle createObject(Cursor c)
+        {
+            return new Puzzle(c.getLong(0),
+                              c.getLong(1),
+                              c.getString(2),
+                              c.getString(3),
+                              c.getString(4),
+                              c.getInt(5),
+                              c.getInt(6),
+                              c.getInt(7),
+                              c.getInt(8),
+                              c.getInt(9) == 1,
+                              null);
+        }
+    };
+
+    private ObjectCreatorByCursor<PuzzleQuestion> mPuzzleQuestionsCreator = new ObjectCreatorByCursor<PuzzleQuestion>()
+    {
+        @Override
+        public PuzzleQuestion createObject(Cursor c)
+        {
+            return new PuzzleQuestion(c.getLong(0),
+                            c.getLong(1),
+                            c.getInt(2),
+                            c.getInt(3),
+                            c.getString(4),
+                            c.getString(5),
+                            c.getString(6));
         }
     };
 
