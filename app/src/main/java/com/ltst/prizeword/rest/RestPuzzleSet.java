@@ -1,5 +1,6 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
@@ -113,8 +114,8 @@ public class RestPuzzleSet
 
     public static class RestPuzzleSetsHolder
     {
-        private List<RestPuzzleSet> mPuzzleSets;
-        private HttpStatus mHttpStatus;
+        private @JsonProperty() List<RestPuzzleSet> mPuzzleSets;
+        private @JsonIgnore HttpStatus mHttpStatus;
 
         public RestPuzzleSetsHolder(){}
 

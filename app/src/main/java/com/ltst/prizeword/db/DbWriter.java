@@ -9,6 +9,8 @@ import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
 
+import org.omich.velo.db.DbHelper;
+import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
@@ -45,37 +47,31 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     private void putNewUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        mDb.beginTransaction();
-        ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
+        final ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
+        final @Nullable List<ContentValues> cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
 
-        @Nullable List<ContentValues> cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
-
-        try
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            mDb.insert(TNAME_USERS, null, cvUser);
-
-            UserData createdUser = getReader().getUserByEmail(user.email);
-            if (cvProviders != null)
+            @Override
+            public void handle()
             {
-                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                long created_id = mDb.insert(TNAME_USERS, null, cvUser);
+
+                if (cvProviders != null && created_id != -1)
                 {
-                    ContentValues cvProv =  iterator.next();
-                    cvProv.put(ColsProviders.USER_ID, createdUser.id);
-                    mDb.insert(TNAME_PROVIDERS, null, cvProv);
+                    for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                    {
+                        ContentValues cvProv = iterator.next();
+                        cvProv.put(ColsProviders.USER_ID, created_id);
+                        mDb.insert(TNAME_PROVIDERS, null, cvProv);
+                    }
                 }
             }
-        }
-        catch(Throwable e)
-        {
-            Log.e(e.getMessage());
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
+        });
+
     }
 
-    private void updateExistingUser(long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
+    private void updateExistingUser(final long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
         @Nullable UserData existingUser = getReader().getUserById(id);
         @Nullable List<UserProvider> existingProviders = getReader().getUserProvidersByUserId(id);
@@ -83,107 +79,69 @@ public class DbWriter extends  DbReader implements IDbWriter
         {
             return;
         }
-        ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
+        final ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
 
 //        @TODO логику обновления провайдеров пользователя
-//        @Nullable List<ContentValues> cvProviders = null;
-//        boolean addProvider = false;
-//        boolean updateProviders = false;
-//        if(providers.size() > existingProviders.size())
-//        {
-//            for (UserProvider existingProvider : existingProviders)
-//            {
-//                providers.remove(existingProvider);
-//            }
-//            cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
-//        }
-
-        mDb.beginTransaction();
-        try
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
-//            if (cvProviders != null)
-//            {
-//                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
-//                {
-//                    ContentValues cvProv = iterator.next();
-//                    mDb.update(TNAME_PROVIDERS, cvProv, ColsProviders.USER_ID + "=" + id, null);
-//                }
-//            }
-
-        }
-        catch (Throwable e)
-        {
-            Log.e(e.getMessage());
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
+            @Override
+            public void handle()
+            {
+                mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
+            }
+        });
     }
 
     @Override
     public void putPuzzleSet(@Nonnull PuzzleSet set)
     {
         mDb.beginTransaction();
-        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
-
-        try
+        final ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            mDb.insert(TNAME_PUZZLE_SETS, null, values);
-        }
-        catch (Throwable e)
-        {
-            Log.e(e.getMessage());
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
+            @Override
+            public void handle()
+            {
+                long id = mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                Log.i("Successfully inserted PUZZLE_SET with id: " + id);
+            }
+        });
     }
 
     @Override
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
-        mDb.beginTransaction();
-        ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
-        List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
-        try
+        final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
+        final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            mDb.insert(TNAME_PUZZLES, null, values);
-            for (ContentValues contentValues : questionCv)
+            @Override
+            public void handle()
             {
-                mDb.insert(TNAME_PUZZLE_QUESTIONS, null, contentValues);
+
             }
-        }
-        catch (Throwable e)
-        {
-            Log.e(e.getMessage());
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
-
+        });
     }
 
     @Override
-    public void putPuzzleSetList(@Nonnull List<PuzzleSet> list)
+    public void putPuzzleSetList(final @Nonnull List<PuzzleSet> list)
     {
-        for (PuzzleSet puzzleSet : list)
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            putPuzzleSet(puzzleSet);
-        }
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_PUZZLE_SETS, null, null); // clean puzzle sets
+                for (PuzzleSet puzzleSet : list)
+                {
+                    ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                    mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                }
+            }
+        });
+
     }
 
-    @Override
-    public void putPuzzleList(@Nonnull List<Puzzle> list)
-    {
-        for (Puzzle puzzle : list)
-        {
-            putPuzzle(puzzle);
-        }
-    }
 
     //===== ContentValues creators =======================
 
@@ -307,4 +265,5 @@ public class DbWriter extends  DbReader implements IDbWriter
     {
         public ContentValues createObjectContentValues(@Nullable T object);
     }
+
 }

@@ -17,6 +17,6 @@ public interface IDbWriter extends IDbReader
 
     void putPuzzleSetList(@Nonnull List<PuzzleSet> list);
     void putPuzzleSet(@Nonnull PuzzleSet set);
-    void putPuzzleList(@Nonnull List<Puzzle> list);
+
     void putPuzzle(@Nonnull Puzzle puzzle);
 }

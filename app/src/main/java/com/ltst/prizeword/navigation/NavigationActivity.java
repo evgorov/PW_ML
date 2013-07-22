@@ -73,7 +73,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override

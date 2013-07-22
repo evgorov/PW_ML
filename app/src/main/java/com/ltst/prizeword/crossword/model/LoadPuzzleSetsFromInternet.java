@@ -57,10 +57,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
         else
         {
-            RestPuzzleSet.RestPuzzleSetsHolder data = loadPuzzleSets(sessionKey);
-            ArrayList<PuzzleSet> sets = extractFromRest(data);
-            env.dbw.putPuzzleSetList(sets);
-            return packToBundle(sets, data.getHttpStatus().value());
+            @Nullable RestPuzzleSet.RestPuzzleSetsHolder data = loadPuzzleSets(sessionKey);
+            if (data != null)
+            {
+                ArrayList<PuzzleSet> sets = extractFromRest(data);
+                env.dbw.putPuzzleSetList(sets);
+                return packToBundle(sets, data.getHttpStatus().value());
+            }
         }
         return getFromDatabase(env);
     }
@@ -80,7 +83,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
     }
 
-    private @Nonnull ArrayList<PuzzleSet> extractFromRest(RestPuzzleSet.RestPuzzleSetsHolder data)
+    private @Nonnull ArrayList<PuzzleSet> extractFromRest(@Nonnull RestPuzzleSet.RestPuzzleSetsHolder data)
     {
         ArrayList<PuzzleSet> sets = new ArrayList<PuzzleSet>(data.getPuzzleSets().size());
         for (RestPuzzleSet restPuzzleSet : data.getPuzzleSets())

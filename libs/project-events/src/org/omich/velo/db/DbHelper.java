@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.omich.velo.handlers.INistener;
+import org.omich.velo.log.Log;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -126,4 +127,29 @@ public class DbHelper
 		iterateCursor(cursor, iterator);
 		cursor.close();
 	}
+
+    /**
+     * Метод для открытия транзакции, выполнения запросов и закрытия.
+     * @param db класс базы данных
+     * @param transaction все что выполняется в транзакции. Если все выполнится без исключение,
+     *                    транзакция завершится успешно.
+     */
+    public static void openTransactionAndFinish(@Nonnull SQLiteDatabase db, @Nonnull org.omich.velo.handlers.IListenerVoid transaction)
+    {
+        db.beginTransaction();
+        try
+        {
+            transaction.handle();
+            db.setTransactionSuccessful();
+        }
+        catch (Throwable e)
+        {
+            Log.e("Error in transaction");
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            db.endTransaction();
+        }
+    }
 }

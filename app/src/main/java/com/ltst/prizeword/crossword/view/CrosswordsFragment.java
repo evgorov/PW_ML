@@ -18,6 +18,7 @@ import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 
@@ -44,6 +45,8 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         super.onAttach(activity);
+        mPuzzleSetModel.updateDataByInternet(updateHandler);
+        mPuzzleSetModel.updateDataByDb(updateHandler);
     }
 
     @Override
@@ -84,4 +87,12 @@ public class CrosswordsFragment extends SherlockFragment
         mContext.startActivity(intent);
     }
 
+    private IListenerVoid updateHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+
+        }
+    };
 }
