@@ -234,4 +234,31 @@ public class RestClient implements IRestClient
         else
             return null;
     }
+
+    @Nullable
+    @Override
+    public RestPuzzleSet getPublishedSets(@Nonnull String sessionKey)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        RestPuzzleSet set = restTemplate.exchange(RestParams.URL_GET_PUBLISHED_SETS_SHORT, HttpMethod.GET, requestEntity, RestPuzzleSet.class, urlVariables).getBody();
+        return set;
+    }
+
+    @Nullable
+    @Override
+    public RestPuzzle getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.USER_PUZZLE_IDS, puzzleServerId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        RestPuzzle puzzle = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle.class, urlVariables).getBody();
+        return puzzle;
+    }
 }
