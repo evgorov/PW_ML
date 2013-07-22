@@ -20,6 +20,8 @@
     <string name="register_screen_retry_pass">Повторите пароль</string>
     <string name="register_screen_date_born">Дата рождения</string>
     <string name="register_screen_city">Город</string>
+    <string name="register_screen_error_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще раз.</string>
+    <string name="register_screen_date_pick_dialog_title">Дата рождения</string>
 
     <string name="login_screen_pass_hint">Пароль</string>
     <string name="login_screen_email_hint">E-mail</string>

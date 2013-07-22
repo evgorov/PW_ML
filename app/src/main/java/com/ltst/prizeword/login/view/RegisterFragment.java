@@ -1,17 +1,22 @@
 package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -34,17 +39,22 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static android.app.DatePickerDialog.OnDateSetListener;
 import static android.view.View.VISIBLE;
 
-public class RegisterFragment extends SherlockFragment implements View.OnClickListener, INavigationBackPress
+
+public class RegisterFragment extends SherlockFragment implements INavigationBackPress, View.OnClickListener
+
 {
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
@@ -55,6 +65,12 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
 
     private @Nonnull Button mRegisterDateButton;
     private @Nonnull Button mNavBackButton;
+
+    private @Nonnull FrameLayout mDatePickerFrame;
+    private @Nonnull DatePicker mDatePicker;
+    SimpleDateFormat dateFormat;
+    Date date;
+
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
@@ -66,12 +82,16 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
     private @Nonnull EditText mPasswordConfirmInput;
     private @Nonnull EditText mCityInput;
 
-    private @Nonnull Button mRegisterSetDateButton;
-    private @Nonnull FrameLayout mDatePickerFrame;
-    private @Nonnull DatePicker mDatePicker;
-    SimpleDateFormat format;
-    Date date;
+    private @Nonnull TextView mEmailLabel;
+    private @Nonnull TextView mPassLabel;
+    private @Nonnull TextView mRetryPassLabel;
 
+    private @Nonnull Calendar cal;
+    private @Nonnull int curYear;
+    private @Nonnull int curMonth;
+    private @Nonnull int curDay;
+    private @Nonnull String pattern;
+    private @Nonnull String fr;
 
     @Override
     public void onAttach(Activity activity)
@@ -90,9 +110,17 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
     {
         View v = inflater.inflate(R.layout.register_fragment_layout, container, false);
         mNavBackButton = (Button) v.findViewById(R.id.registration_nav_back_button);
+
+        mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
+
         mRegisterFinishButton = (Button) v.findViewById(R.id.registration_finish_button);
         mNavBackButton.setOnClickListener(this);
         mRegisterFinishButton.setOnClickListener(this);
+        mRegisterDateButton.setOnClickListener(this);
+
+        pattern = "yyyy-MM-dd"; //iso 8061
+        fr = "dd MMMM yyyy";
+
 
         mNameInput = (EditText) v.findViewById(R.id.register_name_input);
         mSurnameInput = (EditText) v.findViewById(R.id.register_surname_input);
@@ -101,15 +129,16 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
         mPasswordConfirmInput = (EditText) v.findViewById(R.id.register_password_confirm_input);
         mCityInput = (EditText) v.findViewById(R.id.register_city_input);
 
-        mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
-        mRegisterSetDateButton = (Button) v.findViewById(R.id.register_set_date_btn);
-        mDatePickerFrame = (FrameLayout) v.findViewById(R.id.date_picker_frame);
-        mDatePicker = (DatePicker)  v.findViewById(R.id.datePicker1);
+        mEmailLabel = (TextView) v.findViewById(R.id.register_label_email);
+        mPassLabel = (TextView) v.findViewById(R.id.register_label_pass);
+        mRetryPassLabel= (TextView) v.findViewById(R.id.register_label_retry_pass);
 
-        mRegisterDateButton.setOnClickListener(this);
-        mRegisterSetDateButton.setOnClickListener(this);
-        String pattern = "yyyy-MM-dd";
-        format = new SimpleDateFormat(pattern);
+        cal = Calendar.getInstance();
+        curDay = cal.get(Calendar.DAY_OF_MONTH);
+        curMonth = cal.get(Calendar.MONTH);
+        curYear = cal.get(Calendar.YEAR);
+        dateFormat = new SimpleDateFormat(fr);
+        mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
         return v;
     }
 
@@ -126,6 +155,7 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
         if(!name.equals(Strings.EMPTY) && !surname.equals(Strings.EMPTY) && !email.equals(Strings.EMPTY)
                 && password.equals(passwordConfirm) && !password.equals(Strings.EMPTY))
         {
+            validateRegData(Color.WHITE);
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
@@ -148,6 +178,10 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
                 }
             });
         }
+        else{
+            validateRegData(Color.RED);
+            showErrorAlertDalog();
+        }
 
     }
 
@@ -157,6 +191,38 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
+    protected void showErrorAlertDalog()
+    {
+        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
+        alertDialogBuilder.setMessage(R.string.register_screen_error_msg);
+        alertDialogBuilder.create().show();
+    }
+    protected void showDatePickerDialog(){
+        DatePickerDialog dp = new DatePickerDialog(mContext,myCallBack,curYear,curMonth,curDay);
+        dp.getDatePicker().setMaxDate(cal.getTimeInMillis());
+        dp.setTitle(R.string.register_screen_date_pick_dialog_title);
+
+        dp.show();
+    }
+    OnDateSetListener myCallBack = new OnDateSetListener()
+    {
+        @Override public void onDateSet(DatePicker datePicker, int Year, int Month, int Day)
+        {
+            Calendar cl = Calendar.getInstance();
+            cl.set(Year,Month,Day);
+            mRegisterDateButton.setText(dateFormat.format(cl.getTime()));
+        }
+    };
+
+
+
+    protected void validateRegData(int color){
+        mNameInput.setHintTextColor(color);
+        mSurnameInput.setHintTextColor(color);
+        mEmailLabel.setTextColor(color);
+        mPassLabel.setTextColor(color);
+        mRetryPassLabel.setTextColor(color);
+    }
     @Override
     public void onClick(View v)
     {
@@ -169,18 +235,8 @@ public class RegisterFragment extends SherlockFragment implements View.OnClickLi
                 performRegistration();
                 break;
             case R.id.register_date_born_btn:
-                mDatePickerFrame.setVisibility(VISIBLE);
-                break;
-            case R.id.register_set_date_btn:
-                mDatePickerFrame.setVisibility(View.GONE);
-                try
-                {
-                    date=format.parse(mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+ mDatePicker.getDayOfMonth());
-                } catch (ParseException e)
-                {
-                    e.printStackTrace();
-                }
-                mRegisterDateButton.setText(format.format(date));
+
+                showDatePickerDialog();
                 break;
         }
     }
