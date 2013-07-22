@@ -167,6 +167,24 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     }
 
+    @Override
+    public void putPuzzleSetList(@Nonnull List<PuzzleSet> list)
+    {
+        for (PuzzleSet puzzleSet : list)
+        {
+            putPuzzleSet(puzzleSet);
+        }
+    }
+
+    @Override
+    public void putPuzzleList(@Nonnull List<Puzzle> list)
+    {
+        for (Puzzle puzzle : list)
+        {
+            putPuzzle(puzzle);
+        }
+    }
+
     //===== ContentValues creators =======================
 
     private ContentValuesCreator<UserData> mUserDataContentValuesCreator = new ContentValuesCreator<UserData>()

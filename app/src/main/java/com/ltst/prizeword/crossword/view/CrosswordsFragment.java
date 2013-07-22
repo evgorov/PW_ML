@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.ltst.prizeword.app.IBcConnectorOwner;
+
+import org.omich.velo.bcops.client.IBcConnector;
 
 import javax.annotation.Nonnull;
 
@@ -24,6 +27,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     private @Nonnull Context mContext;
     private @Nonnull Button mCrossWordButton;
+    private @Nonnull IBcConnector mBcConnector;
 
     // ==== Livecycle =================================
 
@@ -31,6 +35,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
+        mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
         super.onAttach(activity);
     }
 

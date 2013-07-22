@@ -237,15 +237,17 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleSet getPublishedSets(@Nonnull String sessionKey)
+    public RestPuzzleSet.RestPuzzleSetsHolder getPublishedSets(@Nonnull String sessionKey)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        RestPuzzleSet set = restTemplate.exchange(RestParams.URL_GET_PUBLISHED_SETS_SHORT, HttpMethod.GET, requestEntity, RestPuzzleSet.class, urlVariables).getBody();
-        return set;
+        ResponseEntity<RestPuzzleSet.RestPuzzleSetsHolder> entity = restTemplate.exchange(RestParams.URL_GET_PUBLISHED_SETS_SHORT, HttpMethod.GET, requestEntity, RestPuzzleSet.RestPuzzleSetsHolder.class, urlVariables);
+        RestPuzzleSet.RestPuzzleSetsHolder sets = entity.getBody();
+        sets.setHttpStatus(entity.getStatusCode());
+        return sets;
     }
 
     @Nullable

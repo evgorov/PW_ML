@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import com.ltst.prizeword.tools.ParcelableTools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 public class PuzzleQuestion implements Parcelable

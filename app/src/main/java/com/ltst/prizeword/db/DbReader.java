@@ -164,6 +164,15 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
+    public List<PuzzleSet> getPuzzleSets()
+    {
+        final Cursor cursor = mDb.query(TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS, null, null, null, null, null, null);
+        @Nullable List<PuzzleSet> set = createTypedListByCursor(cursor, mPuzzleSetCreator);
+        return set;
+    }
+
+    @Nullable
+    @Override
     public Puzzle getPuzzleById(long id)
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.ID, id);
@@ -301,29 +310,35 @@ public class DbReader implements IDbReader
     //=========================================================================
 
     @Nullable
-    private static <T> List<T> createTypedListByCursor(@Nonnull Cursor cursor, @Nonnull ObjectCreatorByCursor<T> creator)
+    private static <T> List<T> createTypedListByCursor(@Nullable Cursor cursor, final @Nonnull ObjectCreatorByCursor<T> creator)
     {
-        cursor.moveToFirst();
-        List<T> list = null;
-        while (!cursor.isAfterLast())
+        if (cursor == null)
         {
-            if (list != null)
-            {
-                list = new ArrayList<T>(cursor.getCount());
-            }
-
-            T object = creator.createObject(cursor);
-            list.add(object);
-
-            cursor.moveToNext();
+            return null;
         }
+
+        final List<T> list = new ArrayList<T>(cursor.getCount());
+        DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()
+        {
+            @Override
+            public void handle(@Nonnull Cursor cursor)
+            {
+                T object = creator.createObject(cursor);
+                list.add(object);
+            }
+        });
         cursor.close();
         return list;
     }
 
     @Nullable
-    private static <T> T createObjectByCursor(@Nonnull Cursor cursor, @Nonnull ObjectCreatorByCursor<T> creator)
+    private static <T> T createObjectByCursor(@Nullable Cursor cursor, @Nonnull ObjectCreatorByCursor<T> creator)
     {
+        if (cursor == null)
+        {
+            return null;
+        }
+
         cursor.moveToFirst();
         T object = null;
         if(!cursor.isAfterLast())

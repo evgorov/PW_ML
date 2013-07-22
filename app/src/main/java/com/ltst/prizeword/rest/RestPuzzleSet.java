@@ -1,6 +1,7 @@
 package com.ltst.prizeword.rest;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class RestPuzzleSet
         this.type = type;
     }
 
-    public int getOnth()
+    public int getMonth()
     {
         return month;
     }
@@ -108,5 +109,33 @@ public class RestPuzzleSet
     public void setPuzzles(List<String> puzzles)
     {
         this.puzzles = puzzles;
+    }
+
+    public static class RestPuzzleSetsHolder
+    {
+        private List<RestPuzzleSet> mPuzzleSets;
+        private HttpStatus mHttpStatus;
+
+        public RestPuzzleSetsHolder(){}
+
+        public List<RestPuzzleSet> getPuzzleSets()
+        {
+            return mPuzzleSets;
+        }
+
+        public void setPuzzleSets(List<RestPuzzleSet> puzzleSets)
+        {
+            mPuzzleSets = puzzleSets;
+        }
+
+        public HttpStatus getHttpStatus()
+        {
+            return mHttpStatus;
+        }
+
+        public void setHttpStatus(HttpStatus httpStatus)
+        {
+            mHttpStatus = httpStatus;
+        }
     }
 }

@@ -17,10 +17,11 @@ public interface IDbReader
     @Nullable UserData getUserByEmail(@Nonnull String email);
     @Nullable List<UserProvider> getUserProvidersByUserId(long id);
 
-    @Nullable PuzzleSet getPuzzleSetById(long id);
     @Nullable PuzzleSet getPuzzleSetByServerId(@Nonnull String serverId);
-
     @Nullable Puzzle getPuzzleById(long id);
+    @Nullable List<PuzzleSet> getPuzzleSets();
+
+    @Nullable PuzzleSet getPuzzleSetById(long id);
     @Nullable Puzzle getPuzzleByServerId(@Nonnull String serverId);
     @Nullable List<Puzzle> getPuzzleListBySetId(long setId);
 
