@@ -72,7 +72,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragments = new SparseArrayCompat<Fragment>();
 
         checkLauchingAppByLink();
-        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override

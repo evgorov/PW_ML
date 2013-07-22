@@ -2,8 +2,6 @@ package com.ltst.prizeword.crossword.view;
 
 import android.os.Bundle;
 
-import android.support.v7.widget.GridLayout;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 
@@ -12,7 +10,6 @@ import javax.annotation.Nonnull;
 public class OneCrosswordActivity extends SherlockActivity
 {
     private @Nonnull CrosswordBackgroundView mCrosswordBgImage;
-    private @Nonnull GridLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

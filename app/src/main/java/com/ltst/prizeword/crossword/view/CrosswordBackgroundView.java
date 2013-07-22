@@ -11,10 +11,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.ImageView;
 
 import javax.annotation.Nonnull;
 
-public class CrosswordBackgroundView extends View
+public class CrosswordBackgroundView extends ImageView
 {
     private @Nonnull Bitmap mItemBitmap;
     private @Nonnull Bitmap mBackgroundBitmap;
@@ -82,7 +83,8 @@ public class CrosswordBackgroundView extends View
         int saveCount = canvas.getSaveCount();
         canvas.save();
 
-        canvas.setMatrix(mMatrix);
+        canvas.scale(mScaleFactor, mScaleFactor);
+//        canvas.setMatrix(mMatrix);
 
         canvas.drawBitmap(mBackgroundBitmap, 0, 0, null);
         canvas.drawBitmap(mItemBitmap, 10, 10, null);
@@ -130,62 +132,62 @@ public class CrosswordBackgroundView extends View
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        switch (event.getAction() & MotionEvent.ACTION_MASK)
-        {
-            case MotionEvent.ACTION_DOWN:
-                mMotion = DetectedMotion.DRAG;
-
-                //We assign the current X and Y coordinate of the finger to startX and startY minus the previously translated
-                //amount for each coordinates This works even when we are translating the first time because the initial
-                //values for these two variables is zero.
-                mStartX = event.getX() - mPreviousTranslateX;
-                mStartY = event.getY() - mPreviousTranslateY;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                mTranslateX = event.getX() - mStartX;
-                mTranslateY = event.getY() - mStartY;
-
-                //We cannot use startX and startY directly because we have adjusted their values using the previous translation values.
-                //This is why we need to add those values to startX and startY so that we can get the actual coordinates of the finger.
-                double distance = Math.sqrt(
-                        Math.pow(event.getX() - (mStartX + mPreviousTranslateX), 2) +
-                                Math.pow(event.getY() - (mStartY + mPreviousTranslateY), 2)
-                );
-
-                if (distance > 0)
-                {
-                    mIsDragging = true;
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mMotion = DetectedMotion.ZOOM;
-                break;
-            case MotionEvent.ACTION_UP:
-                mMotion = DetectedMotion.NONE;
-                mIsDragging = false;
-
-                //All fingers went up, so let's save the value of translateX and translateY into previousTranslateX and
-                //previousTranslate
-                mPreviousTranslateX = mTranslateX;
-                mPreviousTranslateY = mTranslateY;
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                mMotion = DetectedMotion.DRAG;
-
-                //This is not strictly necessary; we save the value of translateX and translateY into previousTranslateX
-                //and previousTranslateY when the second finger goes up
-                mPreviousTranslateX = mTranslateX;
-                mPreviousTranslateY = mTranslateY;
-                break;
-        }
-
+//        switch (event.getAction() & MotionEvent.ACTION_MASK)
+//        {
+//            case MotionEvent.ACTION_DOWN:
+//                mMotion = DetectedMotion.DRAG;
+//
+//                //We assign the current X and Y coordinate of the finger to startX and startY minus the previously translated
+//                //amount for each coordinates This works even when we are translating the first time because the initial
+//                //values for these two variables is zero.
+//                mStartX = event.getX() - mPreviousTranslateX;
+//                mStartY = event.getY() - mPreviousTranslateY;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                mTranslateX = event.getX() - mStartX;
+//                mTranslateY = event.getY() - mStartY;
+//
+//                //We cannot use startX and startY directly because we have adjusted their values using the previous translation values.
+//                //This is why we need to add those values to startX and startY so that we can get the actual coordinates of the finger.
+//                double distance = Math.sqrt(
+//                        Math.pow(event.getX() - (mStartX + mPreviousTranslateX), 2) +
+//                                Math.pow(event.getY() - (mStartY + mPreviousTranslateY), 2)
+//                );
+//
+//                if (distance > 0)
+//                {
+//                    mIsDragging = true;
+//                }
+//                break;
+//            case MotionEvent.ACTION_POINTER_DOWN:
+//                mMotion = DetectedMotion.ZOOM;
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                mMotion = DetectedMotion.NONE;
+//                mIsDragging = false;
+//
+//                //All fingers went up, so let's save the value of translateX and translateY into previousTranslateX and
+//                //previousTranslate
+//                mPreviousTranslateX = mTranslateX;
+//                mPreviousTranslateY = mTranslateY;
+//                break;
+//            case MotionEvent.ACTION_POINTER_UP:
+//                mMotion = DetectedMotion.DRAG;
+//
+//                //This is not strictly necessary; we save the value of translateX and translateY into previousTranslateX
+//                //and previousTranslateY when the second finger goes up
+//                mPreviousTranslateX = mTranslateX;
+//                mPreviousTranslateY = mTranslateY;
+//                break;
+//        }
+//
         mScaleDetector.onTouchEvent(event);
 
-        if ((mMotion == DetectedMotion.DRAG && mScaleFactor != 1f && mIsDragging) || mMotion == DetectedMotion.ZOOM)
-        {
-            configureBounds();
-            invalidate();
-        }
+//        if ((mMotion == DetectedMotion.DRAG && mScaleFactor != 1f && mIsDragging) || mMotion == DetectedMotion.ZOOM)
+//        {
+//            configureBounds();
+//            invalidate();
+//        }
 
         return true;
     }

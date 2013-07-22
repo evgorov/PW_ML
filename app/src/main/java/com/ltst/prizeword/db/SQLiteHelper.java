@@ -15,7 +15,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
 
     public static final @Nonnull String TNAME_PUZZLE_SETS  = "puzzleSets";
     public static final @Nonnull String TNAME_PUZZLES      = "puzzles";
-    public static final @Nonnull String TNAME_PUZZLE_DATA  = "puzzleData";
     public static final @Nonnull String TNAME_PUZZLE_QUESTIONS  = "puzzleQuestions";
 
     public static final @Nonnull String TNAME_IMAGES            = "images";
@@ -25,40 +24,29 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
             + ColsPuzzleSets.ID             + " integer not null primary key autoincrement, "
+            + ColsPuzzleSets.SERVER_ID      + " text not null,  "
             + ColsPuzzleSets.NAME           + " text not null,  "
             + ColsPuzzleSets.IS_BOUGHT      + " boolean not null default false, "
             + ColsPuzzleSets.TYPE           + " text not null, "
-            + ColsPuzzleSets.SOLVED_COUNT   + " integer not null default 0, "
-            + ColsPuzzleSets.TOTAL_COUNT    + " integer not null,  "
-            + ColsPuzzleSets.PERCENT        + " integer not null default 0, "
-            + ColsPuzzleSets.SCORE          + " integer not null default 0)";
+            + ColsPuzzleSets.MONTH          + " integer not null default 0, "
+            + ColsPuzzleSets.YEAR           + " integer not null default 0, "
+            + ColsPuzzleSets.CREATED_AT     + " text not null, "
+            + ColsPuzzleSets.IS_PUBLISHED   + " boolean not null default false, "
+            + ColsPuzzleSets.PUZZLES_SERVER_IDS  + " text not null)";
 
     private static final String CREATE_PUZZLES_QUERY = "create table "
             + TNAME_PUZZLES + "("
             + ColsPuzzles.ID             + " integer not null primary key autoincrement, "
             + ColsPuzzles.SET_ID         + " integer not null,  "
+            + ColsPuzzles.SERVER_ID      + " text not null, "
             + ColsPuzzles.NAME           + " text not null, "
             + ColsPuzzles.ISSUED_AT      + " text not null, "
-            + ColsPuzzles.PROGRESS       + " integer not null default 0,  "
             + ColsPuzzles.BASE_SCORE     + " integer not null, "
             + ColsPuzzles.TIME_GIVEN     + " integer not null, "
             + ColsPuzzles.TIME_LEFT      + " integer not null, "
             + ColsPuzzles.SCORE          + " integer not null default 0, "
             + ColsPuzzles.IS_SOLVED      + " boolean not null default false, "
             + " foreign key (" + ColsPuzzles.SET_ID + ") references "
-            + TNAME_PUZZLE_SETS + " (" + ColsPuzzleSets.ID + ") on delete cascade)";
-
-    private static final String CREATE_PUZZLE_DATA_QUERY = "create table "
-            + TNAME_PUZZLE_DATA + "("
-            + ColsPuzzleData.ID          + " integer not null primary key autoincrement, "
-            + ColsPuzzleData.PUZZLE_ID   + " integer not null, "
-            + ColsPuzzleData.SET_ID      + " integer not null, "
-            + ColsPuzzleData.NAME        + " text not null, "
-            + ColsPuzzleData.WIDTH       + " integer not null, "
-            + ColsPuzzleData.HEIGHT      + " integer not null, "
-            + " foreign key (" + ColsPuzzleData.PUZZLE_ID + ") references "
-            + TNAME_PUZZLES + " (" + ColsPuzzles.ID + ") on delete cascade, "
-            + " foreign key (" + ColsPuzzleData.SET_ID + ") references "
             + TNAME_PUZZLE_SETS + " (" + ColsPuzzleSets.ID + ") on delete cascade)";
 
     private static final String CREATE_PUZZLE_QUESTIONS_QUERY = "create table "
@@ -73,7 +61,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsPuzzleQuestions.ANSWER            + " text not null, "
             + ColsPuzzleQuestions.ANSWER_POSITION   + " text not null, "
             + " foreign key (" + ColsPuzzleQuestions.PUZZLE_DATA_ID + ") references "
-            + TNAME_PUZZLE_DATA + " (" + ColsPuzzleData.ID + ") on delete cascade)";
+            + TNAME_PUZZLES + " (" + ColsPuzzles.ID + ") on delete cascade)";
 
     private static final String CREATE_IMAGES_QUERY = "create table "
             + TNAME_IMAGES + "("
@@ -111,22 +99,24 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final class ColsPuzzleSets
     {
         public static final @Nonnull String ID              = "_id";
+        public static final @Nonnull String SERVER_ID       = "serverId";
         public static final @Nonnull String NAME            = "name";
         public static final @Nonnull String IS_BOUGHT       = "bought";
         public static final @Nonnull String TYPE            = "type";
-        public static final @Nonnull String SOLVED_COUNT    = "solvedCount";
-        public static final @Nonnull String TOTAL_COUNT     = "totalCount";
-        public static final @Nonnull String PERCENT         = "percent";
-        public static final @Nonnull String SCORE           = "score";
+        public static final @Nonnull String MONTH           = "month";
+        public static final @Nonnull String YEAR            = "year";
+        public static final @Nonnull String CREATED_AT      = "createdAt";
+        public static final @Nonnull String IS_PUBLISHED       = "published";
+        public static final @Nonnull String PUZZLES_SERVER_IDS  = "puzzlesServerIds";
     }
 
     public static final class ColsPuzzles
     {
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String SET_ID          = "setId";
+        public static final @Nonnull String SERVER_ID       = "serverId";
         public static final @Nonnull String NAME            = "name";
         public static final @Nonnull String ISSUED_AT       = "issuedAt";
-        public static final @Nonnull String PROGRESS        = "progress";
         public static final @Nonnull String BASE_SCORE      = "baseScore";
         public static final @Nonnull String TIME_GIVEN      = "timeGiven";
         public static final @Nonnull String TIME_LEFT       = "timeLeft";
@@ -285,7 +275,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         db.execSQL(CREATE_IMAGES_QUERY);
         db.execSQL(CREATE_PUZZLE_SETS_QUERY);
         db.execSQL(CREATE_PUZZLES_QUERY);
-        db.execSQL(CREATE_PUZZLE_DATA_QUERY);
         db.execSQL(CREATE_PUZZLE_QUESTIONS_QUERY);
     }
 
