@@ -3,6 +3,8 @@ package com.ltst.prizeword.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
 
@@ -43,35 +45,9 @@ public class DbWriter extends  DbReader implements IDbWriter
     private void putNewUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
         mDb.beginTransaction();
-        ContentValues cvUser = new ContentValues();
-        cvUser.put(ColsUsers.NAME, user.name);
-        cvUser.put(ColsUsers.SURNAME, user.surname);
-        cvUser.put(ColsUsers.EMAIL, user.email);
-        cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
-        cvUser.put(ColsUsers.CITY, user.city);
-        cvUser.put(ColsUsers.SOLVED, user.solved);
-        cvUser.put(ColsUsers.POSITION, user.position);
-        cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
-        cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
-        cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
-        cvUser.put(ColsUsers.HINTS, user.hints);
-        cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
-        cvUser.put(ColsUsers.PREVIEW_KEY, user.previewUrl);
+        ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
 
-        @Nullable List<ContentValues> cvProviders = null;
-        if (providers != null)
-        {
-            cvProviders = new ArrayList<ContentValues>(providers.size());
-            for (Iterator<UserProvider> iterator = providers.iterator(); iterator.hasNext(); )
-            {
-                UserProvider prov =  iterator.next();
-                ContentValues cv = new ContentValues();
-                cv.put(ColsProviders.NAME, prov.name);
-                cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
-                cv.put(ColsProviders.TOKEN, prov.providerToken);
-                cvProviders.add(cv);
-            }
-        }
+        @Nullable List<ContentValues> cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
 
         try
         {
@@ -90,7 +66,7 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
         catch(Throwable e)
         {
-            Log.e(e);
+            Log.e(e.getMessage());
         }
         finally
         {
@@ -106,57 +82,156 @@ public class DbWriter extends  DbReader implements IDbWriter
         {
             return;
         }
+        ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
 
-        ContentValues cvUser = new ContentValues();
-        cvUser.put(ColsUsers.NAME, user.name);
-        cvUser.put(ColsUsers.SURNAME, user.surname);
-        cvUser.put(ColsUsers.EMAIL, user.email);
-        cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
-        cvUser.put(ColsUsers.CITY, user.city);
-        cvUser.put(ColsUsers.SOLVED, user.solved);
-        cvUser.put(ColsUsers.POSITION, user.position);
-        cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
-        cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
-        cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
-        cvUser.put(ColsUsers.HINTS, user.hints);
-        cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
-
-        @Nullable List<ContentValues> cvProviders = null;
-        if (providers != null)
-        {
-            cvProviders = new ArrayList<ContentValues>(providers.size());
-            for (Iterator<UserProvider> iterator = providers.iterator(); iterator.hasNext(); )
-            {
-                UserProvider prov =  iterator.next();
-                ContentValues cv = new ContentValues();
-                cv.put(ColsProviders.NAME, prov.name);
-                cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
-                cv.put(ColsProviders.TOKEN, prov.providerToken);
-                cvProviders.add(cv);
-            }
-        }
+//        @TODO логику обновления провайдеров пользователя
+//        @Nullable List<ContentValues> cvProviders = null;
+//        boolean addProvider = false;
+//        boolean updateProviders = false;
+//        if(providers.size() > existingProviders.size())
+//        {
+//            for (UserProvider existingProvider : existingProviders)
+//            {
+//                providers.remove(existingProvider);
+//            }
+//            cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
+//        }
 
         mDb.beginTransaction();
         try
         {
             mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
-            if (cvProviders != null)
-            {
-                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
-                {
-                    ContentValues cvProv =  iterator.next();
-                    mDb.update(TNAME_PROVIDERS, cvProv, ColsProviders.USER_ID + "=" + id, null);
-                }
-            }
+//            if (cvProviders != null)
+//            {
+//                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+//                {
+//                    ContentValues cvProv = iterator.next();
+//                    mDb.update(TNAME_PROVIDERS, cvProv, ColsProviders.USER_ID + "=" + id, null);
+//                }
+//            }
+
         }
         catch (Throwable e)
         {
-            Log.e(e);
+            Log.e(e.getMessage());
         }
         finally
         {
             mDb.endTransaction();
         }
+    }
 
+    @Override
+    public void putPuzzleSet(@Nonnull PuzzleSet set)
+    {
+        mDb.beginTransaction();
+        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
+
+        try
+        {
+            mDb.insert(TNAME_PUZZLE_SETS, null, values);
+        }
+        catch (Throwable e)
+        {
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            mDb.endTransaction();
+        }
+    }
+
+    @Override
+    public void putPuzzle(@Nonnull Puzzle puzzle)
+    {
+
+    }
+
+    //===== ContentValues creators =======================
+
+    private ContentValuesCreator<UserData> mUserDataContentValuesCreator = new ContentValuesCreator<UserData>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable UserData user)
+        {
+            ContentValues cvUser = new ContentValues();
+            if (user != null)
+            {
+                cvUser.put(ColsUsers.NAME, user.name);
+                cvUser.put(ColsUsers.SURNAME, user.surname);
+                cvUser.put(ColsUsers.EMAIL, user.email);
+                cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
+                cvUser.put(ColsUsers.CITY, user.city);
+                cvUser.put(ColsUsers.SOLVED, user.solved);
+                cvUser.put(ColsUsers.POSITION, user.position);
+                cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
+                cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
+                cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
+                cvUser.put(ColsUsers.HINTS, user.hints);
+                cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
+            }
+            return cvUser;
+        }
+    };
+
+    private ContentValuesCreator<UserProvider> mUserProviderContentValuesCreator = new ContentValuesCreator<UserProvider>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable UserProvider prov)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsProviders.NAME, prov.name);
+            cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
+            cv.put(ColsProviders.TOKEN, prov.providerToken);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<PuzzleSet> mPuzzleSetContentValuesCreator = new ContentValuesCreator<PuzzleSet>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable PuzzleSet object)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsPuzzleSets.SERVER_ID, object.serverId);
+            cv.put(ColsPuzzleSets.NAME, object.name);
+            cv.put(ColsPuzzleSets.IS_BOUGHT, object.isBought);
+            cv.put(ColsPuzzleSets.TYPE, object.type);
+            cv.put(ColsPuzzleSets.MONTH, object.month);
+            cv.put(ColsPuzzleSets.YEAR, object.year);
+            cv.put(ColsPuzzleSets.CREATED_AT, object.createdAt);
+            cv.put(ColsPuzzleSets.IS_PUBLISHED, object.isPublished);
+            StringBuilder builder = new StringBuilder();
+            for (String s : object.puzzlesId)
+            {
+                builder.append(s);
+                if(object.puzzlesId.indexOf(s) != object.puzzlesId.size() - 1)
+                    builder.append(SET_PUZZLE_IDS_SEPARATOR);
+            }
+            cv.put(ColsPuzzleSets.PUZZLES_SERVER_IDS, builder.toString());
+            return cv;
+        }
+    };
+
+    // ========================================================
+
+    private <T> List<ContentValues> createContentValuesList(@Nullable List<T> objectList, @Nonnull ContentValuesCreator<T> creator)
+    {
+        @Nullable List<ContentValues> cvList = null;
+        if (objectList != null)
+        {
+            cvList = new ArrayList<ContentValues>(objectList.size());
+            for (T object : objectList)
+            {
+                ContentValues cv = creator.createObjectContentValues(object);
+                cvList.add(cv);
+            }
+        }
+        return cvList;
+    }
+
+    public interface ContentValuesCreator<T>
+    {
+        public ContentValues createObjectContentValues(@Nullable T object);
     }
 }

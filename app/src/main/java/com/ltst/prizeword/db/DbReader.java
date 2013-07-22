@@ -22,7 +22,7 @@ import static com.ltst.prizeword.db.SQLiteHelper.*;
 
 public class DbReader implements IDbReader
 {
-    private static final String SET_PUZZLE_IDS_SEPARATOR = "|";
+    protected static final String SET_PUZZLE_IDS_SEPARATOR = "|";
 
     private static final @Nonnull String[] FIELDS_P_USER =
     {
