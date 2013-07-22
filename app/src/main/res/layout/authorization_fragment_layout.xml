@@ -42,7 +42,10 @@
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
         </LinearLayout>
 
 
@@ -50,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
 
-                >
+                android:fillViewport="false">
 
             <LinearLayout
                     android:layout_height="wrap_content"
@@ -67,12 +70,17 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_enter_edittext1_bg"
                         android:singleLine="true"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         android:inputType="textEmailAddress"
                         android:textColor="@android:color/white"
                         android:layout_marginTop="88dp"
                         android:paddingLeft="10dp"
-                        android:textColorHint="@android:color/white"
-                        android:hint="e-mail"/>
+                        android:textColorHint="@color/hint_color"
+                        android:hint="e-mail"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDy="-1"
+                        android:shadowRadius="2"/>
 
                 <ImageView
                         android:layout_height="wrap_content"
@@ -85,10 +93,15 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_enter_edittext2_bg"
                         android:singleLine="true"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hint_color"
                         android:hint="пароль"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDy="-1"
+                        android:shadowRadius="2"
 
                         />
 

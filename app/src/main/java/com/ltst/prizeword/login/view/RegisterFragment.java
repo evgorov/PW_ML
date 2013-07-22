@@ -68,7 +68,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
 
     private @Nonnull Button mRegisterDateButton;
     private @Nonnull Button mNavBackButton;
-    private @Nonnull Button mRegisterSetDateButton;
+
 
     private @Nonnull FrameLayout mDatePickerFrame;
     private @Nonnull DatePicker mDatePicker;
@@ -116,16 +116,15 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mNavBackButton = (Button) v.findViewById(R.id.registration_nav_back_button);
 
         mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
-        mRegisterSetDateButton = (Button) v.findViewById(R.id.register_set_date_btn);
-        mDatePickerFrame = (FrameLayout) v.findViewById(R.id.date_picker_frame);
-        mDatePicker = (DatePicker)  v.findViewById(R.id.datePicker1);
+
+
 
 
         mRegisterFinishButton = (Button) v.findViewById(R.id.registration_finish_button);
         mNavBackButton.setOnClickListener(this);
         mRegisterFinishButton.setOnClickListener(this);
         mRegisterDateButton.setOnClickListener(this);
-        mRegisterSetDateButton.setOnClickListener(this);
+
         pattern = "yyyy-MM-dd"; //iso 8061
         fr = "dd MMMM yyyy";
 
@@ -246,20 +245,10 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                 performRegistration();
                 break;
             case R.id.register_date_born_btn:
-               /* mDatePickerFrame.setVisibility(VISIBLE);*/
+
                 showDatePickerDialog();
                 break;
-            case R.id.register_set_date_btn:
-                /*mDatePickerFrame.setVisibility(View.GONE);
-                try
-                {
-                    date=format.parse(mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+ mDatePicker.getDayOfMonth());
-                } catch (ParseException e)
-                {
-                    e.printStackTrace();
-                }
-                mRegisterDateButton.setText(format.format(date));*/
-                break;
+
         }
     }
 
