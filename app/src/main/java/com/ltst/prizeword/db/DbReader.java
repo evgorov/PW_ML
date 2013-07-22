@@ -81,27 +81,7 @@ public class DbReader implements IDbReader
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
                 FIELDS_P_USER, ColsUsers.EMAIL, email);
-        UserData user = createObjectByCursor(cursor, new ObjectCreatorByCursor<UserData>()
-        {
-            @Override
-            public UserData createObject(Cursor c)
-            {
-                return new UserData(c.getLong(0),
-                        c.getString(1),
-                        c.getString(2),
-                        c.getString(3),
-                        c.getString(4),
-                        c.getString(5),
-                        c.getInt(6),
-                        c.getInt(7),
-                        c.getInt(8),
-                        c.getInt(9),
-                        c.getInt(10),
-                        c.getInt(11),
-                        c.getString(12),
-                        null);
-            }
-        });
+        UserData user = createObjectByCursor(cursor, mUserDataCreator);
         return user;
     }
 
@@ -111,27 +91,7 @@ public class DbReader implements IDbReader
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
                 FIELDS_P_USER, ColsUsers.ID, id);
-        UserData user = createObjectByCursor(cursor, new ObjectCreatorByCursor<UserData>()
-        {
-            @Override
-            public UserData createObject(Cursor c)
-            {
-                return new UserData(c.getLong(0),
-                        c.getString(1),
-                        c.getString(2),
-                        c.getString(3),
-                        c.getString(4),
-                        c.getString(5),
-                        c.getInt(6),
-                        c.getInt(7),
-                        c.getInt(8),
-                        c.getInt(9),
-                        c.getInt(10),
-                        c.getInt(11),
-                        c.getString(12),
-                        null);
-            }
-        });
+        UserData user = createObjectByCursor(cursor, mUserDataCreator);
         return user;
     }
 
@@ -173,6 +133,7 @@ public class DbReader implements IDbReader
         @Nullable PuzzleSet set = createObjectByCursor(cursor, mPuzzleSetCreator);
         return set;
     }
+    // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
     {
@@ -192,6 +153,30 @@ public class DbReader implements IDbReader
             return new PuzzleSet(id, serverId, name, bought, type, month, year, created_at, published, puzzlesServerIds);
         }
     };
+
+    private ObjectCreatorByCursor<UserData> mUserDataCreator = new ObjectCreatorByCursor<UserData>()
+    {
+        @Override
+        public UserData createObject(Cursor c)
+        {
+            return new UserData(c.getLong(0),
+                    c.getString(1),
+                    c.getString(2),
+                    c.getString(3),
+                    c.getString(4),
+                    c.getString(5),
+                    c.getInt(6),
+                    c.getInt(7),
+                    c.getInt(8),
+                    c.getInt(9),
+                    c.getInt(10),
+                    c.getInt(11),
+                    c.getString(12),
+                    null);
+        }
+    };
+
+    //===========================================
 
     private static @Nonnull List<String> parsePuzzleServerIds(@Nonnull String idsSeparated)
     {
@@ -236,8 +221,8 @@ public class DbReader implements IDbReader
         return object;
     }
 
-    public abstract static class ObjectCreatorByCursor<T>
+    public interface ObjectCreatorByCursor<T>
     {
-        public abstract T createObject(Cursor c);
+        public T createObject(Cursor c);
     }
 }
