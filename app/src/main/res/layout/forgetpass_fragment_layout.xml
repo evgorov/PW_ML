@@ -46,32 +46,22 @@
         <ScrollView
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-
                 android:visibility="visible">
 
-            <FrameLayout
+            <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:background="@drawable/login_remind_bg">
-
-
-                <Button
-                        android:id="@+id/button2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="70dp"
-                        android:background="@drawable/login_remind_send_but"/>
-
-
                 <EditText
                         android:id="@+id/forgetpass_email_etext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_remind_edittext_bg"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="214dp"
+                        android:layout_marginTop="170dp"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
@@ -88,12 +78,10 @@
                         android:id="@+id/forgetpass_send_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
                         android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="70dp"
                         android:background="@drawable/login_remind_send_but"/>
-
-
-            </FrameLayout>
+            </LinearLayout>
 
         </ScrollView>
 

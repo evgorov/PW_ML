@@ -51,9 +51,7 @@
 
         <ScrollView
                 android:layout_height="match_parent"
-                android:layout_width="match_parent"
-
-                android:fillViewport="false">
+                android:layout_width="match_parent">
 
             <LinearLayout
                     android:layout_height="wrap_content"
@@ -74,7 +72,7 @@
                         android:textSize="14sp"
                         android:inputType="textEmailAddress"
                         android:textColor="@android:color/white"
-                        android:layout_marginTop="88dp"
+                        android:layout_marginTop="100dp"
                         android:paddingLeft="10dp"
                         android:textColorHint="@color/hint_color"
                         android:hint="e-mail"

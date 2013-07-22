@@ -31,8 +31,8 @@
     <string name="register_screen_surname">Surname*</string>
     <string name="register_screen_email">E-mail*</string>
     <string name="register_screen_pass">Password*</string>
-    <string name="register_screen_retry_pass">Repeat password</string>
-    <string name="register_screen_date_born">Birthdate</string>
+    <string name="register_screen_retry_pass">Repeat\npassword</string>
+    <string name="register_screen_date_born">Birth\ndate</string>
     <string name="register_screen_city">City</string>
 
     // ==== toast messages ====
