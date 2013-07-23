@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:id="@+id/header_listview_photo_img"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="left|center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/ic_launcher"/>
+
+    <TextView
+            android:id="@+id/header_listview_nickname_tview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="20sp"
+            android:clickable="false"
+            android:text="Nickname"/>
+
+    <TextView
+            android:id="@+id/header_listview_personal_record_tview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="false"
+            android:text="Personal record:"/>
+
+    <TextView
+            android:id="@+id/header_listview_points_tview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:clickable="false"
+            android:text="1200 очков"/>
+
+    <Button
+            android:id="@+id/header_listview_logout_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Смена пользователя"/>
+
+</LinearLayout>

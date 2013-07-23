@@ -9,7 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -51,6 +55,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
+    private @Nonnull HeaderHolder mDrawerHeader;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
 
@@ -66,6 +71,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         mBcConnector = new BcConnector(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
+        View v = getLayoutInflater().inflate(R.layout.header_listview, null);
+        mDrawerHeader = new HeaderHolder();
+        mDrawerHeader.setHolder(v);
+        mDrawerList.addHeaderView(v);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
@@ -283,5 +292,23 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void unlockDrawer()
     {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    //==== Header =============
+
+    public class HeaderHolder{
+        public @Nonnull ImageView imgPhoto;
+        public @Nonnull TextView tvNickname;
+        public @Nonnull TextView tvRecordtitle;
+        public @Nonnull TextView tvPoints;
+        public @Nonnull Button btnLogout;
+
+        public void setHolder(@Nonnull View v){
+            this.imgPhoto = (ImageView) v.findViewById(R.id.header_listview_photo_img);
+            this.tvNickname = (TextView) v.findViewById(R.id.header_listview_nickname_tview);
+            this.tvPoints = (TextView) v.findViewById(R.id.header_listview_points_tview);
+            this.tvRecordtitle = (TextView) v.findViewById(R.id.header_listview_personal_record_tview);
+            this.btnLogout = (Button) v.findViewById(R.id.header_listview_logout_btn);
+        }
     }
 }
