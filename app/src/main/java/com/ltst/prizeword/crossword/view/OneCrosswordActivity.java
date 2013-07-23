@@ -29,7 +29,7 @@ public class OneCrosswordActivity extends SherlockActivity
         return intent;
     }
 
-    private @Nonnull CrosswordBackgroundView mCrosswordBgImage;
+    private @Nonnull PuzzleView mCrosswordBgImage;
     private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
@@ -41,7 +41,7 @@ public class OneCrosswordActivity extends SherlockActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_crossword);
-        mCrosswordBgImage = (CrosswordBackgroundView) findViewById(R.id.one_crossword_view);
+        mCrosswordBgImage = (PuzzleView) findViewById(R.id.one_crossword_view);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)

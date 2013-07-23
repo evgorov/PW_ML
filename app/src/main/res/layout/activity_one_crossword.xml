@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".OneCrosswordActivity">
 
-    <com.ltst.prizeword.crossword.view.CrosswordBackgroundView
+    <com.ltst.prizeword.crossword.view.PuzzleView
             android:id="@+id/one_crossword_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
