@@ -25,15 +25,18 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadOnePuzzleFromInternet.sessionKey";
     public static final @Nonnull String BF_PUZZLE_ID = "LoadOnePuzzleFromInternet.puzzleId";
+    public static final @Nonnull String BF_SET_ID = "LoadOnePuzzleFromInternet.setId";
+
     public static final @Nonnull String BF_PUZZLE = "LoadOnePuzzleFromInternet.puzzle";
     public static final @Nonnull String BF_STATUS_CODE = "LoadOnePuzzleFromInternet.statusCode";
 
     public static final @Nonnull
-    Intent createIntent(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    Intent createIntent(@Nonnull String sessionKey, @Nonnull String puzzleId, long setId)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_PUZZLE_ID, puzzleId);
+        intent.putExtra(BF_SET_ID, setId);
         return intent;
     }
     @Nullable
@@ -47,6 +50,8 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         }
         @Nonnull String sessionKey = extras.getString(BF_SESSION_KEY);
         @Nonnull String puzzleId = extras.getString(BF_PUZZLE_ID);
+        long setId = extras.getLong(BF_SET_ID);
+
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
@@ -61,6 +66,7 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
                 Puzzle puzzle = parsePuzzle(holder);
                 if (puzzle != null)
                 {
+                    puzzle.setId = setId;
                     env.dbw.putPuzzle(puzzle);
                     return packToBundle(puzzle, holder.getStatus().value());
                 }
