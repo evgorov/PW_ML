@@ -54,13 +54,13 @@
             <FrameLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center_horizontal">
+                    android:layout_gravity="center">
 
                 <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:background="@drawable/login_register_main_bg"
                         >
@@ -361,7 +361,6 @@
 
             </FrameLayout>
         </ScrollView>
-
     </LinearLayout>
 
 </FrameLayout>

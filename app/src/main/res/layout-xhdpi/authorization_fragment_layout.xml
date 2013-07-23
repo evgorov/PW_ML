@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-
         <LinearLayout
                 android:id="@+id/autho_nav_bar"
                 android:layout_width="match_parent"
@@ -63,10 +62,11 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:background="@drawable/login_enter_main_bg"
                         >
+
 
                     <EditText
                             android:id="@+id/login_email_etext"
@@ -129,6 +129,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/login_enter_linesahdow_between_edittext"/>
             </FrameLayout>
+
         </ScrollView>
 
     </LinearLayout>
