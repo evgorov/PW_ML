@@ -70,9 +70,9 @@ public class PuzzleTilesLayer implements ICanvasLayer
         int tileHeight = mEmptyLetter.getHeight();
         RectF rect = new RectF(mPadding, mPadding, tileWidth + mPadding, tileHeight + mPadding);
 
-        for (int i = 0; i < mPuzzleWidth; i++)
+        for (int i = 0; i < mPuzzleHeight; i++)
         {
-            for (int j = 0; j < mPuzzleHeight; j++)
+            for (int j = 0; j < mPuzzleWidth; j++)
             {
                 canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
                 rect.left += tileWidth + mTileGap;
