@@ -15,10 +15,15 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel.PuzzleSetType;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -83,8 +88,21 @@ public class CrosswordsFragment extends SherlockFragment
 
     private void launchCrosswordActivity()
     {
-        @Nonnull Intent intent = new Intent(mContext, OneCrosswordActivity.class);
-        mContext.startActivity(intent);
+        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull String freeSetServerId = Strings.EMPTY;
+        for (PuzzleSet set : sets)
+        {
+            if(set.type.equals(PuzzleSetType.FREE))
+            {
+                freeSetServerId = set.serverId;
+                break;
+            }
+        }
+        if (freeSetServerId != Strings.EMPTY)
+        {
+            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSetServerId);
+            mContext.startActivity(intent);
+        }
     }
 
     private IListenerVoid updateHandler = new IListenerVoid()
