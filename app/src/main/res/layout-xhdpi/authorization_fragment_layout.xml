@@ -38,14 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/authorization_fragment_title"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDy="2"
-                    android:shadowRadius="3"/>
+                    style="@style/NavigationBarText"/>
         </LinearLayout>
 
 
@@ -73,18 +66,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_enter_edittext1_bg"
-                            android:singleLine="true"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
                             android:inputType="textEmailAddress"
-                            android:textColor="@android:color/white"
                             android:layout_marginTop="115dp"
-                            android:paddingLeft="10dp"
-                            android:textColorHint="@color/hint_color"
                             android:hint="e-mail"
-                            android:shadowColor="@android:color/black"
-                            android:shadowDy="-1"
-                            android:shadowRadius="2"/>
+                            style="@style/EditTextText"/>
 
 
                     <EditText
@@ -92,18 +77,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_enter_edittext2_bg"
-                            android:singleLine="true"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
                             android:inputType="textPassword"
-                            android:textColor="@android:color/white"
-                            android:paddingLeft="10dp"
-                            android:textColorHint="@color/hint_color"
                             android:hint="пароль"
-                            android:shadowColor="@android:color/black"
-                            android:shadowDy="-1"
-                            android:shadowRadius="2"
-
+                            style="@style/EditTextText"
                             />
 
                     <Button

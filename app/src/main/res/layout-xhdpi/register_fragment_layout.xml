@@ -34,21 +34,13 @@
             <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/white"
                     android:text="Регистрация"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical|center"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDy="2"
-                    android:shadowRadius="3"/>
+                    style="@style/NavigationBarText"/>
         </LinearLayout>
 
         <ScrollView
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-
                 >
 
             <FrameLayout
@@ -112,36 +104,20 @@
                                     android:id="@+id/register_name_input"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
                                     android:inputType="textCapWords"
                                     android:background="@drawable/login_register_edittext_top"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    android:textColorHint="@color/hint_color"
                                     android:hint="@string/register_screen_name"
-                                    android:shadowColor="@android:color/black"
-                                    android:shadowDy="-1"
-                                    android:shadowRadius="2"
+                                    style="@style/EditTextText"
                                     />
 
                             <EditText
                                     android:id="@+id/register_surname_input"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:singleLine="true"
-                                    android:textStyle="bold"
-                                    android:textSize="14sp"
                                     android:background="@drawable/login_register_edittext_bottom"
                                     android:inputType="textCapWords"
-                                    android:paddingLeft="10dp"
-                                    android:textColor="@android:color/white"
-                                    android:textColorHint="@color/hint_color"
                                     android:hint="@string/register_screen_surname"
-                                    android:shadowColor="@android:color/black"
-                                    android:shadowDy="-1"
-                                    android:shadowRadius="2"
+                                    style="@style/EditTextText"
                                     />
                         </LinearLayout>
                     </LinearLayout>
@@ -169,18 +145,11 @@
                                 android:id="@+id/register_email_input"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:singleLine="true"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:inputType="textEmailAddress"
                                 android:background="@drawable/login_register_edittext_top"
-                                android:paddingLeft="10dp"
-                                android:textColor="@android:color/white"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="10dp"
+                                style="@style/EditTextText"
                                 />
                     </LinearLayout>
 
@@ -205,18 +174,11 @@
                                 android:id="@+id/register_password_input"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:singleLine="true"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:inputType="textPassword"
                                 android:background="@drawable/login_register_textedit_2_2"
-                                android:paddingLeft="10dp"
-                                android:textColor="@android:color/white"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="10dp"
+                                style="@style/EditTextText"
                                 />
                     </LinearLayout>
 
@@ -241,18 +203,11 @@
                                 android:id="@+id/register_password_confirm_input"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:singleLine="true"
-                                android:textStyle="bold"
-                                android:textSize="20sp"
                                 android:inputType="textPassword"
                                 android:background="@drawable/login_register_edittext_bottom"
-                                android:paddingLeft="10dp"
-                                android:textColor="@android:color/white"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="10dp"
+                                style="@style/EditTextText"
                                 />
                     </LinearLayout>
 
@@ -278,17 +233,11 @@
                                 android:id="@+id/register_date_born_btn"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:paddingLeft="10dp"
                                 android:gravity="center_vertical|left"
                                 android:background="@drawable/login_register_date_but"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
                                 android:layout_marginLeft="8dp"
-                                android:layout_marginRight="13dp"/>
+                                android:layout_marginRight="13dp"
+                                style="@style/EditTextText"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -311,18 +260,11 @@
                                 android:id="@+id/register_city_input"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:inputType="textCapWords"
                                 android:background="@drawable/login_register_edittext_3_1"
-                                android:paddingLeft="10dp"
-                                android:textColor="@android:color/white"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="10dp"
+                                style="@style/EditTextText"
                                 />
                     </LinearLayout>
 
