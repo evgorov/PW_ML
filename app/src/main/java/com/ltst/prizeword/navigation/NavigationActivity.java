@@ -28,6 +28,9 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.IAutorization;
+import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
+import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -55,10 +58,12 @@ public class NavigationActivity extends SherlockFragmentActivity
         implements INavigationDrawerActivity<NavigationDrawerItem>,
         IFragmentsHolderActivity,
         IBcConnectorOwner,
-        INavigationDrawerHolder
+        INavigationDrawerHolder,
+        IAutorization
 {
 
     public static final @Nonnull String LOG_TAG = "prizeword";
+    public static final @Nonnull String mURLImage = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
 
     private @Nonnull IBcConnector mBcConnector;
 
@@ -89,7 +94,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
 
-        loadAvatar();
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
         selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
@@ -304,6 +308,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
+    @Override
+    public void onAutotized() {
+        loadUserData();
+    }
+
     //==== Header =============
 
     public class HeaderHolder{
@@ -322,13 +331,35 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    void loadAvatar(){
+    //===== Task loading user datas ==============
+
+    private void loadUserData(){
+        Log.d(LOG_TAG, "loadUserData");
+        SessionLoadingUserData session = new SessionLoadingUserData(){
+
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                String sessionKey = SharedPreferencesValues.getSessionKey(NavigationActivity.this);
+                Log.d(LOG_TAG, "SessionKey = "+sessionKey);
+                return LoadUserDataFromInternetTask.createIntent(sessionKey);
+            }
+        };
+        session.update(new IListenerVoid(){
+            @Override
+            public void handle() {
+            }
+        });
+    }
+
+    private void loadAvatar(@Nonnull String url){
+        final @Nonnull String urlf = url;
         SessionLoadingImage session = new SessionLoadingImage() {
             @Nonnull
             @Override
             protected Intent createIntent() {
-                String url = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
-                return LoadImageTask.createIntent(url);
+//                String url = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
+                return LoadImageTask.createIntent(urlf);
             }
         };
         session.update(new IListenerVoid(){
@@ -360,16 +391,56 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         @Override
         protected void handleData(@Nullable Bundle result) {
-            final String LOG_TAG = "downloader";
-            Log.d(LOG_TAG, "COME!");
+            Log.d(LOG_TAG, "COME LOADING IMAGE!");
             if (result == null)
                 return;
 
             byte[] buffer = result.getByteArray(LoadImageTask.BF_BITMAP);
             if(!byte.class.isEnum()){
-                Log.d(LOG_TAG, "EXIST SOME RESULT!");
+                Log.d(LOG_TAG, "EXIST SOME RESULT LOADING IMAGE!");
                 Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+            }
+        }
+    }
+
+    private abstract class SessionLoadingUserData extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector() {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadUserDataFromInternetTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result) {
+            Log.d(LOG_TAG, "COME LOADING USER DATA!");
+            if (result == null)
+                return;
+
+            UserData data = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
+
+            if( data != null ){
+                Log.d(LOG_TAG, "EXIST SOME RESULT BY LOADING USER DATA");
+                mDrawerHeader.tvNickname.setText(data.name);
+//                loadAvatar(data.previewUrl);
+                loadAvatar(NavigationActivity.mURLImage);
+            }
+            else
+            {
+                Log.d(LOG_TAG, "USER DATA IS NULL");
             }
         }
     }

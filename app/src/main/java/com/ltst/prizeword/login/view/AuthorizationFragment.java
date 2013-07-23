@@ -20,6 +20,7 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.IAutorization;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
@@ -151,6 +152,7 @@ public class AuthorizationFragment extends SherlockFragment
                 else
                 {
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    ((IAutorization) mContext).onAutotized();
                 }
             }
         });
