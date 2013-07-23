@@ -95,7 +95,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center_vertical|center"
-                                    android:background="@drawable/login_register_ava_frame2x"/>
+                                    android:background="@drawable/login_register_ava_frame"/>
                         </FrameLayout>
 
                         <TextView
@@ -104,12 +104,7 @@
                                 android:layout_width="match_parent"
                                 android:text="@string/register_screen_email"
                                 android:layout_marginTop="40dp"
-                                android:textColor="@color/hint_color"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
+                                style="@style/TextViewHint"
                                 android:gravity="right"
                                 />
 
@@ -119,12 +114,7 @@
                                 android:layout_width="match_parent"
                                 android:text="@string/register_screen_pass"
                                 android:layout_marginTop="30dp"
-                                android:textColor="@color/hint_color"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
+                                style="@style/TextViewHint"
                                 android:gravity="right"
                                 />
 
@@ -133,13 +123,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="match_parent"
                                 android:layout_marginTop="20dp"
-                                android:textColor="@color/hint_color"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:text="@string/register_screen_retry_pass"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
+                                style="@style/TextViewHint"
                                 android:gravity="right"
                                 />
 
@@ -148,13 +133,8 @@
                                 android:layout_width="match_parent"
                                 android:singleLine="false"
                                 android:layout_marginTop="20dp"
-                                android:textColor="@color/hint_color"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:text="@string/register_screen_date_born"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
+                                style="@style/TextViewHint"
                                 android:gravity="right"
                                 />
 
@@ -162,13 +142,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="match_parent"
                                 android:layout_marginTop="25dp"
-                                android:textColor="@color/hint_color"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
                                 android:text="@string/register_screen_city"
-                                android:shadowColor="@android:color/black"
-                                android:shadowDy="-1"
-                                android:shadowRadius="2"
+                                style="@style/TextViewHint"
                                 android:gravity="right"
                                 />
 

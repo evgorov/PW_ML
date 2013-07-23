@@ -35,7 +35,7 @@
                     android:textColor="@android:color/white"
                     android:layout_marginLeft="20dp"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:text="@string/forgetpass_fragment_title"
                     android:layout_gravity="center_vertical|center"
                     android:shadowColor="@android:color/black"
@@ -61,13 +61,13 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/login_remind_edittext_bg"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="134dp"
+                        android:layout_marginTop="300dp"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
                         android:textStyle="bold"
                         android:inputType="textEmailAddress"
-                        android:textSize="14sp"
+                        android:textSize="20sp"
                         android:textColorHint="@color/hint_color"
                         android:hint="e-mail"
                         android:shadowColor="@android:color/black"
@@ -79,7 +79,7 @@
                         android:id="@+id/forgetpass_send_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="35dp"
                         android:layout_gravity="center_horizontal|bottom"
                         android:background="@drawable/login_remind_send_but"/>
             </LinearLayout>
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"
-                            android:layout_marginBottom="25dp"
+                            android:layout_marginBottom="45dp"
                             android:background="@drawable/login_remind_sent_done_but"/>
 
                 </FrameLayout>
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:text="Пароль отправлен"
                     android:layout_gravity="center_vertical|center"
                     android:shadowColor="@android:color/black"

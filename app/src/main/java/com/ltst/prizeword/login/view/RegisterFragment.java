@@ -211,6 +211,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         DatePickerDialog dp = new DatePickerDialog(mContext,myCallBack,curYear,curMonth,curDay);
         dp.getDatePicker().setMaxDate(cal.getTimeInMillis());
         dp.setTitle(R.string.register_screen_date_pick_dialog_title);
+        dp.getDatePicker().setCalendarViewShown(false);
 
         dp.show();
     }

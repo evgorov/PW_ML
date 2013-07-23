@@ -17,4 +17,12 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="TextViewHint" >
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#c2b8af</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>

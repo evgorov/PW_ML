@@ -40,7 +40,7 @@
                     android:text="@string/authorization_fragment_title"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:layout_marginLeft="20dp"
                     android:layout_gravity="center_vertical"
                     android:shadowColor="@android:color/black"
@@ -69,10 +69,10 @@
                         android:background="@drawable/login_enter_edittext1_bg"
                         android:singleLine="true"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="20sp"
                         android:inputType="textEmailAddress"
                         android:textColor="@android:color/white"
-                        android:layout_marginTop="115dp"
+                        android:layout_marginTop="207dp"
                         android:paddingLeft="10dp"
                         android:textColorHint="@color/hint_color"
                         android:hint="e-mail"
@@ -92,7 +92,7 @@
                         android:background="@drawable/login_enter_edittext2_bg"
                         android:singleLine="true"
                         android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:textSize="20sp"
                         android:inputType="textPassword"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
@@ -108,14 +108,14 @@
                         android:id="@+id/login_enter_enter_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="50dp"
                         android:background="@drawable/login_enter_but"/>
 
                 <ImageButton
                         android:id="@+id/login_forget_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/login_forget_but"
                         />
             </LinearLayout>
