@@ -223,6 +223,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mEmailLabel.setTextColor(color);
         mPassLabel.setTextColor(color);
         mRetryPassLabel.setTextColor(color);
+        if(color==Color.RED){
+            mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+            mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+            mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+            mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2_error);
+            mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+        }
+        else{
+            mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+            mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+            mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+            mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2);
+            mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+        }
     }
     @Override
     public void onClick(View v)
