@@ -327,11 +327,10 @@ public class NavigationActivity extends SherlockFragmentActivity
             @Nonnull
             @Override
             protected Intent createIntent() {
-                String url = null;
+                String url = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
                 return LoadImageTask.createIntent(url);
             }
         };
-
         session.update(new IListenerVoid(){
             @Override
             public void handle() {
