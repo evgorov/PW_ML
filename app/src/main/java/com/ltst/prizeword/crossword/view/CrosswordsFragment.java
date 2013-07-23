@@ -26,6 +26,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
                                 implements View.OnClickListener
@@ -89,18 +90,18 @@ public class CrosswordsFragment extends SherlockFragment
     private void launchCrosswordActivity()
     {
         List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-        @Nonnull String freeSetServerId = Strings.EMPTY;
+        @Nullable PuzzleSet freeSet = null;
         for (PuzzleSet set : sets)
         {
             if(set.type.equals(PuzzleSetType.FREE))
             {
-                freeSetServerId = set.serverId;
+                freeSet = set;
                 break;
             }
         }
-        if (freeSetServerId != Strings.EMPTY)
+        if (freeSet != null)
         {
-            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSetServerId);
+            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet);
             mContext.startActivity(intent);
         }
     }

@@ -9,29 +9,32 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 
 public class OneCrosswordActivity extends SherlockActivity
 {
-    public static final @Nonnull String BF_PUZZLE_SERVER_ID = "OneCrosswordActivity.puzzleServerId";
+    public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
 
     public static @Nonnull
-    Intent createIntent(@Nonnull Context context, @Nonnull String puzzleServerId)
+    Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set)
     {
         Intent intent = new Intent(context, OneCrosswordActivity.class);
-        intent.putExtra(BF_PUZZLE_SERVER_ID, puzzleServerId);
+        intent.putExtra(BF_PUZZLE_SET, set);
         return intent;
     }
 
     private @Nonnull CrosswordBackgroundView mCrosswordBgImage;
     private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
-    private @Nonnull String mPuzzleServerId;
+    private @Nonnull PuzzleSet mPuzzleSet;
     private @Nonnull String mSessionKey;
+    private @Nonnull String mCurrentPuzzleServerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,8 +46,9 @@ public class OneCrosswordActivity extends SherlockActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
-            mPuzzleServerId = extras.getString(BF_PUZZLE_SERVER_ID);
+            mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
         }
+        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(0);
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
         mBcConnector = new BcConnector(this);
     }
@@ -52,7 +56,9 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onResume()
     {
-        mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mPuzzleServerId);
+        mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mCurrentPuzzleServerId, mPuzzleSet.id);
+        mPuzzleModel.updateDataByDb(updateHandler);
+        mPuzzleModel.updateDataByInternet(updateHandler);
         super.onResume();
     }
 
@@ -62,4 +68,12 @@ public class OneCrosswordActivity extends SherlockActivity
         super.onDestroy();
     }
 
+    private @Nonnull IListenerVoid updateHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+
+        }
+    };
 }
