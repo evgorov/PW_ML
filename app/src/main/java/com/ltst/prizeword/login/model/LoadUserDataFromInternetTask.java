@@ -56,7 +56,6 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
             {
                 @Nonnull UserData userData = parseUserData(response);
                 @Nullable List<UserProvider> providerData = parseProviderData(response);
-                // тут скачать картику;
                 env.dbw.putUser(userData, providerData);
                 return getUserDataFromDatabase(env, userData.email);
             }

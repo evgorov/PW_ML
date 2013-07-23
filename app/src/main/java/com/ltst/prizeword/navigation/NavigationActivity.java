@@ -63,7 +63,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 {
 
     public static final @Nonnull String LOG_TAG = "prizeword";
-    public static final @Nonnull String mURLImage = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
 
     private @Nonnull IBcConnector mBcConnector;
 
@@ -334,14 +333,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     //===== Task loading user datas ==============
 
     private void loadUserData(){
-        Log.d(LOG_TAG, "loadUserData");
         SessionLoadingUserData session = new SessionLoadingUserData(){
 
             @Nonnull
             @Override
             protected Intent createIntent() {
                 String sessionKey = SharedPreferencesValues.getSessionKey(NavigationActivity.this);
-                Log.d(LOG_TAG, "SessionKey = "+sessionKey);
                 return LoadUserDataFromInternetTask.createIntent(sessionKey);
             }
         };
@@ -391,13 +388,11 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         @Override
         protected void handleData(@Nullable Bundle result) {
-            Log.d(LOG_TAG, "COME LOADING IMAGE!");
             if (result == null)
                 return;
 
             byte[] buffer = result.getByteArray(LoadImageTask.BF_BITMAP);
             if(!byte.class.isEnum()){
-                Log.d(LOG_TAG, "EXIST SOME RESULT LOADING IMAGE!");
                 Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
             }
@@ -426,21 +421,14 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         @Override
         protected void handleData(@Nullable Bundle result) {
-            Log.d(LOG_TAG, "COME LOADING USER DATA!");
             if (result == null)
                 return;
 
             UserData data = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
 
             if( data != null ){
-                Log.d(LOG_TAG, "EXIST SOME RESULT BY LOADING USER DATA");
-                mDrawerHeader.tvNickname.setText(data.name);
-//                loadAvatar(data.previewUrl);
-                loadAvatar(NavigationActivity.mURLImage);
-            }
-            else
-            {
-                Log.d(LOG_TAG, "USER DATA IS NULL");
+                mDrawerHeader.tvNickname.setText(data.surname != Strings.EMPTY ? data.surname +" "+data.name : data.name);
+                loadAvatar(data.previewUrl);
             }
         }
     }
