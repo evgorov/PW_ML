@@ -39,13 +39,13 @@ public class OnePuzzleModel implements IOnePuzzleModel
     @Override
     public void updateDataByDb(@Nonnull IListenerVoid handler)
     {
-        updateDataByDb(handler);
+        mPuzzleDbUpdater.update(handler);
     }
 
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
-        updateDataByInternet(handler);
+        mPuzzleInternetUpdater.update(handler);
     }
 
     // ==== updaters ==================================================
