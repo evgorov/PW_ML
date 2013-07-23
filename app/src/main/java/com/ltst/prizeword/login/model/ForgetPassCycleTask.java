@@ -39,9 +39,9 @@ public class ForgetPassCycleTask implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv dbTaskEnv)
     {
-        @Nullable Bundle bundle = dbTaskEnv.extras;
-        if(bundle == null)
-            return null;
+            @Nullable Bundle bundle = dbTaskEnv.extras;
+            if(bundle == null)
+                return null;
         @Nullable String newPassword = bundle.getString(BF_NEW_PASSWORD);
         @Nullable String passwordToken = bundle.getString(BF_PASSWORD_TOKEN);
         @Nullable String currentEmail = bundle.getString(BF_CURRENT_EMAIL);

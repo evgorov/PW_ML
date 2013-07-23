@@ -3,11 +3,14 @@ package com.ltst.prizeword.navigation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +24,10 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -31,13 +36,17 @@ import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.LoadImageTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.omich.velo.bcops.BcBaseService;
+import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerInt;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -80,6 +89,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
 
+        loadAvatar();
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
         selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
@@ -309,6 +319,59 @@ public class NavigationActivity extends SherlockFragmentActivity
             this.tvPoints = (TextView) v.findViewById(R.id.header_listview_points_tview);
             this.tvRecordtitle = (TextView) v.findViewById(R.id.header_listview_personal_record_tview);
             this.btnLogout = (Button) v.findViewById(R.id.header_listview_logout_btn);
+        }
+    }
+
+    void loadAvatar(){
+        SessionLoadingImage session = new SessionLoadingImage() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                String url = null;
+                return LoadImageTask.createIntent(url);
+            }
+        };
+
+        session.update(new IListenerVoid(){
+            @Override
+            public void handle() {
+            }
+        });
+    }
+
+    private abstract class SessionLoadingImage extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector() {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadImageTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result) {
+            final String LOG_TAG = "downloader";
+            Log.d(LOG_TAG, "COME!");
+            if (result == null)
+                return;
+
+            byte[] buffer = result.getByteArray(LoadImageTask.BF_BITMAP);
+            if(!byte.class.isEnum()){
+                Log.d(LOG_TAG, "EXIST SOME RESULT!");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+                mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+            }
         }
     }
 }
