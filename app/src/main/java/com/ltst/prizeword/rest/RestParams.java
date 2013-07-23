@@ -34,10 +34,12 @@ public class RestParams
     public static final @Nonnull String BIRTHDATE = "birthdate";
     public static final @Nonnull String USERPIC = "userpic";
     public static final @Nonnull String CITY = "city";
-
     public static final @Nonnull String PASSWORD_TOKEN = "token";
+    public static final @Nonnull String USER_PUZZLE_IDS = "ids";
 
     // == API URLS ==
+
+    // == login/auth
 
     public static final @Nonnull String URL_API = "http://api.prize-word.com";
     public static final @Nonnull String URL_PROVIDER_LOGIN = URL_API + "/%s/login";
@@ -70,6 +72,11 @@ public class RestParams
 
     public static final @Nonnull String PARAM_PARSE_URL = "url";
     public static final @Nonnull String PARAM_PARSE_TOKEN = "token";
+
+    // ==== Puzzle URLS ====
+
+    public static final @Nonnull String URL_GET_PUBLISHED_SETS_SHORT = URL_API + "/published_sets" + addParam(SESSION_KEY, true) + SYM_AND_PARAM + "mode=short";
+    public static final @Nonnull String URL_GET_USER_PUZZLES = URL_API + "/user_puzzles" + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
     // ================
 

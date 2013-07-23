@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.EditText;
 import android.widget.TextView;
-
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -51,7 +49,6 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-
 import static android.app.DatePickerDialog.OnDateSetListener;
 import static android.view.View.VISIBLE;
 
@@ -68,7 +65,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
 
     private @Nonnull Button mRegisterDateButton;
     private @Nonnull Button mNavBackButton;
-
 
     private @Nonnull FrameLayout mDatePickerFrame;
     private @Nonnull DatePicker mDatePicker;
@@ -117,9 +113,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
 
         mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
 
-
-
-
         mRegisterFinishButton = (Button) v.findViewById(R.id.registration_finish_button);
         mNavBackButton.setOnClickListener(this);
         mRegisterFinishButton.setOnClickListener(this);
@@ -146,7 +139,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         curYear = cal.get(Calendar.YEAR);
         dateFormat = new SimpleDateFormat(fr);
         mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
-
         return v;
     }
 
@@ -169,7 +161,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
 
             SignUpExecutor updater = new SignUpExecutor()
             {
-
                 @Nonnull
                 @Override
                 protected Intent createIntent()
@@ -191,7 +182,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
             validateRegData(Color.RED);
             showErrorAlertDalog();
         }
-
 
     }
 
@@ -249,7 +239,6 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
 
                 showDatePickerDialog();
                 break;
-
         }
     }
 

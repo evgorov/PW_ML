@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -233,5 +234,36 @@ public class RestClient implements IRestClient
             return entity.getStatusCode();
         else
             return null;
+    }
+
+    @Nullable
+    @Override
+    public RestPuzzleSet.RestPuzzleSetsHolder getPublishedSets(@Nonnull String sessionKey)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestPuzzleSet[]> entity = restTemplate.exchange(RestParams.URL_GET_PUBLISHED_SETS_SHORT, HttpMethod.GET, requestEntity, RestPuzzleSet[].class, urlVariables);
+        RestPuzzleSet.RestPuzzleSetsHolder holder = new RestPuzzleSet.RestPuzzleSetsHolder();
+        List<RestPuzzleSet> sets = Arrays.asList(entity.getBody());
+        holder.setPuzzleSets(sets);
+        holder.setHttpStatus(entity.getStatusCode());
+        return holder;
+    }
+
+    @Nullable
+    @Override
+    public RestPuzzle getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.USER_PUZZLE_IDS, puzzleServerId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        RestPuzzle puzzle = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle.class, urlVariables).getBody();
+        return puzzle;
     }
 }

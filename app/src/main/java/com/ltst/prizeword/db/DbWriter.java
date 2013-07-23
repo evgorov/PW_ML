@@ -3,9 +3,14 @@ package com.ltst.prizeword.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
 
+import org.omich.velo.db.DbHelper;
+import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
@@ -42,63 +47,31 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     private void putNewUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        mDb.beginTransaction();
-        ContentValues cvUser = new ContentValues();
-        cvUser.put(ColsUsers.NAME, user.name);
-        cvUser.put(ColsUsers.SURNAME, user.surname);
-        cvUser.put(ColsUsers.EMAIL, user.email);
-        cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
-        cvUser.put(ColsUsers.CITY, user.city);
-        cvUser.put(ColsUsers.SOLVED, user.solved);
-        cvUser.put(ColsUsers.POSITION, user.position);
-        cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
-        cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
-        cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
-        cvUser.put(ColsUsers.HINTS, user.hints);
-        cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
-        cvUser.put(ColsUsers.PREVIEW_KEY, user.previewUrl);
+        final ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
+        final @Nullable List<ContentValues> cvProviders = createContentValuesList(providers, mUserProviderContentValuesCreator);
 
-        @Nullable List<ContentValues> cvProviders = null;
-        if (providers != null)
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            cvProviders = new ArrayList<ContentValues>(providers.size());
-            for (Iterator<UserProvider> iterator = providers.iterator(); iterator.hasNext(); )
+            @Override
+            public void handle()
             {
-                UserProvider prov =  iterator.next();
-                ContentValues cv = new ContentValues();
-                cv.put(ColsProviders.NAME, prov.name);
-                cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
-                cv.put(ColsProviders.TOKEN, prov.providerToken);
-                cvProviders.add(cv);
-            }
-        }
+                long created_id = mDb.insert(TNAME_USERS, null, cvUser);
 
-        try
-        {
-            mDb.insert(TNAME_USERS, null, cvUser);
-
-            UserData createdUser = getReader().getUserByEmail(user.email);
-            if (cvProviders != null)
-            {
-                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                if (cvProviders != null && created_id != -1)
                 {
-                    ContentValues cvProv =  iterator.next();
-                    cvProv.put(ColsProviders.USER_ID, createdUser.id);
-                    mDb.insert(TNAME_PROVIDERS, null, cvProv);
+                    for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                    {
+                        ContentValues cvProv = iterator.next();
+                        cvProv.put(ColsProviders.USER_ID, created_id);
+                        mDb.insert(TNAME_PROVIDERS, null, cvProv);
+                    }
                 }
             }
-        }
-        catch(Throwable e)
-        {
-            Log.e(e);
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
+        });
+
     }
 
-    private void updateExistingUser(long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
+    private void updateExistingUser(final long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
         @Nullable UserData existingUser = getReader().getUserById(id);
         @Nullable List<UserProvider> existingProviders = getReader().getUserProvidersByUserId(id);
@@ -106,57 +79,191 @@ public class DbWriter extends  DbReader implements IDbWriter
         {
             return;
         }
+        final ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
 
-        ContentValues cvUser = new ContentValues();
-        cvUser.put(ColsUsers.NAME, user.name);
-        cvUser.put(ColsUsers.SURNAME, user.surname);
-        cvUser.put(ColsUsers.EMAIL, user.email);
-        cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
-        cvUser.put(ColsUsers.CITY, user.city);
-        cvUser.put(ColsUsers.SOLVED, user.solved);
-        cvUser.put(ColsUsers.POSITION, user.position);
-        cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
-        cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
-        cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
-        cvUser.put(ColsUsers.HINTS, user.hints);
-        cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
-
-        @Nullable List<ContentValues> cvProviders = null;
-        if (providers != null)
+//        @TODO логику обновления провайдеров пользователя
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            cvProviders = new ArrayList<ContentValues>(providers.size());
-            for (Iterator<UserProvider> iterator = providers.iterator(); iterator.hasNext(); )
+            @Override
+            public void handle()
             {
-                UserProvider prov =  iterator.next();
-                ContentValues cv = new ContentValues();
-                cv.put(ColsProviders.NAME, prov.name);
-                cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
-                cv.put(ColsProviders.TOKEN, prov.providerToken);
-                cvProviders.add(cv);
+                mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
             }
-        }
+        });
+    }
 
+    @Override
+    public void putPuzzleSet(@Nonnull PuzzleSet set)
+    {
         mDb.beginTransaction();
-        try
+        final ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
-            mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
-            if (cvProviders != null)
+            @Override
+            public void handle()
             {
-                for (Iterator<ContentValues> iterator = cvProviders.iterator(); iterator.hasNext(); )
+                long id = mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                Log.i("Successfully inserted PUZZLE_SET with id: " + id);
+            }
+        });
+    }
+
+    @Override
+    public void putPuzzle(@Nonnull Puzzle puzzle)
+    {
+        final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
+        final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+
+            }
+        });
+    }
+
+    @Override
+    public void putPuzzleSetList(final @Nonnull List<PuzzleSet> list)
+    {
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_PUZZLE_SETS, null, null); // clean puzzle sets
+                for (PuzzleSet puzzleSet : list)
                 {
-                    ContentValues cvProv =  iterator.next();
-                    mDb.update(TNAME_PROVIDERS, cvProv, ColsProviders.USER_ID + "=" + id, null);
+                    ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                    mDb.insert(TNAME_PUZZLE_SETS, null, values);
                 }
             }
-        }
-        catch (Throwable e)
-        {
-            Log.e(e);
-        }
-        finally
-        {
-            mDb.endTransaction();
-        }
+        });
 
     }
+
+
+    //===== ContentValues creators =======================
+
+    private ContentValuesCreator<UserData> mUserDataContentValuesCreator = new ContentValuesCreator<UserData>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable UserData user)
+        {
+            ContentValues cvUser = new ContentValues();
+            if (user != null)
+            {
+                cvUser.put(ColsUsers.NAME, user.name);
+                cvUser.put(ColsUsers.SURNAME, user.surname);
+                cvUser.put(ColsUsers.EMAIL, user.email);
+                cvUser.put(ColsUsers.BIRTHDATE, user.bithdate);
+                cvUser.put(ColsUsers.CITY, user.city);
+                cvUser.put(ColsUsers.SOLVED, user.solved);
+                cvUser.put(ColsUsers.POSITION, user.position);
+                cvUser.put(ColsUsers.MONTH_SCORE, user.monthScore);
+                cvUser.put(ColsUsers.HIGH_SCORE, user.highScore);
+                cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
+                cvUser.put(ColsUsers.HINTS, user.hints);
+                cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
+            }
+            return cvUser;
+        }
+    };
+
+    private ContentValuesCreator<UserProvider> mUserProviderContentValuesCreator = new ContentValuesCreator<UserProvider>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable UserProvider prov)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsProviders.NAME, prov.name);
+            cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
+            cv.put(ColsProviders.TOKEN, prov.providerToken);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<PuzzleSet> mPuzzleSetContentValuesCreator = new ContentValuesCreator<PuzzleSet>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable PuzzleSet object)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsPuzzleSets.SERVER_ID, object.serverId);
+            cv.put(ColsPuzzleSets.NAME, object.name);
+            cv.put(ColsPuzzleSets.IS_BOUGHT, object.isBought);
+            cv.put(ColsPuzzleSets.TYPE, object.type);
+            cv.put(ColsPuzzleSets.MONTH, object.month);
+            cv.put(ColsPuzzleSets.YEAR, object.year);
+            cv.put(ColsPuzzleSets.CREATED_AT, object.createdAt);
+            cv.put(ColsPuzzleSets.IS_PUBLISHED, object.isPublished);
+            StringBuilder builder = new StringBuilder();
+            for (String s : object.puzzlesId)
+            {
+                builder.append(s);
+                if(object.puzzlesId.indexOf(s) != object.puzzlesId.size() - 1)
+                    builder.append(SET_PUZZLE_IDS_SEPARATOR);
+            }
+            cv.put(ColsPuzzleSets.PUZZLES_SERVER_IDS, builder.toString());
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<Puzzle> mPuzzleContentValuesCreator = new ContentValuesCreator<Puzzle>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable Puzzle object)
+        {
+            ContentValues cv = new ContentValues();
+            cv.put(ColsPuzzles.SET_ID, object.setId);
+            cv.put(ColsPuzzles.SERVER_ID, object.serverId);
+            cv.put(ColsPuzzles.NAME, object.name);
+            cv.put(ColsPuzzles.ISSUED_AT, object.issuedAt);
+            cv.put(ColsPuzzles.BASE_SCORE, object.baseScore);
+            cv.put(ColsPuzzles.TIME_GIVEN, object.timeGiven);
+            cv.put(ColsPuzzles.TIME_LEFT, object.timeLeft);
+            cv.put(ColsPuzzles.SCORE, object.score);
+            cv.put(ColsPuzzles.IS_SOLVED, object.isSolved);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<PuzzleQuestion> mPuzzleQuestionContentValuesCreator = new ContentValuesCreator<PuzzleQuestion>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable PuzzleQuestion object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsPuzzleQuestions.PUZZLE_ID, object.puzzleId);
+            cv.put(ColsPuzzleQuestions.COLUMN, object.column);
+            cv.put(ColsPuzzleQuestions.ROW, object.row);
+            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.quesitonText);
+            cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
+            cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
+            return cv;
+        }
+    };
+
+    // ========================================================
+
+    private <T> List<ContentValues> createContentValuesList(@Nullable List<T> objectList, @Nonnull ContentValuesCreator<T> creator)
+    {
+        @Nullable List<ContentValues> cvList = null;
+        if (objectList != null)
+        {
+            cvList = new ArrayList<ContentValues>(objectList.size());
+            for (T object : objectList)
+            {
+                ContentValues cv = creator.createObjectContentValues(object);
+                cvList.add(cv);
+            }
+        }
+        return cvList;
+    }
+
+    public interface ContentValuesCreator<T>
+    {
+        public ContentValues createObjectContentValues(@Nullable T object);
+    }
+
 }

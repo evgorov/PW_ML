@@ -156,7 +156,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         }
         catch(Throwable e)
         {
-            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
         }
     }
@@ -170,7 +170,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         }
         catch(Throwable e)
         {
-            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
         }
     }
@@ -184,7 +184,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
         }
         catch(Throwable e)
         {
-            Log.i("Can't load survey from internet"); //$NON-NLS-1$
+            Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
         }
     }

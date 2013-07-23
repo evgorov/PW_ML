@@ -69,4 +69,15 @@ public class UserProvider implements Parcelable
     {
         return string != null ? string : Strings.EMPTY;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        return this.equals((UserProvider) o);
+    }
+
+    public boolean equals(UserProvider o)
+    {
+        return this.name.equals(o.name);
+    }
 }
