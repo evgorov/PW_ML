@@ -36,7 +36,7 @@ import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.tools.LoadImageTask;
+import com.ltst.prizeword.dowloading.LoadImageTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

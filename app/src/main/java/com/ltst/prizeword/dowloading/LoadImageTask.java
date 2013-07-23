@@ -1,4 +1,4 @@
-package com.ltst.prizeword.tools;
+package com.ltst.prizeword.dowloading;
 
 import android.content.Intent;
 import android.os.Bundle;
