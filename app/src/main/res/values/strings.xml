@@ -13,6 +13,7 @@
     <string name="resetpass_fragment_title">Восстановление пароля</string>
     <string name="forgetpass_fragment_title">Забыли пароль?</string>
     <string name="registration_fragment_title">Регистрация</string>
+    <string name="rules_fragment_title">Правила</string>
 
 
     <string name="error">Ошибка</string>
