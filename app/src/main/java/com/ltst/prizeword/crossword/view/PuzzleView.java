@@ -5,6 +5,7 @@ import com.ltst.prizeword.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -34,7 +35,7 @@ public class PuzzleView extends View
     private @Nonnull Context mContext;
 
     private @Nonnull Matrix mMatrix;
-
+    private @Nonnull RectF mViewRect;
     private @Nonnull PuzzleBackgroundLayer mBackgroundLayer;
     private @Nonnull PuzzleTilesLayer mQuestionsAndLettersLayer;
 
@@ -60,7 +61,6 @@ public class PuzzleView extends View
         super(context, attrs, defStyle);
         mContext = context;
         mMatrix = new Matrix();
-        initCanvasDimensions();
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
@@ -74,6 +74,25 @@ public class PuzzleView extends View
         mViewHeight = resolveSize(height, heightMeasureSpec);
 
         setMeasuredDimension(mViewWidth, mViewHeight);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh)
+    {
+        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
+        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
+        Log.i("viewW: " + mViewWidth + " viewH: " + mViewHeight);
+        Log.i("canvasW: " + mCanvasWidth + " canvasH: " + mCanvasHeight);
+        Log.i("SW: " + scaleWidth + " SH: " + scaleHeight);
+        float minWidth = 1/scaleWidth;
+        float minHeight = 1/scaleHeight;
+        Log.i("mW: " + minWidth + " mH: " + minHeight);
+        mMinScaleFactor = ((int)(Math.min(minWidth, minHeight)/0.1f)) * 0.1f;
+        Log.i("top: " + getTop() + " left: " + getLeft() + " right: " + getRight() + " bottom: " + getBottom());
+
+        mViewRect = new RectF(getLeft(), getTop(), getRight(), getBottom());
+        initCanvasDimensions();
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public void setPuzzleCellWidth(int puzzleCellWidth)
@@ -99,6 +118,7 @@ public class PuzzleView extends View
         configureBounds();
         canvas.setMatrix(mMatrix);
 
+        canvas.translate(mViewRect.left, mViewRect.top);
         mBackgroundLayer.drawLayer(canvas);
         mQuestionsAndLettersLayer.drawLayer(canvas);
 
@@ -111,7 +131,6 @@ public class PuzzleView extends View
     private void initCanvasDimensions()
     {
         mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext, mPuzzleCellWidth, mPuzzleCellHeigth);
-
         int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
         int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
         mCanvasWidth = 2 * mPadding + mPuzzleCellWidth * tileWidth + (mPuzzleCellWidth - 1) * mTileGap;
@@ -120,21 +139,15 @@ public class PuzzleView extends View
         mQuestionsAndLettersLayer.setPadding(mPadding);
         mQuestionsAndLettersLayer.setTileGap(mTileGap);
         mBackgroundLayer = new PuzzleBackgroundLayer(mContext, mCanvasWidth, mCanvasHeight, R.drawable.bg_sand_tile2x);
-
-        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
-        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
-        Log.i("viewW: " + mViewWidth + " viewH: " + mViewHeight);
-        Log.i("canvasW: " + mCanvasWidth + " canvasH: " + mCanvasHeight);
-        Log.i("SW: " + scaleWidth + " SH: " + scaleHeight);
-        mMinScaleFactor = Math.min(1/scaleWidth, 1/scaleHeight);
     }
 
     private void configureBounds()
     {
         mMatrix.reset();
         mMatrix.postScale(mScaleFactor, mScaleFactor);
-        mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f ),
-                         (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f));
+        mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f  + 0.5f),
+                         (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f + 0.5f));
+
     }
 
     @Override
@@ -151,7 +164,7 @@ public class PuzzleView extends View
             mScaleFactor *= detector.getScaleFactor();
 
             // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(MIN_SCALE_FACTOR, Math.min(mScaleFactor, MAX_SCALE_FACTOR));
+            mScaleFactor = Math.max(mMinScaleFactor, Math.min(mScaleFactor, MAX_SCALE_FACTOR));
 
             invalidate();
             return true;
