@@ -23,6 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +40,7 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.ResetUserDataOnServerTask;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.login.model.UserData;
@@ -124,6 +132,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            // Получаем картинку из галереи;
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -134,10 +143,31 @@ public class NavigationActivity extends SherlockFragmentActivity
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-
+            // Меняем аватарку на панеле;
             mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            // String picturePath contains the path of selected Image
+            // Отправляем новую аватарку насервер;
+            byte[] userPic = readFile(picturePath);
+            String sessionKey = SharedPreferencesValues.getSessionKey(this);
+            resetUserData(sessionKey, userPic);
         }
+    }
+
+    byte[] readFile(@Nonnull String path){
+        File file = new File(path);
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return  bytes;
     }
 
     @Override
@@ -371,9 +401,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
-                Intent i = new Intent(
-                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;
             default:
@@ -412,6 +440,22 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         };
         session.update(new IListenerVoid(){
+            @Override
+            public void handle() {
+            }
+        });
+    }
+
+    private void resetUserData(@Nonnull final String sessionKey, final byte[] img){
+        SessionResetUserData session = new SessionResetUserData(){
+
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return ResetUserDataOnServerTask.createIntent(sessionKey,img);
+            }
+        };
+        session.update(new IListenerVoid() {
             @Override
             public void handle() {
             }
@@ -499,6 +543,34 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerHeader.tvNickname.setText(data.surname != Strings.EMPTY ? data.surname +" "+data.name : data.name);
                 loadAvatar(data.previewUrl);
             }
+        }
+    }
+
+    private abstract class SessionResetUserData extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector() {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return ResetUserDataOnServerTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result) {
+            if (result == null)
+                return;
+
         }
     }
 }

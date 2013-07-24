@@ -55,25 +55,26 @@ public class RestClient implements IRestClient
     }
 
     @Override
-    public RestUserData.RestUserDataHolder resetUserData(@Nonnull RestUserData.RestUserDataSender userData) {
+    public RestUserData resetUserPic(@Nonnull String token, @Nonnull byte[] userPic)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.PASSWORD_TOKEN, token);
+        urlVariables.put(RestParams.USERPIC, userPic);
 
-        // Attention:
-        // Update basic information. If userpic is included in request, then whole request should be encoded with multipart/form-data.
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
 
-    // Set the Content-Type header
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(new MediaType("application","json"));
-        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(userData, requestHeaders);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
 
-    // Add the Jackson and String message converters
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
+        RestUserData.RestUserDataHolder result = entity.getBody();
+        result.setStatusCode(entity.getStatusCode());
+        return result.getUserData();
 
-    // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-        ResponseEntity<RestUserData.RestUserDataHolder> responseEntity = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-        RestUserData.RestUserDataHolder result = responseEntity.getBody();
-        result.setStatusCode(responseEntity.getStatusCode());
-        return result;
     }
 
     @Nullable

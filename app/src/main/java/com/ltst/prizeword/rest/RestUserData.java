@@ -268,6 +268,7 @@ public class RestUserData
         private @JsonProperty("name") String mName;
         private @JsonProperty("password") int mPassword;
         private @JsonProperty("surname") String mSurname;
+        private @JsonProperty("userpic") String mUserPicUrl;
         private @JsonProperty("userpic") byte[] mUserpic;
         private @JsonProperty("email") String mEmail;
         private @JsonProperty("birthdate") String mBirthDate;
@@ -277,68 +278,76 @@ public class RestUserData
         {
         }
 
-        public String getmSessionKey() {
+        public String getSessionKey() {
             return mSessionKey;
         }
 
-        public void setmSessionKey(String mSessionKey) {
+        public void setSessionKey(String mSessionKey) {
             this.mSessionKey = mSessionKey;
         }
 
-        public String getmName() {
+        public String getName() {
             return mName;
         }
 
-        public void setmName(String mName) {
+        public void setName(String mName) {
             this.mName = mName;
         }
 
-        public int getmPassword() {
+        public int getPassword() {
             return mPassword;
         }
 
-        public void setmPassword(int mPassword) {
+        public void setPassword(int mPassword) {
             this.mPassword = mPassword;
         }
 
-        public String getmSurname() {
+        public String getSurname() {
             return mSurname;
         }
 
-        public void setmSurname(String mSurname) {
+        public void setSurname(String mSurname) {
             this.mSurname = mSurname;
         }
 
-        public byte[] getmUserpic() {
+        public byte[] getUserpic() {
             return mUserpic;
         }
 
-        public void setmUserpic(byte[] mUserpic) {
+        public void setUserpic(byte[] mUserpic) {
             this.mUserpic = mUserpic;
         }
 
-        public String getmEmail() {
+        public String getEmail() {
             return mEmail;
         }
 
-        public void setmEmail(String mEmail) {
+        public void setEmail(String mEmail) {
             this.mEmail = mEmail;
         }
 
-        public String getmBirthDate() {
+        public String getBirthDate() {
             return mBirthDate;
         }
 
-        public void setmBirthDate(String mBirthDate) {
+        public void setBirthDate(String mBirthDate) {
             this.mBirthDate = mBirthDate;
         }
 
-        public String getmCity() {
+        public String getCity() {
             return mCity;
         }
 
-        public void setmCity(String mCity) {
+        public void setCity(String mCity) {
             this.mCity = mCity;
+        }
+
+        public String getUserpicUrl() {
+            return mUserPicUrl;
+        }
+
+        public void setUserPicUrl(String mUserPicUrl) {
+            this.mUserPicUrl = mUserPicUrl;
         }
     }
 }
