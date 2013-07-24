@@ -3,14 +3,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:orientation="vertical"
-             android:background="@drawable/login_bg_tile"
+
         >
 
-    <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@drawable/login_enter_top_shadow"
-            />
 
     <LinearLayout
             android:layout_height="match_parent"
@@ -42,7 +37,7 @@
         <ScrollView
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-
+                android:background="@drawable/login_bg"
                 >
 
             <FrameLayout
