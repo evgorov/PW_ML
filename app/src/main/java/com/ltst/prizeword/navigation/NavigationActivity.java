@@ -4,9 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
@@ -68,6 +71,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public static final @Nonnull String LOG_TAG = "prizeword";
 
+    private @Nonnull int RESULT_LOAD_IMAGE = 1;
+
     private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull Dialog mDrawerChoiceDialog;
@@ -75,6 +80,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull ListView mDrawerList;
     private @Nonnull HeaderHolder mDrawerHeader;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
+
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
 
     private @Nonnull FragmentManager mFragmentManager;
@@ -111,6 +117,27 @@ public class NavigationActivity extends SherlockFragmentActivity
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
         selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            // String picturePath contains the path of selected Image
+        }
     }
 
     @Override
@@ -344,6 +371,10 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;
             default:
                 break;
