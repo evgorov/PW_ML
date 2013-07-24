@@ -260,4 +260,85 @@ public class RestUserData
             StatusCode = statusCode;
         }
     }
+
+    @JsonIgnoreProperties
+    public static class RestUserDataSender
+    {
+        private @JsonProperty("session_key") String mSessionKey;
+        private @JsonProperty("name") String mName;
+        private @JsonProperty("password") int mPassword;
+        private @JsonProperty("surname") String mSurname;
+        private @JsonProperty("userpic") byte[] mUserpic;
+        private @JsonProperty("email") String mEmail;
+        private @JsonProperty("birthdate") String mBirthDate;
+        private @JsonProperty("city") String mCity;
+
+        public RestUserDataSender()
+        {
+        }
+
+        public String getmSessionKey() {
+            return mSessionKey;
+        }
+
+        public void setmSessionKey(String mSessionKey) {
+            this.mSessionKey = mSessionKey;
+        }
+
+        public String getmName() {
+            return mName;
+        }
+
+        public void setmName(String mName) {
+            this.mName = mName;
+        }
+
+        public int getmPassword() {
+            return mPassword;
+        }
+
+        public void setmPassword(int mPassword) {
+            this.mPassword = mPassword;
+        }
+
+        public String getmSurname() {
+            return mSurname;
+        }
+
+        public void setmSurname(String mSurname) {
+            this.mSurname = mSurname;
+        }
+
+        public byte[] getmUserpic() {
+            return mUserpic;
+        }
+
+        public void setmUserpic(byte[] mUserpic) {
+            this.mUserpic = mUserpic;
+        }
+
+        public String getmEmail() {
+            return mEmail;
+        }
+
+        public void setmEmail(String mEmail) {
+            this.mEmail = mEmail;
+        }
+
+        public String getmBirthDate() {
+            return mBirthDate;
+        }
+
+        public void setmBirthDate(String mBirthDate) {
+            this.mBirthDate = mBirthDate;
+        }
+
+        public String getmCity() {
+            return mCity;
+        }
+
+        public void setmCity(String mCity) {
+            this.mCity = mCity;
+        }
+    }
 }

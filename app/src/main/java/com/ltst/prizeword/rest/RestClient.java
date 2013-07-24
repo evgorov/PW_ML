@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -51,6 +52,28 @@ public class RestClient implements IRestClient
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
         return holder.getUserData();
+    }
+
+    @Override
+    public RestUserData.RestUserDataHolder resetUserData(@Nonnull RestUserData.RestUserDataSender userData) {
+
+        // Attention:
+        // Update basic information. If userpic is included in request, then whole request should be encoded with multipart/form-data.
+
+    // Set the Content-Type header
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(new MediaType("application","json"));
+        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(userData, requestHeaders);
+
+    // Add the Jackson and String message converters
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+    // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+        ResponseEntity<RestUserData.RestUserDataHolder> responseEntity = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
+        RestUserData.RestUserDataHolder result = responseEntity.getBody();
+        result.setStatusCode(responseEntity.getStatusCode());
+        return result;
     }
 
     @Nullable
