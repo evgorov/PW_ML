@@ -23,6 +23,7 @@ import static com.ltst.prizeword.db.SQLiteHelper.*;
 public class DbReader implements IDbReader
 {
     protected static final String SET_PUZZLE_IDS_SEPARATOR = "|";
+    protected static final String REGEXP_SHIELD = "\\";
 
     private static final @Nonnull String[] FIELDS_P_USER =
     {
@@ -302,7 +303,7 @@ public class DbReader implements IDbReader
 
     private static @Nonnull List<String> parsePuzzleServerIds(@Nonnull String idsSeparated)
     {
-        String[] ids = idsSeparated.split(SET_PUZZLE_IDS_SEPARATOR);
+        String[] ids = idsSeparated.split(REGEXP_SHIELD + SET_PUZZLE_IDS_SEPARATOR);
         List<String> list = Arrays.asList(ids);
         return list;
     }

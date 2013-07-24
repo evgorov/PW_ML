@@ -18,5 +18,5 @@ public interface IRestClient
     HttpStatus resetPassword(@Nonnull String token,  @Nonnull String newPassword);
 
     @Nullable RestPuzzleSet.RestPuzzleSetsHolder getPublishedSets(@Nonnull String sessionKey);
-    @Nullable RestPuzzle getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId);
+    @Nullable RestPuzzle.RestPuzzleHolder getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId);
 }
