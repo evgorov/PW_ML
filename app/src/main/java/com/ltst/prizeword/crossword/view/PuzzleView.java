@@ -61,6 +61,7 @@ public class PuzzleView extends View
         super(context, attrs, defStyle);
         mContext = context;
         mMatrix = new Matrix();
+        initCanvasDimensions();
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
@@ -118,7 +119,7 @@ public class PuzzleView extends View
         configureBounds();
         canvas.setMatrix(mMatrix);
 
-        canvas.translate(mViewRect.left, mViewRect.top);
+//        canvas.translate(mViewRect.left, mViewRect.top);
         mBackgroundLayer.drawLayer(canvas);
         mQuestionsAndLettersLayer.drawLayer(canvas);
 
@@ -130,7 +131,7 @@ public class PuzzleView extends View
 
     private void initCanvasDimensions()
     {
-        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext, mPuzzleCellWidth, mPuzzleCellHeigth);
+        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), mPuzzleCellWidth, mPuzzleCellHeigth);
         int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
         int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
         mCanvasWidth = 2 * mPadding + mPuzzleCellWidth * tileWidth + (mPuzzleCellWidth - 1) * mTileGap;
@@ -138,7 +139,7 @@ public class PuzzleView extends View
 
         mQuestionsAndLettersLayer.setPadding(mPadding);
         mQuestionsAndLettersLayer.setTileGap(mTileGap);
-        mBackgroundLayer = new PuzzleBackgroundLayer(mContext, mCanvasWidth, mCanvasHeight, R.drawable.bg_sand_tile2x);
+        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight, R.drawable.bg_sand_tile2x);
     }
 
     private void configureBounds()

@@ -4,15 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".OneCrosswordActivity">
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@android:color/transparent"/>
 
     <com.ltst.prizeword.crossword.view.PuzzleView
             android:id="@+id/one_crossword_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             />
 
 </LinearLayout>

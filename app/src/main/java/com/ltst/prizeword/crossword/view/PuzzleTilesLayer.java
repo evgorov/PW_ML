@@ -1,6 +1,6 @@
 package com.ltst.prizeword.crossword.view;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,13 +22,13 @@ public class PuzzleTilesLayer implements ICanvasLayer
     private int mPadding = 0;
     private int mTileGap = 0;
 
-    public PuzzleTilesLayer(@Nonnull Context context, int puzzleWidth, int puzzleHeight)
+    public PuzzleTilesLayer(@Nonnull Resources res, int puzzleWidth, int puzzleHeight)
     {
         mPuzzleWidth = puzzleWidth;
         mPuzzleHeight = puzzleHeight;
 
-        mEmptyLetter = BitmapFactory.decodeResource(context.getResources(), R.drawable.gamefield_tile_letter_empty);
-        mQuestionNormal = BitmapFactory.decodeResource(context.getResources(), R.drawable.gamefield_tile_question_new);
+        mEmptyLetter = BitmapFactory.decodeResource(res, R.drawable.gamefield_tile_letter_empty);
+        mQuestionNormal = BitmapFactory.decodeResource(res, R.drawable.gamefield_tile_question_new);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }

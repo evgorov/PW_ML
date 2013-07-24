@@ -1,6 +1,6 @@
 package com.ltst.prizeword.crossword.view;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,7 +18,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     private @Nonnull Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
 
-    public PuzzleBackgroundLayer(@Nonnull Context context,
+    public PuzzleBackgroundLayer(@Nonnull Resources res,
                                  int width,
                                  int height,
                                  int bgTileResource)
@@ -26,7 +26,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         mWidth = width;
         mHeight = height;
         mBgTileResource = bgTileResource;
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), mBgTileResource);
+        Bitmap bitmap = BitmapFactory.decodeResource(res, mBgTileResource);
         mBgTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
