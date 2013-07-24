@@ -1,4 +1,4 @@
-package com.ltst.prizeword.login.model;
+package com.ltst.prizeword.login.view;
 
 /**
  * Created by cosic on 23.07.13.

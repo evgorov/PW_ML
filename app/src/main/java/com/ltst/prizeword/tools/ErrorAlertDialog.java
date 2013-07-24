@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.widget.LinearLayout;
 
 import com.ltst.prizeword.R;
 
@@ -45,6 +46,7 @@ public class ErrorAlertDialog extends AlertDialog.Builder {
                 dialog.cancel();
             }
         });
+
         return super.create();
     }
 
@@ -52,6 +54,10 @@ public class ErrorAlertDialog extends AlertDialog.Builder {
     {
         ErrorAlertDialog dialog = new ErrorAlertDialog(context);
         dialog.setMessageResource(msgResId);
-        dialog.create().show();
+        AlertDialog alert = dialog.create();
+        Resources res = alert.getContext().getResources();
+        alert.getWindow().setLayout((int) res.getDimension(R.dimen.error_dialog_width),
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        alert.show();
     }
 }

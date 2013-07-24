@@ -1,5 +1,6 @@
 package com.ltst.prizeword.navigation;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,7 +30,7 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
-import com.ltst.prizeword.login.model.IAutorization;
+import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
@@ -40,6 +42,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.dowloading.LoadImageTask;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -59,13 +62,15 @@ public class NavigationActivity extends SherlockFragmentActivity
         IFragmentsHolderActivity,
         IBcConnectorOwner,
         INavigationDrawerHolder,
-        IAutorization
+        IAutorization,
+        View.OnClickListener
 {
 
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private @Nonnull IBcConnector mBcConnector;
 
+    private @Nonnull Dialog mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull HeaderHolder mDrawerHeader;
@@ -87,11 +92,21 @@ public class NavigationActivity extends SherlockFragmentActivity
         View v = getLayoutInflater().inflate(R.layout.header_listview, null);
         mDrawerHeader = new HeaderHolder();
         mDrawerHeader.setHolder(v);
+        mDrawerHeader.imgPhoto.setOnClickListener(this);
         mDrawerList.addHeaderView(v);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
+
+        Resources res = getResources();
+        mDrawerChoiceDialog = new Dialog(this);
+        mDrawerChoiceDialog.setContentView(R.layout.choice_photo_dialog_layout);
+        mDrawerChoiceDialog.setTitle(res.getString(R.string.choice_source));
+        ((Button) mDrawerChoiceDialog.findViewById(R.id.choice_photo_dialog_camera_btn)).setOnClickListener(this);
+        ((Button) mDrawerChoiceDialog.findViewById(R.id.choice_photo_dialog_gallery_btn)).setOnClickListener(this);
+        mDrawerChoiceDialog.getWindow().setLayout((int) res.getDimension(R.dimen.choise_photo_dialog_width),
+                LinearLayout.LayoutParams.WRAP_CONTENT);
 
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
@@ -307,9 +322,32 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
+    //==== IAutorization ==============================================
+
     @Override
     public void onAutotized() {
         loadUserData();
+    }
+
+    //==== IOnClickListeber ========
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId())
+        {
+            case R.id.header_listview_photo_img:
+                mDrawerChoiceDialog.show();
+                break;
+            case R.id.choice_photo_dialog_camera_btn:
+                mDrawerChoiceDialog.cancel();
+                break;
+            case R.id.choice_photo_dialog_gallery_btn:
+                mDrawerChoiceDialog.cancel();
+                break;
+            default:
+                break;
+        }
     }
 
     //==== Header =============
@@ -355,7 +393,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             @Nonnull
             @Override
             protected Intent createIntent() {
-//                String url = "http://t0.gstatic.com/images?q=tbn:ANd9GcShI1bkbkZ9iE0QOs1nuGz0HqyU19g8IIoytJ2oeNHqilEzO_NHtw";
                 return LoadImageTask.createIntent(urlf);
             }
         };
@@ -395,6 +432,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             if(!byte.class.isEnum()){
                 Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+
             }
         }
     }
