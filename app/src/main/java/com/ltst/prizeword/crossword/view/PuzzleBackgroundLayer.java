@@ -66,8 +66,6 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         }
         rect.right = mWidth;
         canvas.drawBitmap(mBgTileBitmap, null, rect, mPaint);
-
-        canvas.drawText("right: " + rect.right + " bottom: " + rect.bottom, 100, 700, mPaint);
     }
 
     @Override

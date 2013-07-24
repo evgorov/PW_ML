@@ -40,9 +40,10 @@ public class PuzzleView extends View
 
     private @Nonnull ScaleGestureDetector mScaleDetector;
 
-    private static final float MIN_SCALE_FACTOR = 0.1f;
-    private static final float MAX_SCALE_FACTOR = 2.0f;
-    private float mScaleFactor = MIN_SCALE_FACTOR;
+    private static final float MIN_SCALE_FACTOR = 0.5f;
+    private static final float MAX_SCALE_FACTOR = 1.2f;
+    private float mScaleFactor = MAX_SCALE_FACTOR;
+    private float mMinScaleFactor = MIN_SCALE_FACTOR;
 
     public PuzzleView(Context context)
     {
@@ -118,30 +119,27 @@ public class PuzzleView extends View
 
         mQuestionsAndLettersLayer.setPadding(mPadding);
         mQuestionsAndLettersLayer.setTileGap(mTileGap);
-
         mBackgroundLayer = new PuzzleBackgroundLayer(mContext, mCanvasWidth, mCanvasHeight, R.drawable.bg_sand_tile2x);
+
+        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
+        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
+        Log.i("viewW: " + mViewWidth + " viewH: " + mViewHeight);
+        Log.i("canvasW: " + mCanvasWidth + " canvasH: " + mCanvasHeight);
+        Log.i("SW: " + scaleWidth + " SH: " + scaleHeight);
+        mMinScaleFactor = Math.min(1/scaleWidth, 1/scaleHeight);
     }
 
     private void configureBounds()
     {
-//        mMatrix.setScale(mScaleFactor, mScaleFactor);
-
-//        float scaleWidth = mViewWidth/mCanvasWidth;
-//        float scaleHeight = mViewHeight/mCanvasHeight;
-//        mScaleFactor = Math.min(scaleWidth, scaleHeight);
         mMatrix.reset();
         mMatrix.postScale(mScaleFactor, mScaleFactor);
         mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f ),
                          (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f));
-//        mMatrix.postTranslate(200, 200);
-//        mMatrix.postTranslate();
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        Log.i("TOUCH EVENT");
         return mScaleDetector.onTouchEvent(event);
     }
 
