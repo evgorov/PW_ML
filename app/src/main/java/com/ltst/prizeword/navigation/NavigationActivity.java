@@ -20,7 +20,6 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.RulesFragment;
-import com.ltst.prizeword.login.RulesSlideFragment;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -74,8 +73,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragments = new SparseArrayCompat<Fragment>();
 
         checkLauchingAppByLink();
-        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-        //selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        //selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        selectNavigationFragmentByClassname(RulesFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
