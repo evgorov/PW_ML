@@ -81,7 +81,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.HIGH_SCORE          + " integer not null default 0, "
             + ColsUsers.DYNAMICS            + " integer not null default 0, "
             + ColsUsers.HINTS               + " integer not null default 0, "
-            + ColsUsers.PREVIEW_URL	        + " text not null, "
+            + ColsUsers.PREVIEW_URL	        + " text, "
             + ColsUsers.PREVIEW_KEY	        + " text)";
 
     private static final String CREATE_PROVIDERS_QUERY = "create table "

@@ -447,6 +447,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     private void resetUserData(@Nonnull final String sessionKey, final byte[] img){
+        // изменить аватарку;
         SessionResetUserData session = new SessionResetUserData(){
 
             @Nonnull
@@ -463,22 +464,23 @@ public class NavigationActivity extends SherlockFragmentActivity
         });
     }
 
-//    private void resetUserData(@Nonnull final String sessionKey, final @Nonnull String userName){
-//        SessionResetUserData session = new SessionResetUserData(){
-//
-//            @Nonnull
-//            @Override
-//            protected Intent createIntent() {
-//                return ResetUserDataOnServerTask.createUserName(sessionKey, userName);
-////                return ResetUserDataOnServerTask.createTestIntent();
-//            }
-//        };
-//        session.update(new IListenerVoid(){
-//            @Override
-//            public void handle() {
-//            }
-//        });
-//    }
+    private void resetUserData(@Nonnull final String sessionKey, final @Nonnull String userName){
+        // изменить имя пользователя;
+        SessionResetUserData session = new SessionResetUserData(){
+
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return ResetUserDataOnServerTask.createUserName(sessionKey, userName);
+//                return ResetUserDataOnServerTask.createTestIntent();
+            }
+        };
+        session.update(new IListenerVoid(){
+            @Override
+            public void handle() {
+            }
+        });
+    }
 
     private void loadAvatar(@Nonnull final String url){
         SessionLoadingImage session = new SessionLoadingImage() {
@@ -586,6 +588,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         protected void handleData(@Nullable Bundle result) {
             Log.d(NavigationActivity.LOG_TAG, "FINAL!");
+
+            UserData data = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
+
+            if( data != null ){
+                loadAvatar(data.previewUrl);
+            }
+
         }
     }
 
