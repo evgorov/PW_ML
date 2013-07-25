@@ -42,7 +42,7 @@ public class PuzzleView extends View
     private @Nonnull ScaleGestureDetector mScaleDetector;
 
     private static final float MIN_SCALE_FACTOR = 0.5f;
-    private static final float MAX_SCALE_FACTOR = 1.2f;
+    private static final float MAX_SCALE_FACTOR = 1.0f;
     private float mScaleFactor = MAX_SCALE_FACTOR;
     private float mMinScaleFactor = MIN_SCALE_FACTOR;
 

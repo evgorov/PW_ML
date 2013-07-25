@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -14,10 +16,13 @@ import javax.annotation.Nullable;
 
 public class PuzzleTilesLayer implements ICanvasLayer
 {
-    private final int FONT_SIZE = 22;
+    private final int FONT_SIZE = 20;
+    private int mTextHeight;
+    private int mTextLeading;
 
     private int mPuzzleWidth;
     private int mPuzzleHeight;
+    private int mTileTextPadding;
 
     private @Nonnull Resources mResources;
     private @Nonnull Bitmap mEmptyLetter;
@@ -37,6 +42,12 @@ public class PuzzleTilesLayer implements ICanvasLayer
         mPaint.setAntiAlias(true);
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setTextSize(FONT_SIZE);
+        mPaint.setStyle(Paint.Style.FILL);
+        Typeface tf = Typeface.create("Helvetica",Typeface.BOLD);
+        mPaint.setTypeface(tf);
+        Paint.FontMetrics fm = mPaint.getFontMetrics();
+        mTextHeight = (int) (fm.descent - fm.ascent + fm.leading);
+        mTextLeading = (int)fm.leading;
     }
 
     public void initBitmaps(int emptyLetterResId,
@@ -48,6 +59,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
                             int correctQuesitonResId)
     {
         mEmptyLetter = BitmapFactory.decodeResource(mResources, emptyLetterResId);
+        mTileTextPadding = mEmptyLetter.getWidth()/6;
         mQuestionNormal = BitmapFactory.decodeResource(mResources, emptyQuestionResId);
     }
 
@@ -103,9 +115,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
                 if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_QUESTION)
                 {
                     canvas.drawBitmap(mQuestionNormal, null, rect, mPaint);
-                    String question = mQuestions.get(questionsIndex);
-                    
-                    canvas.drawText(question, rect.left + tileWidth/2, rect.top + tileHeight/2, mPaint);
+                    drawQuestionText(canvas, questionsIndex, rect);
                     questionsIndex++;
                 }
 
@@ -118,6 +128,54 @@ public class PuzzleTilesLayer implements ICanvasLayer
             rect.bottom += tileHeight + mTileGap;
         }
     }
+
+    private void drawQuestionText(@Nonnull Canvas canvas, int questionsIndex, @Nonnull RectF tileRect)
+    {
+        String question = mQuestions.get(questionsIndex);
+        RectF textRect = new RectF(tileRect.left + mTileTextPadding,
+                tileRect.top + mTileTextPadding,
+                tileRect.right - mTileTextPadding,
+                tileRect.bottom - mTileTextPadding);
+        int textWidth = (int)(textRect.right - textRect.left);
+        int textHeight = (int)(textRect.bottom - textRect.top);
+
+        List<String> filledText = fillTextInWidth(question, textWidth);
+        int lineCount = filledText.size();
+        int totalLineHeight = lineCount * mTextHeight + (lineCount - 1) * mTextLeading;
+        int startCoord = (textHeight - totalLineHeight)/2 + mTextHeight/2 + mTextLeading;
+        int lineIndex = 0;
+        for (String s : filledText)
+        {
+            canvas.drawText(s, textRect.left + textWidth/2,
+                    textRect.top + startCoord + (mTextHeight + mTextLeading) * lineIndex,
+                    mPaint);
+            lineIndex++;
+        }
+    }
+
+    private @Nonnull List<String> fillTextInWidth(@Nonnull String text, int width)
+    {
+        List<String> strings = new ArrayList<String>();
+        int start = 0;
+        int end = text.length() - 1;
+        while(start < end)
+        {
+            int measured = mPaint.breakText(text.substring(start, end), true, width, null);
+            for (int i = measured; i >= start; i--)
+            {
+                char letter = text.charAt(i);
+                if(letter == ' ')
+                {
+                    measured = i;
+                    break;
+                }
+            }
+            strings.add(text.substring(start, start + measured + 1));
+            start += measured + 1;
+        }
+        return strings;
+    }
+
 
     @Override
     public void recycle()
