@@ -9,6 +9,7 @@ public interface IRestClient
 {
     @Nullable RestUserData getUserData(@Nonnull String sessionToken);
     @Nullable RestUserData resetUserPic(@Nonnull String token, @Nonnull byte[] userPic);
+    @Nullable RestUserData resetUserName(@Nonnull String token, @Nonnull String userName);
     @Nullable RestUserData.RestUserDataHolder getSessionKeyByProvider(@Nonnull String provider, @Nonnull String access_token);
     @Nullable RestUserData.RestUserDataHolder getSessionKeyBySignUp(@Nonnull String email, @Nonnull String name,
                                                 @Nonnull String surname, @Nonnull String password,

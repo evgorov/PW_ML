@@ -24,12 +24,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public static final @Nonnull String LOG_TAG = "prizeword";
 
-    private @Nonnull int RESULT_LOAD_IMAGE = 1;
+    private int RESULT_LOAD_IMAGE = 1;
 
     private @Nonnull IBcConnector mBcConnector;
 
@@ -147,8 +145,10 @@ public class NavigationActivity extends SherlockFragmentActivity
             mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             // Отправляем новую аватарку насервер;
             byte[] userPic = readFile(picturePath);
+//            String userName = "Vladislav";
             String sessionKey = SharedPreferencesValues.getSessionKey(this);
             resetUserData(sessionKey, userPic);
+//            resetUserData(sessionKey, userName);
         }
     }
 
@@ -452,23 +452,40 @@ public class NavigationActivity extends SherlockFragmentActivity
             @Nonnull
             @Override
             protected Intent createIntent() {
-                return ResetUserDataOnServerTask.createIntent(sessionKey,img);
+                return ResetUserDataOnServerTask.createUserPicIntent(sessionKey, img);
+//                return ResetUserDataOnServerTask.createTestIntent();
             }
         };
-        session.update(new IListenerVoid() {
+        session.update(new IListenerVoid(){
             @Override
             public void handle() {
             }
         });
     }
 
-    private void loadAvatar(@Nonnull String url){
-        final @Nonnull String urlf = url;
+//    private void resetUserData(@Nonnull final String sessionKey, final @Nonnull String userName){
+//        SessionResetUserData session = new SessionResetUserData(){
+//
+//            @Nonnull
+//            @Override
+//            protected Intent createIntent() {
+//                return ResetUserDataOnServerTask.createUserName(sessionKey, userName);
+////                return ResetUserDataOnServerTask.createTestIntent();
+//            }
+//        };
+//        session.update(new IListenerVoid(){
+//            @Override
+//            public void handle() {
+//            }
+//        });
+//    }
+
+    private void loadAvatar(@Nonnull final String url){
         SessionLoadingImage session = new SessionLoadingImage() {
             @Nonnull
             @Override
             protected Intent createIntent() {
-                return LoadImageTask.createIntent(urlf);
+                return LoadImageTask.createIntent(url);
             }
         };
         session.update(new IListenerVoid(){
@@ -557,7 +574,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Nonnull
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return ResetUserDataOnServerTask.class;
+                return ResetUserDataOnServerTask.class;
         }
 
         @Nonnull
@@ -568,9 +585,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         @Override
         protected void handleData(@Nullable Bundle result) {
-            if (result == null)
-                return;
-
+            Log.d(NavigationActivity.LOG_TAG, "FINAL!");
         }
     }
+
 }
