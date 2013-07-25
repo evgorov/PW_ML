@@ -16,6 +16,7 @@
 
 
     <string name="error">Ошибка</string>
+    <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
     <string name="choice_source">Выберите источник</string>
     <string name="camera">Камера</string>
     <string name="gallery"> Галерея</string>

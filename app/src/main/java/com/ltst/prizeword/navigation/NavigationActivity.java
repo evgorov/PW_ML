@@ -1,13 +1,16 @@
 package com.ltst.prizeword.navigation;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -22,13 +25,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.hardware.Camera;
+import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 import com.ltst.prizeword.tools.Files;
+import com.ltst.prizeword.tools.PhotoHandler;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -80,6 +82,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private int RESULT_LOAD_IMAGE = 1;
+    private int REQUEST_MAKE_PHOTO = 2;
 
     private @Nonnull IBcConnector mBcConnector;
 
@@ -95,6 +98,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
     private int mCurrentSelectedFragmentPosition = 0;
+
+    private Camera mCamera;
+    private int mCameraId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         checkLauchingAppByLink();
 //        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
         selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+
+        // --- Camera -----
+        findCamera();
     }
 
     @Override
@@ -153,6 +162,35 @@ public class NavigationActivity extends SherlockFragmentActivity
 //            Bitmap bmp = BitmapFactory.decodeByteArray(userPic, 0, userPic.length);
 //            mDrawerHeader.imgPhoto.setImageBitmap(bmp);
         }
+        if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
+//            try {
+//                // We need to recyle unused bitmaps
+//                InputStream stream = getContentResolver().openInputStream(data.getData());
+//                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+//
+//                mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    void findCamera(){
+        // do we have a camera?
+        if (!getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            Toast.makeText(this, "No camera on this device", Toast.LENGTH_LONG)
+                    .show();
+        } else {
+            mCameraId = PhotoHandler.findFrontFacingCamera();
+            if (mCameraId < 0) {
+                Toast.makeText(this, "No front facing camera found.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                mCamera = Camera.open(mCameraId);
+            }
+        }
     }
 
     @Override
@@ -163,6 +201,16 @@ public class NavigationActivity extends SherlockFragmentActivity
         spref.commit();
         super.onDestroy();
     }
+
+    @Override
+    protected void onPause() {
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
+        super.onPause();
+    }
+
 
     // ==== INavigationDrawerActivity =================================
 
@@ -383,6 +431,12 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case R.id.choice_photo_dialog_camera_btn:
                 mDrawerChoiceDialog.cancel();
+                if(mCamera != null){
+                    mCamera.takePicture(null, null,
+                            new PhotoHandler(getApplicationContext()));
+                } else {
+                    Toast.makeText(this, getResources().getText(R.string.not_found_camera), Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
