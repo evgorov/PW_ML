@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PuzzleBackgroundLayer implements ICanvasLayer
 {
@@ -35,20 +36,34 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     @Override
     public void drawLayer(Canvas canvas)
     {
-        int tileWidth = mBgTileBitmap.getWidth();
-        int tileHeight = mBgTileBitmap.getHeight();
+        PuzzleBackgroundLayer.fillBackgroundWithTile(canvas, mBgTileBitmap, mPaint);
+    }
+
+    @Override
+    public void recycle()
+    {
+        mBgTileBitmap.recycle();
+    }
+
+    public static void fillBackgroundWithTile(@Nonnull Canvas canvas, @Nonnull Bitmap tileBitmap, @Nullable Paint paint)
+    {
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+
+        int tileWidth = tileBitmap.getWidth();
+        int tileHeight = tileBitmap.getHeight();
         RectF rect = new RectF(0, 0, tileWidth, tileHeight);
 
-        while (rect.bottom < mHeight)
+        while (rect.bottom < height)
         {
-            while (rect.right < mWidth)
+            while (rect.right < width)
             {
-                canvas.drawBitmap(mBgTileBitmap, null, rect, mPaint);
+                canvas.drawBitmap(tileBitmap, null, rect, paint);
                 rect.left += tileWidth;
                 rect.right += tileWidth;
             }
-            rect.right = mWidth;
-            canvas.drawBitmap(mBgTileBitmap, null, rect, mPaint);
+            rect.right = width;
+            canvas.drawBitmap(tileBitmap, null, rect, paint);
             rect.left = 0;
             rect.right = tileWidth;
 
@@ -57,20 +72,14 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         }
 
         rect.right = tileWidth;
-        rect.bottom = mHeight;
-        while (rect.right < mWidth)
+        rect.bottom = height;
+        while (rect.right < width)
         {
-            canvas.drawBitmap(mBgTileBitmap, null, rect, mPaint);
+            canvas.drawBitmap(tileBitmap, null, rect, paint);
             rect.left += tileWidth;
             rect.right += tileWidth;
         }
-        rect.right = mWidth;
-        canvas.drawBitmap(mBgTileBitmap, null, rect, mPaint);
-    }
-
-    @Override
-    public void recycle()
-    {
-        mBgTileBitmap.recycle();
+        rect.right = width;
+        canvas.drawBitmap(tileBitmap, null, rect, paint);
     }
 }

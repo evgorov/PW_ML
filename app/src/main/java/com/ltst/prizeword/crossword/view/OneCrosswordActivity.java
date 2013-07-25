@@ -41,7 +41,6 @@ public class OneCrosswordActivity extends SherlockActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_crossword);
-        mCrosswordBgImage = (PuzzleView) findViewById(R.id.one_crossword_view);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -54,12 +53,27 @@ public class OneCrosswordActivity extends SherlockActivity
     }
 
     @Override
+    protected void onStart()
+    {
+        mCrosswordBgImage = (PuzzleView) findViewById(R.id.one_crossword_view);
+        mCrosswordBgImage.setBackgroundTileBitmap(R.drawable.bg_dark_tile);
+        super.onStart();
+    }
+
+    @Override
     protected void onResume()
     {
         mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mCurrentPuzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
         super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        mCrosswordBgImage.recycle();
+        super.onStop();
     }
 
     @Override
