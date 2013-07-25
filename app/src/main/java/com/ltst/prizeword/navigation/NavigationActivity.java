@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
+import com.ltst.prizeword.tools.Files;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -144,30 +146,13 @@ public class NavigationActivity extends SherlockFragmentActivity
             // Меняем аватарку на панеле;
             mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             // Отправляем новую аватарку насервер;
-            byte[] userPic = readFile(picturePath);
-//            String userName = "Vladislav";
+            byte[] userPic = Files.readFile(picturePath);
             String sessionKey = SharedPreferencesValues.getSessionKey(this);
             resetUserData(sessionKey, userPic);
-//            resetUserData(sessionKey, userName);
-        }
-    }
 
-    byte[] readFile(@Nonnull String path){
-        File file = new File(path);
-        int size = (int) file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+//            Bitmap bmp = BitmapFactory.decodeByteArray(userPic, 0, userPic.length);
+//            mDrawerHeader.imgPhoto.setImageBitmap(bmp);
         }
-        return  bytes;
     }
 
     @Override
@@ -526,7 +511,9 @@ public class NavigationActivity extends SherlockFragmentActivity
             if(!byte.class.isEnum()){
                 Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
-
+            }
+            else{
+                mDrawerHeader.imgPhoto.setImageResource(R.drawable.login_register_ava_btn);
             }
         }
     }
