@@ -7,30 +7,58 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.ltst.prizeword.R;
+import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PuzzleTilesLayer implements ICanvasLayer
 {
+    private final int FONT_SIZE = 22;
+
     private int mPuzzleWidth;
     private int mPuzzleHeight;
 
+    private @Nonnull Resources mResources;
     private @Nonnull Bitmap mEmptyLetter;
     private @Nonnull Bitmap mQuestionNormal;
     private @Nonnull Paint mPaint;
     private int mPadding = 0;
     private int mTileGap = 0;
+    private @Nullable byte[][] mStateMatrix;
+    private @Nullable List<String> mQuestions;
 
     public PuzzleTilesLayer(@Nonnull Resources res, int puzzleWidth, int puzzleHeight)
     {
         mPuzzleWidth = puzzleWidth;
         mPuzzleHeight = puzzleHeight;
-
-        mEmptyLetter = BitmapFactory.decodeResource(res, R.drawable.gamefield_tile_letter_empty);
-        mQuestionNormal = BitmapFactory.decodeResource(res, R.drawable.gamefield_tile_question_new);
+        mResources = res;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setTextSize(FONT_SIZE);
+    }
+
+    public void initBitmaps(int emptyLetterResId,
+                            int inputLetterResId,
+                            int correctLetterOverlayResId,
+                            int emptyQuestionResId,
+                            int inputQuestionResId,
+                            int wrongQuestionResId,
+                            int correctQuesitonResId)
+    {
+        mEmptyLetter = BitmapFactory.decodeResource(mResources, emptyLetterResId);
+        mQuestionNormal = BitmapFactory.decodeResource(mResources, emptyQuestionResId);
+    }
+
+    public void setStateMatrix(@Nullable byte[][] stateMatrix)
+    {
+        mStateMatrix = stateMatrix;
+    }
+
+    public void setQuestions(@Nullable List<String> questions)
+    {
+        mQuestions = questions;
     }
 
     public int getTileWidth()
@@ -43,19 +71,9 @@ public class PuzzleTilesLayer implements ICanvasLayer
         return mEmptyLetter.getHeight();
     }
 
-    public int getPadding()
-    {
-        return mPadding;
-    }
-
     public void setPadding(int padding)
     {
         mPadding = padding;
-    }
-
-    public int getTileGap()
-    {
-        return mTileGap;
     }
 
     public void setTileGap(int tileGap)
@@ -66,15 +84,31 @@ public class PuzzleTilesLayer implements ICanvasLayer
     @Override
     public void drawLayer(Canvas canvas)
     {
+        if (mStateMatrix == null)
+        {
+            return;
+        }
+
         int tileWidth = mEmptyLetter.getWidth();
         int tileHeight = mEmptyLetter.getHeight();
         RectF rect = new RectF(mPadding, mPadding, tileWidth + mPadding, tileHeight + mPadding);
 
+        int questionsIndex = 0;
         for (int i = 0; i < mPuzzleHeight; i++)
         {
             for (int j = 0; j < mPuzzleWidth; j++)
             {
-                canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
+                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_LETTER)
+                    canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
+                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_QUESTION)
+                {
+                    canvas.drawBitmap(mQuestionNormal, null, rect, mPaint);
+                    String question = mQuestions.get(questionsIndex);
+                    
+                    canvas.drawText(question, rect.left + tileWidth/2, rect.top + tileHeight/2, mPaint);
+                    questionsIndex++;
+                }
+
                 rect.left += tileWidth + mTileGap;
                 rect.right += tileWidth + mTileGap;
             }

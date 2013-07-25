@@ -1,7 +1,5 @@
 package com.ltst.prizeword.crossword.view;
 
-import com.ltst.prizeword.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,15 +20,6 @@ import javax.annotation.Nullable;
 
 public class PuzzleView extends View
 {
-    private static final int DEFAULT_CELL_WIDTH = 14;
-    private static final int DEFAULT_CELL_HEIGHT = 20;
-    private static final int DEFAULT_PADDING = 16;
-    private static final int DEFAULT_TILE_GAP = 4;
-
-    private int mPuzzleCellWidth = DEFAULT_CELL_WIDTH;
-    private int mPuzzleCellHeigth = DEFAULT_CELL_HEIGHT;
-    private int mPadding = DEFAULT_PADDING;
-    private int mTileGap = DEFAULT_TILE_GAP;
 
     private @Nonnull Context mContext;
 
@@ -41,7 +30,7 @@ public class PuzzleView extends View
 
     private int mCanvasWidth;
     private int mCanvasHeight;
-    private @Nonnull Bitmap mCanvasBitmap;
+    private @Nullable Bitmap mCanvasBitmap;
     private @Nullable Bitmap mBackgroundTileBitmap;
 
     private int mViewWidth;
@@ -56,6 +45,8 @@ public class PuzzleView extends View
     private static final float MAX_SCALE_FACTOR = 1.2f;
     private float mScaleFactor = MAX_SCALE_FACTOR;
     private float mMinScaleFactor = MIN_SCALE_FACTOR;
+
+    private @Nullable PuzzleViewInformation mPuzzleInfo;
 
     public PuzzleView(Context context)
     {
@@ -74,26 +65,20 @@ public class PuzzleView extends View
         mMatrix = new Matrix();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        initCanvasDimensions();
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-    }
-
-    public void setPuzzleCellWidth(int puzzleCellWidth)
-    {
-        mPuzzleCellWidth = puzzleCellWidth;
-        initCanvasDimensions();
-    }
-
-    public void setPuzzleCellHeigth(int puzzleCellHeigth)
-    {
-        mPuzzleCellHeigth = puzzleCellHeigth;
-        initCanvasDimensions();
     }
 
     public void setBackgroundTileBitmap(int resId)
     {
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resId);
         mBackgroundTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+    }
+
+    public void setPuzzleInfo(@Nullable PuzzleViewInformation puzzleInfo)
+    {
+        mPuzzleInfo = puzzleInfo;
+        initCanvasDimensions();
+        invalidate(mViewRect);
     }
 
     // ==== measuring ====
@@ -113,14 +98,7 @@ public class PuzzleView extends View
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
-        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
-        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
-        float minWidth = 1/scaleWidth;
-        float minHeight = 1/scaleHeight;
-        mMinScaleFactor = ((int)(Math.min(minWidth, minHeight)/0.1f)) * 0.1f;
-
         mViewRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
-        initCanvasDimensions();
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
@@ -128,29 +106,59 @@ public class PuzzleView extends View
 
     private void initCanvasDimensions()
     {
-        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), mPuzzleCellWidth, mPuzzleCellHeigth);
+        if (mPuzzleInfo == null)
+        {
+            return;
+        }
+
+        int padding = mPuzzleInfo.getPadding();
+        int cellWidth = mPuzzleInfo.getPuzzleCellWidth();
+        int cellHeight = mPuzzleInfo.getPuzzleCellHeight();
+        int tileGap = mPuzzleInfo.getTileGap();
+
+        // init questions layer
+        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), cellWidth, cellHeight);
+        mQuestionsAndLettersLayer.initBitmaps(mPuzzleInfo.getLetterEmpty(),
+                                            mPuzzleInfo.getLetterEmptyInput(),
+                                            mPuzzleInfo.getOverlayLetterCorrect(),
+                                            mPuzzleInfo.getQuestionEmpty(),
+                                            mPuzzleInfo.getQuestionInput(),
+                                            mPuzzleInfo.getQuestionWrong(),
+                                            mPuzzleInfo.getQuestionCorrect());
+        mQuestionsAndLettersLayer.setPadding(padding);
+        mQuestionsAndLettersLayer.setTileGap(tileGap);
+        mQuestionsAndLettersLayer.setStateMatrix(mPuzzleInfo.getStateMatrix());
+        mQuestionsAndLettersLayer.setQuestions(mPuzzleInfo.getQuestionsList());
+
+        // compute canvas size
         int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
         int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
-        mCanvasWidth = 2 * mPadding + mPuzzleCellWidth * tileWidth + (mPuzzleCellWidth - 1) * mTileGap;
-        mCanvasHeight = 2 * mPadding + mPuzzleCellHeigth * tileHeigth + (mPuzzleCellHeigth - 1) * mTileGap;
+        mCanvasWidth = 2 * padding + cellWidth * tileWidth + (cellWidth - 1) * tileGap;
+        mCanvasHeight = 2 * padding + cellHeight * tileHeigth + (cellHeight - 1) * tileGap;
 
-        mQuestionsAndLettersLayer.setPadding(mPadding);
-        mQuestionsAndLettersLayer.setTileGap(mTileGap);
-        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight, R.drawable.bg_sand_tile2x);
+        // init background layer
+        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight, mPuzzleInfo.getBackgroundTile());
 
+        // init drawing canvas
         mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);
         mPuzzleCanvas = new Canvas(mCanvasBitmap);
         mBackgroundLayer.drawLayer(mPuzzleCanvas);
         mQuestionsAndLettersLayer.drawLayer(mPuzzleCanvas);
+
+        // compute scale factor
+        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
+        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
+        float minWidth = 1/scaleWidth;
+        float minHeight = 1/scaleHeight;
+        mMinScaleFactor = ((int)(Math.min(minWidth, minHeight)/0.1f)) * 0.1f;
     }
 
-    // ==== drawing, scaling, traslating ====
+    // ==== drawing, scaling, translating ====
 
     @Override
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
-        Log.i("w: " + canvas.getWidth() + " h: " + canvas.getHeight());
         drawBackground(canvas);
 
         int saveCount = canvas.getSaveCount();
@@ -178,7 +186,10 @@ public class PuzzleView extends View
 
     private void drawPuzzle(Canvas canvas)
     {
-        canvas.drawBitmap(mCanvasBitmap, 0, 0, mPaint);
+        if (mCanvasBitmap != null)
+        {
+            canvas.drawBitmap(mCanvasBitmap, 0, 0, mPaint);
+        }
     }
 
     private void configureBounds()

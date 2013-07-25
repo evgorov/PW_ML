@@ -110,11 +110,30 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     }
 
-    public static class PuzzleSetType
+
+    public enum PuzzleSetType
     {
-        public static final @Nonnull String BRILLIANT = "brilliant";
-        public static final @Nonnull String GOLD = "gold";
-        public static final @Nonnull String SILVER = "silver";
-        public static final @Nonnull String FREE = "free";
+        BRILLIANT,
+        GOLD,
+        SILVER,
+        FREE
+    }
+
+    public static final @Nonnull String BRILLIANT = "brilliant";
+    public static final @Nonnull String GOLD = "gold";
+    public static final @Nonnull String SILVER = "silver";
+    public static final @Nonnull String FREE = "free";
+
+    public static @Nullable PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
+    {
+        if (type.startsWith(FREE))
+            return PuzzleSetType.FREE;
+        if (type.startsWith(GOLD))
+            return PuzzleSetType.GOLD;
+        if (type.startsWith(SILVER))
+            return PuzzleSetType.SILVER;
+        if (type.startsWith(BRILLIANT))
+            return PuzzleSetType.BRILLIANT;
+        return null;
     }
 }

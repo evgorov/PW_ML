@@ -9,13 +9,16 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
+import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class OneCrosswordActivity extends SherlockActivity
 {
@@ -87,7 +90,13 @@ public class OneCrosswordActivity extends SherlockActivity
         @Override
         public void handle()
         {
-
+            @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+            if (puzzle != null)
+            {
+                PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
+                PuzzleViewInformation info = new PuzzleViewInformation(type, puzzle.questions);
+                mCrosswordBgImage.setPuzzleInfo(info);
+            }
         }
     };
 }
