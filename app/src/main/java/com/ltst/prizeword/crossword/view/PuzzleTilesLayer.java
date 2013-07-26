@@ -4,10 +4,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.util.SparseArray;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -33,14 +33,16 @@ public class PuzzleTilesLayer implements ICanvasLayer
     private @Nonnull Paint mPaint;
     private int mPadding = 0;
     private int mTileGap = 0;
-    private @Nullable byte[][] mStateMatrix;
+    private @Nullable int[][] mStateMatrix;
     private @Nullable List<PuzzleQuestion> mQuestions;
+    private @Nonnull SparseArray<Bitmap> mArrows;
 
     public PuzzleTilesLayer(@Nonnull Resources res, int puzzleWidth, int puzzleHeight)
     {
         mPuzzleWidth = puzzleWidth;
         mPuzzleHeight = puzzleHeight;
         mResources = res;
+        mArrows = new SparseArray<Bitmap>();
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -52,7 +54,6 @@ public class PuzzleTilesLayer implements ICanvasLayer
         mPaint.setTypeface(tf);
         Paint.FontMetrics fm = mPaint.getFontMetrics();
         mTextHeight = (int) mPaint.getTextSize();
-//        mTextHeight = (int) (fm.descent - mPaint.getTextSize());
 
     }
 
@@ -69,7 +70,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
         mQuestionNormal = BitmapFactory.decodeResource(mResources, emptyQuestionResId);
     }
 
-    public void setStateMatrix(@Nullable byte[][] stateMatrix)
+    public void setStateMatrix(@Nullable int[][] stateMatrix)
     {
         mStateMatrix = stateMatrix;
     }
@@ -116,9 +117,26 @@ public class PuzzleTilesLayer implements ICanvasLayer
         {
             for (int j = 0; j < mPuzzleWidth; j++)
             {
-                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_LETTER)
+                int initState = mStateMatrix[j][i];
+                int state = mStateMatrix[j][i] & PuzzleViewInformation.STATE_MASK;
+                if (state == PuzzleViewInformation.STATE_LETTER)
+                {
                     canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
-                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_QUESTION)
+                    int arrow = mStateMatrix[j][i] & PuzzleQuestion.ArrowType.ARROW_TYPE_MASK;
+                    if(arrow != PuzzleQuestion.ArrowType.NO_ARROW)
+                    {
+                        int res = PuzzleViewInformation.getArrowResource(arrow);
+                        Bitmap arrowBitmap = mArrows.get(arrow);
+                        if(arrowBitmap == null)
+                        {
+                            arrowBitmap = BitmapFactory.decodeResource(mResources, res);
+                            mArrows.append(arrow, arrowBitmap);
+                        }
+                        canvas.drawBitmap(arrowBitmap, null, rect, mPaint);
+                    }
+                }
+
+                if (state == PuzzleViewInformation.STATE_QUESTION)
                 {
                     canvas.drawBitmap(mQuestionNormal, null, rect, mPaint);
                     drawQuestionText(canvas, questionsIndex, rect);
@@ -187,5 +205,12 @@ public class PuzzleTilesLayer implements ICanvasLayer
     {
         mEmptyLetter.recycle();
         mQuestionNormal.recycle();
+        int key = 0;
+        for(int i = 0; i < mArrows.size(); i++)
+        {
+            key = mArrows.keyAt(i);
+            Bitmap bm = mArrows.get(key);
+            bm.recycle();
+        }
     }
 }

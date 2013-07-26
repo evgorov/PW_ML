@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import org.omich.velo.log.Log;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -138,12 +140,14 @@ public class PuzzleView extends View
         // init background layer
         mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight,
                 mPuzzleInfo.getBackgroundTile(), mPuzzleInfo.getBackgroundFrame(), framePadding);
-
+        Log.i("w: " + mCanvasWidth + " h: " + mCanvasHeight);
         // init drawing canvas
-        mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);
+        mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_4444);
         mPuzzleCanvas = new Canvas(mCanvasBitmap);
         mBackgroundLayer.drawLayer(mPuzzleCanvas);
+        mBackgroundLayer.recycle();
         mQuestionsAndLettersLayer.drawLayer(mPuzzleCanvas);
+        mQuestionsAndLettersLayer.recycle();
 
         // compute scale factor
         float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
@@ -196,8 +200,8 @@ public class PuzzleView extends View
     {
         mMatrix.reset();
         mMatrix.postScale(mScaleFactor, mScaleFactor);
-        mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f  + 0.5f),
-                         (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f + 0.5f));
+        mMatrix.postTranslate((int) ((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f + 0.5f),
+                (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f + 0.5f));
     }
 
     public void recycle()
