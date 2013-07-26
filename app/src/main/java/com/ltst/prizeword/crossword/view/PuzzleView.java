@@ -112,6 +112,7 @@ public class PuzzleView extends View
         }
 
         int padding = mPuzzleInfo.getPadding();
+        int shadowPadding = mPuzzleInfo.getShadowPadding();
         int cellWidth = mPuzzleInfo.getPuzzleCellWidth();
         int cellHeight = mPuzzleInfo.getPuzzleCellHeight();
         int tileGap = mPuzzleInfo.getTileGap();
@@ -125,19 +126,20 @@ public class PuzzleView extends View
                                             mPuzzleInfo.getQuestionInput(),
                                             mPuzzleInfo.getQuestionWrong(),
                                             mPuzzleInfo.getQuestionCorrect());
-        mQuestionsAndLettersLayer.setPadding(padding);
+        mQuestionsAndLettersLayer.setPadding(padding + shadowPadding);
         mQuestionsAndLettersLayer.setTileGap(tileGap);
         mQuestionsAndLettersLayer.setStateMatrix(mPuzzleInfo.getStateMatrix());
-        mQuestionsAndLettersLayer.setQuestions(mPuzzleInfo.getQuestionsList());
+        mQuestionsAndLettersLayer.setQuestions(mPuzzleInfo.getPuzzleQuestions());
 
         // compute canvas size
         int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
         int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
-        mCanvasWidth = 2 * padding + cellWidth * tileWidth + (cellWidth - 1) * tileGap;
-        mCanvasHeight = 2 * padding + cellHeight * tileHeigth + (cellHeight - 1) * tileGap;
+        mCanvasWidth = 2 * (padding + shadowPadding) + cellWidth * tileWidth + (cellWidth - 1) * tileGap;
+        mCanvasHeight = 2 * (padding + shadowPadding) + cellHeight * tileHeigth + (cellHeight - 1) * tileGap;
 
         // init background layer
-        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight, mPuzzleInfo.getBackgroundTile());
+        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight,
+                mPuzzleInfo.getBackgroundTile(), mPuzzleInfo.getBackgroundFrame(), shadowPadding);
 
         // init drawing canvas
         mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);

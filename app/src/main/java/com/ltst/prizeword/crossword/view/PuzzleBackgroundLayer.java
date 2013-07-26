@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.NinePatchDrawable;
+
+import com.ltst.prizeword.R;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,14 +19,18 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     private int mWidth;
     private int mHeight;
     private int mBgTileResource;
+    private int mShadowPadding;
 
     private @Nonnull Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
+    private @Nonnull NinePatchDrawable mFrameBorder;
 
     public PuzzleBackgroundLayer(@Nonnull Resources res,
                                  int width,
                                  int height,
-                                 int bgTileResource)
+                                 int bgTileResource,
+                                 int bgFrameResource,
+                                 int shadowPadding)
     {
         mWidth = width;
         mHeight = height;
@@ -31,12 +39,22 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         mBgTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mFrameBorder = (NinePatchDrawable) res.getDrawable(bgFrameResource);
+        mShadowPadding = shadowPadding;
     }
 
     @Override
     public void drawLayer(Canvas canvas)
     {
-        PuzzleBackgroundLayer.fillBackgroundWithTile(canvas, mBgTileBitmap, mPaint);
+        Bitmap bm = Bitmap.createBitmap(mWidth - 2 * mShadowPadding, mHeight - 2 * mShadowPadding, Bitmap.Config.ARGB_8888);
+        Canvas mainCanvas = new Canvas(bm);
+        PuzzleBackgroundLayer.fillBackgroundWithTile(mainCanvas, mBgTileBitmap, mPaint);
+        canvas.drawBitmap(bm, mShadowPadding, mShadowPadding, mPaint);
+        bm.recycle();
+
+        Rect rect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+        mFrameBorder.setBounds(rect);
+        mFrameBorder.draw(canvas);
     }
 
     @Override

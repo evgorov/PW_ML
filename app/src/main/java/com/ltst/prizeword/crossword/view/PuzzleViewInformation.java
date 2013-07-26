@@ -23,6 +23,7 @@ public class PuzzleViewInformation
     private int mPuzzleCellHeigth;
     private int mPadding = DEFAULT_PADDING;
     private int mTileGap = DEFAULT_TILE_GAP;
+    private int mShadowPadding = DEFAULT_PADDING;
 
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
@@ -147,6 +148,11 @@ public class PuzzleViewInformation
         return R.drawable.bg_sand_tile2x;
     }
 
+    public int getBackgroundFrame()
+    {
+        return R.drawable.gamefield_border;
+    }
+
     public int getPuzzleCellWidth()
     {
         return mPuzzleCellWidth;
@@ -160,6 +166,11 @@ public class PuzzleViewInformation
     public int getPadding()
     {
         return mPadding;
+    }
+
+    public int getShadowPadding()
+    {
+        return mShadowPadding;
     }
 
     public int getTileGap()
