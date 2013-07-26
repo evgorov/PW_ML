@@ -19,7 +19,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     private int mWidth;
     private int mHeight;
     private int mBgTileResource;
-    private int mShadowPadding;
+    private int mFramePadding;
 
     private @Nonnull Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
@@ -30,7 +30,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
                                  int height,
                                  int bgTileResource,
                                  int bgFrameResource,
-                                 int shadowPadding)
+                                 int framePadding)
     {
         mWidth = width;
         mHeight = height;
@@ -40,16 +40,16 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mFrameBorder = (NinePatchDrawable) res.getDrawable(bgFrameResource);
-        mShadowPadding = shadowPadding;
+        mFramePadding = framePadding;
     }
 
     @Override
     public void drawLayer(Canvas canvas)
     {
-        Bitmap bm = Bitmap.createBitmap(mWidth - 2 * mShadowPadding, mHeight - 2 * mShadowPadding, Bitmap.Config.ARGB_8888);
+        Bitmap bm = Bitmap.createBitmap(mWidth - 2 * mFramePadding, mHeight - 2*mFramePadding, Bitmap.Config.ARGB_8888);
         Canvas mainCanvas = new Canvas(bm);
         PuzzleBackgroundLayer.fillBackgroundWithTile(mainCanvas, mBgTileBitmap, mPaint);
-        canvas.drawBitmap(bm, mShadowPadding, mShadowPadding, mPaint);
+        canvas.drawBitmap(bm, mFramePadding, mFramePadding, mPaint);
         bm.recycle();
 
         Rect rect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
