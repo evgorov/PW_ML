@@ -196,7 +196,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     @Override
     public DbReader createDbReader() throws DbException
     {
-        return new DbReader(this);
+        return new DbReader(this, false);
     }
 
     @Nonnull

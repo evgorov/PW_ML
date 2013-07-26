@@ -1,8 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OneCrosswordActivity">
+    tools:context=".OneCrosswordActivity"
+    android:orientation="vertical">
+    <!--<View android:layout_width="match_parent"-->
+          <!--android:layout_height="64dp"/>-->
 
     <com.ltst.prizeword.crossword.view.PuzzleView
             android:id="@+id/one_crossword_view"
@@ -10,4 +13,4 @@
             android:layout_height="match_parent"
             />
 
-</FrameLayout>
+</LinearLayout>

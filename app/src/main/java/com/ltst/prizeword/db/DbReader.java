@@ -93,15 +93,17 @@ public class DbReader implements IDbReader
 
     public final @Nonnull SQLiteDatabase mDb;
 
-    public DbReader(@Nonnull SQLiteHelper helper) throws DbException
+    public DbReader(@Nonnull SQLiteHelper helper, boolean mustBeSQLiteDatabaseWriteable) throws DbException
     {
-        mDb = helper.createReadableSQLiteDatabase();
+        mDb = mustBeSQLiteDatabaseWriteable
+            ? helper.createWritableSQLiteDatabase()
+            : helper.createReadableSQLiteDatabase();
         SQLiteHelper.configureSQLiteDatabase(mDb);
     }
 
-    protected @Nonnull IDbReader getReader()
+    protected @Nonnull SQLiteDatabase getDb()
     {
-        return this;
+        return mDb;
     }
 
     @Nullable
