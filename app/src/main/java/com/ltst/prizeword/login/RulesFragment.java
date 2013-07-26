@@ -20,7 +20,7 @@ public class RulesFragment extends SherlockFragment implements OnClickListener{
     public static final @Nonnull String FRAGMENT_CLASSNAME = RulesFragment.class.getName();
 
     RulesFragmentAdapter mAdapter;
-    ViewPager mPager;
+    private ViewPager mPager;
 
     public static final String TAG = "detailsFragment";
 
