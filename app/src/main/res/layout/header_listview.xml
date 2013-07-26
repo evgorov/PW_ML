@@ -15,7 +15,7 @@
             android:focusable="true"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:background="@drawable/ic_launcher"/>
+            android:background="@drawable/login_register_ava_btn"/>
 
     <TextView
             android:id="@+id/header_listview_nickname_tview"

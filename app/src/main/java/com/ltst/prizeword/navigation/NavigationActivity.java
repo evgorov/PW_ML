@@ -14,14 +14,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
@@ -30,13 +27,9 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.db.DbService;
-import com.ltst.prizeword.login.model.ResetUserDataOnServerTask;
 import com.ltst.prizeword.login.view.IAutorization;
-import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
@@ -45,14 +38,12 @@ import com.ltst.prizeword.login.view.LoginFragment;
 import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
+import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.tools.Files;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.omich.velo.bcops.BcBaseService;
-import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
@@ -91,6 +82,9 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
+    private @Nonnull
+    UserDataModel mUserDataModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,14 +93,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         View v = getLayoutInflater().inflate(R.layout.header_listview, null);
-        mDrawerHeader = new HeaderHolder();
-        mDrawerHeader.setHolder(v);
+        mDrawerHeader = new HeaderHolder(v);
         mDrawerHeader.imgPhoto.setOnClickListener(this);
         mDrawerList.addHeaderView(v);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
+        mUserDataModel = new UserDataModel(this,mBcConnector);
 
         Resources res = getResources();
         mDrawerChoiceDialog = new Dialog(this);
@@ -141,8 +135,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             // Отправляем новую аватарку насервер;
             byte[] userPic = Files.readFile(picturePath);
-            String sessionKey = SharedPreferencesValues.getSessionKey(this);
-            resetUserData(sessionKey, userPic);
+            resetUserData(userPic);
         }
         if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
             // получаем фото с камеры;
@@ -153,8 +146,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] userPic = stream.toByteArray();
-            String sessionKey = SharedPreferencesValues.getSessionKey(this);
-            resetUserData(sessionKey, userPic);
+            resetUserData(userPic);
         }
     }
 
@@ -204,7 +196,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Nonnull
     @Override
-    public List<NavigationDrawerItem>  getNavigationDrawerItems()
+    public List<NavigationDrawerItem> getNavigationDrawerItems()
     {
         if(mDrawerItems == null)
         {
@@ -399,195 +391,85 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    //==== Header =============
-
-    public class HeaderHolder{
-        public @Nonnull ImageView imgPhoto;
-        public @Nonnull TextView tvNickname;
-        public @Nonnull TextView tvRecordtitle;
-        public @Nonnull TextView tvPoints;
-        public @Nonnull Button btnLogout;
-
-        public void setHolder(@Nonnull View v){
-            this.imgPhoto = (ImageView) v.findViewById(R.id.header_listview_photo_img);
-            this.tvNickname = (TextView) v.findViewById(R.id.header_listview_nickname_tview);
-            this.tvPoints = (TextView) v.findViewById(R.id.header_listview_points_tview);
-            this.tvRecordtitle = (TextView) v.findViewById(R.id.header_listview_personal_record_tview);
-            this.btnLogout = (Button) v.findViewById(R.id.header_listview_logout_btn);
-        }
-    }
-
     //===== Task loading user datas ==============
 
     private void loadUserData(){
-        SessionLoadingUserData session = new SessionLoadingUserData(){
-
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                String sessionKey = SharedPreferencesValues.getSessionKey(NavigationActivity.this);
-                return LoadUserDataFromInternetTask.createIntent(sessionKey);
-            }
-        };
-        session.update(new IListenerVoid(){
-            @Override
-            public void handle() {
-            }
-        });
+        // загружаем данные о пользователе с сервера;
+        mUserDataModel.loadUserData(mTaskHandlerLoadUserData);
     }
 
-    private void resetUserData(@Nonnull final String sessionKey, final byte[] img){
+    private void resetUserData(byte[] userPic){
         // изменить аватарку;
-        SessionResetUserData session = new SessionResetUserData(){
+        mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
 
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                return ResetUserDataOnServerTask.createUserPicIntent(sessionKey, img);
-//                return ResetUserDataOnServerTask.createTestIntent();
-            }
-        };
-        session.update(new IListenerVoid(){
-            @Override
-            public void handle() {
-            }
-        });
     }
 
-    private void resetUserData(@Nonnull final String sessionKey, final @Nonnull String userName){
+    private void resetUserData(@Nonnull String userName){
         // изменить имя пользователя;
-        SessionResetUserData session = new SessionResetUserData(){
-
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                return ResetUserDataOnServerTask.createUserName(sessionKey, userName);
-//                return ResetUserDataOnServerTask.createTestIntent();
-            }
-        };
-        session.update(new IListenerVoid(){
-            @Override
-            public void handle() {
-            }
-        });
+        mUserDataModel.resetUserName(userName, mTaskHandlerResetUserName);
     }
 
-    private void loadAvatar(@Nonnull final String url){
-        SessionLoadingImage session = new SessionLoadingImage() {
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                return LoadImageTask.createIntent(url);
-            }
-        };
-        session.update(new IListenerVoid(){
-            @Override
-            public void handle() {
-            }
-        });
+
+    private void loadAvatar(@Nonnull String url){
+        // загружаем аватарку с сервера;
+        mUserDataModel.loadUserPic(url, mTaskHandlerLoadUserPic);
     }
 
-    private abstract class SessionLoadingImage extends ModelUpdater<DbService.DbTaskEnv>
+    private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
     {
-        @Nonnull
         @Override
-        protected IBcConnector getBcConnector() {
-            return mBcConnector;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return LoadImageTask.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
-            return DbService.class;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result) {
-            if (result == null)
-                return;
-
-            byte[] buffer = result.getByteArray(LoadImageTask.BF_BITMAP);
-            if(!byte.class.isEnum()){
-                Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
-                mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+        public void handle()
+        {
+            UserData data = mUserDataModel.getUserData();
+            if( data != null ){
+                mDrawerHeader.tvNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
+                loadAvatar(data.previewUrl);
             }
-            else{
+        }
+    };
+
+    private IListenerVoid mTaskHandlerLoadUserPic = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            byte[] buffer = mUserDataModel.getUserPic();
+            Bitmap bitmap = null;
+            if(!byte.class.isEnum() && buffer != null){
+                try
+                {
+                    bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+                }
+                catch (NullPointerException e){
+                    throw new RuntimeException(e);
+                }
+            }
+            if(bitmap != null){
+                mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
+            } else {
                 mDrawerHeader.imgPhoto.setImageResource(R.drawable.login_register_ava_btn);
             }
         }
-    }
+    };
 
-    private abstract class SessionLoadingUserData extends ModelUpdater<DbService.DbTaskEnv>
+    private IListenerVoid mTaskHandlerResetUserPic = new IListenerVoid()
     {
-        @Nonnull
         @Override
-        protected IBcConnector getBcConnector() {
-            return mBcConnector;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return LoadUserDataFromInternetTask.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
-            return DbService.class;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result) {
-            if (result == null)
-                return;
-
-            UserData data = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
-
-            if( data != null ){
-                mDrawerHeader.tvNickname.setText(data.surname != Strings.EMPTY ? data.surname +" "+data.name : data.name);
-                loadAvatar(data.previewUrl);
-            }
-        }
-    }
-
-    private abstract class SessionResetUserData extends ModelUpdater<DbService.DbTaskEnv>
-    {
-        @Nonnull
-        @Override
-        protected IBcConnector getBcConnector() {
-            return mBcConnector;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-                return ResetUserDataOnServerTask.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
-            return DbService.class;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result) {
-            Log.d(NavigationActivity.LOG_TAG, "FINAL!");
-
-            UserData data = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
-
+        public void handle()
+        {
+            UserData data = mUserDataModel.getUserData();
             if( data != null ){
                 loadAvatar(data.previewUrl);
             }
-
         }
-    }
+    };
+
+    private IListenerVoid mTaskHandlerResetUserName = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+        }
+    };
 
 }
