@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
     private int mPadding = 0;
     private int mTileGap = 0;
     private @Nullable byte[][] mStateMatrix;
-    private @Nullable List<String> mQuestions;
+    private @Nullable List<PuzzleQuestion> mQuestions;
 
     public PuzzleTilesLayer(@Nonnull Resources res, int puzzleWidth, int puzzleHeight)
     {
@@ -73,7 +74,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
         mStateMatrix = stateMatrix;
     }
 
-    public void setQuestions(@Nullable List<String> questions)
+    public void setQuestions(@Nullable List<PuzzleQuestion> questions)
     {
         mQuestions = questions;
     }
@@ -136,7 +137,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
 
     private void drawQuestionText(@Nonnull Canvas canvas, int questionsIndex, @Nonnull RectF tileRect)
     {
-        String question = mQuestions.get(questionsIndex);
+        String question = mQuestions.get(questionsIndex).questionText;
         RectF textRect = new RectF(tileRect.left + mTileTextPadding,
                 tileRect.top + mTileTextPadding,
                 tileRect.right - mTileTextPadding,

@@ -257,7 +257,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             ContentValues cv  = new ContentValues();
             cv.put(ColsPuzzleQuestions.COLUMN, object.column);
             cv.put(ColsPuzzleQuestions.ROW, object.row);
-            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.quesitonText);
+            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.questionText);
             cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
             cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
             return cv;

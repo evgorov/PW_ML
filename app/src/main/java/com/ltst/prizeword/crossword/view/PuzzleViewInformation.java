@@ -1,14 +1,12 @@
 package com.ltst.prizeword.crossword.view;
 
-import android.graphics.Matrix;
-
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PuzzleViewInformation
@@ -74,18 +72,10 @@ public class PuzzleViewInformation
     }
 
     // в порядке обхода клеток
-    public @Nullable List<String> getQuestionsList()
+    @Nullable
+    public List<PuzzleQuestion> getPuzzleQuestions()
     {
-        List<String> list = null;
-        if (mPuzzleQuestions != null)
-        {
-            list = new ArrayList<String>();
-            for (PuzzleQuestion question : mPuzzleQuestions)
-            {
-                list.add(question.quesitonText);
-            }
-        }
-        return list;
+        return mPuzzleQuestions;
     }
 
     public void setPadding(int padding)
@@ -141,6 +131,17 @@ public class PuzzleViewInformation
         return 0;
     }
 
+    public int getArrow(@Nonnull PuzzleQuestion.ArrowType type)
+    {
+        switch (type)
+        {
+//            case NORTH_RIGHT:
+//                return 1;
+            default:
+                return 0;
+        }
+    }
+
     public int getBackgroundTile()
     {
         return R.drawable.bg_sand_tile2x;
@@ -165,4 +166,5 @@ public class PuzzleViewInformation
     {
         return mTileGap;
     }
+
 }
