@@ -32,7 +32,7 @@ public class BitmapTools {
             @Override
             public void run() {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
                 mBuffer = stream.toByteArray();
                 handler.handle();
             }
