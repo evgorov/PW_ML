@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 
+import com.ltst.prizeword.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class PuzzleTilesLayer implements ICanvasLayer
 {
-    private final int FONT_SIZE = 20;
+    private int mFontSize;
     private int mTextHeight;
     private int mTextLeading;
 
@@ -38,16 +40,19 @@ public class PuzzleTilesLayer implements ICanvasLayer
         mPuzzleWidth = puzzleWidth;
         mPuzzleHeight = puzzleHeight;
         mResources = res;
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setTextSize(FONT_SIZE);
+        mFontSize = res.getDimensionPixelSize(R.dimen.puzzle_question_font_size);
+        mPaint.setTextSize(mFontSize);
         mPaint.setStyle(Paint.Style.FILL);
         Typeface tf = Typeface.create("Helvetica",Typeface.BOLD);
         mPaint.setTypeface(tf);
         Paint.FontMetrics fm = mPaint.getFontMetrics();
         mTextHeight = (int) (fm.descent - fm.ascent + fm.leading);
         mTextLeading = (int)fm.leading;
+
     }
 
     public void initBitmaps(int emptyLetterResId,
