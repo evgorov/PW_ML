@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -21,18 +21,20 @@
             android:id="@+id/header_listview_nickname_tview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:textSize="20sp"
             android:clickable="false"
-            android:text="@string/user"/>
+            android:text="@string/user"
+            android:layout_below="@+id/header_listview_photo_img"
+            android:layout_alignParentLeft="true"/>
 
     <TextView
             android:id="@+id/header_listview_personal_record_tview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:clickable="false"
-            android:text="@string/personal_record"/>
+            android:text="@string/personal_record"
+            android:layout_below="@+id/header_listview_nickname_tview"
+            android:layout_alignParentLeft="true"/>
 
     <TextView
             android:id="@+id/header_listview_points_tview"
@@ -40,7 +42,10 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:clickable="false"
-            android:text="1200 очков"/>
+            android:text="1200 очков"
+            android:layout_below="@+id/header_listview_nickname_tview"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="16dp"/>
 
     <Button
             android:id="@+id/header_listview_logout_btn"
@@ -48,6 +53,16 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:text="Смена пользователя"/>
+            android:text="Смена пользователя"
+            android:layout_below="@+id/header_listview_points_tview"
+            android:layout_alignParentLeft="true"/>
 
-</LinearLayout>
+    <ProgressBar
+            android:id="@+id/header_listview_progressbar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/header_listview_nickname_tview"
+            android:layout_alignRight="@+id/header_listview_points_tview"/>
+
+</RelativeLayout>

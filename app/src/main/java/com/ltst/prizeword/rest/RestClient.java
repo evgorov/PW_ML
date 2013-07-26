@@ -1,5 +1,8 @@
 package com.ltst.prizeword.rest;
 
+import android.graphics.Bitmap;
+
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
 import org.omich.velo.net.Network;
@@ -82,7 +85,13 @@ public class RestClient implements IRestClient
 // Create and populate a simple object to be used in the request
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-        urlVariables.put(RestParams.USERPIC, userPic);
+        try{
+            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
+            urlVariables.put(RestParams.USERPIC, bab);
+        }
+        catch(Exception e){
+            urlVariables.put(RestParams.USERPIC, userPic);
+        }
 
 // Set the Content-Type header
         HttpHeaders requestHeaders = new HttpHeaders();
