@@ -13,8 +13,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import org.omich.velo.log.Log;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -21,7 +22,6 @@ public class PuzzleTilesLayer implements ICanvasLayer
 {
     private int mFontSize;
     private int mTextHeight;
-    private int mTextLeading;
 
     private int mPuzzleWidth;
     private int mPuzzleHeight;
@@ -51,8 +51,8 @@ public class PuzzleTilesLayer implements ICanvasLayer
         Typeface tf = Typeface.create("Helvetica",Typeface.BOLD);
         mPaint.setTypeface(tf);
         Paint.FontMetrics fm = mPaint.getFontMetrics();
-        mTextHeight = (int) (fm.descent - fm.ascent + fm.leading);
-        mTextLeading = (int)fm.leading;
+        mTextHeight = (int) mPaint.getTextSize();
+//        mTextHeight = (int) (fm.descent - mPaint.getTextSize());
 
     }
 
@@ -144,16 +144,15 @@ public class PuzzleTilesLayer implements ICanvasLayer
                 tileRect.bottom - mTileTextPadding);
         int textWidth = (int)(textRect.right - textRect.left);
         int textHeight = (int)(textRect.bottom - textRect.top);
-
         List<String> filledText = fillTextInWidth(question, textWidth);
         int lineCount = filledText.size();
-        int totalLineHeight = lineCount * mTextHeight + (lineCount - 1) * mTextLeading;
-        int startCoord = (textHeight - totalLineHeight)/2 + mTextHeight/2 + mTextLeading;
+        int totalLineHeight = lineCount * mTextHeight;
+        int startCoord = (textHeight - totalLineHeight)/2;
         int lineIndex = 0;
         for (String s : filledText)
         {
             canvas.drawText(s, textRect.left + textWidth/2,
-                    textRect.top + startCoord + (mTextHeight + mTextLeading) * lineIndex,
+                    textRect.top + startCoord + mTextHeight * (lineIndex + 1),
                     mPaint);
             lineIndex++;
         }
