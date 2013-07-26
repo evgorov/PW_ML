@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
 
 import java.net.URI;
@@ -45,7 +47,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         IBcConnectorOwner,
         INavigationDrawerHolder
 {
-
+    private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private @Nonnull IBcConnector mBcConnector;
@@ -54,7 +56,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull ListView mDrawerList;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
-
+    private @Nonnull View mFooterView;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
@@ -71,10 +73,12 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
-
         checkLauchingAppByLink();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
+        mDrawerList.addFooterView(mFooterView);
         //selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-        selectNavigationFragmentByClassname(RulesFragment.FRAGMENT_CLASSNAME);
+        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
@@ -134,7 +138,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(RulesFragment.FRAGMENT_ID,RulesFragment.FRAGMENT_CLASSNAME,false);
 
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
@@ -193,10 +196,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.login_fragment_title);
         else if(id.equals(CrosswordsFragment.FRAGMENT_ID))
             title = res.getString(R.string.crosswords_fragment_title);
-        else if (id.equals(RulesFragment.FRAGMENT_ID))
-            title = res.getString(R.string.rules_fragment_title);
-        else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
-            title = res.getString(R.string.authorization_fragment_title);
         else if(id.equals(RegisterFragment.FRAGMENT_ID))
             title = res.getString(R.string.registration_fragment_title);
         else if(id.equals(ResetPassFragment.FRAGMENT_ID))

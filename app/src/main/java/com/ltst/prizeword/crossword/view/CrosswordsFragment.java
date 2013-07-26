@@ -18,6 +18,7 @@ import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel.PuzzleSetType;
+import com.ltst.prizeword.login.RulesFragment;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
@@ -37,6 +38,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     private @Nonnull Context mContext;
     private @Nonnull Button mCrossWordButton;
+    private @Nonnull Button mShowRules;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
@@ -60,6 +62,8 @@ public class CrosswordsFragment extends SherlockFragment
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
         mCrossWordButton = (Button) v.findViewById(R.id.view_crossword);
+        mShowRules = (Button)v.findViewById(R.id.show_rules);
+
         return v;
     }
 
@@ -67,6 +71,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         mCrossWordButton.setOnClickListener(this);
+        mShowRules.setOnClickListener(this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -79,6 +84,10 @@ public class CrosswordsFragment extends SherlockFragment
         {
             case R.id.view_crossword:
                 launchCrosswordActivity();
+                break;
+            case R.id.show_rules:
+                @Nonnull Intent intent = RulesFragment.createIntent(mContext);
+                mContext.startActivity(intent);
                 break;
             default:
                 break;

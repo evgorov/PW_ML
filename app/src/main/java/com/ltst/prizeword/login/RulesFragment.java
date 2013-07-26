@@ -1,17 +1,21 @@
 package com.ltst.prizeword.login;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 
 import java.util.ArrayList;
@@ -21,54 +25,108 @@ import javax.annotation.Nonnull;
 
 import static android.view.View.OnClickListener;
 
-public class RulesFragment extends FragmentActivity implements OnClickListener{
+public class RulesFragment extends SherlockActivity implements OnClickListener
+{
+    private int[] mImages;
+    private int[] mTexts;
+    private ImageView mSimpleImage;
+    private TextView mSimpleText;
+    private Button mButton;
 
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.RulesFragment";
-    public static final @Nonnull String FRAGMENT_CLASSNAME = RulesFragment.class.getName();
-
-    RulesFragmentAdapter mAdapter;
-    private ViewPager mPager;
+    public static @Nonnull android.content.Intent createIntent(@Nonnull Context context)
+    {
+        Intent intent = new Intent(context, RulesFragment.class);
+        return intent;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
-        View v = inflater.inflate(R.layout.rules_fragment_layout, container, false);
-        /*mAdapter = new RulesFragmentAdapter();
+        mImages = new int[]{R.drawable.rules_page_12x, R.drawable.rules_page_22x,
+                R.drawable.rules_page_32x, R.drawable.rules_page_42x, R.drawable.rules_page_52x, R.drawable.rules_page_62x, R.drawable.rules_page_72x, R.drawable.rules_page_82x, R.drawable.rules_page_92x
+                , R.drawable.rules_page_102x, R.drawable.rules_page_112x, R.drawable.rules_page_122x};
+        mTexts = new  int[]{R.string.rules_text_1,R.string.rules_text_2,R.string.rules_text_3,R.string.rules_text_4,R.string.rules_text_5,R.string.rules_text_6,R.string.rules_text_7,R.string.rules_text_8,
+                R.string.rules_text_9,R.string.rules_text_10,R.string.rules_text_11,R.string.rules_text_12,};
 
-        mPager = (ViewPager)v.findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.rules_fragment_layout);
 
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        mButton = (Button)findViewById(R.id.rules_close);
 
-        });*/
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        LinearLayout indicator = (LinearLayout) findViewById(R.id.rules_indicator);
+
+       LinearLayout.LayoutParams params;
+
+        for (int i = 0; i < mImages.length; i++)
+        {
+            mSimpleImage = new ImageView(this);
+            mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_empty);
+            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0,0,9,0);
+            mSimpleImage.setLayoutParams(params);
+            mSimpleImage.setId(i);
+
+            indicator.addView(mSimpleImage);
+        }
+
+        mSimpleImage = (ImageView) findViewById(0);
+        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_full);
+        mSimpleText = (TextView)findViewById(R.id.rules_text);
+        mSimpleText.setText(mTexts[0]);
 
         List<View> pages = new ArrayList<View>();
-
-        LayoutInflater inflater1 = LayoutInflater.from(getActivity());
-        View page = inflater1.inflate(R.layout.page, null);
-        TextView textView = (TextView) page.findViewById(R.id.text_view);
-        textView.setText("Страница 1");
-        pages.add(page);
-
-        page = inflater1.inflate(R.layout.page, null);
-        textView = (TextView) page.findViewById(R.id.text_view);
-        textView.setText("Страница 2");
-        pages.add(page);
-
-        page = inflater1.inflate(R.layout.page, null);
-        textView = (TextView) page.findViewById(R.id.text_view);
-        textView.setText("Страница 3");
-        pages.add(page);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View page;
+        ImageView imageView;
+        for (int i = 0; i < mImages.length; i++)
+        {
+            page = inflater.inflate(R.layout.rules_simple_image, null);
+            imageView = (ImageView) page.findViewById(R.id.image_view);
+            imageView.setImageResource(mImages[i]);
+            pages.add(page);
+        }
 
         RulesFragmentAdapter pagerAdapter = new RulesFragmentAdapter(pages);
-        ViewPager viewPager = (ViewPager)v.findViewById(R.id.pager);
+
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override public void onPageScrolled(int i, float v, int i2)
+            {
 
-        return v;
+            }
+
+            @Override public void onPageSelected(int position)
+            {
+                for (int i = 0; i < mImages.length; i++)
+                {
+                    mSimpleImage = (ImageView) findViewById(i);
+                    if (i == position)
+                        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_full);
+                    else
+                        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_empty);
+
+                }
+                mSimpleText.setText(mTexts[position]);
+            }
+
+            @Override public void onPageScrollStateChanged(int i)
+            {
+
+            }
+        });
+
+        mButton.setOnClickListener(this);
     }
-    @Override public void onClick(View view)
-    {
 
+    @Override public void onClick(View v)
+    {
+        switch(v.getId()){
+            case R.id.rules_close:
+                onBackPressed();
+            break;
+        }
     }
 }
