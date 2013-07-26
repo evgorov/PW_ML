@@ -13,6 +13,8 @@
             android:layout_gravity="left|center_vertical"
             android:clickable="true"
             android:focusable="true"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:background="@drawable/ic_launcher"/>
 
     <TextView
