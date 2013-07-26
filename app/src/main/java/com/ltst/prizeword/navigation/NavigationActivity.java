@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,27 +122,27 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            // Получаем картинку из галереи;
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+//            // Получаем картинку из галереи;
+            Uri chosenImageUri = data.getData();
+            Bitmap photo = null;
+            try {
+                photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             // Меняем аватарку на панеле;
-            mDrawerHeader.imgPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
-            byte[] userPic = Files.readFile(picturePath);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] userPic = stream.toByteArray();
             resetUserData(userPic);
         }
         if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
             // получаем фото с камеры;
-            Bitmap photo=(Bitmap) data.getExtras().get("data");
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
             // Меняем аватарку на панеле;
-            mDrawerHeader.imgPhoto.setImageBitmap(photo);
+            mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -374,14 +375,17 @@ public class NavigationActivity extends SherlockFragmentActivity
         switch (view.getId())
         {
             case R.id.header_listview_photo_img:
+                // Вызываем окно выбора источника получения фото;
                 mDrawerChoiceDialog.show();
                 break;
             case R.id.choice_photo_dialog_camera_btn:
                 mDrawerChoiceDialog.cancel();
+                // Вызываем камеру;
                 Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, REQUEST_MAKE_PHOTO);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
+                // Вызываем галерею;
                 mDrawerChoiceDialog.cancel();
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -423,7 +427,10 @@ public class NavigationActivity extends SherlockFragmentActivity
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
                 mDrawerHeader.tvNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
+                mDrawerHeader.tvPoints.setText(String.valueOf(data.highScore));
                 loadAvatar(data.previewUrl);
+            } else {
+                mDrawerHeader.clean();
             }
         }
     };
@@ -444,11 +451,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                     throw new RuntimeException(e);
                 }
             }
-            if(bitmap != null){
-                mDrawerHeader.imgPhoto.setImageBitmap(bitmap);
-            } else {
-                mDrawerHeader.imgPhoto.setImageResource(R.drawable.login_register_ava_btn);
-            }
+            mDrawerHeader.setImage(bitmap);
         }
     };
 
@@ -460,6 +463,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
                 loadAvatar(data.previewUrl);
+            } else {
+                mDrawerHeader.setImage(null);
             }
         }
     };

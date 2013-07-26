@@ -15,8 +15,10 @@
     <string name="registration_fragment_title">Регистрация</string>
 
 
+    <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
+    <string name="personal_record">Персональный рекорд</string>
     <string name="choice_source">Выберите источник</string>
     <string name="camera">Камера</string>
     <string name="gallery"> Галерея</string>

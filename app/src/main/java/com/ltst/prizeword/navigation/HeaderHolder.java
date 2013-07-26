@@ -1,5 +1,6 @@
 package com.ltst.prizeword.navigation;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.ltst.prizeword.R;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 26.07.13.
@@ -25,5 +27,20 @@ public class HeaderHolder {
         this.tvPoints = (TextView) v.findViewById(R.id.header_listview_points_tview);
         this.tvRecordtitle = (TextView) v.findViewById(R.id.header_listview_personal_record_tview);
         this.btnLogout = (Button) v.findViewById(R.id.header_listview_logout_btn);
+    }
+
+    public void setImage(@Nullable Bitmap bitmap){
+        if(bitmap != null){
+            this.imgPhoto.setImageBitmap(bitmap);
+        } else {
+            this.imgPhoto.setImageResource(R.drawable.login_register_ava_btn);
+        }
+
+    }
+
+    public void clean(){
+        this.tvNickname.setText(R.string.user);
+        this.tvPoints.setText(String.valueOf(0));
+        this.setImage(null);
     }
 }
