@@ -23,7 +23,7 @@ public class PuzzleViewInformation
     private int mPuzzleCellHeigth;
     private int mPadding = DEFAULT_PADDING;
     private int mTileGap = DEFAULT_TILE_GAP;
-    private int mFramePadding = DEFAULT_PADDING/2;
+    private int mFramePadding = DEFAULT_PADDING;
 
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;

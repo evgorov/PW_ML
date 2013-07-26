@@ -8,18 +8,21 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PuzzleView extends View
 {
+    protected static int ACTION_MODE_NONE = 0;
+    protected static int ACTION_MODE_DRAG = 1;
+    private int mActionMode;
 
     private @Nonnull Context mContext;
 
@@ -36,8 +39,8 @@ public class PuzzleView extends View
     private int mViewWidth;
     private int mViewHeight;
 
-    private @Nonnull PuzzleBackgroundLayer mBackgroundLayer;
-    private @Nonnull PuzzleTilesLayer mQuestionsAndLettersLayer;
+    private @Nullable PuzzleBackgroundLayer mBackgroundLayer;
+    private @Nullable PuzzleTilesLayer mQuestionsAndLettersLayer;
 
     private @Nonnull ScaleGestureDetector mScaleDetector;
 
@@ -66,6 +69,7 @@ public class PuzzleView extends View
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+        mPointPanStart = new PointF();
     }
 
     public void setBackgroundTileBitmap(int resId)
@@ -198,38 +202,106 @@ public class PuzzleView extends View
     {
         mMatrix.reset();
         mMatrix.postScale(mScaleFactor, mScaleFactor);
-        mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f  + 0.5f),
-                         (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f + 0.5f));
+        if(mIsPanning)
+        {
+            if (mPanTranslation != null && mPointPanStart != null)
+            {
+                mMatrix.postTranslate(mPointPanStart.x + mPanTranslation.x,
+                                    mPointPanStart.y + mPanTranslation.y);
+            }
+        }
+        else
+            mMatrix.postTranslate((int)((mViewWidth - mCanvasWidth * mScaleFactor) * 0.5f  + 0.5f),
+                (int) ((mViewHeight - mCanvasHeight * mScaleFactor) * 0.5f + 0.5f));
     }
 
     public void recycle()
     {
-        mCanvasBitmap.recycle();
-        if (mBackgroundTileBitmap != null)
+//        if (mCanvasBitmap != null)
+        {
+            mCanvasBitmap.recycle();
+        }
+//        if (mBackgroundTileBitmap != null)
         {
             mBackgroundTileBitmap.recycle();
         }
-        mBackgroundLayer.recycle();
-        mQuestionsAndLettersLayer.recycle();
+//        if (mBackgroundLayer != null)
+        {
+            mBackgroundLayer.recycle();
+        }
+//        if (mQuestionsAndLettersLayer != null)
+        {
+            mQuestionsAndLettersLayer.recycle();
+        }
     }
 
     // ==== touch events ======
 
+    private @Nullable PointF mPointPanStart;
+    private @Nullable PointF mPanTranslation;
+    private boolean mIsPanning = false;
+
+    public int getActionMode()
+    {
+        return mActionMode;
+    }
+
+    public void setActionMode(int actionMode)
+    {
+        mActionMode = actionMode;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        return mScaleDetector.onTouchEvent(event);
+        switch (event.getAction() & MotionEvent.ACTION_MASK)
+        {
+            case MotionEvent.ACTION_DOWN:
+                mPointPanStart.set(event.getX(), event.getY());
+                setActionMode(ACTION_MODE_DRAG);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(mActionMode == ACTION_MODE_DRAG)
+                {
+                    double distance = Math.sqrt(Math.pow(event.getX() - mPointPanStart.x,2.0)
+                            + Math.pow(event.getY() - mPointPanStart.y, 2.0));
+                    if(distance > 10.0f)
+                    {
+                        mPanTranslation = new PointF(event.getX() - mPointPanStart.x,
+                                event.getY() - mPointPanStart.y);
+                        mPanTranslation.x /= mScaleFactor;
+                        mPanTranslation.y /= mScaleFactor;
+                        mIsPanning = true;
+                        invalidate(mViewRect);
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                mIsPanning = false;
+                mScaleDetector.onTouchEvent(event);
+                break;
+            case MotionEvent.ACTION_UP:
+                mIsPanning = false;
+                setActionMode(ACTION_MODE_NONE);
+                break;
+        }
+        return true;
     }
+
+
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
     {
         @Override
         public boolean onScale(ScaleGestureDetector detector)
         {
-            mScaleFactor *= detector.getScaleFactor();
-            mScaleFactor = Math.max(mMinScaleFactor, Math.min(mScaleFactor, MAX_SCALE_FACTOR));
+            if(!mIsPanning)
+            {
+                mScaleFactor *= detector.getScaleFactor();
+                mScaleFactor = Math.max(mMinScaleFactor, Math.min(mScaleFactor, MAX_SCALE_FACTOR));
 
-            invalidate(mViewRect);
+                invalidate(mViewRect);
+            }
             return true;
         }
     }
