@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -30,7 +32,9 @@ import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
@@ -39,21 +43,19 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static android.app.DatePickerDialog.OnDateSetListener;
-import static android.view.View.VISIBLE;
 
 
-public class RegisterFragment extends SherlockFragment implements INavigationBackPress, View.OnClickListener
+public class RegisterFragment extends SherlockFragment
+        implements INavigationBackPress,
+        View.OnClickListener
 
 {
     public static final @Nonnull
@@ -71,6 +73,8 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
     SimpleDateFormat dateFormat;
     Date date;
 
+    private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
+    private @Nonnull ImageView mIconImg;
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
@@ -117,6 +121,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mNavBackButton.setOnClickListener(this);
         mRegisterFinishButton.setOnClickListener(this);
         mRegisterDateButton.setOnClickListener(this);
+        mIconImg = (ImageView) v.findViewById(R.id.registration_nav_icon_img);
+        mIconImg.setClickable(true);
+        mIconImg.setFocusable(true);
+        mIconImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(NavigationActivity.LOG_TAG, "PRESS");
+            }
+        });
+
+
+        mDrawerChoiceDialog = new ChoiceImageSourceHolder(mContext);
+        mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
+        mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         pattern = "yyyy-MM-dd"; //iso 8061
         fr = "dd MMMM yyyy";
@@ -254,6 +272,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
             case R.id.register_date_born_btn:
                 hideKeyboard();
                 showDatePickerDialog();
+                break;
+            case R.id.registration_nav_icon_img:
+                Log.d(NavigationActivity.LOG_TAG, "PRESS");
+                mDrawerChoiceDialog.show();
+                break;
+            case R.id.choice_photo_dialog_camera_btn:
+                Log.d(NavigationActivity.LOG_TAG, "PRESS");
+                mDrawerChoiceDialog.cancel();
+                break;
+            case R.id.choice_photo_dialog_gallery_btn:
+                Log.d(NavigationActivity.LOG_TAG, "PRESS");
+                mDrawerChoiceDialog.cancel();
+                break;
+            default:
                 break;
         }
     }

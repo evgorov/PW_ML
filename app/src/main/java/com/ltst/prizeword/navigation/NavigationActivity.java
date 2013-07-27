@@ -1,6 +1,5 @@
 package com.ltst.prizeword.navigation;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,8 +14,6 @@ import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 
@@ -31,7 +28,6 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
-import com.ltst.prizeword.login.RulesFragment;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -42,7 +38,7 @@ import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.BitmapTools;
-import com.ltst.prizeword.tools.Files;
+import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -71,7 +67,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull IBcConnector mBcConnector;
 
-    private @Nonnull Dialog mDrawerChoiceDialog;
+
+    private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull HeaderHolder mDrawerHeader;
@@ -86,8 +83,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull BitmapTools mBitMapTools;
 
-    private @Nonnull
-    UserDataModel mUserDataModel;
+    private @Nonnull UserDataModel mUserDataModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -108,14 +104,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel = new UserDataModel(this,mBcConnector);
         mBitMapTools = new BitmapTools();
 
-        Resources res = getResources();
-        mDrawerChoiceDialog = new Dialog(this);
-        mDrawerChoiceDialog.setContentView(R.layout.choice_photo_dialog_layout);
-        mDrawerChoiceDialog.setTitle(res.getString(R.string.choice_source));
-        ((Button) mDrawerChoiceDialog.findViewById(R.id.choice_photo_dialog_camera_btn)).setOnClickListener(this);
-        ((Button) mDrawerChoiceDialog.findViewById(R.id.choice_photo_dialog_gallery_btn)).setOnClickListener(this);
-        mDrawerChoiceDialog.getWindow().setLayout((int) res.getDimension(R.dimen.choise_photo_dialog_width),
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
+        mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
+        mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         checkLauchingAppByLink();
         LayoutInflater inflater = LayoutInflater.from(this);
