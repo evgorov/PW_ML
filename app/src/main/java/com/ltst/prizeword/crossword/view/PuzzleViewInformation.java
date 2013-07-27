@@ -93,32 +93,32 @@ public class PuzzleViewInformation
         mTileGap = tileGap;
     }
 
-    public int getLetterEmpty()
+    public static int getLetterEmpty()
     {
         return R.drawable.gamefield_tile_letter_empty;
     }
 
-    public int getLetterEmptyInput()
+    public static int getLetterEmptyInput()
     {
         return R.drawable.gamefield_tile_letter_empty_input;
     }
 
-    public int getOverlayLetterCorrect()
+    public static int getOverlayLetterCorrect()
     {
         return R.drawable.gamefield_tile_letter_correct_input_overlay;
     }
 
-    public int getQuestionEmpty()
+    public static int getQuestionEmpty()
     {
         return R.drawable.gamefield_tile_question_new;
     }
 
-    public int getQuestionInput()
+    public static int getQuestionInput()
     {
         return R.drawable.gamefield_tile_question_input;
     }
 
-    public int getQuestionWrong()
+    public static int getQuestionWrong()
     {
         return R.drawable.gamefield_tile_question_wrong;
     }
@@ -147,12 +147,12 @@ public class PuzzleViewInformation
         }
     }
 
-    public int getBackgroundTile()
+    public static int getBackgroundTile()
     {
         return R.drawable.bg_sand_tile2x;
     }
 
-    public int getBackgroundFrame()
+    public static int getBackgroundFrame()
     {
         return R.drawable.gamefield_border;
     }

@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.login.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
@@ -80,6 +82,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
+    private @Nonnull Button mShowRulesBtn;
+    private @Nonnull Button mLogoutBtn;
+
     private int mCurrentSelectedFragmentPosition = 0;
 
     private @Nonnull BitmapTools mBitMapTools;
@@ -113,9 +118,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         LayoutInflater inflater = LayoutInflater.from(this);
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
-        //selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
-        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.show_rules);
+        mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
+        mShowRulesBtn.setOnClickListener(this);
+        mLogoutBtn.setOnClickListener(this);
+        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+
+//        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
@@ -374,6 +384,16 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
+            case R.id.show_rules:
+                @Nonnull Intent intent = RulesFragment.createIntent(getContext());
+                getContext().startActivity(intent);
+                break;
+            case R.id.header_listview_logout_btn:
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(getContext());
+                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                spref.commit();
+                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                break;
             case R.id.header_listview_photo_img:
                 // Вызываем окно выбора источника получения фото;
                 mDrawerChoiceDialog.show();

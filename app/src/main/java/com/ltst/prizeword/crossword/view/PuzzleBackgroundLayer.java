@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -12,7 +11,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 
-import com.ltst.prizeword.R;
+import com.ltst.prizeword.tools.BitmapHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,22 +48,12 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
 
     private void loadBgTileBitmap()
     {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = mScreenRatio;
-        Bitmap bitmap = BitmapFactory.decodeResource(mResources, mBgTileResource, options);
-        mBgTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        mBgTileBitmap = BitmapHelper.loadBitmapInSampleSize(mResources, mBgTileResource, mScreenRatio);
     }
 
     @Override
-    public void drawLayer(Canvas canvas)
+    public void drawLayer (@Nonnull Canvas canvas, @Nonnull Rect viewport)
     {
-        drawLayer(canvas, 1.0f);
-    }
-
-    public void drawLayer (@Nonnull Canvas canvas, float scale)
-    {
-        if(scale > 1.0f)
-            return;
 
         if (mBgTileBitmap == null || mBgTileBitmap.isRecycled())
         {
@@ -72,8 +61,8 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         }
         if(!mBgTileBitmap.isRecycled())
         {
-            int width = (int)(mDrawingRect.width() * scale);
-            int height = (int)(mDrawingRect.height() * scale);
+            int width = viewport.width();
+            int height = viewport.height();
             int horOffset = (mDrawingRect.width() - width)/2;
             int verOffset = (mDrawingRect.height() - height)/2;
             width -= 2 * mFramePadding;
