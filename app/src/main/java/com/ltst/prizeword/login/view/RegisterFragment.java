@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,7 +137,8 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         cal = Calendar.getInstance();
         curDay = cal.get(Calendar.DAY_OF_MONTH);
         curMonth = cal.get(Calendar.MONTH);
-        curYear = cal.get(Calendar.YEAR);
+        curYear = (cal.get(Calendar.YEAR)-23);
+        cal.set(curYear,curMonth,curDay);
         dateFormat = new SimpleDateFormat(fr);
         mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
         return v;
@@ -180,7 +182,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         }
         else{
             validateRegData(Color.RED);
-            showErrorAlertDalog();
+            showErrorAlertDalog(R.string.register_screen_error_msg);
         }
 
     }
@@ -191,24 +193,32 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
-    protected void showErrorAlertDalog()
+    protected void showErrorAlertDalog(int ResID)
     {
         ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
-        alertDialogBuilder.setMessage(R.string.register_screen_error_msg);
+        alertDialogBuilder.setMessage(ResID);
         alertDialogBuilder.create().show();
     }
     protected void showDatePickerDialog(){
         DatePickerDialog dp = new DatePickerDialog(mContext,myCallBack,curYear,curMonth,curDay);
-        dp.getDatePicker().setMaxDate(cal.getTimeInMillis());
-        dp.setTitle(R.string.register_screen_date_pick_dialog_title);
-        dp.getDatePicker().setCalendarViewShown(false);
 
+        dp.setTitle(R.string.register_screen_date_pick_dialog_title);
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB){
+            cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-10);
+            dp.getDatePicker().setMaxDate(cal.getTimeInMillis());
+            dp.getDatePicker().setCalendarViewShown(false);
+        }
         dp.show();
     }
     OnDateSetListener myCallBack = new OnDateSetListener()
     {
         @Override public void onDateSet(DatePicker datePicker, int Year, int Month, int Day)
         {
+            curDay = Day;
+            curMonth=Month;
+            curYear= Year;
             Calendar cl = Calendar.getInstance();
             cl.set(Year,Month,Day);
             mRegisterDateButton.setText(dateFormat.format(cl.getTime()));
@@ -288,14 +298,16 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                     break;
                 case RestParams.SC_FORBIDDEN:
                 {
-                    int msg_id = R.string.msg_register_email_exists;
-                    ErrorAlertDialog.showDialog(mContext,msg_id);
+                    showErrorAlertDalog(R.string.msg_register_email_exists);
+                    /*int msg_id = R.string.msg_register_email_exists;
+                    ErrorAlertDialog.showDialog(mContext,msg_id);*/
                     break;
                 }
                 default:
                 {
-                    int msg_id = R.string.msg_unknown_error;
-                    ErrorAlertDialog.showDialog(mContext, msg_id);
+                    showErrorAlertDalog(R.string.msg_unknown_error);
+                    /*int msg_id = R.string.msg_unknown_error;
+                    ErrorAlertDialog.showDialog(mContext, msg_id);*/
                     break;
                 }
             }
