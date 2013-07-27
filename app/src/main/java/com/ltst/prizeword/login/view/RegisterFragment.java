@@ -430,9 +430,10 @@ public class RegisterFragment extends SherlockFragment
 
     public void setImage(@Nullable Bitmap bitmap){
         if(bitmap != null){
-            if(bitmap.hasAlpha())
-                bitmap.setHasAlpha(false);
-            mIconImg.setImageBitmap(bitmap);
+            int size = (int) getResources().getDimension(R.dimen.size_avatar);
+//            if(bitmap.hasAlpha())
+//                bitmap.setHasAlpha(false);
+            mIconImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, size, size, false));
         } else {
             mIconImg.setImageResource(R.drawable.login_register_ava_btn);
         }

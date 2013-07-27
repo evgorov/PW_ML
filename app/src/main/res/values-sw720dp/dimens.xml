@@ -1,3 +1,4 @@
 <resources>
     <dimen name="frame_border_offset">15dp</dimen>
+    <dimen name="size_avatar">75dp</dimen>
 </resources>

@@ -41,7 +41,7 @@ public class BitmapTools {
     public void convert(@Nonnull Bitmap bitmap){
         this.mBitmap = bitmap;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         mBuffer = stream.toByteArray();
     }
 }
