@@ -78,9 +78,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         LayoutInflater inflater = LayoutInflater.from(this);
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
-        //selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
-        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+//        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
