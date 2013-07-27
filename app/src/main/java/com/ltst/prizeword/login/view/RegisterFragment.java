@@ -260,6 +260,12 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
             case R.id.registration_finish_button:
                 hideKeyboard();
                 performRegistration();
+                mNameInput.setText(Strings.EMPTY);
+                mSurnameInput.setText(Strings.EMPTY);
+                mEmailInput.setText(Strings.EMPTY);
+                mPasswordInput.setText(Strings.EMPTY);
+                mPasswordConfirmInput.setText(Strings.EMPTY);
+                mCityInput.setText(Strings.EMPTY);
                 break;
             case R.id.register_date_born_btn:
                 hideKeyboard();

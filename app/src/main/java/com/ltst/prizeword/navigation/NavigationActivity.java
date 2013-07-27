@@ -42,7 +42,6 @@ import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.BitmapTools;
-import com.ltst.prizeword.tools.Files;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -81,6 +80,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull View mFooterView;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
+
+    private @Nonnull Button mShowRulesBtn;
+    private @Nonnull Button mLogoutBtn;
 
     private int mCurrentSelectedFragmentPosition = 0;
 
@@ -121,6 +123,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         LayoutInflater inflater = LayoutInflater.from(this);
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
+
+        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.show_rules);
+        mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
+        mShowRulesBtn.setOnClickListener(this);
+        mLogoutBtn.setOnClickListener(this);
         selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
 //        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
@@ -382,6 +389,16 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
+            case R.id.show_rules:
+                @Nonnull Intent intent = RulesFragment.createIntent(getContext());
+                getContext().startActivity(intent);
+                break;
+            case R.id.header_listview_logout_btn:
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(getContext());
+                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                spref.commit();
+                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                break;
             case R.id.header_listview_photo_img:
                 // Вызываем окно выбора источника получения фото;
                 mDrawerChoiceDialog.show();
