@@ -25,6 +25,8 @@ public class PuzzleViewInformation
     private int mTileGap = DEFAULT_TILE_GAP;
     private int mFramePadding = DEFAULT_PADDING/2;
 
+    private int mBackgroundTileRes;
+
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
     private @Nullable byte[][] mStateMatrix;
@@ -178,4 +180,13 @@ public class PuzzleViewInformation
         return mTileGap;
     }
 
+    public void setBackgroundTileBitmapRes(int backgroundTileBitmap)
+    {
+        mBackgroundTileRes = backgroundTileBitmap;
+    }
+
+    public int getCanvasBackgroundTileRes()
+    {
+        return mBackgroundTileRes;
+    }
 }

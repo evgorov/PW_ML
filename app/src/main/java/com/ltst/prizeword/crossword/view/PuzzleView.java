@@ -104,53 +104,53 @@ public class PuzzleView extends View
 
     private void initCanvasDimensions()
     {
-        if (mPuzzleInfo == null)
-        {
-            return;
-        }
-
-        int padding = mPuzzleInfo.getPadding();
-        int framePadding = mPuzzleInfo.getFramePadding();
-        int cellWidth = mPuzzleInfo.getPuzzleColumnsCount();
-        int cellHeight = mPuzzleInfo.getPuzzleRowsCount();
-        int tileGap = mPuzzleInfo.getTileGap();
-
-        // init questions layer
-        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), cellWidth, cellHeight);
-        mQuestionsAndLettersLayer.initBitmaps(mPuzzleInfo.getLetterEmpty(),
-                                            mPuzzleInfo.getLetterEmptyInput(),
-                                            mPuzzleInfo.getOverlayLetterCorrect(),
-                                            mPuzzleInfo.getQuestionEmpty(),
-                                            mPuzzleInfo.getQuestionInput(),
-                                            mPuzzleInfo.getQuestionWrong(),
-                                            mPuzzleInfo.getQuestionCorrect());
-        mQuestionsAndLettersLayer.setPadding(padding + framePadding);
-        mQuestionsAndLettersLayer.setTileGap(tileGap);
-        mQuestionsAndLettersLayer.setStateMatrix(mPuzzleInfo.getStateMatrix());
-        mQuestionsAndLettersLayer.setQuestions(mPuzzleInfo.getPuzzleQuestions());
-
-        // compute canvas size
-        int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
-        int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
-        mCanvasWidth = 2 * (padding + framePadding) + cellWidth * tileWidth + (cellWidth - 1) * tileGap;
-        mCanvasHeight = 2 * (padding + framePadding) + cellHeight * tileHeigth + (cellHeight - 1) * tileGap;
-
-        // init background layer
-        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight,
-                mPuzzleInfo.getBackgroundTile(), mPuzzleInfo.getBackgroundFrame(), framePadding);
-
-        // init drawing canvas
-        mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);
-        mPuzzleCanvas = new Canvas(mCanvasBitmap);
-        mBackgroundLayer.drawLayer(mPuzzleCanvas);
-        mQuestionsAndLettersLayer.drawLayer(mPuzzleCanvas);
-
-        // compute scale factor
-        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
-        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
-        float minWidth = 1/scaleWidth;
-        float minHeight = 1/scaleHeight;
-        mMinScaleFactor = ((int)(Math.min(minWidth, minHeight)/0.1f)) * 0.1f;
+//        if (mPuzzleInfo == null)
+//        {
+//            return;
+//        }
+//
+//        int padding = mPuzzleInfo.getPadding();
+//        int framePadding = mPuzzleInfo.getFramePadding();
+//        int cellWidth = mPuzzleInfo.getPuzzleColumnsCount();
+//        int cellHeight = mPuzzleInfo.getPuzzleRowsCount();
+//        int tileGap = mPuzzleInfo.getTileGap();
+//
+//        // init questions layer
+//        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), cellWidth, cellHeight);
+//        mQuestionsAndLettersLayer.initBitmaps(mPuzzleInfo.getLetterEmpty(),
+//                                            mPuzzleInfo.getLetterEmptyInput(),
+//                                            mPuzzleInfo.getOverlayLetterCorrect(),
+//                                            mPuzzleInfo.getQuestionEmpty(),
+//                                            mPuzzleInfo.getQuestionInput(),
+//                                            mPuzzleInfo.getQuestionWrong(),
+//                                            mPuzzleInfo.getQuestionCorrect());
+//        mQuestionsAndLettersLayer.setPadding(padding + framePadding);
+//        mQuestionsAndLettersLayer.setTileGap(tileGap);
+//        mQuestionsAndLettersLayer.setStateMatrix(mPuzzleInfo.getStateMatrix());
+//        mQuestionsAndLettersLayer.setQuestions(mPuzzleInfo.getPuzzleQuestions());
+//
+//        // compute canvas size
+//        int tileWidth = mQuestionsAndLettersLayer.getTileWidth();
+//        int tileHeigth = mQuestionsAndLettersLayer.getTileHeight();
+//        mCanvasWidth = 2 * (padding + framePadding) + cellWidth * tileWidth + (cellWidth - 1) * tileGap;
+//        mCanvasHeight = 2 * (padding + framePadding) + cellHeight * tileHeigth + (cellHeight - 1) * tileGap;
+//
+//        // init background layer
+//        mBackgroundLayer = new PuzzleBackgroundLayer(mContext.getResources(), mCanvasWidth, mCanvasHeight,
+//                mPuzzleInfo.getBackgroundTile(), mPuzzleInfo.getBackgroundFrame(), framePadding);
+//
+//        // init drawing canvas
+//        mCanvasBitmap = Bitmap.createBitmap(mCanvasWidth, mCanvasHeight, Bitmap.Config.ARGB_8888);
+//        mPuzzleCanvas = new Canvas(mCanvasBitmap);
+//        mBackgroundLayer.drawLayer(mPuzzleCanvas);
+//        mQuestionsAndLettersLayer.drawLayer(mPuzzleCanvas);
+//
+//        // compute scale factor
+//        float scaleWidth = (float)mCanvasWidth/(float)mViewWidth;
+//        float scaleHeight = (float)mCanvasHeight/(float)mViewHeight;
+//        float minWidth = 1/scaleWidth;
+//        float minHeight = 1/scaleHeight;
+//        mMinScaleFactor = ((int)(Math.min(minWidth, minHeight)/0.1f)) * 0.1f;
     }
 
     // ==== drawing, scaling, translating ====

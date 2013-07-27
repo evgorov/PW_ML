@@ -32,7 +32,8 @@ public class DrawingThread extends Thread
                 c = holder.lockCanvas();
                 synchronized (holder)
                 {
-                    mView.onDraw(c);
+                    if (c != null)
+                        mView.onDraw(c);
                 }
             }
             finally

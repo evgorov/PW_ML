@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 
 import com.ltst.prizeword.R;
@@ -16,51 +18,82 @@ import javax.annotation.Nullable;
 
 public class PuzzleBackgroundLayer implements ICanvasLayer
 {
-    private int mWidth;
-    private int mHeight;
+    private @Nonnull Rect mDrawingRect;
     private int mBgTileResource;
     private int mFramePadding;
 
-    private @Nonnull Bitmap mBgTileBitmap;
+    private @Nullable Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
     private @Nonnull NinePatchDrawable mFrameBorder;
 
+    private int mScreenRatio;
+    private @Nonnull Resources mResources;
+
     public PuzzleBackgroundLayer(@Nonnull Resources res,
-                                 int width,
-                                 int height,
+                                 @Nonnull Rect drawingRect,
                                  int bgTileResource,
                                  int bgFrameResource,
-                                 int framePadding)
+                                 int framePadding,
+                                 int screenRatio)
     {
-        mWidth = width;
-        mHeight = height;
+        mResources = res;
+        mDrawingRect = drawingRect;
         mBgTileResource = bgTileResource;
-        Bitmap bitmap = BitmapFactory.decodeResource(res, mBgTileResource);
-        mBgTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        mScreenRatio = screenRatio;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mFrameBorder = (NinePatchDrawable) res.getDrawable(bgFrameResource);
         mFramePadding = framePadding;
     }
 
+    private void loadBgTileBitmap()
+    {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = mScreenRatio;
+        Bitmap bitmap = BitmapFactory.decodeResource(mResources, mBgTileResource, options);
+        mBgTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+    }
+
     @Override
     public void drawLayer(Canvas canvas)
     {
-        Bitmap bm = Bitmap.createBitmap(mWidth - 2 * mFramePadding, mHeight - 2*mFramePadding, Bitmap.Config.ARGB_8888);
-        Canvas mainCanvas = new Canvas(bm);
-        PuzzleBackgroundLayer.fillBackgroundWithTile(mainCanvas, mBgTileBitmap, mPaint);
-        canvas.drawBitmap(bm, mFramePadding, mFramePadding, mPaint);
-        bm.recycle();
+        if (mBgTileBitmap == null)
+        {
+            loadBgTileBitmap();
+        }
+        if(!mBgTileBitmap.isRecycled())
+        {
+            Bitmap bm = Bitmap.createBitmap(mDrawingRect.width() - 2 * mFramePadding,
+                                            mDrawingRect.height() - 2*mFramePadding,
+                                            Bitmap.Config.ARGB_8888);
+            Canvas mainCanvas = new Canvas(bm);
+//            PuzzleBackgroundLayer.fillBackgroundWithTile(mainCanvas, mBgTileBitmap, mPaint);
+            PuzzleBackgroundLayer.fillBackgroundByDrawable(mResources, mainCanvas, mBgTileBitmap);
+            canvas.drawBitmap(bm, mDrawingRect.left + mFramePadding, mDrawingRect.top + mFramePadding, mPaint);
+            bm.recycle();
 
-        Rect rect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-        mFrameBorder.setBounds(rect);
-        mFrameBorder.draw(canvas);
+            mFrameBorder.setBounds(mDrawingRect);
+            mFrameBorder.draw(canvas);
+        }
+        recycle();
     }
 
     @Override
     public void recycle()
     {
-        mBgTileBitmap.recycle();
+        if (mBgTileBitmap != null)
+        {
+            mBgTileBitmap.recycle();
+        }
+    }
+
+    public static void fillBackgroundByDrawable(@Nonnull Resources res, @Nonnull Canvas canvas, @Nonnull Bitmap tileBitmap)
+    {
+        Rect rect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+        BitmapDrawable drawable = new BitmapDrawable(res, tileBitmap);
+        drawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        drawable.setBounds(rect);
+        drawable.draw(canvas);
     }
 
     public static void fillBackgroundWithTile(@Nonnull Canvas canvas, @Nonnull Bitmap tileBitmap, @Nullable Paint paint)
