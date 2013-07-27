@@ -17,10 +17,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.view.LayoutInflater;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.RulesFragment;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.login.view.ForgetPassFragment;
@@ -63,7 +63,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         IAutorization,
         View.OnClickListener
 {
-
+    private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private int RESULT_LOAD_IMAGE = 1;
@@ -78,7 +78,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
-
+    private @Nonnull View mFooterView;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
@@ -90,7 +90,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     UserDataModel mUserDataModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         mBcConnector = new BcConnector(this);
@@ -117,8 +118,12 @@ public class NavigationActivity extends SherlockFragmentActivity
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         checkLauchingAppByLink();
-//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-        selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
+        mDrawerList.addFooterView(mFooterView);
+        //selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+
+        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
@@ -199,11 +204,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public List<NavigationDrawerItem> getNavigationDrawerItems()
     {
-        if(mDrawerItems == null)
+        if (mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             // login, auth fragments
-            initFragmentToList(LoginFragment.FRAGMENT_ID,  LoginFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, false);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
@@ -221,7 +226,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void selectNavigationFragmentByPosition(int position)
     {
         unlockDrawer();
-        if(!isFragmentInitialized(position))
+        if (!isFragmentInitialized(position))
         {
             String classname = mDrawerItems.get(position).getFragmentClassName();
             Fragment fr = Fragment.instantiate(this, classname);
@@ -232,8 +237,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         Fragment fr = mFragments.get(position);
 
         mFragmentManager.beginTransaction()
-                        .replace(R.id.navigation_content_frame, fr)
-                        .commit();
+                .replace(R.id.navigation_content_frame, fr)
+                .commit();
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
@@ -247,7 +252,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         for (int i = 0; i < size; i++)
         {
             NavigationDrawerItem item = mDrawerItems.get(i);
-            if(fragmentClassname.equals(item.getFragmentClassName()))
+            if (fragmentClassname.equals(item.getFragmentClassName()))
             {
                 mCurrentSelectedFragmentPosition = i;
                 selectNavigationFragmentByPosition(i);
@@ -262,20 +267,20 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         String title = Strings.EMPTY;
         Resources res = getResources();
-        if(id.equals(LoginFragment.FRAGMENT_ID))
+        if (id.equals(LoginFragment.FRAGMENT_ID))
             title = res.getString(R.string.login_fragment_title);
-        else if(id.equals(CrosswordsFragment.FRAGMENT_ID))
-            title = res.getString(R.string.crosswords_fragment_title);
-        else if(id.equals(AuthorizationFragment.FRAGMENT_ID))
+        else if (id.equals(AuthorizationFragment.FRAGMENT_ID))
             title = res.getString(R.string.authorization_fragment_title);
-        else if(id.equals(RegisterFragment.FRAGMENT_ID))
+        else if (id.equals(CrosswordsFragment.FRAGMENT_ID))
+            title = res.getString(R.string.crosswords_fragment_title);
+        else if (id.equals(RegisterFragment.FRAGMENT_ID))
             title = res.getString(R.string.registration_fragment_title);
-        else if(id.equals(ResetPassFragment.FRAGMENT_ID))
+        else if (id.equals(ResetPassFragment.FRAGMENT_ID))
             title = res.getString(R.string.resetpass_fragment_title);
-        else if(id.equals(ForgetPassFragment.FRAGMENT_ID))
+        else if (id.equals(ForgetPassFragment.FRAGMENT_ID))
             title = res.getString(R.string.forgetpass_fragment_title);
 
-        if(!title.equals(Strings.EMPTY))
+        if (!title.equals(Strings.EMPTY))
         {
             NavigationDrawerItem item = new NavigationDrawerItem(title, classname, hidden);
             mDrawerItems.add(item);
@@ -289,20 +294,20 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private void checkLauchingAppByLink()
     {
-        @Nullable Intent intent  = getIntent();
+        @Nullable Intent intent = getIntent();
         if (intent == null)
             return;
         if (intent.getAction() != Intent.ACTION_VIEW)
             return;
 
         @Nullable String url = intent.getDataString();
-        if(url == null)
+        if (url == null)
             return;
         URI uri = URI.create(url);
         List<NameValuePair> values = URLEncodedUtils.parse(uri, "UTF-8");
         for (NameValuePair value : values)
         {
-            if(value.getName().equals(RestParams.PARAM_PARSE_TOKEN))
+            if (value.getName().equals(RestParams.PARAM_PARSE_TOKEN))
             {
                 String passwordToken = value.getValue();
                 selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
@@ -326,14 +331,17 @@ public class NavigationActivity extends SherlockFragmentActivity
     // ==================== BACK_PRESS ==============================
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
 
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
             Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
-            if(fr instanceof INavigationBackPress){
-                ((INavigationBackPress)fr).onBackKeyPress();
-            }
-            else {
+            if (fr instanceof INavigationBackPress)
+            {
+                ((INavigationBackPress) fr).onBackKeyPress();
+            } else
+            {
                 return super.onKeyDown(keyCode, event);
             }
         }

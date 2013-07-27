@@ -24,7 +24,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
             + ColsPuzzleSets.ID             + " integer not null primary key autoincrement, "
-            + ColsPuzzleSets.SERVER_ID      + " text not null,  "
+            + ColsPuzzleSets.SERVER_ID      + " text not null unique,  "
             + ColsPuzzleSets.NAME           + " text not null,  "
             + ColsPuzzleSets.IS_BOUGHT      + " boolean not null default false, "
             + ColsPuzzleSets.TYPE           + " text not null, "
@@ -38,7 +38,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + TNAME_PUZZLES + "("
             + ColsPuzzles.ID             + " integer not null primary key autoincrement, "
             + ColsPuzzles.SET_ID         + " integer not null,  "
-            + ColsPuzzles.SERVER_ID      + " text not null, "
+            + ColsPuzzles.SERVER_ID      + " text not null unique, "
             + ColsPuzzles.NAME           + " text not null, "
             + ColsPuzzles.ISSUED_AT      + " text not null, "
             + ColsPuzzles.BASE_SCORE     + " integer not null, "
@@ -196,7 +196,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     @Override
     public DbReader createDbReader() throws DbException
     {
-        return new DbReader(this);
+        return new DbReader(this, false);
     }
 
     @Nonnull

@@ -40,11 +40,18 @@
         </activity>
         <activity
             android:name=".crossword.view.OneCrosswordActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_one_crossword" >
         </activity>
         <activity
             android:name=".login.view.SocialLoginActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".login.RulesFragment"
+            android:label="@string/rules_fragment_title"
+            android:theme="@style/TransparentActivity">
+
         </activity>
 
     </application>

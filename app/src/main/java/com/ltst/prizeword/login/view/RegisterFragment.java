@@ -223,6 +223,20 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         mEmailLabel.setTextColor(color);
         mPassLabel.setTextColor(color);
         mRetryPassLabel.setTextColor(color);
+        if(color==Color.RED){
+            mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+            mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+            mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+            mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2_error);
+            mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+        }
+        else{
+            mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+            mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+            mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+            mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2);
+            mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+        }
     }
     @Override
     public void onClick(View v)
@@ -230,16 +244,23 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         switch (v.getId())
         {
             case R.id.registration_nav_back_button:
+                hideKeyboard();
                 onBackKeyPress();
                 break;
             case R.id.registration_finish_button:
+                hideKeyboard();
                 performRegistration();
                 break;
             case R.id.register_date_born_btn:
-
+                hideKeyboard();
                 showDatePickerDialog();
                 break;
         }
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private abstract class SignUpExecutor extends ModelUpdater<DbService.DbTaskEnv>
@@ -268,7 +289,7 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
                 case RestParams.SC_FORBIDDEN:
                 {
                     int msg_id = R.string.msg_register_email_exists;
-                    ErrorAlertDialog.showDialog(mContext, msg_id);
+                    ErrorAlertDialog.showDialog(mContext,msg_id);
                     break;
                 }
                 default:

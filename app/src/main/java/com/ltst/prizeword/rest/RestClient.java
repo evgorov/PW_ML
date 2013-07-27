@@ -438,7 +438,7 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzle getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId)
+    public RestPuzzle.RestPuzzleHolder getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
@@ -446,7 +446,14 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        RestPuzzle puzzle = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle.class, urlVariables).getBody();
-        return puzzle;
+        ResponseEntity<RestPuzzle[]> entity = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle[].class, urlVariables);
+        RestPuzzle.RestPuzzleHolder holder = new RestPuzzle.RestPuzzleHolder();
+        RestPuzzle[] puzzles = entity.getBody();
+        if (puzzles[0] != null)
+        {
+            holder.setPuzzles(puzzles[0]);
+        }
+        holder.setStatus(entity.getStatusCode());
+        return holder;
     }
 }

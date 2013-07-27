@@ -23,6 +23,7 @@ import static com.ltst.prizeword.db.SQLiteHelper.*;
 public class DbReader implements IDbReader
 {
     protected static final String SET_PUZZLE_IDS_SEPARATOR = "|";
+    protected static final String REGEXP_SHIELD = "\\";
 
     private static final @Nonnull String[] FIELDS_P_USER =
     {
@@ -92,15 +93,22 @@ public class DbReader implements IDbReader
 
     public final @Nonnull SQLiteDatabase mDb;
 
-    public DbReader(@Nonnull SQLiteHelper helper) throws DbException
+    public DbReader(@Nonnull SQLiteHelper helper, boolean mustBeSQLiteDatabaseWriteable) throws DbException
     {
-        mDb = helper.createReadableSQLiteDatabase();
+        mDb = mustBeSQLiteDatabaseWriteable
+            ? helper.createWritableSQLiteDatabase()
+            : helper.createReadableSQLiteDatabase();
         SQLiteHelper.configureSQLiteDatabase(mDb);
     }
 
-    protected @Nonnull IDbReader getReader()
+    protected @Nonnull SQLiteDatabase getDb()
     {
-        return this;
+        return mDb;
+    }
+
+    public void close()
+    {
+        mDb.close();
     }
 
     @Nullable
@@ -302,7 +310,7 @@ public class DbReader implements IDbReader
 
     private static @Nonnull List<String> parsePuzzleServerIds(@Nonnull String idsSeparated)
     {
-        String[] ids = idsSeparated.split(SET_PUZZLE_IDS_SEPARATOR);
+        String[] ids = idsSeparated.split(REGEXP_SHIELD + SET_PUZZLE_IDS_SEPARATOR);
         List<String> list = Arrays.asList(ids);
         return list;
     }
@@ -318,16 +326,22 @@ public class DbReader implements IDbReader
         }
 
         final List<T> list = new ArrayList<T>(cursor.getCount());
-        DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()
+        try
         {
-            @Override
-            public void handle(@Nonnull Cursor cursor)
+            DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()
             {
-                T object = creator.createObject(cursor);
-                list.add(object);
-            }
-        });
-        cursor.close();
+                @Override
+                public void handle(@Nonnull Cursor cursor)
+                {
+                    T object = creator.createObject(cursor);
+                    list.add(object);
+                }
+            });
+        }
+        finally
+        {
+            cursor.close();
+        }
         return list;
     }
 
@@ -339,13 +353,20 @@ public class DbReader implements IDbReader
             return null;
         }
 
-        cursor.moveToFirst();
         T object = null;
-        if(!cursor.isAfterLast())
+        try
         {
-            object = creator.createObject(cursor);
+            cursor.moveToFirst();
+
+            if(!cursor.isAfterLast())
+            {
+                object = creator.createObject(cursor);
+            }
         }
-        cursor.close();
+        finally
+        {
+            cursor.close();
+        }
         return object;
     }
 

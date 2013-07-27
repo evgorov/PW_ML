@@ -2,4 +2,5 @@
 <resources>
     <color name="hint_color">#c2b8af</color>
     <color name="header_text_color">#FFFFFF</color>
+    <color name="cursor_color">#ffffff</color>
 </resources>

@@ -2,13 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@drawable/login_bg_tile">
+            >
 
-    <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@drawable/login_enter_top_shadow"
-            />
 
     <LinearLayout
             android:layout_height="match_parent"
@@ -33,20 +28,16 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textColor="@android:color/white"
-                    android:layout_marginLeft="20dp"
-                    android:textStyle="bold"
-                    android:textSize="22sp"
                     android:text="@string/forgetpass_fragment_title"
-                    android:layout_gravity="center_vertical|center"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDy="2"
-                    android:shadowRadius="3"/>
+                    style="@style/NavigationBarText"
+                    />
         </LinearLayout>
 
         <ScrollView
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:background="@drawable/login_bg">
 
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -55,6 +46,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:background="@drawable/login_remind_bg">
+
                 <EditText
                         android:id="@+id/forgetpass_email_etext"
                         android:layout_width="wrap_content"
@@ -62,17 +54,9 @@
                         android:background="@drawable/login_remind_edittext_bg"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="300dp"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:paddingLeft="10dp"
-                        android:textStyle="bold"
                         android:inputType="textEmailAddress"
-                        android:textSize="20sp"
-                        android:textColorHint="@color/hint_color"
                         android:hint="e-mail"
-                        android:shadowColor="@android:color/black"
-                        android:shadowDy="-1"
-                        android:shadowRadius="2"
+                        style="@style/EditTextText"
                         />
 
                 <Button
@@ -110,9 +94,11 @@
                     >
 
                 <FrameLayout
+                        android:id="@+id/forget_succes_alert"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/login_remind_sent_bg"
                         >
 
@@ -140,14 +126,8 @@
             <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="22sp"
                     android:text="Пароль отправлен"
-                    android:layout_gravity="center_vertical|center"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDy="2"
-                    android:shadowRadius="3"/>
+                    style="@style/NavigationBarText"/>
 
         </FrameLayout>
     </FrameLayout>

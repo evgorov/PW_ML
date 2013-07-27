@@ -4,14 +4,8 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:orientation="vertical"
-             android:background="@drawable/login_bg_tile"
-        >
 
-    <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@drawable/login_enter_top_shadow"
-            />
+        >
 
     <LinearLayout
             android:layout_height="match_parent"
@@ -38,87 +32,73 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/authorization_fragment_title"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="22sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDy="2"
-                    android:shadowRadius="3"/>
+                    style="@style/NavigationBarText"/>
         </LinearLayout>
 
 
         <ScrollView
                 android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+                android:background="@drawable/login_bg">
 
-            <LinearLayout
+            <FrameLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:background="@drawable/login_enter_main_bg"
-                    >
+                    android:layout_gravity="center">
 
-                <EditText
-                        android:id="@+id/login_email_etext"
-                        android:layout_width="wrap_content"
+                <LinearLayout
                         android:layout_height="wrap_content"
-                        android:background="@drawable/login_enter_edittext1_bg"
-                        android:singleLine="true"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@android:color/white"
-                        android:layout_marginTop="207dp"
-                        android:paddingLeft="10dp"
-                        android:textColorHint="@color/hint_color"
-                        android:hint="e-mail"
-                        android:shadowColor="@android:color/black"
-                        android:shadowDy="-1"
-                        android:shadowRadius="2"/>
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@drawable/login_enter_main_bg"
+                        >
+
+                    <EditText
+                            android:id="@+id/login_email_etext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/login_enter_edittext1_bg"
+                            android:inputType="textEmailAddress"
+                            android:layout_marginTop="207dp"
+                            android:textColorHint="@color/hint_color"
+                            android:hint="e-mail"
+                            style="@style/EditTextText"
+                            />
+                    <EditText
+                            android:id="@+id/login_passwd_etext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/login_enter_edittext2_bg"
+                            android:inputType="textPassword"
+                            android:hint="пароль"
+                            style="@style/EditTextText"
+                            />
+
+                    <Button
+                            android:id="@+id/login_enter_enter_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50dp"
+                            android:background="@drawable/login_enter_but"/>
+
+                    <ImageButton
+                            android:id="@+id/login_forget_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/login_forget_but"
+                            />
+                </LinearLayout>
 
                 <ImageView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/login_enter_linesahdow_between_edittext"/>
-
-                <EditText
-                        android:id="@+id/login_passwd_etext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/login_enter_edittext2_bg"
-                        android:singleLine="true"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:inputType="textPassword"
-                        android:textColor="@android:color/white"
-                        android:paddingLeft="10dp"
-                        android:textColorHint="@color/hint_color"
-                        android:hint="пароль"
-                        android:shadowColor="@android:color/black"
-                        android:shadowDy="-1"
-                        android:shadowRadius="2"
-
-                        />
-
-                <Button
-                        android:id="@+id/login_enter_enter_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:background="@drawable/login_enter_but"/>
-
-                <ImageButton
-                        android:id="@+id/login_forget_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:background="@drawable/login_forget_but"
-                        />
-            </LinearLayout>
+            </FrameLayout>
         </ScrollView>
 
     </LinearLayout>
