@@ -120,14 +120,6 @@ public class AuthorizationFragment extends SherlockFragment
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
-    protected void showErrorAlertDalog()
-    {
-        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
-        alertDialogBuilder.setMessage(R.string.login_enter_error_msg);
-        alertDialogBuilder.create().show();
-    }
-
-
     protected void enterLogin(@Nonnull String email, @Nonnull String password)
     {
 
@@ -154,11 +146,17 @@ public class AuthorizationFragment extends SherlockFragment
                 Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
                 if (sessionKey.isEmpty())
                 {
-                    showErrorAlertDalog();
+                    ErrorAlertDialog.showDialog(mContext, R.string.login_enter_error_msg);
                 }
                 else
                 {
+                    // скрываем клавиатуру;
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    // Переключемся на фрагмент сканвордов;
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
+                    ((IAutorization) mContext).onAutotized();
                 }
             }
         });

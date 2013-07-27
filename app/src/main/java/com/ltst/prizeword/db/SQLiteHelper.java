@@ -73,16 +73,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.NAME                + " text not null, "
             + ColsUsers.SURNAME             + " text not null, "
             + ColsUsers.EMAIL               + " text not null unique, "
-            + ColsUsers.BIRTHDATE           + " text not null default \"\", "
-            + ColsUsers.CITY                + " text not null, "
+            + ColsUsers.BIRTHDATE           + " text default \"\", "
+            + ColsUsers.CITY                + " text default \"\", "
             + ColsUsers.SOLVED              + " integer not null default 0, "
             + ColsUsers.POSITION            + " integer not null default 0, "
             + ColsUsers.MONTH_SCORE         + " integer not null default 0, "
             + ColsUsers.HIGH_SCORE          + " integer not null default 0, "
             + ColsUsers.DYNAMICS            + " integer not null default 0, "
             + ColsUsers.HINTS               + " integer not null default 0, "
-            + ColsUsers.PREVIEW_URL	        + " text not null, "
-            + ColsUsers.PREVIEW_KEY	        + " text not null)";
+            + ColsUsers.PREVIEW_URL	        + " text, "
+            + ColsUsers.PREVIEW_KEY	        + " text)";
 
     private static final String CREATE_PROVIDERS_QUERY = "create table "
             + TNAME_PROVIDERS + "("

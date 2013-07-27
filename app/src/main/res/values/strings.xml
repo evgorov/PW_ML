@@ -16,7 +16,13 @@
     <string name="rules_fragment_title">Правила</string>
 
 
+    <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
+    <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
+    <string name="personal_record">Персональный рекорд</string>
+    <string name="choice_source">Выберите источник</string>
+    <string name="camera">Камера</string>
+    <string name="gallery"> Галерея</string>
     <string name="login_enter_error_msg">Логин или пароль набраны неверно. Пожалуйста попробуйте еще раз.</string>
     <string name="ok_bnt_title">Ok</string>
     <string name="register_screen_name">Имя*</string>
