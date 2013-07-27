@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -91,19 +92,26 @@ public class AuthorizationFragment extends SherlockFragment
         switch (view.getId())
         {
             case R.id.login_enter_enter_btn:
+                hideKeyboard();
                 String email = mEmailEditText.getText().toString();
                 String passwordf = mPasswdlEditText.getText().toString();
                 enterLogin(email, passwordf);
                 break;
             case R.id.login_forget_btn:
+                hideKeyboard();
                 mFragmentHolder.selectNavigationFragmentByClassname(ForgetPassFragment.FRAGMENT_CLASSNAME);
                 break;
             case R.id.login_back_button:
+                hideKeyboard();
                 onBackKeyPress();
                 break;
             default:
                 break;
         }
+    }
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
