@@ -106,6 +106,11 @@ public class DbReader implements IDbReader
         return mDb;
     }
 
+    public void close()
+    {
+        mDb.close();
+    }
+
     @Nullable
     @Override
     public UserData getUserByEmail(@Nonnull String email)
@@ -321,16 +326,22 @@ public class DbReader implements IDbReader
         }
 
         final List<T> list = new ArrayList<T>(cursor.getCount());
-        DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()
+        try
         {
-            @Override
-            public void handle(@Nonnull Cursor cursor)
+            DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()
             {
-                T object = creator.createObject(cursor);
-                list.add(object);
-            }
-        });
-        cursor.close();
+                @Override
+                public void handle(@Nonnull Cursor cursor)
+                {
+                    T object = creator.createObject(cursor);
+                    list.add(object);
+                }
+            });
+        }
+        finally
+        {
+            cursor.close();
+        }
         return list;
     }
 
@@ -342,13 +353,20 @@ public class DbReader implements IDbReader
             return null;
         }
 
-        cursor.moveToFirst();
         T object = null;
-        if(!cursor.isAfterLast())
+        try
         {
-            object = creator.createObject(cursor);
+            cursor.moveToFirst();
+
+            if(!cursor.isAfterLast())
+            {
+                object = creator.createObject(cursor);
+            }
         }
-        cursor.close();
+        finally
+        {
+            cursor.close();
+        }
         return object;
     }
 

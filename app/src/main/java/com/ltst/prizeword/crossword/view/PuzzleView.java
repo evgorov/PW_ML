@@ -111,8 +111,8 @@ public class PuzzleView extends View
 
         int padding = mPuzzleInfo.getPadding();
         int framePadding = mPuzzleInfo.getFramePadding();
-        int cellWidth = mPuzzleInfo.getPuzzleCellWidth();
-        int cellHeight = mPuzzleInfo.getPuzzleCellHeight();
+        int cellWidth = mPuzzleInfo.getPuzzleColumnsCount();
+        int cellHeight = mPuzzleInfo.getPuzzleRowsCount();
         int tileGap = mPuzzleInfo.getTileGap();
 
         // init questions layer

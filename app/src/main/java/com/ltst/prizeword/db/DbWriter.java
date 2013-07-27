@@ -94,7 +94,6 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzleSet(@Nonnull PuzzleSet set)
     {
-        mDb.beginTransaction();
         final ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
