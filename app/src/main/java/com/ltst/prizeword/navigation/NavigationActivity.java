@@ -57,7 +57,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         IBcConnectorOwner,
         INavigationDrawerHolder,
         IAutorization,
-        View.OnClickListener
+        View.OnClickListener,
+        IReloadUserData
 {
     private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -363,7 +364,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override
     public void onAutotized() {
-        loadUserData();
+        reloadUserData();
     }
 
     //==== IOnClickListeber ========
@@ -396,7 +397,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     //===== Task loading user datas ==============
 
-    private void loadUserData(){
+    public void reloadUserData(){
         // загружаем данные о пользователе с сервера;
         mUserDataModel.loadUserData(mTaskHandlerLoadUserData);
     }
@@ -465,7 +466,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             } else {
 //                mDrawerHeader.setImage(null);
             }
-            loadUserData();
+            reloadUserData();
         }
     };
 

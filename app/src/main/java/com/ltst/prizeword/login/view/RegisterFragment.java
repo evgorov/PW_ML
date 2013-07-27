@@ -38,6 +38,7 @@ import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.IReloadUserData;
 import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.tools.BitmapTools;
@@ -88,6 +89,7 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull ImageView mIconImg;
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull IReloadUserData mIReloadUserData;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
     private @Nonnull EditText mNameInput;
@@ -120,6 +122,7 @@ public class RegisterFragment extends SherlockFragment
         mBitMapTools = new BitmapTools();
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
+        mIReloadUserData = (IReloadUserData) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mDrawerHolder = (INavigationDrawerHolder)activity;
         mDrawerHolder.lockDrawerClosed();
@@ -447,6 +450,7 @@ public class RegisterFragment extends SherlockFragment
         @Override
         public void handle()
         {
+            mIReloadUserData.reloadUserData();
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
 //                loadAvatar(data.previewUrl);
