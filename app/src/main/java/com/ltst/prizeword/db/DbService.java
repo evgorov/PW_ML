@@ -73,4 +73,15 @@ public class DbService extends BcBaseService<DbService.DbTaskEnv>
         }
         return new DbTaskEnv(db , extras, context, bcToaster, ph, ci);
     }
+
+    @Override
+    public void onDestroy()
+    {
+        DbWriter db = mDbWriter;
+        if(db != null)
+        {
+            db.close();
+        }
+    }
+
 }

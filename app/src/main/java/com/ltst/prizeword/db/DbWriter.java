@@ -94,7 +94,6 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzleSet(@Nonnull PuzzleSet set)
     {
-        mDb.beginTransaction();
         final ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(set);
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
@@ -122,11 +121,12 @@ public class DbWriter extends  DbReader implements IDbWriter
                 public void handle()
                 {
                     long id = mDb.insert(TNAME_PUZZLES, null, values);
-                    for (ContentValues questionValues : questionCv)
-                    {
-                        questionValues.put(ColsPuzzleQuestions.PUZZLE_ID, id);
-                        mDb.insert(TNAME_PUZZLE_QUESTIONS, null, questionValues);
-                    }
+                    if(id != -1)
+                        for (ContentValues questionValues : questionCv)
+                        {
+                            questionValues.put(ColsPuzzleQuestions.PUZZLE_ID, id);
+                            mDb.insert(TNAME_PUZZLE_QUESTIONS, null, questionValues);
+                        }
                 }
             });
         }

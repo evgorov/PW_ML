@@ -1,5 +1,7 @@
 package com.ltst.prizeword.crossword.view;
 
+import android.content.res.Resources;
+
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -19,11 +21,13 @@ public class PuzzleViewInformation
     private static final int DEFAULT_PADDING = 16;
     private static final int DEFAULT_TILE_GAP = 4;
 
-    private int mPuzzleCellWidth;
-    private int mPuzzleCellHeigth;
+    private int mPuzzleColumnsCount;
+    private int mPuzzleRowsCount;
     private int mPadding = DEFAULT_PADDING;
     private int mTileGap = DEFAULT_TILE_GAP;
-    private int mFramePadding = DEFAULT_PADDING/2;
+    private int mFramePadding = DEFAULT_PADDING;
+
+    private int mBackgroundTileRes;
 
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
@@ -39,8 +43,8 @@ public class PuzzleViewInformation
                                  @Nullable PuzzleSetModel.PuzzleSetType setType,
                                  @Nullable List<PuzzleQuestion> puzzleQuestions)
     {
-        mPuzzleCellWidth = puzzleCellWidth;
-        mPuzzleCellHeigth = puzzleCellHeigth;
+        mPuzzleColumnsCount = puzzleCellWidth;
+        mPuzzleRowsCount = puzzleCellHeigth;
         mSetType = setType;
         mPuzzleQuestions = puzzleQuestions;
         initStateMatrix();
@@ -48,10 +52,10 @@ public class PuzzleViewInformation
 
     private void initStateMatrix()
     {
-        mStateMatrix = new byte[mPuzzleCellWidth][mPuzzleCellHeigth];
-        for (int i = 0; i < mPuzzleCellWidth; i++)
+        mStateMatrix = new byte[mPuzzleColumnsCount][mPuzzleRowsCount];
+        for (int i = 0; i < mPuzzleColumnsCount; i++)
         {
-            for (int j = 0; j < mPuzzleCellHeigth; j++)
+            for (int j = 0; j < mPuzzleRowsCount; j++)
             {
                 mStateMatrix[i][j] = STATE_LETTER;
             }
@@ -153,14 +157,14 @@ public class PuzzleViewInformation
         return R.drawable.gamefield_border;
     }
 
-    public int getPuzzleCellWidth()
+    public int getPuzzleColumnsCount()
     {
-        return mPuzzleCellWidth;
+        return mPuzzleColumnsCount;
     }
 
-    public int getPuzzleCellHeight()
+    public int getPuzzleRowsCount()
     {
-        return mPuzzleCellHeigth;
+        return mPuzzleRowsCount;
     }
 
     public int getPadding()
@@ -168,8 +172,9 @@ public class PuzzleViewInformation
         return mPadding;
     }
 
-    public int getFramePadding()
+    public int getFramePadding(@Nonnull Resources res)
     {
+        mFramePadding = res.getDimensionPixelSize(R.dimen.frame_border_offset);
         return mFramePadding;
     }
 
@@ -178,4 +183,13 @@ public class PuzzleViewInformation
         return mTileGap;
     }
 
+    public void setBackgroundTileBitmapRes(int backgroundTileBitmap)
+    {
+        mBackgroundTileRes = backgroundTileBitmap;
+    }
+
+    public int getCanvasBackgroundTileRes()
+    {
+        return mBackgroundTileRes;
+    }
 }
