@@ -117,7 +117,7 @@ public class PuzzleView extends View
 //
 //        // init questions layer
 //        mQuestionsAndLettersLayer = new PuzzleTilesLayer(mContext.getResources(), cellWidth, cellHeight);
-//        mQuestionsAndLettersLayer.initBitmaps(mPuzzleInfo.getLetterEmpty(),
+//        mQuestionsAndLettersLayer.addResources(mPuzzleInfo.getLetterEmpty(),
 //                                            mPuzzleInfo.getLetterEmptyInput(),
 //                                            mPuzzleInfo.getOverlayLetterCorrect(),
 //                                            mPuzzleInfo.getQuestionEmpty(),
