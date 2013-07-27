@@ -12,6 +12,8 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 
+import com.ltst.prizeword.tools.BitmapHelper;
+
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -21,6 +23,7 @@ public class PuzzleManager
 {
     private Rect mPuzzleRect;
     private Rect mPuzzleViewRect;
+    private Rect mViewport;
     private int mPuzzleToScreenRatio;
     private Matrix mMatrix;
 
@@ -33,6 +36,7 @@ public class PuzzleManager
     private Point mFocusPoint;
 
     private @Nullable PuzzleBackgroundLayer mBgLayer;
+    private @Nullable PuzzleTilesLayer mTilesLayer;
     private @Nonnull Paint mPaint;
 
     private @Nonnull PuzzleViewInformation mInfo;
@@ -55,7 +59,7 @@ public class PuzzleManager
         Log.i("measuring dims");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(mContext.getResources(), mInfo.getLetterEmpty(), options);
+        BitmapFactory.decodeResource(mContext.getResources(), PuzzleViewInformation.getLetterEmpty(), options);
         mTileWidth = options.outWidth;
         mTileHeight = options.outHeight;
 
@@ -81,13 +85,14 @@ public class PuzzleManager
                                         mPuzzleRect.height()/mPuzzleViewRect.height());
         Log.i("Setting view rect: "+ mPuzzleViewRect.width() + " " + mPuzzleViewRect.height() + " " + mPuzzleToScreenRatio);
 
+        // compute drawing dimensions
         int padding = mInfo.getPadding() / mPuzzleToScreenRatio;
         int framePadding = mInfo.getFramePadding(mContext.getResources()) / mPuzzleToScreenRatio;
         int cols = mInfo.getPuzzleColumnsCount();
         int rows = mInfo.getPuzzleRowsCount();
         int tileGap = mInfo.getTileGap() / mPuzzleToScreenRatio;
-        int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * mTileWidth;
-        int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * mTileHeight;
+        int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * (mTileWidth/mPuzzleToScreenRatio);
+        int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * (mTileHeight/mPuzzleToScreenRatio);
         mDrawingRect = new Rect(0, 0, drawingWidth, drawingHeight);
 
         Log.i("drawing dims: " + drawingWidth + " " + drawingHeight);
@@ -95,8 +100,24 @@ public class PuzzleManager
         mDrawingCanvas = new Canvas(mDrawingBitmap);
         mFocusPoint = new Point(drawingWidth/2, drawingHeight/2);
 
+        // init bg layer
         mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mDrawingRect,
-                mInfo.getBackgroundTile(), mInfo.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
+                PuzzleViewInformation.getBackgroundTile(), PuzzleViewInformation.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
+
+        // init tiles layer
+        mTilesLayer = new PuzzleTilesLayer(mContext.getResources(), mDrawingRect,
+                                           cols, rows, mPuzzleToScreenRatio);
+        mTilesLayer.setPadding(padding + framePadding);
+        mTilesLayer.setTileGap(tileGap);
+        mTilesLayer.setStateMatrix(mInfo.getStateMatrix());
+        mTilesLayer.setQuestions(mInfo.getPuzzleQuestions());
+        mTilesLayer.initTileTextPadding(mTileWidth);
+
+        // compute scaled viewport
+        float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
+        float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
+        float scale = Math.min(widthScale, heightScale);
+        mViewport = new Rect(0, 0, (int)(drawingWidth * scale), (int) (drawingHeight * scale));
 
         isRecycled = false;
     }
@@ -107,27 +128,26 @@ public class PuzzleManager
         {
             return;
         }
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = mPuzzleToScreenRatio;
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), mInfo.getCanvasBackgroundTileRes(), options);
+        Bitmap bitmap = BitmapHelper.loadBitmapInSampleSize(mContext.getResources(),
+                mInfo.getCanvasBackgroundTileRes(), mPuzzleToScreenRatio);
         PuzzleBackgroundLayer.fillBackgroundByDrawable(mContext.getResources(), mDrawingCanvas, bitmap);
         bitmap.recycle();
 
-//        mPaint.setColor(Color.GREEN);
-//        mDrawingCanvas.drawCircle(0,0,100,mPaint);
-//        mDrawingCanvas.drawCircle(mFocusPoint.x, mFocusPoint.y, 50, mPaint);
-//        mPaint.setColor(Color.RED);
-//        mDrawingCanvas.drawRect(0,0,50,50, mPaint);
     }
 
     private void drawPuzzleTilesBg()
     {
         if (mBgLayer != null)
         {
-            float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
-            float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
-            float scale = Math.min(widthScale, heightScale);
-            mBgLayer.drawLayer(mDrawingCanvas, scale);
+            mBgLayer.drawLayer(mDrawingCanvas, mViewport);
+        }
+    }
+
+    private void drawPuzzleTiles()
+    {
+        if (mTilesLayer != null)
+        {
+            mTilesLayer.drawLayer(mDrawingCanvas, mViewport);
         }
     }
 
@@ -149,6 +169,7 @@ public class PuzzleManager
         {
             fillDrawingCanvasWithBg();
             drawPuzzleTilesBg();
+            drawPuzzleTiles();
 
             int saveCount = screenCanvas.getSaveCount();
             screenCanvas.save();
@@ -169,6 +190,10 @@ public class PuzzleManager
         if (mBgLayer != null)
         {
             mBgLayer.recycle();
+        }
+        if (mTilesLayer != null)
+        {
+            mTilesLayer.recycle();
         }
         if (mDrawingBitmap != null)
         {

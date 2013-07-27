@@ -112,7 +112,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
                         @Override
                         public void handle()
                         {
-
+                            mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                         }
                     });
                 }
