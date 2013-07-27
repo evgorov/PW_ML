@@ -74,44 +74,17 @@ public class RestClient implements IRestClient
         return holder.getUserData();
     }
 
-//    @Override
-//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-//// Отправка аватарки на сервер для обновления данных;
-//// Create and populate a simple object to be used in the request
-//
-//        // populate the data to post
+    @Override
+    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
+// Отправка аватарки на сервер для обновления данных;
+// Create and populate a simple object to be used in the request
+
+        String url = "http://api.prize-word.com/me?session_key="+sessionKey;
+
+        // populate the data to post
 //        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<String, Object>();
 //        formData.add(RestParams.SESSION_KEY, sessionKey);
 //        formData.add(RestParams.USERPIC, userPic);
-//
-//// Set the Content-Type header
-//        HttpHeaders requestHeaders = new HttpHeaders();
-////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-//// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
-//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
-//                formData, requestHeaders);
-//        // Create a new RestTemplate instance
-////        RestTemplate restTemplate = new RestTemplate(true);
-//
-////        String url = "http://api.prize-word.com/me/userpic?session_key={"+sessionKey+"}&userpic=[{"+userPic+"}]";
-//        String url = "http://api.prize-word.com/me/userpic?session_key={session_key}&userpic=[{userpic}]";
-//
-//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-////        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC2, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-//        RestUserData.RestUserDataHolder result = entity.getBody();
-//        result.setStatusCode(entity.getStatusCode());
-//        return result.getUserData();
-//    }
-
-    @Override
-    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-
-        String url = "http://api.prize-word.com/me?session_key="+sessionKey;
-//        String url = RestParams.URL_RESET_USER_PIC2;
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost postRequest = new HttpPost(url);
         MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 //        try {
 //            reqEntity.addPart("name", new StringBody("Name"));
@@ -130,31 +103,81 @@ public class RestClient implements IRestClient
             //Log.v("Exception in Image", ""+e);
 //            reqEntity.addPart("picture", new StringBody(""));
         }
-        postRequest.setEntity(reqEntity);
-        HttpResponse response = null;
-        try {
-            response = httpClient.execute(postRequest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String sResponse;
-        StringBuilder s = new StringBuilder();
-        try {
-            while ((sResponse = reader.readLine()) != null) {
-                s = s.append(sResponse);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+// Set the Content-Type header
+        HttpHeaders requestHeaders = new HttpHeaders();
+//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+        requestHeaders.setAccept(acceptableMediaTypes);
+        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
+//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
+//                reqEntity, requestHeaders);
+        HttpEntity<MultipartEntity> requestEntity = new HttpEntity<MultipartEntity>(reqEntity, requestHeaders);
 
-        return new RestUserData();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
+        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
+//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.postForEntity(url, requestEntity, RestUserData.RestUserDataHolder.class);
+        RestUserData.RestUserDataHolder result = entity.getBody();
+        result.setStatusCode(entity.getStatusCode());
+        return result.getUserData();
     }
+
+//    @Override
+//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
+//
+//        String url = "http://api.prize-word.com/me?session_key="+sessionKey;
+////        String url = RestParams.URL_RESET_USER_PIC2;
+//        HttpClient httpClient = new DefaultHttpClient();
+//        HttpPost postRequest = new HttpPost(url);
+//        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+////        try {
+////            reqEntity.addPart("name", new StringBody("Name"));
+////            reqEntity.addPart("Id", new StringBody("ID"));
+////            reqEntity.addPart("title",new StringBody("TITLE"));
+////            reqEntity.addPart("caption", new StringBody("Caption"));
+////        } catch (UnsupportedEncodingException e) {
+////            e.printStackTrace();
+////        }
+//        try{
+//            byte[] data = userPic;
+//            ByteArrayBody bab = new ByteArrayBody(data, "somename.png");
+//            reqEntity.addPart(RestParams.USERPIC, bab);
+//        }
+//        catch(Exception e){
+//            //Log.v("Exception in Image", ""+e);
+////            reqEntity.addPart("picture", new StringBody(""));
+//        }
+//        postRequest.setEntity(reqEntity);
+//        HttpResponse response = null;
+//        try {
+//            response = httpClient.execute(postRequest);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        BufferedReader reader = null;
+//        try {
+//            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String sResponse;
+//        StringBuilder s = new StringBuilder();
+//        try {
+//            while ((sResponse = reader.readLine()) != null) {
+//                s = s.append(sResponse);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return new RestUserData();
+//    }
 
 
     // Более или менее рабочий вариант;
