@@ -58,13 +58,11 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     @Override
     public void drawLayer(Canvas canvas)
     {
-        drawLayer(canvas, 1.0f);
+        drawLayer(canvas, mDrawingRect);
     }
 
-    public void drawLayer (@Nonnull Canvas canvas, float scale)
+    public void drawLayer (@Nonnull Canvas canvas, @Nonnull Rect viewport)
     {
-        if(scale > 1.0f)
-            return;
 
         if (mBgTileBitmap == null || mBgTileBitmap.isRecycled())
         {
@@ -72,8 +70,8 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         }
         if(!mBgTileBitmap.isRecycled())
         {
-            int width = (int)(mDrawingRect.width() * scale);
-            int height = (int)(mDrawingRect.height() * scale);
+            int width = viewport.width();
+            int height = viewport.height();
             int horOffset = (mDrawingRect.width() - width)/2;
             int verOffset = (mDrawingRect.height() - height)/2;
             width -= 2 * mFramePadding;

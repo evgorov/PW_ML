@@ -21,6 +21,7 @@ public class PuzzleManager
 {
     private Rect mPuzzleRect;
     private Rect mPuzzleViewRect;
+    private Rect mViewport;
     private int mPuzzleToScreenRatio;
     private Matrix mMatrix;
 
@@ -33,6 +34,7 @@ public class PuzzleManager
     private Point mFocusPoint;
 
     private @Nullable PuzzleBackgroundLayer mBgLayer;
+    private @Nullable PuzzleTilesLayer mTilesLayer;
     private @Nonnull Paint mPaint;
 
     private @Nonnull PuzzleViewInformation mInfo;
@@ -98,6 +100,11 @@ public class PuzzleManager
         mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mDrawingRect,
                 mInfo.getBackgroundTile(), mInfo.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
 
+        float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
+        float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
+        float scale = Math.min(widthScale, heightScale);
+        mViewport = new Rect(0, 0, (int)(drawingWidth * scale), (int) (drawingHeight * scale));
+
         isRecycled = false;
     }
 
@@ -124,10 +131,7 @@ public class PuzzleManager
     {
         if (mBgLayer != null)
         {
-            float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
-            float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
-            float scale = Math.min(widthScale, heightScale);
-            mBgLayer.drawLayer(mDrawingCanvas, scale);
+            mBgLayer.drawLayer(mDrawingCanvas, mViewport);
         }
     }
 
