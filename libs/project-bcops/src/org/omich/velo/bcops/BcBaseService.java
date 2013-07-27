@@ -110,7 +110,7 @@ abstract public class BcBaseService<TaskEnv> extends IntentService
 			}
 			catch (Throwable e)
 			{
-				Log.w("BcService operation error, which wasn't catched in IBcTask", e); //$NON-NLS-1$
+;				Log.w("BcService operation error, which wasn't catched in IBcTask", e); //$NON-NLS-1$
 				result = new Bundle();
 				result.putParcelable(BF_ERROR, new ErrorParcelable(e));
 			}

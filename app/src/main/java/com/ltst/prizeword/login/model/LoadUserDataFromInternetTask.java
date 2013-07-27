@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestUserData;
@@ -37,6 +38,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
+        android.util.Log.d(NavigationActivity.LOG_TAG, "EXECUTE LOAD!");
         Bundle extras = env.extras;
         if(extras == null)
             return null;
@@ -84,7 +86,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         }
     }
 
-    private @Nullable
+    public static @Nullable
     List<UserProvider> parseProviderData(RestUserData response)
     {
         List<RestUserData.RestUserProvider> providers = response.getProviders();
