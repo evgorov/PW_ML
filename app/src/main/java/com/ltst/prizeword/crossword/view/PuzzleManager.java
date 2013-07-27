@@ -60,7 +60,7 @@ public class PuzzleManager
         mTileHeight = options.outHeight;
 
         int padding = mInfo.getPadding();
-        int framePadding = mInfo.getFramePadding();
+        int framePadding = mInfo.getFramePadding(mContext.getResources());
         int cellWidth = mInfo.getPuzzleColumnsCount();
         int cellHeight = mInfo.getPuzzleRowsCount();
         int tileGap = mInfo.getTileGap();
@@ -82,7 +82,7 @@ public class PuzzleManager
         Log.i("Setting view rect: "+ mPuzzleViewRect.width() + " " + mPuzzleViewRect.height() + " " + mPuzzleToScreenRatio);
 
         int padding = mInfo.getPadding() / mPuzzleToScreenRatio;
-        int framePadding = mInfo.getFramePadding() / mPuzzleToScreenRatio;
+        int framePadding = mInfo.getFramePadding(mContext.getResources()) / mPuzzleToScreenRatio;
         int cols = mInfo.getPuzzleColumnsCount();
         int rows = mInfo.getPuzzleRowsCount();
         int tileGap = mInfo.getTileGap() / mPuzzleToScreenRatio;
@@ -96,7 +96,7 @@ public class PuzzleManager
         mFocusPoint = new Point(drawingWidth/2, drawingHeight/2);
 
         mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mDrawingRect,
-                mInfo.getBackgroundTile(), mInfo.getBackgroundFrame(), framePadding, mPuzzleToScreenRatio);
+                mInfo.getBackgroundTile(), mInfo.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
 
         isRecycled = false;
     }
@@ -124,7 +124,10 @@ public class PuzzleManager
     {
         if (mBgLayer != null)
         {
-            mBgLayer.drawLayer(mDrawingCanvas);
+            float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
+            float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
+            float scale = Math.min(widthScale, heightScale);
+            mBgLayer.drawLayer(mDrawingCanvas, scale);
         }
     }
 

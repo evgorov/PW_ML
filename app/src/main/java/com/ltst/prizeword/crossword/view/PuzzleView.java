@@ -160,16 +160,6 @@ public class PuzzleView extends View
     {
         super.onDraw(canvas);
         drawBackground(canvas);
-
-        int saveCount = canvas.getSaveCount();
-        canvas.save();
-
-        configureBounds();
-        canvas.concat(mMatrix);
-
-        drawPuzzle(canvas);
-
-        canvas.restoreToCount(saveCount);
     }
 
     private void drawBackground(Canvas canvas)

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -57,22 +58,38 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     @Override
     public void drawLayer(Canvas canvas)
     {
-        if (mBgTileBitmap == null)
+        drawLayer(canvas, 1.0f);
+    }
+
+    public void drawLayer (@Nonnull Canvas canvas, float scale)
+    {
+        if(scale > 1.0f)
+            return;
+
+        if (mBgTileBitmap == null || mBgTileBitmap.isRecycled())
         {
             loadBgTileBitmap();
         }
         if(!mBgTileBitmap.isRecycled())
         {
-            Bitmap bm = Bitmap.createBitmap(mDrawingRect.width() - 2 * mFramePadding,
-                                            mDrawingRect.height() - 2*mFramePadding,
-                                            Bitmap.Config.ARGB_8888);
-            Canvas mainCanvas = new Canvas(bm);
-//            PuzzleBackgroundLayer.fillBackgroundWithTile(mainCanvas, mBgTileBitmap, mPaint);
-            PuzzleBackgroundLayer.fillBackgroundByDrawable(mResources, mainCanvas, mBgTileBitmap);
-            canvas.drawBitmap(bm, mDrawingRect.left + mFramePadding, mDrawingRect.top + mFramePadding, mPaint);
-            bm.recycle();
+            int width = (int)(mDrawingRect.width() * scale);
+            int height = (int)(mDrawingRect.height() * scale);
+            int horOffset = (mDrawingRect.width() - width)/2;
+            int verOffset = (mDrawingRect.height() - height)/2;
+            width -= 2 * mFramePadding;
+            height -= 2 * mFramePadding;
+            Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-            mFrameBorder.setBounds(mDrawingRect);
+            Canvas mainCanvas = new Canvas(bm);
+            PuzzleBackgroundLayer.fillBackgroundByDrawable(mResources, mainCanvas, mBgTileBitmap);
+            canvas.drawBitmap(bm, horOffset + mDrawingRect.left + mFramePadding,
+                                  verOffset + mDrawingRect.top + mFramePadding, mPaint);
+            bm.recycle();
+            Rect frameRect = new Rect(horOffset + mDrawingRect.left,
+                                      verOffset + mDrawingRect.top,
+                                      mDrawingRect.right - horOffset,
+                                      mDrawingRect.bottom - verOffset);
+            mFrameBorder.setBounds(frameRect);
             mFrameBorder.draw(canvas);
         }
         recycle();

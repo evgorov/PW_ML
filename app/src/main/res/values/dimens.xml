@@ -6,4 +6,6 @@
     <dimen name="navigation_drawer_item_height">48dp</dimen>
 
     <dimen name="puzzle_question_font_size">10sp</dimen>
+
+    <dimen name="frame_border_offset">10dp</dimen>
 </resources>

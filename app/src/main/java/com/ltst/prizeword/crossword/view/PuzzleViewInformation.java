@@ -1,5 +1,7 @@
 package com.ltst.prizeword.crossword.view;
 
+import android.content.res.Resources;
+
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -23,7 +25,7 @@ public class PuzzleViewInformation
     private int mPuzzleRowsCount;
     private int mPadding = DEFAULT_PADDING;
     private int mTileGap = DEFAULT_TILE_GAP;
-    private int mFramePadding = DEFAULT_PADDING/2;
+    private int mFramePadding = DEFAULT_PADDING;
 
     private int mBackgroundTileRes;
 
@@ -170,8 +172,9 @@ public class PuzzleViewInformation
         return mPadding;
     }
 
-    public int getFramePadding()
+    public int getFramePadding(@Nonnull Resources res)
     {
+        mFramePadding = res.getDimensionPixelSize(R.dimen.frame_border_offset);
         return mFramePadding;
     }
 
