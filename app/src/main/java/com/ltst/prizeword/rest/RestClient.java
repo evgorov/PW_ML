@@ -62,65 +62,66 @@ public class RestClient implements IRestClient
         return holder.getUserData();
     }
 
-    @Override
-    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-// Отправка аватарки на сервер для обновления данных;
-// Create and populate a simple object to be used in the request
-
-        // populate the data to post
-        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<String, Object>();
-        formData.add(RestParams.SESSION_KEY, sessionKey);
-        formData.add(RestParams.USERPIC, userPic);
-
-// Set the Content-Type header
-        HttpHeaders requestHeaders = new HttpHeaders();
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
-                formData, requestHeaders);
-        // Create a new RestTemplate instance
-//        RestTemplate restTemplate = new RestTemplate(true);
-
-//        String url = "http://api.prize-word.com/me/userpic?session_key="+sessionKey;
-
-// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-        RestUserData.RestUserDataHolder result = entity.getBody();
-        result.setStatusCode(entity.getStatusCode());
-        return result.getUserData();
-    }
-
 //    @Override
 //    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
 //// Отправка аватарки на сервер для обновления данных;
 //// Create and populate a simple object to be used in the request
-//        MultipartEntity urlVariables = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-////        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-////        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-////        urlVariables.put(RestParams.USERPIC, userPic);
-//        try{
-//            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
-//            urlVariables.addPart(RestParams.SESSION_KEY, new StringBody(sessionKey));
-//            urlVariables.addPart(RestParams.USERPIC, bab);
-//        }
-//        catch(Exception e){
-////            urlVariables.put(RestParams.USERPIC, userPic);
-//        }
+//
+//        // populate the data to post
+//        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<String, Object>();
+//        formData.add(RestParams.SESSION_KEY, sessionKey);
+//        formData.add(RestParams.USERPIC, userPic);
 //
 //// Set the Content-Type header
 //        HttpHeaders requestHeaders = new HttpHeaders();
 ////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 //        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
+//// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
+//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
+//                formData, requestHeaders);
+//        // Create a new RestTemplate instance
+////        RestTemplate restTemplate = new RestTemplate(true);
+//
+////        String url = "http://api.prize-word.com/me/userpic?session_key={"+sessionKey+"}&userpic=[{"+userPic+"}]";
+//        String url = "http://api.prize-word.com/me/userpic?session_key={session_key}&userpic=[{userpic}]";
 //
 //// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC2 + "/postformdata", HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+////        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC2, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
+//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
 //        RestUserData.RestUserDataHolder result = entity.getBody();
 //        result.setStatusCode(entity.getStatusCode());
 //        return result.getUserData();
 //    }
+
+    @Override
+    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
+// Отправка аватарки на сервер для обновления данных;
+// Create and populate a simple object to be used in the request
+        MultipartEntity urlVariables = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+//        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+//        urlVariables.put(RestParams.USERPIC, userPic);
+        try{
+            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
+            urlVariables.addPart(RestParams.SESSION_KEY, new StringBody(sessionKey));
+            urlVariables.addPart(RestParams.USERPIC, bab);
+        }
+        catch(Exception e){
+//            urlVariables.put(RestParams.USERPIC, userPic);
+        }
+
+// Set the Content-Type header
+        HttpHeaders requestHeaders = new HttpHeaders();
+//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
+
+// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+        RestUserData.RestUserDataHolder result = entity.getBody();
+        result.setStatusCode(entity.getStatusCode());
+        return result.getUserData();
+    }
 
     @Override
     public RestUserData resetUserName(@Nonnull String sessionKey, @Nonnull String userName){
