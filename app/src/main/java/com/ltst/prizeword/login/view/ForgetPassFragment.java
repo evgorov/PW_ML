@@ -118,11 +118,11 @@ public class ForgetPassFragment extends SherlockFragment
     {
         switch (view.getId()){
             case R.id.forgetpass_back_btn:
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                hideKeyboard();
                 onBackKeyPress();
                 break;
             case R.id.forgetpass_send_btn:
+                hideKeyboard();
                 sendEmail();
                 break;
             case R.id.forgetpass_success_send_ok_btn:
@@ -137,6 +137,11 @@ public class ForgetPassFragment extends SherlockFragment
             default:
                 break;
         }
+    }
+
+    private void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override

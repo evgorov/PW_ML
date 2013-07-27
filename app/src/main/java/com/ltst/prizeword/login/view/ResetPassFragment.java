@@ -89,8 +89,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
             @Override
             public void onClick(View v)
             {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                hideKeyboard();
 
                 mNewPassword = mNewPasswordInput.getText().toString();
                 final String pass = mNewPassword;
@@ -126,6 +125,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     {
         mPasswordToken = token;
     }
+
 
     private abstract class ForgetPassUpdater extends ModelUpdater<DbService.DbTaskEnv>
     {
@@ -185,6 +185,10 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     public void onBackKeyPress()
     {
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+        hideKeyboard();
+    }
+
+    private void hideKeyboard(){
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
