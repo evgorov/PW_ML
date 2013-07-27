@@ -462,10 +462,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
-                loadAvatar(data.previewUrl);
+//                loadAvatar(data.previewUrl);
             } else {
-                mDrawerHeader.setImage(null);
+//                mDrawerHeader.setImage(null);
             }
+            loadUserData();
         }
     };
 

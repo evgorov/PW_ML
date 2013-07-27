@@ -123,7 +123,7 @@ public class RestClient implements IRestClient
 
     @Override
     public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-
+    // Рабочий вариант;
         try{
             String url = "http://api.prize-word.com/me?session_key="+sessionKey;
             HttpClient httpClient = new DefaultHttpClient();
@@ -160,7 +160,7 @@ public class RestClient implements IRestClient
     }
 
 
-    // Более или менее рабочий вариант;
+//    // Более или менее рабочий вариант;
 //    @Override
 //    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
 //        // Create and populate a simple object to be used in the request
