@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,6 +33,8 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
+import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
@@ -107,6 +110,9 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull String pattern;
     private @Nonnull String fr;
 
+    private @Nonnull UserDataModel mUserDataModel;
+
+
     @Override
     public void onAttach(Activity activity)
     {
@@ -117,6 +123,7 @@ public class RegisterFragment extends SherlockFragment
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mDrawerHolder = (INavigationDrawerHolder)activity;
         mDrawerHolder.lockDrawerClosed();
+        mUserDataModel = new UserDataModel(mContext,mBcConnector);
     }
 
 
@@ -357,6 +364,11 @@ public class RegisterFragment extends SherlockFragment
                         SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
                         spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
                         spref.commit();
+
+                        Bitmap bitmap = ((BitmapDrawable)mIconImg.getDrawable()).getBitmap();
+                        mBitMapTools.convert(bitmap);
+                        byte[] userPic = mBitMapTools.getBuffer();
+                        resetUserData(userPic);
                     }
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     break;
@@ -423,5 +435,26 @@ public class RegisterFragment extends SherlockFragment
         }
 
     }
+
+    private void resetUserData(byte[] userPic){
+        // изменить аватарку;
+        mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
+
+    }
+
+    private IListenerVoid mTaskHandlerResetUserPic = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            UserData data = mUserDataModel.getUserData();
+            if( data != null ){
+//                loadAvatar(data.previewUrl);
+            } else {
+//                mDrawerHeader.setImage(null);
+            }
+//            loadUserData();
+        }
+    };
 
 }
