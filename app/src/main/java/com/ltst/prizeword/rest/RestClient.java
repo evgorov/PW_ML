@@ -95,26 +95,20 @@ public class RestClient implements IRestClient
 
     @Override
     public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-// Отправка аватарки на сервер для обновления данных;
-// Create and populate a simple object to be used in the request
-        MultipartEntity urlVariables = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-//        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-//        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-//        urlVariables.put(RestParams.USERPIC, userPic);
-        try{
-            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
-            urlVariables.addPart(RestParams.SESSION_KEY, new StringBody(sessionKey));
-            urlVariables.addPart(RestParams.USERPIC, bab);
-        }
-        catch(Exception e){
-//            urlVariables.put(RestParams.USERPIC, userPic);
-        }
-
+        // Create and populate a simple object to be used in the request
+//        RestUserData.RestUserDataSender message = new RestUserData.RestUserDataSender();
+//        message.setSessionKey(token);
+//        message.setUserpic(userPic);
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.USERPIC, userPic);
 // Set the Content-Type header
         HttpHeaders requestHeaders = new HttpHeaders();
 //        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
+
+        String url = RestParams.URL_RESET_USER_PIC;
 
 // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
         ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
@@ -122,6 +116,36 @@ public class RestClient implements IRestClient
         result.setStatusCode(entity.getStatusCode());
         return result.getUserData();
     }
+
+//    @Override
+//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
+//// Отправка аватарки на сервер для обновления данных;
+//// Create and populate a simple object to be used in the request
+//        MultipartEntity urlVariables = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+////        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+////        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+////        urlVariables.put(RestParams.USERPIC, userPic);
+//        try{
+//            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
+//            urlVariables.addPart(RestParams.SESSION_KEY, new StringBody(sessionKey));
+//            urlVariables.addPart(RestParams.USERPIC, bab);
+//        }
+//        catch(Exception e){
+////            urlVariables.put(RestParams.USERPIC, userPic);
+//        }
+//
+//// Set the Content-Type header
+//        HttpHeaders requestHeaders = new HttpHeaders();
+////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
+//
+//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+//        RestUserData.RestUserDataHolder result = entity.getBody();
+//        result.setStatusCode(entity.getStatusCode());
+//        return result.getUserData();
+//    }
 
     @Override
     public RestUserData resetUserName(@Nonnull String sessionKey, @Nonnull String userName){
