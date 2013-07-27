@@ -97,6 +97,8 @@ public class AuthorizationFragment extends SherlockFragment
                 String email = mEmailEditText.getText().toString();
                 String passwordf = mPasswdlEditText.getText().toString();
                 enterLogin(email, passwordf);
+                mEmailEditText.setText(Strings.EMPTY);
+                mPasswdlEditText.setText(Strings.EMPTY);
                 break;
             case R.id.login_forget_btn:
                 hideKeyboard();
