@@ -63,7 +63,7 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
             mSimpleImage = new ImageView(this);
             mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_empty);
             params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0,0,9,0);
+            params.setMargins(0,0,8,0);
             mSimpleImage.setLayoutParams(params);
             mSimpleImage.setId(i);
 
@@ -71,7 +71,7 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
         }
 
         mSimpleImage = (ImageView) findViewById(0);
-        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_full);
+        mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_full);
         mSimpleText = (TextView)findViewById(R.id.rules_text);
         mSimpleText.setText(mTexts[0]);
 
@@ -104,9 +104,9 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
                 {
                     mSimpleImage = (ImageView) findViewById(i);
                     if (i == position)
-                        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_full);
+                        mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_full);
                     else
-                        mSimpleImage.setBackgroundResource(R.drawable.rules_pagecontrol_empty);
+                        mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_empty);
 
                 }
                 mSimpleText.setText(mTexts[position]);
