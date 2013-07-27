@@ -35,6 +35,12 @@ public class OnePuzzleModel implements IOnePuzzleModel
         mSetId = setId;
     }
 
+    @Nullable
+    @Override
+    public Puzzle getPuzzle()
+    {
+        return mPuzzle;
+    }
 
     @Override
     public void updateDataByDb(@Nonnull IListenerVoid handler)

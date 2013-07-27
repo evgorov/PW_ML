@@ -1,34 +1,63 @@
 package com.ltst.prizeword.login;
 
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.content.Context;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ltst.prizeword.R;
 
+import java.util.List;
 
-public class RulesFragmentAdapter extends FragmentPagerAdapter
+
+public class RulesFragmentAdapter extends PagerAdapter
 {
-    private int[] Images;
+    List<View> pages;
+    private Context mContext;
 
-    private int mCount;
-
-    public RulesFragmentAdapter(FragmentManager fm){
-        super(fm);
-        Images = new int[]{R.drawable.rules_page_12x, R.drawable.rules_page_22x, R.drawable.rules_page_32x, R.drawable.rules_page_42x, R.drawable.rules_page_52x, R.drawable.rules_page_62x, R.drawable.rules_page_72x, R.drawable.rules_page_82x, R.drawable.rules_page_92x, R.drawable.rules_page_102x, R.drawable.rules_page_112x, R.drawable.rules_page_122x};
-        mCount = Images.length;
-
+    public RulesFragmentAdapter(List<View> pages){
+        this.pages = pages;
     }
 
-
-    @Override public Fragment getItem(int position)
-    {
-        return new RulesSlideFragment(Images[position]);
+    @Override
+    public Object instantiateItem(View collection, int position){
+        View v = pages.get(position);
+        ((ViewPager) collection).addView(v, 0);
+        return v;
     }
 
-    @Override public int getCount()
-    {
-        return mCount;
+    @Override
+    public void destroyItem(View collection, int position, Object view){
+        ((ViewPager) collection).removeView((View) view);
+    }
+
+    @Override
+    public int getCount(){
+        return pages.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object){
+        return view.equals(object);
+    }
+
+    @Override
+    public void finishUpdate(View arg0){
+    }
+
+    @Override
+    public void restoreState(Parcelable arg0, ClassLoader arg1){
+    }
+
+    @Override
+    public Parcelable saveState(){
+        return null;
+    }
+
+    @Override
+    public void startUpdate(View arg0){
     }
 }

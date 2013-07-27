@@ -28,15 +28,14 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     public DbWriter(@Nonnull SQLiteHelper helper) throws DbException
     {
-        super(helper);
-        mDb = helper.createWritableSQLiteDatabase();
-        SQLiteHelper.configureSQLiteDatabase(mDb);
+        super(helper, true);
+        mDb = getDb();
     }
 
     @Override
     public void putUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        @Nullable UserData exitingUser = getReader().getUserByEmail(user.email);
+        @Nullable UserData exitingUser = getUserByEmail(user.email);
         if(exitingUser == null)
         {
             putNewUser(user, providers);
@@ -73,8 +72,8 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     private void updateExistingUser(final long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        @Nullable UserData existingUser = getReader().getUserById(id);
-        @Nullable List<UserProvider> existingProviders = getReader().getUserProvidersByUserId(id);
+        @Nullable UserData existingUser = getUserById(id);
+        @Nullable List<UserProvider> existingProviders = getUserProvidersByUserId(id);
         if (existingUser == null)
         {
             return;
@@ -258,7 +257,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             ContentValues cv  = new ContentValues();
             cv.put(ColsPuzzleQuestions.COLUMN, object.column);
             cv.put(ColsPuzzleQuestions.ROW, object.row);
-            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.quesitonText);
+            cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.questionText);
             cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
             cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
             return cv;

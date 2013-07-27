@@ -44,6 +44,12 @@
             android:name=".login.view.SocialLoginActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".login.RulesFragment"
+            android:label="@string/rules_fragment_title"
+            android:theme="@style/TransparentActivity">
+
+        </activity>
 
     </application>
 

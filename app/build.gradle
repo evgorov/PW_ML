@@ -29,4 +29,21 @@ android {
         minSdkVersion 8
         targetSdkVersion 17
     }
+
+    signingConfigs {
+        release {
+            storeFile file("key/prizeword-release.keystore")
+            storePassword "przwrd"
+            keyAlias "ltst"
+            keyPassword "przwrd"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable true
+            jniDebugBuild true
+            signingConfig signingConfigs.release
+        }
+    }
 }
