@@ -31,6 +31,7 @@ import com.ltst.prizeword.tools.ErrorAlertDialog;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -142,9 +143,9 @@ public class AuthorizationFragment extends SherlockFragment
             {
                 Log.i(LOG_TAG, "handling");
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
-                String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, "");
+                String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                 Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
-                if (sessionKey.isEmpty())
+                if (sessionKey.equals(Strings.EMPTY))
                 {
                     ErrorAlertDialog.showDialog(mContext, R.string.login_enter_error_msg);
                 }

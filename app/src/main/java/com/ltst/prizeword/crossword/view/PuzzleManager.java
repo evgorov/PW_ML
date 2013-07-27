@@ -91,8 +91,8 @@ public class PuzzleManager
         int cols = mInfo.getPuzzleColumnsCount();
         int rows = mInfo.getPuzzleRowsCount();
         int tileGap = mInfo.getTileGap() / mPuzzleToScreenRatio;
-        int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * mTileWidth;
-        int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * mTileHeight;
+        int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * (mTileWidth/mPuzzleToScreenRatio);
+        int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * (mTileHeight/mPuzzleToScreenRatio);
         mDrawingRect = new Rect(0, 0, drawingWidth, drawingHeight);
 
         Log.i("drawing dims: " + drawingWidth + " " + drawingHeight);

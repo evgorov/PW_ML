@@ -115,19 +115,26 @@ public class PuzzleTilesLayer implements ICanvasLayer
         int tileWidth = mEmptyLetter.getWidth();
         int tileHeight = mEmptyLetter.getHeight();
 
-        int preferredTileWidth = (width - mTileGap * (mPuzzleWidth - 1) - mPadding * 2)/mPuzzleWidth;
+        Rect frameRect = new Rect(horOffset + mDrawingRect.left,
+                verOffset + mDrawingRect.top,
+                mDrawingRect.right - horOffset,
+                mDrawingRect.bottom - verOffset);
 
-        if(tileWidth > preferredTileWidth)
+        float difFactor = 10f;
+        int preferredTileWidth = (frameRect.width() - mTileGap * (mPuzzleWidth - 1) - mPadding * 4)/mPuzzleWidth;
+        float difX = Math.abs(tileWidth - preferredTileWidth);
+        if(difX > difFactor || difX < difFactor)
         {
             tileWidth = preferredTileWidth;
         }
 
-        int preferredTileHeight = (height - mTileGap * (mPuzzleHeight -1) - mPadding * 2)/mPuzzleHeight;
-
-        if(tileHeight > preferredTileHeight)
+        int preferredTileHeight = (frameRect.height() - mTileGap * (mPuzzleHeight -1) - mPadding * 4)/mPuzzleHeight;
+        float difY = Math.abs(tileHeight - preferredTileHeight);
+        if(difY > difFactor || difY < difFactor)
         {
             tileHeight = preferredTileHeight;
         }
+
 
         RectF rect = new RectF(2*mPadding + horOffset,
                                2*mPadding + verOffset,
