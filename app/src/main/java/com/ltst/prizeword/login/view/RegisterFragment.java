@@ -124,18 +124,12 @@ public class RegisterFragment extends SherlockFragment
         mIconImg = (ImageView) v.findViewById(R.id.registration_nav_icon_img);
         mIconImg.setClickable(true);
         mIconImg.setFocusable(true);
-        mIconImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(NavigationActivity.LOG_TAG, "PRESS");
-            }
-        });
 
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(mContext);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
-
+        mIconImg.setOnClickListener(this);
         pattern = "yyyy-MM-dd"; //iso 8061
         fr = "dd MMMM yyyy";
 
