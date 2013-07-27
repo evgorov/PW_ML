@@ -35,6 +35,8 @@ public class HeaderHolder {
 
     public void setImage(@Nullable Bitmap bitmap){
         if(bitmap != null){
+            if(bitmap.hasAlpha())
+                bitmap.setHasAlpha(false);
             this.imgPhoto.setImageBitmap(bitmap);
         } else {
             this.imgPhoto.setImageResource(R.drawable.login_register_ava_btn);

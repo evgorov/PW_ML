@@ -2,10 +2,15 @@ package com.ltst.prizeword.rest;
 
 import android.graphics.Bitmap;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
 import org.omich.velo.net.Network;
@@ -25,6 +30,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,27 +107,80 @@ public class RestClient implements IRestClient
 
     @Override
     public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-        // Create and populate a simple object to be used in the request
-//        RestUserData.RestUserDataSender message = new RestUserData.RestUserDataSender();
-//        message.setSessionKey(token);
-//        message.setUserpic(userPic);
-        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-        urlVariables.put(RestParams.USERPIC, userPic);
-// Set the Content-Type header
-        HttpHeaders requestHeaders = new HttpHeaders();
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
 
-        String url = RestParams.URL_RESET_USER_PIC;
+        String url = "http://api.prize-word.com/me?session_key="+sessionKey;
+//        String url = RestParams.URL_RESET_USER_PIC2;
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost postRequest = new HttpPost(url);
+        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//        try {
+//            reqEntity.addPart("name", new StringBody("Name"));
+//            reqEntity.addPart("Id", new StringBody("ID"));
+//            reqEntity.addPart("title",new StringBody("TITLE"));
+//            reqEntity.addPart("caption", new StringBody("Caption"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        try{
+            byte[] data = userPic;
+            ByteArrayBody bab = new ByteArrayBody(data, "somename.png");
+            reqEntity.addPart(RestParams.USERPIC, bab);
+        }
+        catch(Exception e){
+            //Log.v("Exception in Image", ""+e);
+//            reqEntity.addPart("picture", new StringBody(""));
+        }
+        postRequest.setEntity(reqEntity);
+        HttpResponse response = null;
+        try {
+            response = httpClient.execute(postRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String sResponse;
+        StringBuilder s = new StringBuilder();
+        try {
+            while ((sResponse = reader.readLine()) != null) {
+                s = s.append(sResponse);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        RestUserData.RestUserDataHolder result = entity.getBody();
-        result.setStatusCode(entity.getStatusCode());
-        return result.getUserData();
+        return new RestUserData();
     }
+
+
+    // Более или менее рабочий вариант;
+//    @Override
+//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
+//        // Create and populate a simple object to be used in the request
+////        RestUserData.RestUserDataSender message = new RestUserData.RestUserDataSender();
+////        message.setSessionKey(token);
+////        message.setUserpic(userPic);
+//        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+//        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+//        urlVariables.put(RestParams.USERPIC, userPic);
+//// Set the Content-Type header
+//        HttpHeaders requestHeaders = new HttpHeaders();
+////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
+//
+//        String url = RestParams.URL_RESET_USER_PIC;
+//
+//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+//        RestUserData.RestUserDataHolder result = entity.getBody();
+//        result.setStatusCode(entity.getStatusCode());
+//        return result.getUserData();
+//    }
 
 //    @Override
 //    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
