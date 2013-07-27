@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -27,11 +27,13 @@ import static android.view.View.OnClickListener;
 
 public class RulesFragment extends SherlockActivity implements OnClickListener
 {
-    private int[] mImages;
-    private int[] mTexts;
-    private ImageView mSimpleImage;
-    private TextView mSimpleText;
-    private Button mButton;
+    private @Nonnull int[] mImages;
+    private @Nonnull int[] mTexts;
+    private @Nonnull ImageView mSimpleImage;
+    private @Nonnull TextView mSimpleText;
+    private @Nonnull Button mButton;
+    private @Nonnull Animation mAnimationIn;
+    private @Nonnull Animation mAnimationOut;
 
     public static @Nonnull android.content.Intent createIntent(@Nonnull Context context)
     {
@@ -72,8 +74,12 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
 
         mSimpleImage = (ImageView) findViewById(0);
         mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_full);
+
         mSimpleText = (TextView)findViewById(R.id.rules_text);
         mSimpleText.setText(mTexts[0]);
+        mAnimationIn = AnimationUtils.loadAnimation(this,R.anim.rules_alpha_text_in);
+        mAnimationOut = AnimationUtils.loadAnimation(this,R.anim.rules_alpha_text_out);
+
 
         List<View> pages = new ArrayList<View>();
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -99,7 +105,10 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
             }
 
             @Override public void onPageSelected(int position)
-            {
+            {   mAnimationOut.reset();
+                mSimpleText.clearAnimation();
+                mSimpleText.startAnimation(mAnimationOut);
+
                 for (int i = 0; i < mImages.length; i++)
                 {
                     mSimpleImage = (ImageView) findViewById(i);
@@ -109,7 +118,12 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
                         mSimpleImage.setImageResource(R.drawable.rules_pagecontrol_empty);
 
                 }
+
                 mSimpleText.setText(mTexts[position]);
+
+                mAnimationIn.reset();
+                mSimpleText.clearAnimation();
+                mSimpleText.startAnimation(mAnimationIn);
             }
 
             @Override public void onPageScrollStateChanged(int i)

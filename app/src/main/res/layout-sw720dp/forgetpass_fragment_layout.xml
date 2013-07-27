@@ -94,9 +94,11 @@
                     >
 
                 <FrameLayout
+                        android:id="@+id/forget_succes_alert"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/login_remind_sent_bg"
                         >
 

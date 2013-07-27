@@ -244,6 +244,8 @@ public class RegisterFragment extends SherlockFragment implements INavigationBac
         switch (v.getId())
         {
             case R.id.registration_nav_back_button:
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 onBackKeyPress();
                 break;
             case R.id.registration_finish_button:

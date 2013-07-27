@@ -9,6 +9,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +55,9 @@ public class ForgetPassFragment extends SherlockFragment
     private @Nonnull EditText mEmailEditText;
     private @Nonnull View mSuccessAlert;
     private @Nonnull View mSuccessButton;
+    private @Nonnull View mSuccessAlertBg;
+    private @Nonnull Animation mAnimationSlideInTop;
+    private @Nonnull Animation mAnimationSlideOutTop;
 
     @Override
     public void onAttach(Activity activity) {
@@ -83,6 +88,9 @@ public class ForgetPassFragment extends SherlockFragment
         mSendEmailButton = (Button) v.findViewById(R.id.forgetpass_send_btn);
         mSuccessAlert = (View) v.findViewById(R.id.forgetpass_success_send_alert);
         mSuccessButton = (View) v.findViewById(R.id.forgetpass_success_send_ok_btn);
+        mAnimationSlideInTop = AnimationUtils.loadAnimation(mContext,R.anim.forget_slide_in_succes_view);
+        mAnimationSlideOutTop = AnimationUtils.loadAnimation(mContext,R.anim.forget_slide_out_succes_view);
+        mSuccessAlertBg = (View) v.findViewById(R.id.forget_succes_alert);
         return v;
     }
 
@@ -110,6 +118,8 @@ public class ForgetPassFragment extends SherlockFragment
     {
         switch (view.getId()){
             case R.id.forgetpass_back_btn:
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 onBackKeyPress();
                 break;
             case R.id.forgetpass_send_btn:
@@ -117,6 +127,9 @@ public class ForgetPassFragment extends SherlockFragment
                 break;
             case R.id.forgetpass_success_send_ok_btn:
                 // Скрываем окно успешной отправки email;
+                mAnimationSlideOutTop.reset();
+                mSuccessAlertBg.clearAnimation();
+                mSuccessAlertBg.startAnimation(mAnimationSlideOutTop);
                 mSuccessAlert.setVisibility(View.GONE);
                 //  переходим на другой фрагмент;
                 onBackKeyPress();
@@ -173,6 +186,9 @@ public class ForgetPassFragment extends SherlockFragment
             {
                 // Показываем окно успешной отправки email;
                 mSuccessAlert.setVisibility(View.VISIBLE);
+                mAnimationSlideInTop.reset();
+                mSuccessAlertBg.clearAnimation();
+                mSuccessAlertBg.startAnimation(mAnimationSlideInTop);
                 // скрываем клавиатуру;
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
