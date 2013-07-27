@@ -384,8 +384,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                 startActivityForResult(cameraIntent, REQUEST_MAKE_PHOTO);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
-                // Вызываем галерею;
                 mDrawerChoiceDialog.cancel();
+                // Вызываем галерею;
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;

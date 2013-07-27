@@ -26,14 +26,11 @@ public class BitmapTools {
         return this.mBuffer;
     }
 
-    public void convertBitmapToBytearray(@Nonnull Bitmap bitmap, final @Nonnull IListenerVoid handler){
-        this.mBitmap = bitmap;
+    public void convertBitmapToBytearray(final @Nonnull Bitmap bitmap, final @Nonnull IListenerVoid handler){
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
-                mBuffer = stream.toByteArray();
+                convert(bitmap);
                 handler.handle();
             }
         });
@@ -41,4 +38,10 @@ public class BitmapTools {
         thread.start();
     }
 
+    public void convert(@Nonnull Bitmap bitmap){
+        this.mBitmap = bitmap;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
+        mBuffer = stream.toByteArray();
+    }
 }

@@ -7,7 +7,6 @@
         >
 
     <ImageView
-            android:id="@+id/registration_nav_icon_img"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="@drawable/login_enter_top_shadow"

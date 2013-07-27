@@ -5,8 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.tools.BitmapTools;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
@@ -43,6 +47,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,6 +63,9 @@ public class RegisterFragment extends SherlockFragment
         View.OnClickListener
 
 {
+    private int RESULT_LOAD_IMAGE = 1;
+    private int REQUEST_MAKE_PHOTO = 2;
+
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RegisterFragment.class.getName();
@@ -90,6 +98,8 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull TextView mPassLabel;
     private @Nonnull TextView mRetryPassLabel;
 
+    private @Nonnull BitmapTools mBitMapTools;
+
     private @Nonnull Calendar cal;
     private @Nonnull int curYear;
     private @Nonnull int curMonth;
@@ -101,6 +111,7 @@ public class RegisterFragment extends SherlockFragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        mBitMapTools = new BitmapTools();
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
@@ -152,6 +163,40 @@ public class RegisterFragment extends SherlockFragment
         dateFormat = new SimpleDateFormat(fr);
         mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+//            // Получаем картинку из галереи;
+            Uri chosenImageUri = data.getData();
+            Bitmap photo = null;
+            try {
+                photo = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Меняем аватарку на панеле;
+            setImage(photo);
+            // Отправляем новую аватарку насервер;
+//            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
+            mBitMapTools.convert(photo);
+            byte[] userPic = mBitMapTools.getBuffer();
+//            resetUserData(userPic);
+        }
+        if(requestCode == REQUEST_MAKE_PHOTO && resultCode == Activity.RESULT_OK){
+            // получаем фото с камеры;
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            // Меняем аватарку на панеле;
+            setImage(photo);
+            // Отправляем новую аватарку насервер;
+//            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
+            mBitMapTools.convert(photo);
+            byte[] userPic = mBitMapTools.getBuffer();
+//            resetUserData(userPic);
+        }
     }
 
     private void performRegistration()
@@ -268,16 +313,19 @@ public class RegisterFragment extends SherlockFragment
                 showDatePickerDialog();
                 break;
             case R.id.registration_nav_icon_img:
-                Log.d(NavigationActivity.LOG_TAG, "PRESS");
                 mDrawerChoiceDialog.show();
                 break;
             case R.id.choice_photo_dialog_camera_btn:
-                Log.d(NavigationActivity.LOG_TAG, "PRESS");
                 mDrawerChoiceDialog.cancel();
+                // Вызываем камеру;
+                Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, REQUEST_MAKE_PHOTO);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
-                Log.d(NavigationActivity.LOG_TAG, "PRESS");
                 mDrawerChoiceDialog.cancel();
+                // Вызываем галерею;
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;
             default:
                 break;
@@ -348,4 +396,32 @@ public class RegisterFragment extends SherlockFragment
             return mBcConnector;
         }
     }
+
+    private IListenerVoid mTaskConvertBitmap = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+//            mContext.runOnUiThread(new Runnable() {
+//                public void run() {
+//                    // Отправляем новую аватарку насервер;
+//                    byte[] userPic = mBitMapTools.getBuffer();
+////                    resetUserData(userPic);
+////                    mDrawerHeader.pbLoading.setVisibility(ProgressBar.GONE);
+//                }
+//            });
+        }
+    };
+
+    public void setImage(@Nullable Bitmap bitmap){
+        if(bitmap != null){
+            if(bitmap.hasAlpha())
+                bitmap.setHasAlpha(false);
+            mIconImg.setImageBitmap(bitmap);
+        } else {
+            mIconImg.setImageResource(R.drawable.login_register_ava_btn);
+        }
+
+    }
+
 }
