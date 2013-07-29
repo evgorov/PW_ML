@@ -2,7 +2,6 @@ package com.ltst.prizeword.login.view;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,16 +11,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,11 +37,11 @@ import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.navigation.IReloadUserData;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.tools.BitmapTools;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
+import com.ltst.prizeword.tools.IBitmapAsyncTask;
+import com.ltst.prizeword.tools.BitmapAsyncTask;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -62,10 +59,10 @@ import javax.annotation.Nullable;
 
 import static android.app.DatePickerDialog.OnDateSetListener;
 
-
 public class RegisterFragment extends SherlockFragment
         implements INavigationBackPress,
-        View.OnClickListener
+        View.OnClickListener,
+        IBitmapAsyncTask
 
 {
     private int RESULT_LOAD_IMAGE = 1;
@@ -104,8 +101,6 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull TextView mPassLabel;
     private @Nonnull TextView mRetryPassLabel;
 
-    private @Nonnull BitmapTools mBitMapTools;
-
     private @Nonnull Calendar cal;
     private @Nonnull int curYear;
     private @Nonnull int curMonth;
@@ -114,13 +109,13 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull String fr;
 
     private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
 
 
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        mBitMapTools = new BitmapTools();
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
         mIReloadUserData = (IReloadUserData) activity;
@@ -192,22 +187,12 @@ public class RegisterFragment extends SherlockFragment
             }
             // Меняем аватарку на панеле;
             setImage(photo);
-            // Отправляем новую аватарку насервер;
-//            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-            mBitMapTools.convert(photo);
-            byte[] userPic = mBitMapTools.getBuffer();
-//            resetUserData(userPic);
         }
         if(requestCode == REQUEST_MAKE_PHOTO && resultCode == Activity.RESULT_OK){
             // получаем фото с камеры;
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             // Меняем аватарку на панеле;
             setImage(photo);
-            // Отправляем новую аватарку насервер;
-//            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-            mBitMapTools.convert(photo);
-            byte[] userPic = mBitMapTools.getBuffer();
-//            resetUserData(userPic);
         }
     }
 
@@ -385,9 +370,8 @@ public class RegisterFragment extends SherlockFragment
                         spref.commit();
 
                         Bitmap bitmap = ((BitmapDrawable)mIconImg.getDrawable()).getBitmap();
-                        mBitMapTools.convert(bitmap);
-                        byte[] userPic = mBitMapTools.getBuffer();
-                        resetUserData(userPic);
+                        mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
+                        mBitmapAsyncTask.execute(bitmap);
                     }
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     break;
@@ -430,22 +414,6 @@ public class RegisterFragment extends SherlockFragment
         }
     }
 
-    private IListenerVoid mTaskConvertBitmap = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-//            mContext.runOnUiThread(new Runnable() {
-//                public void run() {
-//                    // Отправляем новую аватарку насервер;
-//                    byte[] userPic = mBitMapTools.getBuffer();
-////                    resetUserData(userPic);
-////                    mDrawerHeader.pbLoading.setVisibility(ProgressBar.GONE);
-//                }
-//            });
-        }
-    };
-
     public void setImage(@Nullable Bitmap bitmap){
         if(bitmap != null){
             int size = (int) getResources().getDimension(R.dimen.size_avatar);
@@ -479,5 +447,11 @@ public class RegisterFragment extends SherlockFragment
 //            loadUserData();
         }
     };
+
+    @Override
+    public void bitmapConvertToByte(@Nullable byte[] buffer) {
+        // Отправляем новую аватарку насервер;
+        resetUserData(buffer);
+    }
 
 }

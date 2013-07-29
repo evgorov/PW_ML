@@ -39,8 +39,9 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.tools.BitmapTools;
+import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
+import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -60,7 +61,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         INavigationDrawerHolder,
         IAutorization,
         View.OnClickListener,
-        IReloadUserData
+        IReloadUserData,
+        IBitmapAsyncTask
 {
     private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -87,9 +89,9 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
-    private @Nonnull BitmapTools mBitMapTools;
-
     private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -108,7 +110,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
         mUserDataModel = new UserDataModel(this,mBcConnector);
-        mBitMapTools = new BitmapTools();
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
@@ -144,8 +145,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             // Меняем аватарку на панеле;
              mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
-            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-//            mDrawerHeader.pbLoading.setVisibility(ProgressBar.VISIBLE);
+            mBitmapAsyncTask = new BitmapAsyncTask(this);
+            mBitmapAsyncTask.execute(photo);
         }
         if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
             // получаем фото с камеры;
@@ -153,8 +154,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             // Меняем аватарку на панеле;
             mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
-            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-//            mDrawerHeader.pbLoading.setVisibility(ProgressBar.VISIBLE);
+            mBitmapAsyncTask = new BitmapAsyncTask(this);
+            mBitmapAsyncTask.execute(photo);
         }
     }
 
@@ -498,19 +499,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     };
 
-    private IListenerVoid mTaskConvertBitmap = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    // Отправляем новую аватарку насервер;
-                    byte[] userPic = mBitMapTools.getBuffer();
-                    resetUserData(userPic);
-//                    mDrawerHeader.pbLoading.setVisibility(ProgressBar.GONE);
-                }
-            });
-        }
-    };
+    @Override
+    public void bitmapConvertToByte(@Nullable byte[] buffer) {
+        // Отправляем новую аватарку насервер;
+        resetUserData(buffer);
+    }
+
 }
