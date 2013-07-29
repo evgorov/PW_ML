@@ -3,12 +3,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:layout_gravity="center_horizontal">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/menu_group_result_in_month"/>
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/menu_group_social"/>
     <Button
-            android:id="@+id/show_rules"
+        android:id="@+id/menu_invate_friends_btn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@drawable/menu_invate_friends_but"/>
+
+    <Button
+            android:id="@+id/menu_show_rules_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show Rules"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/menu_rules_but"
+            />
+    <Button
+            android:id="@+id/restore_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_restore_but"
             />
 
 </LinearLayout>

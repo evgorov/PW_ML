@@ -21,7 +21,6 @@ public class HeaderHolder {
     public @Nonnull TextView tvRecordtitle;
     public @Nonnull TextView tvPoints;
     public @Nonnull Button btnLogout;
-    public @Nonnull ProgressBar pbLoading;
 
     public HeaderHolder(@Nonnull View v){
         this.imgPhoto = (ImageView) v.findViewById(R.id.header_listview_photo_img);
@@ -29,8 +28,7 @@ public class HeaderHolder {
         this.tvPoints = (TextView) v.findViewById(R.id.header_listview_points_tview);
         this.tvRecordtitle = (TextView) v.findViewById(R.id.header_listview_personal_record_tview);
         this.btnLogout = (Button) v.findViewById(R.id.header_listview_logout_btn);
-        this.pbLoading = (ProgressBar) v.findViewById(R.id.header_listview_progressbar);
-        this.pbLoading.setVisibility(ProgressBar.GONE);
+
     }
 
     public void setImage(@Nullable Bitmap bitmap){

@@ -119,7 +119,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
 
-        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.show_rules);
+        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.menu_show_rules_btn);
         mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
         mShowRulesBtn.setOnClickListener(this);
         mLogoutBtn.setOnClickListener(this);
@@ -384,7 +384,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
-            case R.id.show_rules:
+            case R.id.menu_show_rules_btn:
                 @Nonnull Intent intent = RulesFragment.createIntent(getContext());
                 getContext().startActivity(intent);
                 break;
