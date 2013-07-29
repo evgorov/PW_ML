@@ -22,6 +22,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     private int mBgTileResource;
     private int mFramePadding;
     private int mPadding;
+    private int mDrawingMargin;
 
     private @Nullable Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
@@ -49,6 +50,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         mFrameBorder = (NinePatchDrawable) res.getDrawable(bgFrameResource);
         mFramePadding = framePadding;
         mPadding = viewPadding;
+        loadBgTileBitmap();
     }
 
     private void loadBgTileBitmap()
@@ -60,9 +62,11 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     public void drawLayer (@Nonnull Canvas canvas, @Nonnull Rect viewport)
     {
 
-        if (mBgTileBitmap == null || mBgTileBitmap.isRecycled())
+//        if (mBgTileBitmap == null || mBgTileBitmap.isRecycled())
+        if(mBgTileBitmap == null)
         {
-            loadBgTileBitmap();
+            return;
+//            loadBgTileBitmap();
         }
         if(!mBgTileBitmap.isRecycled())
         {
@@ -92,8 +96,12 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
             int rightFrameOffset = Math.abs(viewport.right - mPuzzleRect.right);
             int bottomFrameOffset = Math.abs(viewport.bottom - mPuzzleRect.bottom);
             int frameBgPadding = mPadding + mFramePadding;
-            int bgTop = (topFrameOffset < frameBgPadding) ? frameBgPadding - topFrameOffset : 0;
-            int bgLeft = (leftFrameOffset < frameBgPadding) ? frameBgPadding - leftFrameOffset : 0;
+            int bgTop = (topFrameOffset < frameBgPadding) ?
+                    frameBgPadding - topFrameOffset :
+                    mDrawingRect.top + frameBgPadding;
+            int bgLeft = (leftFrameOffset < frameBgPadding) ?
+                    frameBgPadding - leftFrameOffset :
+                    mDrawingRect.left + frameBgPadding;
             int bgRight = (rightFrameOffset < frameBgPadding) ?
                     mDrawingRect.right - (frameBgPadding - rightFrameOffset):
                     mDrawingRect.right;
@@ -109,7 +117,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
             bm.recycle();
 
             canvas.save();
-            canvas.translate(- viewport.left, - viewport.top);
+            canvas.translate(- viewport.left/2, - viewport.top/2);
 
             Rect frameRect = new Rect(mPadding + mPuzzleRect.left,
                                         mPadding + mPuzzleRect.top,
@@ -120,7 +128,7 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
 
             canvas.restore();
         }
-        recycle();
+//        recycle();
     }
 
     @Override
