@@ -2,7 +2,6 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -19,8 +18,10 @@ import javax.annotation.Nullable;
 public class PuzzleBackgroundLayer implements ICanvasLayer
 {
     private @Nonnull Rect mDrawingRect;
+    private @Nonnull Rect mPuzzleRect;
     private int mBgTileResource;
     private int mFramePadding;
+    private int mPadding;
 
     private @Nullable Bitmap mBgTileBitmap;
     private @Nonnull Paint mPaint;
@@ -30,20 +31,24 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
     private @Nonnull Resources mResources;
 
     public PuzzleBackgroundLayer(@Nonnull Resources res,
+                                 @Nonnull Rect puzzleRect,
                                  @Nonnull Rect drawingRect,
                                  int bgTileResource,
                                  int bgFrameResource,
+                                 int viewPadding,
                                  int framePadding,
                                  int screenRatio)
     {
         mResources = res;
         mDrawingRect = drawingRect;
+        mPuzzleRect = puzzleRect;
         mBgTileResource = bgTileResource;
         mScreenRatio = screenRatio;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mFrameBorder = (NinePatchDrawable) res.getDrawable(bgFrameResource);
         mFramePadding = framePadding;
+        mPadding = viewPadding;
     }
 
     private void loadBgTileBitmap()
@@ -61,25 +66,59 @@ public class PuzzleBackgroundLayer implements ICanvasLayer
         }
         if(!mBgTileBitmap.isRecycled())
         {
-            int width = viewport.width();
-            int height = viewport.height();
-            int horOffset = (mDrawingRect.width() - width)/2;
-            int verOffset = (mDrawingRect.height() - height)/2;
-            width -= 2 * mFramePadding;
-            height -= 2 * mFramePadding;
-            Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
+//            int width = viewport.width();
+//            int height = viewport.height();
+//            int horOffset = (mDrawingRect.width() - width)/2;
+//            int verOffset = (mDrawingRect.height() - height)/2;
+//            width -= 2 * mFramePadding;
+//            height -= 2 * mFramePadding;
+//            Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//
+//            Canvas mainCanvas = new Canvas(bm);
+//            PuzzleBackgroundLayer.fillBackgroundByDrawable(mResources, mainCanvas, mBgTileBitmap);
+//            canvas.drawBitmap(bm, horOffset + mDrawingRect.left + mFramePadding,
+//                                  verOffset + mDrawingRect.top + mFramePadding, mPaint);
+//            bm.recycle();
+//            Rect frameRect = new Rect(horOffset + mDrawingRect.left,
+//                                      verOffset + mDrawingRect.top,
+//                                      mDrawingRect.right - horOffset,
+//                                      mDrawingRect.bottom - verOffset);
+//            mFrameBorder.setBounds(frameRect);
+//            mFrameBorder.draw(canvas);
+
+            int topFrameOffset = Math.abs(viewport.top - mPuzzleRect.top);
+            int leftFrameOffset = Math.abs(viewport.left - mPuzzleRect.left);
+            int rightFrameOffset = Math.abs(viewport.right - mPuzzleRect.right);
+            int bottomFrameOffset = Math.abs(viewport.bottom - mPuzzleRect.bottom);
+            int frameBgPadding = mPadding + mFramePadding;
+            int bgTop = (topFrameOffset < frameBgPadding) ? frameBgPadding - topFrameOffset : 0;
+            int bgLeft = (leftFrameOffset < frameBgPadding) ? frameBgPadding - leftFrameOffset : 0;
+            int bgRight = (rightFrameOffset < frameBgPadding) ?
+                    mDrawingRect.right - (frameBgPadding - rightFrameOffset):
+                    mDrawingRect.right;
+            int bgBottom = (bottomFrameOffset < frameBgPadding) ?
+                    mDrawingRect.bottom - (frameBgPadding - bottomFrameOffset):
+                    mDrawingRect.bottom;
+
+            Rect bgRect = new Rect(bgLeft, bgTop, bgRight, bgBottom);
+            Bitmap bm = Bitmap.createBitmap(bgRect.width(), bgRect.height(), Bitmap.Config.ARGB_8888);
             Canvas mainCanvas = new Canvas(bm);
             PuzzleBackgroundLayer.fillBackgroundByDrawable(mResources, mainCanvas, mBgTileBitmap);
-            canvas.drawBitmap(bm, horOffset + mDrawingRect.left + mFramePadding,
-                                  verOffset + mDrawingRect.top + mFramePadding, mPaint);
+            canvas.drawBitmap(bm, null, bgRect, mPaint);
             bm.recycle();
-            Rect frameRect = new Rect(horOffset + mDrawingRect.left,
-                                      verOffset + mDrawingRect.top,
-                                      mDrawingRect.right - horOffset,
-                                      mDrawingRect.bottom - verOffset);
+
+            canvas.save();
+            canvas.translate(- viewport.left, - viewport.top);
+
+            Rect frameRect = new Rect(mPadding + mPuzzleRect.left,
+                                        mPadding + mPuzzleRect.top,
+                                        mPuzzleRect.right - mPadding,
+                                        mPuzzleRect.bottom - mPadding);
             mFrameBorder.setBounds(frameRect);
             mFrameBorder.draw(canvas);
+
+            canvas.restore();
         }
         recycle();
     }

@@ -86,11 +86,11 @@ public class PuzzleManager
         Log.i("Setting view rect: "+ mPuzzleViewRect.width() + " " + mPuzzleViewRect.height() + " " + mPuzzleToScreenRatio);
 
         // compute drawing dimensions
-        int padding = mInfo.getPadding() / mPuzzleToScreenRatio;
-        int framePadding = mInfo.getFramePadding(mContext.getResources()) / mPuzzleToScreenRatio;
+        int padding = mInfo.getPadding();
+        int framePadding = mInfo.getFramePadding(mContext.getResources()) ;
         int cols = mInfo.getPuzzleColumnsCount();
         int rows = mInfo.getPuzzleRowsCount();
-        int tileGap = mInfo.getTileGap() / mPuzzleToScreenRatio;
+        int tileGap = mInfo.getTileGap();
         int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * (mTileWidth/mPuzzleToScreenRatio);
         int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * (mTileHeight/mPuzzleToScreenRatio);
         mDrawingRect = new Rect(0, 0, drawingWidth, drawingHeight);
@@ -101,23 +101,27 @@ public class PuzzleManager
         mFocusPoint = new Point(drawingWidth/2, drawingHeight/2);
 
         // init bg layer
-        mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mDrawingRect,
-                PuzzleViewInformation.getBackgroundTile(), PuzzleViewInformation.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
+        mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mPuzzleRect, mDrawingRect,
+                PuzzleViewInformation.getBackgroundTile(), PuzzleViewInformation.getBackgroundFrame(), padding, framePadding, mPuzzleToScreenRatio);
 
         // init tiles layer
-        mTilesLayer = new PuzzleTilesLayer(mContext.getResources(), mDrawingRect,
-                                           cols, rows, mPuzzleToScreenRatio);
-        mTilesLayer.setPadding(padding + framePadding);
-        mTilesLayer.setTileGap(tileGap);
-        mTilesLayer.setStateMatrix(mInfo.getStateMatrix());
-        mTilesLayer.setQuestions(mInfo.getPuzzleQuestions());
-        mTilesLayer.initTileTextPadding(mTileWidth);
+//        mTilesLayer = new PuzzleTilesLayer(mContext.getResources(), mDrawingRect,
+//                                           cols, rows, mPuzzleToScreenRatio);
+//        mTilesLayer.setPadding(padding + framePadding);
+//        mTilesLayer.setTileGap(tileGap);
+//        mTilesLayer.setStateMatrix(mInfo.getStateMatrix());
+//        mTilesLayer.setQuestions(mInfo.getPuzzleQuestions());
+//        mTilesLayer.initTileTextPadding(mTileWidth);
 
         // compute scaled viewport
-        float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
-        float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
-        float scale = Math.min(widthScale, heightScale);
-        mViewport = new Rect(0, 0, (int)(drawingWidth * scale), (int) (drawingHeight * scale));
+//        float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
+//        float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
+//        float scale = Math.min(widthScale, heightScale);
+//        mViewport = new Rect(0, 0, (int)(drawingWidth * scale), (int) (drawingHeight * scale));
+        mViewport = new Rect(0, 0, drawingWidth, drawingHeight);
+        int translateX = (mPuzzleRect.width() - mDrawingRect.width());
+        int translateY = (mPuzzleRect.height() - mDrawingRect.height());
+        mViewport.set(translateX, translateY, drawingWidth + translateX, drawingHeight + translateY);
 
         isRecycled = false;
     }
@@ -156,7 +160,9 @@ public class PuzzleManager
         mMatrix.reset();
         float translateX = mFocusPoint.x - mPuzzleViewRect.width()/2;
         float translateY = mFocusPoint.y - mPuzzleViewRect.height()/2;
-        mMatrix.postTranslate(-translateX, -translateY);
+//        mMatrix.postTranslate(-translateX, -translateY);
+        mMatrix.postTranslate(-(mDrawingRect.width() - mPuzzleViewRect.width()), -(mDrawingRect.height() - mPuzzleViewRect.height()));
+//        mMatrix.postTranslate(-(mDrawingRect.width() - mPuzzleViewRect.width()), 0);
     }
 
     public void drawPuzzle(@Nonnull Canvas screenCanvas)

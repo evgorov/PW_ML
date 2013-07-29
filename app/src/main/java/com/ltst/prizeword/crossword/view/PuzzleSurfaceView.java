@@ -94,8 +94,6 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     {
         if (canvas == null)
             return;
-//        double fps = fps();
-//        canvas.drawText(String.valueOf("FPS: " + fps), 10, 10, null);
         if (mPuzzleManager != null && !mPuzzleManager.isRecycled())
         {
             mPuzzleManager.drawPuzzle(canvas);
@@ -108,22 +106,5 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
         {
             mPuzzleManager.recycle();
         }
-    }
-
-    // =============================================
-
-    private final int MAX_SIZE = 100;
-    private final double NANOS = 1000000000.0;
-
-    /** Calculates and returns frames per second */
-    private double fps() {
-        long lastTime = System.nanoTime();
-        double difference = (lastTime - times.getFirst()) / NANOS;
-        times.addLast(lastTime);
-        int size = times.size();
-        if (size > MAX_SIZE) {
-            times.removeFirst();
-        }
-        return difference > 0 ? times.size() / difference : 0.0;
     }
 }

@@ -123,9 +123,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
         mShowRulesBtn.setOnClickListener(this);
         mLogoutBtn.setOnClickListener(this);
-        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-
-//        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+//
+        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
