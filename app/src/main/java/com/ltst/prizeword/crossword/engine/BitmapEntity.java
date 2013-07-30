@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,6 +38,14 @@ public class BitmapEntity
         if (mBitmap != null && !mIsRecycled)
         {
             canvas.drawBitmap(mBitmap, posX, posY, paint);
+        }
+    }
+
+    public void draw(@Nonnull Canvas canvas, @Nonnull RectF rect, @Nonnull Paint paint)
+    {
+        if (mBitmap != null && !mIsRecycled)
+        {
+            canvas.drawBitmap(mBitmap, null, rect, paint);
         }
     }
 

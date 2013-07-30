@@ -3,9 +3,11 @@ package com.ltst.prizeword.crossword.engine;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.SparseArray;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class BitmapManager
 {
@@ -32,6 +34,32 @@ public class BitmapManager
     {
         BitmapEntity bm = mBitmaps.get(resource);
         bm.draw(canvas, posX, posY, mPaint);
+    }
+
+    public void drawResource(int resource, @Nonnull Canvas canvas, @Nonnull RectF rect)
+    {
+        BitmapEntity bm = mBitmaps.get(resource);
+        bm.draw(canvas, rect, mPaint);
+    }
+
+    public int getWidth(int resource)
+    {
+        @Nullable BitmapEntity bm = mBitmaps.get(resource);
+        if (bm != null)
+        {
+            return bm.width;
+        }
+        return 0;
+    }
+
+    public int getHeight(int resource)
+    {
+        @Nullable BitmapEntity bm = mBitmaps.get(resource);
+        if (bm != null)
+        {
+            return bm.height;
+        }
+        return 0;
     }
 
     public void recycle()

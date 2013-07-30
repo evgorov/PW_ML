@@ -199,7 +199,7 @@ public class PuzzleResources
         return mTileGap;
     }
 
-    public int getCanvasBackgroundTileRes()
+    public static int getCanvasBackgroundTileRes()
     {
         return R.drawable.bg_dark_tile;
     }

@@ -3,6 +3,8 @@ package com.ltst.prizeword.crossword.view;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.ltst.prizeword.crossword.view.PuzzleSurfaceView;
+
 import javax.annotation.Nonnull;
 
 public class DrawingThread extends Thread

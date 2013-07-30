@@ -33,7 +33,6 @@ public class OneCrosswordActivity extends SherlockActivity
         return intent;
     }
 
-//    private @Nonnull PuzzleView mCrosswordBgImage;
     private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
@@ -61,9 +60,6 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onStart()
     {
-
-//        mCrosswordBgImage = (PuzzleView) findViewById(R.id.one_crossword_view);
-//        mCrosswordBgImage.setBackgroundTileBitmapRes(R.drawable.bg_dark_tile);
         mPuzzleView = (PuzzleSurfaceView) findViewById(R.id.puzzle_view);
         super.onStart();
     }
@@ -80,7 +76,6 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onStop()
     {
-//        mCrosswordBgImage.recycle();
         mPuzzleView.recycle();
         super.onStop();
     }
@@ -101,7 +96,6 @@ public class OneCrosswordActivity extends SherlockActivity
             {
                 PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
                 PuzzleResources info = new PuzzleResources(type, puzzle.questions);
-//                mCrosswordBgImage.setPuzzleInfo(info);
                 mPuzzleView.initializePuzzle(info);
             }
         }

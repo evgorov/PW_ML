@@ -20,7 +20,6 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
 {
     private @Nonnull Context mContext;
     private @Nonnull DrawingThread mDrawingThread;
-    private @Nonnull Rect mViewRect;
     private @Nonnull Rect mViewScreenRect;
     private @Nullable PuzzleManager mPuzzleManager;
 
@@ -62,12 +61,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        mViewRect = new Rect(0, 0, width, height);
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
-        if (mPuzzleManager != null)
-        {
-            mPuzzleManager.setPuzzleViewRect(mViewRect);
-        }
     }
 
     @Override
@@ -93,8 +87,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     {
         if (mPuzzleManager == null)
         {
-            mPuzzleManager = new PuzzleManager(mContext, info);
-            mPuzzleManager.setPuzzleViewRect(mViewRect);
+            mPuzzleManager = new PuzzleManager(mContext, info, mViewScreenRect);
         }
     }
 
@@ -103,11 +96,12 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     {
         if (canvas == null)
             return;
-        if (mPuzzleManager != null && !mPuzzleManager.isRecycled())
+        if (mPuzzleManager != null)
         {
             mPuzzleManager.drawPuzzle(canvas);
         }
     }
+
 
     @Override
     public boolean onTouchEvent(@Nonnull MotionEvent event)
@@ -123,7 +117,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
                 {
                     double distance = Math.sqrt(Math.pow(event.getX() - mPointPanStart.x,2.0)
                             + Math.pow(event.getY() - mPointPanStart.y, 2.0));
-                    if(distance > 0.5f)
+//                    if(distance > 0.05f)
                     {
                         mPanTranslation = new PointF(event.getX() - mPointPanStart.x,
                                 event.getY() - mPointPanStart.y);
