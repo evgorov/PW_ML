@@ -21,6 +21,9 @@ public class PuzzleFieldDrawer
     private int mTileHeight;
     private @Nonnull NinePatchDrawable mFrameBorder;
 
+    private int mDrawingOffsetX = 0;
+    private int mDrawingOffsetY = 0;
+
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResources info)
     {
         mContext = context;
@@ -48,6 +51,17 @@ public class PuzzleFieldDrawer
         mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
     }
 
+    public void enableScaling(float scaleWidth, float scaleHeight)
+    {
+        int scaledWidth = (int)(mPuzzleRect.width() * scaleWidth);
+        int scaledHeight = (int)(mPuzzleRect.height() * scaleHeight);
+        mDrawingOffsetX = scaledWidth/2 - mPuzzleRect.width()/2;
+        mDrawingOffsetY = scaledHeight/2 - mPuzzleRect.height()/2;
+
+        mPuzzleRect.right += mDrawingOffsetX * 2;
+        mPuzzleRect.bottom += mDrawingOffsetY * 2;
+    }
+
     public void loadResources()
     {
         mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile());
@@ -64,17 +78,17 @@ public class PuzzleFieldDrawer
         int padding = mInfo.getPadding();
         int framePadding = mInfo.getFramePadding(mContext.getResources());
         int puzzlePadding = padding + framePadding;
-        RectF puzzleBackgroundRect = new RectF(puzzlePadding + mPuzzleRect.left,
-                puzzlePadding + mPuzzleRect.top,
-                mPuzzleRect.right - puzzlePadding,
-                mPuzzleRect.bottom - puzzlePadding);
+        RectF puzzleBackgroundRect = new RectF(puzzlePadding + mPuzzleRect.left + mDrawingOffsetX,
+                puzzlePadding + mPuzzleRect.top + mDrawingOffsetY,
+                mPuzzleRect.right - puzzlePadding - mDrawingOffsetX,
+                mPuzzleRect.bottom - puzzlePadding - mDrawingOffsetY);
         fillRectWithBitmap(canvas, puzzleBackgroundRect, PuzzleResources.getBackgroundTile());
 
         // draw frame
-        Rect frameRect = new Rect(padding + mPuzzleRect.left,
-                padding + mPuzzleRect.top,
-                mPuzzleRect.right - padding,
-                mPuzzleRect.bottom - padding);
+        Rect frameRect = new Rect(padding + mDrawingOffsetX + mPuzzleRect.left,
+                padding + mDrawingOffsetY + mPuzzleRect.top,
+                mPuzzleRect.right - padding - mDrawingOffsetX,
+                mPuzzleRect.bottom - padding - mDrawingOffsetY);
         mFrameBorder.setBounds(frameRect);
         mFrameBorder.draw(canvas);
     }
@@ -84,6 +98,25 @@ public class PuzzleFieldDrawer
         mBitmapManager.recycle();
     }
 
+    public int getWidth()
+    {
+        return mPuzzleRect.width();
+    }
+
+    public int getHeight()
+    {
+        return mPuzzleRect.height();
+    }
+
+    public int getActualWidth()
+    {
+        return mPuzzleRect.width() - mDrawingOffsetX * 2;
+    }
+
+    public int getActualHeight()
+    {
+        return mPuzzleRect.height() - mDrawingOffsetY * 2;
+    }
 
     public int getCenterX()
     {
@@ -100,14 +133,14 @@ public class PuzzleFieldDrawer
         int halfWidth = viewRect.width()/2;
         int halfHeight = viewRect.height()/2;
 
-        if(p.x - halfWidth < mPuzzleRect.left)
-            p.x = halfWidth;
-        if(p.x + halfWidth > mPuzzleRect.right)
-            p.x = mPuzzleRect.right - halfWidth;
-        if(p.y - halfHeight < mPuzzleRect.top)
-            p.y = halfHeight;
-        if(p.y + halfHeight > mPuzzleRect.bottom)
-            p.y = mPuzzleRect.bottom - halfHeight;
+        if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+            p.x = halfWidth + mDrawingOffsetX;
+        if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+            p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
+        if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
+            p.y = halfHeight + mDrawingOffsetY;
+        if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
+            p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
     }
 
     private void fillRectWithBitmap(@Nonnull Canvas canvas, @Nonnull RectF rect, int res)

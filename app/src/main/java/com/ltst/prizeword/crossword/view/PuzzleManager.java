@@ -26,6 +26,12 @@ public class PuzzleManager
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
     private @Nonnull Rect mPuzzleViewRect;
+    private @Nonnull Rect mScaledViewRect;
+
+    private float MIN_SCALE;
+    private float MAX_SCALE = 1.0f;
+    private boolean mScaled;
+    private float mCurrentScale = MAX_SCALE;
 
     public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleResources info, @Nonnull Rect puzzleViewRect)
     {
@@ -35,8 +41,18 @@ public class PuzzleManager
         mPuzzleViewRect = puzzleViewRect;
         mFieldDrawer = new PuzzleFieldDrawer(context, info);
         mFieldDrawer.loadResources();
-        mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
         mMatrix = new Matrix();
+
+        float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
+        float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
+        MIN_SCALE = Math.min(scaleHeight, scaleWidth);
+        mFieldDrawer.enableScaling(1 + scaleWidth, 1 + scaleHeight);
+        mScaled = true;
+
+        mScaledViewRect = new Rect(0, 0,
+                mFieldDrawer.getActualWidth(),
+                mFieldDrawer.getActualHeight());
+        mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
     private int curScrollX = 0;
@@ -49,16 +65,24 @@ public class PuzzleManager
 
         mFocusViewPoint.x += offsetX;
         mFocusViewPoint.y += offsetY;
-        mFieldDrawer.checkFocusPoint(mFocusViewPoint, mPuzzleViewRect);
+        mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
 //        Log.i("TOUCH", "view x: " + mFocusViewPoint.x + " y: " + mFocusViewPoint.y);
+    }
+
+    public void onScaleEvent()
+    {
+        mScaled = !mScaled;
+        mCurrentScale = (mScaled) ? MAX_SCALE : MIN_SCALE;
+        mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
     private void configureMatrix()
     {
         mMatrix.reset();
-        float translateX = mFocusViewPoint.x - mPuzzleViewRect.width()/2;
-        float translateY = mFocusViewPoint.y - mPuzzleViewRect.height()/2;
+        float translateX = mFocusViewPoint.x - (mScaled ? mPuzzleViewRect.width()/2 : mScaledViewRect.width()/2);
+        float translateY = mFocusViewPoint.y - (mScaled ? mPuzzleViewRect.height()/2 : mScaledViewRect.height()/2);
         mMatrix.postTranslate(-translateX, -translateY);
+        mMatrix.postScale(mCurrentScale, mCurrentScale);
 
 //        mMatrix.postTranslate(-(mDrawingRect.width() - mPuzzleViewRect.width()), -(mDrawingRect.height() - mPuzzleViewRect.height()));
 //        mMatrix.postTranslate(-(mDrawingRect.width() - mPuzzleViewRect.width()), 0);

@@ -179,6 +179,28 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
             }
             return true;
         }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+        {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e)
+        {
+            if (mPuzzleManager != null)
+            {
+                mPuzzleManager.onScaleEvent();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e)
+        {
+            return super.onSingleTapConfirmed(e);
+        }
     }
 
 }
