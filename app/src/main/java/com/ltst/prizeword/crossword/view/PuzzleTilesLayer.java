@@ -2,15 +2,14 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.tools.BitmapHelper;
 
@@ -146,9 +145,9 @@ public class PuzzleTilesLayer implements ICanvasLayer
         {
             for (int j = 0; j < mPuzzleWidth; j++)
             {
-                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_LETTER)
+                if (mStateMatrix[j][i] == PuzzleResources.STATE_LETTER)
                     canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
-                if (mStateMatrix[j][i] == PuzzleViewInformation.STATE_QUESTION)
+                if (mStateMatrix[j][i] == PuzzleResources.STATE_QUESTION)
                 {
                     canvas.drawBitmap(mQuestionNormal, null, rect, mPaint);
                     drawQuestionText(canvas, questionsIndex, rect);
@@ -170,9 +169,9 @@ public class PuzzleTilesLayer implements ICanvasLayer
     private void loadBitmaps()
     {
         mEmptyLetter = BitmapHelper.loadBitmapInSampleSize(mResources,
-                PuzzleViewInformation.getLetterEmpty(), mScreenRatio);
+                PuzzleResources.getLetterEmpty(), mScreenRatio);
         mQuestionNormal = BitmapHelper.loadBitmapInSampleSize(mResources,
-                PuzzleViewInformation.getQuestionEmpty(), mScreenRatio);
+                PuzzleResources.getQuestionEmpty(), mScreenRatio);
     }
 
     private void drawQuestionText(@Nonnull Canvas canvas, int questionsIndex, @Nonnull RectF tileRect)

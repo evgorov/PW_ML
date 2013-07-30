@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.tools.BitmapHelper;
 
 import org.omich.velo.log.Log;
@@ -39,11 +40,11 @@ public class PuzzleManager
     private @Nullable PuzzleTilesLayer mTilesLayer;
     private @Nonnull Paint mPaint;
 
-    private @Nonnull PuzzleViewInformation mInfo;
+    private @Nonnull PuzzleResources mInfo;
     private @Nonnull Context mContext;
     private boolean isRecycled;
 
-    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleViewInformation info)
+    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleResources info)
     {
         mContext = context;
         mInfo = info;
@@ -59,7 +60,7 @@ public class PuzzleManager
         Log.i("measuring dims");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(mContext.getResources(), PuzzleViewInformation.getLetterEmpty(), options);
+        BitmapFactory.decodeResource(mContext.getResources(), PuzzleResources.getLetterEmpty(), options);
         mTileWidth = options.outWidth;
         mTileHeight = options.outHeight;
 
@@ -105,7 +106,7 @@ public class PuzzleManager
 
         // init bg layer
         mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mPuzzleRect, mDrawingRect,
-                PuzzleViewInformation.getBackgroundTile(), PuzzleViewInformation.getBackgroundFrame(), padding, framePadding, mPuzzleToScreenRatio);
+                PuzzleResources.getBackgroundTile(), PuzzleResources.getBackgroundFrame(), padding, framePadding, mPuzzleToScreenRatio);
 //        mBgLayer.setDrawingMarginX(mDrawingMarginX/2);
 //        mBgLayer.setDrawingMarginY(mDrawingMarginY/2);
         // init tiles layer

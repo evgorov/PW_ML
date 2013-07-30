@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
+
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -87,7 +89,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
         }
     }
 
-    public void initializePuzzle(@Nonnull PuzzleViewInformation info)
+    public void initializePuzzle(@Nonnull PuzzleResources info)
     {
         if (mPuzzleManager == null)
         {

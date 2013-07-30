@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -99,8 +100,7 @@ public class OneCrosswordActivity extends SherlockActivity
             if (puzzle != null)
             {
                 PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-                PuzzleViewInformation info = new PuzzleViewInformation(type, puzzle.questions);
-                info.setBackgroundTileBitmapRes(R.drawable.bg_dark_tile);
+                PuzzleResources info = new PuzzleResources(type, puzzle.questions);
 //                mCrosswordBgImage.setPuzzleInfo(info);
                 mPuzzleView.initializePuzzle(info);
             }

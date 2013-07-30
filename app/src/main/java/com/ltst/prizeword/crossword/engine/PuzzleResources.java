@@ -1,4 +1,4 @@
-package com.ltst.prizeword.crossword.view;
+package com.ltst.prizeword.crossword.engine;
 
 import android.content.res.Resources;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PuzzleViewInformation
+public class PuzzleResources
 {
     public static final byte STATE_QUESTION = 1;
     public static final byte STATE_LETTER = 2;
@@ -33,15 +33,15 @@ public class PuzzleViewInformation
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
     private @Nullable byte[][] mStateMatrix;
 
-    public PuzzleViewInformation(@Nullable PuzzleSetModel.PuzzleSetType setType,
-                                 @Nullable List<PuzzleQuestion> puzzleQuestions)
+    public PuzzleResources(@Nullable PuzzleSetModel.PuzzleSetType setType,
+                           @Nullable List<PuzzleQuestion> puzzleQuestions)
     {
         this(DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT, setType, puzzleQuestions);
     }
 
-    public PuzzleViewInformation(int puzzleCellWidth, int puzzleCellHeigth,
-                                 @Nullable PuzzleSetModel.PuzzleSetType setType,
-                                 @Nullable List<PuzzleQuestion> puzzleQuestions)
+    public PuzzleResources(int puzzleCellWidth, int puzzleCellHeigth,
+                           @Nullable PuzzleSetModel.PuzzleSetType setType,
+                           @Nullable List<PuzzleQuestion> puzzleQuestions)
     {
         mPuzzleColumnsCount = puzzleCellWidth;
         mPuzzleRowsCount = puzzleCellHeigth;
@@ -183,13 +183,8 @@ public class PuzzleViewInformation
         return mTileGap;
     }
 
-    public void setBackgroundTileBitmapRes(int backgroundTileBitmap)
-    {
-        mBackgroundTileRes = backgroundTileBitmap;
-    }
-
     public int getCanvasBackgroundTileRes()
     {
-        return mBackgroundTileRes;
+        return R.drawable.bg_dark_tile;
     }
 }

@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -48,7 +50,7 @@ public class PuzzleView extends View
     private float mScaleFactor = MAX_SCALE_FACTOR;
     private float mMinScaleFactor = MIN_SCALE_FACTOR;
 
-    private @Nullable PuzzleViewInformation mPuzzleInfo;
+    private @Nullable PuzzleResources mPuzzleInfo;
 
     public PuzzleView(Context context)
     {
@@ -77,7 +79,7 @@ public class PuzzleView extends View
         mBackgroundTileBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
     }
 
-    public void setPuzzleInfo(@Nullable PuzzleViewInformation puzzleInfo)
+    public void setPuzzleInfo(@Nullable PuzzleResources puzzleInfo)
     {
         mPuzzleInfo = puzzleInfo;
         initCanvasDimensions();
