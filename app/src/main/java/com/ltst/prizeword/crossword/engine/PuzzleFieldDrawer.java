@@ -61,8 +61,8 @@ public class PuzzleFieldDrawer
         int cellWidth = mInfo.getPuzzleColumnsCount();
         int cellHeight = mInfo.getPuzzleRowsCount();
         int tileGap = mInfo.getTileGap();
-        int puzzleWidth = padding + 2 * framePadding + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
-        int puzzleHeight = padding + 2 * framePadding + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
+        int puzzleWidth = 2 * (padding + 2 * framePadding) + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
+        int puzzleHeight = 2 * (padding + 2 * framePadding) + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
         mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
     }
 
@@ -98,6 +98,7 @@ public class PuzzleFieldDrawer
         mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes());
         mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty());
         mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty());
+        mBitmapManager.addBitmap(PuzzleResources.getArrowResource(0));
     }
 
     public void drawBackground(@Nonnull Canvas canvas)
@@ -127,8 +128,8 @@ public class PuzzleFieldDrawer
 
     public void drawPuzzles(@Nonnull Canvas canvas)
     {
-        int cols = mInfo.getPuzzleColumnsCount() - 1;
-        int rows = mInfo.getPuzzleRowsCount() - 1;
+        int cols = mInfo.getPuzzleColumnsCount();
+        int rows = mInfo.getPuzzleRowsCount();
         int[][] stateMatrix = mInfo.getStateMatrix();
         int framePadding = mInfo.getFramePadding(mContext.getResources());
         int padding = mInfo.getPadding();
@@ -151,14 +152,7 @@ public class PuzzleFieldDrawer
                     int arrow = stateMatrix[j][i] & PuzzleQuestion.ArrowType.ARROW_TYPE_MASK;
                     if(arrow != PuzzleQuestion.ArrowType.NO_ARROW)
                     {
-//                        int res = PuzzleResources.getArrowResource(arrow);
-//                        Bitmap arrowBitmap = mArrows.get(arrow);
-//                        if(arrowBitmap == null)
-//                        {
-//                            arrowBitmap = BitmapFactory.decodeResource(mResources, res);
-//                            mArrows.append(arrow, arrowBitmap);
-//                        }
-//                        canvas.drawBitmap(arrowBitmap, null, rect, mPaint);
+                        mBitmapManager.drawResource(PuzzleResources.getArrowResource(arrow), canvas, rect);
                     }
                 }
 

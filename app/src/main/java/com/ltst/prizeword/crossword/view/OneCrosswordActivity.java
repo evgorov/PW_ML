@@ -39,7 +39,7 @@ public class OneCrosswordActivity extends SherlockActivity
     private @Nonnull String mSessionKey;
     private @Nonnull String mCurrentPuzzleServerId;
 
-    private @Nonnull PuzzleSurfaceView mPuzzleView;
+    private @Nonnull PuzzleView mPuzzleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +60,7 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onStart()
     {
-        mPuzzleView = (PuzzleSurfaceView) findViewById(R.id.puzzle_view);
+        mPuzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         super.onStart();
     }
 

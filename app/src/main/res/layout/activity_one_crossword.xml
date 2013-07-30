@@ -7,7 +7,7 @@
     <!--<View android:layout_width="match_parent"-->
           <!--android:layout_height="64dp"/>-->
 
-    <com.ltst.prizeword.crossword.view.PuzzleSurfaceView
+    <com.ltst.prizeword.crossword.view.PuzzleView
             android:id="@+id/puzzle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
