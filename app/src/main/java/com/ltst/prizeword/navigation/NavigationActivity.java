@@ -12,11 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,8 +42,11 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.tools.BitmapTools;
+import com.ltst.prizeword.swipe.ITouchInterface;
+import com.ltst.prizeword.swipe.TouchDetector;
+import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
+import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -60,7 +66,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         INavigationDrawerHolder,
         IAutorization,
         View.OnClickListener,
-        IReloadUserData
+        IReloadUserData,
+        IBitmapAsyncTask,
+        ITouchInterface
 {
     private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -87,9 +95,10 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
-    private @Nonnull BitmapTools mBitMapTools;
-
     private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
+    private @Nonnull GestureDetector mGestureDetector;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -100,7 +109,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         View v = getLayoutInflater().inflate(R.layout.header_listview, null);
-        mDrawerHeader = new HeaderHolder(v);
+        mDrawerHeader = new HeaderHolder(this, v);
         mDrawerHeader.imgPhoto.setOnClickListener(this);
         mDrawerList.addHeaderView(v);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
@@ -108,7 +117,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
         mUserDataModel = new UserDataModel(this,mBcConnector);
-        mBitMapTools = new BitmapTools();
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
@@ -119,13 +127,21 @@ public class NavigationActivity extends SherlockFragmentActivity
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
 
-        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.show_rules);
+        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.menu_show_rules_btn);
         mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
         mShowRulesBtn.setOnClickListener(this);
         mLogoutBtn.setOnClickListener(this);
-//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-//
         selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+
+        // Вешаем swipe;
+        mGestureDetector = new GestureDetector(this, new TouchDetector(this));
+        mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return mGestureDetector.onTouchEvent(event);
+            }
+        });
+
     }
 
     @Override
@@ -144,8 +160,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             // Меняем аватарку на панеле;
              mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
-            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-//            mDrawerHeader.pbLoading.setVisibility(ProgressBar.VISIBLE);
+            mBitmapAsyncTask = new BitmapAsyncTask(this);
+            mBitmapAsyncTask.execute(photo);
         }
         if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
             // получаем фото с камеры;
@@ -153,8 +169,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             // Меняем аватарку на панеле;
             mDrawerHeader.setImage(photo);
             // Отправляем новую аватарку насервер;
-            mBitMapTools.convertBitmapToBytearray(photo, mTaskConvertBitmap);
-//            mDrawerHeader.pbLoading.setVisibility(ProgressBar.VISIBLE);
+            mBitmapAsyncTask = new BitmapAsyncTask(this);
+            mBitmapAsyncTask.execute(photo);
         }
     }
 
@@ -384,7 +400,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
-            case R.id.show_rules:
+            case R.id.menu_show_rules_btn:
                 @Nonnull Intent intent = RulesFragment.createIntent(getContext());
                 getContext().startActivity(intent);
                 break;
@@ -498,19 +514,23 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     };
 
-    private IListenerVoid mTaskConvertBitmap = new IListenerVoid()
-    {
-        @Override
-        public void handle()
+    @Override
+    public void bitmapConvertToByte(@Nullable byte[] buffer) {
+        // Отправляем новую аватарку насервер;
+        resetUserData(buffer);
+    }
+
+    @Override
+    public void notifySwipe(SwipeMethod swipe) {
+        switch (swipe)
         {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    // Отправляем новую аватарку насервер;
-                    byte[] userPic = mBitMapTools.getBuffer();
-                    resetUserData(userPic);
-//                    mDrawerHeader.pbLoading.setVisibility(ProgressBar.GONE);
-                }
-            });
+            case SWIPE_LEFT:
+                mDrawerLayout.closeDrawer(mDrawerList);
+                break;
+            case SWIPE_RIGHT:
+                mDrawerLayout.openDrawer(mDrawerList);
+                break;
+            default: break;
         }
-    };
+    }
 }
