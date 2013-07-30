@@ -69,6 +69,7 @@
                             android:inputType="textEmailAddress"
                             android:layout_marginTop="115dp"
                             android:hint="e-mail"
+                            android:text="vlad@ltst.ru"
                             style="@style/EditTextText"/>
 
 
@@ -79,6 +80,7 @@
                             android:background="@drawable/login_enter_edittext2_bg"
                             android:inputType="textPassword"
                             android:hint="пароль"
+                            android:text="vlad"
                             style="@style/EditTextText"
                             />
 

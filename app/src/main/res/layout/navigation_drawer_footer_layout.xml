@@ -5,14 +5,40 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_gravity="center_horizontal">
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/menu_group_result_in_month"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/menu_group_result_in_month"/>
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/shutter_words_margin"
+                android:text="месяце"/>
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/menu_pride_score_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/menu_score_but"/>
+
+    <Button
+            android:id="@+id/menu_pride_rating_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/menu_rating_btn"/>
+
     <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="4dp"
             android:text="@string/menu_group_social"/>
     <Button
         android:id="@+id/menu_invate_friends_btn"

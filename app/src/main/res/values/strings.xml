@@ -16,10 +16,11 @@
     <string name="rules_fragment_title">Правила</string>
 
 
+    <string name="points">очков</string>
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
-    <string name="personal_record">Персональный рекорд</string>
+    <string name="personal_record">Персональный рекорд:</string>
     <string name="choice_source">Выберите источник</string>
     <string name="camera">Камера</string>
     <string name="gallery"> Галерея</string>
@@ -76,6 +77,21 @@
     <string name="rules_text_12">PrizeWord - увлекательно, полезно и выгодно!</string>
 
     // ==== Menu_group text ====
-    <string name="menu_group_result_in_month">Ваш результат в "месяце"</string>
+    <string name="menu_group_result_in_month">Ваш результат в</string>
     <string name="menu_group_social">Социальные сети</string>
+
+    <string-array name="menu_group_months">
+        <item>январе</item>
+        <item>феврале</item>
+        <item>марте</item>
+        <item>апреле</item>
+        <item>мае</item>
+        <item>июле</item>
+        <item>июне</item>
+        <item>августе</item>
+        <item>сентябре</item>
+        <item>октябре</item>
+        <item>ноябре</item>
+        <item>декабре</item>
+    </string-array>
 </resources>

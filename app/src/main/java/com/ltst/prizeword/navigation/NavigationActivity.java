@@ -226,7 +226,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             // login, auth fragments
-            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
