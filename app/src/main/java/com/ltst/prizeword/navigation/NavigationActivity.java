@@ -102,7 +102,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         View v = getLayoutInflater().inflate(R.layout.header_listview, null);
-        mDrawerHeader = new HeaderHolder(v);
+        mDrawerHeader = new HeaderHolder(this, v);
         mDrawerHeader.imgPhoto.setOnClickListener(this);
         mDrawerList.addHeaderView(v);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
