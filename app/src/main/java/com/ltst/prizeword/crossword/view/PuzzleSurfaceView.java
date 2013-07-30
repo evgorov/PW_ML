@@ -9,6 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 
@@ -17,10 +18,9 @@ import org.omich.velo.log.Log;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Callback
+public class PuzzleSurfaceView extends View
 {
     private @Nonnull Context mContext;
-    private @Nonnull DrawingThread mDrawingThread;
     private @Nonnull Rect mViewScreenRect;
     private @Nullable PuzzleManager mPuzzleManager;
 
@@ -47,43 +47,16 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     {
         super(context, attrs, defStyle);
         mContext = context;
-        getHolder().addCallback(this);
         mPointPanStart = new PointF();
         mPanTranslation = new PointF();
         mGestureDetector = new GestureDetector(context, new GestureListener());
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder)
-    {
-        mDrawingThread = new DrawingThread(this);
-        mDrawingThread.setRunning(true);
-        mDrawingThread.start();
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+    protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder)
-    {
-        boolean retry = true;
-        mDrawingThread.setRunning(false);
-        while (retry)
-        {
-            try
-            {
-                mDrawingThread.join();
-                retry = false;
-            }
-            catch (InterruptedException e)
-            {
-                Log.i(e.getMessage());
-            }
-        }
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public void initializePuzzle(@Nonnull PuzzleResources info)
@@ -176,6 +149,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
             if (mPuzzleManager != null)
             {
                 mPuzzleManager.onScrollEvent(distanceX, distanceY);
+                invalidate();
             }
             return true;
         }
@@ -192,6 +166,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
             if (mPuzzleManager != null)
             {
                 mPuzzleManager.onScaleEvent();
+                invalidate();
             }
             return true;
         }

@@ -74,7 +74,7 @@ public class PuzzleResources
             Point p = ArrowType.positionToPoint(arrowType, col, row);
             if (p != null)
             {
-                mStateMatrix[p.x][p.y] &= arrowType;
+                mStateMatrix[p.x][p.y] |= arrowType;
             }
         }
     }

@@ -109,6 +109,7 @@ public class PuzzleManager
         screenCanvas.concat(mMatrix);
 
         mFieldDrawer.drawBackground(screenCanvas);
+        mFieldDrawer.drawPuzzles(screenCanvas);
 
         screenCanvas.restoreToCount(saveCount);
     }
