@@ -24,7 +24,6 @@ public class BitmapAsyncTask extends AsyncTask<Bitmap, Void, byte[]> {
     protected void onPreExecute() {
     }
 
-
     @Override
     protected byte[] doInBackground(Bitmap... bitmaps) {
         for(Bitmap bitmap: bitmaps){

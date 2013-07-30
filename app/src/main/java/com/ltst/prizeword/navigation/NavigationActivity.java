@@ -12,11 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,6 +42,8 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.swipe.ITouchInterface;
+import com.ltst.prizeword.swipe.TouchDetector;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.IBitmapAsyncTask;
@@ -62,7 +67,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         IAutorization,
         View.OnClickListener,
         IReloadUserData,
-        IBitmapAsyncTask
+        IBitmapAsyncTask,
+        ITouchInterface
 {
     private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -91,6 +97,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
+    private @Nonnull GestureDetector mGestureDetector;
 
 
     @Override
@@ -125,6 +132,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         mShowRulesBtn.setOnClickListener(this);
         mLogoutBtn.setOnClickListener(this);
         selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+
+        // Вешаем swipe;
+        mGestureDetector = new GestureDetector(this, new TouchDetector(this));
+        mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return mGestureDetector.onTouchEvent(event);
+            }
+        });
 
 //        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
@@ -505,4 +520,17 @@ public class NavigationActivity extends SherlockFragmentActivity
         resetUserData(buffer);
     }
 
+    @Override
+    public void notifySwipe(SwipeMethod swipe) {
+        switch (swipe)
+        {
+            case SWIPE_LEFT:
+                mDrawerLayout.closeDrawer(mDrawerList);
+                break;
+            case SWIPE_RIGHT:
+                mDrawerLayout.openDrawer(mDrawerList);
+                break;
+            default: break;
+        }
+    }
 }
