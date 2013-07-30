@@ -2,6 +2,8 @@ package com.ltst.prizeword.crossword.engine;
 
 import android.content.res.Resources;
 
+import android.graphics.Point;
+
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -11,10 +13,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.ltst.prizeword.crossword.model.PuzzleQuestion.ArrowType;
 public class PuzzleResources
-{
-    public static final byte STATE_QUESTION = 1;
-    public static final byte STATE_LETTER = 2;
+    public static final int STATE_MASK = 0x00000011;
+    public static final int STATE_QUESTION = 0x00000001;
+    public static final int STATE_LETTER = 0x00000010;
 
     private static final int DEFAULT_CELL_WIDTH = 14;
     private static final int DEFAULT_CELL_HEIGHT = 20;
@@ -31,7 +34,7 @@ public class PuzzleResources
 
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
-    private @Nullable byte[][] mStateMatrix;
+    private @Nullable int[][] mStateMatrix;
 
     public PuzzleResources(@Nullable PuzzleSetModel.PuzzleSetType setType,
                            @Nullable List<PuzzleQuestion> puzzleQuestions)
@@ -52,7 +55,7 @@ public class PuzzleResources
 
     private void initStateMatrix()
     {
-        mStateMatrix = new byte[mPuzzleColumnsCount][mPuzzleRowsCount];
+        mStateMatrix = new int[mPuzzleColumnsCount][mPuzzleRowsCount];
         for (int i = 0; i < mPuzzleColumnsCount; i++)
         {
             for (int j = 0; j < mPuzzleRowsCount; j++)
@@ -63,11 +66,19 @@ public class PuzzleResources
 
         for (PuzzleQuestion question : mPuzzleQuestions)
         {
-            mStateMatrix[question.column - 1][question.row - 1] = STATE_QUESTION;
+            int col = question.column - 1;
+            int row = question.row - 1;
+            int arrowType = question.getAnswerPosition();
+            mStateMatrix[col][row] = STATE_QUESTION;
+            Point p = ArrowType.positionToPoint(arrowType, col, row);
+            if (p != null)
+            {
+                mStateMatrix[p.x][p.y] &= arrowType;
+            }
         }
     }
 
-    public @Nullable byte[][] getStateMatrix()
+    public @Nullable int[][] getStateMatrix()
     {
         if (mStateMatrix != null)
         {
@@ -76,11 +87,15 @@ public class PuzzleResources
         return null;
     }
 
-    // в порядке обхода клеток
     @Nullable
     public List<PuzzleQuestion> getPuzzleQuestions()
     {
         return mPuzzleQuestions;
+    }
+
+    public static int getArrowResource(int type)
+    {
+        return R.drawable.gamefield_tile_arrow_north_up;
     }
 
     public void setPadding(int padding)

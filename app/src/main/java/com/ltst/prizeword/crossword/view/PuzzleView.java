@@ -15,6 +15,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

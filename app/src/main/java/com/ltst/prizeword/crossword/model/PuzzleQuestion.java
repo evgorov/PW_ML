@@ -1,11 +1,13 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.ltst.prizeword.tools.ParcelableTools;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PuzzleQuestion implements Parcelable
 {
@@ -67,7 +69,7 @@ public class PuzzleQuestion implements Parcelable
         dest.writeString(answerPosition);
     }
 
-    public ArrowType getAnswerPosition()
+    public int getAnswerPosition()
     {
         if(answerPosition.equals(ANSPOS_NORTH_LEFT))
             return ArrowType.NORTH_LEFT;
@@ -109,7 +111,7 @@ public class PuzzleQuestion implements Parcelable
             return ArrowType.NORTH_WEST_RIGHT;
         if(answerPosition.equals(ANSPOS_NORTH_WEST_BOTTOM))
             return ArrowType.NORTH_WEST_BOTTOM;
-        return null;
+        return 0;
     }
 
     //    north:left, north:top, north:right,
@@ -120,31 +122,83 @@ public class PuzzleQuestion implements Parcelable
 //    south-west:top, south-west:right,
 //    west:left, west:top, west:bottom,
 //    north-west:right, north-west:bottom
-    public enum ArrowType
+    public static class ArrowType
     {
-        NORTH_LEFT,
-        NORTH_TOP,
-        NORTH_RIGHT,
-        //        NORTH_EAST_RIGHT, ??
-        NORTH_EAST_LEFT,
-        NORTH_EAST_BOTTOM,
-        EAST_TOP,
-        EAST_RIGHT,
-        EAST_BOTTOM,
-        SOUTH_EAST_LEFT,
-        SOUTH_EAST_TOP,
-        //        SOUTH_EAST_BOTTOM, ??
-        SOUTH_LEFT,
-        SOUTH_RIGHT,
-        SOUTH_BOTTOM,
-        SOUTH_WEST_TOP,
-        SOUTH_WEST_RIGHT,
-        //        SOUTH_WEST_BOTTOM, ??
-        WEST_LEFT,
-        WEST_TOP,
-        WEST_BOTTOM,
-        NORTH_WEST_RIGHT,
-        NORTH_WEST_BOTTOM
+        public static final int ARROW_TYPE_MASK     = 0x01111100;
+        public static final int NO_ARROW            = 0x00000000;
+
+        public static final int NORTH_LEFT          = 0x00000100;
+        public static final int NORTH_TOP           = 0x00001000;
+        public static final int NORTH_RIGHT         = 0x00001100;
+        public static final int NORTH_EAST_LEFT     = 0x00010100;
+        public static final int NORTH_EAST_BOTTOM   = 0x00011000;
+        public static final int EAST_TOP            = 0x00011100;
+        public static final int EAST_RIGHT          = 0x00100000;
+        public static final int EAST_BOTTOM         = 0x00100100;
+        public static final int SOUTH_EAST_LEFT     = 0x00101000;
+        public static final int SOUTH_EAST_TOP      = 0x00101100;
+        public static final int SOUTH_LEFT          = 0x00110000;
+        public static final int SOUTH_RIGHT         = 0x00110100;
+        public static final int SOUTH_BOTTOM        = 0x00111000;
+        public static final int SOUTH_WEST_TOP      = 0x00111100;
+        public static final int SOUTH_WEST_RIGHT    = 0x01000000;
+        public static final int WEST_LEFT           = 0x01000100;
+        public static final int WEST_TOP            = 0x01001000;
+        public static final int WEST_BOTTOM         = 0x01001100;
+        public static final int NORTH_WEST_RIGHT    = 0x01010000;
+        public static final int NORTH_WEST_BOTTOM   = 0x01010100;
+
+        public static @Nullable Point positionToPoint(int type, int col, int row)
+        {
+            Point p = null;
+            switch (type)
+            {
+                case NORTH_RIGHT:
+                case NORTH_TOP:
+                case NORTH_LEFT:
+                    p = new Point(col, row - 1);
+                    break;
+                case NORTH_EAST_BOTTOM:
+                case NORTH_EAST_LEFT:
+                    p = new Point(col + 1, row - 1);
+                    break;
+                case EAST_TOP:
+                case EAST_RIGHT:
+                case EAST_BOTTOM:
+                    p = new Point(col + 1, row);
+                    break;
+                case SOUTH_EAST_LEFT:
+                case SOUTH_EAST_TOP:
+                    p = new Point(col + 1, row + 1);
+                    break;
+                case SOUTH_LEFT:
+                case SOUTH_RIGHT:
+                case SOUTH_BOTTOM:
+                    p = new Point(col, row + 1);
+                    break;
+                case SOUTH_WEST_TOP:
+                case SOUTH_WEST_RIGHT:
+                    p = new Point(col - 1, row + 1);
+                    break;
+                case WEST_BOTTOM:
+                case WEST_LEFT:
+                case WEST_TOP:
+                    p = new Point(col - 1, row);
+                    break;
+                case NORTH_WEST_BOTTOM:
+                case NORTH_WEST_RIGHT:
+                    p = new Point(col - 1, row - 1);
+                    break;
+            }
+//            if (p != null)
+//            {
+//                if(p.x >= col) p.x = col - 1;
+//                if(p.y >= row) p.y = row - 1;
+//                if(p.x < 0) p.x = 0;
+//                if(p.y < 0) p.y = 0;
+//            }
+            return p;
+        }
     }
 
     private static final @Nonnull String ANSPOS_NORTH_LEFT = "north:left";
