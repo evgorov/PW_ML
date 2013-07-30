@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -29,6 +30,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private @Nonnull PointF mPointPanStart;
     private @Nonnull PointF mPanTranslation;
     private boolean mIsPanning = false;
+    private @Nonnull GestureDetector mGestureDetector;
 
 
     public PuzzleSurfaceView(Context context)
@@ -48,6 +50,7 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
         getHolder().addCallback(this);
         mPointPanStart = new PointF();
         mPanTranslation = new PointF();
+        mGestureDetector = new GestureDetector(context, new GestureListener());
     }
 
     @Override
@@ -106,38 +109,39 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
     @Override
     public boolean onTouchEvent(@Nonnull MotionEvent event)
     {
-        switch (event.getAction() & MotionEvent.ACTION_MASK)
-        {
-            case MotionEvent.ACTION_DOWN:
-                mPointPanStart.set(event.getX(), event.getY());
-                setActionMode(ACTION_MODE_PAN);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if(mActionMode == ACTION_MODE_PAN)
-                {
-                    double distance = Math.sqrt(Math.pow(event.getX() - mPointPanStart.x,2.0)
-                            + Math.pow(event.getY() - mPointPanStart.y, 2.0));
-//                    if(distance > 0.05f)
-                    {
-                        mPanTranslation = new PointF(event.getX() - mPointPanStart.x,
-                                event.getY() - mPointPanStart.y);
-                        mIsPanning = true;
-                        if (mPuzzleManager != null)
-                        {
-                            mPuzzleManager.onScrollEvent((int)mPanTranslation.x, (int)mPanTranslation.y);
-                        }
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mIsPanning = false;
-                break;
-            case MotionEvent.ACTION_UP:
-                mIsPanning = false;
-                setActionMode(ACTION_MODE_NONE);
-                break;
-        }
-        return true;
+//        switch (event.getAction() & MotionEvent.ACTION_MASK)
+//        {
+//            case MotionEvent.ACTION_DOWN:
+//                mPointPanStart.set(event.getX(), event.getY());
+//                setActionMode(ACTION_MODE_PAN);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if(mActionMode == ACTION_MODE_PAN)
+//                {
+//                    double distance = Math.sqrt(Math.pow(event.getX() - mPointPanStart.x,2.0)
+//                            + Math.pow(event.getY() - mPointPanStart.y, 2.0));
+////                    if(distance > 0.05f)
+//                    {
+//                        mPanTranslation = new PointF(event.getX() - mPointPanStart.x,
+//                                event.getY() - mPointPanStart.y);
+//                        mIsPanning = true;
+//                        if (mPuzzleManager != null)
+//                        {
+//                            mPuzzleManager.onScrollEvent((int)mPanTranslation.x, (int)mPanTranslation.y);
+//                        }
+//                    }
+//                }
+//                break;
+//            case MotionEvent.ACTION_POINTER_DOWN:
+//                mIsPanning = false;
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                mIsPanning = false;
+//                setActionMode(ACTION_MODE_NONE);
+//                break;
+//        }
+//        return true;
+        return  mGestureDetector.onTouchEvent(event);
     }
 
     public int getActionMode()
@@ -157,4 +161,24 @@ public class PuzzleSurfaceView extends SurfaceView implements SurfaceHolder.Call
             mPuzzleManager.recycle();
         }
     }
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener
+    {
+        @Override
+        public boolean onDown(MotionEvent e)
+        {
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+        {
+            if (mPuzzleManager != null)
+            {
+                mPuzzleManager.onScrollEvent(distanceX, distanceY);
+            }
+            return true;
+        }
+    }
+
 }

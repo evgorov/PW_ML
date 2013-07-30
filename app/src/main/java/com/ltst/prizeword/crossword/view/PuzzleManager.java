@@ -42,13 +42,13 @@ public class PuzzleManager
     private int curScrollX = 0;
     private int curScrollY = 0;
 
-    public void onScrollEvent(int offsetX, int offsetY)
+    public void onScrollEvent(float offsetX, float offsetY)
     {
 //        curScrollX += Math.abs(offsetX);
 //        curScrollY += Math.abs(offsetY);
 
-        mFocusViewPoint.x -= offsetX;
-        mFocusViewPoint.y -= offsetY;
+        mFocusViewPoint.x += offsetX;
+        mFocusViewPoint.y += offsetY;
         mFieldDrawer.checkFocusPoint(mFocusViewPoint, mPuzzleViewRect);
 //        Log.i("TOUCH", "view x: " + mFocusViewPoint.x + " y: " + mFocusViewPoint.y);
     }
