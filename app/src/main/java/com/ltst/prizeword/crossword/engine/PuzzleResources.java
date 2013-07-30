@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.model.PuzzleQuestion.ArrowType;
 public class PuzzleResources
+{
     public static final int STATE_MASK = 0x00000011;
     public static final int STATE_QUESTION = 0x00000001;
     public static final int STATE_LETTER = 0x00000010;
@@ -151,7 +152,7 @@ public class PuzzleResources
         return 0;
     }
 
-    public int getArrow(@Nonnull PuzzleQuestion.ArrowType type)
+    public int getArrow(int type)
     {
         switch (type)
         {

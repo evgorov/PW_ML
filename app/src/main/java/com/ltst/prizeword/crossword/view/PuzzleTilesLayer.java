@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -148,20 +149,15 @@ public class PuzzleTilesLayer implements ICanvasLayer
         {
             for (int j = 0; j < mPuzzleWidth; j++)
             {
-<<<<<<< HEAD
-                if (mStateMatrix[j][i] == PuzzleResources.STATE_LETTER)
-                    canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
-                if (mStateMatrix[j][i] == PuzzleResources.STATE_QUESTION)
-=======
                 int initState = mStateMatrix[j][i];
-                int state = mStateMatrix[j][i] & PuzzleViewInformation.STATE_MASK;
-                if (state == PuzzleViewInformation.STATE_LETTER)
+                int state = mStateMatrix[j][i] & PuzzleResources.STATE_MASK;
+                if (state == PuzzleResources.STATE_LETTER)
                 {
                     canvas.drawBitmap(mEmptyLetter, null, rect, mPaint);
                     int arrow = mStateMatrix[j][i] & PuzzleQuestion.ArrowType.ARROW_TYPE_MASK;
                     if(arrow != PuzzleQuestion.ArrowType.NO_ARROW)
                     {
-                        int res = PuzzleViewInformation.getArrowResource(arrow);
+                        int res = PuzzleResources.getArrowResource(arrow);
                         Bitmap arrowBitmap = mArrows.get(arrow);
                         if(arrowBitmap == null)
                         {
@@ -172,8 +168,7 @@ public class PuzzleTilesLayer implements ICanvasLayer
                     }
                 }
 
-                if (state == PuzzleViewInformation.STATE_QUESTION)
->>>>>>> arrows
+                if (state == PuzzleResources.STATE_QUESTION)
                 {
                     canvas.drawBitmap(mQuestionNormal, null, rect, mPaint);
                     drawQuestionText(canvas, questionsIndex, rect);
