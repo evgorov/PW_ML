@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="42dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/menu_score_color"
                 android:textSize="16sp"
                 android:text="1200"/>
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="42dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/menu_rating_color"
                 android:textSize="16sp"
                 android:text="342-й"/>
 
