@@ -40,7 +40,6 @@
         </activity>
         <activity
             android:name=".crossword.view.OneCrosswordActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_one_crossword" >
         </activity>
         <activity

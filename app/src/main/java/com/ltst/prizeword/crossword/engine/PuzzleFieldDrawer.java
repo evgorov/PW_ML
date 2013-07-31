@@ -159,9 +159,9 @@ public class PuzzleFieldDrawer
                             }
                             mBitmapManager.drawResource(arrowResource, canvas, rect);
                         }
+                        arrowResource = PuzzleResources.getArrowResource(state.getSecondArrow());
                         if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
                         {
-                            arrowResource = PuzzleResources.getArrowResource(state.getSecondArrow());
                             if(!mBitmapManager.hasReasource(arrowResource))
                             {
                                 mBitmapManager.addBitmap(arrowResource);

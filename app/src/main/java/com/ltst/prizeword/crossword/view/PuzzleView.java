@@ -2,7 +2,6 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -17,15 +16,9 @@ import javax.annotation.Nullable;
 public class PuzzleView extends View
 {
     private @Nonnull Context mContext;
-    private @Nonnull Rect mViewScreenRect;
+    private @Nullable Rect mViewScreenRect;
     private @Nullable PuzzleManager mPuzzleManager;
 
-    protected static int ACTION_MODE_NONE = 0;
-    protected static int ACTION_MODE_PAN = 1;
-    private int mActionMode;
-    private @Nonnull PointF mPointPanStart;
-    private @Nonnull PointF mPanTranslation;
-    private boolean mIsPanning = false;
     private @Nonnull GestureDetector mGestureDetector;
 
 
@@ -43,8 +36,6 @@ public class PuzzleView extends View
     {
         super(context, attrs, defStyle);
         mContext = context;
-        mPointPanStart = new PointF();
-        mPanTranslation = new PointF();
         mGestureDetector = new GestureDetector(context, new GestureListener());
     }
 
@@ -52,14 +43,16 @@ public class PuzzleView extends View
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
+        invalidate(mViewScreenRect);
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public void initializePuzzle(@Nonnull PuzzleResources info)
     {
-        if (mPuzzleManager == null)
+        if (mViewScreenRect != null)
         {
             mPuzzleManager = new PuzzleManager(mContext, info, mViewScreenRect);
+            invalidate(mViewScreenRect);
         }
     }
 
@@ -78,49 +71,7 @@ public class PuzzleView extends View
     @Override
     public boolean onTouchEvent(@Nonnull MotionEvent event)
     {
-//        switch (event.getAction() & MotionEvent.ACTION_MASK)
-//        {
-//            case MotionEvent.ACTION_DOWN:
-//                mPointPanStart.set(event.getX(), event.getY());
-//                setActionMode(ACTION_MODE_PAN);
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                if(mActionMode == ACTION_MODE_PAN)
-//                {
-//                    double distance = Math.sqrt(Math.pow(event.getX() - mPointPanStart.x,2.0)
-//                            + Math.pow(event.getY() - mPointPanStart.y, 2.0));
-////                    if(distance > 0.05f)
-//                    {
-//                        mPanTranslation = new PointF(event.getX() - mPointPanStart.x,
-//                                event.getY() - mPointPanStart.y);
-//                        mIsPanning = true;
-//                        if (mPuzzleManager != null)
-//                        {
-//                            mPuzzleManager.onScrollEvent((int)mPanTranslation.x, (int)mPanTranslation.y);
-//                        }
-//                    }
-//                }
-//                break;
-//            case MotionEvent.ACTION_POINTER_DOWN:
-//                mIsPanning = false;
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                mIsPanning = false;
-//                setActionMode(ACTION_MODE_NONE);
-//                break;
-//        }
-//        return true;
         return  mGestureDetector.onTouchEvent(event);
-    }
-
-    public int getActionMode()
-    {
-        return mActionMode;
-    }
-
-    public void setActionMode(int actionMode)
-    {
-        mActionMode = actionMode;
     }
 
     public void recycle()
@@ -128,6 +79,7 @@ public class PuzzleView extends View
         if (mPuzzleManager != null)
         {
             mPuzzleManager.recycle();
+            mPuzzleManager = null;
         }
     }
 
@@ -145,7 +97,7 @@ public class PuzzleView extends View
             if (mPuzzleManager != null)
             {
                 mPuzzleManager.onScrollEvent(distanceX, distanceY);
-                invalidate();
+                invalidate(mViewScreenRect);
             }
             return true;
         }
@@ -162,7 +114,7 @@ public class PuzzleView extends View
             if (mPuzzleManager != null)
             {
                 mPuzzleManager.onScaleEvent();
-                invalidate();
+                invalidate(mViewScreenRect);
             }
             return true;
         }
