@@ -16,7 +16,8 @@
 
         <FrameLayout
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_margin="4dp">
 
             <ImageView
                     android:id="@+id/header_listview_photo_img"
@@ -46,7 +47,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/user"
                     android:textColor="@color/header_text_color"
                     />
@@ -55,8 +55,7 @@
                     android:id="@+id/header_listview_personal_record_tview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:layout_marginLeft="10dp"
+                    android:textSize="10sp"
                     android:layout_marginTop="5dp"
                     android:text="@string/personal_record"
                     android:textColor="@color/header_text_color"
@@ -73,7 +72,6 @@
                         android:textSize="16sp"
                         android:clickable="false"
                         android:text="0"
-                        android:layout_marginLeft="10dp"
                         android:textColor="@color/header_text_color" />
                 <TextView
                         android:layout_width="wrap_content"
@@ -82,7 +80,6 @@
                         android:textSize="16sp"
                         android:clickable="false"
                         android:text="@string/points"
-                        android:layout_marginLeft="10dp"
                         android:textColor="@color/header_text_color" />
             </LinearLayout>
         </LinearLayout>

@@ -86,6 +86,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
+    private @Nonnull List<NavigationDrawerItem> mDrawerItemsVisible;
     private @Nonnull View mFooterView;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
@@ -222,6 +223,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public List<NavigationDrawerItem> getNavigationDrawerItems()
     {
+        if(mDrawerItemsVisible == null){
+            mDrawerItemsVisible = new ArrayList<NavigationDrawerItem>();
+        }
         if (mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
@@ -235,7 +239,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
         }
-        return mDrawerItems;
+        return mDrawerItemsVisible;
     }
 
     // ==== IFragmentsHolderActivity =================================
@@ -302,6 +306,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             NavigationDrawerItem item = new NavigationDrawerItem(title, classname, hidden);
             mDrawerItems.add(item);
+            if(!hidden){
+                mDrawerItemsVisible.add(item);
+            }
         }
     }
 
