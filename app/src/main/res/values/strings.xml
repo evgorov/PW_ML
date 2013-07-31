@@ -19,6 +19,7 @@
     <string name="points">очков</string>
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
+    <string name="in_rating">в рейтинге</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
     <string name="personal_record">Персональный рекорд:</string>
     <string name="choice_source">Выберите источник</string>

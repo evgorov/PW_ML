@@ -22,17 +22,61 @@
                 android:text="месяце"/>
     </LinearLayout>
 
-    <Button
+    <LinearLayout
             android:id="@+id/menu_pride_score_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:background="@drawable/menu_score_but"/>
+            android:gravity="center_vertical"
+            android:background="@drawable/menu_score_but">
 
-    <Button
+        <TextView
+                android:id="@+id/menu_pride_score_txt"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="42dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="1200"/>
+
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/points"/>
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/menu_pride_rating_btn"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:background="@drawable/menu_rating_btn"/>
+            android:gravity="center_vertical"
+            android:background="@drawable/menu_rating_btn">
+
+        <TextView
+                android:id="@+id/menu_pride_rating_txt"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="42dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="342-й"/>
+
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/in_rating" />
+    </LinearLayout>
 
     <TextView
             android:layout_height="wrap_content"
@@ -45,6 +89,68 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:background="@drawable/menu_invate_friends_but"/>
+
+    <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical|right"
+            android:paddingRight="8dp"
+            android:background="@drawable/menu_rating_btn">
+
+        <ToggleButton
+                android:id="@+id/menu_vk_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/menu_switcher"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical|right"
+            android:paddingRight="8dp"
+            android:background="@drawable/menu_rating_btn">
+
+        <ToggleButton
+                android:id="@+id/menu_fb_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/menu_switcher"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical|right"
+            android:paddingRight="8dp"
+            android:background="@drawable/menu_rating_btn">
+
+        <ToggleButton
+                android:id="@+id/menu_notification_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/menu_switcher"/>
+
+    </LinearLayout>
 
     <Button
             android:id="@+id/menu_show_rules_btn"
