@@ -6,9 +6,12 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,6 +23,9 @@ public class PuzzleView extends View
     private @Nullable PuzzleManager mPuzzleManager;
 
     private @Nonnull GestureDetector mGestureDetector;
+    private @Nonnull ScaleGestureDetector mScaleGestureDetector;
+    private static final float MIN_SCALE_FACTOR_DETECTABLE = 0.25f;
+    private boolean mScaled = true;
 
 
     public PuzzleView(Context context)
@@ -37,6 +43,7 @@ public class PuzzleView extends View
         super(context, attrs, defStyle);
         mContext = context;
         mGestureDetector = new GestureDetector(context, new GestureListener());
+        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
     @Override
@@ -75,7 +82,10 @@ public class PuzzleView extends View
     @Override
     public boolean onTouchEvent(@Nonnull MotionEvent event)
     {
-        return  mGestureDetector.onTouchEvent(event);
+        mGestureDetector.onTouchEvent(event);
+        mScaleGestureDetector.onTouchEvent(event);
+
+        return true;
     }
 
     public void recycle()
@@ -98,7 +108,7 @@ public class PuzzleView extends View
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
         {
-            if (mPuzzleManager != null)
+            if (mPuzzleManager != null && mViewScreenRect != null)
             {
                 mPuzzleManager.onScrollEvent(distanceX, distanceY);
                 invalidate(mViewScreenRect);
@@ -115,10 +125,11 @@ public class PuzzleView extends View
         @Override
         public boolean onDoubleTap(MotionEvent e)
         {
-            if (mPuzzleManager != null)
+            if (mPuzzleManager != null && mViewScreenRect != null)
             {
                 mPuzzleManager.onScaleEvent();
                 invalidate(mViewScreenRect);
+                mScaled = !mScaled;
             }
             return true;
         }
@@ -127,6 +138,37 @@ public class PuzzleView extends View
         public boolean onSingleTapConfirmed(MotionEvent e)
         {
             return super.onSingleTapConfirmed(e);
+        }
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
+    {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector)
+        {
+            float scaleFactor = detector.getScaleFactor();
+            Log.i("scalefactor: " + scaleFactor);
+            if(scaleFactor >= 1 + MIN_SCALE_FACTOR_DETECTABLE && !mScaled)
+            {
+                if (mPuzzleManager != null && mViewScreenRect != null)
+                {
+                    mPuzzleManager.onScaleEvent();
+                    invalidate(mViewScreenRect);
+                    mScaled = true;
+                }
+                return true;
+            }
+            if(scaleFactor <= 1 - MIN_SCALE_FACTOR_DETECTABLE && mScaled)
+            {
+                if (mPuzzleManager != null && mViewScreenRect != null)
+                {
+                    mPuzzleManager.onScaleEvent();
+                    invalidate(mViewScreenRect);
+                    mScaled = false;
+                }
+                return true;
+            }
+            return false;
         }
     }
 
