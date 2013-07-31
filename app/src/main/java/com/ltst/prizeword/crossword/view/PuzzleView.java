@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 
-import org.omich.velo.log.Log;
+import org.omich.velo.handlers.IListener;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,7 +24,7 @@ public class PuzzleView extends View
 
     private @Nonnull GestureDetector mGestureDetector;
     private @Nonnull ScaleGestureDetector mScaleGestureDetector;
-    private static final float MIN_SCALE_FACTOR_DETECTABLE = 0.25f;
+    private static final float MIN_SCALE_FACTOR_DETECTABLE = 0.2f;
     private boolean mScaled = true;
 
 
@@ -127,8 +127,7 @@ public class PuzzleView extends View
         {
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                mPuzzleManager.onScaleEvent();
-                invalidate(mViewScreenRect);
+                mPuzzleManager.onScaleEvent(PuzzleView.this);
                 mScaled = !mScaled;
             }
             return true;
@@ -141,19 +140,18 @@ public class PuzzleView extends View
         }
     }
 
+
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
     {
         @Override
         public boolean onScale(ScaleGestureDetector detector)
         {
             float scaleFactor = detector.getScaleFactor();
-            Log.i("scalefactor: " + scaleFactor);
             if(scaleFactor >= 1 + MIN_SCALE_FACTOR_DETECTABLE && !mScaled)
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent();
-                    invalidate(mViewScreenRect);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this);
                     mScaled = true;
                 }
                 return true;
@@ -162,8 +160,7 @@ public class PuzzleView extends View
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent();
-                    invalidate(mViewScreenRect);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this);
                     mScaled = false;
                 }
                 return true;
