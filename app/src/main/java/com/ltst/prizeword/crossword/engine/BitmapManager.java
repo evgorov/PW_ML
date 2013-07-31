@@ -30,6 +30,11 @@ public class BitmapManager
         entity.loadResource(mContext.getResources());
     }
 
+    public boolean hasReasource(int resource)
+    {
+        return mBitmaps.indexOfKey(resource) >= 0;
+    }
+
     public void drawResource(int resource, @Nonnull Canvas canvas, float posX, float posY)
     {
         BitmapEntity bm = mBitmaps.get(resource);

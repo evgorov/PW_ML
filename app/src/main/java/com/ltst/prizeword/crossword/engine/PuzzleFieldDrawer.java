@@ -98,7 +98,6 @@ public class PuzzleFieldDrawer
         mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes());
         mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty());
         mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty());
-        mBitmapManager.addBitmap(PuzzleResources.getArrowResource(0));
     }
 
     public void drawBackground(@Nonnull Canvas canvas)
@@ -130,7 +129,7 @@ public class PuzzleFieldDrawer
     {
         int cols = mInfo.getPuzzleColumnsCount();
         int rows = mInfo.getPuzzleRowsCount();
-        int[][] stateMatrix = mInfo.getStateMatrix();
+        PuzzleTileState[][] stateMatrix = mInfo.getStateMatrix();
         int framePadding = mInfo.getFramePadding(mContext.getResources());
         int padding = mInfo.getPadding();
         int tileGap = mInfo.getTileGap();
@@ -145,18 +144,34 @@ public class PuzzleFieldDrawer
         {
             for (int j = 0; j < cols; j++)
             {
-                int state = stateMatrix[j][i] & PuzzleResources.STATE_MASK;
-                if (state == PuzzleResources.STATE_LETTER)
+                PuzzleTileState state = stateMatrix[j][i];
+                if (state.hasLetter)
                 {
                     mBitmapManager.drawResource(PuzzleResources.getLetterEmpty(), canvas, rect);
-                    int arrow = stateMatrix[j][i] & PuzzleQuestion.ArrowType.ARROW_TYPE_MASK;
-                    if(arrow != PuzzleQuestion.ArrowType.NO_ARROW)
+                    if(state.hasArrows)
                     {
-                        mBitmapManager.drawResource(PuzzleResources.getArrowResource(arrow), canvas, rect);
+                        int arrowResource = PuzzleResources.getArrowResource(state.getFirstArrow());
+                        if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
+                        {
+                            if(!mBitmapManager.hasReasource(arrowResource))
+                            {
+                                mBitmapManager.addBitmap(arrowResource);
+                            }
+                            mBitmapManager.drawResource(arrowResource, canvas, rect);
+                        }
+                        if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
+                        {
+                            arrowResource = PuzzleResources.getArrowResource(state.getSecondArrow());
+                            if(!mBitmapManager.hasReasource(arrowResource))
+                            {
+                                mBitmapManager.addBitmap(arrowResource);
+                            }
+                            mBitmapManager.drawResource(arrowResource, canvas, rect);
+                        }
                     }
                 }
 
-                if (state == PuzzleResources.STATE_QUESTION)
+                if (state.hasQuestion)
                 {
                     mBitmapManager.drawResource(PuzzleResources.getQuestionEmpty(), canvas, rect);
                     drawQuestionText(canvas, questionsIndex, rect);

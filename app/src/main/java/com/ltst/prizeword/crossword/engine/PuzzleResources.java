@@ -13,13 +13,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.ltst.prizeword.crossword.model.PuzzleQuestion.ArrowType;
+import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
+
 public class PuzzleResources
 {
-    public static final int STATE_MASK = 0x00000011;
-    public static final int STATE_QUESTION = 0x00000001;
-    public static final int STATE_LETTER = 0x00000010;
-
     private static final int DEFAULT_CELL_WIDTH = 14;
     private static final int DEFAULT_CELL_HEIGHT = 20;
     private static final int DEFAULT_PADDING = 16;
@@ -31,11 +28,9 @@ public class PuzzleResources
     private int mTileGap = DEFAULT_TILE_GAP;
     private int mFramePadding = DEFAULT_PADDING;
 
-    private int mBackgroundTileRes;
-
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
-    private @Nullable int[][] mStateMatrix;
+    private @Nullable PuzzleTileState[][] mStateMatrix;
 
     public PuzzleResources(@Nullable PuzzleSetModel.PuzzleSetType setType,
                            @Nullable List<PuzzleQuestion> puzzleQuestions)
@@ -56,12 +51,13 @@ public class PuzzleResources
 
     private void initStateMatrix()
     {
-        mStateMatrix = new int[mPuzzleColumnsCount][mPuzzleRowsCount];
+        mStateMatrix = new PuzzleTileState[mPuzzleColumnsCount][mPuzzleRowsCount];
         for (int i = 0; i < mPuzzleColumnsCount; i++)
         {
             for (int j = 0; j < mPuzzleRowsCount; j++)
             {
-                mStateMatrix[i][j] = STATE_LETTER;
+                mStateMatrix[i][j] = new PuzzleTileState();
+                mStateMatrix[i][j].setLetterState(LetterState.LETTER_EMPTY);
             }
         }
 
@@ -70,16 +66,16 @@ public class PuzzleResources
             int col = question.column - 1;
             int row = question.row - 1;
             int arrowType = question.getAnswerPosition();
-            mStateMatrix[col][row] = STATE_QUESTION;
+            mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
             Point p = ArrowType.positionToPoint(arrowType, col, row);
             if (p != null)
             {
-                mStateMatrix[p.x][p.y] |= arrowType;
+                mStateMatrix[p.x][p.y].addArrow(arrowType);
             }
         }
     }
 
-    public @Nullable int[][] getStateMatrix()
+    public @Nullable PuzzleTileState[][] getStateMatrix()
     {
         if (mStateMatrix != null)
         {
@@ -96,7 +92,152 @@ public class PuzzleResources
 
     public static int getArrowResource(int type)
     {
-        return R.drawable.gamefield_tile_arrow_north_up;
+        boolean isDone = (type & ArrowType.ARROW_DONE) == ArrowType.ARROW_DONE;
+        type &= ArrowType.ARROW_TYPE_MASK;
+        switch (type)
+        {
+            case ArrowType.NORTH_LEFT:
+                if (!isDone)
+                    return R.drawable.gamefield_tile_arrow_north_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_north_left_done;
+            case ArrowType.NORTH_RIGHT:
+                if (!isDone)
+                    return R.drawable.gamefield_tile_arrow_north_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_north_right_done;
+            case ArrowType.NORTH_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_north_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_north_up_done;
+            case ArrowType.EAST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_east_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_east_down_done;
+            case ArrowType.EAST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_east_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_east_up_done;
+            case ArrowType.EAST_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_east_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_east_right_done;
+            case ArrowType.SOUTH_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_south_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_south_down_done;
+            case ArrowType.SOUTH_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_south_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_south_left_done;
+            case ArrowType.SOUTH_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_south_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_south_right_done;
+            case ArrowType.WEST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_west_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_west_down_done;
+            case ArrowType.WEST_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_west_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_west_left_done;
+            case ArrowType.WEST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_west_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_west_up_done;
+            case ArrowType.NORTH_EAST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northeast_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_northeast_down_done;
+            case ArrowType.NORTH_EAST_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northeast_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_northeast_left_done;
+            case ArrowType.NORTH_EAST_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northeast_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_northeast_right_done;
+            case ArrowType.NORTH_EAST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northeast_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_northeast_up_done;
+            case ArrowType.NORTH_WEST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northwest_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_northwest_down_done;
+            case ArrowType.NORTH_WEST_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northwest_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_northwest_left_done;
+            case ArrowType.NORTH_WEST_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northwest_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_northwest_right_done;
+            case ArrowType.NORTH_WEST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_northwest_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_northwest_up_done;
+            case ArrowType.SOUTH_EAST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southeast_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_southeast_up_done;
+            case ArrowType.SOUTH_EAST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southeast_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_southeast_down_done;
+            case ArrowType.SOUTH_EAST_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southeast_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_southeast_left_done;
+            case ArrowType.SOUTH_EAST_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southeast_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_southeast_right_done;
+            case ArrowType.SOUTH_WEST_TOP:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southwest_up;
+                else
+                    return R.drawable.gamefield_tile_arrow_southwest_up_done;
+            case ArrowType.SOUTH_WEST_BOTTOM:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southwest_down;
+                else
+                    return R.drawable.gamefield_tile_arrow_southwest_down_done;
+            case ArrowType.SOUTH_WEST_LEFT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southwest_left;
+                else
+                    return R.drawable.gamefield_tile_arrow_southwest_left_done;
+            case ArrowType.SOUTH_WEST_RIGHT:
+                if(!isDone)
+                    return R.drawable.gamefield_tile_arrow_southwest_right;
+                else
+                    return R.drawable.gamefield_tile_arrow_southwest_right_done;
+        }
+        return 0;
     }
 
     public void setPadding(int padding)
@@ -150,17 +291,6 @@ public class PuzzleResources
         if (mSetType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
             return R.drawable.gamefield_tile_question_correct_brilliant;
         return 0;
-    }
-
-    public int getArrow(int type)
-    {
-        switch (type)
-        {
-//            case NORTH_RIGHT:
-//                return 1;
-            default:
-                return 0;
-        }
     }
 
     public static int getBackgroundTile()
