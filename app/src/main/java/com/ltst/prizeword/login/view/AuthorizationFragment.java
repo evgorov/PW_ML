@@ -83,8 +83,10 @@ public class AuthorizationFragment extends SherlockFragment
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
 
-        return v;
+        mEmailEditText.setText("vlad@ltst.ru");
+        mPasswdlEditText.setText("vlad");
 
+        return v;
     }
 
     @Override
