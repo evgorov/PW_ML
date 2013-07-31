@@ -43,6 +43,10 @@ public class PuzzleView extends View
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
+        if (mPuzzleManager != null)
+        {
+            mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
+        }
         invalidate(mViewScreenRect);
         super.onSizeChanged(w, h, oldw, oldh);
     }
