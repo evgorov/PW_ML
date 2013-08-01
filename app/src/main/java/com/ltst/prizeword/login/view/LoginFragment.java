@@ -35,6 +35,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull Button mAuthorizationButton;
     private @Nonnull Button mRegistrationButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull IAutorization mAuthorization;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
 
@@ -43,7 +44,8 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         super.onAttach(activity);
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
-        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mAuthorization = (IAutorization) activity;
+        mDrawerHolder = (INavigationDrawerHolder) activity;
         mDrawerHolder.lockDrawerClosed();
     }
 
@@ -73,13 +75,13 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         {
 
             case R.id.enter_with_fb_btn:
-                //Для facebook
+                //??? facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
                 startActivityForResult(intent, REQUEST_LOGIN_FB);
                 break;
             case R.id.enter_with_vk_btn:
-                //Для вконтакте
+                //??? ?????????
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
                 startActivityForResult(intent, REQUEST_LOGIN_VK);
@@ -99,17 +101,22 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_LOGIN_FB) {
-            if (resultCode == SherlockFragmentActivity.RESULT_OK) {
-                //успешно авторизовались в facebook
-                mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-            }
-        }
-        else
-        if (requestCode == REQUEST_LOGIN_VK) {
-            if (resultCode == SherlockFragmentActivity.RESULT_OK) {
-                //успешно авторизовались в vkontakte
-                mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        if (resultCode == SherlockFragmentActivity.RESULT_OK) {
+            switch (requestCode){
+                case  REQUEST_LOGIN_FB: {
+                    //успешно авторизовались в facebook
+                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    mAuthorization.onAutotized();
+                }
+                break;
+                case REQUEST_LOGIN_VK: {
+                    //успешно авторизовались в vkontakte
+                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    mAuthorization.onAutotized();
+                }
+                break;
+                default:
+                break;
             }
         }
     }

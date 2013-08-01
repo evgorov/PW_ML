@@ -58,6 +58,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull ImageButton mForgetLoginButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
+    private @Nonnull IAutorization mAuthorization;
 
     @Override
     public void onAttach(Activity activity)
@@ -65,6 +66,7 @@ public class AuthorizationFragment extends SherlockFragment
         super.onAttach(activity);
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+        mAuthorization = (IAutorization) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mDrawerHolder = (INavigationDrawerHolder)activity;
         mDrawerHolder.lockDrawerClosed();
@@ -128,7 +130,7 @@ public class AuthorizationFragment extends SherlockFragment
                     // Переключемся на фрагмент сканвордов;
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
-                    ((IAutorization) mContext).onAutotized();
+                    mAuthorization.onAutotized();
                 }
             }
         });
