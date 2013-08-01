@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 public interface IUserDataModel {
 
     void loadUserPic(@Nonnull final String url, @Nonnull IListenerVoid handler);
-    void loadUserData(@Nonnull IListenerVoid handler);
+    void loadUserDataFromInternet(@Nonnull IListenerVoid handler);
     void resetUserPic(final byte[] userPic, @Nonnull IListenerVoid handler);
     void resetUserName(final String userName, @Nonnull IListenerVoid handler);
 }

@@ -43,7 +43,7 @@ public class UserDataModel implements IUserDataModel {
     }
 
     @Override
-    public void loadUserData(@Nonnull IListenerVoid handler) {
+    public void loadUserDataFromInternet(@Nonnull IListenerVoid handler) {
 
         final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
         Updater session = new Updater() {

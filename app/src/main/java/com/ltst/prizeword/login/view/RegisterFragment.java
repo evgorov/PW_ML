@@ -234,7 +234,7 @@ public class RegisterFragment extends SherlockFragment
         }
         else{
             validateRegData(Color.RED);
-            showErrorAlertDalog(R.string.register_screen_error_msg);
+            ErrorAlertDialog.showDialog(mContext, R.string.register_screen_error_msg);
         }
 
     }
@@ -245,12 +245,6 @@ public class RegisterFragment extends SherlockFragment
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
-    protected void showErrorAlertDalog(int ResID)
-    {
-        ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
-        alertDialogBuilder.setMessage(ResID);
-        alertDialogBuilder.create().show();
-    }
     protected void showDatePickerDialog(){
         DatePickerDialog dp = new DatePickerDialog(mContext,myCallBack,curYear,curMonth,curDay);
 
@@ -378,16 +372,12 @@ public class RegisterFragment extends SherlockFragment
                     break;
                 case RestParams.SC_FORBIDDEN:
                 {
-                    showErrorAlertDalog(R.string.msg_register_email_exists);
-                    /*int msg_id = R.string.msg_register_email_exists;
-                    ErrorAlertDialog.showDialog(mContext,msg_id);*/
+                    ErrorAlertDialog.showDialog(mContext, R.string.msg_register_email_exists);
                     break;
                 }
                 default:
                 {
-                    showErrorAlertDalog(R.string.msg_unknown_error);
-                    /*int msg_id = R.string.msg_unknown_error;
-                    ErrorAlertDialog.showDialog(mContext, msg_id);*/
+                    ErrorAlertDialog.showDialog(mContext, R.string.msg_unknown_error);
                     break;
                 }
             }
@@ -445,7 +435,7 @@ public class RegisterFragment extends SherlockFragment
             } else {
 //                mDrawerHeader.setImage(null);
             }
-//            loadUserData();
+//            loadUserDataFromInternet();
         }
     };
 

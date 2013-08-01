@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AuthorizationFragment extends SherlockFragment
-        implements View.OnClickListener, INavigationBackPress
+        implements View.OnClickListener, View.OnKeyListener, INavigationBackPress
 {
     private @Nonnull String LOG_TAG = "autorization";
 
@@ -82,11 +84,46 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
+        mEmailEditText.setOnKeyListener(this);
+        mPasswdlEditText.setOnKeyListener(this);
 
         mEmailEditText.setText("vlad@ltst.ru");
         mPasswdlEditText.setText("vlad");
 
         return v;
+    }
+
+    private  void authorizing(){
+        hideKeyboard();
+        String email = mEmailEditText.getText().toString();
+        String passwordf = mPasswdlEditText.getText().toString();
+        enterLogin(email, passwordf);
+//                mEmailEditText.setText(Strings.EMPTY);
+//                mPasswdlEditText.setText(Strings.EMPTY);
+    }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+        switch (view.getId()){
+            case R.id.login_email_etext:{
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if(mPasswdlEditText.requestFocus()) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        mEmailEditText.clearFocus();
+                    }
+                }
+            }
+            break;
+            case R.id.login_passwd_etext:{
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    authorizing();
+                }
+            }
+            break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     @Override
@@ -95,12 +132,7 @@ public class AuthorizationFragment extends SherlockFragment
         switch (view.getId())
         {
             case R.id.login_enter_enter_btn:
-                hideKeyboard();
-                String email = mEmailEditText.getText().toString();
-                String passwordf = mPasswdlEditText.getText().toString();
-                enterLogin(email, passwordf);
-                mEmailEditText.setText(Strings.EMPTY);
-                mPasswdlEditText.setText(Strings.EMPTY);
+                authorizing();
                 break;
             case R.id.login_forget_btn:
                 hideKeyboard();
@@ -156,8 +188,7 @@ public class AuthorizationFragment extends SherlockFragment
                 else
                 {
                     // скрываем клавиатуру;
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    hideKeyboard();
                     // Переключемся на фрагмент сканвордов;
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;

@@ -436,7 +436,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public void reloadUserData(){
         // загружаем данные о пользователе с сервера;
-        mUserDataModel.loadUserData(mTaskHandlerLoadUserData);
+        mUserDataModel.loadUserDataFromInternet(mTaskHandlerLoadUserData);
     }
 
     private void resetUserData(byte[] userPic){
