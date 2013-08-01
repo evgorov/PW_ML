@@ -147,19 +147,8 @@ public class PuzzleManager
             {
                 mCurrentScale *= mDeltaScale;
 
-//                synchronized (view)
-                {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                        view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                    } else {
-//                        view.postInvalidateDelayed(FPS_INTERVAL,
-//                                mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                    }
-                    view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-                }
+                view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                        mPuzzleViewRect.right, mPuzzleViewRect.bottom);
                 try
                 {
                     ScaleAnimationThread.sleep(FPS_INTERVAL);
@@ -171,21 +160,8 @@ public class PuzzleManager
             }
             final float delta = toZoom / mCurrentScale;
             mCurrentScale *= delta;
-
-
-//            synchronized (view)
-            {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                } else {
-//                    view.postInvalidateDelayed(FPS_INTERVAL,
-//                            mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                }
-                view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                        mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-            }
+            view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                    mPuzzleViewRect.right, mPuzzleViewRect.bottom);
             mIsAnimating = false;
 
         }
