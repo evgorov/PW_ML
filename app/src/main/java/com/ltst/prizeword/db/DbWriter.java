@@ -7,6 +7,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
 
 import org.omich.velo.db.DbHelper;
@@ -68,6 +69,27 @@ public class DbWriter extends  DbReader implements IDbWriter
             }
         });
 
+    }
+
+    @Override
+    public void putUserImage(int user_id, @Nullable byte[] buffer)
+    {
+        @Nullable UserData existingUser = getUserById(user_id);
+        if (existingUser == null)
+        {
+            return;
+        }
+
+        @Nonnull UserImage userImage = new UserImage(-1, existingUser.previewUrl, buffer);
+        final ContentValues cv = mUserPicContentValuesCreator.createObjectContentValues(userImage);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.insert(TNAME_IMAGES, null, cv);
+            }
+        });
     }
 
     private void updateExistingUser(final long id, @Nonnull UserData user, @Nullable List<UserProvider> providers)
@@ -186,6 +208,21 @@ public class DbWriter extends  DbReader implements IDbWriter
                 cvUser.put(ColsUsers.DYNAMICS, user.dynamics);
                 cvUser.put(ColsUsers.HINTS, user.hints);
                 cvUser.put(ColsUsers.PREVIEW_URL, user.previewUrl);
+            }
+            return cvUser;
+        }
+    };
+
+    private ContentValuesCreator<UserImage> mUserPicContentValuesCreator = new ContentValuesCreator<UserImage>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable UserImage image)
+        {
+            ContentValues cvUser = new ContentValues();
+            if (image != null)
+            {
+                cvUser.put(ColsImages.KEY, image.key);
+                cvUser.put(ColsImages.IMAGE, image.image);
             }
             return cvUser;
         }
