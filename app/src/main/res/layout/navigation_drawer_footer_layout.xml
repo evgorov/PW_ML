@@ -206,7 +206,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:paddingRight="2dp"
-            android:background="@drawable/menu_rating_btn">
+            android:background="@drawable/menu_vk_btn">
 
         <ToggleButton
                 android:id="@+id/menu_vk_switcher"
@@ -226,7 +226,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:paddingRight="2dp"
-            android:background="@drawable/menu_rating_btn">
+            android:background="@drawable/menu_fb_btn">
 
         <ToggleButton
                 android:id="@+id/menu_fb_switcher"
@@ -248,7 +248,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:paddingRight="2dp"
-            android:background="@drawable/menu_rating_btn">
+            android:background="@drawable/menu_notify_btn">
 
         <ToggleButton
                 android:id="@+id/menu_notification_switcher"
