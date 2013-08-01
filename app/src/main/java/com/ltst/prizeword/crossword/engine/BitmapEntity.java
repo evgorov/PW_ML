@@ -24,6 +24,14 @@ public class BitmapEntity
         mIsRecycled = false;
     }
 
+    public BitmapEntity(@Nonnull Bitmap bitmap)
+    {
+        mBitmap = bitmap;
+        mIsRecycled = false;
+        width = bitmap.getWidth();
+        height = bitmap.getHeight();
+    }
+
     public void loadResource(@Nonnull Resources res)
     {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -56,5 +64,12 @@ public class BitmapEntity
             mBitmap.recycle();
             mIsRecycled = true;
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        recycle();
+        super.finalize();
     }
 }
