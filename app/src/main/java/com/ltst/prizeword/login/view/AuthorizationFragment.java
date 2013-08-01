@@ -95,9 +95,44 @@ public class AuthorizationFragment extends SherlockFragment
 
     private  void authorizing(){
         hideKeyboard();
-        String email = mEmailEditText.getText().toString();
-        String passwordf = mPasswdlEditText.getText().toString();
-        enterLogin(email, passwordf);
+        final @Nonnull String email = mEmailEditText.getText().toString();
+        final @Nonnull String password = mPasswdlEditText.getText().toString();
+
+        SessionEnterLogin loader = new SessionEnterLogin()
+        {
+            @Nonnull
+            @Override
+            protected Intent createIntent()
+            {
+                return LoadSessionKeyTask.createSignInIntent(email, password);
+            }
+        };
+
+        loader.update(new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                Log.i(LOG_TAG, "handling");
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+                String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
+                if (sessionKey.equals(Strings.EMPTY))
+                {
+                    ErrorAlertDialog.showDialog(mContext, R.string.login_enter_error_msg);
+                }
+                else
+                {
+                    // скрываем клавиатуру;
+                    hideKeyboard();
+                    // Переключемся на фрагмент сканвордов;
+                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
+                    ((IAutorization) mContext).onAutotized();
+                }
+            }
+        });
+
 //                mEmailEditText.setText(Strings.EMPTY);
 //                mPasswdlEditText.setText(Strings.EMPTY);
     }
@@ -146,6 +181,7 @@ public class AuthorizationFragment extends SherlockFragment
                 break;
         }
     }
+
     private void hideKeyboard(){
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -155,48 +191,6 @@ public class AuthorizationFragment extends SherlockFragment
     public void onBackKeyPress()
     {
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
-    }
-
-    protected void enterLogin(@Nonnull String email, @Nonnull String password)
-    {
-
-        final @Nonnull String emailf = email;
-        final @Nonnull String passwordf = password;
-        SessionEnterLogin loader = new SessionEnterLogin()
-        {
-            @Nonnull
-            @Override
-            protected Intent createIntent()
-            {
-                return LoadSessionKeyTask.createSignInIntent(emailf, passwordf);
-            }
-        };
-
-        loader.update(new IListenerVoid()
-        {
-            @Override
-            public void handle()
-            {
-                Log.i(LOG_TAG, "handling");
-                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
-                String sessionKey = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-                Log.i(LOG_TAG, "SESSIONKEY = " + sessionKey);
-                if (sessionKey.equals(Strings.EMPTY))
-                {
-                    ErrorAlertDialog.showDialog(mContext, R.string.login_enter_error_msg);
-                }
-                else
-                {
-                    // скрываем клавиатуру;
-                    hideKeyboard();
-                    // Переключемся на фрагмент сканвордов;
-                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-                    // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
-                    ((IAutorization) mContext).onAutotized();
-                }
-            }
-        });
-
     }
 
     private abstract class SessionEnterLogin extends ModelUpdater<DbService.DbTaskEnv>
