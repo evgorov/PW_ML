@@ -16,6 +16,8 @@
     <string name="rules_fragment_title">Правила</string>
 
 
+
+    <string name="ending">-й</string>
     <string name="points">очков</string>
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>

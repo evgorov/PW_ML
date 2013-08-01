@@ -17,9 +17,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -82,18 +80,13 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
-    private @Nonnull HeaderHolder mDrawerHeader;
+    private @Nonnull MainMenuHolder mDrawerMenu;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
     private @Nonnull List<NavigationDrawerItem> mDrawerItemsVisible;
-    private @Nonnull View mFooterView;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
-
-    private @Nonnull Button mMyCrossword;
-    private @Nonnull Button mShowRulesBtn;
-    private @Nonnull Button mLogoutBtn;
 
     private int mCurrentSelectedFragmentPosition = 0;
 
@@ -110,11 +103,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        View vheader = inflater.inflate(R.layout.header_listview, null);
+        View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
-        View v = inflater.inflate(R.layout.header_listview, null);
-        mDrawerHeader = new HeaderHolder(this, v);
-        mDrawerHeader.imgPhoto.setOnClickListener(this);
-        mDrawerList.addHeaderView(v);
+        mDrawerList.addHeaderView(vheader);
+        mDrawerList.addFooterView(vfooter);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
@@ -126,16 +119,12 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         checkLauchingAppByLink();
-        mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
-        mDrawerList.addFooterView(mFooterView);
 
-        mMyCrossword = (Button)mFooterView.findViewById(R.id.menu_mypuzzle_btn);
-        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.menu_show_rules_btn);
-        mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
-
-        mMyCrossword.setOnClickListener(this);
-        mShowRulesBtn.setOnClickListener(this);
-        mLogoutBtn.setOnClickListener(this);
+        mDrawerMenu = new MainMenuHolder(this, vheader, vfooter);
+        mDrawerMenu.mImage.setOnClickListener(this);
+        mDrawerMenu.mMyCrossword.setOnClickListener(this);
+        mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
+        mDrawerMenu.mLogoutBtn.setOnClickListener(this);
         selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
         // Вешаем swipe;
@@ -163,7 +152,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 e.printStackTrace();
             }
             // Меняем аватарку на панеле;
-             mDrawerHeader.setImage(photo);
+             mDrawerMenu.setImage(photo);
             // Отправляем новую аватарку насервер;
             mBitmapAsyncTask = new BitmapAsyncTask(this);
             mBitmapAsyncTask.execute(photo);
@@ -172,7 +161,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             // получаем фото с камеры;
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             // Меняем аватарку на панеле;
-            mDrawerHeader.setImage(photo);
+            mDrawerMenu.setImage(photo);
             // Отправляем новую аватарку насервер;
             mBitmapAsyncTask = new BitmapAsyncTask(this);
             mBitmapAsyncTask.execute(photo);
@@ -476,11 +465,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
-                mDrawerHeader.tvNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
-                mDrawerHeader.tvPoints.setText(String.valueOf(data.highScore));
+                mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
+                mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
+                mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
+                mDrawerMenu.mPosition.setText(String.valueOf(data.position));
                 loadAvatar(data.previewUrl);
             } else {
-                mDrawerHeader.clean();
+                mDrawerMenu.clean();
             }
         }
     };
@@ -501,7 +492,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                     throw new RuntimeException(e);
                 }
             }
-            mDrawerHeader.setImage(bitmap);
+            mDrawerMenu.setImage(bitmap);
         }
     };
 
@@ -514,7 +505,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             if( data != null ){
 //                loadAvatar(data.previewUrl);
             } else {
-//                mDrawerHeader.setImage(null);
+//                mDrawerMenu.setImage(null);
             }
             reloadUserData();
         }
