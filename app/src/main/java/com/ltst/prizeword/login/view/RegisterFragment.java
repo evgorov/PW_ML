@@ -369,7 +369,8 @@ public class RegisterFragment extends SherlockFragment
                         spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
                         spref.commit();
 
-                        Bitmap bitmap = ((BitmapDrawable)mIconImg.getDrawable()).getBitmap();
+                        BitmapDrawable drawable = (BitmapDrawable) mIconImg.getDrawable();
+                        Bitmap bitmap = drawable == null ? null : drawable.getBitmap();
                         mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
                         mBitmapAsyncTask.execute(bitmap);
                     }

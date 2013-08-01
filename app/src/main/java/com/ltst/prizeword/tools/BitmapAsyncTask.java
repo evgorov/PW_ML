@@ -26,11 +26,15 @@ public class BitmapAsyncTask extends AsyncTask<Bitmap, Void, byte[]> {
 
     @Override
     protected byte[] doInBackground(Bitmap... bitmaps) {
-        for(Bitmap bitmap: bitmaps){
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] buffer = stream.toByteArray();
-            return buffer;
+        if(bitmaps != null){
+            for(Bitmap bitmap: bitmaps){
+                if(bitmap!=null){
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] buffer = stream.toByteArray();
+                    return buffer;
+                }
+            }
         }
         return null;
     }
