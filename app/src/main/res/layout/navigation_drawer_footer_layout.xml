@@ -5,6 +5,15 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_gravity="center_horizontal">
+
+    <Button
+            android:id="@+id/menu_mypuzzle_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/menu_mypuzzle_but"
+            />
+
     <LinearLayout
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
@@ -14,10 +23,12 @@
         <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:textColor="@color/menu_text_color"
                 android:text="@string/menu_group_result_in_month"/>
         <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:textColor="@color/menu_text_color"
                 android:layout_marginStart="@dimen/shutter_words_margin"
                 android:text="месяце"/>
     </LinearLayout>
@@ -83,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="4dp"
+            android:textColor="@color/menu_text_color"
             android:text="@string/menu_group_social"/>
     <Button
         android:id="@+id/menu_invate_friends_btn"

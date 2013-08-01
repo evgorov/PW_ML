@@ -17,7 +17,7 @@
         <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_margin="4dp">
+                android:layout_margin="8dp">
 
             <ImageView
                     android:id="@+id/header_listview_photo_img"
@@ -46,7 +46,8 @@
                     android:id="@+id/header_listview_nickname_tview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:singleLine="true"
+                    android:textSize="18sp"
                     android:text="@string/user"
                     android:textColor="@color/header_text_color"
                     />

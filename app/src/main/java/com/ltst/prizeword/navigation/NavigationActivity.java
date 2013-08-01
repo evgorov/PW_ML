@@ -91,6 +91,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
+    private @Nonnull Button mMyCrossword;
     private @Nonnull Button mShowRulesBtn;
     private @Nonnull Button mLogoutBtn;
 
@@ -107,9 +108,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         mBcConnector = new BcConnector(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
-        View v = getLayoutInflater().inflate(R.layout.header_listview, null);
+        View v = inflater.inflate(R.layout.header_listview, null);
         mDrawerHeader = new HeaderHolder(this, v);
         mDrawerHeader.imgPhoto.setOnClickListener(this);
         mDrawerList.addHeaderView(v);
@@ -124,12 +126,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         checkLauchingAppByLink();
-        LayoutInflater inflater = LayoutInflater.from(this);
         mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList.addFooterView(mFooterView);
 
+        mMyCrossword = (Button)mFooterView.findViewById(R.id.menu_mypuzzle_btn);
         mShowRulesBtn = (Button)mFooterView.findViewById(R.id.menu_show_rules_btn);
         mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
+
+        mMyCrossword.setOnClickListener(this);
         mShowRulesBtn.setOnClickListener(this);
         mLogoutBtn.setOnClickListener(this);
         selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
@@ -237,7 +241,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
 
             // crossword
-            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
         }
         return mDrawerItemsVisible;
     }
@@ -407,6 +411,9 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
+            case R.id.menu_mypuzzle_btn:
+                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                break;
             case R.id.menu_show_rules_btn:
                 @Nonnull Intent intent = RulesFragment.createIntent(getContext());
                 getContext().startActivity(intent);
