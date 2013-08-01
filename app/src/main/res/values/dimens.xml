@@ -13,4 +13,5 @@
     <dimen name="size_avatar">54dp</dimen>
 
     <dimen name="frame_border_offset">10dp</dimen>
+    <dimen name="main_menu_vertical_margin">10dp</dimen>
 </resources>

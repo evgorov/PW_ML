@@ -32,18 +32,18 @@ public class MainMenuHolder {
 
     public @Nonnull TextView mMonth;
 
-    public MainMenuHolder(@Nonnull Context context, @Nonnull View v1, @Nonnull View v2){
+    public MainMenuHolder(@Nonnull Context context, @Nonnull View view){
         this.mContext = context;
-        this.mImage = (ImageView) v1.findViewById(R.id.header_listview_photo_img);
-        this.mNickname = (TextView) v1.findViewById(R.id.header_listview_nickname_tview);
-        this.mHightRecord = (TextView) v1.findViewById(R.id.header_listview_points_tview);
-        this.mLogoutBtn = (Button)v1.findViewById(R.id.header_listview_logout_btn);
+        this.mImage = (ImageView) view.findViewById(R.id.header_listview_photo_img);
+        this.mNickname = (TextView) view.findViewById(R.id.header_listview_nickname_tview);
+        this.mHightRecord = (TextView) view.findViewById(R.id.header_listview_points_tview);
+        this.mLogoutBtn = (Button) view.findViewById(R.id.header_listview_logout_btn);
 
-        this.mMonth = (TextView) v2.findViewById(R.id.menu_current_month_txt);
-        this.mMyCrossword = (Button)v2.findViewById(R.id.menu_mypuzzle_btn);
-        this.mShowRulesBtn = (Button)v2.findViewById(R.id.menu_show_rules_btn);
-        this.mScore = (TextView) v2.findViewById(R.id.menu_pride_score_txt);
-        this.mPosition = (TextView) v2.findViewById(R.id.menu_pride_position_txt);
+        this.mMonth = (TextView) view.findViewById(R.id.menu_current_month_txt);
+        this.mMyCrossword = (Button) view.findViewById(R.id.menu_mypuzzle_btn);
+        this.mShowRulesBtn = (Button) view.findViewById(R.id.menu_show_rules_btn);
+        this.mScore = (TextView) view.findViewById(R.id.menu_pride_score_txt);
+        this.mPosition = (TextView) view.findViewById(R.id.menu_pride_position_txt);
 
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);

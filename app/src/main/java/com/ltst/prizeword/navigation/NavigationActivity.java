@@ -103,10 +103,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
-        View vheader = inflater.inflate(R.layout.header_listview, null);
         View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
-        mDrawerList.addHeaderView(vheader);
         mDrawerList.addFooterView(vfooter);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
@@ -120,7 +118,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         checkLauchingAppByLink();
 
-        mDrawerMenu = new MainMenuHolder(this, vheader, vfooter);
+        mDrawerMenu = new MainMenuHolder(this, vfooter);
         mDrawerMenu.mImage.setOnClickListener(this);
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
