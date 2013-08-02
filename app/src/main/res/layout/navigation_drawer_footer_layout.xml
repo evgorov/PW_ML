@@ -28,8 +28,8 @@
                     android:background="@drawable/login_register_ava_but"/>
 
             <ImageView
-                    android:layout_width="@dimen/size_avatar"
-                    android:layout_height="@dimen/size_avatar"
+                    android:layout_width="@dimen/size_avatar_frame"
+                    android:layout_height="@dimen/size_avatar_frame"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     android:background="@drawable/login_register_ava_frame"/>

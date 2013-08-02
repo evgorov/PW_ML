@@ -10,7 +10,8 @@
     <dimen name="choise_photo_dialog_width">200dp</dimen>
     <dimen name="error_dialog_width">400dp</dimen>
     <dimen name="puzzle_question_font_size">10sp</dimen>
-    <dimen name="size_avatar">57dp</dimen>
+    <dimen name="size_avatar">54dp</dimen>
+    <dimen name="size_avatar_frame">57dp</dimen>
 
     <dimen name="frame_border_offset">10dp</dimen>
     <dimen name="menu_main_vertical_margin">10dp</dimen>

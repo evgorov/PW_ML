@@ -101,8 +101,6 @@ public class DbWriter extends  DbReader implements IDbWriter
             return;
         }
         final ContentValues cvUser = mUserDataContentValuesCreator.createObjectContentValues(user);
-
-//        @TODO логику обновления провайдеров пользователя
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
             @Override
@@ -111,6 +109,33 @@ public class DbWriter extends  DbReader implements IDbWriter
                 mDb.update(TNAME_USERS, cvUser, ColsUsers.ID + "=" + id, null);
             }
         });
+
+        // Удаляем все провайдеры текущего пользователя;
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_PROVIDERS, ColsProviders.USER_ID + "=" + id, null);
+            }
+        });
+
+        // Доавляем новые провайдеры текущему пользователю;
+        for(@Nullable UserProvider provider: providers){
+            if(provider == null) continue;
+            provider.userId = id;
+            final @Nullable UserProvider prov = provider;
+            final ContentValues cvProviders = mUserProviderContentValuesCreator.createObjectContentValues(prov);
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+//                    mDb.update(TNAME_PROVIDERS, cvProviders, ColsProviders.USER_ID + "=" + id +" AND " + ColsProviders.NAME + "=" + prov.name, null);
+                    mDb.insert(TNAME_PROVIDERS, null, cvProviders);
+                }
+            });
+        }
     }
 
     @Override
@@ -237,6 +262,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsProviders.NAME, prov.name);
             cv.put(ColsProviders.PROVIDER_ID, prov.providerId);
             cv.put(ColsProviders.TOKEN, prov.providerToken);
+            cv.put(ColsProviders.USER_ID, prov.userId);
             return cv;
         }
     };
