@@ -49,10 +49,10 @@ public class BitmapManager
                           final @Nonnull IListener<Rect> invalidateListener,
                           final @Nonnull Rect rect)
     {
-        BitmapEntity entity = new BitmapEntity(resource);
-        entity.loadResource(mContext);
-        mBitmaps.append(resource, entity);
-        invalidateListener.handle(rect);
+//        BitmapEntity entity = new BitmapEntity(resource);
+//        entity.loadResource(mContext);
+//        mBitmaps.append(resource, entity);
+//        invalidateListener.handle(rect);
 
 //        mBitmapResourceModel.loadBitmapEntity(resource, new
 //            IListener<BitmapEntity>()
@@ -64,6 +64,8 @@ public class BitmapManager
 //                    invalidateListener.handle(rect);
 //                }
 //            });
+
+        mBitmapResourceModel.loadBitmapEntity(resource, null);
 
     }
 

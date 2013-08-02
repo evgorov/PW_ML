@@ -31,14 +31,17 @@ public class BitmapResourceModel implements IBitmapResourceModel
     }
 
     @Override
-    public void loadBitmapEntity(final int resource, final IListener<BitmapEntity> handler)
+    public void loadBitmapEntity(final int resource, @Nullable final IListener<BitmapEntity> handler)
     {
         BitmapEntityDecoder decoder = new SingleBitmapDecoder()
         {
             @Override
             public void handleBitmap(@Nonnull BitmapEntity entity)
             {
-                handler.handle(entity);
+                if (handler != null)
+                {
+                    handler.handle(entity);
+                }
             }
 
             @Nonnull

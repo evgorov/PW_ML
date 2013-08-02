@@ -130,9 +130,9 @@ public class PuzzleFieldDrawer
         measureText();
 
         mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), mInvalidateHandler, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateHandler, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateHandler, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateHandler, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateHandler, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateHandler, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateHandler, mPuzzleRect);
 
 //        mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight);
 //        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight);
