@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:singleLine="true"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:text="@string/user"
                     android:textColor="@color/header_text_color"
                     />
@@ -58,7 +58,7 @@
                     android:textSize="10sp"
                     android:layout_marginTop="5dp"
                     android:text="@string/personal_record"
-                    android:textColor="@color/header_text_color"
+                    android:textColor="@color/menu_text_color"
                     />
 
             <LinearLayout
@@ -135,19 +135,14 @@
 
         <TextView
                 android:id="@+id/menu_pride_score_txt"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:layout_marginLeft="42dp"
+                style="@style/MainMenuTextView"
                 android:textColor="@color/menu_score_color"
-                android:textSize="14sp"
                 android:text="1200"/>
 
         <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/shutter_words_margin"
-                android:textColor="@color/menu_text_color"
-                android:textSize="14sp"
+                style="@style/MainMenuTextView"
                 android:text="@string/points"/>
     </LinearLayout>
 
@@ -163,26 +158,19 @@
 
         <TextView
                 android:id="@+id/menu_pride_position_txt"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:layout_marginLeft="42dp"
+                style="@style/MainMenuTextView"
                 android:textColor="@color/menu_rating_color"
-                android:textSize="14sp"
                 android:text="342"/>
 
         <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                style="@style/MainMenuTextView"
                 android:textColor="@color/menu_rating_color"
-                android:textSize="14sp"
                 android:text="@string/ending"/>
 
         <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/shutter_words_margin"
-                android:textColor="@color/menu_text_color"
-                android:textSize="14sp"
+                style="@style/MainMenuTextView"
                 android:text="@string/in_rating" />
     </LinearLayout>
 
