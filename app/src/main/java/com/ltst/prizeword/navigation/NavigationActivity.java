@@ -28,6 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.login.model.UserProvider;
 import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
@@ -441,6 +442,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.loadUserDataFromInternet(mTaskHandlerLoadUserData);
     }
 
+    private void reloadProviders(long user_id){
+        // загружаем провайдеры;
+        mUserDataModel.loadProvidersFromDB(user_id, mTaskHandlerLoadProviders);
+    }
+
     private void resetUserData(byte[] userPic){
         // изменить аватарку;
         mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
@@ -470,6 +476,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
                 loadAvatar(data.previewUrl);
+                reloadProviders(data.id);
                 selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else {
                 mDrawerMenu.clean();
@@ -518,6 +525,27 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+        }
+    };
+
+    private IListenerVoid mTaskHandlerLoadProviders = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            @Nullable ArrayList<UserProvider> providers = mUserDataModel.getProviders();
+            if(providers != null){
+                for(UserProvider provider: providers){
+                    if(provider.name.equals(RestParams.VK_PROVIDER)){
+                        mDrawerMenu.mVkontakteBtn.setChecked(true);
+                        mDrawerMenu.mVkontakteBtn.setEnabled(false);
+                    }
+                    if(provider.name.equals(RestParams.FB_PROVIDER)){
+                        mDrawerMenu.mFacebookBtn.setChecked(true);
+                        mDrawerMenu.mFacebookBtn.setEnabled(false);
+                    }
+                }
+            }
         }
     };
 

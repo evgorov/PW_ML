@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
 
@@ -27,6 +28,11 @@ public class MainMenuHolder {
     public @Nonnull View mShowRulesBtn;
     public @Nonnull View mLogoutBtn;
 
+    public @Nonnull ToggleButton mVkontakteBtn;
+    public @Nonnull ToggleButton mFacebookBtn;
+    public @Nonnull ToggleButton mNotificationBtn;
+
+
     public @Nonnull TextView mScore;
     public @Nonnull TextView mPosition;
 
@@ -44,6 +50,11 @@ public class MainMenuHolder {
         this.mShowRulesBtn = (View) view.findViewById(R.id.menu_show_rules_btn);
         this.mScore = (TextView) view.findViewById(R.id.menu_pride_score_txt);
         this.mPosition = (TextView) view.findViewById(R.id.menu_pride_position_txt);
+
+        this.mVkontakteBtn = (ToggleButton) view.findViewById(R.id.menu_vk_switcher);
+        this.mFacebookBtn = (ToggleButton) view.findViewById(R.id.menu_fb_switcher);
+        this.mNotificationBtn = (ToggleButton) view.findViewById(R.id.menu_notification_switcher);
+
 
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);

@@ -15,7 +15,7 @@
         <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="12dp">
 
             <ImageView
                     android:id="@+id/header_listview_photo_img"
@@ -39,8 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="bottom">
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_gravity="center">
 
             <TextView
                     android:id="@+id/header_listview_nickname_tview"
@@ -214,8 +215,8 @@
 
         <ToggleButton
                 android:id="@+id/menu_vk_switcher"
-                android:layout_width="94dp"
-                android:layout_height="wrap_content"
+                android:layout_width="85dp"
+                android:layout_height="43dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/menu_switcher"/>
@@ -242,8 +243,8 @@
 
         <ToggleButton
                 android:id="@+id/menu_fb_switcher"
-                android:layout_width="94dp"
-                android:layout_height="wrap_content"
+                android:layout_width="85dp"
+                android:layout_height="43dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/menu_switcher"/>
@@ -272,8 +273,8 @@
 
         <ToggleButton
                 android:id="@+id/menu_notification_switcher"
-                android:layout_width="94dp"
-                android:layout_height="wrap_content"
+                android:layout_width="85dp"
+                android:layout_height="43dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/menu_switcher"/>

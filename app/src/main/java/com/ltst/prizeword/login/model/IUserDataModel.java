@@ -13,4 +13,5 @@ public interface IUserDataModel {
     void loadUserDataFromInternet(@Nonnull IListenerVoid handler);
     void resetUserPic(final byte[] userPic, @Nonnull IListenerVoid handler);
     void resetUserName(final String userName, @Nonnull IListenerVoid handler);
+    void loadProvidersFromDB(long user_id, @Nonnull IListenerVoid handler);
 }

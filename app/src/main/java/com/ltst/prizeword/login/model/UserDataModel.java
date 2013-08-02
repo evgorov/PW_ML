@@ -16,6 +16,8 @@ import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,6 +30,7 @@ public class UserDataModel implements IUserDataModel {
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull UserData mUserData;
     private @Nonnull byte[] mUserPic;
+    private @Nullable ArrayList<UserProvider> mProviders;
 
     public UserDataModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector) {
         this.mContext = context;
@@ -42,6 +45,11 @@ public class UserDataModel implements IUserDataModel {
     @Nonnull
     public byte[] getUserPic() {
         return mUserPic;
+    }
+
+    @Nullable
+    public ArrayList<UserProvider> getProviders() {
+        return mProviders;
     }
 
     @Override
@@ -164,6 +172,35 @@ public class UserDataModel implements IUserDataModel {
                 mUserData = result.getParcelable(ResetUserDataOnServerTask.BF_USER_DATA);
             }
 
+        };
+        session.update(handler);
+    }
+
+    @Override
+    public void loadProvidersFromDB(final long user_id, @Nonnull IListenerVoid handler) {
+
+        Updater session = new Updater() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return LoadUserDataFromDataBase.createIntentLoadingProviders(user_id);
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return LoadUserDataFromDataBase.class;
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                if (result == null){
+                    mProviders = null;
+                    return;
+                }
+                mProviders = result.getParcelableArrayList(LoadUserDataFromDataBase.BF_PROVIDERS);
+            }
         };
         session.update(handler);
     }
