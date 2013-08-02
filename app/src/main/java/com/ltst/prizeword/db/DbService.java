@@ -82,6 +82,7 @@ public class DbService extends BcBaseService<DbService.DbTaskEnv>
         {
             db.close();
         }
+        super.onDestroy();
     }
 
 }

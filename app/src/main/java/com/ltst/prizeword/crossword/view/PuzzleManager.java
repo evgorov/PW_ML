@@ -11,21 +11,22 @@ import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
-    private Point mFocusViewPoint;
-    private @Nonnull Paint mPaint;
+    private @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
     private @Nonnull Rect mPuzzleViewRect;
-    private @Nonnull Rect mScaledViewRect;
+    private @Nullable Rect mScaledViewRect;
 
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
@@ -34,17 +35,22 @@ public class PuzzleManager
     private boolean mIsAnimating;
 
     public PuzzleManager(@Nonnull Context context,
-                         @Nonnull PuzzleResources info,
+                         @Nonnull PuzzleResourcesAdapter adapter,
                          @Nonnull Rect puzzleViewRect,
                          @Nonnull IListener<Rect> invalidateHandler)
     {
         mContext = context;
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mFieldDrawer = new PuzzleFieldDrawer(context, info, invalidateHandler);
-        mFieldDrawer.loadResources();
+        mPuzzleViewRect = puzzleViewRect;
         mMatrix = new Matrix();
-        setPuzzleViewRect(puzzleViewRect);
+        mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
+        adapter.addResourcesUpdater(new IListener<PuzzleResources>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleResources puzzleResources)
+            {
+                setPuzzleViewRect(mPuzzleViewRect);
+            }
+        });
     }
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
@@ -64,7 +70,7 @@ public class PuzzleManager
 
     public void onScrollEvent(float offsetX, float offsetY)
     {
-        if(mIsAnimating)
+        if(mIsAnimating || mScaledViewRect == null || mFocusViewPoint == null)
             return;
         mFocusViewPoint.x += offsetX;
         mFocusViewPoint.y += offsetY;
@@ -73,7 +79,7 @@ public class PuzzleManager
 
     public void onScaleEvent(@Nonnull View view)
     {
-        if(mIsAnimating)
+        if(mIsAnimating || mScaledViewRect == null || mFocusViewPoint == null)
             return;
         ScaleAnimationThread anim = null;
         if(mScaled)
@@ -89,6 +95,10 @@ public class PuzzleManager
 
     private void configureMatrix()
     {
+        if (mFocusViewPoint == null)
+        {
+            return;
+        }
         mMatrix.reset();
 
         float translateX = (mFocusViewPoint.x - mPuzzleViewRect.width()/2/mCurrentScale);
@@ -108,7 +118,7 @@ public class PuzzleManager
         screenCanvas.concat(mMatrix);
 
         mFieldDrawer.drawBackground(screenCanvas);
-//        mFieldDrawer.drawPuzzles(screenCanvas);
+        mFieldDrawer.drawPuzzles(screenCanvas);
 
         screenCanvas.restoreToCount(saveCount);
     }

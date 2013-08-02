@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 
+import com.ltst.prizeword.db.DbService;
+
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BitmapDecoderTask implements BitmapDecodingService.IDecodeTask
+public class BitmapDecoderTask implements IBcTask
 {
     public static final @Nonnull String BF_RESOURCE_ID = "BitmapDecoderTask.resourceId";
     public static final @Nonnull String BF_DECODE_RECT = "BitmapDecoderTask.decodeRect";
@@ -35,7 +38,7 @@ public class BitmapDecoderTask implements BitmapDecodingService.IDecodeTask
 
     @Nullable
     @Override
-    public Bundle execute(@Nonnull BitmapDecodingService.DecodeTaskEnv decodeTaskEnv)
+    public Bundle execute(@Nonnull IBcTask.BcTaskEnv decodeTaskEnv)
     {
         Bundle extras = decodeTaskEnv.extras;
         if (extras == null)
@@ -50,7 +53,7 @@ public class BitmapDecoderTask implements BitmapDecodingService.IDecodeTask
             ArrayList<Bitmap> bitmaps = BitmapDecoder.decodeTiles(decodeTaskEnv.context, resource, rect);
             if (bitmaps != null)
             {
-                return packToBundle(bitmaps);
+                return packToBundle(resource, bitmaps);
             }
         }
         else
@@ -59,24 +62,26 @@ public class BitmapDecoderTask implements BitmapDecodingService.IDecodeTask
             if (bm != null)
             {
                 Log.i("Bitmap loaded: " + bm.getWidth() + " " + bm.getHeight());
-                return packToBundle(bm);
+                return packToBundle(resource, bm);
             }
         }
         return null;
     }
 
-    private @Nonnull Bundle packToBundle(@Nonnull Bitmap bitmap)
+    private static Bundle packToBundle(int resourceId, @Nonnull Bitmap bitmap)
     {
         Log.i("Packing bitmap");
         Bundle bundle = new Bundle();
         bundle.putParcelable(BF_BITMAP, bitmap);
+        bundle.putInt(BF_RESOURCE_ID, resourceId);
         return bundle;
     }
 
-    private @Nonnull Bundle packToBundle(@Nonnull ArrayList<Bitmap> bitmaps)
+    private static Bundle packToBundle(int resourceId, @Nonnull ArrayList<Bitmap> bitmaps)
     {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_BITMAP_TILE_LIST, bitmaps);
+        bundle.putInt(BF_RESOURCE_ID, resourceId);
         return bundle;
     }
 }

@@ -29,7 +29,6 @@ import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
-import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserDataModel;
@@ -46,6 +45,8 @@ import com.ltst.prizeword.tools.BitmapAsyncTask;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -348,7 +349,7 @@ public class RegisterFragment extends SherlockFragment
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    private abstract class SignUpExecutor extends ModelUpdater<DbService.DbTaskEnv>
+    private abstract class SignUpExecutor extends ModelUpdater<IBcTask.BcTaskEnv>
     {
         @Override
         protected void handleData(@Nullable Bundle result)
@@ -394,16 +395,16 @@ public class RegisterFragment extends SherlockFragment
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
         {
-            return DbService.class;
+            return LoadSessionKeyTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
         {
-            return LoadSessionKeyTask.class;
+            return BcService.class;
         }
 
         @Nonnull

@@ -10,13 +10,14 @@ import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestUserData;
 
 import org.omich.velo.bcops.BcTaskHelper;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LoadSessionKeyTask implements DbService.IDbTask
+public class LoadSessionKeyTask implements IBcTask
 {
     public static final @Nonnull String BF_STATUS_CODE = "LoadSessionKeyTask.statusCode";
     public static final @Nonnull String BF_SESSION_KEY = "LoadSessionKeyTask.sessionToken";
@@ -84,7 +85,7 @@ public class LoadSessionKeyTask implements DbService.IDbTask
 
         @Nullable
     @Override
-    public Bundle execute(@Nonnull DbService.DbTaskEnv env)
+    public Bundle execute(@Nonnull BcTaskEnv env)
     {
         Bundle extras = env.extras;
         if(extras == null)

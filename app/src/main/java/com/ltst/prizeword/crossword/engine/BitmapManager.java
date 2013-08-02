@@ -7,20 +7,24 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.SparseArray;
 
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.tools.decoding.BitmapDecoderTask;
-import com.ltst.prizeword.tools.decoding.BitmapDecodingService;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
+
+import java.lang.ref.WeakReference;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,50 +49,37 @@ public class BitmapManager
                           final @Nonnull IListener<Rect> invalidateListener,
                           final @Nonnull Rect rect)
     {
-//        BitmapEntity entity = new BitmapEntity(resource);
-//        entity.loadResource(mContext);
-//        mBitmaps.append(resource, entity);
-//        invalidateListener.handle(rect);
+        BitmapEntity entity = new BitmapEntity(resource);
+        entity.loadResource(mContext);
+        mBitmaps.append(resource, entity);
+        invalidateListener.handle(rect);
+
+//
+//        Bundle params = new Bundle();
+//        params.putInt(BitmapDecoderTask.BF_RESOURCE_ID, resource);
+//        BitmapDecoderAsyncTask task = new BitmapDecoderAsyncTask(mBitmaps);
+//        task.execute(params);
 
 
-        BitmapDecoder decoder = new BitmapDecoder()
-        {
-            @Nonnull
-            @Override
-            protected Intent createIntent()
-            {
-                return BitmapDecoderTask.createIntent(resource, null);
-            }
-
-            @Override
-            protected void handleData(@Nullable Bundle result)
-            {
-                Log.i("Handling result");
-                if (result == null)
-                {
-                    return;
-                }
-                Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
-                if (bitmap == null)
-                {
-                    return;
-                }
-
-                BitmapEntity entity = new BitmapEntity(resource);
-                entity.setBitmap(bitmap);
-                mBitmaps.append(resource, entity);
-                Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
-            }
-        };
-        decoder.update(new IListenerVoid()
-        {
-            @Override
-            public void handle()
-            {
-                Log.i("Invalidate handled");
-                invalidateListener.handle(rect);
-            }
-        });
+//        BitmapDecoder decoder = new BitmapDecoder()
+//        {
+//            @Nonnull
+//            @Override
+//            protected Intent createIntent()
+//            {
+//                return BitmapDecoderTask.createIntent(resource, null);
+//            }
+//
+//        };
+//        decoder.updateResources(new IListenerVoid()
+//        {
+//            @Override
+//            public void handle()
+//            {
+//                Log.i("Invalidate handled");
+//                invalidateListener.handle(rect);
+//            }
+//        });
     }
 
     public boolean hasReasource(int resource)
@@ -143,8 +134,23 @@ public class BitmapManager
         }
     }
 
-    private abstract class BitmapDecoder extends ModelUpdater<BitmapDecodingService.DecodeTaskEnv>
+    private abstract class BitmapDecoder extends ModelUpdater<IBcTask.BcTaskEnv>
     {
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        {
+            return BitmapDecoderTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        {
+            return BcService.class;
+        }
+
         @Nonnull
         @Override
         protected IBcConnector getBcConnector()
@@ -152,18 +158,85 @@ public class BitmapManager
             return mBcConnector;
         }
 
-        @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<BitmapDecodingService.DecodeTaskEnv>> getTaskClass()
+        protected void handleData(@Nullable Bundle result)
         {
-            return BitmapDecoderTask.class;
+            Log.i("Handling result");
+            if (result == null)
+            {
+                return;
+            }
+            Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
+            if (bitmap == null)
+            {
+                return;
+            }
+            int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
+
+            BitmapEntity entity = new BitmapEntity(resource);
+            entity.setBitmap(bitmap);
+            mBitmaps.append(resource, entity);
+            Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
+        }
+    }
+
+    private class BitmapDecoderAsyncTask extends AsyncTask<Bundle, Integer, Bundle>
+    {
+        private @Nonnull WeakReference<SparseArray<BitmapEntity>> mBitmapsRef;
+
+        public BitmapDecoderAsyncTask(@Nonnull SparseArray<BitmapEntity> bitmaps)
+        {
+            mBitmapsRef = new WeakReference<SparseArray<BitmapEntity>>(bitmaps);
         }
 
-        @Nonnull
         @Override
-        protected Class<? extends BcBaseService<BitmapDecodingService.DecodeTaskEnv>> getServiceClass()
+        protected Bundle doInBackground(Bundle... params)
         {
-            return BitmapDecodingService.class;
+            Log.i("do in background");
+            int resource = params[0].getInt(BitmapDecoderTask.BF_RESOURCE_ID);
+            Bitmap bm = com.ltst.prizeword.tools.decoding.BitmapDecoder.decode(mContext, resource);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(BitmapDecoderTask.BF_BITMAP, bm);
+            bundle.putInt(BitmapDecoderTask.BF_RESOURCE_ID, resource);
+            return bundle;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.i("pre execute");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Bundle result)
+        {
+            Log.i("post execute");
+            if (result == null)
+            {
+                return;
+            }
+            Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
+            if (bitmap == null)
+            {
+                return;
+            }
+            int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
+
+            BitmapEntity entity = new BitmapEntity(resource);
+            entity.setBitmap(bitmap);
+            SparseArray<BitmapEntity> bitmaps = mBitmapsRef.get();
+            if (bitmaps != null)
+            {
+                bitmaps.append(resource, entity);
+            }
+        }
+
+        @Override
+        protected void onCancelled()
+        {
+            Log.i("cancelled");
+            super.onCancelled();
         }
     }
 }
