@@ -24,6 +24,8 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -151,7 +153,7 @@ public class SocialLoginActivity extends SherlockActivity
         }
     }
 
-    private abstract class SessionKeyLoader extends ModelUpdater<DbService.DbTaskEnv>
+    private abstract class SessionKeyLoader extends ModelUpdater<IBcTask.BcTaskEnv>
     {
         @Nonnull
         @Override
@@ -162,16 +164,16 @@ public class SocialLoginActivity extends SherlockActivity
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
         {
             return LoadSessionKeyTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
         {
-            return DbService.class;
+            return BcService.class;
         }
 
         @Override

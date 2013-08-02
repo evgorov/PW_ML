@@ -72,7 +72,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         IBitmapAsyncTask,
         ITouchInterface
 {
-    private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private final int RESULT_LOAD_IMAGE = 1;
@@ -116,7 +115,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
-        mUserDataModel = new UserDataModel(this,mBcConnector);
+        mUserDataModel = new UserDataModel(this, mBcConnector);
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
@@ -422,7 +421,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     //==== IAutorization ==============================================
 
     @Override
-    public void onAutotized() {
+    public void onAuthotized() {
         reloadUserData();
     }
 

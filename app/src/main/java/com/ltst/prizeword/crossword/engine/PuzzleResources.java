@@ -250,16 +250,6 @@ public class PuzzleResources
         mTileGap = tileGap;
     }
 
-    public static int getLetterEmpty()
-    {
-        return R.drawable.gamefield_tile_letter_empty;
-    }
-
-    public static int getLetterEmptyInput()
-    {
-        return R.drawable.gamefield_tile_letter_empty_input;
-    }
-
     public static int getOverlayLetterCorrect()
     {
         return R.drawable.gamefield_tile_letter_correct_input_overlay;
@@ -291,6 +281,39 @@ public class PuzzleResources
         if (mSetType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
             return R.drawable.gamefield_tile_question_correct_brilliant;
         return 0;
+    }
+
+    public static int getLetterEmpty()
+    {
+        return R.drawable.gamefield_tile_letter_empty;
+    }
+
+    public static int getLetterEmptyInput()
+    {
+        return R.drawable.gamefield_tile_letter_empty_input;
+    }
+
+    public int getLetterTilesCorrect()
+    {
+        if (mSetType == PuzzleSetModel.PuzzleSetType.FREE)
+            return R.drawable.gamefield_tile_letters_correct_free;
+        if (mSetType == PuzzleSetModel.PuzzleSetType.SILVER)
+            return R.drawable.gamefield_tile_letters_correct_silver;
+        if (mSetType == PuzzleSetModel.PuzzleSetType.GOLD)
+            return R.drawable.gamefield_tile_letters_correct_gold;
+        if (mSetType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
+            return R.drawable.gamefield_tile_letters_correct_brilliant;
+        return 0;
+    }
+
+    public static int getLetterTilesInput()
+    {
+        return R.drawable.gamefield_tile_letters_input;
+    }
+
+    public static int getLetterTilesWrong()
+    {
+        return R.drawable.gamefield_tile_letters_wrong;
     }
 
     public static int getBackgroundTile()

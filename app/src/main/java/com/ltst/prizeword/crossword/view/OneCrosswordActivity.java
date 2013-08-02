@@ -8,6 +8,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -33,13 +34,13 @@ public class OneCrosswordActivity extends SherlockActivity
         return intent;
     }
 
-    private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
     private @Nonnull String mSessionKey;
-    private @Nonnull String mCurrentPuzzleServerId;
 
     private @Nonnull PuzzleView mPuzzleView;
+    private @Nonnull PuzzleResourcesAdapter mPuzzleAdapter;
+    private @Nonnull String mCurrentPuzzleServerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,9 +53,9 @@ public class OneCrosswordActivity extends SherlockActivity
         {
             mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
         }
-        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(0);
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
         mBcConnector = new BcConnector(this);
+        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(0);
     }
 
     @Override
@@ -67,9 +68,9 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onResume()
     {
-        mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mCurrentPuzzleServerId, mPuzzleSet.id);
-        mPuzzleModel.updateDataByDb(updateHandler);
-        mPuzzleModel.updateDataByInternet(updateHandler);
+        mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
+        mPuzzleView.setAdapter(mPuzzleAdapter);
+        mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         super.onResume();
     }
 
@@ -80,24 +81,11 @@ public class OneCrosswordActivity extends SherlockActivity
         super.onStop();
     }
 
+
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
     }
 
-    private @Nonnull IListenerVoid updateHandler = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-            if (puzzle != null)
-            {
-                PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-                PuzzleResources info = new PuzzleResources(type, puzzle.questions);
-                mPuzzleView.initializePuzzle(info);
-            }
-        }
-    };
 }

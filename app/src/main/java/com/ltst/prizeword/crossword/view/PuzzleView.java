@@ -10,8 +10,10 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +28,8 @@ public class PuzzleView extends View
     private @Nonnull ScaleGestureDetector mScaleGestureDetector;
     private static final float MIN_SCALE_FACTOR_DETECTABLE = 0.2f;
     private boolean mScaled = true;
+
+    private @Nonnull PuzzleResourcesAdapter mAdapter;
 
 
     public PuzzleView(Context context)
@@ -46,6 +50,33 @@ public class PuzzleView extends View
         mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
+    public void setAdapter(@Nonnull PuzzleResourcesAdapter adapter)
+    {
+        recycle();
+        mAdapter = adapter;
+        mAdapter.setPuzzleUpdater(new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                if (mViewScreenRect != null)
+                {
+                    mPuzzleManager = new PuzzleManager(mContext, mAdapter, mViewScreenRect, new IListener<Rect>()
+                    {
+                        @Override
+                        public void handle(@Nullable Rect rect)
+                        {
+                            if (rect != null)
+                            {
+                                invalidate(rect);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
@@ -58,15 +89,6 @@ public class PuzzleView extends View
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    public void initializePuzzle(@Nonnull PuzzleResources info)
-    {
-        if (mViewScreenRect != null)
-        {
-            mPuzzleManager = new PuzzleManager(mContext, info, mViewScreenRect);
-            invalidate(mViewScreenRect);
-        }
-    }
-
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -77,7 +99,6 @@ public class PuzzleView extends View
             mPuzzleManager.drawPuzzle(canvas);
         }
     }
-
 
     @Override
     public boolean onTouchEvent(@Nonnull MotionEvent event)

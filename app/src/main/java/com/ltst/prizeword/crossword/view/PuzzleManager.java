@@ -11,20 +11,22 @@ import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
+import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
-    private Point mFocusViewPoint;
-    private @Nonnull Paint mPaint;
+    private @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
     private @Nonnull Rect mPuzzleViewRect;
-    private @Nonnull Rect mScaledViewRect;
+    private @Nullable Rect mScaledViewRect;
 
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
@@ -32,15 +34,23 @@ public class PuzzleManager
     private float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
 
-    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleResources info, @Nonnull Rect puzzleViewRect)
+    public PuzzleManager(@Nonnull Context context,
+                         @Nonnull PuzzleResourcesAdapter adapter,
+                         @Nonnull Rect puzzleViewRect,
+                         @Nonnull IListener<Rect> invalidateHandler)
     {
         mContext = context;
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mFieldDrawer = new PuzzleFieldDrawer(context, info);
-        mFieldDrawer.loadResources();
+        mPuzzleViewRect = puzzleViewRect;
         mMatrix = new Matrix();
-        setPuzzleViewRect(puzzleViewRect);
+        mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
+        adapter.addResourcesUpdater(new IListener<PuzzleResources>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleResources puzzleResources)
+            {
+                setPuzzleViewRect(mPuzzleViewRect);
+            }
+        });
     }
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
@@ -60,7 +70,7 @@ public class PuzzleManager
 
     public void onScrollEvent(float offsetX, float offsetY)
     {
-        if(mIsAnimating)
+        if(mIsAnimating || mScaledViewRect == null || mFocusViewPoint == null)
             return;
         mFocusViewPoint.x += offsetX;
         mFocusViewPoint.y += offsetY;
@@ -69,7 +79,7 @@ public class PuzzleManager
 
     public void onScaleEvent(@Nonnull View view)
     {
-        if(mIsAnimating)
+        if(mIsAnimating || mScaledViewRect == null || mFocusViewPoint == null)
             return;
         ScaleAnimationThread anim = null;
         if(mScaled)
@@ -79,12 +89,15 @@ public class PuzzleManager
         anim.start();
 
         mScaled = !mScaled;
-//        mCurrentScale = (mScaled) ? MAX_SCALE : MIN_SCALE;
         mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
     private void configureMatrix()
     {
+        if (mFocusViewPoint == null)
+        {
+            return;
+        }
         mMatrix.reset();
 
         float translateX = (mFocusViewPoint.x - mPuzzleViewRect.width()/2/mCurrentScale);
@@ -147,19 +160,8 @@ public class PuzzleManager
             {
                 mCurrentScale *= mDeltaScale;
 
-//                synchronized (view)
-                {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                        view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                    } else {
-//                        view.postInvalidateDelayed(FPS_INTERVAL,
-//                                mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                    }
-                    view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-                }
+                view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                        mPuzzleViewRect.right, mPuzzleViewRect.bottom);
                 try
                 {
                     ScaleAnimationThread.sleep(FPS_INTERVAL);
@@ -171,21 +173,8 @@ public class PuzzleManager
             }
             final float delta = toZoom / mCurrentScale;
             mCurrentScale *= delta;
-
-
-//            synchronized (view)
-            {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                } else {
-//                    view.postInvalidateDelayed(FPS_INTERVAL,
-//                            mPuzzleViewRect.left, mPuzzleViewRect.top,
-//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-//                }
-                view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                        mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-            }
+            view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                    mPuzzleViewRect.right, mPuzzleViewRect.bottom);
             mIsAnimating = false;
 
         }

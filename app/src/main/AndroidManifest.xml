@@ -20,8 +20,12 @@
         android:theme="@style/AppTheme" >
 
         <service
-            android:name="com.ltst.prizeword.db.DbService"
+            android:name=".db.DbService"
             android:exported="false" />
+
+        <service
+                android:name="org.omich.velo.bcops.simple.BcService"
+                android:exported="false" />
 
         <activity
             android:name=".navigation.NavigationActivity"

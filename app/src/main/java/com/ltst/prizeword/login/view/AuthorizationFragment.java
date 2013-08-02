@@ -35,6 +35,8 @@ import com.ltst.prizeword.tools.ErrorAlertDialog;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -132,7 +134,7 @@ public class AuthorizationFragment extends SherlockFragment
                     // Переключемся на фрагмент сканвордов;
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
-                    mAuthorization.onAutotized();
+                    mAuthorization.onAuthotized();
                 }
             }
         });
@@ -199,7 +201,7 @@ public class AuthorizationFragment extends SherlockFragment
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
-    private abstract class SessionEnterLogin extends ModelUpdater<DbService.DbTaskEnv>
+    private abstract class SessionEnterLogin extends ModelUpdater<IBcTask.BcTaskEnv>
     {
         @Nonnull
         @Override
@@ -210,16 +212,16 @@ public class AuthorizationFragment extends SherlockFragment
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
         {
-            return DbService.class;
+            return LoadSessionKeyTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
         {
-            return LoadSessionKeyTask.class;
+            return BcService.class;
         }
 
         @Override
