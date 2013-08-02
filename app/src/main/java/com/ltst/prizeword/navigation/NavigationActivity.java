@@ -133,7 +133,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         });
 
-//        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override

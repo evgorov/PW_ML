@@ -1,11 +1,15 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.ltst.prizeword.tools.ParcelableTools;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import static com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 
 public class PuzzleQuestion implements Parcelable
 {
@@ -67,7 +71,7 @@ public class PuzzleQuestion implements Parcelable
         dest.writeString(answerPosition);
     }
 
-    public ArrowType getAnswerPosition()
+    public int getAnswerPosition()
     {
         if(answerPosition.equals(ANSPOS_NORTH_LEFT))
             return ArrowType.NORTH_LEFT;
@@ -79,6 +83,10 @@ public class PuzzleQuestion implements Parcelable
             return ArrowType.NORTH_EAST_LEFT;
         if(answerPosition.equals(ANSPOS_NORTH_EAST_BOTTOM))
             return ArrowType.NORTH_EAST_BOTTOM;
+        if(answerPosition.equals(ANSPOS_NORTH_EAST_RIGHT))
+            return ArrowType.NORTH_EAST_RIGHT;
+        if(answerPosition.equals(ANSPOS_NORTH_EAST_TOP))
+            return ArrowType.NORTH_EAST_TOP;
         if(answerPosition.equals(ANSPOS_EAST_TOP))
             return ArrowType.EAST_TOP;
         if(answerPosition.equals(ANSPOS_EAST_RIGHT))
@@ -89,6 +97,10 @@ public class PuzzleQuestion implements Parcelable
             return ArrowType.SOUTH_EAST_LEFT;
         if(answerPosition.equals(ANSPOS_SOUTH_EAST_TOP))
             return ArrowType.SOUTH_EAST_TOP;
+        if(answerPosition.equals(ANSPOS_SOUTH_EAST_BOTTOM))
+            return ArrowType.SOUTH_EAST_BOTTOM;
+        if(answerPosition.equals(ANSPOS_SOUTH_EAST_RIGHT))
+            return ArrowType.SOUTH_EAST_RIGHT;
         if(answerPosition.equals(ANSPOS_SOUTH_LEFT))
             return ArrowType.SOUTH_LEFT;
         if(answerPosition.equals(ANSPOS_SOUTH_RIGHT))
@@ -99,6 +111,10 @@ public class PuzzleQuestion implements Parcelable
             return ArrowType.SOUTH_WEST_TOP;
         if(answerPosition.equals(ANSPOS_SOUTH_WEST_RIGHT))
             return ArrowType.SOUTH_WEST_RIGHT;
+        if(answerPosition.equals(ANSPOS_SOUTH_WEST_BOTTOM))
+            return ArrowType.SOUTH_WEST_BOTTOM;
+        if(answerPosition.equals(ANSPOS_SOUTH_WEST_LEFT))
+            return ArrowType.SOUTH_WEST_LEFT;
         if(answerPosition.equals(ANSPOS_WEST_LEFT))
             return ArrowType.WEST_LEFT;
         if(answerPosition.equals(ANSPOS_WEST_TOP))
@@ -109,42 +125,11 @@ public class PuzzleQuestion implements Parcelable
             return ArrowType.NORTH_WEST_RIGHT;
         if(answerPosition.equals(ANSPOS_NORTH_WEST_BOTTOM))
             return ArrowType.NORTH_WEST_BOTTOM;
-        return null;
-    }
-
-    //    north:left, north:top, north:right,
-//    north-east:left, north-east:bottom,
-//    east:top, east:right, east:bottom,
-//    south-east:left, south-east:top,
-//    south:left, south:right, south:bottom,
-//    south-west:top, south-west:right,
-//    west:left, west:top, west:bottom,
-//    north-west:right, north-west:bottom
-    public enum ArrowType
-    {
-        NORTH_LEFT,
-        NORTH_TOP,
-        NORTH_RIGHT,
-        //        NORTH_EAST_RIGHT, ??
-        NORTH_EAST_LEFT,
-        NORTH_EAST_BOTTOM,
-        EAST_TOP,
-        EAST_RIGHT,
-        EAST_BOTTOM,
-        SOUTH_EAST_LEFT,
-        SOUTH_EAST_TOP,
-        //        SOUTH_EAST_BOTTOM, ??
-        SOUTH_LEFT,
-        SOUTH_RIGHT,
-        SOUTH_BOTTOM,
-        SOUTH_WEST_TOP,
-        SOUTH_WEST_RIGHT,
-        //        SOUTH_WEST_BOTTOM, ??
-        WEST_LEFT,
-        WEST_TOP,
-        WEST_BOTTOM,
-        NORTH_WEST_RIGHT,
-        NORTH_WEST_BOTTOM
+        if(answerPosition.equals(ANSPOS_NORTH_WEST_LEFT))
+            return ArrowType.NORTH_WEST_LEFT;
+        if(answerPosition.equals(ANSPOS_NORTH_WEST_TOP))
+            return ArrowType.NORTH_WEST_TOP;
+        return 0;
     }
 
     private static final @Nonnull String ANSPOS_NORTH_LEFT = "north:left";
@@ -153,6 +138,8 @@ public class PuzzleQuestion implements Parcelable
 
     private static final @Nonnull String ANSPOS_NORTH_EAST_LEFT = "north-east:left";
     private static final @Nonnull String ANSPOS_NORTH_EAST_BOTTOM = "north-east:bottom";
+    private static final @Nonnull String ANSPOS_NORTH_EAST_TOP = "north-east:top";
+    private static final @Nonnull String ANSPOS_NORTH_EAST_RIGHT = "north-east:right";
 
     private static final @Nonnull String ANSPOS_EAST_TOP = "east:top";
     private static final @Nonnull String ANSPOS_EAST_RIGHT = "east:right";
@@ -160,6 +147,8 @@ public class PuzzleQuestion implements Parcelable
 
     private static final @Nonnull String ANSPOS_SOUTH_EAST_LEFT = "south-east:left";
     private static final @Nonnull String ANSPOS_SOUTH_EAST_TOP = "south-east:top";
+    private static final @Nonnull String ANSPOS_SOUTH_EAST_RIGHT = "south-east:right";
+    private static final @Nonnull String ANSPOS_SOUTH_EAST_BOTTOM = "south-east:bottom";
 
     private static final @Nonnull String ANSPOS_SOUTH_LEFT = "south:left";
     private static final @Nonnull String ANSPOS_SOUTH_RIGHT = "south:right";
@@ -167,6 +156,8 @@ public class PuzzleQuestion implements Parcelable
 
     private static final @Nonnull String ANSPOS_SOUTH_WEST_TOP = "south-west:top";
     private static final @Nonnull String ANSPOS_SOUTH_WEST_RIGHT = "south-west:right";
+    private static final @Nonnull String ANSPOS_SOUTH_WEST_BOTTOM = "south-west:bottom";
+    private static final @Nonnull String ANSPOS_SOUTH_WEST_LEFT = "south-west:left";
 
     private static final @Nonnull String ANSPOS_WEST_LEFT = "west:left";
     private static final @Nonnull String ANSPOS_WEST_TOP = "west:top";
@@ -174,5 +165,7 @@ public class PuzzleQuestion implements Parcelable
 
     private static final @Nonnull String ANSPOS_NORTH_WEST_RIGHT = "north-west:right";
     private static final @Nonnull String ANSPOS_NORTH_WEST_BOTTOM = "north-west:bottom";
+    private static final @Nonnull String ANSPOS_NORTH_WEST_LEFT = "north-west:left";
+    private static final @Nonnull String ANSPOS_NORTH_WEST_TOP = "north-west:top";
 
 }

@@ -1,203 +1,194 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.view.View;
 
-import com.ltst.prizeword.tools.BitmapHelper;
+import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
-    private Rect mPuzzleRect;
-    private Rect mPuzzleViewRect;
-    private Rect mViewport;
-    private int mPuzzleToScreenRatio;
-    private Matrix mMatrix;
-
-    private Rect mDrawingRect;
-    private @Nullable Canvas mDrawingCanvas;
-    private @Nullable Bitmap mDrawingBitmap;
-
-    private int mTileWidth;
-    private int mTileHeight;
-    private Point mFocusPoint;
-
-    private @Nullable PuzzleBackgroundLayer mBgLayer;
-    private @Nullable PuzzleTilesLayer mTilesLayer;
+    private Point mFocusViewPoint;
     private @Nonnull Paint mPaint;
-
-    private @Nonnull PuzzleViewInformation mInfo;
     private @Nonnull Context mContext;
-    private boolean isRecycled;
+    private @Nonnull PuzzleFieldDrawer mFieldDrawer;
+    private @Nonnull Matrix mMatrix;
+    private @Nonnull Rect mPuzzleViewRect;
+    private @Nonnull Rect mScaledViewRect;
 
-    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleViewInformation info)
+    private float MIN_SCALE;
+    private float MAX_SCALE = 1.0f;
+    private boolean mScaled;
+    private float mCurrentScale = MAX_SCALE;
+    private boolean mIsAnimating;
+
+    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleResources info, @Nonnull Rect puzzleViewRect)
     {
         mContext = context;
-        mInfo = info;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        isRecycled = true;
+        mFieldDrawer = new PuzzleFieldDrawer(context, info);
+        mFieldDrawer.loadResources();
         mMatrix = new Matrix();
-        measureDimensions();
+        setPuzzleViewRect(puzzleViewRect);
     }
 
-    private void measureDimensions()
-    {
-        Log.i("measuring dims");
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(mContext.getResources(), PuzzleViewInformation.getLetterEmpty(), options);
-        mTileWidth = options.outWidth;
-        mTileHeight = options.outHeight;
-
-        int padding = mInfo.getPadding();
-        int framePadding = mInfo.getFramePadding(mContext.getResources());
-        int cellWidth = mInfo.getPuzzleColumnsCount();
-        int cellHeight = mInfo.getPuzzleRowsCount();
-        int tileGap = mInfo.getTileGap();
-        int puzzleWidth = 2 * (padding + framePadding) + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
-        int puzzleHeight = 2 * (padding + framePadding) + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
-        mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
-    }
-
-    public boolean isRecycled()
-    {
-        return isRecycled;
-    }
-
-    public void setPuzzleViewRect(Rect puzzleViewRect)
+    public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
         mPuzzleViewRect = puzzleViewRect;
-        mPuzzleToScreenRatio = Math.min(mPuzzleRect.width()/mPuzzleViewRect.width(),
-                                        mPuzzleRect.height()/mPuzzleViewRect.height());
-        Log.i("Setting view rect: "+ mPuzzleViewRect.width() + " " + mPuzzleViewRect.height() + " " + mPuzzleToScreenRatio);
+        float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
+        float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
+        MIN_SCALE = Math.min(scaleHeight, scaleWidth);
+        mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
+        mScaled = true;
 
-        // compute drawing dimensions
-        int padding = mInfo.getPadding() / mPuzzleToScreenRatio;
-        int framePadding = mInfo.getFramePadding(mContext.getResources()) / mPuzzleToScreenRatio;
-        int cols = mInfo.getPuzzleColumnsCount();
-        int rows = mInfo.getPuzzleRowsCount();
-        int tileGap = mInfo.getTileGap() / mPuzzleToScreenRatio;
-        int drawingWidth = 2 * (padding + framePadding) + cols * mTileWidth/mPuzzleToScreenRatio + (cols - 1) * tileGap + 2 * (mTileWidth/mPuzzleToScreenRatio);
-        int drawingHeight = 2 * (padding + framePadding) + rows * mTileHeight/mPuzzleToScreenRatio + (rows - 1) * tileGap + 2 * (mTileHeight/mPuzzleToScreenRatio);
-        mDrawingRect = new Rect(0, 0, drawingWidth, drawingHeight);
-
-        Log.i("drawing dims: " + drawingWidth + " " + drawingHeight);
-        mDrawingBitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888);
-        mDrawingCanvas = new Canvas(mDrawingBitmap);
-        mFocusPoint = new Point(drawingWidth/2, drawingHeight/2);
-
-        // init bg layer
-        mBgLayer = new PuzzleBackgroundLayer(mContext.getResources(), mDrawingRect,
-                PuzzleViewInformation.getBackgroundTile(), PuzzleViewInformation.getBackgroundFrame(), padding + framePadding, mPuzzleToScreenRatio);
-
-        // init tiles layer
-        mTilesLayer = new PuzzleTilesLayer(mContext.getResources(), mDrawingRect,
-                                           cols, rows, mPuzzleToScreenRatio);
-        mTilesLayer.setPadding(padding + framePadding);
-        mTilesLayer.setTileGap(tileGap);
-        mTilesLayer.setStateMatrix(mInfo.getStateMatrix());
-        mTilesLayer.setQuestions(mInfo.getPuzzleQuestions());
-        mTilesLayer.initTileTextPadding(mTileWidth);
-
-        // compute scaled viewport
-        float widthScale = (float)mPuzzleViewRect.width()/(float)mDrawingRect.width();
-        float heightScale = (float)mPuzzleViewRect.height()/(float)mDrawingRect.height();
-        float scale = Math.min(widthScale, heightScale);
-        mViewport = new Rect(0, 0, (int)(drawingWidth * scale), (int) (drawingHeight * scale));
-
-        isRecycled = false;
+        mScaledViewRect = new Rect(0, 0,
+                mFieldDrawer.getActualWidth(),
+                mFieldDrawer.getActualHeight());
+        mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
-    private void fillDrawingCanvasWithBg()
+    public void onScrollEvent(float offsetX, float offsetY)
     {
-        if (mDrawingCanvas == null)
-        {
+        if(mIsAnimating)
             return;
-        }
-        Bitmap bitmap = BitmapHelper.loadBitmapInSampleSize(mContext.getResources(),
-                mInfo.getCanvasBackgroundTileRes(), mPuzzleToScreenRatio);
-        PuzzleBackgroundLayer.fillBackgroundByDrawable(mContext.getResources(), mDrawingCanvas, bitmap);
-        bitmap.recycle();
-
+        mFocusViewPoint.x += offsetX;
+        mFocusViewPoint.y += offsetY;
+        mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
     }
 
-    private void drawPuzzleTilesBg()
+    public void onScaleEvent(@Nonnull View view)
     {
-        if (mBgLayer != null)
-        {
-            mBgLayer.drawLayer(mDrawingCanvas, mViewport);
-        }
+        if(mIsAnimating)
+            return;
+        ScaleAnimationThread anim = null;
+        if(mScaled)
+            anim = new ScaleAnimationThread(view, MAX_SCALE, MIN_SCALE);
+        else
+            anim = new ScaleAnimationThread(view, MIN_SCALE, MAX_SCALE);
+        anim.start();
+
+        mScaled = !mScaled;
+//        mCurrentScale = (mScaled) ? MAX_SCALE : MIN_SCALE;
+        mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
-    private void drawPuzzleTiles()
-    {
-        if (mTilesLayer != null)
-        {
-            mTilesLayer.drawLayer(mDrawingCanvas, mViewport);
-        }
-    }
-
-    private void configureBounds()
+    private void configureMatrix()
     {
         mMatrix.reset();
-        float translateX = mFocusPoint.x - mPuzzleViewRect.width()/2;
-        float translateY = mFocusPoint.y - mPuzzleViewRect.height()/2;
+
+        float translateX = (mFocusViewPoint.x - mPuzzleViewRect.width()/2/mCurrentScale);
+        float translateY = (mFocusViewPoint.y- mPuzzleViewRect.height()/2/mCurrentScale);
         mMatrix.postTranslate(-translateX, -translateY);
+
+        mMatrix.postScale(mCurrentScale, mCurrentScale);
+
     }
 
     public void drawPuzzle(@Nonnull Canvas screenCanvas)
     {
-        if (mPuzzleViewRect == null || mDrawingBitmap == null || mDrawingCanvas == null)
-        {
-            return;
-        }
-        if (!isRecycled)
-        {
-            fillDrawingCanvasWithBg();
-            drawPuzzleTilesBg();
-            drawPuzzleTiles();
+        int saveCount = screenCanvas.getSaveCount();
+        screenCanvas.save();
 
-            int saveCount = screenCanvas.getSaveCount();
-            screenCanvas.save();
+        configureMatrix();
+        screenCanvas.concat(mMatrix);
 
-            configureBounds();
-            screenCanvas.concat(mMatrix);
-            screenCanvas.drawBitmap(mDrawingBitmap, 0, 0, mPaint);
+        mFieldDrawer.drawBackground(screenCanvas);
+        mFieldDrawer.drawPuzzles(screenCanvas);
 
-            screenCanvas.restoreToCount(saveCount);
-        }
+        screenCanvas.restoreToCount(saveCount);
     }
-
 
 
     public void recycle()
     {
-        isRecycled = true;
-        if (mBgLayer != null)
+        mFieldDrawer.unloadResources();
+    }
+
+    private class ScaleAnimationThread extends Thread
+    {
+        private static final long FPS_INTERVAL = 1000 / 60;
+        static final float ANIMATION_SCALE_PER_ITERATION_IN = 1.1f;
+        static final float ANIMATION_SCALE_PER_ITERATION_OUT = 0.9f;
+
+        private final @Nonnull View view;
+        private final float fromZoom;
+        private final float toZoom;
+        private final float mDeltaScale;
+
+        private ScaleAnimationThread(@Nonnull View view, float fromZoom, float toZoom)
         {
-            mBgLayer.recycle();
+            this.toZoom = toZoom;
+            this.fromZoom = fromZoom;
+            this.view = view;
+            if (fromZoom < toZoom) {
+                mDeltaScale = ANIMATION_SCALE_PER_ITERATION_IN;
+            } else {
+                mDeltaScale = ANIMATION_SCALE_PER_ITERATION_OUT;
+            }
         }
-        if (mTilesLayer != null)
+
+        @Override
+        public void run()
         {
-            mTilesLayer.recycle();
-        }
-        if (mDrawingBitmap != null)
-        {
-            mDrawingBitmap.recycle();
+            mIsAnimating = true;
+            while((mDeltaScale > 1f && mCurrentScale < toZoom)
+                    || (mDeltaScale < 1f && toZoom < mCurrentScale))
+            {
+                mCurrentScale *= mDeltaScale;
+
+//                synchronized (view)
+                {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                        view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
+//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+//                    } else {
+//                        view.postInvalidateDelayed(FPS_INTERVAL,
+//                                mPuzzleViewRect.left, mPuzzleViewRect.top,
+//                                mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+//                    }
+                    view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+                }
+                try
+                {
+                    ScaleAnimationThread.sleep(FPS_INTERVAL);
+                }
+                catch (InterruptedException e)
+                {
+                    Log.e(e.getMessage());
+                }
+            }
+            final float delta = toZoom / mCurrentScale;
+            mCurrentScale *= delta;
+
+
+//            synchronized (view)
+            {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    view.postInvalidateOnAnimation(mPuzzleViewRect.left, mPuzzleViewRect.top,
+//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+//                } else {
+//                    view.postInvalidateDelayed(FPS_INTERVAL,
+//                            mPuzzleViewRect.left, mPuzzleViewRect.top,
+//                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+//                }
+                view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                        mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+            }
+            mIsAnimating = false;
+
         }
     }
+
 }

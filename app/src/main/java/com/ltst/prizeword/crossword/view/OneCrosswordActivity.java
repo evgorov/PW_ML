@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -32,14 +33,13 @@ public class OneCrosswordActivity extends SherlockActivity
         return intent;
     }
 
-//    private @Nonnull PuzzleView mCrosswordBgImage;
     private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
     private @Nonnull String mSessionKey;
     private @Nonnull String mCurrentPuzzleServerId;
 
-    private @Nonnull PuzzleSurfaceView mPuzzleView;
+    private @Nonnull PuzzleView mPuzzleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,10 +60,7 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onStart()
     {
-
-//        mCrosswordBgImage = (PuzzleView) findViewById(R.id.one_crossword_view);
-//        mCrosswordBgImage.setBackgroundTileBitmapRes(R.drawable.bg_dark_tile);
-        mPuzzleView = (PuzzleSurfaceView) findViewById(R.id.puzzle_view);
+        mPuzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         super.onStart();
     }
 
@@ -79,7 +76,6 @@ public class OneCrosswordActivity extends SherlockActivity
     @Override
     protected void onStop()
     {
-//        mCrosswordBgImage.recycle();
         mPuzzleView.recycle();
         super.onStop();
     }
@@ -99,9 +95,7 @@ public class OneCrosswordActivity extends SherlockActivity
             if (puzzle != null)
             {
                 PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-                PuzzleViewInformation info = new PuzzleViewInformation(type, puzzle.questions);
-                info.setBackgroundTileBitmapRes(R.drawable.bg_dark_tile);
-//                mCrosswordBgImage.setPuzzleInfo(info);
+                PuzzleResources info = new PuzzleResources(type, puzzle.questions);
                 mPuzzleView.initializePuzzle(info);
             }
         }
