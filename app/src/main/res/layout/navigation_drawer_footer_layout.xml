@@ -10,8 +10,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/menu_header_bg"
-            android:gravity="center">
+            android:background="@drawable/menu_header_bg">
 
         <FrameLayout
                 android:layout_height="wrap_content"
@@ -39,27 +38,23 @@
         <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="bottom">
 
             <TextView
                     android:id="@+id/header_listview_nickname_tview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:singleLine="true"
                     android:textSize="14sp"
                     android:text="@string/user"
-                    android:textColor="@color/header_text_color"
-                    />
+                    style="@style/MenuMainTextTitleStyle"/>
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/MenuMainTextItemStyle"
                     android:textSize="10sp"
                     android:layout_marginTop="5dp"
-                    android:text="@string/personal_record"
-                    android:textColor="@color/menu_text_color"
-                    />
+                    android:text="@string/personal_record"/>
 
             <LinearLayout
                     android:layout_height="wrap_content"
@@ -67,60 +62,63 @@
                     android:orientation="horizontal">
                 <TextView
                         android:id="@+id/header_listview_points_tview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:clickable="false"
                         android:text="0"
-                        android:textColor="@color/header_text_color" />
+                        style="@style/MenuMainTextTitleStyle" />
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/shutter_words_margin"
                         android:textSize="16sp"
                         android:clickable="false"
                         android:text="@string/points"
-                        android:textColor="@color/header_text_color" />
+                        style="@style/MenuMainTextTitleStyle" />
             </LinearLayout>
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <Button
+    <LinearLayout
             android:id="@+id/header_listview_logout_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/menu_switch_user_but"/>
+            style="@style/MenuMenuButtonStyle"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/menu_main_left_big_margin"
+            android:background="@drawable/menu_switch_user_but" >
 
-    <Button
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:text="@string/menu_main_logout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/menu_mypuzzle_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/main_menu_vertical_margin"
-            android:background="@drawable/menu_mypuzzle_but"
-            />
+            style="@style/MenuMenuButtonStyle"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/menu_main_vertical_margin"
+            android:background="@drawable/menu_mypuzzle_but" >
+
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:text="@string/menu_main_my_crosswords"/>
+
+    </LinearLayout>
 
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/main_menu_vertical_margin"
-            android:layout_marginBottom="@dimen/main_menu_vertical_margin"
+            android:layout_marginTop="@dimen/menu_main_vertical_margin"
+            android:layout_marginBottom="@dimen/menu_main_vertical_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/menu_title_text_color"
-                android:text="@string/menu_group_result_in_month"/>
+                android:text="@string/menu_group_result_in_month"
+                style="@style/MenuMainTextTitleStyle" />
         <TextView
                 android:id="@+id/menu_current_month_txt"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/menu_title_text_color"
                 android:layout_marginStart="@dimen/shutter_words_margin"
-                android:text="месяце"/>
+                style="@style/MenuMainTextTitleStyle" />
     </LinearLayout>
 
     <LinearLayout
@@ -135,14 +133,16 @@
 
         <TextView
                 android:id="@+id/menu_pride_score_txt"
-                android:layout_marginLeft="42dp"
-                style="@style/MainMenuTextView"
+                android:layout_marginLeft="@dimen/menu_main_left_big_margin"
+                style="@style/MenuMainTextItemStyle"
                 android:textColor="@color/menu_score_color"
                 android:text="1200"/>
 
         <TextView
                 android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MainMenuTextView"
+                style="@style/MenuMainTextItemStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="@string/points"/>
     </LinearLayout>
 
@@ -158,34 +158,41 @@
 
         <TextView
                 android:id="@+id/menu_pride_position_txt"
-                android:layout_marginLeft="42dp"
-                style="@style/MainMenuTextView"
+                android:layout_marginLeft="@dimen/menu_main_left_big_margin"
+                style="@style/MenuMainTextItemStyle"
                 android:textColor="@color/menu_rating_color"
                 android:text="342"/>
 
         <TextView
-                style="@style/MainMenuTextView"
+                style="@style/MenuMainTextItemStyle"
                 android:textColor="@color/menu_rating_color"
                 android:text="@string/ending"/>
 
         <TextView
                 android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MainMenuTextView"
+                style="@style/MenuMainTextItemStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="@string/in_rating" />
     </LinearLayout>
 
     <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/main_menu_vertical_margin"
-            android:layout_marginBottom="@dimen/main_menu_vertical_margin"
-            android:textColor="@color/menu_title_text_color"
-            android:text="@string/menu_group_social"/>
-    <Button
-        android:id="@+id/menu_invate_friends_btn"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:background="@drawable/menu_invate_friends_but"/>
+            android:layout_marginTop="@dimen/menu_main_vertical_margin"
+            android:layout_marginBottom="@dimen/menu_main_vertical_margin"
+            android:text="@string/menu_group_social"
+            style="@style/MenuMainTextTitleStyle" />
+
+    <LinearLayout
+            android:id="@+id/menu_invate_friends_btn"
+            style="@style/MenuMenuButtonStyle"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/menu_main_left_big_margin"
+            android:background="@drawable/menu_invate_friends_but" >
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:text="@string/menu_main_invite_friends"/>
+    </LinearLayout>
 
     <LinearLayout
             android:clickable="true"
@@ -194,8 +201,16 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
+            android:paddingLeft="@dimen/menu_main_left_big_margin"
             android:paddingRight="2dp"
             android:background="@drawable/menu_vk_btn">
+
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/menu_main_vkontakte"/>
 
         <ToggleButton
                 android:id="@+id/menu_vk_switcher"
@@ -214,8 +229,16 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
+            android:paddingLeft="@dimen/menu_main_left_big_margin"
             android:paddingRight="2dp"
             android:background="@drawable/menu_fb_btn">
+
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/menu_main_facebook"/>
 
         <ToggleButton
                 android:id="@+id/menu_fb_switcher"
@@ -231,13 +254,21 @@
     <LinearLayout
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginTop="@dimen/main_menu_vertical_margin"
+            android:layout_marginTop="@dimen/menu_main_vertical_margin"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
+            android:paddingLeft="@dimen/menu_main_left_margin"
             android:paddingRight="2dp"
             android:background="@drawable/menu_notify_btn">
+
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/menu_main_nootifyers"/>
 
         <ToggleButton
                 android:id="@+id/menu_notification_switcher"
@@ -249,18 +280,27 @@
 
     </LinearLayout>
 
-    <Button
+    <LinearLayout
             android:id="@+id/menu_show_rules_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/main_menu_vertical_margin"
-            android:background="@drawable/menu_rules_but"
-            />
-    <Button
+            style="@style/MenuMenuButtonStyle"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/menu_main_vertical_margin"
+            android:background="@drawable/menu_rules_but" >
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:text="@string/menu_main_rules"/>
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/restore_buy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_restore_but"
-            />
+            style="@style/MenuMenuButtonStyle"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_restore_but" >
+        <TextView
+                android:layout_marginLeft="@dimen/shutter_words_margin"
+                style="@style/MenuMainTextItemStyle"
+                android:text="@string/menu_main_restore_shoping"/>
+    </LinearLayout>
 
 </LinearLayout>

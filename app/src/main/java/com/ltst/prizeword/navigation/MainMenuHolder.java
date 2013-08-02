@@ -23,9 +23,9 @@ public class MainMenuHolder {
     public @Nonnull TextView mNickname;
     public @Nonnull TextView mHightRecord;
 
-    public @Nonnull Button mMyCrossword;
-    public @Nonnull Button mShowRulesBtn;
-    public @Nonnull Button mLogoutBtn;
+    public @Nonnull View mMyCrossword;
+    public @Nonnull View mShowRulesBtn;
+    public @Nonnull View mLogoutBtn;
 
     public @Nonnull TextView mScore;
     public @Nonnull TextView mPosition;
@@ -37,11 +37,11 @@ public class MainMenuHolder {
         this.mImage = (ImageView) view.findViewById(R.id.header_listview_photo_img);
         this.mNickname = (TextView) view.findViewById(R.id.header_listview_nickname_tview);
         this.mHightRecord = (TextView) view.findViewById(R.id.header_listview_points_tview);
-        this.mLogoutBtn = (Button) view.findViewById(R.id.header_listview_logout_btn);
+        this.mLogoutBtn = (View) view.findViewById(R.id.header_listview_logout_btn);
 
         this.mMonth = (TextView) view.findViewById(R.id.menu_current_month_txt);
-        this.mMyCrossword = (Button) view.findViewById(R.id.menu_mypuzzle_btn);
-        this.mShowRulesBtn = (Button) view.findViewById(R.id.menu_show_rules_btn);
+        this.mMyCrossword = (View) view.findViewById(R.id.menu_mypuzzle_btn);
+        this.mShowRulesBtn = (View) view.findViewById(R.id.menu_show_rules_btn);
         this.mScore = (TextView) view.findViewById(R.id.menu_pride_score_txt);
         this.mPosition = (TextView) view.findViewById(R.id.menu_pride_position_txt);
 

@@ -51,14 +51,31 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">#00000000</item>
     </style>
-    <style name="MainMenuTextView">
+    <style name="MenuMainTextItemStyle">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content"</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:shadowColor">@android:color/black</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">-1</item>
         <item name="android:shadowRadius">1</item>
         <item name="android:textColor">@color/menu_text_color</item>
         <item name="android:textSize">14sp</item>
+    </style>
+    <style name="MenuMainTextTitleStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">@color/menu_title_text_color</item>
+    </style>
+    <style name="MenuMenuButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/menu_main_left_margin</item>
     </style>
 </resources>

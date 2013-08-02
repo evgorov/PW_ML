@@ -15,8 +15,6 @@
     <string name="registration_fragment_title">Регистрация</string>
     <string name="rules_fragment_title">Правила</string>
 
-
-
     <string name="ending">-й</string>
     <string name="points">очков</string>
     <string name="user">Пользователь</string>
@@ -38,6 +36,16 @@
     <string name="register_screen_city">Город</string>
     <string name="register_screen_error_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще раз.</string>
     <string name="register_screen_date_pick_dialog_title">Дата рождения</string>
+
+    <string name="menu_main_my_crosswords">Мои сканворды</string>
+    <string name="menu_main_invite_friends">Пригласить друзей</string>
+    <string name="menu_main_vkontakte">ВКонтакте</string>
+    <string name="menu_main_facebook">Facebook</string>
+    <string name="menu_main_nootifyers">Уведомления</string>
+    <string name="menu_main_rules">Правила</string>
+    <string name="menu_main_restore_shoping">Восстановить покупки</string>
+    <string name="menu_main_logout">Сменить пользователя</string>
+
 
     <string name="title_activity_one_crossword">Crossword</string>
     <string name="title_activity_vk">Vkontakte</string>
