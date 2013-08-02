@@ -45,48 +45,50 @@ public class BitmapManager
                           final @Nonnull IListener<Rect> invalidateListener,
                           final @Nonnull Rect rect)
     {
-        BitmapEntity entity = new BitmapEntity(resource);
-        entity.loadResource(mContext);
-        mBitmaps.append(resource, entity);
-        invalidateListener.handle(rect);
-//        BitmapDecoder decoder = new BitmapDecoder()
-//        {
-//            @Nonnull
-//            @Override
-//            protected Intent createIntent()
-//            {
-//                return BitmapDecoderTask.createIntent(resource, null);
-//            }
-//
-//            @Override
-//            protected void handleData(@Nullable Bundle result)
-//            {
-//                Log.i("Handling result");
-//                if (result == null)
-//                {
-//                    return;
-//                }
-//                Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
-//                if (bitmap == null)
-//                {
-//                    return;
-//                }
-//
-//                BitmapEntity entity = new BitmapEntity(resource);
-//                entity.setBitmap(bitmap);
-//                mBitmaps.append(resource, entity);
-//                Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
-//            }
-//        };
-//        decoder.update(new IListenerVoid()
-//        {
-//            @Override
-//            public void handle()
-//            {
-//                Log.i("Invalidate handled");
-//                invalidateListener.handle(rect);
-//            }
-//        });
+//        BitmapEntity entity = new BitmapEntity(resource);
+//        entity.loadResource(mContext);
+//        mBitmaps.append(resource, entity);
+//        invalidateListener.handle(rect);
+
+
+        BitmapDecoder decoder = new BitmapDecoder()
+        {
+            @Nonnull
+            @Override
+            protected Intent createIntent()
+            {
+                return BitmapDecoderTask.createIntent(resource, null);
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                Log.i("Handling result");
+                if (result == null)
+                {
+                    return;
+                }
+                Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
+                if (bitmap == null)
+                {
+                    return;
+                }
+
+                BitmapEntity entity = new BitmapEntity(resource);
+                entity.setBitmap(bitmap);
+                mBitmaps.append(resource, entity);
+                Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
+            }
+        };
+        decoder.update(new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                Log.i("Invalidate handled");
+                invalidateListener.handle(rect);
+            }
+        });
     }
 
     public boolean hasReasource(int resource)

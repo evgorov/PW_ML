@@ -102,9 +102,9 @@ public class PuzzleFieldDrawer
     public void loadResources()
     {
         mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), mInvalidateListener, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateListener, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateListener, mPuzzleRect);
-        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateListener, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateListener, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateListener, mPuzzleRect);
+//        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateListener, mPuzzleRect);
 //        mLetterBitmapManager = new LetterBitmapManager(mContext, PuzzleResources.getLetterTilesInput(), mTileWidth, mTileHeight);
 //        mLetterBitmapManager.addTileResource(mInfo.getLetterTilesCorrect(), mTileWidth, mTileHeight);
 //        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight);
@@ -117,22 +117,22 @@ public class PuzzleFieldDrawer
         fillRectWithBitmap(canvas, bgRectF, PuzzleResources.getCanvasBackgroundTileRes());
 
         // draw puzzle bg
-        int padding = mInfo.getPadding();
-        int framePadding = mInfo.getFramePadding(mContext.getResources());
-        int puzzlePadding = padding + framePadding;
-        RectF puzzleBackgroundRect = new RectF(puzzlePadding + mPuzzleRect.left + mDrawingOffsetX,
-                puzzlePadding + mPuzzleRect.top + mDrawingOffsetY,
-                mPuzzleRect.right - puzzlePadding - mDrawingOffsetX,
-                mPuzzleRect.bottom - puzzlePadding - mDrawingOffsetY);
-        fillRectWithBitmap(canvas, puzzleBackgroundRect, PuzzleResources.getBackgroundTile());
+//        int padding = mInfo.getPadding();
+//        int framePadding = mInfo.getFramePadding(mContext.getResources());
+//        int puzzlePadding = padding + framePadding;
+//        RectF puzzleBackgroundRect = new RectF(puzzlePadding + mPuzzleRect.left + mDrawingOffsetX,
+//                puzzlePadding + mPuzzleRect.top + mDrawingOffsetY,
+//                mPuzzleRect.right - puzzlePadding - mDrawingOffsetX,
+//                mPuzzleRect.bottom - puzzlePadding - mDrawingOffsetY);
+//        fillRectWithBitmap(canvas, puzzleBackgroundRect, PuzzleResources.getBackgroundTile());
 
-        // draw frame
-        Rect frameRect = new Rect(padding + mDrawingOffsetX + mPuzzleRect.left,
-                padding + mDrawingOffsetY + mPuzzleRect.top,
-                mPuzzleRect.right - padding - mDrawingOffsetX,
-                mPuzzleRect.bottom - padding - mDrawingOffsetY);
-        mFrameBorder.setBounds(frameRect);
-        mFrameBorder.draw(canvas);
+//        // draw frame
+//        Rect frameRect = new Rect(padding + mDrawingOffsetX + mPuzzleRect.left,
+//                padding + mDrawingOffsetY + mPuzzleRect.top,
+//                mPuzzleRect.right - padding - mDrawingOffsetX,
+//                mPuzzleRect.bottom - padding - mDrawingOffsetY);
+//        mFrameBorder.setBounds(frameRect);
+//        mFrameBorder.draw(canvas);
     }
 
     public void drawPuzzles(@Nonnull Canvas canvas)
