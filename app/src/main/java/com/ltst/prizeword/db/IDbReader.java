@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 public interface IDbReader
 {
     @Nullable UserData getUserById(long id);
-    @Nullable UserData getUserByEmail(@Nonnull String email);
+//    @Nullable UserData getUserByEmail(@Nonnull String email);
     @Nullable public UserImage getUserImage(long user_id);
     @Nullable List<UserProvider> getUserProvidersByUserId(long id);
 

@@ -36,7 +36,7 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putUser(@Nonnull UserData user, @Nullable List<UserProvider> providers)
     {
-        @Nullable UserData exitingUser = getUserByEmail(user.email);
+        @Nullable UserData exitingUser = getUserById(SQLiteHelper.ID_USER);
         if(exitingUser == null)
         {
             putNewUser(user, providers);

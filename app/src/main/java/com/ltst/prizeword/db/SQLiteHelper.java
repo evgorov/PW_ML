@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 
 public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
 {
+    public static final int ID_USER = 1;
+
     private static final String DATABASE_NAME = "app.db";
     private static final String TEST_DATABASE_NAME = "testapp.db";
     private static final int    DATABASE_VERSION = 1;
@@ -72,7 +74,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsUsers.ID                  + " integer not null primary key autoincrement, "
             + ColsUsers.NAME                + " text not null, "
             + ColsUsers.SURNAME             + " text not null, "
-            + ColsUsers.EMAIL               + " text not null unique, "
+            + ColsUsers.EMAIL               + " text default \"\", "
             + ColsUsers.BIRTHDATE           + " text default \"\", "
             + ColsUsers.CITY                + " text default \"\", "
             + ColsUsers.SOLVED              + " integer not null default 0, "

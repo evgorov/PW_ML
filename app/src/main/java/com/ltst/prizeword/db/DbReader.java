@@ -119,15 +119,15 @@ public class DbReader implements IDbReader
         mDb.close();
     }
 
-    @Nullable
-    @Override
-    public UserData getUserByEmail(@Nonnull String email)
-    {
-        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
-                FIELDS_P_USER, ColsUsers.EMAIL, email);
-        UserData user = createObjectByCursor(cursor, mUserDataCreator);
-        return user;
-    }
+//    @Nullable
+//    @Override
+//    public UserData getUserByEmail(@Nonnull String email)
+//    {
+//        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
+//                FIELDS_P_USER, ColsUsers.EMAIL, email);
+//        UserData user = createObjectByCursor(cursor, mUserDataCreator);
+//        return user;
+//    }
 
     @Nullable
     @Override
