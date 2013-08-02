@@ -1,11 +1,16 @@
 package com.ltst.prizeword.crossword.engine;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 
+import com.ltst.prizeword.tools.decoding.BitmapDecoder;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Nonnull;
@@ -18,31 +23,31 @@ public class LetterBitmapManager
     private @Nonnull Paint mPaint;
     private @Nonnull Context mContext;
 
-    public LetterBitmapManager(@Nonnull Context context, int lettersResource, int letterWidth, int letterHeight)
+    public LetterBitmapManager(@Nonnull Context context)
     {
         mContext = context;
         mLetters = new HashMap<String, BitmapEntity>();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        decodeBitmaps();
-    }
-
-    private void decodeBitmaps()
-    {
-        int length = mAlphabet.length();
-        for (int i = 0; i < length; i++)
-        {
-            char letter = mAlphabet.charAt(i);
-//                BitmapEntity entity = new BitmapEntity(bm);
-//                String key = getLetterResourceKey(mDecoder.getResourceId(), letter);
-//                mLetters.put(key, entity);
-        }
     }
 
     public void addTileResource(int lettersResource, int letterWidth, int letterHeight)
     {
-//        mDecoder = new BitmapDecoder(mContext, lettersResource, letterWidth, letterHeight);
-//        decodeBitmaps();
+        Rect rect = new Rect(0, 0, letterWidth, letterHeight);
+        ArrayList<Bitmap> bitmaps = BitmapDecoder.decodeTiles(mContext, lettersResource, rect);
+        if (bitmaps == null)
+        {
+            return;
+        }
+
+        int length = mAlphabet.length();
+        for (int i = 0; i < length; i++)
+        {
+            char letter = mAlphabet.charAt(i);
+            BitmapEntity entity = new BitmapEntity(bitmaps.get(i));
+            String key = getLetterResourceKey(lettersResource, letter);
+            mLetters.put(key, entity);
+        }
     }
 
     public void drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)

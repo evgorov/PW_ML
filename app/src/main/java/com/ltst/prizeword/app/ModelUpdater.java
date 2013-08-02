@@ -37,11 +37,14 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
         }
     }
 
-    public void update (@Nonnull IListenerVoid updateHandler)
+    public void update (@Nullable IListenerVoid updateHandler)
     {
         IBcConnector connector = getBcConnector();
 
-        mListeners.add(updateHandler);
+        if (updateHandler != null)
+        {
+            mListeners.add(updateHandler);
+        }
 
         if(mTaskId != null)
             return;

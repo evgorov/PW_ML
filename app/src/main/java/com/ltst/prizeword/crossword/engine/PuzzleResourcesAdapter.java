@@ -26,6 +26,8 @@ public class PuzzleResourcesAdapter
     private @Nullable IListenerVoid mPuzzleUpdater;
     private @Nonnull List<IListener<PuzzleResources>> mResourcesUpdaterList;
 
+    private @Nonnull IBitmapResourceModel mIBitmapResourceModel;
+
     public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
                                   @Nonnull String sessionKey,
                                   @Nonnull PuzzleSet puzzleSet)
@@ -34,6 +36,7 @@ public class PuzzleResourcesAdapter
         mSessionKey = sessionKey;
         mPuzzleSet = puzzleSet;
         mResourcesUpdaterList = new ArrayList<IListener<PuzzleResources>>();
+        mIBitmapResourceModel = new BitmapResourceModel(mBcConnector);
     }
 
     public void updatePuzzle(@Nonnull String puzzleServerId)
@@ -41,6 +44,12 @@ public class PuzzleResourcesAdapter
         mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
+    }
+
+    @Nonnull
+    public IBitmapResourceModel getBitmapResourceModel()
+    {
+        return mIBitmapResourceModel;
     }
 
     public void updateResources()
@@ -60,7 +69,6 @@ public class PuzzleResourcesAdapter
 
     public void addResourcesUpdater(@Nullable IListener<PuzzleResources> resourcesUpdater)
     {
-
         mResourcesUpdaterList.add(resourcesUpdater);
     }
 

@@ -50,7 +50,9 @@ public class PuzzleFieldDrawer
         mContext = context;
         mAdapter = adapter;
         mInvalidateHandler = invalidateHandler;
-        mBitmapManager = new BitmapManager(context);
+        mBitmapManager = new BitmapManager(context, mAdapter.getBitmapResourceModel());
+        mLetterBitmapManager = new LetterBitmapManager(mContext);
+
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
 
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
@@ -131,7 +133,7 @@ public class PuzzleFieldDrawer
         mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateHandler, mPuzzleRect);
         mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateHandler, mPuzzleRect);
         mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateHandler, mPuzzleRect);
-//        mLetterBitmapManager = new LetterBitmapManager(mContext, PuzzleResources.getLetterTilesInput(), mTileWidth, mTileHeight);
+
 //        mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight);
 //        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight);
     }
@@ -198,7 +200,7 @@ public class PuzzleFieldDrawer
                         int arrowResource = PuzzleResources.getArrowResource(state.getFirstArrow());
                         if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
                         {
-                            if(!mBitmapManager.hasReasource(arrowResource))
+                            if(!mBitmapManager.hasResource(arrowResource))
                             {
                                 mBitmapManager.addBitmap(arrowResource, mInvalidateHandler, mPuzzleRect);
                             }
@@ -207,7 +209,7 @@ public class PuzzleFieldDrawer
                         arrowResource = PuzzleResources.getArrowResource(state.getSecondArrow());
                         if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
                         {
-                            if(!mBitmapManager.hasReasource(arrowResource))
+                            if(!mBitmapManager.hasResource(arrowResource))
                             {
                                 mBitmapManager.addBitmap(arrowResource, mInvalidateHandler, mPuzzleRect);
                             }

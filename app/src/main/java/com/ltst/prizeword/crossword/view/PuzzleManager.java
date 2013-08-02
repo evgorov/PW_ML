@@ -89,7 +89,6 @@ public class PuzzleManager
         anim.start();
 
         mScaled = !mScaled;
-//        mCurrentScale = (mScaled) ? MAX_SCALE : MIN_SCALE;
         mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 

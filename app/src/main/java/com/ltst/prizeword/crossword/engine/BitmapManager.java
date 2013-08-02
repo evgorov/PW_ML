@@ -34,13 +34,13 @@ public class BitmapManager
     private @Nonnull Context mContext;
     private @Nonnull SparseArray<BitmapEntity> mBitmaps;
     private @Nonnull Paint mPaint;
-    private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull IBitmapResourceModel mBitmapResourceModel;
 
-    public BitmapManager(@Nonnull Context context)
+    public BitmapManager(@Nonnull Context context, @Nonnull IBitmapResourceModel bitmapModel)
     {
         mContext = context;
-        mBcConnector = new BcConnector(context);
         mBitmaps = new SparseArray<BitmapEntity>();
+        mBitmapResourceModel = bitmapModel;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
@@ -54,35 +54,20 @@ public class BitmapManager
         mBitmaps.append(resource, entity);
         invalidateListener.handle(rect);
 
-//
-//        Bundle params = new Bundle();
-//        params.putInt(BitmapDecoderTask.BF_RESOURCE_ID, resource);
-//        BitmapDecoderAsyncTask task = new BitmapDecoderAsyncTask(mBitmaps);
-//        task.execute(params);
-
-
-//        BitmapDecoder decoder = new BitmapDecoder()
-//        {
-//            @Nonnull
-//            @Override
-//            protected Intent createIntent()
+//        mBitmapResourceModel.loadBitmapEntity(resource, new
+//            IListener<BitmapEntity>()
 //            {
-//                return BitmapDecoderTask.createIntent(resource, null);
-//            }
-//
-//        };
-//        decoder.updateResources(new IListenerVoid()
-//        {
-//            @Override
-//            public void handle()
-//            {
-//                Log.i("Invalidate handled");
-//                invalidateListener.handle(rect);
-//            }
-//        });
+//                @Override
+//                public void handle(@Nullable BitmapEntity entity)
+//                {
+//                    mBitmaps.append(resource, entity);
+//                    invalidateListener.handle(rect);
+//                }
+//            });
+
     }
 
-    public boolean hasReasource(int resource)
+    public boolean hasResource(int resource)
     {
         return mBitmaps.indexOfKey(resource) >= 0;
     }
@@ -134,109 +119,4 @@ public class BitmapManager
         }
     }
 
-    private abstract class BitmapDecoder extends ModelUpdater<IBcTask.BcTaskEnv>
-    {
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
-        {
-            return BitmapDecoderTask.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
-        {
-            return BcService.class;
-        }
-
-        @Nonnull
-        @Override
-        protected IBcConnector getBcConnector()
-        {
-            return mBcConnector;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result)
-        {
-            Log.i("Handling result");
-            if (result == null)
-            {
-                return;
-            }
-            Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
-            if (bitmap == null)
-            {
-                return;
-            }
-            int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-
-            BitmapEntity entity = new BitmapEntity(resource);
-            entity.setBitmap(bitmap);
-            mBitmaps.append(resource, entity);
-            Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
-        }
-    }
-
-    private class BitmapDecoderAsyncTask extends AsyncTask<Bundle, Integer, Bundle>
-    {
-        private @Nonnull WeakReference<SparseArray<BitmapEntity>> mBitmapsRef;
-
-        public BitmapDecoderAsyncTask(@Nonnull SparseArray<BitmapEntity> bitmaps)
-        {
-            mBitmapsRef = new WeakReference<SparseArray<BitmapEntity>>(bitmaps);
-        }
-
-        @Override
-        protected Bundle doInBackground(Bundle... params)
-        {
-            Log.i("do in background");
-            int resource = params[0].getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-            Bitmap bm = com.ltst.prizeword.tools.decoding.BitmapDecoder.decode(mContext, resource);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(BitmapDecoderTask.BF_BITMAP, bm);
-            bundle.putInt(BitmapDecoderTask.BF_RESOURCE_ID, resource);
-            return bundle;
-        }
-
-        @Override
-        protected void onPreExecute()
-        {
-            Log.i("pre execute");
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Bundle result)
-        {
-            Log.i("post execute");
-            if (result == null)
-            {
-                return;
-            }
-            Bitmap bitmap = result.getParcelable(BitmapDecoderTask.BF_BITMAP);
-            if (bitmap == null)
-            {
-                return;
-            }
-            int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-
-            BitmapEntity entity = new BitmapEntity(resource);
-            entity.setBitmap(bitmap);
-            SparseArray<BitmapEntity> bitmaps = mBitmapsRef.get();
-            if (bitmaps != null)
-            {
-                bitmaps.append(resource, entity);
-            }
-        }
-
-        @Override
-        protected void onCancelled()
-        {
-            Log.i("cancelled");
-            super.onCancelled();
-        }
-    }
 }

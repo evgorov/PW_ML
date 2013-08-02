@@ -49,6 +49,11 @@ public class BitmapEntity
     public void setBitmap(@Nullable Bitmap bitmap)
     {
         mBitmap = bitmap;
+        if (mBitmap != null)
+        {
+            width = mBitmap.getWidth();
+            height = mBitmap.getHeight();
+        }
     }
 
     public void draw(@Nonnull Canvas canvas, float posX, float posY, @Nonnull Paint paint)

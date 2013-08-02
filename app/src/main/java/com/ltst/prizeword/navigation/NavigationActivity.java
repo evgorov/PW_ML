@@ -68,7 +68,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         IBitmapAsyncTask,
         ITouchInterface
 {
-    private Context context = null;
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private int RESULT_LOAD_IMAGE = 1;
