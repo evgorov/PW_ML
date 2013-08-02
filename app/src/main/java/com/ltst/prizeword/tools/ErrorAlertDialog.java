@@ -52,9 +52,9 @@ public class ErrorAlertDialog extends AlertDialog.Builder {
 
     public static void showDialog(@Nonnull Context context, int msgResId)
     {
-        ErrorAlertDialog dialog = new ErrorAlertDialog(context);
-        dialog.setMessageResource(msgResId);
-        AlertDialog alert = dialog.create();
+        ErrorAlertDialog builder = new ErrorAlertDialog(context);
+        builder.setMessage(msgResId);
+        AlertDialog alert = builder.create();
         Resources res = alert.getContext().getResources();
         alert.getWindow().setLayout((int) res.getDimension(R.dimen.error_dialog_width),
                 LinearLayout.LayoutParams.WRAP_CONTENT);

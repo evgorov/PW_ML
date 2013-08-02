@@ -4,6 +4,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface IDbReader
 {
     @Nullable UserData getUserById(long id);
     @Nullable UserData getUserByEmail(@Nonnull String email);
+    @Nullable public UserImage getUserImage(long user_id);
     @Nullable List<UserProvider> getUserProvidersByUserId(long id);
 
     @Nullable PuzzleSet getPuzzleSetByServerId(@Nonnull String serverId);

@@ -38,7 +38,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
-        android.util.Log.d(NavigationActivity.LOG_TAG, "EXECUTE LOAD!");
+//        android.util.Log.d(NavigationActivity.LOG_TAG, "EXECUTE LOAD!");
         Bundle extras = env.extras;
         if(extras == null)
             return null;

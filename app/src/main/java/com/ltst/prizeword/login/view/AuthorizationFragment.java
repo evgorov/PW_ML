@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AuthorizationFragment extends SherlockFragment
-        implements View.OnClickListener, INavigationBackPress
+        implements View.OnClickListener, View.OnKeyListener, INavigationBackPress
 {
     private @Nonnull String LOG_TAG = "autorization";
 
@@ -58,6 +62,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull ImageButton mForgetLoginButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
+    private @Nonnull IAutorization mAuthorization;
 
     @Override
     public void onAttach(Activity activity)
@@ -65,6 +70,7 @@ public class AuthorizationFragment extends SherlockFragment
         super.onAttach(activity);
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
+        mAuthorization = (IAutorization) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mDrawerHolder = (INavigationDrawerHolder)activity;
         mDrawerHolder.lockDrawerClosed();
@@ -84,59 +90,27 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
+        mEmailEditText.setOnKeyListener(this);
+        mPasswdlEditText.setOnKeyListener(this);
+
+        mEmailEditText.setText("vlad@ltst.ru");
+        mPasswdlEditText.setText("vlad");
 
         return v;
-
     }
 
-    @Override
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
-            case R.id.login_enter_enter_btn:
-                hideKeyboard();
-                String email = mEmailEditText.getText().toString();
-                String passwordf = mPasswdlEditText.getText().toString();
-                enterLogin(email, passwordf);
-                mEmailEditText.setText(Strings.EMPTY);
-                mPasswdlEditText.setText(Strings.EMPTY);
-                break;
-            case R.id.login_forget_btn:
-                hideKeyboard();
-                mFragmentHolder.selectNavigationFragmentByClassname(ForgetPassFragment.FRAGMENT_CLASSNAME);
-                break;
-            case R.id.login_back_button:
-                hideKeyboard();
-                onBackKeyPress();
-                break;
-            default:
-                break;
-        }
-    }
-    private void hideKeyboard(){
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
+    private  void authorizing(){
+        hideKeyboard();
+        final @Nonnull String email = mEmailEditText.getText().toString();
+        final @Nonnull String password = mPasswdlEditText.getText().toString();
 
-    @Override
-    public void onBackKeyPress()
-    {
-        mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
-    }
-
-    protected void enterLogin(@Nonnull String email, @Nonnull String password)
-    {
-
-        final @Nonnull String emailf = email;
-        final @Nonnull String passwordf = password;
         SessionEnterLogin loader = new SessionEnterLogin()
         {
             @Nonnull
             @Override
             protected Intent createIntent()
             {
-                return LoadSessionKeyTask.createSignInIntent(emailf, passwordf);
+                return LoadSessionKeyTask.createSignInIntent(email, password);
             }
         };
 
@@ -156,16 +130,75 @@ public class AuthorizationFragment extends SherlockFragment
                 else
                 {
                     // скрываем клавиатуру;
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    hideKeyboard();
                     // Переключемся на фрагмент сканвордов;
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
-                    ((IAutorization) mContext).onAuthotized();
+                    mAuthorization.onAuthotized();
                 }
             }
         });
 
+//                mEmailEditText.setText(Strings.EMPTY);
+//                mPasswdlEditText.setText(Strings.EMPTY);
+    }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+        switch (view.getId()){
+            case R.id.login_email_etext:{
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if(mPasswdlEditText.requestFocus()) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        mEmailEditText.clearFocus();
+                    }
+                }
+            }
+            break;
+            case R.id.login_passwd_etext:{
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    authorizing();
+                }
+            }
+            break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.login_enter_enter_btn:
+                authorizing();
+                break;
+            case R.id.login_forget_btn:
+                hideKeyboard();
+                mFragmentHolder.selectNavigationFragmentByClassname(ForgetPassFragment.FRAGMENT_CLASSNAME);
+                break;
+            case R.id.login_back_button:
+                hideKeyboard();
+                onBackKeyPress();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void hideKeyboard(){
+        @Nonnull FragmentActivity fragment = getActivity();
+        if(fragment == null) return;
+        InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    @Override
+    public void onBackKeyPress()
+    {
+        mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
     private abstract class SessionEnterLogin extends ModelUpdater<IBcTask.BcTaskEnv>

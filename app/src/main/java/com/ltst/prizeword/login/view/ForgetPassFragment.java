@@ -202,10 +202,8 @@ public class ForgetPassFragment extends SherlockFragment
             }
             else
             {
-                ErrorAlertDialog alertDialogBuilder = new ErrorAlertDialog(mContext);
-                alertDialogBuilder.setMessage(R.string.msg_forget_password_error_email);
-                alertDialogBuilder.create().show();
-           }
+                ErrorAlertDialog.showDialog(mContext, R.string.msg_forget_password_error_email);
+            }
         }
     }
 }

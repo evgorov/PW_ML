@@ -7,6 +7,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
 
 import org.omich.velo.db.DbHelper;
@@ -91,6 +92,13 @@ public class DbReader implements IDbReader
 
     };
 
+    public static final @Nonnull String[] FIELDS_P_IMAGES =
+    {
+            ColsImages.ID,
+            ColsImages.KEY,
+            ColsImages.IMAGE,
+    };
+
     public final @Nonnull SQLiteDatabase mDb;
 
     public DbReader(@Nonnull SQLiteHelper helper, boolean mustBeSQLiteDatabaseWriteable) throws DbException
@@ -130,6 +138,18 @@ public class DbReader implements IDbReader
         UserData user = createObjectByCursor(cursor, mUserDataCreator);
         return user;
     }
+
+    @Nullable
+    @Override
+    public UserImage getUserImage(long user_id)
+    {
+        UserData userData = getUserById(user_id);
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_IMAGES,
+                FIELDS_P_IMAGES, ColsImages.KEY, userData.previewUrl);
+        UserImage image = createObjectByCursor(cursor, mUserImageCreator);
+        return image;
+    }
+
 
     public @Nullable List<UserProvider> getUserProvidersByUserId(long userId)
     {
@@ -269,6 +289,17 @@ public class DbReader implements IDbReader
                     c.getInt(11),
                     c.getString(12),
                     null);
+        }
+    };
+
+    private ObjectCreatorByCursor<UserImage> mUserImageCreator = new ObjectCreatorByCursor<UserImage>()
+    {
+        @Override
+        public UserImage createObject(Cursor c)
+        {
+            return new UserImage(c.getLong(0),
+                    c.getString(1),
+                    c.getBlob(2));
         }
     };
 

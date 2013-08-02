@@ -16,6 +16,7 @@ import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
 
@@ -35,8 +36,6 @@ import javax.annotation.Nullable;
  */
 public class SocialLoginActivity extends SherlockActivity
 {
-    final private @Nonnull String LOG_TAG = "vkontakte";
-
     static public final @Nonnull String PROVEDER_ID = "prov_id";
 
     private @Nonnull IBcConnector mBcConnector;
@@ -65,7 +64,6 @@ public class SocialLoginActivity extends SherlockActivity
 
         Bundle extras = getIntent().getExtras();
         pProviderId = extras.getString(PROVEDER_ID);
-        Log.d(LOG_TAG, "PROVIDER_ID = "+pProviderId);
 
         if(pProviderId.equals(RestParams.VK_PROVIDER)) {
             loadUrl(RestParams.URL_VK_LOGIN);
@@ -99,7 +97,7 @@ public class SocialLoginActivity extends SherlockActivity
         try {
             if(url==null)
                 return;
-            Log.d(LOG_TAG, "PARSE URL = "+url);
+//            Log.d(NavigationActivity.LOG_TAG, "SocialLogin PARSE URL = "+url);
             if(url.startsWith(RestParams.URL_VK_TOKEN) || url.startsWith(RestParams.URL_FB_TOKEN))
             {
                 if(!url.contains("error=")){
@@ -140,12 +138,8 @@ public class SocialLoginActivity extends SherlockActivity
                         @Override
                         public void handle()
                         {
-                            Log.i(LOG_TAG, "handling");
                             Intent intent=new Intent();
-//                            intent.putExtra(VkAccount.ACCOUNT_ACCESS_TOKEN, auth[0]);
-//                            intent.putExtra(VkAccount.ACCOUNT_USER_ID, Long.parseLong(auth[1]));
                             setResult(SherlockActivity.RESULT_OK, intent);
-
                             finish();
                         }
                     });
@@ -154,13 +148,7 @@ public class SocialLoginActivity extends SherlockActivity
                     finish();
                 }
             }
-//            if(url.startsWith(RestParams.URL_VK_AUTORITHE) || url.startsWith(RestParams.URL_FB_AUTORITHE))
-//            {
-//                Log.d(LOG_TAG, "GET AUTORITHED PAGE! ");
-//                finish();
-//            }
         } catch (Exception e) {
-            Log.d(LOG_TAG, "EXCEPTION! " + e.toString());
             e.printStackTrace();
         }
     }
@@ -200,7 +188,7 @@ public class SocialLoginActivity extends SherlockActivity
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(SocialLoginActivity.this);
                 spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
                 spref.commit();
-                Log.i("SESSION KEY", sessionKey);
+                Log.i(NavigationActivity.LOG_TAG, "SocialLogin SESSION KEY ="+sessionKey);
             }
         }
     }

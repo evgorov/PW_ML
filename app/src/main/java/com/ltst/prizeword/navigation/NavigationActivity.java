@@ -17,9 +17,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -30,7 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.login.RulesFragment;
+import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;
@@ -82,16 +80,13 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
-    private @Nonnull HeaderHolder mDrawerHeader;
+    private @Nonnull MainMenuHolder mDrawerMenu;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
-    private @Nonnull View mFooterView;
+    private @Nonnull List<NavigationDrawerItem> mDrawerItemsVisible;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
-
-    private @Nonnull Button mShowRulesBtn;
-    private @Nonnull Button mLogoutBtn;
 
     private int mCurrentSelectedFragmentPosition = 0;
 
@@ -106,12 +101,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         mBcConnector = new BcConnector(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
-        View v = getLayoutInflater().inflate(R.layout.header_listview, null);
-        mDrawerHeader = new HeaderHolder(this, v);
-        mDrawerHeader.imgPhoto.setOnClickListener(this);
-        mDrawerList.addHeaderView(v);
+        mDrawerList.addFooterView(vfooter);
         mDrawerAdapter = new NavigationDrawerListAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
         mFragmentManager = getSupportFragmentManager();
@@ -123,16 +117,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         checkLauchingAppByLink();
-        LayoutInflater inflater = LayoutInflater.from(this);
-        mFooterView = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
-        mDrawerList.addFooterView(mFooterView);
 
-        mShowRulesBtn = (Button)mFooterView.findViewById(R.id.menu_show_rules_btn);
-        mLogoutBtn = (Button)v.findViewById(R.id.header_listview_logout_btn);
-        mShowRulesBtn.setOnClickListener(this);
-        mLogoutBtn.setOnClickListener(this);
-        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        mDrawerMenu = new MainMenuHolder(this, vfooter);
+        mDrawerMenu.mImage.setOnClickListener(this);
+        mDrawerMenu.mMyCrossword.setOnClickListener(this);
+        mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
+        mDrawerMenu.mLogoutBtn.setOnClickListener(this);
+        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -158,7 +149,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 e.printStackTrace();
             }
             // Меняем аватарку на панеле;
-             mDrawerHeader.setImage(photo);
+             mDrawerMenu.setImage(photo);
             // Отправляем новую аватарку насервер;
             mBitmapAsyncTask = new BitmapAsyncTask(this);
             mBitmapAsyncTask.execute(photo);
@@ -167,7 +158,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             // получаем фото с камеры;
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             // Меняем аватарку на панеле;
-            mDrawerHeader.setImage(photo);
+            mDrawerMenu.setImage(photo);
             // Отправляем новую аватарку насервер;
             mBitmapAsyncTask = new BitmapAsyncTask(this);
             mBitmapAsyncTask.execute(photo);
@@ -222,20 +213,23 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public List<NavigationDrawerItem> getNavigationDrawerItems()
     {
+        if(mDrawerItemsVisible == null){
+            mDrawerItemsVisible = new ArrayList<NavigationDrawerItem>();
+        }
         if (mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             // login, auth fragments
-            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
 
             // crossword
-            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, false);
+            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
         }
-        return mDrawerItems;
+        return mDrawerItemsVisible;
     }
 
     // ==== IFragmentsHolderActivity =================================
@@ -302,6 +296,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             NavigationDrawerItem item = new NavigationDrawerItem(title, classname, hidden);
             mDrawerItems.add(item);
+            if(!hidden){
+                mDrawerItemsVisible.add(item);
+            }
         }
     }
 
@@ -400,6 +397,9 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         switch (view.getId())
         {
+            case R.id.menu_mypuzzle_btn:
+                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                break;
             case R.id.menu_show_rules_btn:
                 @Nonnull Intent intent = RulesFragment.createIntent(getContext());
                 getContext().startActivity(intent);
@@ -435,7 +435,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public void reloadUserData(){
         // загружаем данные о пользователе с сервера;
-        mUserDataModel.loadUserData(mTaskHandlerLoadUserData);
+        mUserDataModel.loadUserDataFromInternet(mTaskHandlerLoadUserData);
     }
 
     private void resetUserData(byte[] userPic){
@@ -462,11 +462,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             UserData data = mUserDataModel.getUserData();
             if( data != null ){
-                mDrawerHeader.tvNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
-                mDrawerHeader.tvPoints.setText(String.valueOf(data.highScore));
+                mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name +" "+data.surname : data.surname);
+                mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
+                mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
+                mDrawerMenu.mPosition.setText(String.valueOf(data.position));
                 loadAvatar(data.previewUrl);
             } else {
-                mDrawerHeader.clean();
+                mDrawerMenu.clean();
             }
         }
     };
@@ -487,7 +489,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                     throw new RuntimeException(e);
                 }
             }
-            mDrawerHeader.setImage(bitmap);
+            mDrawerMenu.setImage(bitmap);
         }
     };
 
@@ -500,7 +502,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             if( data != null ){
 //                loadAvatar(data.previewUrl);
             } else {
-//                mDrawerHeader.setImage(null);
+//                mDrawerMenu.setImage(null);
             }
             reloadUserData();
         }

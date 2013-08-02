@@ -1,4 +1,4 @@
-package com.ltst.prizeword.login;
+package com.ltst.prizeword.login.view;
 
 
 import android.content.Context;

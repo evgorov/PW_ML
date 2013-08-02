@@ -3,4 +3,8 @@
     <color name="hint_color">#c2b8af</color>
     <color name="header_text_color">#FFFFFF</color>
     <color name="cursor_color">#ffffff</color>
+    <color name="menu_score_color">#e7b217</color>
+    <color name="menu_rating_color">#3fad03</color>
+    <color name="menu_text_color">#9e9287</color>
+    <color name="menu_title_text_color">#ffffff</color>
 </resources>
