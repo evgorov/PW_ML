@@ -123,7 +123,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
-        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -133,6 +132,10 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         });
 
+        // show login fragment and try load user data by session_key;
+//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+        reloadUserData();
     }
 
     @Override
@@ -467,8 +470,10 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
                 loadAvatar(data.previewUrl);
+                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else {
                 mDrawerMenu.clean();
+                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
             }
         }
     };
