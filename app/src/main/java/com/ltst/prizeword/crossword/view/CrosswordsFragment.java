@@ -17,11 +17,8 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.crossword.model.PuzzleSetModel.PuzzleSetType;
-import com.ltst.prizeword.login.RulesFragment;
 
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.List;

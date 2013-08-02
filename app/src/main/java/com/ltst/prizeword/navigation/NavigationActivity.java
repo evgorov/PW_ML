@@ -28,7 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.login.RulesFragment;
+import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.view.AuthorizationFragment;

@@ -3,11 +3,13 @@ package com.ltst.prizeword.login.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.dowloading.LoadImageTask;
+import com.ltst.prizeword.navigation.NavigationActivity;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -46,6 +48,7 @@ public class UserDataModel implements IUserDataModel {
     public void loadUserDataFromInternet(@Nonnull IListenerVoid handler) {
 
         final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        Log.d(NavigationActivity.LOG_TAG, "RELOAD USERDATA SessionKey = "+sessionKey);
         Updater session = new Updater() {
             @Nonnull
             @Override
@@ -66,6 +69,7 @@ public class UserDataModel implements IUserDataModel {
                     mUserData = null;
                     return;
                 }
+                @Nonnull UserData userData = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
                 mUserData = result.getParcelable(LoadUserDataFromInternetTask.BF_USER_DATA);
             }
         };

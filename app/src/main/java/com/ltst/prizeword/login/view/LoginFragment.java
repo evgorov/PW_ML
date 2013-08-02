@@ -73,7 +73,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         @Nonnull Intent intent;
         switch (v.getId())
         {
-
             case R.id.enter_with_fb_btn:
                 //??? facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
@@ -91,11 +90,9 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 break;
             case R.id.enter_to_registration_btn:
                 mFragmentHolder.selectNavigationFragmentByClassname(RegisterFragment.FRAGMENT_CLASSNAME);
-                //mFragmentHolder.selectNavigationFragmentByClassname(RecoveryPassFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
-
         }
     }
 
