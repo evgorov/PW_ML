@@ -425,6 +425,9 @@ public class RestClient implements IRestClient
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.MODE, RestParams.MODE_SHORT);
+        urlVariables.put(RestParams.YEAR, 2013);
+        urlVariables.put(RestParams.MONTH, 7);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);

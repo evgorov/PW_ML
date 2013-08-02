@@ -12,6 +12,7 @@ import android.view.View;
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -32,12 +33,15 @@ public class PuzzleManager
     private float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
 
-    public PuzzleManager(@Nonnull Context context, @Nonnull PuzzleResources info, @Nonnull Rect puzzleViewRect)
+    public PuzzleManager(@Nonnull Context context,
+                         @Nonnull PuzzleResources info,
+                         @Nonnull Rect puzzleViewRect,
+                         @Nonnull IListener<Rect> invalidateHandler)
     {
         mContext = context;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mFieldDrawer = new PuzzleFieldDrawer(context, info);
+        mFieldDrawer = new PuzzleFieldDrawer(context, info, invalidateHandler);
         mFieldDrawer.loadResources();
         mMatrix = new Matrix();
         setPuzzleViewRect(puzzleViewRect);

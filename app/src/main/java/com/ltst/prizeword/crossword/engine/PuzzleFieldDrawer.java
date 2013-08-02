@@ -13,6 +13,8 @@ import android.graphics.drawable.NinePatchDrawable;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
+import org.omich.velo.handlers.IListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import javax.annotation.Nonnull;
 public class PuzzleFieldDrawer
 {
     private @Nonnull BitmapManager mBitmapManager;
+    private @Nonnull LetterBitmapManager mLetterBitmapManager;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleResources mInfo;
 
@@ -36,12 +39,15 @@ public class PuzzleFieldDrawer
     private int mFontSize;
     private int mTextHeight;
     private @Nonnull Paint mPaint;
+    private IListener<Rect> mInvalidateListener;
 
 
-    public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResources info)
+    public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResources info,
+                             @Nonnull IListener<Rect> invalidateListener)
     {
         mContext = context;
         mInfo = info;
+        mInvalidateListener = invalidateListener;
         mBitmapManager = new BitmapManager(context);
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
         measureDimensions();
@@ -64,6 +70,7 @@ public class PuzzleFieldDrawer
         int puzzleWidth = 2 * (padding + 2 * framePadding) + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
         int puzzleHeight = 2 * (padding + 2 * framePadding) + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
         mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
+
     }
 
     private void measureText()
@@ -94,10 +101,13 @@ public class PuzzleFieldDrawer
 
     public void loadResources()
     {
-        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile());
-        mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes());
-        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty());
-        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty());
+        mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), mInvalidateListener, mPuzzleRect);
+        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), mInvalidateListener, mPuzzleRect);
+        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), mInvalidateListener, mPuzzleRect);
+        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), mInvalidateListener, mPuzzleRect);
+//        mLetterBitmapManager = new LetterBitmapManager(mContext, PuzzleResources.getLetterTilesInput(), mTileWidth, mTileHeight);
+//        mLetterBitmapManager.addTileResource(mInfo.getLetterTilesCorrect(), mTileWidth, mTileHeight);
+//        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight);
     }
 
     public void drawBackground(@Nonnull Canvas canvas)
@@ -155,7 +165,7 @@ public class PuzzleFieldDrawer
                         {
                             if(!mBitmapManager.hasReasource(arrowResource))
                             {
-                                mBitmapManager.addBitmap(arrowResource);
+                                mBitmapManager.addBitmap(arrowResource, mInvalidateListener, mPuzzleRect);
                             }
                             mBitmapManager.drawResource(arrowResource, canvas, rect);
                         }
@@ -164,7 +174,7 @@ public class PuzzleFieldDrawer
                         {
                             if(!mBitmapManager.hasReasource(arrowResource))
                             {
-                                mBitmapManager.addBitmap(arrowResource);
+                                mBitmapManager.addBitmap(arrowResource, mInvalidateListener, mPuzzleRect);
                             }
                             mBitmapManager.drawResource(arrowResource, canvas, rect);
                         }

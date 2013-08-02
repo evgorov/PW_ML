@@ -1,10 +1,10 @@
 package com.ltst.prizeword.crossword.engine;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+
 
 import java.util.HashMap;
 
@@ -13,8 +13,7 @@ import javax.annotation.Nullable;
 
 public class LetterBitmapManager
 {
-    private @Nonnull TileBitmapDecoder mDecoder;
-    private static final @Nonnull String mAlphabet = "АБВГДЕЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ- ";
+    private static final @Nonnull String mAlphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ- ";
     private @Nonnull HashMap<String, BitmapEntity> mLetters;
     private @Nonnull Paint mPaint;
     private @Nonnull Context mContext;
@@ -22,7 +21,6 @@ public class LetterBitmapManager
     public LetterBitmapManager(@Nonnull Context context, int lettersResource, int letterWidth, int letterHeight)
     {
         mContext = context;
-        mDecoder = new TileBitmapDecoder(context, lettersResource, letterWidth, letterHeight);
         mLetters = new HashMap<String, BitmapEntity>();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -32,27 +30,19 @@ public class LetterBitmapManager
     private void decodeBitmaps()
     {
         int length = mAlphabet.length();
-        int tilesInColumn  = mDecoder.getTileColumns();
         for (int i = 0; i < length; i++)
         {
             char letter = mAlphabet.charAt(i);
-            int row = i/(tilesInColumn + 1);
-            int column = i - row * tilesInColumn;
-            @Nullable Bitmap bm = mDecoder.decodeTile(column, row);
-            if (bm != null)
-            {
-                BitmapEntity entity = new BitmapEntity(bm);
-                String key = getLetterResourceKey(mDecoder.getResourceId(), letter);
-                mLetters.put(key, entity);
-            }
+//                BitmapEntity entity = new BitmapEntity(bm);
+//                String key = getLetterResourceKey(mDecoder.getResourceId(), letter);
+//                mLetters.put(key, entity);
         }
     }
 
     public void addTileResource(int lettersResource, int letterWidth, int letterHeight)
     {
-        mDecoder.recycle();
-        mDecoder = new TileBitmapDecoder(mContext, lettersResource, letterWidth, letterHeight);
-        decodeBitmaps();
+//        mDecoder = new BitmapDecoder(mContext, lettersResource, letterWidth, letterHeight);
+//        decodeBitmaps();
     }
 
     public void drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)
@@ -67,7 +57,7 @@ public class LetterBitmapManager
 
     private @Nonnull String getLetterResourceKey(int resource, char letter)
     {
-        return String.valueOf(resource) + "_" + String.valueOf(Character.getNumericValue(letter));
+        return String.valueOf(resource) + "_" + letter;
     }
 
     public void recycle()
@@ -76,7 +66,6 @@ public class LetterBitmapManager
         {
             bitmapEntity.recycle();
         }
-        mDecoder.recycle();
     }
 
     @Override

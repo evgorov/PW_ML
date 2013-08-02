@@ -62,7 +62,17 @@ public class PuzzleView extends View
     {
         if (mViewScreenRect != null)
         {
-            mPuzzleManager = new PuzzleManager(mContext, info, mViewScreenRect);
+            mPuzzleManager = new PuzzleManager(mContext, info, mViewScreenRect, new IListener<Rect>()
+            {
+                @Override
+                public void handle(@Nullable Rect rect)
+                {
+                    if (rect != null)
+                    {
+                        invalidate(rect);
+                    }
+                }
+            });
             invalidate(mViewScreenRect);
         }
     }

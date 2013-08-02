@@ -36,6 +36,10 @@ public class RestParams
     public static final @Nonnull String CITY = "city";
     public static final @Nonnull String PASSWORD_TOKEN = "token";
     public static final @Nonnull String USER_PUZZLE_IDS = "ids";
+    public static final @Nonnull String YEAR = "year";
+    public static final @Nonnull String MONTH = "month";
+    public static final @Nonnull String MODE = "mode";
+    public static final @Nonnull String MODE_SHORT = "short";
 
     // == API URLS ==
 
@@ -79,7 +83,11 @@ public class RestParams
 
     // ==== Puzzle URLS ====
 
-    public static final @Nonnull String URL_GET_PUBLISHED_SETS_SHORT = URL_API + "/published_sets" + addParam(SESSION_KEY, true) + SYM_AND_PARAM + "mode=short";
+    public static final @Nonnull String URL_GET_PUBLISHED_SETS_SHORT = URL_API + "/published_sets"
+            + addParam(SESSION_KEY, true)
+            + addParam(MODE, false)
+            + addParam(MONTH, false)
+            + addParam(YEAR, false);
     public static final @Nonnull String URL_GET_USER_PUZZLES = URL_API + "/user_puzzles" + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
     // ================

@@ -50,11 +50,8 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
+
         super.onAttach(activity);
-        mPuzzleSetModel.updateDataByInternet(updateHandler);
-        mPuzzleSetModel.updateDataByDb(updateHandler);
     }
 
     @Override
@@ -62,9 +59,17 @@ public class CrosswordsFragment extends SherlockFragment
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
         mCrossWordButton = (Button) v.findViewById(R.id.view_crossword);
-
-
         return v;
+    }
+
+    @Override
+    public void onResume()
+    {
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
+        mPuzzleSetModel.updateDataByInternet(updateHandler);
+        mPuzzleSetModel.updateDataByDb(updateHandler);
+        super.onResume();
     }
 
     @Override

@@ -1,11 +1,17 @@
 package com.ltst.prizeword.crossword.engine;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+
+import com.ltst.prizeword.tools.decoding.BitmapDecoderTask;
+
+import org.omich.velo.handlers.IListener;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,13 +38,17 @@ public class BitmapEntity
         height = bitmap.getHeight();
     }
 
-    public void loadResource(@Nonnull Resources res)
+    public void loadResource(@Nonnull Context context)
     {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        mBitmap = BitmapFactory.decodeResource(res, resourceId, options);
+        mBitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
         mIsRecycled = false;
-        width = options.outWidth;
-        height = options.outHeight;
+        width = mBitmap.getWidth();
+        height = mBitmap.getHeight();
+    }
+
+    public void setBitmap(@Nullable Bitmap bitmap)
+    {
+        mBitmap = bitmap;
     }
 
     public void draw(@Nonnull Canvas canvas, float posX, float posY, @Nonnull Paint paint)
@@ -72,4 +82,6 @@ public class BitmapEntity
         recycle();
         super.finalize();
     }
+
+
 }

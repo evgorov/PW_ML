@@ -80,6 +80,7 @@ public class OneCrosswordActivity extends SherlockActivity
         super.onStop();
     }
 
+
     @Override
     protected void onDestroy()
     {
