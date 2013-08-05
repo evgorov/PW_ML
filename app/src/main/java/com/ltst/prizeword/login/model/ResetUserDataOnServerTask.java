@@ -28,8 +28,6 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
     public static final @Nonnull String BF_USER_DATA = LoadUserDataFromInternetTask.BF_USER_DATA;
     public static final @Nonnull String BF_USER_PIC = "ResetUserDataOnServerTask.userPic";
     public static final @Nonnull String BF_USER_NAME = "ResetUserDataOnServerTask.userName";
-    public static final @Nonnull String BF_MERGE_SESSION_KEY1 = "LoadUserDataFromInternetTask.mergeSessionKey1";
-    public static final @Nonnull String BF_MERGE_SESSION_KEY2 = "LoadUserDataFromInternetTask.mergeSessionKey2";
 
     public static @Nonnull
     Intent createUserPicIntent(@Nonnull String sessionKey, byte[] userPic)
@@ -46,15 +44,6 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_USER_NAME, name);
-        return intent;
-    }
-
-    public static @Nonnull
-    Intent createIntentMergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2)
-    {
-        Intent intent = new Intent();
-        intent.putExtra(BF_MERGE_SESSION_KEY1, sessionKey1);
-        intent.putExtra(BF_MERGE_SESSION_KEY2, sessionKey2);
         return intent;
     }
 

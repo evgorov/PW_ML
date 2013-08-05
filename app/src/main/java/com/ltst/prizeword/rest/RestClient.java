@@ -22,6 +22,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -351,11 +352,32 @@ public class RestClient implements IRestClient
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY1, sessionKey1);
         urlVariables.put(RestParams.SESSION_KEY2, sessionKey2);
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
+
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        String response = restTemplate.exchange(RestParams.URL_POST_LINK_ACCOUNTS, HttpMethod.POST, requestEntity, String.class, urlVariables).getBody();
-        HttpStatus status = HttpStatus.valueOf(404);
+
+        @Nullable ResponseEntity<String> response = null;
+        @Nonnull HttpStatus status = null;
+        try
+        {
+            response = restTemplate.exchange(RestParams.URL_POST_LINK_ACCOUNTS, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e){
+
+        }
+        finally
+        {
+            if(response == null)
+                status = HttpStatus.valueOf(RestParams.SC_ERROR);
+            else
+                status = response.getStatusCode();
+        }
         return status;
 
     }

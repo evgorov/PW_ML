@@ -179,9 +179,11 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
                 case REQUEST_LOGIN_VK:
                 case REQUEST_LOGIN_FB:
-                    String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
                     // @TODO замержить 2 аккаунта в один;
-//                    reloadUserData();
+                    mUserDataModel.mergeAccounts(sessionKey1,sessionKey2, mTaskHandlerMergeAccounts);
                 break;
             }
         }
@@ -579,6 +581,22 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mDrawerMenu.mFacebookBtn.setEnabled(true);
                     mDrawerMenu.mFacebookBtn.setChecked(false);
                 }
+            }
+        }
+    };
+
+    private IListenerVoid mTaskHandlerMergeAccounts = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            int statusCode = mUserDataModel.getStatusCodeMergeAccounts();
+            if(statusCode == RestParams.SC_SUCCESS){
+
+            }
+            else
+            {
+
             }
         }
     };

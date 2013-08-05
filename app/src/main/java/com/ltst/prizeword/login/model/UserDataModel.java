@@ -10,6 +10,7 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -31,6 +32,7 @@ public class UserDataModel implements IUserDataModel {
     private @Nonnull UserData mUserData;
     private @Nonnull byte[] mUserPic;
     private @Nullable ArrayList<UserProvider> mProviders;
+    private int mStatusCodeMergeAccounts;
 
     public UserDataModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector) {
         this.mContext = context;
@@ -50,6 +52,10 @@ public class UserDataModel implements IUserDataModel {
     @Nullable
     public ArrayList<UserProvider> getProviders() {
         return mProviders;
+    }
+
+    public int getStatusCodeMergeAccounts() {
+        return mStatusCodeMergeAccounts;
     }
 
     @Override
@@ -241,21 +247,23 @@ public class UserDataModel implements IUserDataModel {
             @Nonnull
             @Override
             protected Intent createIntent() {
-                return ResetUserDataOnServerTask.createIntentMergeAccounts(sessionKey1, sessionKey2);
+                return MergeAccountsTask.createIntentMergeAccounts(sessionKey1, sessionKey2);
             }
 
             @Nonnull
             @Override
             protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-                return ResetUserDataOnServerTask.class;
+                return MergeAccountsTask.class;
             }
 
             @Override
             protected void handleData(@Nullable Bundle result)
             {
                 if (result == null){
+                    mStatusCodeMergeAccounts = RestParams.SC_ERROR;
                     return;
                 }
+                mStatusCodeMergeAccounts = result.getInt(MergeAccountsTask.BF_STATUS_CODE);
             }
         };
         session.update(handler);
