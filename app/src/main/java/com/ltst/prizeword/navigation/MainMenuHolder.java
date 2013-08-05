@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
 
@@ -23,9 +24,14 @@ public class MainMenuHolder {
     public @Nonnull TextView mNickname;
     public @Nonnull TextView mHightRecord;
 
-    public @Nonnull Button mMyCrossword;
-    public @Nonnull Button mShowRulesBtn;
-    public @Nonnull Button mLogoutBtn;
+    public @Nonnull View mMyCrossword;
+    public @Nonnull View mShowRulesBtn;
+    public @Nonnull View mLogoutBtn;
+
+    public @Nonnull ToggleButton mVkontakteBtn;
+    public @Nonnull ToggleButton mFacebookBtn;
+    public @Nonnull ToggleButton mNotificationBtn;
+
 
     public @Nonnull TextView mScore;
     public @Nonnull TextView mPosition;
@@ -37,13 +43,18 @@ public class MainMenuHolder {
         this.mImage = (ImageView) view.findViewById(R.id.header_listview_photo_img);
         this.mNickname = (TextView) view.findViewById(R.id.header_listview_nickname_tview);
         this.mHightRecord = (TextView) view.findViewById(R.id.header_listview_points_tview);
-        this.mLogoutBtn = (Button) view.findViewById(R.id.header_listview_logout_btn);
+        this.mLogoutBtn = (View) view.findViewById(R.id.header_listview_logout_btn);
 
         this.mMonth = (TextView) view.findViewById(R.id.menu_current_month_txt);
-        this.mMyCrossword = (Button) view.findViewById(R.id.menu_mypuzzle_btn);
-        this.mShowRulesBtn = (Button) view.findViewById(R.id.menu_show_rules_btn);
+        this.mMyCrossword = (View) view.findViewById(R.id.menu_mypuzzle_btn);
+        this.mShowRulesBtn = (View) view.findViewById(R.id.menu_show_rules_btn);
         this.mScore = (TextView) view.findViewById(R.id.menu_pride_score_txt);
         this.mPosition = (TextView) view.findViewById(R.id.menu_pride_position_txt);
+
+        this.mVkontakteBtn = (ToggleButton) view.findViewById(R.id.menu_vk_switcher);
+        this.mFacebookBtn = (ToggleButton) view.findViewById(R.id.menu_fb_switcher);
+        this.mNotificationBtn = (ToggleButton) view.findViewById(R.id.menu_notification_switcher);
+
 
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);

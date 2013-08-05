@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.db.SQLiteHelper;
 import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
@@ -38,7 +39,6 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
-//        android.util.Log.d(NavigationActivity.LOG_TAG, "EXECUTE LOAD!");
         Bundle extras = env.extras;
         if(extras == null)
             return null;
@@ -115,7 +115,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
     public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env, @Nonnull String email)
     {
         Bundle bundle = new Bundle();
-        UserData data = env.dbw.getUserByEmail(email);
+        UserData data = env.dbw.getUserById(SQLiteHelper.ID_USER);
         bundle.putParcelable(BF_USER_DATA, data);
         return bundle;
     }

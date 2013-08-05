@@ -119,15 +119,15 @@ public class DbReader implements IDbReader
         mDb.close();
     }
 
-    @Nullable
-    @Override
-    public UserData getUserByEmail(@Nonnull String email)
-    {
-        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
-                FIELDS_P_USER, ColsUsers.EMAIL, email);
-        UserData user = createObjectByCursor(cursor, mUserDataCreator);
-        return user;
-    }
+//    @Nullable
+//    @Override
+//    public UserData getUserByEmail(@Nonnull String email)
+//    {
+//        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
+//                FIELDS_P_USER, ColsUsers.EMAIL, email);
+//        UserData user = createObjectByCursor(cursor, mUserDataCreator);
+//        return user;
+//    }
 
     @Nullable
     @Override
@@ -151,11 +151,11 @@ public class DbReader implements IDbReader
     }
 
 
-    public @Nullable List<UserProvider> getUserProvidersByUserId(long userId)
+    public @Nullable ArrayList<UserProvider> getUserProvidersByUserId(long userId)
     {
         final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PROVIDERS, FIELDS_P_USER_PROVIDERS,
                 ColsProviders.USER_ID, userId);
-        List<UserProvider> providerList = createTypedListByCursor(cursor, new ObjectCreatorByCursor<UserProvider>()
+        ArrayList<UserProvider> providerList = createTypedListByCursor(cursor, new ObjectCreatorByCursor<UserProvider>()
         {
             @Override
             public UserProvider createObject(Cursor c)
@@ -349,14 +349,14 @@ public class DbReader implements IDbReader
     //=========================================================================
 
     @Nullable
-    private static <T> List<T> createTypedListByCursor(@Nullable Cursor cursor, final @Nonnull ObjectCreatorByCursor<T> creator)
+    private static <T> ArrayList<T> createTypedListByCursor(@Nullable Cursor cursor, final @Nonnull ObjectCreatorByCursor<T> creator)
     {
         if (cursor == null)
         {
             return null;
         }
 
-        final List<T> list = new ArrayList<T>(cursor.getCount());
+        final ArrayList<T> list = new ArrayList<T>(cursor.getCount());
         try
         {
             DbHelper.iterateCursor(cursor, new DbHelper.CursorIterator()

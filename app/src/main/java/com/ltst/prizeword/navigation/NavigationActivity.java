@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.login.model.UserProvider;
 import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
@@ -39,6 +41,7 @@ import com.ltst.prizeword.login.view.RegisterFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
+import com.ltst.prizeword.login.view.SocialLoginActivity;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -64,14 +67,17 @@ public class NavigationActivity extends SherlockFragmentActivity
         INavigationDrawerHolder,
         IAutorization,
         View.OnClickListener,
+        CompoundButton.OnCheckedChangeListener,
         IReloadUserData,
         IBitmapAsyncTask,
         ITouchInterface
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
-    private int RESULT_LOAD_IMAGE = 1;
-    private int REQUEST_MAKE_PHOTO = 2;
+    private final int RESULT_LOAD_IMAGE = 1;
+    private final int REQUEST_MAKE_PHOTO = 2;
+    public final static int REQUEST_LOGIN_VK = 3;
+    public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
 
@@ -122,7 +128,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
-        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        mDrawerMenu.mVkontakteBtn.setOnCheckedChangeListener(this);
+        mDrawerMenu.mFacebookBtn.setOnCheckedChangeListener(this);
+        mDrawerMenu.mNotificationBtn.setOnCheckedChangeListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -132,35 +140,63 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         });
 
+        // show login fragment and try load user data by session_key;
+//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+        selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+        reloadUserData();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case RESULT_LOAD_IMAGE: {
 //            // Получаем картинку из галереи;
-            Uri chosenImageUri = data.getData();
-            Bitmap photo = null;
-            try {
-                photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    Uri chosenImageUri = data.getData();
+                    Bitmap photo = null;
+                    try {
+                        photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // Меняем аватарку на панеле;
+                    mDrawerMenu.setImage(photo);
+                    // Отправляем новую аватарку насервер;
+                    mBitmapAsyncTask = new BitmapAsyncTask(this);
+                    mBitmapAsyncTask.execute(photo);
+                }
+                break;
+                case REQUEST_MAKE_PHOTO:{
+                    // получаем фото с камеры;
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Меняем аватарку на панеле;
+                    mDrawerMenu.setImage(photo);
+                    // Отправляем новую аватарку насервер;
+                    mBitmapAsyncTask = new BitmapAsyncTask(this);
+                    mBitmapAsyncTask.execute(photo);
+                }
+                break;
+                case REQUEST_LOGIN_VK:
+                case REQUEST_LOGIN_FB:
+                    reloadUserData();
+                break;
             }
-            // Меняем аватарку на панеле;
-             mDrawerMenu.setImage(photo);
-            // Отправляем новую аватарку насервер;
-            mBitmapAsyncTask = new BitmapAsyncTask(this);
-            mBitmapAsyncTask.execute(photo);
         }
-        if(requestCode == REQUEST_MAKE_PHOTO && resultCode == RESULT_OK){
-            // получаем фото с камеры;
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // Меняем аватарку на панеле;
-            mDrawerMenu.setImage(photo);
-            // Отправляем новую аватарку насервер;
-            mBitmapAsyncTask = new BitmapAsyncTask(this);
-            mBitmapAsyncTask.execute(photo);
+        else {
+            switch (requestCode){
+                case REQUEST_LOGIN_VK: {
+                    mDrawerMenu.mVkontakteBtn.setChecked(false);
+                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
+                }
+                case REQUEST_LOGIN_FB: {
+                    mDrawerMenu.mFacebookBtn.setChecked(false);
+                    mDrawerMenu.mFacebookBtn.setEnabled(true);
+                }
+                default:
+                    break;
+            }
         }
     }
 
@@ -437,6 +473,11 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.loadUserDataFromInternet(mTaskHandlerLoadUserData);
     }
 
+    private void reloadProviders(long user_id){
+        // загружаем провайдеры;
+        mUserDataModel.loadProvidersFromDB(user_id, mTaskHandlerLoadProviders);
+    }
+
     private void resetUserData(byte[] userPic){
         // изменить аватарку;
         mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
@@ -466,8 +507,11 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
                 loadAvatar(data.previewUrl);
+                reloadProviders(data.id);
+                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else {
                 mDrawerMenu.clean();
+                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
             }
         }
     };
@@ -515,6 +559,38 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     };
 
+    private IListenerVoid mTaskHandlerLoadProviders = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            // Получили список провайдеров, выставляем значение свитчеров;
+            @Nullable ArrayList<UserProvider> providers = mUserDataModel.getProviders();
+            @Nonnull List<String> names = new ArrayList<String>();
+            if(providers != null){
+                for(UserProvider provider: providers){
+                    names.add(provider.name);
+                }
+                if(names.contains(RestParams.VK_PROVIDER)){
+                    mDrawerMenu.mVkontakteBtn.setEnabled(false);
+                    mDrawerMenu.mVkontakteBtn.setChecked(true);
+                }
+                else {
+                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
+                    mDrawerMenu.mVkontakteBtn.setChecked(false);
+                }
+                if(names.contains(RestParams.FB_PROVIDER)){
+                    mDrawerMenu.mFacebookBtn.setEnabled(false);
+                    mDrawerMenu.mFacebookBtn.setChecked(true);
+                }
+                else {
+                    mDrawerMenu.mFacebookBtn.setEnabled(true);
+                    mDrawerMenu.mFacebookBtn.setChecked(false);
+                }
+            }
+        }
+    };
+
     @Override
     public void bitmapConvertToByte(@Nullable byte[] buffer) {
         // Отправляем новую аватарку насервер;
@@ -533,5 +609,46 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             default: break;
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
+
+        @Nonnull Intent intent;
+        if(state){
+            switch (compoundButton.getId()){
+                case R.id.menu_vk_switcher:
+                    if(mDrawerMenu.mVkontakteBtn.isEnabled()){
+                        intent = new Intent(this, SocialLoginActivity.class);
+                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
+                        startActivityForResult(intent, REQUEST_LOGIN_VK);
+                    }
+                    break;
+                case R.id.menu_fb_switcher:
+                    if(mDrawerMenu.mFacebookBtn.isEnabled()){
+                        intent = new Intent(this, SocialLoginActivity.class);
+                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
+                        startActivityForResult(intent, REQUEST_LOGIN_FB);
+                    }
+                    break;
+                case R.id.menu_notification_switcher:
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            switch (compoundButton.getId()){
+                case R.id.menu_vk_switcher:
+                    break;
+                case R.id.menu_fb_switcher:
+                    break;
+                case R.id.menu_notification_switcher:
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 }
