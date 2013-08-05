@@ -8,13 +8,13 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
@@ -41,6 +41,7 @@ public class SocialLoginActivity extends SherlockActivity
     private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull WebView mWebView;
+    private @Nonnull ProgressBar mProgressBar;
 
     private @Nonnull String pProviderId;
 
@@ -53,8 +54,11 @@ public class SocialLoginActivity extends SherlockActivity
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.clearCache(true);
 
+        mProgressBar = (ProgressBar) this.findViewById(R.id.activity_webview_progressbar);
+        mProgressBar.setVisibility(ProgressBar.GONE);
+
         //Чтобы получать уведомления об окончании загрузки страницы
-        mWebView.setWebViewClient(new VkWebViewClient());
+        mWebView.setWebViewClient(new SocialWebViewClient());
 
         //otherwise CookieManager will fall with java.lang.IllegalStateException: CookieSyncManager::createInstance() needs to be called before CookieSyncManager::getInstance()
         CookieSyncManager.createInstance(this);
@@ -76,16 +80,18 @@ public class SocialLoginActivity extends SherlockActivity
 
     }
 
-    private class VkWebViewClient extends WebViewClient {
+    private class SocialWebViewClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            mProgressBar.setVisibility(ProgressBar.VISIBLE);
             parseUrl(url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            mProgressBar.setVisibility(ProgressBar.GONE);
         }
     }
 

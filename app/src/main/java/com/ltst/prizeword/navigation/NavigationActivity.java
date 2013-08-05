@@ -481,12 +481,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.resetUserImage(userPic, mTaskHandlerResetUserPic);
     }
 
-    private void resetUserData(@Nonnull String userName){
-        // изменить имя пользователя;
-        mUserDataModel.resetUserName(userName, mTaskHandlerResetUserName);
-    }
-
-
     private void reloadUserImageFromServer(@Nonnull String url){
         // загружаем аватарку с сервера;
         mUserDataModel.loadUserImageFromServer(url, mTaskHandlerLoadUserImageFromServer);
@@ -552,15 +546,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             } else {
                 reloadUserImageFromServer(data.previewUrl);
             }
- //            reloadUserData();
-        }
-    };
-
-    private IListenerVoid mTaskHandlerResetUserName = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
         }
     };
 
