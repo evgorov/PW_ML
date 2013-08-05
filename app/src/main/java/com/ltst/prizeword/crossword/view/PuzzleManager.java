@@ -3,14 +3,12 @@ package com.ltst.prizeword.crossword.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
-import android.os.Build;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
-import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
@@ -79,7 +77,16 @@ public class PuzzleManager
         anim.start();
 
         mScaled = !mScaled;
-//        mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+    }
+
+    public void onTapEvent(@Nonnull PointF point)
+    {
+        if(!mScaled && mFocusViewPoint == null)
+            return;
+        float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
+        float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
+        point.set(puzzleX, puzzleY);
+        mFieldDrawer.convertPointFromPuzzleCoordsToTilesAreaCoords(point);
     }
 
     private void configureMatrix()

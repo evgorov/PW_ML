@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -225,6 +226,20 @@ public class PuzzleFieldDrawer
             p.y = halfHeight + mDrawingOffsetY;
         if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
             p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
+    }
+
+    public void convertPointFromPuzzleCoordsToTilesAreaCoords(@Nonnull PointF p)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        int framePadding = mResources.getFramePadding(mContext.getResources());
+        int padding = mResources.getPadding();
+        float x = p.x - (mDrawingOffsetX + 2 * framePadding + padding);
+        float y = p.y - (mDrawingOffsetY + 2 * framePadding + padding);
+        p.set(x, y);
     }
 
     // ====== drawing =====================================

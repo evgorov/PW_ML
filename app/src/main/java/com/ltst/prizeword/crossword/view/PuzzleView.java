@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -13,7 +14,6 @@ import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
-import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -160,7 +160,12 @@ public class PuzzleView extends View
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e)
         {
-            return super.onSingleTapConfirmed(e);
+            PointF p = new PointF(e.getX(), e.getY());
+            if (mPuzzleManager != null && mViewScreenRect != null)
+            {
+                mPuzzleManager.onTapEvent(p);
+            }
+            return true;
         }
     }
 
