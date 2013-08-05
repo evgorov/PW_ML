@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 public interface IDbWriter extends IDbReader
 {
     void putUser(@Nonnull UserData user, @Nullable List<UserProvider> providers);
-    void putUserImage(int user_id, @Nullable byte[] buffer);
+    void putUserImage(@Nullable byte[] buffer);
 
     void putPuzzleSetList(@Nonnull List<PuzzleSet> list);
     void putPuzzleSet(@Nonnull PuzzleSet set);

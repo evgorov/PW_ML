@@ -23,6 +23,10 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
     public static final @Nonnull String BF_IMAGE_DATA = "LoadUserDataFromDataBase.imageData";
     public static final @Nonnull String BF_USER_ID = "LoadUserDataFromDataBase.userId";
     public static final @Nonnull String BF_PROVIDERS = "LoadUserDataFromDataBase.userProviders";
+    private static final @Nonnull String BF_STATUS = "LoadUserDataFromDataBase.status";
+
+    private static final int STATUS_LOAD_PROVIDERS = 1;
+    private static final int STATUS_LOAD_USERIMAGE = 2;
 
     public static @Nonnull Intent createIntentInsertImage(int user_id, @Nullable byte[] buffer)
     {
@@ -35,7 +39,16 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
     public static @Nonnull Intent createIntentLoadingProviders(long user_id)
     {
         Intent intent = new Intent();
+        intent.putExtra(BF_STATUS, user_id);
+        intent.putExtra(BF_STATUS, STATUS_LOAD_PROVIDERS);
+        return intent;
+    }
+
+    public static @Nonnull Intent createIntentLoadingImage(long user_id)
+    {
+        Intent intent = new Intent();
         intent.putExtra(BF_USER_ID, user_id);
+        intent.putExtra(BF_STATUS, STATUS_LOAD_USERIMAGE);
         return intent;
     }
 
@@ -47,8 +60,16 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
             return null;
 
         long user_id = extras.getLong(BF_USER_ID);
+        int status = extras.getInt(BF_STATUS);
         if(user_id >= 0){
-            return  getUserProviderFromDB(env, user_id);
+            switch (status){
+                case STATUS_LOAD_PROVIDERS:
+                    return  getUserProviderFromDB(env, user_id);
+                case STATUS_LOAD_USERIMAGE:
+                    return  getUserImageFromDB(env, user_id);
+                default:
+                    break;
+            }
         }
         return  null;
     }
@@ -58,6 +79,14 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
         Bundle bundle = new Bundle();
         @Nullable ArrayList<UserProvider> data = env.dbw.getUserProvidersByUserId(SQLiteHelper.ID_USER);
         bundle.putParcelableArrayList(BF_PROVIDERS, data);
+        return bundle;
+    }
+
+    public static @Nullable Bundle getUserImageFromDB(@Nonnull DbService.DbTaskEnv env, long user_id)
+    {
+        Bundle bundle = new Bundle();
+        @Nullable UserImage data = env.dbw.getUserImage(SQLiteHelper.ID_USER);
+        bundle.putByteArray(BF_IMAGE_DATA, data.image);
         return bundle;
     }
 }

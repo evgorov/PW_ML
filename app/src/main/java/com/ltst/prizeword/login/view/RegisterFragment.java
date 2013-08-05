@@ -420,7 +420,7 @@ public class RegisterFragment extends SherlockFragment
 
     private void resetUserData(byte[] userPic){
         // изменить аватарку;
-        mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
+        mUserDataModel.resetUserImage(userPic, mTaskHandlerResetUserPic);
 
     }
 

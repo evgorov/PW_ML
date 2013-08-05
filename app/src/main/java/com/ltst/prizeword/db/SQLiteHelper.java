@@ -92,7 +92,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsProviders.NAME	        + " text not null, "
             + ColsProviders.USER_ID	        + " integer not null, "
             + ColsProviders.PROVIDER_ID	    + " text not null, "
-            + ColsProviders.TOKEN	        + " text not null,"
+            + ColsProviders.TOKEN	        + " text,"
             + " foreign key (" + ColsProviders.USER_ID + ") references "
             + TNAME_USERS + " (" + ColsUsers.ID + ") on delete cascade)";
 

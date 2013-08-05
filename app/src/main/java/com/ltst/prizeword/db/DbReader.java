@@ -131,10 +131,10 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
-    public UserData getUserById(long id)
+    public UserData getUserById(long user_id)
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
-                FIELDS_P_USER, ColsUsers.ID, id);
+                FIELDS_P_USER, ColsUsers.ID, user_id);
         UserData user = createObjectByCursor(cursor, mUserDataCreator);
         return user;
     }

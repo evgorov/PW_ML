@@ -9,9 +9,10 @@ import javax.annotation.Nonnull;
  */
 public interface IUserDataModel {
 
-    void loadUserPic(@Nonnull final String url, @Nonnull IListenerVoid handler);
+    void loadUserImageFromServer(@Nonnull final String url, @Nonnull IListenerVoid handler);
+    void loadUserImageFromDB(long user_id, @Nonnull IListenerVoid handler);
     void loadUserDataFromInternet(@Nonnull IListenerVoid handler);
-    void resetUserPic(final byte[] userPic, @Nonnull IListenerVoid handler);
+    void resetUserImage(final byte[] userPic, @Nonnull IListenerVoid handler);
     void resetUserName(final String userName, @Nonnull IListenerVoid handler);
     void loadProvidersFromDB(long user_id, @Nonnull IListenerVoid handler);
 }

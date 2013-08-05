@@ -81,7 +81,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull IBcConnector mBcConnector;
 
-
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
@@ -153,7 +152,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         if(resultCode == RESULT_OK){
             switch (requestCode){
                 case RESULT_LOAD_IMAGE: {
-//            // Получаем картинку из галереи;
+                    // Получаем картинку из галереи;
                     Uri chosenImageUri = data.getData();
                     Bitmap photo = null;
                     try {
@@ -366,7 +365,6 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             }
         }
-
     }
 
     //==== IBcConnectorOwner ==============================================
@@ -478,10 +476,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.loadProvidersFromDB(user_id, mTaskHandlerLoadProviders);
     }
 
-    private void resetUserData(byte[] userPic){
+    private void resetUserImage(byte[] userPic){
         // изменить аватарку;
-        mUserDataModel.resetUserPic(userPic, mTaskHandlerResetUserPic);
-
+        mUserDataModel.resetUserImage(userPic, mTaskHandlerResetUserPic);
     }
 
     private void resetUserData(@Nonnull String userName){
@@ -490,9 +487,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
 
-    private void loadAvatar(@Nonnull String url){
+    private void reloadUserImageFromServer(@Nonnull String url){
         // загружаем аватарку с сервера;
-        mUserDataModel.loadUserPic(url, mTaskHandlerLoadUserPic);
+        mUserDataModel.loadUserImageFromServer(url, mTaskHandlerLoadUserImageFromServer);
+    }
+
+    private void reloadUserImageFromDB(long user_id){
+        // загружаем аватарку из базы данных;
+        mUserDataModel.loadUserImageFromDB(user_id, mTaskHandlerLoadUserImageFromServer);
     }
 
     private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
@@ -506,8 +508,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
-                loadAvatar(data.previewUrl);
                 reloadProviders(data.id);
+                reloadUserImageFromDB(data.id);
+                reloadUserImageFromServer(data.previewUrl);
                 selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else {
                 mDrawerMenu.clean();
@@ -516,19 +519,21 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     };
 
-    private IListenerVoid mTaskHandlerLoadUserPic = new IListenerVoid()
+    private IListenerVoid mTaskHandlerLoadUserImageFromServer = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             byte[] buffer = mUserDataModel.getUserPic();
             Bitmap bitmap = null;
-            if(!byte.class.isEnum() && buffer != null){
+            if(!byte.class.isEnum() && buffer != null)
+            {
                 try
                 {
                     bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
                 }
-                catch (NullPointerException e){
+                catch (NullPointerException e)
+                {
                     throw new RuntimeException(e);
                 }
             }
@@ -542,12 +547,12 @@ public class NavigationActivity extends SherlockFragmentActivity
         public void handle()
         {
             UserData data = mUserDataModel.getUserData();
-            if( data != null ){
-//                loadAvatar(data.previewUrl);
+            if( data == null || data.previewUrl == null || data.previewUrl == Strings.EMPTY ){
+                mDrawerMenu.setImage(null);
             } else {
-//                mDrawerMenu.setImage(null);
+                reloadUserImageFromServer(data.previewUrl);
             }
-            reloadUserData();
+ //            reloadUserData();
         }
     };
 
@@ -594,7 +599,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void bitmapConvertToByte(@Nullable byte[] buffer) {
         // Отправляем новую аватарку насервер;
-        resetUserData(buffer);
+        resetUserImage(buffer);
     }
 
     @Override

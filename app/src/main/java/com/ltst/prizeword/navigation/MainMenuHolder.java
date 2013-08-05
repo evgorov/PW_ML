@@ -3,7 +3,6 @@ package com.ltst.prizeword.navigation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -71,12 +70,13 @@ public class MainMenuHolder {
         } else {
             this.mImage.setImageResource(R.drawable.login_register_ava_btn);
         }
-
     }
 
     public void clean(){
         this.mNickname.setText(R.string.user);
         this.mHightRecord.setText(String.valueOf(0));
+        this.mScore.setText(String.valueOf(0));
+        this.mPosition.setText(String.valueOf(0));
         this.setImage(null);
     }
 }

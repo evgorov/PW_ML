@@ -92,6 +92,12 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
                 @Nonnull UserData userData = LoadUserDataFromInternetTask.parseUserData(response);
                 @Nullable List<UserProvider> providerData = LoadUserDataFromInternetTask.parseProviderData(response);
                 env.dbw.putUser(userData, providerData);
+
+                if( userPic!=null && userData.previewUrl!=null )
+                {
+                    env.dbw.putUserImage(userPic);
+                }
+
                 return LoadUserDataFromInternetTask.getUserDataFromDatabase(env, userData.email);
             }
         }
