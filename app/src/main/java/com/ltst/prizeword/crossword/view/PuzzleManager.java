@@ -145,10 +145,27 @@ public class PuzzleManager
         public void run()
         {
             mIsAnimating = true;
+            int iterations = 0;
+            float tempScale = mCurrentScale;
+            while((mDeltaScale > 1f && tempScale < toZoom)
+                    || (mDeltaScale < 1f && toZoom < tempScale))
+            {
+                tempScale *= mDeltaScale;
+                iterations++;
+            }
+
+            Point center = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+            int stepX = (center.x - mFocusViewPoint.x)/iterations;
+            int stepY = (center.y - mFocusViewPoint.y)/iterations;
+
             while((mDeltaScale > 1f && mCurrentScale < toZoom)
                     || (mDeltaScale < 1f && toZoom < mCurrentScale))
             {
                 mCurrentScale *= mDeltaScale;
+                if(mFocusViewPoint != center)
+                {
+                    mFocusViewPoint.offset(stepX, stepY);
+                }
 
                 view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
                         mPuzzleViewRect.right, mPuzzleViewRect.bottom);
@@ -163,6 +180,7 @@ public class PuzzleManager
             }
             final float delta = toZoom / mCurrentScale;
             mCurrentScale *= delta;
+            mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
             view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
                     mPuzzleViewRect.right, mPuzzleViewRect.bottom);
             mIsAnimating = false;
