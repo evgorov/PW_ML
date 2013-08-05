@@ -5,14 +5,13 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
-import com.ltst.prizeword.db.SQLiteHelper;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
+import com.ltst.prizeword.rest.RestUserData;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
-import org.springframework.http.HttpStatus;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +24,7 @@ public class MergeAccountsTask implements DbService.IDbTask {
     public static final @Nonnull String BF_MERGE_SESSION_KEY1 = "MergeAccountsTask.sessionKey1";
     public static final @Nonnull String BF_MERGE_SESSION_KEY2 = "MergeAccountsTask.sessionKey2";
     public static final @Nonnull String BF_STATUS_CODE = "MergeAccountsTask.statusCode";
+    public static final @Nonnull String BF_STATUS_MESSAGE = "MergeAccountsTask.statusMessage";
 
 
     public static @Nonnull
@@ -56,18 +56,18 @@ public class MergeAccountsTask implements DbService.IDbTask {
 
             if(sessionKey1 != Strings.EMPTY && sessionKey2 != Strings.EMPTY){
                 IRestClient client = RestClient.create();
-                HttpStatus response = client.mergeAccounts(sessionKey1,sessionKey2);
-                int statusCode = response.value();
-                return getStatusCode(statusCode);
+                RestUserData.RestAnswerMessageHolder response = client.mergeAccounts(sessionKey1, sessionKey2);
+                return getAnswerMessage(response);
             }
         }
         return null;
     }
 
-    public static @Nullable Bundle getStatusCode(int statusCode)
+    public static @Nullable Bundle getAnswerMessage(@Nonnull RestUserData.RestAnswerMessageHolder answer)
     {
         Bundle bundle = new Bundle();
-        bundle.putInt(BF_STATUS_CODE, statusCode);
+        bundle.putInt(BF_STATUS_CODE, answer.getStatusCode().value());
+        bundle.putString(BF_STATUS_MESSAGE, answer.getMessage());
         return bundle;
     }
 }

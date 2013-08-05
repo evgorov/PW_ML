@@ -21,5 +21,6 @@ public interface IRestClient
 
     @Nullable RestPuzzleSet.RestPuzzleSetsHolder getPublishedSets(@Nonnull String sessionKey);
     @Nullable RestPuzzle.RestPuzzleHolder getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId);
-    @Nullable HttpStatus mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2);
+    @Nullable
+    RestUserData.RestAnswerMessageHolder mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2);
 }

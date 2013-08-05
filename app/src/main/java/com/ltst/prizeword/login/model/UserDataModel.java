@@ -32,7 +32,8 @@ public class UserDataModel implements IUserDataModel {
     private @Nonnull UserData mUserData;
     private @Nonnull byte[] mUserPic;
     private @Nullable ArrayList<UserProvider> mProviders;
-    private int mStatusCodeMergeAccounts;
+    private int mStatusCodeAnswer;
+    private @Nonnull String mStatusMessageAnswer;
     private @Nonnull String mProvider;
 
     public UserDataModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector) {
@@ -55,8 +56,13 @@ public class UserDataModel implements IUserDataModel {
         return mProviders;
     }
 
-    public int getStatusCodeMergeAccounts() {
-        return mStatusCodeMergeAccounts;
+    public int getStatusCodeAnswer() {
+        return mStatusCodeAnswer;
+    }
+
+    @Nonnull
+    public String getStatusMessageAnswer() {
+        return mStatusMessageAnswer;
     }
 
     @Nonnull
@@ -270,10 +276,11 @@ public class UserDataModel implements IUserDataModel {
             protected void handleData(@Nullable Bundle result)
             {
                 if (result == null){
-                    mStatusCodeMergeAccounts = RestParams.SC_ERROR;
+                    mStatusCodeAnswer = RestParams.SC_ERROR;
                     return;
                 }
-                mStatusCodeMergeAccounts = result.getInt(MergeAccountsTask.BF_STATUS_CODE);
+                mStatusCodeAnswer = result.getInt(MergeAccountsTask.BF_STATUS_CODE);
+                mStatusMessageAnswer = result.getString(MergeAccountsTask.BF_STATUS_MESSAGE);
             }
         };
         session.update(handler);

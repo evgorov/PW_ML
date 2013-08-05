@@ -590,10 +590,20 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            int statusCode = mUserDataModel.getStatusCodeMergeAccounts();
-            if(statusCode != RestParams.SC_SUCCESS)
+            int statusCode = mUserDataModel.getStatusCodeAnswer();
+            @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
+            @Nonnull String provider = mUserDataModel.getProvider();
+            if(statusCode == RestParams.SC_SUCCESS)
             {
-                @Nonnull String provider = mUserDataModel.getProvider();
+                if(provider == RestParams.VK_PROVIDER){
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
+                }
+                if(provider == RestParams.FB_PROVIDER){
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(false);
+                }
+            }
+            else
+            {
                 if(provider == RestParams.VK_PROVIDER){
                     mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                 }

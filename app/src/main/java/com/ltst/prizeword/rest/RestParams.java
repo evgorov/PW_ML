@@ -62,9 +62,7 @@ public class RestParams
     public static final @Nonnull String URL_POST_LINK_ACCOUNTS = URL_API + "/link_accounts" + addParam(SESSION_KEY1, true) + addParam(SESSION_KEY2, false);
 
     public static final @Nonnull String URL_GET_USER_DATA = URL_API + "/me" + addParam(SESSION_KEY, true);
-    public static final @Nonnull String URL_RESET_USER_PIC = URL_GET_USER_DATA + addParam(USERPIC, false);
-//    public static final @Nonnull String URL_RESET_USER_PIC2 = URL_GET_USER_DATA + "&"+USERPIC+"[{"+USERPIC+"}]";
-    public static final @Nonnull String URL_RESET_USER_PIC2 = URL_GET_USER_DATA;
+    public static final @Nonnull String URL_RESET_USER_PIC = URL_API + "/me"+SYM_PARAM+SESSION_KEY+SYM_PARAM_SETTER;
     public static final @Nonnull String URL_RESET_USER_NAME = URL_GET_USER_DATA + addParam(NAME, false);
 
     public static final @Nonnull String URL_FORGOT_PASSWORD = URL_API + "/forgot_password" + addParam(EMAIL, true);

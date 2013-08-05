@@ -350,4 +350,30 @@ public class RestUserData
             this.mUserPicUrl = mUserPicUrl;
         }
     }
+
+    @JsonIgnoreProperties
+    public static class RestAnswerMessageHolder
+    {
+        private @JsonProperty("message") String mMessage;
+        private HttpStatus mStatusCode;
+
+        public RestAnswerMessageHolder() {
+        }
+
+        public String getMessage() {
+            return mMessage;
+        }
+
+        public void setMessage(String mMessage) {
+            this.mMessage = mMessage;
+        }
+
+        public HttpStatus getStatusCode() {
+            return mStatusCode;
+        }
+
+        public void setStatusCode(HttpStatus statusCode) {
+            mStatusCode = statusCode;
+        }
+    }
 }
