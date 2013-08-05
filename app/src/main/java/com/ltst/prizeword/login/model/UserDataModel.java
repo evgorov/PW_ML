@@ -33,6 +33,7 @@ public class UserDataModel implements IUserDataModel {
     private @Nonnull byte[] mUserPic;
     private @Nullable ArrayList<UserProvider> mProviders;
     private int mStatusCodeMergeAccounts;
+    private @Nonnull String mProvider;
 
     public UserDataModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector) {
         this.mContext = context;
@@ -56,6 +57,15 @@ public class UserDataModel implements IUserDataModel {
 
     public int getStatusCodeMergeAccounts() {
         return mStatusCodeMergeAccounts;
+    }
+
+    @Nonnull
+    public String getProvider() {
+        return mProvider;
+    }
+
+    public void setProvider(@Nonnull String mProvider) {
+        this.mProvider = mProvider;
     }
 
     @Override

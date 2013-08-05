@@ -127,9 +127,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
-        mDrawerMenu.mVkontakteBtn.setOnCheckedChangeListener(this);
-        mDrawerMenu.mFacebookBtn.setOnCheckedChangeListener(this);
-        mDrawerMenu.mNotificationBtn.setOnCheckedChangeListener(this);
+        mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -182,20 +182,20 @@ public class NavigationActivity extends SherlockFragmentActivity
                     SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
                     String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                     String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-                    // @TODO замержить 2 аккаунта в один;
-                    mUserDataModel.mergeAccounts(sessionKey1,sessionKey2, mTaskHandlerMergeAccounts);
+                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
+                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
                 break;
             }
         }
         else {
             switch (requestCode){
                 case REQUEST_LOGIN_VK: {
-                    mDrawerMenu.mVkontakteBtn.setChecked(false);
-                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                 }
                 case REQUEST_LOGIN_FB: {
-                    mDrawerMenu.mFacebookBtn.setChecked(false);
-                    mDrawerMenu.mFacebookBtn.setEnabled(true);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
                 }
                 default:
                     break;
@@ -566,20 +566,20 @@ public class NavigationActivity extends SherlockFragmentActivity
                     names.add(provider.name);
                 }
                 if(names.contains(RestParams.VK_PROVIDER)){
-                    mDrawerMenu.mVkontakteBtn.setEnabled(false);
-                    mDrawerMenu.mVkontakteBtn.setChecked(true);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(true);
                 }
                 else {
-                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
-                    mDrawerMenu.mVkontakteBtn.setChecked(false);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                 }
                 if(names.contains(RestParams.FB_PROVIDER)){
-                    mDrawerMenu.mFacebookBtn.setEnabled(false);
-                    mDrawerMenu.mFacebookBtn.setChecked(true);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(false);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(true);
                 }
                 else {
-                    mDrawerMenu.mFacebookBtn.setEnabled(true);
-                    mDrawerMenu.mFacebookBtn.setChecked(false);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
                 }
             }
         }
@@ -591,12 +591,15 @@ public class NavigationActivity extends SherlockFragmentActivity
         public void handle()
         {
             int statusCode = mUserDataModel.getStatusCodeMergeAccounts();
-            if(statusCode == RestParams.SC_SUCCESS){
-
-            }
-            else
+            if(statusCode != RestParams.SC_SUCCESS)
             {
-
+                @Nonnull String provider = mUserDataModel.getProvider();
+                if(provider == RestParams.VK_PROVIDER){
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+                }
+                if(provider == RestParams.FB_PROVIDER){
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
+                }
             }
         }
     };
@@ -628,14 +631,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         if(state){
             switch (compoundButton.getId()){
                 case R.id.menu_vk_switcher:
-                    if(mDrawerMenu.mVkontakteBtn.isEnabled()){
+                    if(mDrawerMenu.mVkontakteSwitcher.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_VK);
                     }
                     break;
                 case R.id.menu_fb_switcher:
-                    if(mDrawerMenu.mFacebookBtn.isEnabled()){
+                    if(mDrawerMenu.mFacebookSwitcher.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_FB);

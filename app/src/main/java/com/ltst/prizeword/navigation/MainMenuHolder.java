@@ -27,9 +27,9 @@ public class MainMenuHolder {
     public @Nonnull View mShowRulesBtn;
     public @Nonnull View mLogoutBtn;
 
-    public @Nonnull ToggleButton mVkontakteBtn;
-    public @Nonnull ToggleButton mFacebookBtn;
-    public @Nonnull ToggleButton mNotificationBtn;
+    public @Nonnull ToggleButton mVkontakteSwitcher;
+    public @Nonnull ToggleButton mFacebookSwitcher;
+    public @Nonnull ToggleButton mNotificationSwitcher;
 
 
     public @Nonnull TextView mScore;
@@ -50,9 +50,9 @@ public class MainMenuHolder {
         this.mScore = (TextView) view.findViewById(R.id.menu_pride_score_txt);
         this.mPosition = (TextView) view.findViewById(R.id.menu_pride_position_txt);
 
-        this.mVkontakteBtn = (ToggleButton) view.findViewById(R.id.menu_vk_switcher);
-        this.mFacebookBtn = (ToggleButton) view.findViewById(R.id.menu_fb_switcher);
-        this.mNotificationBtn = (ToggleButton) view.findViewById(R.id.menu_notification_switcher);
+        this.mVkontakteSwitcher = (ToggleButton) view.findViewById(R.id.menu_vk_switcher);
+        this.mFacebookSwitcher = (ToggleButton) view.findViewById(R.id.menu_fb_switcher);
+        this.mNotificationSwitcher = (ToggleButton) view.findViewById(R.id.menu_notification_switcher);
 
 
         Calendar cal = Calendar.getInstance();
