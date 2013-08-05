@@ -36,21 +36,11 @@ public class PuzzleManager
 
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
-                         @Nonnull Rect puzzleViewRect,
                          @Nonnull IListener<Rect> invalidateHandler)
     {
         mContext = context;
-        mPuzzleViewRect = puzzleViewRect;
         mMatrix = new Matrix();
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
-        adapter.addResourcesUpdater(new IListener<PuzzleResources>()
-        {
-            @Override
-            public void handle(@Nullable PuzzleResources puzzleResources)
-            {
-                setPuzzleViewRect(mPuzzleViewRect);
-            }
-        });
     }
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)

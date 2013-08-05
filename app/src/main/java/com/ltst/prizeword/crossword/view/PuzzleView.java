@@ -54,27 +54,29 @@ public class PuzzleView extends View
     {
         recycle();
         mAdapter = adapter;
-        mAdapter.setPuzzleUpdater(new IListenerVoid()
+        mPuzzleManager = new PuzzleManager(mContext, mAdapter, new IListener<Rect>()
         {
             @Override
-            public void handle()
+            public void handle(@Nullable Rect rect)
             {
-                if (mViewScreenRect != null)
+                if (rect != null)
                 {
-                    mPuzzleManager = new PuzzleManager(mContext, mAdapter, mViewScreenRect, new IListener<Rect>()
-                    {
-                        @Override
-                        public void handle(@Nullable Rect rect)
-                        {
-                            if (rect != null)
-                            {
-                                invalidate(rect);
-                            }
-                        }
-                    });
+                    invalidate(rect);
                 }
             }
         });
+        mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleResources puzzleResources)
+            {
+                if (mViewScreenRect != null)
+                {
+                    mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
+                }
+            }
+        });
+
     }
 
     @Override
