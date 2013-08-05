@@ -84,7 +84,7 @@ public class PuzzleManager
         mScaled = !mScaled;
     }
 
-    public void onTapEvent(@Nonnull PointF point)
+    public void onTapEvent(@Nonnull PointF point, @Nonnull PuzzleView view)
     {
         if(!mScaled || mFocusViewPoint == null)
             return;

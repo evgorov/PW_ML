@@ -315,7 +315,7 @@ public class PuzzleFieldDrawer
                 PuzzleTileState state = stateMatrix[j][i];
                 if (state.hasLetter)
                 {
-                    mBitmapManager.drawResource(PuzzleResources.getLetterEmpty(), canvas, rect);
+                    drawLetterByState(canvas, rect, state);
                     if(state.hasArrows)
                     {
                         drawArrow(state.getFirstArrow(), canvas, rect);
@@ -360,6 +360,22 @@ public class PuzzleFieldDrawer
         }
         mBitmapManager.drawResource(questionRes, canvas, rect);
         drawQuestionText(canvas, question, rect);
+    }
+
+    private void drawLetterByState(@Nonnull Canvas canvas, @Nonnull RectF rect,
+                                   @Nonnull PuzzleTileState state)
+    {
+        int letterRes = 0;
+        switch (state.getLetterState())
+        {
+            case PuzzleTileState.LetterState.LETTER_EMPTY:
+                letterRes = PuzzleResources.getLetterEmpty();
+                break;
+            case PuzzleTileState.LetterState.LETTER_EMPTY_INPUT:
+                letterRes = PuzzleResources.getLetterEmptyInput();
+                break;
+        }
+        mBitmapManager.drawResource(letterRes, canvas, rect);
     }
 
     private void drawQuestionText(@Nonnull Canvas canvas, @Nonnull String question, @Nonnull RectF tileRect)
@@ -490,6 +506,7 @@ public class PuzzleFieldDrawer
         public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
         {
             mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getLetterEmptyInput(), null);
             mBitmapManager.addBitmap(PuzzleResources.getQuestionInput(), null);
             mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
             {

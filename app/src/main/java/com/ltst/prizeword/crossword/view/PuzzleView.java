@@ -163,7 +163,7 @@ public class PuzzleView extends View
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                mPuzzleManager.onTapEvent(p);
+                mPuzzleManager.onTapEvent(p, PuzzleView.this);
             }
             return true;
         }

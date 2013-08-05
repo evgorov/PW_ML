@@ -62,17 +62,23 @@ public class PuzzleResources
                 mStateMatrix[i][j].setLetterState(LetterState.LETTER_EMPTY);
             }
         }
+        if (mPuzzleQuestions == null)
+        {
+            return;
+        }
 
         for (PuzzleQuestion question : mPuzzleQuestions)
         {
+            int index = mPuzzleQuestions.indexOf(question);
             int col = question.column - 1;
             int row = question.row - 1;
             int arrowType = question.getAnswerPosition();
             mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
+            mStateMatrix[col][row].setQuestionIndex(index);
             Point p = ArrowType.positionToPoint(arrowType, col, row);
             if (p != null)
             {
-                mStateMatrix[p.x][p.y].addArrow(arrowType);
+                mStateMatrix[p.x][p.y].addArrow(arrowType, index);
             }
         }
     }
