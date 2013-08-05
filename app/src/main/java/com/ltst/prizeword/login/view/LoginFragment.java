@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
@@ -76,13 +78,13 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
             case R.id.enter_with_fb_btn:
                 //??? facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
-                intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
+                intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
                 startActivityForResult(intent, REQUEST_LOGIN_FB);
                 break;
             case R.id.enter_with_vk_btn:
                 //??? ?????????
                 intent = new Intent(mContext, SocialLoginActivity.class);
-                intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
+                intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
                 startActivityForResult(intent, REQUEST_LOGIN_VK);
                 break;
             case R.id.enter_to_authorization_btn:
@@ -99,6 +101,12 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == SherlockFragmentActivity.RESULT_OK) {
+
+            String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+            spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
+            spref.commit();
+
             switch (requestCode){
                 case  REQUEST_LOGIN_FB: {
                     //успешно авторизовались в facebook

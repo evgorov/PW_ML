@@ -179,7 +179,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
                 case REQUEST_LOGIN_VK:
                 case REQUEST_LOGIN_FB:
-                    reloadUserData();
+                    String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                    // @TODO замержить 2 аккаунта в один;
+//                    reloadUserData();
                 break;
             }
         }
@@ -610,14 +612,14 @@ public class NavigationActivity extends SherlockFragmentActivity
                 case R.id.menu_vk_switcher:
                     if(mDrawerMenu.mVkontakteBtn.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
+                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_VK);
                     }
                     break;
                 case R.id.menu_fb_switcher:
                     if(mDrawerMenu.mFacebookBtn.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
+                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_FB);
                     }
                     break;
