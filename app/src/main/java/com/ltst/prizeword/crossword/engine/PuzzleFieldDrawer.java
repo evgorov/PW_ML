@@ -15,6 +15,7 @@ import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class PuzzleFieldDrawer
     private boolean mBackgroundResourcesLoaded;
     private boolean mPuzzleTilesResourcesLoaded;
     private boolean mArrowsResourcesLoaded;
+    private boolean mLetterResourcesLoaded;
+    private boolean mLetterResourcesDecodingInProgress;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
@@ -61,6 +64,8 @@ public class PuzzleFieldDrawer
         mBackgroundResourcesLoaded = false;
         mPuzzleTilesResourcesLoaded = false;
         mArrowsResourcesLoaded = false;
+        mLetterResourcesLoaded = false;
+        mLetterResourcesDecodingInProgress = false;
 
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
         {
@@ -137,50 +142,71 @@ public class PuzzleFieldDrawer
         measureText();
 
         // load background tiles
-        mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), null);
-        mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), new
-                IListenerVoid()
-                {
-                    @Override
-                    public void handle()
+        if(!mBackgroundResourcesLoaded)
+        {
+            mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), new
+                    IListenerVoid()
                     {
-                        mBackgroundResourcesLoaded = true;
-                        mInvalidateHandler.handle(mPuzzleRect);
-                    }
-                });
+                        @Override
+                        public void handle()
+                        {
+                            mBackgroundResourcesLoaded = true;
+                            mInvalidateHandler.handle(mPuzzleRect);
+                        }
+                    });
+        }
 
         // load basic puzzle tiles
-        mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
-        mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
+        if(!mPuzzleTilesResourcesLoaded)
         {
-            @Override
-            public void handle()
+            mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
             {
-                mPuzzleTilesResourcesLoaded = true;
-                mInvalidateHandler.handle(mPuzzleRect);
-            }
-        });
+                @Override
+                public void handle()
+                {
+                    mPuzzleTilesResourcesLoaded = true;
+                    mInvalidateHandler.handle(mPuzzleRect);
+                }
+            });
+        }
 
         // load arrows
-        int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
-        for (int i = 0; i < arrowTypes.length - 1; i++)
+        if(!mArrowsResourcesLoaded)
         {
-            int res = PuzzleResources.getArrowResource(arrowTypes[i]);
-            mBitmapManager.addBitmap(res, null);
-        }
-        int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
-        mBitmapManager.addBitmap(lastRes, new IListenerVoid()
-        {
-            @Override
-            public void handle()
+            int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
+            for (int i = 0; i < arrowTypes.length - 1; i++)
             {
-                mArrowsResourcesLoaded = true;
-                mInvalidateHandler.handle(mPuzzleRect);
+                int res = PuzzleResources.getArrowResource(arrowTypes[i]);
+                mBitmapManager.addBitmap(res, null);
             }
-        });
+            int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
+            mBitmapManager.addBitmap(lastRes, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mArrowsResourcesLoaded = true;
+                    mInvalidateHandler.handle(mPuzzleRect);
+                }
+            });
+        }
 
-        mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
-        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, null);
+        if(!mLetterResourcesLoaded && !mLetterResourcesDecodingInProgress)
+        {
+            mLetterResourcesDecodingInProgress = true;
+            mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
+            mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mLetterResourcesLoaded = true;
+                    mLetterResourcesDecodingInProgress = false;
+                }
+            });
+        }
     }
 
     public void drawBackground(@Nonnull Canvas canvas)

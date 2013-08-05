@@ -40,49 +40,35 @@ public class LetterBitmapManager
 
     public void addTileResource(final int lettersResource, int letterWidth, int letterHeight, final @Nullable IListenerVoid loadingHandler)
     {
-//        Rect rect = new Rect(0, 0, letterWidth, letterHeight);
-//        ArrayList<Bitmap> bitmaps = BitmapDecoder.decodeTiles(mContext, lettersResource, rect);
-//        if (bitmaps == null)
-//        {
-//            return;
-//        }
-//
-//        int length = mAlphabet.length();
-//        for (int i = 0; i < length; i++)
-//        {
-//            char letter = mAlphabet.charAt(i);
-//            BitmapEntity entity = new BitmapEntity(bitmaps.get(i));
-//            String key = getLetterResourceKey(lettersResource, letter);
-//            mLetters.put(key, entity);
-//        }
-
         mBitmapResourceModel.loadTileBitmapEntityList(lettersResource, letterWidth, letterHeight, new IListener<List<BitmapEntity>>()
         {
             @Override
             public void handle(@Nullable List<BitmapEntity> bitmapEntities)
             {
-                if (bitmapEntities == null)
+                synchronized (this)
                 {
-                    return;
-                }
+                    if (bitmapEntities == null)
+                    {
+                        return;
+                    }
 
-                int length = mAlphabet.length();
-                if(bitmapEntities.size() != length)
-                    return;
+                    int length = mAlphabet.length();
+                    if(bitmapEntities.size() != length)
+                        return;
 
-                for (int i = 0; i < length; i++)
-                {
-                    char letter = mAlphabet.charAt(i);
-                    BitmapEntity entity = bitmapEntities.get(i);
-                    String key = getLetterResourceKey(lettersResource, letter);
-                    mLetters.put(key, entity);
-                }
+                    for (int i = 0; i < length; i++)
+                    {
+                        char letter = mAlphabet.charAt(i);
+                        BitmapEntity entity = bitmapEntities.get(i);
+                        String key = getLetterResourceKey(lettersResource, letter);
+                        mLetters.put(key, entity);
+                    }
 
-                if (loadingHandler != null)
-                {
-                    loadingHandler.handle();
+                    if (loadingHandler != null)
+                    {
+                        loadingHandler.handle();
+                    }
                 }
-                Log.i("letters loaded");
             }
         });
     }

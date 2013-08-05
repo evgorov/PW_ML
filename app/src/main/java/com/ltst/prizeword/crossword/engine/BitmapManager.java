@@ -127,38 +127,4 @@ public class BitmapManager
         }
     }
 
-    private class DecodingTask extends AsyncTask<Bundle, Void, Bundle>
-    {
-        @Override
-        protected Bundle doInBackground(Bundle... params)
-        {
-            Bundle b = params[0];
-            if (b == null)
-            {
-                return null;
-            }
-            int res = b.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-            Bitmap bm = BitmapDecoder.decode(mContext, res);
-            Bundle ret = new Bundle();
-            ret.putInt(BitmapDecoderTask.BF_RESOURCE_ID, res);
-            ret.putParcelable(BitmapDecoderTask.BF_BITMAP, bm);
-            return ret;
-        }
-
-        @Override
-        protected void onPostExecute(Bundle bundle)
-        {
-            if (bundle == null)
-            {
-                return;
-            }
-            int res = bundle.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-            Bitmap bm = bundle.getParcelable(BitmapDecoderTask.BF_BITMAP);
-            BitmapEntity entity = new BitmapEntity(res);
-            entity.setBitmap(bm);
-            mBitmaps.append(res, entity);
-            super.onPostExecute(bundle);
-        }
-    }
-
 }
