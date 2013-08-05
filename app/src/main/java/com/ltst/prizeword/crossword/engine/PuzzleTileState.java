@@ -86,6 +86,7 @@ public class PuzzleTileState
         public static final int QUESTION_EMPTY = 0x00000001;
         public static final int QUESTION_CORRECT = 0x00000010;
         public static final int QUESTION_WRONG = 0x000000011;
+        public static final int QUESTION_INPUT = 0x000000100;
     }
 
     public static class LetterState

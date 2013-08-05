@@ -208,6 +208,16 @@ public class PuzzleFieldDrawer
         return mPuzzleRect.height()/2;
     }
 
+    public int getTileWidth()
+    {
+        return mTileWidth;
+    }
+
+    public int getTileHeight()
+    {
+        return mTileHeight;
+    }
+
     public void checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
     {
         if (mPuzzleRect == null)
@@ -282,7 +292,12 @@ public class PuzzleFieldDrawer
 
         int cols = mResources.getPuzzleColumnsCount();
         int rows = mResources.getPuzzleRowsCount();
-        PuzzleTileState[][] stateMatrix = mResources.getStateMatrix();
+        @Nullable PuzzleTileState[][] stateMatrix = mResources.getStateMatrix();
+        if (stateMatrix == null)
+        {
+            return;
+        }
+
         int framePadding = mResources.getFramePadding(mContext.getResources());
         int padding = mResources.getPadding();
         int tileGap = mResources.getTileGap();
@@ -310,8 +325,13 @@ public class PuzzleFieldDrawer
 
                 if (state.hasQuestion)
                 {
-                    mBitmapManager.drawResource(PuzzleResources.getQuestionEmpty(), canvas, rect);
-                    drawQuestionText(canvas, questionsIndex, rect);
+                    List<PuzzleQuestion> questions = mResources.getPuzzleQuestions();
+                    if (questions == null)
+                    {
+                        return;
+                    }
+                    @Nonnull String question = questions.get(questionsIndex).questionText;
+                    drawQuestionByState(canvas, rect, question, state);
                     questionsIndex++;
                 }
 
@@ -325,20 +345,30 @@ public class PuzzleFieldDrawer
         }
     }
 
-    private void drawQuestionText(@Nonnull Canvas canvas, int questionsIndex, @Nonnull RectF tileRect)
+    private void drawQuestionByState(@Nonnull Canvas canvas, @Nonnull RectF rect,
+                                     @Nonnull String question, @Nonnull PuzzleTileState state)
+    {
+        int questionRes = 0;
+        switch (state.getQuestionState())
+        {
+            case PuzzleTileState.QuestionState.QUESTION_EMPTY:
+                questionRes = PuzzleResources.getQuestionEmpty();
+                break;
+            case PuzzleTileState.QuestionState.QUESTION_INPUT:
+                questionRes = PuzzleResources.getQuestionInput();
+                break;
+        }
+        mBitmapManager.drawResource(questionRes, canvas, rect);
+        drawQuestionText(canvas, question, rect);
+    }
+
+    private void drawQuestionText(@Nonnull Canvas canvas, @Nonnull String question, @Nonnull RectF tileRect)
     {
         if (mResources == null)
         {
             return;
         }
 
-        List<PuzzleQuestion> questions = mResources.getPuzzleQuestions();
-        if (questions == null)
-        {
-            return;
-        }
-
-        String question = questions.get(questionsIndex).questionText;
         RectF textRect = new RectF(tileRect.left + mTileTextPadding,
                 tileRect.top + mTileTextPadding,
                 tileRect.right - mTileTextPadding,
@@ -460,6 +490,7 @@ public class PuzzleFieldDrawer
         public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
         {
             mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getQuestionInput(), null);
             mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
             {
                 @Override

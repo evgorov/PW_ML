@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
@@ -25,6 +26,8 @@ public class PuzzleManager
     private @Nonnull Matrix mMatrix;
     private @Nonnull Rect mPuzzleViewRect;
     private @Nullable Rect mScaledViewRect;
+    private @Nonnull PuzzleResourcesAdapter mResourcesAdapter;
+    private @Nonnull IListener<Rect> mInvalidateHandler;
 
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
@@ -37,7 +40,9 @@ public class PuzzleManager
                          @Nonnull IListener<Rect> invalidateHandler)
     {
         mContext = context;
+        mResourcesAdapter = adapter;
         mMatrix = new Matrix();
+        mInvalidateHandler = invalidateHandler;
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
     }
 
@@ -81,12 +86,23 @@ public class PuzzleManager
 
     public void onTapEvent(@Nonnull PointF point)
     {
-        if(!mScaled && mFocusViewPoint == null)
+        if(!mScaled || mFocusViewPoint == null)
             return;
+        @Nullable PuzzleResources res = mResourcesAdapter.getResources();
+        if (res == null)
+        {
+            return;
+        }
         float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
         float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
         point.set(puzzleX, puzzleY);
         mFieldDrawer.convertPointFromPuzzleCoordsToTilesAreaCoords(point);
+        int tileWidth = mFieldDrawer.getTileWidth();
+        int tileHeight = mFieldDrawer.getTileHeight();
+        int col = (int)point.x/tileWidth;
+        int row = (int)point.y/tileHeight;
+        mResourcesAdapter.updatePuzzleStateByTap(col, row);
+        mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
     private void configureMatrix()

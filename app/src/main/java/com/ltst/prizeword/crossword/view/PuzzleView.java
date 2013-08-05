@@ -158,7 +158,7 @@ public class PuzzleView extends View
         }
 
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent e)
+        public boolean onSingleTapUp(MotionEvent e)
         {
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
@@ -167,6 +167,7 @@ public class PuzzleView extends View
             }
             return true;
         }
+
     }
 
 

@@ -25,6 +25,7 @@ public class PuzzleResourcesAdapter
     private @Nullable Puzzle mPuzzle;
     private @Nullable IListenerVoid mPuzzleUpdater;
     private @Nonnull List<IListener<PuzzleResources>> mResourcesUpdaterList;
+    private @Nullable PuzzleResources mResources;
 
     private @Nonnull IBitmapResourceModel mIBitmapResourceModel;
 
@@ -46,10 +47,36 @@ public class PuzzleResourcesAdapter
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
 
+    public void updatePuzzleStateByTap(int column, int row)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        @Nullable PuzzleTileState state = mResources.getPuzzleState(column, row);
+        if (state == null)
+        {
+            return;
+        }
+
+        if(state.hasQuestion)
+        {
+            state.setQuestionState(PuzzleTileState.QuestionState.QUESTION_INPUT);
+        }
+
+    }
+
     @Nonnull
     public IBitmapResourceModel getBitmapResourceModel()
     {
         return mIBitmapResourceModel;
+    }
+
+    @Nullable
+    public PuzzleResources getResources()
+    {
+        return mResources;
     }
 
     public void updateResources()
@@ -60,10 +87,10 @@ public class PuzzleResourcesAdapter
         }
 
         PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-        PuzzleResources info = new PuzzleResources(type, mPuzzle.questions);
+        mResources = new PuzzleResources(type, mPuzzle.questions);
         for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
         {
-            puzzleResourcesHandler.handle(info);
+            puzzleResourcesHandler.handle(mResources);
         }
     }
 

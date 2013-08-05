@@ -15,6 +15,8 @@ import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 
+import org.omich.velo.handlers.IListener;
+
 public class PuzzleResources
 {
     private static final int DEFAULT_CELL_WIDTH = 14;
@@ -73,6 +75,15 @@ public class PuzzleResources
                 mStateMatrix[p.x][p.y].addArrow(arrowType);
             }
         }
+    }
+
+    public @Nullable PuzzleTileState getPuzzleState(int column, int row)
+    {
+        if(column < 0 || column >= mPuzzleColumnsCount)
+            return null;
+        if(row < 0 || row >= mPuzzleRowsCount)
+            return null;
+        return mStateMatrix[column][row];
     }
 
     public @Nullable PuzzleTileState[][] getStateMatrix()
