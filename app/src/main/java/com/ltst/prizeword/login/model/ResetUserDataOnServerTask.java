@@ -28,12 +28,12 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
     public static final @Nonnull String BF_USER_DATA = LoadUserDataFromInternetTask.BF_USER_DATA;
     public static final @Nonnull String BF_USER_PIC = "ResetUserDataOnServerTask.userPic";
     public static final @Nonnull String BF_USER_NAME = "ResetUserDataOnServerTask.userName";
-    public static final @Nonnull String BF_TEST = "ResetUserDataOnServerTask.test";
+    public static final @Nonnull String BF_MERGE_SESSION_KEY1 = "LoadUserDataFromInternetTask.mergeSessionKey1";
+    public static final @Nonnull String BF_MERGE_SESSION_KEY2 = "LoadUserDataFromInternetTask.mergeSessionKey2";
 
     public static @Nonnull
     Intent createUserPicIntent(@Nonnull String sessionKey, byte[] userPic)
     {
-        Log.d(NavigationActivity.LOG_TAG, "CREATE INTENT!");
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_USER_PIC, userPic);
@@ -43,24 +43,23 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
     public static @Nonnull
     Intent createUserName(@Nonnull String sessionKey, @Nonnull String name)
     {
-        Log.d(NavigationActivity.LOG_TAG, "CREATE INTENT!");
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_USER_NAME, name);
         return intent;
     }
 
-    public static @Nonnull Intent createTestIntent()
+    public static @Nonnull
+    Intent createIntentMergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2)
     {
-        Log.d(NavigationActivity.LOG_TAG, "CREATE TEST INTENT!");
         Intent intent = new Intent();
-        intent.putExtra(BF_TEST, "Yahoo!");
+        intent.putExtra(BF_MERGE_SESSION_KEY1, sessionKey1);
+        intent.putExtra(BF_MERGE_SESSION_KEY2, sessionKey2);
         return intent;
     }
 
     @Override
     public Bundle execute(DbService.DbTaskEnv env) {
-        Log.d(NavigationActivity.LOG_TAG, "EXECUTE RESET!");
         Bundle extras = env.extras;
         if(extras == null)
             return null;

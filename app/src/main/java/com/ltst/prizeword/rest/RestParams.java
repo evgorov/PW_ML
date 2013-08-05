@@ -27,6 +27,8 @@ public class RestParams
 
     public static final @Nonnull String ACCESS_TOKEN = "access_token";
     public static final @Nonnull String SESSION_KEY = "session_key";
+    public static final @Nonnull String SESSION_KEY1 = "session_key1";
+    public static final @Nonnull String SESSION_KEY2 = "session_key2";
     public static final @Nonnull String EMAIL = "email";
     public static final @Nonnull String PASSWORD = "password";
     public static final @Nonnull String NAME = "name";
@@ -57,6 +59,7 @@ public class RestParams
     public static final @Nonnull String URL_LOGIN = URL_API + "/login"
                                                             + addParam(EMAIL, true)
                                                             + addParam(PASSWORD, false);
+    public static final @Nonnull String URL_POST_LINK_ACCOUNTS = URL_API + "/link_accounts" + addParam(SESSION_KEY1, true) + addParam(SESSION_KEY2, false);
 
     public static final @Nonnull String URL_GET_USER_DATA = URL_API + "/me" + addParam(SESSION_KEY, true);
     public static final @Nonnull String URL_RESET_USER_PIC = URL_GET_USER_DATA + addParam(USERPIC, false);

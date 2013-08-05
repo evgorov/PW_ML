@@ -343,4 +343,20 @@ public class RestClient implements IRestClient
         holder.setStatus(entity.getStatusCode());
         return holder;
     }
+
+    @Nullable
+    @Override
+    public HttpStatus mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY1, sessionKey1);
+        urlVariables.put(RestParams.SESSION_KEY2, sessionKey2);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        String response = restTemplate.exchange(RestParams.URL_POST_LINK_ACCOUNTS, HttpMethod.POST, requestEntity, String.class, urlVariables).getBody();
+        HttpStatus status = HttpStatus.valueOf(404);
+        return status;
+
+    }
 }

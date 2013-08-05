@@ -201,7 +201,6 @@ public class UserDataModel implements IUserDataModel {
                 }
                 mUserData = result.getParcelable(ResetUserDataOnServerTask.BF_USER_DATA);
             }
-
         };
         session.update(handler);
     }
@@ -230,6 +229,33 @@ public class UserDataModel implements IUserDataModel {
                     return;
                 }
                 mProviders = result.getParcelableArrayList(LoadUserDataFromDataBase.BF_PROVIDERS);
+            }
+        };
+        session.update(handler);
+    }
+
+    @Override
+    public void mergeAccounts(final @Nonnull String sessionKey1, final @Nonnull String sessionKey2, @Nonnull IListenerVoid handler) {
+
+        Updater session = new Updater() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return ResetUserDataOnServerTask.createIntentMergeAccounts(sessionKey1, sessionKey2);
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return ResetUserDataOnServerTask.class;
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                if (result == null){
+                    return;
+                }
             }
         };
         session.update(handler);
