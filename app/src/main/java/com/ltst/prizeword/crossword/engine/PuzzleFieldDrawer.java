@@ -55,7 +55,7 @@ public class PuzzleFieldDrawer
         mAdapter = adapter;
         mInvalidateHandler = invalidateHandler;
         mBitmapManager = new BitmapManager(context, mAdapter.getBitmapResourceModel());
-        mLetterBitmapManager = new LetterBitmapManager(mContext);
+        mLetterBitmapManager = new LetterBitmapManager(mContext, mAdapter.getBitmapResourceModel());
 
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
         mBackgroundResourcesLoaded = false;
@@ -179,8 +179,8 @@ public class PuzzleFieldDrawer
             }
         });
 
-//        mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight);
-//        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight);
+        mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
+        mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, null);
     }
 
     public void drawBackground(@Nonnull Canvas canvas)
@@ -316,6 +316,7 @@ public class PuzzleFieldDrawer
     public void unloadResources()
     {
         mBitmapManager.recycle();
+        mLetterBitmapManager.recycle();
     }
 
     public int getWidth()

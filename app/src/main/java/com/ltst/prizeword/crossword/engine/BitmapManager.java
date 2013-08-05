@@ -62,7 +62,6 @@ public class BitmapManager
                 @Override
                 public void handle(@Nullable BitmapEntity entity)
                 {
-                    Log.i("Appending bitmap");
                     synchronized (this)
                     {
                         mBitmaps.append(resource, entity);

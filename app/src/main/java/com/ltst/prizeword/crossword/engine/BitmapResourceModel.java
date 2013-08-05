@@ -16,6 +16,7 @@ import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.log.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -58,6 +59,22 @@ public class BitmapResourceModel implements IBitmapResourceModel
     public void loadTileBitmapEntityList(final int resource, int tileWidth, int tileHeight, final IListener<List<BitmapEntity>> handler)
     {
         final Rect rect = new Rect(0, 0, tileWidth, tileHeight);
+        TilesBitmapDecoder decoder = new TilesBitmapDecoder()
+        {
+            @Override
+            public void handleBitmapList(@Nonnull List<BitmapEntity> entity)
+            {
+                handler.handle(entity);
+            }
+
+            @Nonnull
+            @Override
+            protected Intent createIntent()
+            {
+                return BitmapDecoderTask.createIntent(resource, rect);
+            }
+        };
+        decoder.update(null);
     }
 
     private abstract class TilesBitmapDecoder extends BitmapEntityDecoder
@@ -68,7 +85,26 @@ public class BitmapResourceModel implements IBitmapResourceModel
         @Override
         protected void handleData(@Nullable Bundle result)
         {
+            if (result == null)
+            {
+                return;
+            }
+            ArrayList<Bitmap> bitmaps = result.getParcelableArrayList(BitmapDecoderTask.BF_BITMAP_TILE_LIST);
+            if (bitmaps == null)
+            {
+                return;
+            }
+            int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
 
+            ArrayList<BitmapEntity> entities = new ArrayList<BitmapEntity>();
+            for (Bitmap bitmap : bitmaps)
+            {
+                BitmapEntity entity = new BitmapEntity(resource);
+                entity.setBitmap(bitmap);
+                entities.add(entity);
+            }
+
+            handleBitmapList(entities);
         }
     }
 
@@ -81,7 +117,6 @@ public class BitmapResourceModel implements IBitmapResourceModel
         @Override
         protected void handleData(@Nullable Bundle result)
         {
-            Log.i("Handling result");
             if (result == null)
             {
                 return;
@@ -96,7 +131,6 @@ public class BitmapResourceModel implements IBitmapResourceModel
             BitmapEntity entity = new BitmapEntity(resource);
             entity.setBitmap(bitmap);
             handleBitmap(entity);
-            Log.i("Bitmap handled: " + bitmap.getWidth() + " " + bitmap.getHeight());
         }
     }
 
