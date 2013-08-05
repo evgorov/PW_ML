@@ -45,12 +45,6 @@ public class PuzzleFieldDrawer
     private @Nonnull Paint mPaint;
     private IListener<Rect> mInvalidateHandler;
 
-    private boolean mBackgroundResourcesLoaded;
-    private boolean mPuzzleTilesResourcesLoaded;
-    private boolean mArrowsResourcesLoaded;
-    private boolean mLetterResourcesLoaded;
-    private boolean mLetterResourcesDecodingInProgress;
-
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
     {
@@ -61,11 +55,6 @@ public class PuzzleFieldDrawer
         mLetterBitmapManager = new LetterBitmapManager(mContext, mAdapter.getBitmapResourceModel());
 
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
-        mBackgroundResourcesLoaded = false;
-        mPuzzleTilesResourcesLoaded = false;
-        mArrowsResourcesLoaded = false;
-        mLetterResourcesLoaded = false;
-        mLetterResourcesDecodingInProgress = false;
 
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
         {
@@ -80,6 +69,8 @@ public class PuzzleFieldDrawer
             }
         });
     }
+
+    // ====== init/deinit =====================
 
     private void measureDimensions()
     {
@@ -142,76 +133,105 @@ public class PuzzleFieldDrawer
         measureText();
 
         // load background tiles
-        if(!mBackgroundResourcesLoaded)
-        {
-            mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), null);
-            mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), new
-                    IListenerVoid()
-                    {
-                        @Override
-                        public void handle()
-                        {
-                            mBackgroundResourcesLoaded = true;
-                            mInvalidateHandler.handle(mPuzzleRect);
-                        }
-                    });
-        }
+        mBackgroundResourcesLoader.load();
 
         // load basic puzzle tiles
-        if(!mPuzzleTilesResourcesLoaded)
-        {
-            mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
-            mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
-            {
-                @Override
-                public void handle()
-                {
-                    mPuzzleTilesResourcesLoaded = true;
-                    mInvalidateHandler.handle(mPuzzleRect);
-                }
-            });
-        }
+        mPuzzleTilesResourcesLoader.load();
 
         // load arrows
-        if(!mArrowsResourcesLoaded)
+        mArrowsResourcesLoader.load();
+
+        // load letters
+        mLetterResourcesLoader.load();
+    }
+
+    public void unloadResources()
+    {
+        mBitmapManager.recycle();
+        mLetterBitmapManager.recycle();
+    }
+
+    // ====== public accessable data =====================================
+
+    public int getWidth()
+    {
+        if (mPuzzleRect == null)
         {
-            int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
-            for (int i = 0; i < arrowTypes.length - 1; i++)
-            {
-                int res = PuzzleResources.getArrowResource(arrowTypes[i]);
-                mBitmapManager.addBitmap(res, null);
-            }
-            int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
-            mBitmapManager.addBitmap(lastRes, new IListenerVoid()
-            {
-                @Override
-                public void handle()
-                {
-                    mArrowsResourcesLoaded = true;
-                    mInvalidateHandler.handle(mPuzzleRect);
-                }
-            });
+            return 0;
+        }
+        return mPuzzleRect.width();
+    }
+
+    public int getHeight()
+    {
+        if (mPuzzleRect == null)
+        {
+            return 0;
+        }
+        return mPuzzleRect.height();
+    }
+
+    public int getActualWidth()
+    {
+        if (mPuzzleRect == null)
+        {
+            return 0;
+        }
+        return mPuzzleRect.width() - mDrawingOffsetX * 2;
+    }
+
+    public int getActualHeight()
+    {
+        if (mPuzzleRect == null)
+        {
+            return 0;
+        }
+        return mPuzzleRect.height() - mDrawingOffsetY * 2;
+    }
+
+    public int getCenterX()
+    {
+        if (mPuzzleRect == null)
+        {
+            return 0;
+        }
+        return mPuzzleRect.width()/2;
+    }
+
+    public int getCenterY()
+    {
+        if (mPuzzleRect == null)
+        {
+            return 0;
+        }
+        return mPuzzleRect.height()/2;
+    }
+
+    public void checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
+    {
+        if (mPuzzleRect == null)
+        {
+            return;
         }
 
-        if(!mLetterResourcesLoaded && !mLetterResourcesDecodingInProgress)
-        {
-            mLetterResourcesDecodingInProgress = true;
-            mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
-            mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
-            {
-                @Override
-                public void handle()
-                {
-                    mLetterResourcesLoaded = true;
-                    mLetterResourcesDecodingInProgress = false;
-                }
-            });
-        }
+        int halfWidth = viewRect.width()/2;
+        int halfHeight = viewRect.height()/2;
+
+        if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+            p.x = halfWidth + mDrawingOffsetX;
+        if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+            p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
+        if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
+            p.y = halfHeight + mDrawingOffsetY;
+        if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
+            p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
     }
+
+    // ====== drawing =====================================
 
     public void drawBackground(@Nonnull Canvas canvas)
     {
-        if (mPuzzleRect == null || mResources == null || !mBackgroundResourcesLoaded)
+        if (mPuzzleRect == null || mResources == null || !mBackgroundResourcesLoader.isLoaded())
         {
             return;
         }
@@ -240,7 +260,7 @@ public class PuzzleFieldDrawer
 
     public void drawPuzzles(@Nonnull Canvas canvas)
     {
-        if (mPuzzleRect == null || mResources == null || !mPuzzleTilesResourcesLoaded)
+        if (mPuzzleRect == null || mResources == null || !mPuzzleTilesResourcesLoader.isLoaded())
         {
             return;
         }
@@ -326,7 +346,7 @@ public class PuzzleFieldDrawer
 
     public void drawArrow(int arrow, final @Nonnull Canvas canvas, final @Nonnull RectF rect)
     {
-        if (!mArrowsResourcesLoaded)
+        if (!mArrowsResourcesLoader.isLoaded())
             return;
 
         final int arrowResource = PuzzleResources.getArrowResource(arrow);
@@ -337,86 +357,6 @@ public class PuzzleFieldDrawer
                 mBitmapManager.drawResource(arrowResource, canvas, rect);
             }
         }
-    }
-
-    public void unloadResources()
-    {
-        mBitmapManager.recycle();
-        mLetterBitmapManager.recycle();
-    }
-
-    public int getWidth()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.width();
-    }
-
-    public int getHeight()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.height();
-    }
-
-    public int getActualWidth()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.width() - mDrawingOffsetX * 2;
-    }
-
-    public int getActualHeight()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.height() - mDrawingOffsetY * 2;
-    }
-
-    public int getCenterX()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.width()/2;
-    }
-
-    public int getCenterY()
-    {
-        if (mPuzzleRect == null)
-        {
-            return 0;
-        }
-        return mPuzzleRect.height()/2;
-    }
-
-    public void checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
-    {
-        if (mPuzzleRect == null)
-        {
-            return;
-        }
-
-        int halfWidth = viewRect.width()/2;
-        int halfHeight = viewRect.height()/2;
-
-        if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
-            p.x = halfWidth + mDrawingOffsetX;
-        if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
-            p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
-        if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
-            p.y = halfHeight + mDrawingOffsetY;
-        if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
-            p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
     }
 
     private void fillRectWithBitmap(@Nonnull Canvas canvas, @Nonnull RectF rect, int res)
@@ -477,5 +417,85 @@ public class PuzzleFieldDrawer
         }
         return strings;
     }
+
+    // =================== Resource loaders ===================
+
+    private ResourcesLoader mBackgroundResourcesLoader = new ResourcesLoader()
+    {
+        @Override
+        public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
+        {
+            mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), new
+                    IListenerVoid()
+                    {
+                        @Override
+                        public void handle()
+                        {
+                            mInvalidateHandler.handle(mPuzzleRect);
+                            loadingFinishedHandler.handle();
+                        }
+                    });
+        }
+    };
+
+    private ResourcesLoader mPuzzleTilesResourcesLoader = new ResourcesLoader()
+    {
+        @Override
+        public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
+        {
+            mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mInvalidateHandler.handle(mPuzzleRect);
+                    loadingFinishedHandler.handle();
+                }
+            });
+        }
+    };
+
+    private ResourcesLoader mArrowsResourcesLoader = new ResourcesLoader()
+    {
+        @Override
+        public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
+        {
+            int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
+            for (int i = 0; i < arrowTypes.length - 1; i++)
+            {
+                int res = PuzzleResources.getArrowResource(arrowTypes[i]);
+                mBitmapManager.addBitmap(res, null);
+            }
+            int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
+            mBitmapManager.addBitmap(lastRes, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mInvalidateHandler.handle(mPuzzleRect);
+                    loadingFinishedHandler.handle();
+                }
+            });
+        }
+    };
+
+    private ResourcesLoader mLetterResourcesLoader = new ResourcesLoader()
+    {
+        @Override
+        public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
+        {
+            mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
+            mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    loadingFinishedHandler.handle();
+                }
+            });
+        }
+    };
 }
 
