@@ -85,7 +85,7 @@ public class UserDataModel implements IUserDataModel {
     }
 
     @Override
-    public void loadUserPic(@Nonnull final String url, @Nonnull IListenerVoid handler) {
+    public void loadUserImageFromServer(@Nonnull final String url, @Nonnull IListenerVoid handler) {
 
         Updater session = new Updater() {
 
@@ -115,7 +115,37 @@ public class UserDataModel implements IUserDataModel {
     }
 
     @Override
-    public void resetUserPic(final byte[] userPic, @Nonnull IListenerVoid handler) {
+    public void loadUserImageFromDB(final long user_id, @Nonnull IListenerVoid handler) {
+
+        Updater session = new Updater() {
+
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return LoadUserDataFromDataBase.createIntentLoadingImage(user_id);
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return LoadUserDataFromDataBase.class;
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                if (result == null){
+                    mUserPic = null;
+                    return;
+                }
+                mUserPic = result.getByteArray(LoadUserDataFromDataBase.BF_IMAGE_DATA);
+            }
+        };
+        session.update(handler);
+    }
+
+    @Override
+    public void resetUserImage(final byte[] userPic, @Nonnull IListenerVoid handler) {
 
         final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
         Updater session = new Updater() {

@@ -5,15 +5,12 @@ import android.graphics.Bitmap;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
-import org.omich.velo.net.Network;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,17 +20,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -74,53 +65,6 @@ public class RestClient implements IRestClient
         return holder.getUserData();
     }
 
-//    @Override
-//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-//// Отправка аватарки на сервер для обновления данных;
-//// Create and populate a simple object to be used in the request
-//
-//        String url = "http://api.prize-word.com/me?session_key="+sessionKey;
-//
-//        // populate the data to post
-//        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-////        try {
-////            reqEntity.addPart("name", new StringBody("Name"));
-////            reqEntity.addPart("Id", new StringBody("ID"));
-////            reqEntity.addPart("title",new StringBody("TITLE"));
-////            reqEntity.addPart("caption", new StringBody("Caption"));
-////        } catch (UnsupportedEncodingException e) {
-////            e.printStackTrace();
-////        }
-//        try{
-//            byte[] data = userPic;
-//            ByteArrayBody bab = new ByteArrayBody(data, "somename.png");
-//            reqEntity.addPart(RestParams.USERPIC, bab);
-//        }
-//        catch(Exception e){
-//        }
-//// Set the Content-Type header
-//        HttpHeaders requestHeaders = new HttpHeaders();
-////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-//        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
-//        requestHeaders.setAccept(acceptableMediaTypes);
-//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-//// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
-//        HttpEntity<MultipartEntity> requestEntity = new HttpEntity<MultipartEntity>(reqEntity, requestHeaders);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
-//        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
-//        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-//
-//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class);
-////        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.postForEntity(url, requestEntity, RestUserData.RestUserDataHolder.class);
-//        RestUserData.RestUserDataHolder result = entity.getBody();
-//        result.setStatusCode(entity.getStatusCode());
-//        return result.getUserData();
-//    }
-
     @Override
     public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
     // Рабочий вариант;
@@ -129,16 +73,13 @@ public class RestClient implements IRestClient
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(url);
             MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-//            reqEntity.addPart("name", new StringBody("Name"));
-//            reqEntity.addPart("Id", new StringBody("ID"));
-//            reqEntity.addPart("title",new StringBody("TITLE"));
-//            reqEntity.addPart("caption", new StringBody("Caption"));
             byte[] data = userPic;
             ByteArrayBody bab = new ByteArrayBody(data, "somename.png");
             reqEntity.addPart(RestParams.USERPIC, bab);
 
             postRequest.setEntity(reqEntity);
             HttpResponse response = httpClient.execute(postRequest);
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 
             String sResponse;
@@ -155,65 +96,8 @@ public class RestClient implements IRestClient
             e.printStackTrace();
         }
 
-        return new RestUserData();
-
+        return getUserData(sessionKey);
     }
-
-
-//    // Более или менее рабочий вариант;
-//    @Override
-//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-//        // Create and populate a simple object to be used in the request
-////        RestUserData.RestUserDataSender message = new RestUserData.RestUserDataSender();
-////        message.setSessionKey(token);
-////        message.setUserpic(userPic);
-//        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-//        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-//        urlVariables.put(RestParams.USERPIC, userPic);
-//// Set the Content-Type header
-//        HttpHeaders requestHeaders = new HttpHeaders();
-////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
-//
-//        String url = RestParams.URL_RESET_USER_PIC;
-//
-//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-//        RestUserData.RestUserDataHolder result = entity.getBody();
-//        result.setStatusCode(entity.getStatusCode());
-//        return result.getUserData();
-//    }
-
-//    @Override
-//    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-//// Отправка аватарки на сервер для обновления данных;
-//// Create and populate a simple object to be used in the request
-//        MultipartEntity urlVariables = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-////        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-////        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
-////        urlVariables.put(RestParams.USERPIC, userPic);
-//        try{
-//            ByteArrayBody bab = new ByteArrayBody(userPic, "userpic.jpg");
-//            urlVariables.addPart(RestParams.SESSION_KEY, new StringBody(sessionKey));
-//            urlVariables.addPart(RestParams.USERPIC, bab);
-//        }
-//        catch(Exception e){
-////            urlVariables.put(RestParams.USERPIC, userPic);
-//        }
-//
-//// Set the Content-Type header
-//        HttpHeaders requestHeaders = new HttpHeaders();
-////        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        HttpEntity<RestUserData.RestUserDataSender> requestEntity = new HttpEntity<RestUserData.RestUserDataSender>(requestHeaders);
-//
-//// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-//        ResponseEntity<RestUserData.RestUserDataHolder> entity = restTemplate.exchange(RestParams.URL_RESET_USER_PIC, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-//        RestUserData.RestUserDataHolder result = entity.getBody();
-//        result.setStatusCode(entity.getStatusCode());
-//        return result.getUserData();
-//    }
 
     @Override
     public RestUserData resetUserName(@Nonnull String sessionKey, @Nonnull String userName){

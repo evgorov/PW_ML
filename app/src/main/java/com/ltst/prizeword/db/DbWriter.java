@@ -72,9 +72,9 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
-    public void putUserImage(int user_id, @Nullable byte[] buffer)
+    public void putUserImage(@Nullable byte[] buffer)
     {
-        @Nullable UserData existingUser = getUserById(user_id);
+        @Nullable UserData existingUser = getUserById(ID_USER);
         if (existingUser == null)
         {
             return;
@@ -221,6 +221,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             ContentValues cvUser = new ContentValues();
             if (user != null)
             {
+                cvUser.put(ColsUsers.ID, SQLiteHelper.ID_USER);
                 cvUser.put(ColsUsers.NAME, user.name);
                 cvUser.put(ColsUsers.SURNAME, user.surname);
                 cvUser.put(ColsUsers.EMAIL, user.email);
