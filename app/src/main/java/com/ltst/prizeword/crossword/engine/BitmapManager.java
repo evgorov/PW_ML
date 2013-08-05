@@ -39,7 +39,6 @@ public class BitmapManager
 
     public BitmapManager(@Nonnull Context context, @Nonnull IBitmapResourceModel bitmapModel)
     {
-        Log.i("Creating manager..");
         mContext = context;
         mBitmaps = new SparseArray<BitmapEntity>();
         mBitmapResourceModel = bitmapModel;
@@ -74,8 +73,6 @@ public class BitmapManager
                     }
                 }
             });
-
-//        mBitmapResourceModel.loadBitmapEntity(resource, null);
 
     }
 

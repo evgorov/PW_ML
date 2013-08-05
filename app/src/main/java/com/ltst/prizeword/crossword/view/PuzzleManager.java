@@ -79,7 +79,7 @@ public class PuzzleManager
         anim.start();
 
         mScaled = !mScaled;
-        mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+//        mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
     }
 
     private void configureMatrix()

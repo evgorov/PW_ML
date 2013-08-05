@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.engine;
 
 import android.graphics.Point;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PuzzleTileState
@@ -93,7 +94,7 @@ public class PuzzleTileState
         public static final int LETTER_EMPTY_INPUT  = 0x00000010;
     }
 
-    //    north:left, north:top, north:right,
+//    north:left, north:top, north:right,
 //    north-east:left, north-east:bottom,
 //    east:top, east:right, east:bottom,
 //    south-east:left, south-east:top,
@@ -188,6 +189,40 @@ public class PuzzleTileState
                     break;
             }
             return p;
+        }
+
+        @Nonnull static int[] getArrowTypesArray()
+        {
+            int[] res = new int[28];
+            res[0] = NORTH_LEFT;
+            res[1] = NORTH_TOP;
+            res[2] = NORTH_RIGHT;
+            res[3] = NORTH_EAST_RIGHT;
+            res[4] = NORTH_EAST_LEFT;
+            res[5] = NORTH_EAST_BOTTOM;
+            res[6] = NORTH_EAST_TOP;
+            res[7] = EAST_BOTTOM;
+            res[8] = EAST_RIGHT;
+            res[9] = EAST_TOP;
+            res[10] = SOUTH_EAST_BOTTOM;
+            res[11] = SOUTH_EAST_LEFT;
+            res[12] = SOUTH_EAST_RIGHT;
+            res[13] = SOUTH_EAST_TOP;
+            res[14] = SOUTH_BOTTOM;
+            res[15] = SOUTH_RIGHT;
+            res[16] = SOUTH_LEFT;
+            res[17] = SOUTH_WEST_BOTTOM;
+            res[18] = SOUTH_WEST_LEFT;
+            res[19] = SOUTH_WEST_RIGHT;
+            res[20] = SOUTH_WEST_TOP;
+            res[21] = WEST_BOTTOM;
+            res[22] = WEST_TOP;
+            res[23] = WEST_LEFT;
+            res[24] = NORTH_WEST_BOTTOM;
+            res[25] = NORTH_WEST_RIGHT;
+            res[26] = NORTH_WEST_LEFT;
+            res[27] = NORTH_WEST_TOP;
+            return res;
         }
     }
 

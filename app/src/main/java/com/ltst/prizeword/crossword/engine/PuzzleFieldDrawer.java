@@ -45,7 +45,8 @@ public class PuzzleFieldDrawer
     private IListener<Rect> mInvalidateHandler;
 
     private boolean mBackgroundResourcesLoaded;
-    private boolean mPuzzleTilesLoaded;
+    private boolean mPuzzleTilesResourcesLoaded;
+    private boolean mArrowsResourcesLoaded;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
@@ -58,7 +59,8 @@ public class PuzzleFieldDrawer
 
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
         mBackgroundResourcesLoaded = false;
-        mPuzzleTilesLoaded = false;
+        mPuzzleTilesResourcesLoaded = false;
+        mArrowsResourcesLoaded = false;
 
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
         {
@@ -134,6 +136,7 @@ public class PuzzleFieldDrawer
         measureDimensions();
         measureText();
 
+        // load background tiles
         mBitmapManager.addBitmap(PuzzleResources.getCanvasBackgroundTileRes(), null);
         mBitmapManager.addBitmap(PuzzleResources.getBackgroundTile(), new
                 IListenerVoid()
@@ -146,13 +149,32 @@ public class PuzzleFieldDrawer
                     }
                 });
 
+        // load basic puzzle tiles
         mBitmapManager.addBitmap(PuzzleResources.getLetterEmpty(), null);
         mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
         {
             @Override
             public void handle()
             {
-                mPuzzleTilesLoaded = true;
+                mPuzzleTilesResourcesLoaded = true;
+                mInvalidateHandler.handle(mPuzzleRect);
+            }
+        });
+
+        // load arrows
+        int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
+        for (int i = 0; i < arrowTypes.length - 1; i++)
+        {
+            int res = PuzzleResources.getArrowResource(arrowTypes[i]);
+            mBitmapManager.addBitmap(res, null);
+        }
+        int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
+        mBitmapManager.addBitmap(lastRes, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mArrowsResourcesLoaded = true;
                 mInvalidateHandler.handle(mPuzzleRect);
             }
         });
@@ -192,7 +214,7 @@ public class PuzzleFieldDrawer
 
     public void drawPuzzles(@Nonnull Canvas canvas)
     {
-        if (mPuzzleRect == null || mResources == null || !mPuzzleTilesLoaded)
+        if (mPuzzleRect == null || mResources == null || !mPuzzleTilesResourcesLoaded)
         {
             return;
         }
@@ -278,22 +300,13 @@ public class PuzzleFieldDrawer
 
     public void drawArrow(int arrow, final @Nonnull Canvas canvas, final @Nonnull RectF rect)
     {
+        if (!mArrowsResourcesLoaded)
+            return;
+
         final int arrowResource = PuzzleResources.getArrowResource(arrow);
         if(arrowResource != PuzzleTileState.ArrowType.NO_ARROW)
         {
-            if(!mBitmapManager.hasResource(arrowResource))
-            {
-                mBitmapManager.addBitmap(arrowResource, new IListenerVoid()
-                {
-                    @Override
-                    public void handle()
-                    {
-                        Rect invRect = new Rect((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom);
-                        mInvalidateHandler.handle(invRect);
-                    }
-                });
-            }
-            else
+            if(mBitmapManager.hasResource(arrowResource))
             {
                 mBitmapManager.drawResource(arrowResource, canvas, rect);
             }

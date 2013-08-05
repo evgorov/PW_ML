@@ -70,7 +70,7 @@ public class PuzzleView extends View
             @Override
             public void handle(@Nullable PuzzleResources puzzleResources)
             {
-                if (mViewScreenRect != null)
+                if (mViewScreenRect != null && mPuzzleManager != null)
                 {
                     mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
                 }
@@ -85,6 +85,7 @@ public class PuzzleView extends View
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
         if (mPuzzleManager != null)
         {
+            mPuzzleManager.recycle();
             mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
         }
         invalidate(mViewScreenRect);
