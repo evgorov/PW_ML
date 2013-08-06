@@ -19,6 +19,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="cee41ec1b82a8d52a74d0691bb17056d0f38cb8f"/>
+
         <service
             android:name=".db.DbService"
             android:exported="false" />
