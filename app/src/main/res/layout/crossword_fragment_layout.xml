@@ -24,8 +24,19 @@
 
     <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/crossword_panel_bg_title">
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/crossword_panel_bg_title"/>
+        </LinearLayout>
 
         <LinearLayout
                 android:orientation="vertical"
@@ -37,6 +48,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="bottom"
                     android:layout_marginBottom="10dp">
 
                 <TextView
