@@ -19,13 +19,13 @@ import javax.annotation.Nullable;
 public class BitmapDecoder
 {
     @Nullable
-    public static Bitmap decode(@Nonnull Context context, int resourceId)
+    public static synchronized Bitmap decode(@Nonnull Context context, int resourceId)
     {
         return BitmapFactory.decodeResource(context.getResources(), resourceId);
     }
 
     @Nullable
-    public static ArrayList<Bitmap> decodeTiles(@Nonnull Context context, int resourceId, @Nonnull Rect rect)
+    public static synchronized ArrayList<Bitmap> decodeTiles(@Nonnull Context context, int resourceId, @Nonnull Rect rect)
     {
         InputStream stream = context.getResources().openRawResource(resourceId);
         @Nullable BitmapRegionDecoder mRegionDecoder = null;
@@ -47,6 +47,16 @@ public class BitmapDecoder
         catch (IOException e)
         {
             Log.e(e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                stream.close();
+            } catch (IOException e)
+            {
+                Log.e(e.getMessage());
+            }
         }
 
         int imageWidth = 0;
@@ -100,6 +110,13 @@ public class BitmapDecoder
 
             tileRect.top += rect.height();
             tileRect.bottom += rect.height();
+        }
+        if (mRegionDecoder != null)
+        {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD_MR1)
+            {
+                mRegionDecoder.recycle();
+            }
         }
 
         return bitmaps;

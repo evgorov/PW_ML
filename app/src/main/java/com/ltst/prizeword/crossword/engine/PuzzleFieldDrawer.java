@@ -549,6 +549,10 @@ public class PuzzleFieldDrawer
         @Override
         public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
         {
+            if (mResources == null)
+            {
+                return;
+            }
             mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
             mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
             {

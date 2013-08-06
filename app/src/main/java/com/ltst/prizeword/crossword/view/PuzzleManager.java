@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
-    private @Nullable Point mFocusViewPoint;
+    private volatile @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
@@ -32,7 +32,7 @@ public class PuzzleManager
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
     private boolean mScaled;
-    private float mCurrentScale = MAX_SCALE;
+    private volatile float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
 
     public PuzzleManager(@Nonnull Context context,
@@ -167,47 +167,49 @@ public class PuzzleManager
         @Override
         public void run()
         {
-            mIsAnimating = true;
-            int iterations = 0;
-            float tempScale = mCurrentScale;
-            while((mDeltaScale > 1f && tempScale < toZoom)
-                    || (mDeltaScale < 1f && toZoom < tempScale))
+            synchronized (this)
             {
-                tempScale *= mDeltaScale;
-                iterations++;
-            }
-
-            Point center = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
-            int stepX = (center.x - mFocusViewPoint.x)/iterations;
-            int stepY = (center.y - mFocusViewPoint.y)/iterations;
-
-            while((mDeltaScale > 1f && mCurrentScale < toZoom)
-                    || (mDeltaScale < 1f && toZoom < mCurrentScale))
-            {
-                mCurrentScale *= mDeltaScale;
-                if(mFocusViewPoint != center)
+                mIsAnimating = true;
+                int iterations = 0;
+                float tempScale = mCurrentScale;
+                while((mDeltaScale > 1f && tempScale < toZoom)
+                        || (mDeltaScale < 1f && toZoom < tempScale))
                 {
-                    mFocusViewPoint.offset(stepX, stepY);
+                    tempScale *= mDeltaScale;
+                    iterations++;
                 }
 
+                Point center = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+                int stepX = (center.x - mFocusViewPoint.x)/iterations;
+                int stepY = (center.y - mFocusViewPoint.y)/iterations;
+
+                while((mDeltaScale > 1f && mCurrentScale < toZoom)
+                        || (mDeltaScale < 1f && toZoom < mCurrentScale))
+                {
+                    mCurrentScale *= mDeltaScale;
+                    if(mFocusViewPoint != center)
+                    {
+                        mFocusViewPoint.offset(stepX, stepY);
+                    }
+
+                    view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+                    try
+                    {
+                        ScaleAnimationThread.sleep(FPS_INTERVAL);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                }
+                final float delta = toZoom / mCurrentScale;
+                mCurrentScale *= delta;
+                mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
                 view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
                         mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-                try
-                {
-                    ScaleAnimationThread.sleep(FPS_INTERVAL);
-                }
-                catch (InterruptedException e)
-                {
-                    Log.e(e.getMessage());
-                }
+                mIsAnimating = false;
             }
-            final float delta = toZoom / mCurrentScale;
-            mCurrentScale *= delta;
-            mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
-            view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                    mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-            mIsAnimating = false;
-
         }
     }
 

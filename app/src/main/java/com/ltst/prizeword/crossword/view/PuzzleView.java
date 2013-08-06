@@ -147,17 +147,6 @@ public class PuzzleView extends View
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e)
-        {
-            if (mPuzzleManager != null && mViewScreenRect != null)
-            {
-                mPuzzleManager.onScaleEvent(PuzzleView.this);
-                mScaled = !mScaled;
-            }
-            return true;
-        }
-
-        @Override
         public boolean onSingleTapUp(MotionEvent e)
         {
             PointF p = new PointF(e.getX(), e.getY());
@@ -167,7 +156,6 @@ public class PuzzleView extends View
             }
             return true;
         }
-
     }
 
 
