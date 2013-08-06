@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
-import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
@@ -88,15 +87,9 @@ public class PuzzleManager
     {
         if(!mScaled || mFocusViewPoint == null)
             return;
-        @Nullable PuzzleResources res = mResourcesAdapter.getResources();
-        if (res == null)
-        {
-            return;
-        }
-        float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
-        float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
-        point.set(puzzleX, puzzleY);
-        mFieldDrawer.convertPointFromPuzzleCoordsToTilesAreaCoords(point);
+
+        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point, mFocusViewPoint, mPuzzleViewRect);
+
         int tileWidth = mFieldDrawer.getTileWidth();
         int tileHeight = mFieldDrawer.getTileHeight();
         int col = (int)point.x/tileWidth;

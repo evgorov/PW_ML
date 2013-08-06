@@ -238,17 +238,20 @@ public class PuzzleFieldDrawer
             p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
     }
 
-    public void convertPointFromPuzzleCoordsToTilesAreaCoords(@Nonnull PointF p)
+    public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p, @Nonnull Point focusPoint, @Nonnull Rect viewRect)
     {
         if (mResources == null)
         {
             return;
         }
+        float puzzleX = focusPoint.x + (p.x - viewRect.width()/2);
+        float puzzleY = focusPoint.y + (p.y - viewRect.height()/2);
 
         int framePadding = mResources.getFramePadding(mContext.getResources());
         int padding = mResources.getPadding();
-        float x = p.x - (mDrawingOffsetX + 2 * framePadding + padding);
-        float y = p.y - (mDrawingOffsetY + 2 * framePadding + padding);
+
+        float x = puzzleX - (mDrawingOffsetX + 4 * framePadding + 2 * padding);
+        float y = puzzleY - (mDrawingOffsetY + 4 * framePadding + 2 * padding);
         p.set(x, y);
     }
 
