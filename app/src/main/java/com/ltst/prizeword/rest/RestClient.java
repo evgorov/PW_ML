@@ -1,7 +1,5 @@
 package com.ltst.prizeword.rest;
 
-import android.graphics.Bitmap;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -17,9 +15,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -69,7 +69,8 @@ public class RestClient implements IRestClient
     public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
     // Рабочий вариант;
         try{
-            String url = "http://api.prize-word.com/me?session_key="+sessionKey;
+//            String url = "http://api.prize-word.com/me?session_key="+sessionKey;
+            String url = RestParams.URL_RESET_USER_PIC+sessionKey;
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(url);
             MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -343,4 +344,47 @@ public class RestClient implements IRestClient
         holder.setStatus(entity.getStatusCode());
         return holder;
     }
+
+    @Nullable
+    @Override
+    public RestUserData.RestAnswerMessageHolder mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY1, sessionKey1);
+        urlVariables.put(RestParams.SESSION_KEY2, sessionKey2);
+
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+
+        @Nonnull RestUserData.RestAnswerMessageHolder answer = null;
+        @Nullable ResponseEntity<RestUserData.RestAnswerMessageHolder> response = null;
+        try
+        {
+            response = restTemplate.exchange(RestParams.URL_POST_LINK_ACCOUNTS, HttpMethod.POST, requestEntity, RestUserData.RestAnswerMessageHolder.class, urlVariables);
+        }
+        catch (HttpClientErrorException e){
+            e.printStackTrace();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(response == null)
+            {
+                answer = new RestUserData.RestAnswerMessageHolder();
+                answer.setStatusCode(HttpStatus.valueOf(RestParams.SC_FORBIDDEN));
+            }
+            else
+            {
+                answer = response.getBody();
+                answer.setStatusCode(response.getStatusCode());
+            }
+        }
+        return answer;
+    }
+
 }
