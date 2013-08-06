@@ -71,9 +71,9 @@ public class BitmapDecoder
         ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>(tileCols * tileRows);
         Rect tileRect = new Rect(rect);
 
-        while (tileRect.bottom < imageHeight)
+        while (tileRect.bottom <= imageHeight)
         {
-            while (tileRect.right < imageWidth)
+            while (tileRect.right <= imageWidth)
             {
                 if (mRegionDecoder != null)
                 {
@@ -96,7 +96,7 @@ public class BitmapDecoder
                 tileRect.right += rect.width();
             }
             tileRect.left = rect.left;
-            tileRect.right = rect.width();
+            tileRect.right = rect.left + rect.width();
 
             tileRect.top += rect.height();
             tileRect.bottom += rect.height();

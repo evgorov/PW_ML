@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -13,7 +14,6 @@ import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
-import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,27 +54,29 @@ public class PuzzleView extends View
     {
         recycle();
         mAdapter = adapter;
-        mAdapter.setPuzzleUpdater(new IListenerVoid()
+        mPuzzleManager = new PuzzleManager(mContext, mAdapter, new IListener<Rect>()
         {
             @Override
-            public void handle()
+            public void handle(@Nullable Rect rect)
             {
-                if (mViewScreenRect != null)
+                if (rect != null)
                 {
-                    mPuzzleManager = new PuzzleManager(mContext, mAdapter, mViewScreenRect, new IListener<Rect>()
-                    {
-                        @Override
-                        public void handle(@Nullable Rect rect)
-                        {
-                            if (rect != null)
-                            {
-                                invalidate(rect);
-                            }
-                        }
-                    });
+                    invalidate(rect);
                 }
             }
         });
+        mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleResources puzzleResources)
+            {
+                if (mViewScreenRect != null && mPuzzleManager != null)
+                {
+                    mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -83,6 +85,7 @@ public class PuzzleView extends View
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
         if (mPuzzleManager != null)
         {
+            mPuzzleManager.recycle();
             mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
         }
         invalidate(mViewScreenRect);
@@ -155,10 +158,16 @@ public class PuzzleView extends View
         }
 
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent e)
+        public boolean onSingleTapUp(MotionEvent e)
         {
-            return super.onSingleTapConfirmed(e);
+            PointF p = new PointF(e.getX(), e.getY());
+            if (mPuzzleManager != null && mViewScreenRect != null)
+            {
+                mPuzzleManager.onTapEvent(p, PuzzleView.this);
+            }
+            return true;
         }
+
     }
 
 

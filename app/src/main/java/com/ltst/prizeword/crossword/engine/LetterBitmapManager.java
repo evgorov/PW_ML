@@ -10,8 +10,13 @@ import android.graphics.RectF;
 
 import com.ltst.prizeword.tools.decoding.BitmapDecoder;
 
+import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,32 +27,50 @@ public class LetterBitmapManager
     private @Nonnull HashMap<String, BitmapEntity> mLetters;
     private @Nonnull Paint mPaint;
     private @Nonnull Context mContext;
+    private @Nonnull IBitmapResourceModel mBitmapResourceModel;
 
-    public LetterBitmapManager(@Nonnull Context context)
+    public LetterBitmapManager(@Nonnull Context context, @Nonnull IBitmapResourceModel model)
     {
         mContext = context;
+        mBitmapResourceModel = model;
         mLetters = new HashMap<String, BitmapEntity>();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
 
-    public void addTileResource(int lettersResource, int letterWidth, int letterHeight)
+    public void addTileResource(final int lettersResource, int letterWidth, int letterHeight, final @Nullable IListenerVoid loadingHandler)
     {
-        Rect rect = new Rect(0, 0, letterWidth, letterHeight);
-        ArrayList<Bitmap> bitmaps = BitmapDecoder.decodeTiles(mContext, lettersResource, rect);
-        if (bitmaps == null)
+        mBitmapResourceModel.loadTileBitmapEntityList(lettersResource, letterWidth, letterHeight, new IListener<List<BitmapEntity>>()
         {
-            return;
-        }
+            @Override
+            public void handle(@Nullable List<BitmapEntity> bitmapEntities)
+            {
+                synchronized (this)
+                {
+                    if (bitmapEntities == null)
+                    {
+                        return;
+                    }
 
-        int length = mAlphabet.length();
-        for (int i = 0; i < length; i++)
-        {
-            char letter = mAlphabet.charAt(i);
-            BitmapEntity entity = new BitmapEntity(bitmaps.get(i));
-            String key = getLetterResourceKey(lettersResource, letter);
-            mLetters.put(key, entity);
-        }
+                    int length = mAlphabet.length();
+                    if(bitmapEntities.size() != length)
+                        return;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        char letter = mAlphabet.charAt(i);
+                        BitmapEntity entity = bitmapEntities.get(i);
+                        String key = getLetterResourceKey(lettersResource, letter);
+                        mLetters.put(key, entity);
+                    }
+
+                    if (loadingHandler != null)
+                    {
+                        loadingHandler.handle();
+                    }
+                }
+            }
+        });
     }
 
     public void drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)

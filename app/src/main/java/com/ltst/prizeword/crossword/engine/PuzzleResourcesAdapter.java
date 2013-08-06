@@ -1,8 +1,11 @@
 package com.ltst.prizeword.crossword.engine;
 
+import android.graphics.Point;
+
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
@@ -25,6 +28,7 @@ public class PuzzleResourcesAdapter
     private @Nullable Puzzle mPuzzle;
     private @Nullable IListenerVoid mPuzzleUpdater;
     private @Nonnull List<IListener<PuzzleResources>> mResourcesUpdaterList;
+    private @Nullable PuzzleResources mResources;
 
     private @Nonnull IBitmapResourceModel mIBitmapResourceModel;
 
@@ -46,10 +50,105 @@ public class PuzzleResourcesAdapter
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
 
+    public void updatePuzzleStateByTap(int column, int row)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        @Nullable PuzzleTileState state = mResources.getPuzzleState(column, row);
+        if (state == null)
+        {
+            return;
+        }
+
+        if(state.hasQuestion)
+        {
+            updateQuestionState(state, column, row);
+        }
+
+    }
+
+    private void updateQuestionState(@Nonnull PuzzleTileState state, int column, int row)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        state.setQuestionState(PuzzleTileState.QuestionState.QUESTION_INPUT);
+        int questionIndex = state.getQuestionIndex();
+        List<PuzzleQuestion> questions = mResources.getPuzzleQuestions();
+        if (questions == null)
+        {
+            return;
+        }
+        @Nullable PuzzleQuestion question = questions.get(questionIndex);
+        if (question == null)
+        {
+            return;
+        }
+
+        Point answerStart = PuzzleTileState.ArrowType.positionToPoint(question.getAnswerPosition(), column, row);
+        if (answerStart != null)
+        {
+            PuzzleTileState arrowTileState = mResources.getPuzzleState(answerStart.x, answerStart.y);
+            if (arrowTileState == null)
+            {
+                return;
+            }
+            int arrowType = arrowTileState.getArrowByQuestionIndex(questionIndex);
+            if(arrowType == PuzzleTileState.ArrowType.NO_ARROW)
+                return;
+
+            AnswerLetterPointIterator iter = new AnswerLetterPointIterator(answerStart,
+                    PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
+            setLetterStateByPointIterator(iter, new IListener<PuzzleTileState>()
+            {
+                @Override
+                public void handle(@Nullable PuzzleTileState puzzleTileState)
+                {
+                    if (puzzleTileState == null)
+                    {
+                        return;
+                    }
+
+                    puzzleTileState.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY_INPUT);
+                }
+            });
+        }
+
+
+    }
+
+    private void setLetterStateByPointIterator(@Nonnull AnswerLetterPointIterator iter, @Nonnull IListener<PuzzleTileState> handler)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+        while (iter.hasNext())
+        {
+            Point next = iter.next();
+            @Nullable PuzzleTileState state = mResources.getPuzzleState(next.x, next.y);
+            if (state != null)
+            {
+                handler.handle(state);
+            }
+        }
+    }
+
     @Nonnull
     public IBitmapResourceModel getBitmapResourceModel()
     {
         return mIBitmapResourceModel;
+    }
+
+    @Nullable
+    public PuzzleResources getResources()
+    {
+        return mResources;
     }
 
     public void updateResources()
@@ -60,10 +159,10 @@ public class PuzzleResourcesAdapter
         }
 
         PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-        PuzzleResources info = new PuzzleResources(type, mPuzzle.questions);
+        mResources = new PuzzleResources(type, mPuzzle.questions);
         for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
         {
-            puzzleResourcesHandler.handle(info);
+            puzzleResourcesHandler.handle(mResources);
         }
     }
 

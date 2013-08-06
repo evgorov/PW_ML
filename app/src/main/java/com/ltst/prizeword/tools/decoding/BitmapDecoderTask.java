@@ -26,7 +26,6 @@ public class BitmapDecoderTask implements IBcTask
     public static final @Nonnull
     Intent createIntent(int resourceId, @Nullable Rect decodeRect)
     {
-        Log.i("Creating intent..");
         Intent intent = new Intent();
         intent.putExtra(BF_RESOURCE_ID, resourceId);
         if (decodeRect != null)
@@ -46,7 +45,6 @@ public class BitmapDecoderTask implements IBcTask
             return null;
         }
         int resource = extras.getInt(BF_RESOURCE_ID);
-        Log.i("Resource decoding: " + resource);
         @Nullable Rect rect = extras.getParcelable(BF_DECODE_RECT);
         if (rect != null)
         {
@@ -61,7 +59,6 @@ public class BitmapDecoderTask implements IBcTask
             Bitmap bm = BitmapDecoder.decode(decodeTaskEnv.context, resource);
             if (bm != null)
             {
-                Log.i("Bitmap loaded: " + bm.getWidth() + " " + bm.getHeight());
                 return packToBundle(resource, bm);
             }
         }
@@ -70,7 +67,6 @@ public class BitmapDecoderTask implements IBcTask
 
     private static Bundle packToBundle(int resourceId, @Nonnull Bitmap bitmap)
     {
-        Log.i("Packing bitmap");
         Bundle bundle = new Bundle();
         bundle.putParcelable(BF_BITMAP, bitmap);
         bundle.putInt(BF_RESOURCE_ID, resourceId);

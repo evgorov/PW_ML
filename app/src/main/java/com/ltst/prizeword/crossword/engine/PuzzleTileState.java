@@ -1,7 +1,9 @@
 package com.ltst.prizeword.crossword.engine;
 
 import android.graphics.Point;
+import android.util.SparseIntArray;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PuzzleTileState
@@ -11,8 +13,9 @@ public class PuzzleTileState
     public boolean hasArrows;
 
     private int questionState;
+    private int questionIndex;
     private int letterState;
-    private int[] arrowsState;
+    private SparseIntArray arrowsState;
     private boolean hasFirstArrow;
     private boolean hasInputLetter;
 
@@ -23,7 +26,7 @@ public class PuzzleTileState
         hasArrows = false;
         questionState = 0;
         letterState = 0;
-        arrowsState = new int[2];
+        arrowsState = new SparseIntArray();
     }
 
     public void setQuestionState(int questionState)
@@ -32,6 +35,16 @@ public class PuzzleTileState
         hasQuestion = true;
         hasLetter = false;
         hasInputLetter = false;
+    }
+
+    public int getQuestionIndex()
+    {
+        return questionIndex;
+    }
+
+    public void setQuestionIndex(int questionIndex)
+    {
+        this.questionIndex = questionIndex;
     }
 
     public void setLetterState(int letterState)
@@ -51,15 +64,15 @@ public class PuzzleTileState
         return letterState;
     }
 
-    public void addArrow(int arrow)
+    public void addArrow(int arrow, int questionIndex)
     {
         if(!hasFirstArrow)
         {
-            arrowsState[0] = arrow;
+            arrowsState.append(questionIndex, arrow);
             hasFirstArrow = true;
         }
         else
-            arrowsState[1] = arrow;
+            arrowsState.append(questionIndex, arrow);
         hasArrows = true;
     }
 
@@ -67,17 +80,29 @@ public class PuzzleTileState
     public int getFirstArrow()
     {
         if(hasInputLetter)
-            return arrowsState[0] | ArrowType.ARROW_DONE;
+            return arrowsState.valueAt(0) | ArrowType.ARROW_DONE;
         else
-            return arrowsState[0];
+            return arrowsState.valueAt(0);
     }
 
     public int getSecondArrow()
     {
         if(hasInputLetter)
-            return arrowsState[1] | ArrowType.ARROW_DONE;
+            return arrowsState.valueAt(1) | ArrowType.ARROW_DONE;
         else
-            return arrowsState[1];
+            return arrowsState.valueAt(1);
+    }
+
+    public int getArrowByQuestionIndex(int questionIndex)
+    {
+        if(arrowsState.indexOfKey(questionIndex) >= 0)
+        {
+            if(hasInputLetter)
+                return arrowsState.get(questionIndex) | ArrowType.ARROW_DONE;
+            else
+                return arrowsState.get(questionIndex);
+        }
+        else return ArrowType.NO_ARROW;
     }
 
     public static class QuestionState
@@ -85,6 +110,7 @@ public class PuzzleTileState
         public static final int QUESTION_EMPTY = 0x00000001;
         public static final int QUESTION_CORRECT = 0x00000010;
         public static final int QUESTION_WRONG = 0x000000011;
+        public static final int QUESTION_INPUT = 0x000000100;
     }
 
     public static class LetterState
@@ -93,7 +119,7 @@ public class PuzzleTileState
         public static final int LETTER_EMPTY_INPUT  = 0x00000010;
     }
 
-    //    north:left, north:top, north:right,
+//    north:left, north:top, north:right,
 //    north-east:left, north-east:bottom,
 //    east:top, east:right, east:bottom,
 //    south-east:left, south-east:top,
@@ -188,6 +214,88 @@ public class PuzzleTileState
                     break;
             }
             return p;
+        }
+
+        @Nonnull static int[] getArrowTypesArray()
+        {
+            int[] res = new int[28];
+            res[0] = NORTH_LEFT;
+            res[1] = NORTH_TOP;
+            res[2] = NORTH_RIGHT;
+            res[3] = NORTH_EAST_RIGHT;
+            res[4] = NORTH_EAST_LEFT;
+            res[5] = NORTH_EAST_BOTTOM;
+            res[6] = NORTH_EAST_TOP;
+            res[7] = EAST_BOTTOM;
+            res[8] = EAST_RIGHT;
+            res[9] = EAST_TOP;
+            res[10] = SOUTH_EAST_BOTTOM;
+            res[11] = SOUTH_EAST_LEFT;
+            res[12] = SOUTH_EAST_RIGHT;
+            res[13] = SOUTH_EAST_TOP;
+            res[14] = SOUTH_BOTTOM;
+            res[15] = SOUTH_RIGHT;
+            res[16] = SOUTH_LEFT;
+            res[17] = SOUTH_WEST_BOTTOM;
+            res[18] = SOUTH_WEST_LEFT;
+            res[19] = SOUTH_WEST_RIGHT;
+            res[20] = SOUTH_WEST_TOP;
+            res[21] = WEST_BOTTOM;
+            res[22] = WEST_TOP;
+            res[23] = WEST_LEFT;
+            res[24] = NORTH_WEST_BOTTOM;
+            res[25] = NORTH_WEST_RIGHT;
+            res[26] = NORTH_WEST_LEFT;
+            res[27] = NORTH_WEST_TOP;
+            return res;
+        }
+    }
+
+    public static class AnswerDirection
+    {
+        public static final int UP = 1;
+        public static final int DOWN = 2;
+        public static final int RIGHT = 3;
+        public static final int LEFT = 4;
+
+        public static int getDirectionByArrow(int arrowType)
+        {
+            switch (arrowType)
+            {
+                case ArrowType.NORTH_WEST_TOP:
+                case ArrowType.NORTH_EAST_TOP:
+                case ArrowType.NORTH_TOP:
+                case ArrowType.EAST_TOP:
+                case ArrowType.WEST_TOP:
+                case ArrowType.SOUTH_EAST_TOP:
+                case ArrowType.SOUTH_WEST_TOP:
+                    return UP;
+                case ArrowType.EAST_BOTTOM:
+                case ArrowType.WEST_BOTTOM:
+                case ArrowType.NORTH_WEST_BOTTOM:
+                case ArrowType.NORTH_EAST_BOTTOM:
+                case ArrowType.SOUTH_EAST_BOTTOM:
+                case ArrowType.SOUTH_WEST_BOTTOM:
+                case ArrowType.SOUTH_BOTTOM:
+                    return DOWN;
+                case ArrowType.EAST_RIGHT:
+                case ArrowType.NORTH_EAST_RIGHT:
+                case ArrowType.SOUTH_EAST_RIGHT:
+                case ArrowType.NORTH_RIGHT:
+                case ArrowType.SOUTH_RIGHT:
+                case ArrowType.SOUTH_WEST_RIGHT:
+                case ArrowType.NORTH_WEST_RIGHT:
+                    return RIGHT;
+                case ArrowType.WEST_LEFT:
+                case ArrowType.NORTH_WEST_LEFT:
+                case ArrowType.SOUTH_WEST_LEFT:
+                case ArrowType.NORTH_EAST_LEFT:
+                case ArrowType.SOUTH_EAST_LEFT:
+                case ArrowType.NORTH_LEFT:
+                case ArrowType.SOUTH_LEFT:
+                    return LEFT;
+            }
+            return 0;
         }
     }
 

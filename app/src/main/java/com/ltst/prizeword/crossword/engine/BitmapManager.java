@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.SparseArray;
 
 import com.ltst.prizeword.app.ModelUpdater;
+import com.ltst.prizeword.tools.decoding.BitmapDecoder;
 import com.ltst.prizeword.tools.decoding.BitmapDecoderTask;
 
 import org.omich.velo.bcops.BcBaseService;
@@ -32,7 +33,7 @@ import javax.annotation.Nullable;
 public class BitmapManager
 {
     private @Nonnull Context mContext;
-    private @Nonnull SparseArray<BitmapEntity> mBitmaps;
+    private @Nonnull final SparseArray<BitmapEntity> mBitmaps;
     private @Nonnull Paint mPaint;
     private @Nonnull IBitmapResourceModel mBitmapResourceModel;
 
@@ -46,24 +47,31 @@ public class BitmapManager
     }
 
     public void addBitmap(final int resource,
-                          final @Nonnull IListener<Rect> invalidateListener,
-                          final @Nonnull Rect rect)
+                          final @Nullable IListenerVoid loadingHandler)
     {
-        BitmapEntity entity = new BitmapEntity(resource);
-        entity.loadResource(mContext);
-        mBitmaps.append(resource, entity);
-        invalidateListener.handle(rect);
+        if(hasResource(resource))
+            return;
 
-//        mBitmapResourceModel.loadBitmapEntity(resource, new
-//            IListener<BitmapEntity>()
-//            {
-//                @Override
-//                public void handle(@Nullable BitmapEntity entity)
-//                {
-//                    mBitmaps.append(resource, entity);
-//                    invalidateListener.handle(rect);
-//                }
-//            });
+//        BitmapEntity entity = new BitmapEntity(resource);
+//        entity.loadResource(mContext);
+//        mBitmaps.append(resource, entity);
+
+        mBitmapResourceModel.loadBitmapEntity(resource, new
+            IListener<BitmapEntity>()
+            {
+                @Override
+                public void handle(@Nullable BitmapEntity entity)
+                {
+                    synchronized (this)
+                    {
+                        mBitmaps.append(resource, entity);
+                        if (loadingHandler != null)
+                        {
+                            loadingHandler.handle();
+                        }
+                    }
+                }
+            });
 
     }
 
