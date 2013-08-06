@@ -47,6 +47,7 @@ import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
@@ -80,6 +81,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull DrawerLayout mDrawerLayout;
@@ -104,6 +106,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
@@ -592,6 +595,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             int statusCode = mUserDataModel.getStatusCodeAnswer();
             @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
+            msg = mContext.getResources().getString(R.string.error_merge_accounts);
             @Nonnull String provider = mUserDataModel.getProvider();
             if(statusCode == RestParams.SC_SUCCESS)
             {
@@ -610,6 +614,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 if(provider == RestParams.FB_PROVIDER){
                     mDrawerMenu.mFacebookSwitcher.setChecked(false);
                 }
+                ErrorAlertDialog.showDialog(mContext, R.string.error_merge_accounts);
             }
         }
     };
