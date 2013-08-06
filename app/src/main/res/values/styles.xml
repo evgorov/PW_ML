@@ -78,4 +78,5 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">@dimen/menu_main_left_margin</item>
     </style>
+
 </resources>

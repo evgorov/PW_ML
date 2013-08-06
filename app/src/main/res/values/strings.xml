@@ -20,6 +20,8 @@
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
     <string name="error_merge_accounts">Ошибка! Этот аккаунт уже привязан к другой учетной записи</string>
+    <string name="hints">Подсказки</string>
+    <string name="hints_rest">Осталось:</string>
     <string name="in_rating">в рейтинге</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
     <string name="personal_record">Персональный рекорд:</string>
@@ -37,6 +39,10 @@
     <string name="register_screen_city">Город</string>
     <string name="register_screen_error_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще раз.</string>
     <string name="register_screen_date_pick_dialog_title">Дата рождения</string>
+    <string name="buy_one_dollar">$0.99</string>
+    <string name="buy_two_dollar">$1.99</string>
+    <string name="buy_three_dollar">$2.99</string>
+
 
     <string name="menu_main_my_crosswords">Мои сканворды</string>
     <string name="menu_main_invite_friends">Пригласить друзей</string>
