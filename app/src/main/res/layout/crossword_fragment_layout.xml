@@ -14,16 +14,68 @@
             />
     <!-- =================================================================================== -->
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-    </LinearLayout>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/crossword_panel_bg_title"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/frame_border">
+
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="4dp"
+                        android:textColor="@color/puzzle_hints_title_text_color"
+                        android:shadowColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:shadowDx="0"
+                        android:shadowDy="-1"
+                        android:shadowRadius="1"
+                        android:text="@string/crosswords_on"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:paddingStart="4dp"
+                        android:textColor="@color/puzzle_hints_title_text_color"
+                        android:shadowColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:shadowDx="0"
+                        android:shadowDy="-1"
+                        android:shadowRadius="1"
+                        android:text="апрель"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
 
     <!-- =================================================================================== -->
 
     <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         <LinearLayout
@@ -206,11 +258,43 @@
 
     <!-- =================================================================================== -->
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
+    <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/crossword_panel_bg_title"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/frame_border">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:textColor="@color/puzzle_hints_title_text_color"
+                    android:shadowColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:shadowDx="0"
+                    android:shadowDy="-1"
+                    android:shadowRadius="1"
+                    android:text="@string/archives"/>
+
+        </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>
