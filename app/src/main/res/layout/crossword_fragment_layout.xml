@@ -74,6 +74,11 @@
                                 android:background="@drawable/puzzles_current_puzzles_head_rest_time_icon"
                                 />
 
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="1dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
                         <TextView
                                 android:layout_marginStart="1dp"
                                 android:textSize="10sp"
@@ -94,7 +99,7 @@
                                 style="@style/PuzzlesHintWhiteTextStyle"
                                 android:text="@string/puzzless_hint_rest_days"
                                 />
-
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -141,23 +146,24 @@
                     android:gravity="center_vertical">
 
                 <TextView
-                        android:textSize="12sp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
                         style="@style/PuzzlesHintCommonTextStyle"
                         android:text="7"/>
 
                 <TextView
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:layout_marginStart="4dp"
                         style="@style/PuzzlesHintCommonTextStyle"
                         android:text="@string/puzzless_hint_crosswords"/>
 
                 <TextView
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         style="@style/PuzzlesHintCommonTextStyle"
                         android:text=","/>
 
                 <TextView
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:layout_marginStart="4dp"
                         style="@style/PuzzlesHintCommonTextStyle"
                         android:text="@string/puzzless_hint_minimal"/>
@@ -169,8 +175,9 @@
                     android:background="@drawable/puzzles_badge_star"/>
 
                 <TextView
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:layout_marginStart="4dp"
+                        android:textStyle="bold"
                         style="@style/PuzzlesHintCommonTextStyle"
                         android:text="85 000"/>
 
@@ -203,35 +210,82 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:gravity="center_vertical">
 
 
                     <TextView
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             style="@style/PuzzlesHintCommonTextStyle"
                             android:text="@string/puzzless_hint_resolved"/>
 
                     <TextView
-                            android:textSize="12sp"
-                            android:layout_marginStart="4dp"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="4dp"
+                            android:textStyle="bold"
                             style="@style/PuzzlesHintCommonTextStyle"
                             android:text="4/12"/>
 
                     <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="1dp"
                             android:orientation="horizontal"
                             android:background="@drawable/puzzles_set_progressbar_bg">
+
+                        <LinearLayout
+                                android:layout_width="17dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="1dp"
+                                android:background="@drawable/puzzles_set_progressbar_progress"/>
 
                     </LinearLayout>
 
                     <TextView
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_marginStart="4dp"
+                            android:textStyle="bold"
                             style="@style/PuzzlesHintCommonTextStyle"
                             android:text="30%"/>
                 </LinearLayout>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical">
+
+                    <TextView
+                            android:textSize="14sp"
+                            style="@style/PuzzlesHintCommonTextStyle"
+                            android:text="@string/puzzless_hint_get_score"/>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/puzzles_badge_star"/>
+
+                    <TextView
+                            android:textSize="14sp"
+                            android:layout_marginStart="4dp"
+                            android:textStyle="bold"
+                            style="@style/PuzzlesHintCommonTextStyle"
+                            android:text="23 000"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <!--@TODO with crosswordss-->
+
             </LinearLayout>
 
             <LinearLayout
