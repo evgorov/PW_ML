@@ -6,12 +6,14 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -85,13 +87,8 @@ public class PuzzleManager
         mScaled = !mScaled;
     }
 
-    public void onTapEvent(@Nonnull PointF point, @Nonnull PuzzleView view)
+    public void onTapEvent(@Nonnull PointF point, @Nullable IListenerVoid successHandler)
     {
-        if(mLastQuestionTapPoint != null)
-        {
-            mResourcesAdapter.cancelLastQuestionState(mLastQuestionTapPoint.x, mLastQuestionTapPoint.y);
-            mLastQuestionTapPoint = null;
-        }
         if(!mScaled || mFocusViewPoint == null)
             return;
 
@@ -104,9 +101,35 @@ public class PuzzleManager
         boolean confirmed = mResourcesAdapter.updatePuzzleStateByTap(col, row);
         if(confirmed)
         {
+            if (successHandler != null)
+            {
+                successHandler.handle();
+            }
+            cancelLastQuestion();
             mLastQuestionTapPoint = new Point(col, row);
         }
         mInvalidateHandler.handle(mPuzzleViewRect);
+    }
+
+    public void onKeyEvent(int keyCode)
+    {
+        switch (keyCode)
+        {
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_ENTER:
+                cancelLastQuestion();
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+        }
+    }
+
+    private void cancelLastQuestion()
+    {
+        if(mLastQuestionTapPoint != null)
+        {
+            mResourcesAdapter.cancelLastQuestionState(mLastQuestionTapPoint.x, mLastQuestionTapPoint.y);
+            mLastQuestionTapPoint = null;
+        }
     }
 
     private void configureMatrix()
