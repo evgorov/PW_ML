@@ -52,6 +52,7 @@ public class PuzzleManager
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
         mPuzzleViewRect = puzzleViewRect;
+        mFieldDrawer.disableScaling();
         float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
         float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
         MIN_SCALE = Math.min(scaleHeight, scaleWidth);

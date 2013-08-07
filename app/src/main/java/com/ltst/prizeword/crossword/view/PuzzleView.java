@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
@@ -22,7 +21,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PuzzleView extends TextView
+public class PuzzleView extends View
 {
     private @Nonnull Context mContext;
     private @Nullable Rect mViewScreenRect;
@@ -95,7 +94,6 @@ public class PuzzleView extends TextView
         mViewScreenRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
         if (mPuzzleManager != null)
         {
-            mPuzzleManager.recycle();
             mPuzzleManager.setPuzzleViewRect(mViewScreenRect);
         }
         invalidate(mViewScreenRect);
@@ -210,6 +208,8 @@ public class PuzzleView extends TextView
         @Override
         public boolean onScale(ScaleGestureDetector detector)
         {
+            if(mKeyboardOpened)
+                return false;
             float scaleFactor = detector.getScaleFactor();
             if(scaleFactor >= 1 + MIN_SCALE_FACTOR_DETECTABLE && !mScaled)
             {

@@ -16,7 +16,6 @@ import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
-import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ public class PuzzleFieldDrawer
     private @Nonnull PuzzleResourcesAdapter mAdapter;
 
     private @Nullable Rect mPuzzleRect;
+    private @Nullable Rect mUnscaledPuzzleRect;
     private int mTileWidth;
     private int mTileHeight;
     private int mTileTextPadding;
@@ -94,7 +94,7 @@ public class PuzzleFieldDrawer
         int puzzleWidth = 2 * (padding + 2 * framePadding) + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
         int puzzleHeight = 2 * (padding + 2 * framePadding) + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
         mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
-
+        mUnscaledPuzzleRect = new Rect(mPuzzleRect);
     }
 
     private void measureText()
@@ -114,18 +114,29 @@ public class PuzzleFieldDrawer
 
     public void enableScaling(float scaleWidth, float scaleHeight)
     {
-        if (mPuzzleRect == null)
+        if (mPuzzleRect == null || mUnscaledPuzzleRect == null)
         {
             return;
         }
 
-        int scaledWidth = (int)(mPuzzleRect.width() * scaleWidth);
-        int scaledHeight = (int)(mPuzzleRect.height() * scaleHeight);
-        mDrawingOffsetX = scaledWidth/2 - mPuzzleRect.width()/2;
-        mDrawingOffsetY = scaledHeight/2 - mPuzzleRect.height()/2;
+        int scaledWidth = (int)(mUnscaledPuzzleRect.width() * scaleWidth);
+        int scaledHeight = (int)(mUnscaledPuzzleRect.height() * scaleHeight);
+        mDrawingOffsetX = scaledWidth/2 - mUnscaledPuzzleRect.width()/2;
+        mDrawingOffsetY = scaledHeight/2 - mUnscaledPuzzleRect.height()/2;
 
-        mPuzzleRect.right += mDrawingOffsetX * 2;
-        mPuzzleRect.bottom += mDrawingOffsetY * 2;
+        mPuzzleRect.right = mUnscaledPuzzleRect.right + mDrawingOffsetX * 2;
+        mPuzzleRect.bottom = mUnscaledPuzzleRect.bottom + mDrawingOffsetY * 2;
+    }
+
+    public void disableScaling()
+    {
+        if (mPuzzleRect == null || mUnscaledPuzzleRect == null)
+        {
+            return;
+        }
+        mPuzzleRect.set(mUnscaledPuzzleRect);
+        mDrawingOffsetX = 0;
+        mDrawingOffsetY = 0;
     }
 
     public void loadResources()
