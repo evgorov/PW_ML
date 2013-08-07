@@ -248,11 +248,13 @@ public class PuzzleView extends View
                     if(!mKeyboardOpened)
                         return false;
                 case KeyEvent.KEYCODE_ENTER:
-                    mPuzzleManager.onKeyEvent(keyCode);
+                    mPuzzleManager.onKeyEvent(event);
                     hideKeyboard();
                     return true;
+                default:
+                    mPuzzleManager.onKeyEvent(event);
+                return true;
             }
-            return false;
         }
     }
 

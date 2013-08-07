@@ -18,6 +18,7 @@ public class PuzzleTileState
     private SparseIntArray arrowsState;
     private boolean hasFirstArrow;
     private boolean hasInputLetter;
+    private String mInputLetter;
 
     public PuzzleTileState()
     {
@@ -51,7 +52,20 @@ public class PuzzleTileState
     {
         this.letterState = letterState;
         hasLetter = true;
+        hasInputLetter = false;
         hasQuestion = false;
+    }
+
+    public String getInputLetter()
+    {
+        return mInputLetter;
+    }
+
+    public void setInputLetter(String inputLetter)
+    {
+        mInputLetter = inputLetter;
+        setLetterState(LetterState.LETTER_INPUT);
+        hasInputLetter = true;
     }
 
     public int getQuestionState()
@@ -117,6 +131,7 @@ public class PuzzleTileState
     {
         public static final int LETTER_EMPTY        = 0x00000001;
         public static final int LETTER_EMPTY_INPUT  = 0x00000010;
+        public static final int LETTER_INPUT        = 0x00000011;
     }
 
 //    north:left, north:top, north:right,

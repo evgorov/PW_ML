@@ -112,13 +112,23 @@ public class PuzzleManager
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
-    public void onKeyEvent(int keyCode)
+    public void onKeyEvent(@Nonnull KeyEvent keyEvent)
     {
-        switch (keyCode)
+        switch (keyEvent.getKeyCode())
         {
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
                 cancelLastQuestion();
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+            case KeyEvent.KEYCODE_UNKNOWN:
+                String letter = keyEvent.getCharacters();
+                if (letter == null || letter.length() > 1)
+                {
+                    break;
+                }
+                letter = letter.toUpperCase();
+                mResourcesAdapter.updateLetterCharacterState(letter);
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
         }

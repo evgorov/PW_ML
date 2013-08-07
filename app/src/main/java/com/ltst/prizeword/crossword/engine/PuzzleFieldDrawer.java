@@ -379,17 +379,29 @@ public class PuzzleFieldDrawer
     private void drawLetterByState(@Nonnull Canvas canvas, @Nonnull RectF rect,
                                    @Nonnull PuzzleTileState state)
     {
-        int letterRes = 0;
         switch (state.getLetterState())
         {
             case PuzzleTileState.LetterState.LETTER_EMPTY:
-                letterRes = PuzzleResources.getLetterEmpty();
+            {
+                int letterRes = PuzzleResources.getLetterEmpty();
+                mBitmapManager.drawResource(letterRes, canvas, rect);
+            }
                 break;
             case PuzzleTileState.LetterState.LETTER_EMPTY_INPUT:
-                letterRes = PuzzleResources.getLetterEmptyInput();
+            {
+                int letterRes = PuzzleResources.getLetterEmptyInput();
+                mBitmapManager.drawResource(letterRes, canvas, rect);
+            }
+                break;
+            case PuzzleTileState.LetterState.LETTER_INPUT:
+            {
+                int letterRes = PuzzleResources.getLetterTilesInput();
+                char letter = state.getInputLetter().charAt(0);
+                mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
+            }
                 break;
         }
-        mBitmapManager.drawResource(letterRes, canvas, rect);
+
     }
 
     private void drawQuestionText(@Nonnull Canvas canvas, @Nonnull String question, @Nonnull RectF tileRect)
@@ -567,6 +579,7 @@ public class PuzzleFieldDrawer
             {
                 return;
             }
+            mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesInput(), mTileWidth, mTileHeight, null);
             mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
             mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
             {
