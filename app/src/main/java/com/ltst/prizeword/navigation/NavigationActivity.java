@@ -84,7 +84,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
-    private @Nonnull DrawerLayout mDrawerLayout;
+    private @Nonnull NavigationDrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull MainMenuHolder mDrawerMenu;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
@@ -109,7 +109,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        mDrawerLayout = (NavigationDrawerLayout) findViewById(R.id.navigation_drawer_layout);
         View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerList.addFooterView(vfooter);
@@ -209,9 +209,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-        spref.commit();
+//        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+//        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+//        spref.commit();
         super.onDestroy();
     }
 
@@ -630,12 +630,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         switch (swipe)
         {
             case SWIPE_LEFT:
-                mDrawerLayout.closeDrawer(mDrawerList);
+                    mDrawerLayout.closeDrawer(mDrawerList);
                 break;
             case SWIPE_RIGHT:
-                mDrawerLayout.openDrawer(mDrawerList);
+                    mDrawerLayout.openDrawer(mDrawerList);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 

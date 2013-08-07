@@ -1,4 +1,4 @@
-<android.support.v4.widget.DrawerLayout
+<com.ltst.prizeword.navigation.NavigationDrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/navigation_drawer_layout"
         android:layout_width="match_parent"
@@ -21,4 +21,4 @@
               android:divider="@android:color/transparent"
               android:dividerHeight="0dp"
               android:background="@drawable/menu_bg_title"/>
-</android.support.v4.widget.DrawerLayout>
+</com.ltst.prizeword.navigation.NavigationDrawerLayout>
