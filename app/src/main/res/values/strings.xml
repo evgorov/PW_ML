@@ -28,6 +28,7 @@
     <string name="puzzless_hint_hints_rest">Осталось:</string>
     <string name="puzzless_hint_crosswords">сканвордов</string>
     <string name="puzzless_hint_minimal">минимум</string>
+    <string name="puzzless_hint_resolved">Разгаданно</string>
     <string name="puzzless_hint_brilliant_crossword">Бриллиантовый</string>
     <string name="in_rating">в рейтинге</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
