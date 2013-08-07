@@ -90,11 +90,11 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
-        mEmailEditText.setOnKeyListener(this);
-        mPasswdlEditText.setOnKeyListener(this);
+//        mEmailEditText.setOnKeyListener(this);
+//        mPasswdlEditText.setOnKeyListener(this);
 
-        mEmailEditText.setText("vlad@ltst.ru");
-        mPasswdlEditText.setText("vlad");
+//        mEmailEditText.setText("vlad@ltst.ru");
+//        mPasswdlEditText.setText("vlad");
 
         return v;
     }
@@ -162,7 +162,7 @@ public class AuthorizationFragment extends SherlockFragment
             }
             break;
             default:
-                return false;
+                return view.onKeyUp(keyCode, keyEvent);
         }
         return true;
     }

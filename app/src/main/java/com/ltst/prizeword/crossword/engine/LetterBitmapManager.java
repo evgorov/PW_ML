@@ -55,7 +55,6 @@ public class LetterBitmapManager
                     int length = mAlphabet.length();
                     if(bitmapEntities.size() != length)
                         return;
-
                     for (int i = 0; i < length; i++)
                     {
                         char letter = mAlphabet.charAt(i);
@@ -63,7 +62,6 @@ public class LetterBitmapManager
                         String key = getLetterResourceKey(lettersResource, letter);
                         mLetters.put(key, entity);
                     }
-
                     if (loadingHandler != null)
                     {
                         loadingHandler.handle();

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.crashlytics.android.Crashlytics;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -106,6 +107,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        Crashlytics.start(this);
         mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);

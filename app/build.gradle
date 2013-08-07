@@ -1,12 +1,15 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 apply plugin: 'android'
+apply plugin: 'crashlytics'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -19,6 +22,7 @@ dependencies {
     compile project(':libs:project-bcops')
     compile project(':libs:project-lists')
     compile project(':libs:project-sherlock')
+
 }
 
 android {
@@ -30,6 +34,13 @@ android {
         targetSdkVersion 17
     }
 
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies{
+        compile 'com.crashlytics.android:crashlytics:1.+'
+    }
     signingConfigs {
         release {
             storeFile file("key/prizeword-release.keystore")

@@ -6,13 +6,14 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
-import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -20,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
-    private @Nullable Point mFocusViewPoint;
+    private volatile @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
@@ -32,8 +33,10 @@ public class PuzzleManager
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
     private boolean mScaled;
-    private float mCurrentScale = MAX_SCALE;
+    private volatile float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
+
+    private @Nullable Point mLastQuestionTapPoint;
 
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
@@ -49,6 +52,7 @@ public class PuzzleManager
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
         mPuzzleViewRect = puzzleViewRect;
+        mFieldDrawer.disableScaling();
         float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
         float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
         MIN_SCALE = Math.min(scaleHeight, scaleWidth);
@@ -84,25 +88,59 @@ public class PuzzleManager
         mScaled = !mScaled;
     }
 
-    public void onTapEvent(@Nonnull PointF point, @Nonnull PuzzleView view)
+    public void onTapEvent(@Nonnull PointF point, @Nullable IListenerVoid successHandler)
     {
         if(!mScaled || mFocusViewPoint == null)
             return;
-        @Nullable PuzzleResources res = mResourcesAdapter.getResources();
-        if (res == null)
-        {
-            return;
-        }
-        float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
-        float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
-        point.set(puzzleX, puzzleY);
-        mFieldDrawer.convertPointFromPuzzleCoordsToTilesAreaCoords(point);
+
+        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point, mFocusViewPoint, mPuzzleViewRect);
+
         int tileWidth = mFieldDrawer.getTileWidth();
         int tileHeight = mFieldDrawer.getTileHeight();
         int col = (int)point.x/tileWidth;
         int row = (int)point.y/tileHeight;
-        mResourcesAdapter.updatePuzzleStateByTap(col, row);
+        boolean confirmed = mResourcesAdapter.updatePuzzleStateByTap(col, row);
+        if(confirmed)
+        {
+            if (successHandler != null)
+            {
+                successHandler.handle();
+            }
+            cancelLastQuestion();
+            mLastQuestionTapPoint = new Point(col, row);
+        }
         mInvalidateHandler.handle(mPuzzleViewRect);
+    }
+
+    public void onKeyEvent(@Nonnull KeyEvent keyEvent)
+    {
+        switch (keyEvent.getKeyCode())
+        {
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_ENTER:
+                cancelLastQuestion();
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+            case KeyEvent.KEYCODE_UNKNOWN:
+                String letter = keyEvent.getCharacters();
+                if (letter == null || letter.length() > 1)
+                {
+                    break;
+                }
+                letter = letter.toUpperCase();
+                mResourcesAdapter.updateLetterCharacterState(letter);
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+        }
+    }
+
+    private void cancelLastQuestion()
+    {
+        if(mLastQuestionTapPoint != null)
+        {
+            mResourcesAdapter.cancelLastQuestionState(mLastQuestionTapPoint.x, mLastQuestionTapPoint.y);
+            mLastQuestionTapPoint = null;
+        }
     }
 
     private void configureMatrix()
@@ -167,47 +205,49 @@ public class PuzzleManager
         @Override
         public void run()
         {
-            mIsAnimating = true;
-            int iterations = 0;
-            float tempScale = mCurrentScale;
-            while((mDeltaScale > 1f && tempScale < toZoom)
-                    || (mDeltaScale < 1f && toZoom < tempScale))
+            synchronized (this)
             {
-                tempScale *= mDeltaScale;
-                iterations++;
-            }
-
-            Point center = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
-            int stepX = (center.x - mFocusViewPoint.x)/iterations;
-            int stepY = (center.y - mFocusViewPoint.y)/iterations;
-
-            while((mDeltaScale > 1f && mCurrentScale < toZoom)
-                    || (mDeltaScale < 1f && toZoom < mCurrentScale))
-            {
-                mCurrentScale *= mDeltaScale;
-                if(mFocusViewPoint != center)
+                mIsAnimating = true;
+                int iterations = 0;
+                float tempScale = mCurrentScale;
+                while((mDeltaScale > 1f && tempScale < toZoom)
+                        || (mDeltaScale < 1f && toZoom < tempScale))
                 {
-                    mFocusViewPoint.offset(stepX, stepY);
+                    tempScale *= mDeltaScale;
+                    iterations++;
                 }
 
+                Point center = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+                int stepX = (center.x - mFocusViewPoint.x)/iterations;
+                int stepY = (center.y - mFocusViewPoint.y)/iterations;
+
+                while((mDeltaScale > 1f && mCurrentScale < toZoom)
+                        || (mDeltaScale < 1f && toZoom < mCurrentScale))
+                {
+                    mCurrentScale *= mDeltaScale;
+                    if(mFocusViewPoint != center)
+                    {
+                        mFocusViewPoint.offset(stepX, stepY);
+                    }
+
+                    view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+                    try
+                    {
+                        ScaleAnimationThread.sleep(FPS_INTERVAL);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                }
+                final float delta = toZoom / mCurrentScale;
+                mCurrentScale *= delta;
+                mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
                 view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
                         mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-                try
-                {
-                    ScaleAnimationThread.sleep(FPS_INTERVAL);
-                }
-                catch (InterruptedException e)
-                {
-                    Log.e(e.getMessage());
-                }
+                mIsAnimating = false;
             }
-            final float delta = toZoom / mCurrentScale;
-            mCurrentScale *= delta;
-            mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
-            view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
-                    mPuzzleViewRect.right, mPuzzleViewRect.bottom);
-            mIsAnimating = false;
-
         }
     }
 
