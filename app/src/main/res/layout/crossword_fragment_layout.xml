@@ -6,22 +6,21 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Button
-            android:id="@+id/view_crossword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crossword"
-            />
     <!-- =================================================================================== -->
 
     <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
             <LinearLayout
                     android:orientation="vertical"
@@ -258,7 +257,7 @@
                             android:orientation="horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="6dp"
                             android:gravity="center_vertical">
 
                         <TextView
@@ -281,6 +280,13 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
+                <Button
+                        android:id="@+id/view_crossword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Crossword"
+                        />
 
                 <LinearLayout
                         android:orientation="vertical"
@@ -458,14 +464,15 @@
 
             </LinearLayout>
 
-
         </FrameLayout>
 
         <!-- =================================================================================== -->
 
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                >
 
             <LinearLayout
                     android:orientation="vertical"
@@ -486,13 +493,15 @@
                     android:background="@drawable/frame_border">
 
                 <TextView
-                        android:paddingStart="4dp"
+                        android:paddingStart="8dp"
                         android:textSize="18sp"
                         style="@style/PuzzlesHintTitleTextStyle"
                         android:text="@string/puzzless_hint_archives"/>
 
             </LinearLayout>
         </FrameLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
