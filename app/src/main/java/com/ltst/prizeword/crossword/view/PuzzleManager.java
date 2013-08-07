@@ -34,6 +34,8 @@ public class PuzzleManager
     private volatile float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
 
+    private @Nullable Point mLastQuestionTapPoint;
+
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
                          @Nonnull IListener<Rect> invalidateHandler)
@@ -85,6 +87,11 @@ public class PuzzleManager
 
     public void onTapEvent(@Nonnull PointF point, @Nonnull PuzzleView view)
     {
+        if(mLastQuestionTapPoint != null)
+        {
+            mResourcesAdapter.cancelLastQuestionState(mLastQuestionTapPoint.x, mLastQuestionTapPoint.y);
+            mLastQuestionTapPoint = null;
+        }
         if(!mScaled || mFocusViewPoint == null)
             return;
 
@@ -94,7 +101,11 @@ public class PuzzleManager
         int tileHeight = mFieldDrawer.getTileHeight();
         int col = (int)point.x/tileWidth;
         int row = (int)point.y/tileHeight;
-        mResourcesAdapter.updatePuzzleStateByTap(col, row);
+        boolean confirmed = mResourcesAdapter.updatePuzzleStateByTap(col, row);
+        if(confirmed)
+        {
+            mLastQuestionTapPoint = new Point(col, row);
+        }
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
 

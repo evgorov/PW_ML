@@ -50,34 +50,36 @@ public class PuzzleResourcesAdapter
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
 
-    public void updatePuzzleStateByTap(int column, int row)
+    public boolean updatePuzzleStateByTap(int column, int row)
     {
         if (mResources == null)
         {
-            return;
+            return false;
         }
 
         @Nullable PuzzleTileState state = mResources.getPuzzleState(column, row);
         if (state == null)
         {
-            return;
+            return false;
         }
 
         if(state.hasQuestion)
         {
-            updateQuestionState(state, column, row);
+            updateQuestionState(state, column, row, true);
+            return true;
         }
-
+        return false;
     }
 
-    private void updateQuestionState(@Nonnull PuzzleTileState state, int column, int row)
+    private void updateQuestionState(@Nonnull PuzzleTileState state, int column, int row, final boolean isInput)
     {
         if (mResources == null)
         {
             return;
         }
 
-        state.setQuestionState(PuzzleTileState.QuestionState.QUESTION_INPUT);
+        state.setQuestionState(isInput ? PuzzleTileState.QuestionState.QUESTION_INPUT :
+                PuzzleTileState.QuestionState.QUESTION_EMPTY);
         int questionIndex = state.getQuestionIndex();
         List<PuzzleQuestion> questions = mResources.getPuzzleQuestions();
         if (questions == null)
@@ -114,12 +116,34 @@ public class PuzzleResourcesAdapter
                         return;
                     }
 
-                    puzzleTileState.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY_INPUT);
+                    puzzleTileState.setLetterState(isInput ?
+                            PuzzleTileState.LetterState.LETTER_EMPTY_INPUT :
+                            PuzzleTileState.LetterState.LETTER_EMPTY);
                 }
             });
         }
 
 
+    }
+
+    public void cancelLastQuestionState(int column, int row)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        @Nullable PuzzleTileState state = mResources.getPuzzleState(column, row);
+        if (state == null)
+        {
+            return;
+        }
+
+        if(state.hasQuestion)
+        {
+            updateQuestionState(state, column, row, false);
+            return;
+        }
     }
 
     private void setLetterStateByPointIterator(@Nonnull AnswerLetterPointIterator iter, @Nonnull IListener<PuzzleTileState> handler)
@@ -189,5 +213,4 @@ public class PuzzleResourcesAdapter
             updateResources();
         }
     };
-
 }
