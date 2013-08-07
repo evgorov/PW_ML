@@ -586,6 +586,7 @@ public class PuzzleFieldDrawer
                 @Override
                 public void handle()
                 {
+                    mInvalidateHandler.handle(mPuzzleRect);
                     loadingFinishedHandler.handle();
                 }
             });

@@ -275,7 +275,7 @@ public class PuzzleTileState
 
         public static int getDirectionByArrow(int arrowType)
         {
-            switch (arrowType)
+            switch (arrowType & ArrowType.ARROW_TYPE_MASK)
             {
                 case ArrowType.NORTH_WEST_TOP:
                 case ArrowType.NORTH_EAST_TOP:
