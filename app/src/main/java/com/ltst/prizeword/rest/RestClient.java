@@ -337,6 +337,10 @@ public class RestClient implements IRestClient
         ResponseEntity<RestPuzzle[]> entity = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle[].class, urlVariables);
         RestPuzzle.RestPuzzleHolder holder = new RestPuzzle.RestPuzzleHolder();
         RestPuzzle[] puzzles = entity.getBody();
+        if(puzzles.length == 0)
+        {
+            return null;
+        }
         if (puzzles[0] != null)
         {
             holder.setPuzzles(puzzles[0]);
