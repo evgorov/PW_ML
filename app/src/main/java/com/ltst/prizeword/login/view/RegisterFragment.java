@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -163,6 +164,8 @@ public class RegisterFragment extends SherlockFragment
         mPassLabel = (TextView) v.findViewById(R.id.register_label_pass);
         mRetryPassLabel= (TextView) v.findViewById(R.id.register_label_retry_pass);
 
+        Locale ruLocale = new Locale("ru","RU");
+        Locale.setDefault(ruLocale);
         cal = Calendar.getInstance();
         curDay = cal.get(Calendar.DAY_OF_MONTH);
         curMonth = cal.get(Calendar.MONTH);

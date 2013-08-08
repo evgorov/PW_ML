@@ -46,4 +46,45 @@
         <item name="android:shadowDy">-1</item>
         <item name="android:shadowRadius">2</item>
     </style>
+    <style name="GamefieldTimerText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="GamefieldHintBtnText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="GamefieldPercentText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    <style name="GamefieldPauseText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    <style name="GamefieldNearSwitchText">
+        <item name="android:textColor">@color/menu_text_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
 </resources>
