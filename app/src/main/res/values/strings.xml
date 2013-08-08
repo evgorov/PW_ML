@@ -105,4 +105,11 @@
         <item>ноябре</item>
         <item>декабре</item>
     </string-array>
+
+    // ==== GameField text ====
+    <string name="gamefield_percent">% решено</string>
+    <string name="gamefield_sound">Звуки</string>
+    <string name="gamefield_music">Музыка</string>
+    <string name="gamefield_pause">Пауза</string>
+
 </resources>

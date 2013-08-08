@@ -1,0 +1,219 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".OneCrosswordActivity"
+              android:orientation="vertical">
+    <!--<View android:layout_width="match_parent"-->
+    <!--android:layout_height="64dp"/>-->
+
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@drawable/navigationbar_bg">
+
+        <Button
+                android:id="@+id/header_stop_play_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/header_stop_but"/>
+
+        <TextView
+                android:id="@+id/header_timer_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical|center"
+                style="@style/GamefieldTimerText"
+                android:background="@drawable/header_timer_bg"
+                android:text="22:57"
+                />
+        <Button
+                android:id="@+id/header_hint_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                style="@style/GamefieldHintBtnText"
+                android:background="@drawable/header_hint_but"
+                android:drawableLeft="@drawable/header_hint_draw"
+                android:text="10"/>
+    </FrameLayout>
+
+    <FrameLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+        <com.ltst.prizeword.crossword.view.PuzzleView
+                android:id="@+id/puzzle_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        <FrameLayout
+                android:id="@+id/gamefild_pause_alert"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@drawable/forget_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                >
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/gamefild_pause_bg"
+                    android:layout_gravity="center_horizontal|top"
+                    >
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical|center"
+                        android:background="@drawable/gamefild_pause_progressbar_bg">
+
+                    <TextView
+                            android:id="@+id/gamefild_progressbar_percent"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="20dp"
+                            style="@style/GamefieldPercentText"
+                            android:text="20"/>
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            style="@style/GamefieldPercentText"
+                            android:text="@string/gamefield_percent"
+                            android:textColor="@color/header_text_color"/>
+
+                    <FrameLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:layout_marginLeft="20dp"
+                            android:background="@drawable/gamefild_pause_progressbar_bg2">
+
+                        <ImageView
+                                android:layout_height="wrap_content"
+                                android:layout_width="80dp"
+                                android:background="@drawable/pause_progressbar"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_marginLeft="2dp"
+                                />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/gamefield_pause"
+                        android:layout_gravity="center_horizontal"
+                        style="@style/GamefieldPauseText"
+                        android:layout_marginTop="40dp"
+                        />
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/gamefild_pause_textview_bg">
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginTop="22dp"
+                                style="@style/GamefieldNearSwitchText"
+                                android:text="@string/gamefield_sound"/>
+
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginTop="38dp"
+                                style="@style/GamefieldNearSwitchText"
+                                android:text="@string/gamefield_music"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="125dp"
+                            >
+
+                        <ToggleButton
+                                android:id="@+id/pause_music_switcher"
+                                android:layout_width="85dp"
+                                android:layout_height="43dp"
+                                android:textOn=""
+                                android:textOff=""
+                                android:background="@drawable/menu_switcher"
+                                android:layout_marginTop="13dp"/>
+
+                        <ToggleButton
+                                android:id="@+id/pause_sounds_switcher"
+                                android:layout_width="85dp"
+                                android:layout_height="43dp"
+                                android:textOn=""
+                                android:textOff=""
+                                android:background="@drawable/menu_switcher"
+                                android:layout_marginTop="20dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="40dp"
+                        >
+
+                    <Button
+                            android:id="@+id/gamefild_menu_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:background="@drawable/gamefild_pause_menu_but"/>
+
+                    <Button
+                            android:id="@+id/gamefild_next_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:background="@drawable/gamefild_pause_next_but"
+                            />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:src="@drawable/navigationbar_bg_shadow"/>
+    </FrameLayout>
+
+</LinearLayout>
