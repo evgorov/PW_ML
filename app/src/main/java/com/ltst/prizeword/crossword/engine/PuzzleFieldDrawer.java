@@ -269,25 +269,34 @@ public class PuzzleFieldDrawer
                                        @Nullable Rect focusOffsetRect,
                                        @Nullable Rect oldViewRect, @Nonnull Rect newViewRect)
     {
-        if(oldViewRect == null || focusOffsetPoint == null || focusOffsetRect == null || mPuzzleRect == null)
+        if(oldViewRect == null || focusOffsetPoint == null
+                || focusOffsetRect == null || mPuzzleRect == null || mResources == null)
         {
             p.set(getCenterX(), getCenterY());
             return;
         }
+        int allowedOffset = mResources.getPadding();
 
         p.set(getCenterX(), getCenterY());
 
-        if(focusOffsetRect.left == 0)
+        if(inBetween(focusOffsetRect.left, allowedOffset))
             p.set(mDrawingOffsetX, p.y);
-        if(focusOffsetRect.right == 0)
+        if(inBetween(focusOffsetRect.right, allowedOffset))
             p.set(mPuzzleRect.right - mDrawingOffsetX, p.y);
-        if(focusOffsetRect.top == 0)
+        if(inBetween(focusOffsetRect.top, allowedOffset))
             p.set(p.x, mDrawingOffsetY);
-        if(focusOffsetRect.bottom == 0)
+        if(inBetween(focusOffsetRect.bottom, allowedOffset))
             p.set(p.x, mPuzzleRect.bottom - mDrawingOffsetY);
 
         p.offset(focusOffsetPoint.x, focusOffsetPoint.y);
         checkFocusPoint(p, newViewRect);
+    }
+
+    private boolean inBetween(int value, int offset)
+    {
+        if(value >= 0 && value <= offset)
+            return true;
+        else return false;
     }
 
     public @Nullable Rect getFocusOffsetRect(@Nonnull Point p, @Nonnull Rect viewRect)
@@ -386,7 +395,9 @@ public class PuzzleFieldDrawer
                 if (state.hasLetter)
                 {
                     drawLetterByState(canvas, rect, state);
-                    if(state.hasArrows)
+                    if(state.hasArrows &&
+                            (state.getLetterState() == PuzzleTileState.LetterState.LETTER_EMPTY ||
+                            state.getLetterState()  == PuzzleTileState.LetterState.LETTER_CORRECT))
                     {
                         drawArrow(state.getFirstArrow(), canvas, rect);
                         drawArrow(state.getSecondArrow(), canvas, rect);

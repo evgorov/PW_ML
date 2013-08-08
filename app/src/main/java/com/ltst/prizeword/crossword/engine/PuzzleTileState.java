@@ -132,6 +132,8 @@ public class PuzzleTileState
         public static final int LETTER_EMPTY        = 0x00000001;
         public static final int LETTER_EMPTY_INPUT  = 0x00000010;
         public static final int LETTER_INPUT        = 0x00000011;
+        public static final int LETTER_CORRECT      = 0x00000101;
+        public static final int LETTER_WRONG        = 0x00000111;
     }
 
 //    north:left, north:top, north:right,
