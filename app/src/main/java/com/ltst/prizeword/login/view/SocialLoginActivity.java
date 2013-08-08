@@ -3,20 +3,16 @@ package com.ltst.prizeword.login.view;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
-import com.ltst.prizeword.app.SharedPreferencesHelper;
-import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
 
@@ -36,13 +32,16 @@ import javax.annotation.Nullable;
  */
 public class SocialLoginActivity extends SherlockActivity
 {
-    static public final @Nonnull String PROVEDER_ID = "prov_id";
+    static public final @Nonnull String BF_PROVEDER_ID = "prov_id";
+    static public final @Nonnull String BF_SESSION_KEY = "session_key";
 
     private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull WebView mWebView;
+    private @Nonnull ProgressBar mProgressBar;
 
     private @Nonnull String pProviderId;
+    private @Nonnull String mSessionKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +52,19 @@ public class SocialLoginActivity extends SherlockActivity
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.clearCache(true);
 
+        mProgressBar = (ProgressBar) this.findViewById(R.id.activity_webview_progressbar);
+        mProgressBar.setVisibility(ProgressBar.GONE);
+
         //Чтобы получать уведомления об окончании загрузки страницы
-        mWebView.setWebViewClient(new VkWebViewClient());
+        mWebView.setWebViewClient(new SocialWebViewClient());
 
         //otherwise CookieManager will fall with java.lang.IllegalStateException: CookieSyncManager::createInstance() needs to be called before CookieSyncManager::getInstance()
         CookieSyncManager.createInstance(this);
-
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.removeAllCookie();
 
         Bundle extras = getIntent().getExtras();
-        pProviderId = extras.getString(PROVEDER_ID);
+        pProviderId = extras.getString(BF_PROVEDER_ID);
 
         if(pProviderId.equals(RestParams.VK_PROVIDER)) {
             loadUrl(RestParams.URL_VK_LOGIN);
@@ -76,16 +77,18 @@ public class SocialLoginActivity extends SherlockActivity
 
     }
 
-    private class VkWebViewClient extends WebViewClient {
+    private class SocialWebViewClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            mProgressBar.setVisibility(ProgressBar.VISIBLE);
             parseUrl(url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            mProgressBar.setVisibility(ProgressBar.GONE);
         }
     }
 
@@ -138,7 +141,8 @@ public class SocialLoginActivity extends SherlockActivity
                         @Override
                         public void handle()
                         {
-                            Intent intent=new Intent();
+                            Intent intent = new Intent();
+                            intent.putExtra(BF_SESSION_KEY, mSessionKey);
                             setResult(SherlockActivity.RESULT_OK, intent);
                             finish();
                         }
@@ -185,10 +189,8 @@ public class SocialLoginActivity extends SherlockActivity
             @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
             if(sessionKey != null)
             {
-                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(SocialLoginActivity.this);
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
-                spref.commit();
-                Log.i(NavigationActivity.LOG_TAG, "SocialLogin SESSION KEY ="+sessionKey);
+                mSessionKey = sessionKey;
+//                Log.i(NavigationActivity.LOG_TAG, "SocialLogin SESSION KEY ="+sessionKey);
             }
         }
     }

@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/login_enter_edittext2_bg"
                             style="@style/EditTextText"
-                            android:inputType="textPassword"
+                            android:inputType="textWebPassword"
                             android:hint="пароль"
                             />
 

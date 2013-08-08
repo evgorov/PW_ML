@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 public class AnswerLetterPointIterator implements Iterator<Point>
 {
+    private @Nonnull Point mStartPoint;
     private @Nonnull Point mPoint;
     private int mDirection;
     private @Nonnull String mAnswer;
@@ -18,7 +19,8 @@ public class AnswerLetterPointIterator implements Iterator<Point>
                                      int direction,
                                      @Nonnull String answer)
     {
-        mPoint = start;
+        mStartPoint = new Point(start.x, start.y);
+        mPoint = new Point(start.x, start.y);
         mDirection = direction;
         mAnswer = answer;
     }
@@ -47,6 +49,12 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         }
         else
             return null;
+    }
+
+    public void reset()
+    {
+        currentLetterIndex = 0;
+        mPoint.set(mStartPoint.x, mStartPoint.y);
     }
 
     private void offsetPointByDirection(@Nonnull Point p)

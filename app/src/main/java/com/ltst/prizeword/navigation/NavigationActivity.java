@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.crashlytics.android.Crashlytics;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -47,6 +48,7 @@ import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
@@ -80,9 +82,10 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
-    private @Nonnull DrawerLayout mDrawerLayout;
+    private @Nonnull NavigationDrawerLayout mDrawerLayout;
     private @Nonnull ListView mDrawerList;
     private @Nonnull MainMenuHolder mDrawerMenu;
     private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
@@ -104,9 +107,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        Crashlytics.start(this);
+        mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        mDrawerLayout = (NavigationDrawerLayout) findViewById(R.id.navigation_drawer_layout);
         View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
         mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
         mDrawerList.addFooterView(vfooter);
@@ -127,9 +132,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
-        mDrawerMenu.mVkontakteBtn.setOnCheckedChangeListener(this);
-        mDrawerMenu.mFacebookBtn.setOnCheckedChangeListener(this);
-        mDrawerMenu.mNotificationBtn.setOnCheckedChangeListener(this);
+        mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -179,19 +184,23 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
                 case REQUEST_LOGIN_VK:
                 case REQUEST_LOGIN_FB:
-                    reloadUserData();
+                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
+                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
                 break;
             }
         }
         else {
             switch (requestCode){
                 case REQUEST_LOGIN_VK: {
-                    mDrawerMenu.mVkontakteBtn.setChecked(false);
-                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                 }
                 case REQUEST_LOGIN_FB: {
-                    mDrawerMenu.mFacebookBtn.setChecked(false);
-                    mDrawerMenu.mFacebookBtn.setEnabled(true);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
                 }
                 default:
                     break;
@@ -202,9 +211,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-        spref.commit();
+//        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+//        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+//        spref.commit();
         super.onDestroy();
     }
 
@@ -481,12 +490,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.resetUserImage(userPic, mTaskHandlerResetUserPic);
     }
 
-    private void resetUserData(@Nonnull String userName){
-        // изменить имя пользователя;
-        mUserDataModel.resetUserName(userName, mTaskHandlerResetUserName);
-    }
-
-
     private void reloadUserImageFromServer(@Nonnull String url){
         // загружаем аватарку с сервера;
         mUserDataModel.loadUserImageFromServer(url, mTaskHandlerLoadUserImageFromServer);
@@ -552,15 +555,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             } else {
                 reloadUserImageFromServer(data.previewUrl);
             }
- //            reloadUserData();
-        }
-    };
-
-    private IListenerVoid mTaskHandlerResetUserName = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
         }
     };
 
@@ -577,21 +571,52 @@ public class NavigationActivity extends SherlockFragmentActivity
                     names.add(provider.name);
                 }
                 if(names.contains(RestParams.VK_PROVIDER)){
-                    mDrawerMenu.mVkontakteBtn.setEnabled(false);
-                    mDrawerMenu.mVkontakteBtn.setChecked(true);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(true);
                 }
                 else {
-                    mDrawerMenu.mVkontakteBtn.setEnabled(true);
-                    mDrawerMenu.mVkontakteBtn.setChecked(false);
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                 }
                 if(names.contains(RestParams.FB_PROVIDER)){
-                    mDrawerMenu.mFacebookBtn.setEnabled(false);
-                    mDrawerMenu.mFacebookBtn.setChecked(true);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(false);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(true);
                 }
                 else {
-                    mDrawerMenu.mFacebookBtn.setEnabled(true);
-                    mDrawerMenu.mFacebookBtn.setChecked(false);
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
                 }
+            }
+        }
+    };
+
+    private IListenerVoid mTaskHandlerMergeAccounts = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            int statusCode = mUserDataModel.getStatusCodeAnswer();
+            @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
+            msg = mContext.getResources().getString(R.string.error_merge_accounts);
+            @Nonnull String provider = mUserDataModel.getProvider();
+            if(statusCode == RestParams.SC_SUCCESS)
+            {
+                if(provider == RestParams.VK_PROVIDER){
+                    mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
+                }
+                if(provider == RestParams.FB_PROVIDER){
+                    mDrawerMenu.mFacebookSwitcher.setEnabled(false);
+                }
+            }
+            else
+            {
+                if(provider == RestParams.VK_PROVIDER){
+                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+                }
+                if(provider == RestParams.FB_PROVIDER){
+                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
+                }
+                ErrorAlertDialog.showDialog(mContext, R.string.error_merge_accounts);
             }
         }
     };
@@ -607,12 +632,13 @@ public class NavigationActivity extends SherlockFragmentActivity
         switch (swipe)
         {
             case SWIPE_LEFT:
-                mDrawerLayout.closeDrawer(mDrawerList);
+                    mDrawerLayout.closeDrawer(mDrawerList);
                 break;
             case SWIPE_RIGHT:
-                mDrawerLayout.openDrawer(mDrawerList);
+                    mDrawerLayout.openDrawer(mDrawerList);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -623,16 +649,16 @@ public class NavigationActivity extends SherlockFragmentActivity
         if(state){
             switch (compoundButton.getId()){
                 case R.id.menu_vk_switcher:
-                    if(mDrawerMenu.mVkontakteBtn.isEnabled()){
+                    if(mDrawerMenu.mVkontakteSwitcher.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.VK_PROVIDER);
+                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_VK);
                     }
                     break;
                 case R.id.menu_fb_switcher:
-                    if(mDrawerMenu.mFacebookBtn.isEnabled()){
+                    if(mDrawerMenu.mFacebookSwitcher.isEnabled()){
                         intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.PROVEDER_ID, RestParams.FB_PROVIDER);
+                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
                         startActivityForResult(intent, REQUEST_LOGIN_FB);
                     }
                     break;

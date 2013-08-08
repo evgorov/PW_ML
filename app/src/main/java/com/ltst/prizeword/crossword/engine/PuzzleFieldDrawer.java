@@ -16,7 +16,6 @@ import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
-import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ public class PuzzleFieldDrawer
     private @Nonnull PuzzleResourcesAdapter mAdapter;
 
     private @Nullable Rect mPuzzleRect;
+    private @Nullable Rect mUnscaledPuzzleRect;
     private int mTileWidth;
     private int mTileHeight;
     private int mTileTextPadding;
@@ -94,7 +94,7 @@ public class PuzzleFieldDrawer
         int puzzleWidth = 2 * (padding + 2 * framePadding) + cellWidth * mTileWidth + (cellWidth - 1) * tileGap;
         int puzzleHeight = 2 * (padding + 2 * framePadding) + cellHeight * mTileHeight + (cellHeight - 1) * tileGap;
         mPuzzleRect = new Rect(0, 0, puzzleWidth, puzzleHeight);
-
+        mUnscaledPuzzleRect = new Rect(mPuzzleRect);
     }
 
     private void measureText()
@@ -114,18 +114,29 @@ public class PuzzleFieldDrawer
 
     public void enableScaling(float scaleWidth, float scaleHeight)
     {
-        if (mPuzzleRect == null)
+        if (mPuzzleRect == null || mUnscaledPuzzleRect == null)
         {
             return;
         }
 
-        int scaledWidth = (int)(mPuzzleRect.width() * scaleWidth);
-        int scaledHeight = (int)(mPuzzleRect.height() * scaleHeight);
-        mDrawingOffsetX = scaledWidth/2 - mPuzzleRect.width()/2;
-        mDrawingOffsetY = scaledHeight/2 - mPuzzleRect.height()/2;
+        int scaledWidth = (int)(mUnscaledPuzzleRect.width() * scaleWidth);
+        int scaledHeight = (int)(mUnscaledPuzzleRect.height() * scaleHeight);
+        mDrawingOffsetX = scaledWidth/2 - mUnscaledPuzzleRect.width()/2;
+        mDrawingOffsetY = scaledHeight/2 - mUnscaledPuzzleRect.height()/2;
 
-        mPuzzleRect.right += mDrawingOffsetX * 2;
-        mPuzzleRect.bottom += mDrawingOffsetY * 2;
+        mPuzzleRect.right = mUnscaledPuzzleRect.right + mDrawingOffsetX * 2;
+        mPuzzleRect.bottom = mUnscaledPuzzleRect.bottom + mDrawingOffsetY * 2;
+    }
+
+    public void disableScaling()
+    {
+        if (mPuzzleRect == null || mUnscaledPuzzleRect == null)
+        {
+            return;
+        }
+        mPuzzleRect.set(mUnscaledPuzzleRect);
+        mDrawingOffsetX = 0;
+        mDrawingOffsetY = 0;
     }
 
     public void loadResources()
@@ -218,27 +229,85 @@ public class PuzzleFieldDrawer
         return mTileHeight;
     }
 
-    public void checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
+    public boolean checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
     {
         if (mPuzzleRect == null)
         {
-            return;
+            return false;
         }
+
+        boolean offBorder = false;
 
         int halfWidth = viewRect.width()/2;
         int halfHeight = viewRect.height()/2;
 
         if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+        {
             p.x = halfWidth + mDrawingOffsetX;
+            offBorder = true;
+        }
         if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+        {
             p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
+            offBorder = true;
+        }
         if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
+        {
             p.y = halfHeight + mDrawingOffsetY;
+            offBorder = true;
+        }
         if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
+        {
             p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
+            offBorder = true;
+        }
+
+        return offBorder;
     }
 
-    public void convertPointFromPuzzleCoordsToTilesAreaCoords(@Nonnull PointF p)
+    public void traslateFocusViewPoint(@Nonnull Point p, @Nullable Point focusOffsetPoint,
+                                       @Nullable Rect focusOffsetRect,
+                                       @Nullable Rect oldViewRect, @Nonnull Rect newViewRect)
+    {
+        if(oldViewRect == null || focusOffsetPoint == null || focusOffsetRect == null || mPuzzleRect == null)
+        {
+            p.set(getCenterX(), getCenterY());
+            return;
+        }
+
+        p.set(getCenterX(), getCenterY());
+
+        if(focusOffsetRect.left == 0)
+            p.set(mDrawingOffsetX, p.y);
+        if(focusOffsetRect.right == 0)
+            p.set(mPuzzleRect.right - mDrawingOffsetX, p.y);
+        if(focusOffsetRect.top == 0)
+            p.set(p.x, mDrawingOffsetY);
+        if(focusOffsetRect.bottom == 0)
+            p.set(p.x, mPuzzleRect.bottom - mDrawingOffsetY);
+
+        p.offset(focusOffsetPoint.x, focusOffsetPoint.y);
+        checkFocusPoint(p, newViewRect);
+    }
+
+    public @Nullable Rect getFocusOffsetRect(@Nonnull Point p, @Nonnull Rect viewRect)
+    {
+        if (mPuzzleRect == null)
+        {
+            return null;
+        }
+        Rect offsetRect = new Rect();
+        int halfWidth = viewRect.width()/2;
+        int halfHeight = viewRect.height()/2;
+
+        offsetRect.left = p.x - halfWidth - (mPuzzleRect.left + mDrawingOffsetX);
+        offsetRect.right = mPuzzleRect.right - mDrawingOffsetX - (p.x + halfWidth);
+        offsetRect.top = p.y - halfHeight - (mPuzzleRect.top + mDrawingOffsetY);
+        offsetRect.bottom = mPuzzleRect.bottom - mDrawingOffsetY - (p.y + halfHeight);
+        return offsetRect;
+    }
+
+    public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p)
     {
         if (mResources == null)
         {
@@ -247,8 +316,9 @@ public class PuzzleFieldDrawer
 
         int framePadding = mResources.getFramePadding(mContext.getResources());
         int padding = mResources.getPadding();
-        float x = p.x - (mDrawingOffsetX + 2 * framePadding + padding);
-        float y = p.y - (mDrawingOffsetY + 2 * framePadding + padding);
+
+        float x = p.x - (mDrawingOffsetX + 4 * framePadding + 2 * padding);
+        float y = p.y - (mDrawingOffsetY + 4 * framePadding + 2 * padding);
         p.set(x, y);
     }
 
@@ -365,17 +435,29 @@ public class PuzzleFieldDrawer
     private void drawLetterByState(@Nonnull Canvas canvas, @Nonnull RectF rect,
                                    @Nonnull PuzzleTileState state)
     {
-        int letterRes = 0;
         switch (state.getLetterState())
         {
             case PuzzleTileState.LetterState.LETTER_EMPTY:
-                letterRes = PuzzleResources.getLetterEmpty();
+            {
+                int letterRes = PuzzleResources.getLetterEmpty();
+                mBitmapManager.drawResource(letterRes, canvas, rect);
+            }
                 break;
             case PuzzleTileState.LetterState.LETTER_EMPTY_INPUT:
-                letterRes = PuzzleResources.getLetterEmptyInput();
+            {
+                int letterRes = PuzzleResources.getLetterEmptyInput();
+                mBitmapManager.drawResource(letterRes, canvas, rect);
+            }
+                break;
+            case PuzzleTileState.LetterState.LETTER_INPUT:
+            {
+                int letterRes = PuzzleResources.getLetterTilesInput();
+                char letter = state.getInputLetter().charAt(0);
+                mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
+            }
                 break;
         }
-        mBitmapManager.drawResource(letterRes, canvas, rect);
+
     }
 
     private void drawQuestionText(@Nonnull Canvas canvas, @Nonnull String question, @Nonnull RectF tileRect)
@@ -549,12 +631,18 @@ public class PuzzleFieldDrawer
         @Override
         public void loadResource(final @Nonnull IListenerVoid loadingFinishedHandler)
         {
+            if (mResources == null)
+            {
+                return;
+            }
+            mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesInput(), mTileWidth, mTileHeight, null);
             mLetterBitmapManager.addTileResource(mResources.getLetterTilesCorrect(), mTileWidth, mTileHeight, null);
             mLetterBitmapManager.addTileResource(PuzzleResources.getLetterTilesWrong(), mTileWidth, mTileHeight, new IListenerVoid()
             {
                 @Override
                 public void handle()
                 {
+                    mInvalidateHandler.handle(mPuzzleRect);
                     loadingFinishedHandler.handle();
                 }
             });

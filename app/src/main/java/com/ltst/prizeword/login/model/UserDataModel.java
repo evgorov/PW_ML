@@ -10,6 +10,7 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -31,6 +32,9 @@ public class UserDataModel implements IUserDataModel {
     private @Nonnull UserData mUserData;
     private @Nonnull byte[] mUserPic;
     private @Nullable ArrayList<UserProvider> mProviders;
+    private int mStatusCodeAnswer;
+    private @Nonnull String mStatusMessageAnswer;
+    private @Nonnull String mProvider;
 
     public UserDataModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector) {
         this.mContext = context;
@@ -50,6 +54,24 @@ public class UserDataModel implements IUserDataModel {
     @Nullable
     public ArrayList<UserProvider> getProviders() {
         return mProviders;
+    }
+
+    public int getStatusCodeAnswer() {
+        return mStatusCodeAnswer;
+    }
+
+    @Nonnull
+    public String getStatusMessageAnswer() {
+        return mStatusMessageAnswer;
+    }
+
+    @Nonnull
+    public String getProvider() {
+        return mProvider;
+    }
+
+    public void setProvider(@Nonnull String mProvider) {
+        this.mProvider = mProvider;
     }
 
     @Override
@@ -201,7 +223,6 @@ public class UserDataModel implements IUserDataModel {
                 }
                 mUserData = result.getParcelable(ResetUserDataOnServerTask.BF_USER_DATA);
             }
-
         };
         session.update(handler);
     }
@@ -230,6 +251,36 @@ public class UserDataModel implements IUserDataModel {
                     return;
                 }
                 mProviders = result.getParcelableArrayList(LoadUserDataFromDataBase.BF_PROVIDERS);
+            }
+        };
+        session.update(handler);
+    }
+
+    @Override
+    public void mergeAccounts(final @Nonnull String sessionKey1, final @Nonnull String sessionKey2, @Nonnull IListenerVoid handler) {
+
+        Updater session = new Updater() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return MergeAccountsTask.createIntentMergeAccounts(sessionKey1, sessionKey2);
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return MergeAccountsTask.class;
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                if (result == null){
+                    mStatusCodeAnswer = RestParams.SC_ERROR;
+                    return;
+                }
+                mStatusCodeAnswer = result.getInt(MergeAccountsTask.BF_STATUS_CODE);
+                mStatusMessageAnswer = result.getString(MergeAccountsTask.BF_STATUS_MESSAGE);
             }
         };
         session.update(handler);

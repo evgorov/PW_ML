@@ -56,7 +56,7 @@ public class BitmapResourceModel implements IBitmapResourceModel
     }
 
     @Override
-    public void loadTileBitmapEntityList(final int resource, int tileWidth, int tileHeight, final IListener<List<BitmapEntity>> handler)
+    public void loadTileBitmapEntityList(final int resource, int tileWidth, int tileHeight, final @Nullable IListener<List<BitmapEntity>> handler)
     {
         final Rect rect = new Rect(0, 0, tileWidth, tileHeight);
         TilesBitmapDecoder decoder = new TilesBitmapDecoder()
@@ -64,7 +64,10 @@ public class BitmapResourceModel implements IBitmapResourceModel
             @Override
             public void handleBitmapList(@Nonnull List<BitmapEntity> entity)
             {
-                handler.handle(entity);
+                if (handler != null)
+                {
+                    handler.handle(entity);
+                }
             }
 
             @Nonnull
@@ -95,7 +98,6 @@ public class BitmapResourceModel implements IBitmapResourceModel
                 return;
             }
             int resource = result.getInt(BitmapDecoderTask.BF_RESOURCE_ID);
-
             ArrayList<BitmapEntity> entities = new ArrayList<BitmapEntity>();
             for (Bitmap bitmap : bitmaps)
             {

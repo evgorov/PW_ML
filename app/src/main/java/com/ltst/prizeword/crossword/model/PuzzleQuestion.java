@@ -1,13 +1,11 @@
 package com.ltst.prizeword.crossword.model;
 
-import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.ltst.prizeword.tools.ParcelableTools;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import static com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 
