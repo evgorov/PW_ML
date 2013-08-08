@@ -478,7 +478,11 @@ public class PuzzleFieldDrawer
             {
                 int letterRes = PuzzleResources.getLetterTilesInput();
                 char letter = state.getInputLetter().charAt(0);
-                mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
+                boolean knownSymbol = mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
+                if(!knownSymbol)
+                {
+                    mLetterBitmapManager.drawLetter(letterRes, LetterBitmapManager.UNKNOWN_CHARACTER, canvas, rect);
+                }
             }
                 break;
             case PuzzleTileState.LetterState.LETTER_CORRECT:

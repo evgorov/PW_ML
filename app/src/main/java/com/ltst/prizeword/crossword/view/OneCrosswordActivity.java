@@ -122,7 +122,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             case R.id.header_stop_play_btn:
                 if (!mStopPlayFlag)
                 {
-
                     mAlertPause.setVisibility(View.VISIBLE);
                     mAnimationSlideInTop.reset();
                     mAlertPause.clearAnimation();

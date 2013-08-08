@@ -168,7 +168,13 @@ public class PuzzleManager
                 cancelLastQuestion();
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
+            // backspace key
+            case KeyEvent.KEYCODE_DEL:
+                mResourcesAdapter.deleteLetterByBackspace();
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
             // russian letters
+            default:
             case KeyEvent.KEYCODE_UNKNOWN:
                 String letter = keyEvent.getCharacters();
                 if (letter == null || letter.length() > 1)
@@ -188,11 +194,6 @@ public class PuzzleManager
                         }
                     }
                 });
-                mInvalidateHandler.handle(mPuzzleViewRect);
-                break;
-            // backspace key
-            case KeyEvent.KEYCODE_DEL:
-                mResourcesAdapter.deleteLetterByBackspace();
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
         }
