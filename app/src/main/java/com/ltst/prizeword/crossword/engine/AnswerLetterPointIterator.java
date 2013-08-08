@@ -64,8 +64,7 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             if (needToDecreaseLetterIndex)
             {
                 currentLetterIndex --;
-            }g
-            needToDecreaseLetterIndex = true;
+            }
             if(currentLetterIndex <= 0)
             {
                 currentLetterIndex = 0;
