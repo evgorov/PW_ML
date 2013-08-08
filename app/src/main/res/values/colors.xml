@@ -10,4 +10,10 @@
     <color name="puzzle_hints_title_text_color">#423731</color>
     <color name="puzzle_hints_paragraph_text_color">#504f4a</color>
     <color name="puzzle_hints_common_text_color">#706358</color>
+    <color name="puzzle_badge_digit_gold_color">#ffdf9b</color>
+    <color name="puzzle_badge_digit_silver_color">#cecece</color>
+    <color name="puzzle_badge_digit_brilliant_color">#e9afee</color>
+    <color name="puzzle_badge_digit_free_color">#dfb189</color>
+    <color name="puzzle_badge_digit_percent_color">#423731</color>
+
 </resources>
