@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 
 public class AnswerLetterPointIterator implements Iterator<Point>
 {
+    public static final char SKIP_LETTER_CHARACTER = '_';
+    public static final char NOT_SKIP_LETTER_CHARACTER = '+';
     private @Nonnull Point mStartPoint;
     private @Nonnull Point mPoint;
     private int mDirection;
@@ -22,6 +24,13 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         mStartPoint = new Point(start.x, start.y);
         mPoint = new Point(start.x, start.y);
         mDirection = direction;
+        mAnswer = answer;
+    }
+
+    public void setAnswer(@Nonnull String answer)
+    {
+        if(answer.length() != mAnswer.length())
+            return;
         mAnswer = answer;
     }
 
