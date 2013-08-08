@@ -15,5 +15,7 @@
     <color name="puzzle_badge_digit_brilliant_color">#e9afee</color>
     <color name="puzzle_badge_digit_free_color">#dfb189</color>
     <color name="puzzle_badge_digit_percent_color">#423731</color>
+    <color name="puzzle_badge_digit_inner_shadow_color">#3fad03</color>
+    <color name="puzzle_badge_digit_ouner_shadow_color">#000000</color>
 
 </resources>
