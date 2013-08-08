@@ -229,40 +229,96 @@ public class PuzzleFieldDrawer
         return mTileHeight;
     }
 
-    public void checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
+    public boolean checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
     {
         if (mPuzzleRect == null)
         {
-            return;
+            return false;
         }
+
+        boolean offBorder = false;
 
         int halfWidth = viewRect.width()/2;
         int halfHeight = viewRect.height()/2;
 
         if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+        {
             p.x = halfWidth + mDrawingOffsetX;
+            offBorder = true;
+        }
         if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+        {
             p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
+            offBorder = true;
+        }
         if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
+        {
             p.y = halfHeight + mDrawingOffsetY;
+            offBorder = true;
+        }
         if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
+        {
             p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
+            offBorder = true;
+        }
+
+        return offBorder;
     }
 
-    public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p, @Nonnull Point focusPoint, @Nonnull Rect viewRect)
+    public void traslateFocusViewPoint(@Nonnull Point p, @Nullable Point focusOffsetPoint,
+                                       @Nullable Rect focusOffsetRect,
+                                       @Nullable Rect oldViewRect, @Nonnull Rect newViewRect)
+    {
+        if(oldViewRect == null || focusOffsetPoint == null || focusOffsetRect == null || mPuzzleRect == null)
+        {
+            p.set(getCenterX(), getCenterY());
+            return;
+        }
+
+        p.set(getCenterX(), getCenterY());
+
+        if(focusOffsetRect.left == 0)
+            p.set(mDrawingOffsetX, p.y);
+        if(focusOffsetRect.right == 0)
+            p.set(mPuzzleRect.right - mDrawingOffsetX, p.y);
+        if(focusOffsetRect.top == 0)
+            p.set(p.x, mDrawingOffsetY);
+        if(focusOffsetRect.bottom == 0)
+            p.set(p.x, mPuzzleRect.bottom - mDrawingOffsetY);
+
+        p.offset(focusOffsetPoint.x, focusOffsetPoint.y);
+        checkFocusPoint(p, newViewRect);
+    }
+
+    public @Nullable Rect getFocusOffsetRect(@Nonnull Point p, @Nonnull Rect viewRect)
+    {
+        if (mPuzzleRect == null)
+        {
+            return null;
+        }
+        Rect offsetRect = new Rect();
+        int halfWidth = viewRect.width()/2;
+        int halfHeight = viewRect.height()/2;
+
+        offsetRect.left = p.x - halfWidth - (mPuzzleRect.left + mDrawingOffsetX);
+        offsetRect.right = mPuzzleRect.right - mDrawingOffsetX - (p.x + halfWidth);
+        offsetRect.top = p.y - halfHeight - (mPuzzleRect.top + mDrawingOffsetY);
+        offsetRect.bottom = mPuzzleRect.bottom - mDrawingOffsetY - (p.y + halfHeight);
+        return offsetRect;
+    }
+
+    public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p)
     {
         if (mResources == null)
         {
             return;
         }
-        float puzzleX = focusPoint.x + (p.x - viewRect.width()/2);
-        float puzzleY = focusPoint.y + (p.y - viewRect.height()/2);
 
         int framePadding = mResources.getFramePadding(mContext.getResources());
         int padding = mResources.getPadding();
 
-        float x = puzzleX - (mDrawingOffsetX + 4 * framePadding + 2 * padding);
-        float y = puzzleY - (mDrawingOffsetY + 4 * framePadding + 2 * padding);
+        float x = p.x - (mDrawingOffsetX + 4 * framePadding + 2 * padding);
+        float y = p.y - (mDrawingOffsetY + 4 * framePadding + 2 * padding);
         p.set(x, y);
     }
 

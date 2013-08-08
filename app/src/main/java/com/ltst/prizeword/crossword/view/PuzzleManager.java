@@ -25,7 +25,7 @@ public class PuzzleManager
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
-    private @Nonnull Rect mPuzzleViewRect;
+    private @Nullable Rect mPuzzleViewRect;
     private @Nullable Rect mScaledViewRect;
     private @Nonnull PuzzleResourcesAdapter mResourcesAdapter;
     private @Nonnull IListener<Rect> mInvalidateHandler;
@@ -51,18 +51,44 @@ public class PuzzleManager
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
+        @Nullable Rect oldViewRect = null;
+        @Nullable Rect focusOffsetRect = null;
+        @Nullable Point focusOffsetPoint = null;
+        if (mPuzzleViewRect != null)
+        {
+            oldViewRect = new Rect(mPuzzleViewRect);
+        }
+        if (mFocusViewPoint != null)
+        {
+            focusOffsetPoint = new Point(mFocusViewPoint.x - mFieldDrawer.getCenterX(),
+                    mFocusViewPoint.y - mFieldDrawer.getCenterY());
+            focusOffsetRect = mFieldDrawer.getFocusOffsetRect(mFocusViewPoint, mPuzzleViewRect);
+        }
+
         mPuzzleViewRect = puzzleViewRect;
         mFieldDrawer.disableScaling();
         float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
         float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
         MIN_SCALE = Math.min(scaleHeight, scaleWidth);
         mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
-        mScaled = true;
 
+        mScaled = true;
         mScaledViewRect = new Rect(0, 0,
                 mFieldDrawer.getActualWidth(),
                 mFieldDrawer.getActualHeight());
+
         mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+        mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
+                focusOffsetRect, oldViewRect, mPuzzleViewRect);
+    }
+
+    private boolean checkFocusViewPoint()
+    {
+        if (mFocusViewPoint == null || mPuzzleViewRect == null || mScaledViewRect == null)
+        {
+            return false;
+        }
+        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
     }
 
     public void onScrollEvent(float offsetX, float offsetY)
@@ -71,7 +97,7 @@ public class PuzzleManager
             return;
         mFocusViewPoint.x += offsetX;
         mFocusViewPoint.y += offsetY;
-        mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
+        checkFocusViewPoint();
     }
 
     public void onScaleEvent(@Nonnull View view)
@@ -88,28 +114,47 @@ public class PuzzleManager
         mScaled = !mScaled;
     }
 
-    public void onTapEvent(@Nonnull PointF point, @Nullable IListenerVoid successHandler)
+    public void onTapEvent(final @Nonnull View view, @Nonnull PointF point, final @Nullable IListenerVoid successHandler)
     {
-        if(!mScaled || mFocusViewPoint == null)
+        if(!mScaled || mFocusViewPoint == null || mPuzzleViewRect == null)
             return;
 
-        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point, mFocusViewPoint, mPuzzleViewRect);
+        final float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
+        final float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
+
+        point.set(puzzleX, puzzleY);
+        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point);
 
         int tileWidth = mFieldDrawer.getTileWidth();
         int tileHeight = mFieldDrawer.getTileHeight();
-        int col = (int)point.x/tileWidth;
-        int row = (int)point.y/tileHeight;
-        boolean confirmed = mResourcesAdapter.updatePuzzleStateByTap(col, row);
-        if(confirmed)
+        if(tileWidth == 0)
+            tileWidth = 1;
+        if(tileHeight == 0)
+            tileHeight = 1;
+        final int col = (int)point.x/tileWidth;
+        final int row = (int)point.y/tileHeight;
+        mResourcesAdapter.updatePuzzleStateByTap(col, row, new IListenerVoid()
         {
-            if (successHandler != null)
+            @Override
+            public void handle()
             {
-                successHandler.handle();
+                if (successHandler != null)
+                {
+                    successHandler.handle();
+                }
+                cancelLastQuestion();
+                mLastQuestionTapPoint = new Point(col, row);
+
+                Point translatePoint = new Point((int)puzzleX, (int) puzzleY);
+                mFieldDrawer.checkFocusPoint(translatePoint, mPuzzleViewRect);
+
+                TranslateAnimationThread thread = new TranslateAnimationThread(view,
+                        mFocusViewPoint, translatePoint);
+                mInvalidateHandler.handle(mPuzzleViewRect);
+
+                thread.start();
             }
-            cancelLastQuestion();
-            mLastQuestionTapPoint = new Point(col, row);
-        }
-        mInvalidateHandler.handle(mPuzzleViewRect);
+        });
     }
 
     public void onKeyEvent(@Nonnull KeyEvent keyEvent)
@@ -145,7 +190,7 @@ public class PuzzleManager
 
     private void configureMatrix()
     {
-        if (mFocusViewPoint == null)
+        if (mFocusViewPoint == null || mPuzzleViewRect == null)
         {
             return;
         }
@@ -246,6 +291,56 @@ public class PuzzleManager
                 mFocusViewPoint.set(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
                 view.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
                         mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+                mIsAnimating = false;
+            }
+        }
+    }
+
+    private class TranslateAnimationThread extends Thread
+    {
+        private static final long FPS_INTERVAL = 1000 / 60;
+        private static final int TRANSLATION_ = 5;
+
+        private final int mDeltaX;
+        private final @Nonnull View mView;
+        private final @Nonnull Point mDestinationPoint;
+        private final int mDeltaY;
+
+        private TranslateAnimationThread(@Nonnull View view,
+                                         @Nonnull Point sourcePoint,
+                                         @Nonnull Point destinationPoint)
+        {
+            mView = view;
+            mDestinationPoint = new Point(destinationPoint);
+            mDeltaX = (destinationPoint.x - sourcePoint.x)/(int)FPS_INTERVAL;
+            mDeltaY = (destinationPoint.y - sourcePoint.y)/(int)FPS_INTERVAL;
+        }
+
+        @Override
+        public void run()
+        {
+            synchronized (this)
+            {
+                mIsAnimating = true;
+                while(Math.abs(mFocusViewPoint.x - mDestinationPoint.x) > TRANSLATION_ &&
+                        Math.abs(mFocusViewPoint.y - mDestinationPoint.y) > TRANSLATION_)
+                {
+                    mFocusViewPoint.offset(mDeltaX, mDeltaY);
+
+                   if(checkFocusViewPoint())
+                       break;
+
+                    mView.postInvalidate(mPuzzleViewRect.left, mPuzzleViewRect.top,
+                            mPuzzleViewRect.right, mPuzzleViewRect.bottom);
+                    try
+                    {
+                        ScaleAnimationThread.sleep(FPS_INTERVAL);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                }
                 mIsAnimating = false;
             }
         }

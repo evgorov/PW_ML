@@ -190,7 +190,7 @@ public class PuzzleView extends View
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                mPuzzleManager.onTapEvent(p, new IListenerVoid(){
+                mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
                     @Override
                     public void handle()
                     {

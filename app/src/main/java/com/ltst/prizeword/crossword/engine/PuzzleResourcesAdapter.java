@@ -53,30 +53,33 @@ public class PuzzleResourcesAdapter
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
 
-    public boolean updatePuzzleStateByTap(int column, int row)
+    public void updatePuzzleStateByTap(int column, int row, @Nullable IListenerVoid confirmedHandler)
     {
         if (mResources == null)
         {
-            return false;
+            return;
         }
 
         @Nullable PuzzleTileState state = mResources.getPuzzleState(column, row);
         if (state == null)
         {
-            return false;
+            return;
         }
 
         if(state.hasQuestion)
         {
+            if (confirmedHandler != null)
+            {
+                confirmedHandler.handle();
+            }
             updateQuestionState(state, column, row, true);
             isInputMode = true;
             if (mCurrentAnswerIterator != null)
             {
                 mCurrentAnswerIterator.reset();
             }
-            return true;
+
         }
-        return false;
     }
 
     private void updateQuestionState(@Nonnull PuzzleTileState state, int column, int row, final boolean isInput)
