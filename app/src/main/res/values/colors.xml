@@ -7,4 +7,7 @@
     <color name="menu_rating_color">#3fad03</color>
     <color name="menu_text_color">#9e9287</color>
     <color name="menu_title_text_color">#ffffff</color>
+    <color name="puzzle_hints_title_text_color">#423731</color>
+    <color name="puzzle_hints_paragraph_text_color">#504f4a</color>
+    <color name="puzzle_hints_common_text_color">#706358</color>
 </resources>

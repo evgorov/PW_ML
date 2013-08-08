@@ -15,8 +15,6 @@ import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 
-import org.omich.velo.handlers.IListener;
-
 public class PuzzleResources
 {
     private static final int DEFAULT_CELL_WIDTH = 14;
@@ -335,7 +333,7 @@ public class PuzzleResources
 
     public static int getBackgroundTile()
     {
-        return R.drawable.bg_sand_tile2x;
+        return R.drawable.bg_sand_tile;
     }
 
     public static int getBackgroundFrame()
