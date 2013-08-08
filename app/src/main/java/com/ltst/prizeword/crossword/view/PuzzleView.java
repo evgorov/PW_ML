@@ -16,6 +16,7 @@ import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerBoolean;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -251,11 +252,20 @@ public class PuzzleView extends View
                         if(!mKeyboardOpened)
                             return false;
                     case KeyEvent.KEYCODE_ENTER:
-                        mPuzzleManager.onKeyEvent(event);
+                        mPuzzleManager.onKeyEvent(event, null);
                         hideKeyboard();
                         return true;
                     default:
-                        mPuzzleManager.onKeyEvent(event);
+                        mPuzzleManager.onKeyEvent(event, new IListenerBoolean(){
+                            @Override
+                            public void handle(boolean b)
+                            {
+                                if(b)
+                                    openKeyboard();
+                                else
+                                    hideKeyboard();
+                            }
+                        });
                         return true;
                 }
             }

@@ -105,6 +105,15 @@ public class PuzzleResources
         return mPuzzleQuestions;
     }
 
+    public void setQuestionCorrect(int index, boolean correct)
+    {
+        if (mPuzzleQuestions == null)
+            return;
+        if(index < 0 || index >= mPuzzleQuestions.size())
+            return;
+        mPuzzleQuestions.get(index).correct = correct;
+    }
+
     public static int getArrowResource(int type)
     {
         boolean isDone = (type & ArrowType.ARROW_DONE) == ArrowType.ARROW_DONE;

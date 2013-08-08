@@ -68,6 +68,11 @@ public class PuzzleTileState
         hasInputLetter = true;
     }
 
+    public void setLetterCorrect(boolean correct)
+    {
+        letterState = correct ? LetterState.LETTER_CORRECT : LetterState.LETTER_WRONG;
+    }
+
     public int getQuestionState()
     {
         return questionState;
