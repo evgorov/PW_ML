@@ -121,13 +121,13 @@ public class PuzzleView extends View
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event)
+    public boolean dispatchKeyEventPreIme(KeyEvent event)
     {
         return mKeyboardListener.onKey(this, event.getKeyCode(), event);
     }
 
     @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event)
+    public boolean dispatchKeyEvent(KeyEvent event)
     {
         return mKeyboardListener.onKey(this, event.getKeyCode(), event);
     }
@@ -242,19 +242,24 @@ public class PuzzleView extends View
             {
                 return false;
             }
-            switch (keyCode)
+            if (event.getAction() == KeyEvent.ACTION_UP
+                    || event.getAction() == KeyEvent.ACTION_MULTIPLE)
             {
-                case KeyEvent.KEYCODE_BACK:
-                    if(!mKeyboardOpened)
-                        return false;
-                case KeyEvent.KEYCODE_ENTER:
-                    mPuzzleManager.onKeyEvent(event);
-                    hideKeyboard();
-                    return true;
-                default:
-                    mPuzzleManager.onKeyEvent(event);
-                return true;
+                switch (keyCode)
+                {
+                    case KeyEvent.KEYCODE_BACK:
+                        if(!mKeyboardOpened)
+                            return false;
+                    case KeyEvent.KEYCODE_ENTER:
+                        mPuzzleManager.onKeyEvent(event);
+                        hideKeyboard();
+                        return true;
+                    default:
+                        mPuzzleManager.onKeyEvent(event);
+                        return true;
+                }
             }
+            else return false;
         }
     }
 

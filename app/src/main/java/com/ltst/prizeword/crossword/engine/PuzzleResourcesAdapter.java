@@ -176,6 +176,20 @@ public class PuzzleResourcesAdapter
         }
     }
 
+    public void deleteLetterByBackspace()
+    {
+        if(mCurrentAnswerIterator == null || !isInputMode || mResources == null)
+            return;
+        @Nullable Point last = mCurrentAnswerIterator.last();
+        if(last == null)
+        {
+            return;
+        }
+        @Nullable PuzzleTileState state = mResources.getPuzzleState(last.x, last.y);
+        if(state != null)
+            state.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY_INPUT);
+    }
+
     private void setLetterStateByPointIterator(@Nonnull AnswerLetterPointIterator iter, @Nonnull IListener<PuzzleTileState> handler)
     {
         if (mResources == null)

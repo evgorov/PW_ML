@@ -161,11 +161,13 @@ public class PuzzleManager
     {
         switch (keyEvent.getKeyCode())
         {
+            // back button, enter key
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
                 cancelLastQuestion();
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
+            // russian letters
             case KeyEvent.KEYCODE_UNKNOWN:
                 String letter = keyEvent.getCharacters();
                 if (letter == null || letter.length() > 1)
@@ -174,6 +176,11 @@ public class PuzzleManager
                 }
                 letter = letter.toUpperCase();
                 mResourcesAdapter.updateLetterCharacterState(letter);
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+            // backspace key
+            case KeyEvent.KEYCODE_DEL:
+                mResourcesAdapter.deleteLetterByBackspace();
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
         }
