@@ -124,6 +124,23 @@ public class PuzzleTileState
         else return ArrowType.NO_ARROW;
     }
 
+    public void removeArrowByQuestionIndex(int questionIndex)
+    {
+        int index = arrowsState.indexOfKey(questionIndex);
+        if(index >= 0)
+            arrowsState.removeAt(index);
+        else
+            return;
+        if(arrowsState.size() == 0)
+            hasArrows = false;
+    }
+
+    public void removeArrows()
+    {
+        hasArrows = false;
+        arrowsState.clear();
+    }
+
     public static class QuestionState
     {
         public static final int QUESTION_EMPTY = 0x00000001;

@@ -395,9 +395,9 @@ public class PuzzleFieldDrawer
                 if (state.hasLetter)
                 {
                     drawLetterByState(canvas, rect, state);
-                    if(state.hasArrows &&
-                            (state.getLetterState() == PuzzleTileState.LetterState.LETTER_EMPTY ||
-                            state.getLetterState()  == PuzzleTileState.LetterState.LETTER_CORRECT))
+                    int letterState = state.getLetterState();
+                    if(state.hasArrows && (letterState == PuzzleTileState.LetterState.LETTER_CORRECT ||
+                                letterState == PuzzleTileState.LetterState.LETTER_EMPTY))
                     {
                         drawArrow(state.getFirstArrow(), canvas, rect);
                         drawArrow(state.getSecondArrow(), canvas, rect);
@@ -647,10 +647,18 @@ public class PuzzleFieldDrawer
             int[] arrowTypes = PuzzleTileState.ArrowType.getArrowTypesArray();
             for (int i = 0; i < arrowTypes.length - 1; i++)
             {
-                int res = PuzzleResources.getArrowResource(arrowTypes[i]);
+                int type = arrowTypes[i];
+                int res = PuzzleResources.getArrowResource(type);
+                mBitmapManager.addBitmap(res, null);
+                type |= PuzzleTileState.ArrowType.ARROW_DONE;
+                res = PuzzleResources.getArrowResource(type);
                 mBitmapManager.addBitmap(res, null);
             }
-            int lastRes = PuzzleResources.getArrowResource(arrowTypes[arrowTypes.length - 1]);
+            int type = arrowTypes[arrowTypes.length - 1];
+            int lastRes = PuzzleResources.getArrowResource(type);
+            mBitmapManager.addBitmap(lastRes, null);
+            type |= PuzzleTileState.ArrowType.ARROW_DONE;
+            lastRes = PuzzleResources.getArrowResource(type);
             mBitmapManager.addBitmap(lastRes, new IListenerVoid()
             {
                 @Override

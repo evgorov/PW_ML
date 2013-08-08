@@ -36,6 +36,7 @@ public class PuzzleResourcesAdapter
     private @Nullable AnswerLetterPointIterator mCurrentAnswerIterator;
     private @Nullable String mCurrentAnswer;
     private @Nullable StringBuffer mCurrentInputBuffer;
+    private int mCurrentInputQuestionIndex = -1;
     private boolean isInputMode;
 
     public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
@@ -68,6 +69,7 @@ public class PuzzleResourcesAdapter
         mCurrentAnswer = null;
         mCurrentInputBuffer = null;
         mCurrentQuestionPoint = null;
+        mCurrentInputQuestionIndex = -1;
     }
 
     public void updatePuzzleStateByTap(int column, int row, @Nullable IListenerVoid confirmedHandler)
@@ -144,6 +146,7 @@ public class PuzzleResourcesAdapter
             if(isInput)
             {
                 mCurrentAnswer = question.answer;
+                mCurrentInputQuestionIndex = questionIndex;
                 final StringBuffer answerWithSkippedBuffer = new StringBuffer();
                 setLetterStateByPointIterator(mCurrentAnswerIterator, new IListener<PuzzleTileState>()
                 {
@@ -273,6 +276,16 @@ public class PuzzleResourcesAdapter
         String inputAnswer = mCurrentInputBuffer.toString().toLowerCase();
         if(inputAnswer.equals(mCurrentAnswer))
         {
+            mCurrentAnswerIterator.reset();
+            Point p = mCurrentAnswerIterator.next();
+            if (p != null)
+            {
+                @Nullable PuzzleTileState state = mResources.getPuzzleState(p.x, p.y);
+                if (state != null && mCurrentInputQuestionIndex >= 0)
+                {
+                    state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
+                }
+            }
             mCurrentAnswerIterator.reset();
             setLetterStateByPointIterator(mCurrentAnswerIterator, new IListener<PuzzleTileState>()
             {
