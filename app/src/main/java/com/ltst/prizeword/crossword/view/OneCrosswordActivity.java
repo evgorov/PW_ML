@@ -45,6 +45,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mMenuBtn;
     private @Nonnull Button mNextBtn;
     private @Nonnull View mAlertPause;
+    private @Nonnull View mAlertPauseBg;
 
     private @Nonnull boolean mStopPlayFlag;
     private @Nonnull Animation mAnimationSlideInTop;
@@ -75,6 +76,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mStopPlayBtn = (Button) findViewById(R.id.header_stop_play_btn);
         mHintBtn = (Button) findViewById(R.id.header_hint_btn);
         mAlertPause = findViewById(R.id.gamefild_pause_alert);
+        mAlertPauseBg = findViewById(R.id.gamefild_pause_bg);
         mStopPlayFlag = true;
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
@@ -123,7 +125,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 if (!mStopPlayFlag)
                 {
 
-                    mAlertPause.setVisibility(View.VISIBLE);
+                    mAlertPauseBg.setVisibility(View.VISIBLE);
                     mAnimationSlideInTop.reset();
                     mAlertPause.clearAnimation();
                     mAlertPause.startAnimation(mAnimationSlideInTop);
@@ -135,7 +137,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                     mAnimationSlideOutTop.reset();
                     mAlertPause.clearAnimation();
                     mAlertPause.startAnimation(mAnimationSlideOutTop);
-                    mAlertPause.setVisibility(View.GONE);
+                    mAlertPauseBg.setVisibility(View.GONE);
                     mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
                     mStopPlayFlag=false;
                 }

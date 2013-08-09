@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="7dp"
 
-                        android:background="@drawable/login_fb_btn"/>
+                        android:background="@drawable/login_fb_but"/>
 
                 <Button
                         android:id="@+id/enter_with_vk_btn"
