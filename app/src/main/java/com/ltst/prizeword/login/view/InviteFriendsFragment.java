@@ -1,6 +1,5 @@
 package com.ltst.prizeword.login.view;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -28,6 +27,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nonnull Button mInviteAllBtn;
     private @Nonnull ListView mFbListView;
     private @Nonnull ListView mVkListView;
+    private @Nonnull InviteFragmentAdapter mFbAdapter;
+    private @Nonnull InviteFragmentAdapter mVkAdapter;
     // ==== Livecycle =================================
 
     @Override
@@ -41,11 +42,14 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View v = inflater.inflate(R.layout.invate_friends_fragment_layout, container, false);
+        View v = inflater.inflate(R.layout.invite_friends_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
         mInviteAllBtn = (Button) v.findViewById(R.id.header_invite_all_btn);
         mFbListView = (ListView)v.findViewById(R.id.fb_friends_listview);
         mVkListView = (ListView)v.findViewById(R.id.vk_friends_listview);
+        String[] names = new String[]{"Дмитрий огнев","ЗАдорожный владимир","александр зайцеы","павел скок","федор новоселрв"};
+        mFbAdapter = new InviteFragmentAdapter(mContext,names);
+        mVkAdapter = new InviteFragmentAdapter(mContext,names);
         return v;
     }
 
@@ -61,8 +65,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     {
         mMenuBtn.setOnClickListener(this);
         mInviteAllBtn.setOnClickListener(this);
-        /*mFbListView.setAdapter();
-        mVkListView.setAdapter();*/
+        mFbListView.setAdapter(mFbAdapter);
+        mVkListView.setAdapter(mVkAdapter);
         super.onActivityCreated(savedInstanceState);
     }
 

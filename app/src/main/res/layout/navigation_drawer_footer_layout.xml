@@ -184,7 +184,7 @@
             style="@style/MenuMainTextTitleStyle" />
 
     <LinearLayout
-            android:id="@+id/menu_invate_friends_btn"
+            android:id="@+id/menu_invite_friends_btn"
             style="@style/MenuMenuButtonStyle"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/menu_main_left_big_margin"
