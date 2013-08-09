@@ -17,6 +17,9 @@ import org.omich.velo.handlers.IListenerBoolean;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -38,6 +41,9 @@ public class PuzzleManager
     private boolean mIsAnimating;
 
     private @Nullable Point mLastQuestionTapPoint;
+    private @Nullable Point mLastQuestionInputPuzzlePoint;
+
+    private final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
@@ -110,20 +116,22 @@ public class PuzzleManager
             anim = new ScaleAnimationThread(view, MAX_SCALE, MIN_SCALE);
         else
             anim = new ScaleAnimationThread(view, MIN_SCALE, MAX_SCALE);
-        anim.start();
+
+        mExecutor.execute(anim);
 
         mScaled = !mScaled;
     }
 
     public void onTapEvent(final @Nonnull View view, @Nonnull PointF point, final @Nullable IListenerVoid successHandler)
     {
-        if(!mScaled || mFocusViewPoint == null || mPuzzleViewRect == null)
+        if(!mScaled || mFocusViewPoint == null || mPuzzleViewRect == null || mIsAnimating)
             return;
 
         final float puzzleX = mFocusViewPoint.x + (point.x - mPuzzleViewRect.width()/2);
         final float puzzleY = mFocusViewPoint.y + (point.y - mPuzzleViewRect.height()/2);
 
         point.set(puzzleX, puzzleY);
+
         mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point);
 
         int tileWidth = mFieldDrawer.getTileWidth();
@@ -135,6 +143,7 @@ public class PuzzleManager
         final int col = (int)point.x/tileWidth;
         final int row = (int)point.y/tileHeight;
         cancelLastQuestion();
+        mLastQuestionInputPuzzlePoint = null;
         mResourcesAdapter.updatePuzzleStateByTap(col, row, new IListenerVoid()
         {
             @Override
@@ -153,13 +162,12 @@ public class PuzzleManager
                 TranslateAnimationThread thread = new TranslateAnimationThread(view,
                         mFocusViewPoint, translatePoint);
                 mInvalidateHandler.handle(mPuzzleViewRect);
-
-                thread.start();
+                mExecutor.execute(thread);
             }
         });
     }
 
-    public void onKeyEvent(@Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
+    public void onKeyEvent(@Nonnull View view, @Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
     {
         switch (keyEvent.getKeyCode())
         {
@@ -171,19 +179,47 @@ public class PuzzleManager
                 break;
             // backspace key
             case KeyEvent.KEYCODE_DEL:
-                mResourcesAdapter.deleteLetterByBackspace();
+            {
+                if (mLastQuestionInputPuzzlePoint == null)
+                {
+                    break;
+                }
+                int tileWidth = mFieldDrawer.getTileWidth();
+                int tileHeight = mFieldDrawer.getTileHeight();
+                Rect tileRect = new Rect(0, 0, tileWidth, tileHeight);
+
+                mResourcesAdapter.deleteLetterByBackspace(mLastQuestionInputPuzzlePoint, tileRect);
+
+                mFieldDrawer.checkFocusPoint(mLastQuestionInputPuzzlePoint, mPuzzleViewRect);
+                TranslateAnimationThread thread = new TranslateAnimationThread(view,
+                        mFocusViewPoint, mLastQuestionInputPuzzlePoint);
+                mExecutor.execute(thread);
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
+            }
             // russian letters
             default:
             case KeyEvent.KEYCODE_UNKNOWN:
+            {
                 String letter = keyEvent.getCharacters();
                 if (letter == null || letter.length() > 1)
                 {
                     break;
                 }
+                int tileWidth = mFieldDrawer.getTileWidth();
+                int tileHeight = mFieldDrawer.getTileHeight();
+                Rect tileRect = new Rect(0, 0, tileWidth, tileHeight);
+
+                if(mLastQuestionInputPuzzlePoint == null)
+                {
+                    mLastQuestionInputPuzzlePoint = new Point(mFocusViewPoint);
+                }
+
                 letter = letter.toUpperCase();
-                mResourcesAdapter.updateLetterCharacterState(letter, new IListenerVoid()
+                mResourcesAdapter.updateLetterCharacterState(letter,
+                        mLastQuestionInputPuzzlePoint,
+                        tileRect,
+                        new IListenerVoid()
                 {
                     @Override
                     public void handle()
@@ -195,7 +231,13 @@ public class PuzzleManager
                         }
                     }
                 });
+                mFieldDrawer.checkFocusPoint(mLastQuestionInputPuzzlePoint, mPuzzleViewRect);
+                TranslateAnimationThread thread = new TranslateAnimationThread(view,
+                        mFocusViewPoint, mLastQuestionInputPuzzlePoint);
+                mExecutor.execute(thread);
+
                 mInvalidateHandler.handle(mPuzzleViewRect);
+            }
                 break;
         }
     }
@@ -322,10 +364,11 @@ public class PuzzleManager
         private static final long FPS_INTERVAL = 1000 / 60;
         private static final int TRANSLATION_ = 5;
 
-        private final int mDeltaX;
         private final @Nonnull View mView;
         private final @Nonnull Point mDestinationPoint;
-        private final int mDeltaY;
+        private int mDeltaX;
+        private int mDeltaY;
+        private int mIterations;
 
         private TranslateAnimationThread(@Nonnull View view,
                                          @Nonnull Point sourcePoint,
@@ -335,6 +378,8 @@ public class PuzzleManager
             mDestinationPoint = new Point(destinationPoint);
             mDeltaX = (destinationPoint.x - sourcePoint.x)/(int)FPS_INTERVAL;
             mDeltaY = (destinationPoint.y - sourcePoint.y)/(int)FPS_INTERVAL;
+            mIterations = Math.max((destinationPoint.x - sourcePoint.x)/((mDeltaX == 0) ? 1:mDeltaX),
+                    (destinationPoint.y - sourcePoint.y)/((mDeltaY == 0)? 1:mDeltaY));
         }
 
         @Override
@@ -343,9 +388,27 @@ public class PuzzleManager
             synchronized (this)
             {
                 mIsAnimating = true;
-                while(Math.abs(mFocusViewPoint.x - mDestinationPoint.x) > TRANSLATION_ &&
-                        Math.abs(mFocusViewPoint.y - mDestinationPoint.y) > TRANSLATION_)
+                boolean xTranslation = false;
+                boolean yTranslation = false;
+                int iter = 0;
+                while(iter <= mIterations)
                 {
+                    iter++;
+                    if (Math.abs(mFocusViewPoint.x - mDestinationPoint.x) < TRANSLATION_)
+                    {
+                        xTranslation = true;
+                        mDeltaX = 0;
+                    }
+
+                    if (Math.abs(mFocusViewPoint.y - mDestinationPoint.y) < TRANSLATION_)
+                    {
+                        yTranslation = true;
+                        mDeltaY = 0;
+                    }
+
+                    if(xTranslation && yTranslation)
+                        break;
+
                     mFocusViewPoint.offset(mDeltaX, mDeltaY);
 
                    if(checkFocusViewPoint())

@@ -1,6 +1,7 @@
 package com.ltst.prizeword.crossword.engine;
 
 import android.graphics.Point;
+import android.graphics.Rect;
 
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
@@ -225,7 +226,7 @@ public class PuzzleResourcesAdapter
         }
     }
 
-    public void updateLetterCharacterState(@Nonnull String character, @Nonnull IListenerVoid correctAnswerHandler)
+    public void updateLetterCharacterState(@Nonnull String character, @Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect, @Nonnull IListenerVoid correctAnswerHandler)
     {
         if (mCurrentAnswerIterator == null || mResources == null)
             return;
@@ -236,12 +237,14 @@ public class PuzzleResourcesAdapter
             {
                 if(next == null)
                     break;
+
                 @Nullable PuzzleTileState state = mResources.getPuzzleState(next.x, next.y);
                 if (state != null)
                 {
                     int letterState = state.getLetterState();
                     if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                     {
+                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(AnswerLetterPointIterator.SKIP_LETTER_CHARACTER);
@@ -254,7 +257,9 @@ public class PuzzleResourcesAdapter
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(character);
-                            checkAnswer(correctAnswerHandler);
+                            boolean correct = checkAnswer(correctAnswerHandler);
+                            if(!correct)
+                                mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
                             break;
                         }
                     }
@@ -264,15 +269,15 @@ public class PuzzleResourcesAdapter
         }
     }
 
-    private void checkAnswer(@Nonnull IListenerVoid correctAnswerHandler)
+    private boolean checkAnswer(@Nonnull IListenerVoid correctAnswerHandler)
     {
         if (mCurrentAnswer == null || mCurrentInputBuffer == null || mCurrentAnswerIterator == null)
         {
-            return;
+            return false;
         }
 
         if(mCurrentInputBuffer.length() < mCurrentAnswer.length())
-            return;
+            return false;
         String inputAnswer = mCurrentInputBuffer.toString().toLowerCase();
         if(inputAnswer.equals(mCurrentAnswer))
         {
@@ -303,6 +308,7 @@ public class PuzzleResourcesAdapter
             resetInputMode();
             correctAnswerHandler.handle();
         }
+        return true;
     }
 
     private void setCurrentQuestionCorrect(boolean correct)
@@ -325,7 +331,7 @@ public class PuzzleResourcesAdapter
         }
     }
 
-    public void deleteLetterByBackspace()
+    public void deleteLetterByBackspace(@Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect)
     {
         if(mCurrentAnswerIterator == null || !isInputMode || mResources == null || mCurrentInputBuffer == null)
             return;
@@ -345,13 +351,19 @@ public class PuzzleResourcesAdapter
                 {
                     last = mCurrentAnswerIterator.last();
                     if(mCurrentInputBuffer.length() >= 1)
+                    {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
+                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
+                    }
                 }
                 else
                 {
                     state.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY_INPUT);
                     if(mCurrentInputBuffer.length() >= 1)
+                    {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
+                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
+                    }
                     break;
                 }
             }
