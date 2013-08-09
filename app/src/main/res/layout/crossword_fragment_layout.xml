@@ -84,7 +84,7 @@
                     <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/crossword_panel_bg_title"/>
+                            />
                 </LinearLayout>
 
                 <LinearLayout
@@ -161,7 +161,6 @@
                     </LinearLayout>
 
                     <!--@TODO input brillian current crossword-->
-                    <include layout="@layout/crossword_archive_brilliant"/>
 
                     <include layout="@layout/crossword_current_brilliant"/>
 
@@ -332,7 +331,7 @@
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     >
 
                 <LinearLayout
@@ -364,8 +363,6 @@
                     <include layout="@layout/crossword_spliter_month"/>
 
                     <include layout="@layout/crossword_archive_brilliant"/>
-
-                    <include layout="@layout/crossword_current_brilliant"/>
 
                 </LinearLayout>
             </FrameLayout>
