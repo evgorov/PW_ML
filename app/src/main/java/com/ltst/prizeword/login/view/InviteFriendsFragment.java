@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -29,6 +30,9 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nonnull ListView mVkListView;
     private @Nonnull InviteFragmentAdapter mFbAdapter;
     private @Nonnull InviteFragmentAdapter mVkAdapter;
+
+    private @Nonnull ImageView mFbHeaderImage;
+    private @Nonnull ImageView mVkHeaderImage;
     // ==== Livecycle =================================
 
     @Override
@@ -47,9 +51,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mInviteAllBtn = (Button) v.findViewById(R.id.header_invite_all_btn);
         mFbListView = (ListView)v.findViewById(R.id.fb_friends_listview);
         mVkListView = (ListView)v.findViewById(R.id.vk_friends_listview);
-        String[] names = new String[]{"Дмитрий огнев","ЗАдорожный владимир","александр зайцеы","павел скок","федор новоселрв"};
+        String[] names = new String[]{"Дмитрий огнев","ЗАдорожный владимир","александр зайцеы","павел скок","федор новоселрв","Курлов Александр","Немытов Кирилл","Невозможность Слежки"};
         mFbAdapter = new InviteFragmentAdapter(mContext,names);
         mVkAdapter = new InviteFragmentAdapter(mContext,names);
+        mFbHeaderImage = new ImageView(mContext);
+        mVkHeaderImage = new ImageView(mContext);
+        mFbHeaderImage.setBackgroundResource(R.drawable.invite_fb_header);
+        mVkHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
         return v;
     }
 
@@ -65,8 +73,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     {
         mMenuBtn.setOnClickListener(this);
         mInviteAllBtn.setOnClickListener(this);
+        mFbListView.setDivider(null);
+        mVkListView.setDivider(null);
+        mFbListView.addHeaderView(mFbHeaderImage);
+        mVkListView.addHeaderView(mVkHeaderImage);
         mFbListView.setAdapter(mFbAdapter);
         mVkListView.setAdapter(mVkAdapter);
+
         super.onActivityCreated(savedInstanceState);
     }
 

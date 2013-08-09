@@ -81,7 +81,7 @@
 
     <style name="GamefieldTimerText">
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDy">2</item>
