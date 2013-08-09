@@ -28,6 +28,7 @@
                     android:background="@drawable/puzzles_badges_bg_brilliant">
 
                 <LinearLayout
+                        android:id="@+id/crossword_badge_resolved_brilliant_number_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -63,6 +64,7 @@
                         />
 
                 <TextView
+                        android:id="@+id/crossword_badge_resolved_brilliant_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4sp"

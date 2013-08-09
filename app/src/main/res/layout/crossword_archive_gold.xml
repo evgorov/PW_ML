@@ -22,7 +22,7 @@
         <TextView
                 android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"
-                android:text="@string/puzzless_hint_brilliant_crossword"/>
+                android:text="@string/puzzless_hint_gold_crossword"/>
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -31,7 +31,7 @@
                 android:gravity="right">
 
             <ToggleButton
-                    android:id="@+id/crossword_archive_brilliant_switcher"
+                    android:id="@+id/crossword_archive_gold_switcher"
                     android:layout_width="34dp"
                     android:layout_height="32dp"
                     android:textOn=""
@@ -61,7 +61,7 @@
                     android:text="@string/puzzless_hint_resolved"/>
 
             <TextView
-                    android:id="@+id/crossword_archive_brilliant_partition"
+                    android:id="@+id/crossword_archive_gold_partition"
                     android:textSize="@dimen/puzzles_badge_text_size"
                     android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
@@ -87,7 +87,7 @@
             </LinearLayout>
 
             <TextView
-                    android:id="@+id/crossword_archive_brilliant_percent"
+                    android:id="@+id/crossword_archive_gold_percent"
                     android:textSize="@dimen/puzzles_badge_text_size"
                     android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
@@ -113,7 +113,7 @@
                     android:background="@drawable/puzzles_badge_star"/>
 
             <TextView
-                    android:id="@+id/crossword_archive_brilliant_score"
+                    android:id="@+id/crossword_archive_gold_score"
                     android:textSize="@dimen/puzzles_badge_text_size"
                     android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
@@ -124,7 +124,7 @@
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/crossword_archive_brilliant_badges_container"
+            android:id="@+id/crossword_archive_gold_badges_container"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"

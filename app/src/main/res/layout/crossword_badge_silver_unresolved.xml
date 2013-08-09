@@ -24,6 +24,7 @@
                 android:layout_marginRight="2dp"
                 android:background="@drawable/puzzles_badges_bg_silver">
             <LinearLayout
+                    android:id="@+id/crossword_badge_unresolved_silver_number_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -36,6 +37,7 @@
         </LinearLayout>
 
         <TextView
+                android:id="@+id/crossword_badge_unresolved_silver_percent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/puzzles_badge_score_text_size"
@@ -44,12 +46,15 @@
                 />
 
         <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/puzzles_badge_progress_bg">
 
             <LinearLayout
+                    android:id="@+id/crossword_badge_unresolved_silver_progress"
+                    android:orientation="horizontal"
                     android:layout_width="21dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dp"
