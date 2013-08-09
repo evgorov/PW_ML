@@ -21,6 +21,7 @@ public class PuzzleResources
     private static final int DEFAULT_CELL_HEIGHT = 20;
     private static final int DEFAULT_PADDING = 16;
     private static final int DEFAULT_TILE_GAP = 4;
+    public static final char LETTER_UNKNOWN = '-';
 
     private int mPuzzleColumnsCount;
     private int mPuzzleRowsCount;

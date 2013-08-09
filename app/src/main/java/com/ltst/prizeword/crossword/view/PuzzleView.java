@@ -4,16 +4,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
+import com.ltst.prizeword.tools.FixedInputConnection;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerBoolean;
@@ -57,6 +61,20 @@ public class PuzzleView extends View
         setFocusable(true);
         setFocusableInTouchMode(true);
         mKeyboardOpened = false;
+    }
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        editorInfo.actionLabel = null;
+        editorInfo.inputType   = InputType.TYPE_NULL;
+        editorInfo.imeOptions  = EditorInfo.IME_ACTION_NONE;
+
+        return new FixedInputConnection(this, false);
+    }
+
+    @Override
+    public boolean onCheckIsTextEditor() {
+        return true;
     }
 
 
@@ -191,13 +209,19 @@ public class PuzzleView extends View
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
+                boolean handled = mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
                     @Override
                     public void handle()
                     {
                         openKeyboard();
                     }
                 });
+
+                if(!handled && !mScaled)
+                {
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, p);
+                    mScaled = true;
+                }
             }
             return true;
         }
@@ -216,7 +240,7 @@ public class PuzzleView extends View
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent(PuzzleView.this);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, null);
                     mScaled = true;
                 }
                 return true;
@@ -225,7 +249,7 @@ public class PuzzleView extends View
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent(PuzzleView.this);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, null);
                     mScaled = false;
                 }
                 return true;
@@ -252,11 +276,11 @@ public class PuzzleView extends View
                         if(!mKeyboardOpened)
                             return false;
                     case KeyEvent.KEYCODE_ENTER:
-                        mPuzzleManager.onKeyEvent(event, null);
+                        mPuzzleManager.onKeyEvent(PuzzleView.this, event, null);
                         hideKeyboard();
                         return true;
                     default:
-                        mPuzzleManager.onKeyEvent(event, new IListenerBoolean(){
+                        mPuzzleManager.onKeyEvent(PuzzleView.this, event, new IListenerBoolean(){
                             @Override
                             public void handle(boolean b)
                             {

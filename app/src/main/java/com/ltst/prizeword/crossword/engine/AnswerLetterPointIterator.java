@@ -27,13 +27,6 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         mAnswer = answer;
     }
 
-    public void setAnswer(@Nonnull String answer)
-    {
-        if(answer.length() != mAnswer.length())
-            return;
-        mAnswer = answer;
-    }
-
     @Override
     public boolean hasNext()
     {
@@ -93,42 +86,33 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         mPoint.set(mStartPoint.x, mStartPoint.y);
     }
 
-    private void offsetPointByDirection(@Nonnull Point p)
+    public void offsetPointByDirection(@Nonnull Point p, int widthOffset, int heightOffset)
     {
         switch (mDirection)
         {
             case PuzzleTileState.AnswerDirection.DOWN:
-                p.offset(0, 1);
+                p.offset(0, heightOffset);
                 break;
             case PuzzleTileState.AnswerDirection.UP:
-                p.offset(0, -1);
+                p.offset(0, -heightOffset);
                 break;
             case PuzzleTileState.AnswerDirection.RIGHT:
-                p.offset(1, 0);
+                p.offset(widthOffset, 0);
                 break;
             case PuzzleTileState.AnswerDirection.LEFT:
-                p.offset(-1, 0);
+                p.offset(-widthOffset, 0);
                 break;
         }
     }
 
+    private void offsetPointByDirection(@Nonnull Point p)
+    {
+        offsetPointByDirection(p, 1, 1);
+    }
+
     private void negateOffsetPointByDirection(@Nonnull Point p)
     {
-        switch (mDirection)
-        {
-            case PuzzleTileState.AnswerDirection.DOWN:
-                p.offset(0, -1);
-                break;
-            case PuzzleTileState.AnswerDirection.UP:
-                p.offset(0, 1);
-                break;
-            case PuzzleTileState.AnswerDirection.RIGHT:
-                p.offset(-1, 0);
-                break;
-            case PuzzleTileState.AnswerDirection.LEFT:
-                p.offset(1, 0);
-                break;
-        }
+        offsetPointByDirection(p, -1, -1);
     }
 
     @Override
