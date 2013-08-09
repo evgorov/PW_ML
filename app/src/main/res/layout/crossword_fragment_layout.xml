@@ -14,11 +14,66 @@
 
         <LinearLayout
                 android:orientation="vertical"
-                android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-        <FrameLayout
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/puzzles_news_bg_strech"/>
+
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="4dp"
+                        android:gravity="bottom|center_horizontal">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/puzzles_news_page_current"/>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/puzzles_news_page"/>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/puzzles_news_page"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center_vertical">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginBottom="28dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="@drawable/puzzles_news_close_but"/>
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -40,22 +95,21 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/frame_border">
 
-
                 <LinearLayout
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                     <TextView
-                            android:layout_marginStart="4dp"
-                            android:textSize="18sp"
+                            android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                            android:textSize="@dimen/puzzles_badge_set_title_text_size"
                             style="@style/PuzzlesHintTitleTextStyle"
                             android:text="@string/puzzless_hint_crosswords_on"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"/>
                     <TextView
-                            android:layout_marginStart="4dp"
-                            android:textSize="18sp"
+                            android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                            android:textSize="@dimen/puzzles_badge_set_title_text_size"
                             style="@style/PuzzlesHintTitleTextStyle"
                             android:text="апрель"/>
                     <LinearLayout
@@ -83,21 +137,21 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
                                 <TextView
-                                        android:layout_marginStart="1dp"
+                                        android:layout_marginLeft="1dp"
                                         android:textSize="10sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/puzzless_hint_rest_abr"
                                         />
 
                                 <TextView
-                                        android:layout_marginStart="2dp"
+                                        android:layout_marginLeft="2dp"
                                         android:textSize="10sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="2"
                                         />
 
                                 <TextView
-                                        android:layout_marginStart="2dp"
+                                        android:layout_marginLeft="2dp"
                                         android:textSize="10sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/puzzless_hint_rest_days"
@@ -109,7 +163,8 @@
                 </LinearLayout>
 
                 <!--@TODO input brillian current crossword-->
-                <include layout="@layout/crossword_current_brilliant"/>
+                <include layout="@layout/crossword_current_brilliant"
+                         android:layout_width="fill_parent"/>
 
             </LinearLayout>
 
@@ -172,6 +227,7 @@
                                     android:text="@string/puzzless_hint_hints_rest"/>
                             <TextView
                                     android:textSize="12sp"
+                                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                     style="@style/PuzzlesHintWhiteTextStyle"
                                     android:text="0"/>
 

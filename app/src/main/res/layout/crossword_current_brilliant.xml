@@ -26,8 +26,8 @@
                 android:background="@drawable/puzzles_set_br"/>
 
         <TextView
-                android:paddingStart="4dp"
-                android:textSize="30sp"
+                android:paddingStart="@dimen/puzzles_badge_range_between_text_size"
+                android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"
                 android:text="@string/puzzless_hint_brilliant_crossword"/>
 
@@ -46,37 +46,37 @@
                 android:gravity="center_vertical">
 
             <TextView
-                    android:textSize="14sp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
                     android:textStyle="bold"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="7"/>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="@string/puzzless_hint_crosswords"/>
 
             <TextView
-                    android:textSize="14sp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text=","/>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="@string/puzzless_hint_minimal"/>
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:background="@drawable/puzzles_badge_star"/>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="85 000"/>
@@ -94,7 +94,7 @@
                 android:background="@drawable/puzzles_buy_crossword_but">
 
             <TextView
-                    android:textSize="14sp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
                     style="@style/PuzzlesHintWhiteTextStyle"
                     android:text="@string/buy_one_dollar"/>
 
@@ -115,13 +115,13 @@
 
 
             <TextView
-                    android:textSize="14sp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="@string/puzzless_hint_resolved"/>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginLeft="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="4/12"/>
@@ -145,8 +145,8 @@
             </LinearLayout>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="30%"/>
@@ -159,19 +159,19 @@
                 android:gravity="center_vertical">
 
             <TextView
-                    android:textSize="14sp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="@string/puzzless_hint_get_score"/>
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:background="@drawable/puzzles_badge_star"/>
 
             <TextView
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                     android:textStyle="bold"
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="23 000"/>
@@ -200,8 +200,18 @@
             <include layout="@layout/crossword_badge_gold_unresolved"/>
             <include layout="@layout/crossword_badge_silver_unresolved"/>
             <include layout="@layout/crossword_badge_free_unresolved"/>
+
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <!--@TODO with crosswordss-->
+            <include layout="@layout/crossword_badge_brilliant_resolved"/>
             <include layout="@layout/crossword_badge_gold_resolved"/>
             <include layout="@layout/crossword_badge_silver_resolved"/>
+            <include layout="@layout/crossword_badge_free_resolved"/>
 
         </TableRow>
     </TableLayout>

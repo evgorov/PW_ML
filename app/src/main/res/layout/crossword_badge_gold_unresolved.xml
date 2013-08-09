@@ -38,7 +38,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="@dimen/puzzles_badge_score_text_size"
                 android:textColor="@color/puzzle_badge_digit_percent_color"
                 android:text="43%"
                 />
