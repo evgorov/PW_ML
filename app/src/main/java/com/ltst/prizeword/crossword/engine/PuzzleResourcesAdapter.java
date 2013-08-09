@@ -276,10 +276,9 @@ public class PuzzleResourcesAdapter
             return false;
         }
 
-        if(mCurrentInputBuffer.length() < mCurrentAnswer.length())
-            return false;
-        String inputAnswer = mCurrentInputBuffer.toString().toLowerCase();
-        if(inputAnswer.equals(mCurrentAnswer))
+        String inputAnswer = mCurrentInputBuffer.toString().toLowerCase().replaceAll("_", "");
+        String currentAnswer = mCurrentAnswer.replaceAll("_", "");
+        if(inputAnswer.equals(currentAnswer))
         {
             mCurrentAnswerIterator.reset();
             Point p = mCurrentAnswerIterator.next();
@@ -307,8 +306,11 @@ public class PuzzleResourcesAdapter
             setCurrentQuestionCorrect(true);
             resetInputMode();
             correctAnswerHandler.handle();
+            return true;
         }
-        return true;
+        else
+            return false;
+
     }
 
     private void setCurrentQuestionCorrect(boolean correct)
