@@ -9,7 +9,9 @@ import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.ltst.prizeword.crossword.engine.AnswerLetterPointIterator;
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
+import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
@@ -217,10 +219,7 @@ public class PuzzleManager
             case KeyEvent.KEYCODE_UNKNOWN:
             {
                 String letter = keyEvent.getCharacters();
-                if (letter == null || letter.length() > 1)
-                {
-                    break;
-                }
+
                 int tileWidth = mFieldDrawer.getTileWidth();
                 int tileHeight = mFieldDrawer.getTileHeight();
                 Rect tileRect = new Rect(0, 0, tileWidth, tileHeight);
@@ -230,7 +229,12 @@ public class PuzzleManager
                     mLastQuestionInputPuzzlePoint = new Point(mFocusViewPoint);
                 }
 
+                if (letter == null || letter.length() > 1)
+                {
+                    letter = String.valueOf(PuzzleResources.LETTER_UNKNOWN);
+                }
                 letter = letter.toUpperCase();
+
                 mResourcesAdapter.updateLetterCharacterState(letter,
                         mLastQuestionInputPuzzlePoint,
                         tileRect,
