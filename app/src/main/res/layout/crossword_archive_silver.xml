@@ -126,8 +126,8 @@
     <LinearLayout
             android:id="@+id/crossword_archive_silver_badges_container"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <!--@TODO with crosswordss-->
