@@ -27,13 +27,6 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         mAnswer = answer;
     }
 
-    public void setAnswer(@Nonnull String answer)
-    {
-        if(answer.length() != mAnswer.length())
-            return;
-        mAnswer = answer;
-    }
-
     @Override
     public boolean hasNext()
     {

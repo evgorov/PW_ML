@@ -191,13 +191,19 @@ public class PuzzleView extends View
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
+                boolean handled = mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
                     @Override
                     public void handle()
                     {
                         openKeyboard();
                     }
                 });
+
+                if(!handled && !mScaled)
+                {
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, p);
+                    mScaled = true;
+                }
             }
             return true;
         }
@@ -216,7 +222,7 @@ public class PuzzleView extends View
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent(PuzzleView.this);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, null);
                     mScaled = true;
                 }
                 return true;
@@ -225,7 +231,7 @@ public class PuzzleView extends View
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
-                    mPuzzleManager.onScaleEvent(PuzzleView.this);
+                    mPuzzleManager.onScaleEvent(PuzzleView.this, null);
                     mScaled = false;
                 }
                 return true;
