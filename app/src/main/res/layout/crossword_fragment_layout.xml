@@ -117,6 +117,7 @@
                                 android:layout_height="wrap_content">
 
                             <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_remain_panel"
                                     android:orientation="horizontal"
                                     android:gravity="center"
                                     android:layout_width="wrap_content"
@@ -142,6 +143,7 @@
                                             />
 
                                     <TextView
+                                            android:id="@+id/crossword_fragment_current_remain_count_days"
                                             android:layout_marginLeft="2dp"
                                             android:textSize="10sp"
                                             style="@style/PuzzlesHintWhiteTextStyle"
@@ -160,9 +162,17 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!--@TODO input brillian current crossword-->
+                    <LinearLayout
+                            android:id="@+id/crossword_fragment_current_container"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent">
 
-                    <include layout="@layout/crossword_current_brilliant"/>
+                        <!--@TODO input brillian current crossword-->
+                        <include layout="@layout/crossword_current_brilliant"/>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
@@ -224,6 +234,7 @@
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/puzzless_hint_hints_rest"/>
                                 <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_count"
                                         android:textSize="12sp"
                                         android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
@@ -249,6 +260,7 @@
                                 android:background="@drawable/puzzles_hints_panel10">
 
                             <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_10_btn"
                                     android:orientation="horizontal"
                                     android:clickable="true"
                                     android:focusable="true"
@@ -259,6 +271,7 @@
                                     android:background="@drawable/puzzles_buy_hints_but">
 
                                 <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_10_price"
                                         android:textSize="14sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/buy_one_dollar"/>
@@ -276,6 +289,7 @@
                                 android:background="@drawable/puzzles_hints_panel20">
 
                             <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_20_btn"
                                     android:orientation="horizontal"
                                     android:clickable="true"
                                     android:focusable="true"
@@ -286,6 +300,7 @@
                                     android:background="@drawable/puzzles_buy_hints_but">
 
                                 <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_20_price"
                                         android:textSize="14sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/buy_two_dollar"/>
@@ -303,6 +318,7 @@
                                 android:background="@drawable/puzzles_hints_panel30">
 
                             <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_30_btn"
                                     android:orientation="horizontal"
                                     android:clickable="true"
                                     android:focusable="true"
@@ -313,6 +329,7 @@
                                     android:background="@drawable/puzzles_buy_hints_but">
 
                                 <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_30_price"
                                         android:textSize="14sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/buy_three_dollar"/>
@@ -347,6 +364,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                        android:id="@+id/crossword_fragment_archive_container"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
