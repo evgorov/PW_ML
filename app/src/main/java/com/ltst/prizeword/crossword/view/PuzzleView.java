@@ -4,16 +4,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
+import com.ltst.prizeword.tools.FixedInputConnection;
 
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerBoolean;
@@ -57,6 +61,20 @@ public class PuzzleView extends View
         setFocusable(true);
         setFocusableInTouchMode(true);
         mKeyboardOpened = false;
+    }
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        editorInfo.actionLabel = null;
+        editorInfo.inputType   = InputType.TYPE_NULL;
+        editorInfo.imeOptions  = EditorInfo.IME_ACTION_NONE;
+
+        return new FixedInputConnection(this, false);
+    }
+
+    @Override
+    public boolean onCheckIsTextEditor() {
+        return true;
     }
 
 
