@@ -14,91 +14,32 @@
 
     <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginTop="8dp">
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/puzzles_set_br"/>
-
         <TextView
-                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                 android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"
                 android:text="@string/puzzless_hint_brilliant_crossword"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
         <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="right">
 
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    android:textStyle="bold"
-                    style="@style/PuzzlesHintCommonTextStyle"
-                    android:text="7"/>
-
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                    style="@style/PuzzlesHintCommonTextStyle"
-                    android:text="@string/puzzless_hint_crosswords"/>
-
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    style="@style/PuzzlesHintCommonTextStyle"
-                    android:text=","/>
-
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                    style="@style/PuzzlesHintCommonTextStyle"
-                    android:text="@string/puzzless_hint_minimal"/>
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                    android:background="@drawable/puzzles_badge_star"/>
-
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                    android:textStyle="bold"
-                    style="@style/PuzzlesHintCommonTextStyle"
-                    android:text="85 000"/>
+            <ToggleButton
+                    android:id="@+id/menu_vk_switcher"
+                    android:layout_width="34dp"
+                    android:layout_height="32dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/puzzles_archive_showmore_bun"/>
 
         </LinearLayout>
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/puzzles_buy_crossword_but">
-
-            <TextView
-                    android:textSize="@dimen/puzzles_badge_text_size"
-                    style="@style/PuzzlesHintWhiteTextStyle"
-                    android:text="@string/buy_one_dollar"/>
-
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -179,13 +120,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-            android:id="@+id/view_crossword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crossword"
-            />
-
     <TableLayout
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
@@ -196,13 +130,12 @@
                 android:layout_height="wrap_content">
 
             <!--@TODO with crosswordss-->
-            <include layout="@layout/crossword_badge_brilliant_unresolved"/>
-            <include layout="@layout/crossword_badge_gold_unresolved"/>
-            <include layout="@layout/crossword_badge_silver_unresolved"/>
-            <include layout="@layout/crossword_badge_free_unresolved"/>
+            <include layout="@layout/crossword_badge_brilliant_resolved"/>
+            <include layout="@layout/crossword_badge_gold_resolved"/>
+            <include layout="@layout/crossword_badge_silver_resolved"/>
+            <include layout="@layout/crossword_badge_free_resolved"/>
 
         </TableRow>
-
     </TableLayout>
 
 </LinearLayout>

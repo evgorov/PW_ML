@@ -93,8 +93,8 @@ public class AuthorizationFragment extends SherlockFragment
 //        mEmailEditText.setOnKeyListener(this);
 //        mPasswdlEditText.setOnKeyListener(this);
 
-//        mEmailEditText.setText("vlad@ltst.ru");
-//        mPasswdlEditText.setText("vlad");
+        mEmailEditText.setText("vlad@ltst.ru");
+        mPasswdlEditText.setText("vlad");
 
         return v;
     }
