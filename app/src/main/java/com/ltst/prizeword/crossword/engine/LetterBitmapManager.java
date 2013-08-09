@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 
 public class LetterBitmapManager
 {
+    public static final char UNKNOWN_CHARACTER = '-';
     private static final @Nonnull String mAlphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ- ";
     private @Nonnull HashMap<String, BitmapEntity> mLetters;
     private @Nonnull Paint mPaint;
@@ -71,14 +72,15 @@ public class LetterBitmapManager
         });
     }
 
-    public void drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)
+    public boolean drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)
     {
         @Nullable BitmapEntity bm = mLetters.get(getLetterResourceKey(resource, letter));
         if (bm == null)
         {
-            return;
+            return false;
         }
         bm.draw(canvas, rect, mPaint);
+        return true;
     }
 
     private @Nonnull String getLetterResourceKey(int resource, char letter)

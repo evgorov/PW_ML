@@ -31,6 +31,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.login.view.InviteFriendsFragment;
 import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
@@ -135,6 +136,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -268,7 +270,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
-
+            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME,true);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
         }
@@ -334,6 +336,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.resetpass_fragment_title);
         else if (id.equals(ForgetPassFragment.FRAGMENT_ID))
             title = res.getString(R.string.forgetpass_fragment_title);
+        else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
+            title = res.getString(R.string.invite_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
         {
@@ -467,6 +471,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 // Вызываем галерею;
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
+                break;
+            case  R.id.menu_invite_friends_btn:
+                selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;

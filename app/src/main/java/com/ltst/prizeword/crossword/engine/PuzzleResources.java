@@ -21,6 +21,7 @@ public class PuzzleResources
     private static final int DEFAULT_CELL_HEIGHT = 20;
     private static final int DEFAULT_PADDING = 16;
     private static final int DEFAULT_TILE_GAP = 4;
+    public static final char LETTER_UNKNOWN = '-';
 
     private int mPuzzleColumnsCount;
     private int mPuzzleRowsCount;
@@ -103,6 +104,15 @@ public class PuzzleResources
     public List<PuzzleQuestion> getPuzzleQuestions()
     {
         return mPuzzleQuestions;
+    }
+
+    public void setQuestionCorrect(int index, boolean correct)
+    {
+        if (mPuzzleQuestions == null)
+            return;
+        if(index < 0 || index >= mPuzzleQuestions.size())
+            return;
+        mPuzzleQuestions.get(index).correct = correct;
     }
 
     public static int getArrowResource(int type)
