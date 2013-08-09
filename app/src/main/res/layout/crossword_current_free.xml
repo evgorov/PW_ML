@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/crossword_current_free_buy_panel"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"

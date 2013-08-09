@@ -187,12 +187,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-            android:id="@+id/view_crossword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crossword"
-            />
+    <!--<Button-->
+            <!--android:id="@+id/view_crossword"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Crossword"-->
+            <!--/>-->
 
     <LinearLayout
             android:id="@+id/crossword_current_brilliant_badges_container"

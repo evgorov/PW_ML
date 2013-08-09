@@ -8,6 +8,34 @@
 
     <!-- =================================================================================== -->
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@drawable/navigationbar_bg">
+
+        <Button
+                android:id="@+id/crossword_fragment_header_menu_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/header_menu_but"
+                android:visibility="visible"
+                />
+
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="18sp"
+                style="@style/PuzzlesHintWhiteTextStyle"
+                android:layout_gravity="center_vertical|center"
+                android:text="@string/puzzless_hint_actionbar_title"
+                />
+
+    </FrameLayout>
+
+    <!-- =================================================================================== -->
+
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -170,7 +198,7 @@
                             android:layout_width="match_parent">
 
                         <!--@TODO input brillian current crossword-->
-                        <include layout="@layout/crossword_current_brilliant"/>
+                        <!--<include layout="@layout/crossword_current_brilliant"/>-->
 
                     </LinearLayout>
 
@@ -381,7 +409,7 @@
 
                     <include layout="@layout/crossword_spliter_month"/>
 
-                    <include layout="@layout/crossword_archive_brilliant"/>
+                    <!--<include layout="@layout/crossword_archive_brilliant"/>-->
 
                 </LinearLayout>
             </FrameLayout>
