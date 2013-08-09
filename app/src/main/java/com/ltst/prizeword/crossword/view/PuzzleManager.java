@@ -134,6 +134,7 @@ public class PuzzleManager
             tileHeight = 1;
         final int col = (int)point.x/tileWidth;
         final int row = (int)point.y/tileHeight;
+        cancelLastQuestion();
         mResourcesAdapter.updatePuzzleStateByTap(col, row, new IListenerVoid()
         {
             @Override
