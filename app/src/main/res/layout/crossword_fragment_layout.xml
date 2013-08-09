@@ -84,6 +84,7 @@
                     <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@drawable/crossword_panel_bg_title"/>
                             />
                 </LinearLayout>
 
