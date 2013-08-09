@@ -68,6 +68,11 @@ public class PuzzleTileState
         hasInputLetter = true;
     }
 
+    public void setLetterCorrect(boolean correct)
+    {
+        letterState = correct ? LetterState.LETTER_CORRECT : LetterState.LETTER_WRONG;
+    }
+
     public int getQuestionState()
     {
         return questionState;
@@ -119,6 +124,23 @@ public class PuzzleTileState
         else return ArrowType.NO_ARROW;
     }
 
+    public void removeArrowByQuestionIndex(int questionIndex)
+    {
+        int index = arrowsState.indexOfKey(questionIndex);
+        if(index >= 0)
+            arrowsState.removeAt(index);
+        else
+            return;
+        if(arrowsState.size() == 0)
+            hasArrows = false;
+    }
+
+    public void removeArrows()
+    {
+        hasArrows = false;
+        arrowsState.clear();
+    }
+
     public static class QuestionState
     {
         public static final int QUESTION_EMPTY = 0x00000001;
@@ -132,6 +154,8 @@ public class PuzzleTileState
         public static final int LETTER_EMPTY        = 0x00000001;
         public static final int LETTER_EMPTY_INPUT  = 0x00000010;
         public static final int LETTER_INPUT        = 0x00000011;
+        public static final int LETTER_CORRECT      = 0x00000101;
+        public static final int LETTER_WRONG        = 0x00000111;
     }
 
 //    north:left, north:top, north:right,

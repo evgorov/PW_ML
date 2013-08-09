@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 
 public class AnswerLetterPointIterator implements Iterator<Point>
 {
+    public static final char SKIP_LETTER_CHARACTER = '_';
+    public static final char NOT_SKIP_LETTER_CHARACTER = '+';
     private @Nonnull Point mStartPoint;
     private @Nonnull Point mPoint;
     private int mDirection;
@@ -25,17 +27,24 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         mAnswer = answer;
     }
 
+    public void setAnswer(@Nonnull String answer)
+    {
+        if(answer.length() != mAnswer.length())
+            return;
+        mAnswer = answer;
+    }
+
     @Override
     public boolean hasNext()
     {
-        return currentLetterIndex < mAnswer.length();
+        return currentLetterIndex >= 0 && currentLetterIndex < mAnswer.length();
     }
 
     @Override
     @Nullable
     public Point next()
     {
-        if(currentLetterIndex < mAnswer.length())
+        if(hasNext())
         {
             if(currentLetterIndex == 0)
             {
@@ -46,6 +55,33 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             offsetPointByDirection(mPoint);
             currentLetterIndex ++;
             return mPoint;
+        }
+        else
+            return null;
+    }
+
+    public @Nullable Point last()
+    {
+        boolean needToDecreaseLetterIndex = true;
+        if(currentLetterIndex >= mAnswer.length())
+        {
+            currentLetterIndex = mAnswer.length() - 1;
+            needToDecreaseLetterIndex = false;
+        }
+        if(hasNext())
+        {
+            if (needToDecreaseLetterIndex)
+            {
+                currentLetterIndex --;
+            }
+            if(currentLetterIndex <= 0)
+            {
+                currentLetterIndex = 0;
+                return mPoint;
+            }
+            Point ret = new Point(mPoint);
+            negateOffsetPointByDirection(mPoint);
+            return ret;
         }
         else
             return null;
@@ -72,6 +108,25 @@ public class AnswerLetterPointIterator implements Iterator<Point>
                 break;
             case PuzzleTileState.AnswerDirection.LEFT:
                 p.offset(-1, 0);
+                break;
+        }
+    }
+
+    private void negateOffsetPointByDirection(@Nonnull Point p)
+    {
+        switch (mDirection)
+        {
+            case PuzzleTileState.AnswerDirection.DOWN:
+                p.offset(0, -1);
+                break;
+            case PuzzleTileState.AnswerDirection.UP:
+                p.offset(0, 1);
+                break;
+            case PuzzleTileState.AnswerDirection.RIGHT:
+                p.offset(-1, 0);
+                break;
+            case PuzzleTileState.AnswerDirection.LEFT:
+                p.offset(1, 0);
                 break;
         }
     }

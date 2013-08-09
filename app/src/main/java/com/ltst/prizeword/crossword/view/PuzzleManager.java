@@ -13,6 +13,7 @@ import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerBoolean;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -157,15 +158,23 @@ public class PuzzleManager
         });
     }
 
-    public void onKeyEvent(@Nonnull KeyEvent keyEvent)
+    public void onKeyEvent(@Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
     {
         switch (keyEvent.getKeyCode())
         {
+            // back button, enter key
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
                 cancelLastQuestion();
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
+            // backspace key
+            case KeyEvent.KEYCODE_DEL:
+                mResourcesAdapter.deleteLetterByBackspace();
+                mInvalidateHandler.handle(mPuzzleViewRect);
+                break;
+            // russian letters
+            default:
             case KeyEvent.KEYCODE_UNKNOWN:
                 String letter = keyEvent.getCharacters();
                 if (letter == null || letter.length() > 1)
@@ -173,7 +182,18 @@ public class PuzzleManager
                     break;
                 }
                 letter = letter.toUpperCase();
-                mResourcesAdapter.updateLetterCharacterState(letter);
+                mResourcesAdapter.updateLetterCharacterState(letter, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        cancelLastQuestion();
+                        if (keyboardOpenHandler != null)
+                        {
+                            keyboardOpenHandler.handle(false);
+                        }
+                    }
+                });
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
         }

@@ -18,6 +18,7 @@ public class PuzzleQuestion implements Parcelable
     public @Nonnull String questionText;
     public @Nonnull String answer;
     public @Nonnull String answerPosition;
+    public boolean correct;
 
     public PuzzleQuestion(long id, long puzzleId, int column, int row, @Nonnull String quesitonText, @Nonnull String answer, @Nonnull String answerPosition)
     {
@@ -28,6 +29,7 @@ public class PuzzleQuestion implements Parcelable
         this.questionText = quesitonText;
         this.answer = answer;
         this.answerPosition = answerPosition;
+        correct = false;
     }
 
     //==== Parcelable implementation ==========================================
@@ -42,7 +44,10 @@ public class PuzzleQuestion implements Parcelable
             @Nonnull String text = ParcelableTools.getNonnullString(source.readString());
             @Nonnull String answer = ParcelableTools.getNonnullString(source.readString());
             @Nonnull String answerPosition = ParcelableTools.getNonnullString(source.readString());
-            return new PuzzleQuestion(id, puzzleId, col, row, text, answer, answerPosition);
+            boolean correct = ParcelableTools.getBooleanFromInt(source.readInt());
+            PuzzleQuestion q = new PuzzleQuestion(id, puzzleId, col, row, text, answer, answerPosition);
+            q.correct = correct;
+            return q;
         }
 
         public PuzzleQuestion[] newArray(int size)
@@ -67,6 +72,7 @@ public class PuzzleQuestion implements Parcelable
         dest.writeString(questionText);
         dest.writeString(answer);
         dest.writeString(answerPosition);
+        dest.writeInt(correct ? 1 : 0);
     }
 
     public int getAnswerPosition()
