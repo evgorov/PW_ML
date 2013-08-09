@@ -19,7 +19,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:layout_margin="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:background="@drawable/puzzles_badges_bg_silver">
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -28,24 +30,6 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:background="@drawable/puzzles_badges_bg_unresolved">
-
-                <!--<com.ltst.prizeword.tools.MagicTextView-->
-                        <!--xmlns:qwerjk="http://schemas.android.com/apk/res/com.ltst.prizeword"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textSize="24sp"-->
-                        <!--android:textColor="@color/puzzle_badge_digit_brilliant_color"-->
-                        <!--android:textStyle="bold"-->
-                        <!--qwerjk:foreground="@drawable/puzzles_badges_bg_gold_resolved"-->
-                        <!--qwerjk:innerShadowDx="10"-->
-                        <!--qwerjk:innerShadowDy="10"-->
-                        <!--qwerjk:innerShadowColor="@color/puzzle_badge_digit_inner_shadow_color"-->
-                        <!--qwerjk:innerShadowRadius="5"-->
-                        <!--qwerjk:outerShadowDx="0"-->
-                        <!--qwerjk:outerShadowDy="5"-->
-                        <!--qwerjk:outerShadowColor="@color/puzzle_badge_digit_ouner_shadow_color"-->
-                        <!--qwerjk:outerShadowRadius="5"-->
-                        <!--android:text="Some text" />-->
 
             </LinearLayout>
 
@@ -62,7 +46,6 @@
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/puzzles_badge_progress_bg">
 

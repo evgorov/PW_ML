@@ -197,6 +197,11 @@
 
             <!--@TODO with crosswordss-->
             <include layout="@layout/crossword_badge_brilliant_unresolved"/>
+            <include layout="@layout/crossword_badge_gold_unresolved"/>
+            <include layout="@layout/crossword_badge_silver_unresolved"/>
+            <include layout="@layout/crossword_badge_free_unresolved"/>
+            <include layout="@layout/crossword_badge_gold_resolved"/>
+            <include layout="@layout/crossword_badge_silver_resolved"/>
 
         </TableRow>
     </TableLayout>
