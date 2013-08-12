@@ -408,7 +408,7 @@
 
                     <!--@TODO input brillian current crossword-->
 
-                    <include layout="@layout/crossword_spliter_month"/>
+                    <include layout="@layout/crossword_splitter_month"/>
 
                     <!--<include layout="@layout/crossword_archive_brilliant"/>-->
 
