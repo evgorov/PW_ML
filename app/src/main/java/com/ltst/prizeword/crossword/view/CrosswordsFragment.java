@@ -32,14 +32,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
-                                implements View.OnClickListener
+                                implements View.OnClickListener,
+                                ICrosswordFragment
 {
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
-//    private @Nonnull Button mCrossWordButton;
 
     private static final int BADGE_ID = 1;
 
@@ -52,6 +52,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull LinearLayout mViewArchiveContainer;
 
     private @Nonnull Button mMenuBackButton;
+    private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
 
     // ==== Livecycle =================================
 
@@ -69,46 +70,48 @@ public class CrosswordsFragment extends SherlockFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
-        mViewCurrentContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_current_container);
-        mViewArchiveContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_archive_container);
-        mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
-        mMenuBackButton.setOnClickListener(this);
+//        mViewCurrentContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_current_container);
+//        mViewArchiveContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_archive_container);
+//        mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
+//        mMenuBackButton.setOnClickListener(this);
+//
+//        LinearLayout viewCurrentBrilliant = (LinearLayout) inflater.inflate(R.layout.crossword_current_brilliant, null, false);
+//        LinearLayout viewCurrentFree = (LinearLayout) inflater.inflate(R.layout.crossword_current_free, null, false);
+//
+//        LinearLayout viewArchiveGold = (LinearLayout) inflater.inflate(R.layout.crossword_archive_gold, null, false);
+//        LinearLayout viewArchiveSilver = (LinearLayout) inflater.inflate(R.layout.crossword_archive_silver, null, false);
+//
+//        ((LinearLayout) viewCurrentFree.findViewById(R.id.crossword_current_free_buy_panel)).setVisibility(View.GONE);
+//        ((LinearLayout) viewArchiveGold.findViewById(R.id.crossword_archive_gold_splitter)).setVisibility(View.GONE);
+//
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.crossword_number_free_1);
+//        ImageView iv = new ImageView(mContext);
+//        iv.setImageBitmap(bitmap);
+////        bitmap.recycle();
+//
+//        View badgeCurrentFree1 = inflater.inflate(R.layout.crossword_badge_free_unresolved, null, false);
+//        badgeCurrentFree1.setId(BADGE_ID);
+//        badgeCurrentFree1.setOnClickListener(this);
+//
+//        ((LinearLayout)badgeCurrentFree1.findViewById(R.id.crossword_badge_unresolved_free_number_container)).addView(iv);
+//
+//        viewCurrentFree.addView(badgeCurrentFree1);
+//
+//        mViewCurrentContainer.addView(viewCurrentBrilliant);
+//        mViewCurrentContainer.addView(viewCurrentFree);
+//
+//        mViewArchiveContainer.addView(viewArchiveGold);
+//        mViewArchiveContainer.addView(viewArchiveSilver);
 
-        LinearLayout viewCurrentBrilliant = (LinearLayout) inflater.inflate(R.layout.crossword_current_brilliant, null, false);
-        LinearLayout viewCurrentFree = (LinearLayout) inflater.inflate(R.layout.crossword_current_free, null, false);
+        mCrosswordFragmentHolder = new CrosswordFragmentHolder(this, inflater, v);
 
-        LinearLayout viewArchiveGold = (LinearLayout) inflater.inflate(R.layout.crossword_archive_gold, null, false);
-        LinearLayout viewArchiveSilver = (LinearLayout) inflater.inflate(R.layout.crossword_archive_silver, null, false);
-
-        ((LinearLayout) viewCurrentFree.findViewById(R.id.crossword_current_free_buy_panel)).setVisibility(View.GONE);
-        ((LinearLayout) viewArchiveGold.findViewById(R.id.crossword_archive_gold_splitter)).setVisibility(View.GONE);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.crossword_number_free_1);
-        ImageView iv = new ImageView(mContext);
-        iv.setImageBitmap(bitmap);
-//        bitmap.recycle();
-
-        View badgeCurrentFree1 = inflater.inflate(R.layout.crossword_badge_free_unresolved, null, false);
-        badgeCurrentFree1.setId(BADGE_ID);
-        badgeCurrentFree1.setOnClickListener(this);
-
-        ((LinearLayout)badgeCurrentFree1.findViewById(R.id.crossword_badge_unresolved_free_number_container)).addView(iv);
-
-        viewCurrentFree.addView(badgeCurrentFree1);
-
-        mViewCurrentContainer.addView(viewCurrentBrilliant);
-        mViewCurrentContainer.addView(viewCurrentFree);
-
-        mViewArchiveContainer.addView(viewArchiveGold);
-        mViewArchiveContainer.addView(viewArchiveSilver);
-
-        CrosswordFragmentHolder.ArchiveCrosswordPanel mArchiveCrosswordPanel = new CrosswordFragmentHolder.ArchiveCrosswordPanel(v);
-        CrosswordFragmentHolder.CurrentCrosswordPanel mCurrentCrosswordPanel = new CrosswordFragmentHolder.CurrentCrosswordPanel(v);
-        CrosswordFragmentHolder.BuyCrosswordPanel mBuyCrosswordPanel = new CrosswordFragmentHolder.BuyCrosswordPanel(v);
-
+//        CrosswordFragmentHolder.ArchiveCrosswordPanel mArchiveCrosswordPanel = new CrosswordFragmentHolder.ArchiveCrosswordPanel(v);
+//        CrosswordFragmentHolder.CurrentCrosswordPanel mCurrentCrosswordPanel = new CrosswordFragmentHolder.CurrentCrosswordPanel(v);
+//        CrosswordFragmentHolder.BuyCrosswordPanel mBuyCrosswordPanel = new CrosswordFragmentHolder.BuyCrosswordPanel(v);
+//
 //        CrosswordFragmentHolder.ArchivePanelItemBrilliant mArchivePanelItemBrilliant = new CrosswordFragmentHolder.ArchivePanelItemBrilliant(inflater);
 //        CrosswordFragmentHolder.ArchivePanelItemGold mArchivePanelItemGold = new CrosswordFragmentHolder.ArchivePanelItemGold(inflater);
-//
+
 //        mArchiveCrosswordPanel.mCrosswordsContainerLL.addView(mArchivePanelItemBrilliant);
 //        mArchiveCrosswordPanel.mCrosswordsContainerLL.addView(mArchivePanelItemGold);
 

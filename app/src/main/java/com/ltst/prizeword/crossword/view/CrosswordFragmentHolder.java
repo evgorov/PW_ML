@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 
 import javax.annotation.Nonnull;
@@ -14,6 +15,42 @@ import javax.annotation.Nonnull;
  * Created by cosic on 12.08.13.
  */
 public class CrosswordFragmentHolder {
+
+    final static int BADGE_RESOLVE_BRILLIANT = 1;
+    final static int BADGE_RESOLVE_GOLD = 2;
+    final static int BADGE_RESOLVE_SILVER = 3;
+    final static int BADGE_RESOLVE_SILVER2 = 4;
+    final static int BADGE_RESOLVE_FREE = 5;
+
+    final static int BADGE_UNRESOLVE_BRILLIANT = 6;
+    final static int BADGE_UNRESOLVE_GOLD = 7;
+    final static int BADGE_UNRESOLVE_SILVER = 8;
+    final static int BADGE_UNRESOLVE_SILVER2 = 9;
+    final static int BADGE_UNRESOLVE_FREE = 10;
+
+    final static int PANEL_CURRENT_BRILLIANT = 11;
+    final static int PANEL_CURRENT_GOLD = 12;
+    final static int PANEL_CURRENT_SILVER = 13;
+    final static int PANEL_CURRENT_SILVER2 = 14;
+    final static int PANEL_CURRENT_FREE = 15;
+
+    final static int PANEL_ARCHIVE_BRILLIANT = 16;
+    final static int PANEL_ARCHIVE_GOLD = 17;
+    final static int PANEL_ARCHIVE_SILVER = 18;
+    final static int PANEL_ARCHIVE_SILVER2 = 19;
+    final static int PANEL_ARCHIVE_FREE = 20;
+
+    private @Nonnull LayoutInflater mInflater;
+    private @Nonnull ICrosswordFragment mICrosswordFragment;
+    private @Nonnull View mViewCrossword;
+
+    public CrosswordFragmentHolder(@Nonnull SherlockFragment fragment, @Nonnull LayoutInflater inflater, @Nonnull View view) {
+        this.mInflater = inflater;
+        this.mICrosswordFragment = (ICrosswordFragment) fragment;
+        this.mViewCrossword = view;
+    }
+
+    // ================== CROSSWORD PANELS ======================
 
     static public class CurrentCrosswordPanel{
 
@@ -29,7 +66,6 @@ public class CrosswordFragmentHolder {
             mRestPanelLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_remain_panel);
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_container);
         }
-
     }
 
     static public class ArchiveCrosswordPanel{
