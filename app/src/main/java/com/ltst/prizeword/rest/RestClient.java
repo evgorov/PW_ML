@@ -391,4 +391,22 @@ public class RestClient implements IRestClient
         return answer;
     }
 
+
+    @Nullable
+    @Override
+    public RestPuzzleUserData getPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        String url = String.format(RestParams.URL_GET_PUZZLE_USERDATA, puzzleId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestPuzzleUserData> entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestPuzzleUserData.class, urlVariables);
+        if (entity != null)
+        {
+            return entity.getBody();
+        }
+        return null;
+    }
 }

@@ -91,6 +91,7 @@ public class RestParams
             + addParam(YEAR, false);
     public static final @Nonnull String URL_GET_USER_PUZZLES = URL_API + "/user_puzzles" + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
+    public static final @Nonnull String URL_GET_PUZZLE_USERDATA = URL_API + "/puzzles/%s" + addParam(SESSION_KEY, true);
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)
