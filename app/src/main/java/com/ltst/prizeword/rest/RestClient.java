@@ -7,6 +7,9 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
 import org.springframework.http.HttpEntity;
@@ -402,14 +405,15 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<RestPuzzleUserData> entity = null;
+        ResponseEntity<String> entity = null;
         RestPuzzleUserData.RestPuzzleUserDataHolder holder = new RestPuzzleUserData.RestPuzzleUserDataHolder();
         try
         {
-            entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestPuzzleUserData.class, urlVariables);
+            entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class, urlVariables);
         }
         catch (HttpClientErrorException e)
         {
+            Log.e(e.getMessage());
         }
         finally
         {
@@ -420,8 +424,19 @@ public class RestClient implements IRestClient
                 return holder;
             }
         }
-        
-        holder.setPuzzleUserData(entity.getBody());
+        @Nullable RestPuzzleUserData data = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonFactory jsonFactory = new JsonFactory();
+        try
+        {
+            JsonParser jsonParser = jsonFactory.createJsonParser(entity.getBody());
+            data = objectMapper.readValue(jsonParser, RestPuzzleUserData.class);
+        } catch (IOException e)
+        {
+            Log.e(e.getMessage());
+        }
+
+        holder.setPuzzleUserData(data);
         holder.setStatus(entity.getStatusCode());
         return holder;
     }

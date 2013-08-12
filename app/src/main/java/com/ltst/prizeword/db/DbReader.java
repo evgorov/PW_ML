@@ -88,8 +88,8 @@ public class DbReader implements IDbReader
             ColsPuzzleQuestions.ROW,
             ColsPuzzleQuestions.QUESTION_TEXT,
             ColsPuzzleQuestions.ANSWER,
-            ColsPuzzleQuestions.ANSWER_POSITION
-
+            ColsPuzzleQuestions.ANSWER_POSITION,
+            ColsPuzzleQuestions.IS_ANSWERED
     };
 
     public static final @Nonnull String[] FIELDS_P_IMAGES =
@@ -333,7 +333,8 @@ public class DbReader implements IDbReader
                             c.getInt(3),
                             c.getString(4),
                             c.getString(5),
-                            c.getString(6));
+                            c.getString(6),
+                            c.getInt(7) == 1);
         }
     };
 

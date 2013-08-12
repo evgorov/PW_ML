@@ -10,12 +10,14 @@ import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.rest.RestPuzzle;
 import com.ltst.prizeword.rest.RestPuzzleQuestion;
+import com.ltst.prizeword.rest.RestPuzzleUserData;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -61,9 +63,10 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         else
         {
             RestPuzzle.RestPuzzleHolder holder = loadPuzzle(sessionKey, puzzleId);
-            if (holder != null)
+            RestPuzzleUserData.RestPuzzleUserDataHolder dataHolder = loadPuzzleUserData(sessionKey, puzzleId);
+            if (holder != null && dataHolder != null)
             {
-                Puzzle puzzle = parsePuzzle(holder);
+                Puzzle puzzle = parsePuzzle(holder, dataHolder);
                 if (puzzle != null)
                 {
                     puzzle.setId = setId;
@@ -98,21 +101,57 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         }
     }
 
-    private @Nullable Puzzle parsePuzzle(@Nonnull RestPuzzle.RestPuzzleHolder holder)
+    private @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder loadPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    {
+        try
+        {
+            IRestClient client = RestClient.create();
+            return client.getPuzzleUserData(sessionKey, puzzleId);
+        }
+        catch (Throwable e)
+        {
+            Log.e(e.getMessage());
+            Log.i("Can't load data from internet"); //$NON-NLS-1$
+            return null;
+        }
+    }
+
+    private @Nullable Puzzle parsePuzzle(@Nonnull RestPuzzle.RestPuzzleHolder holder,
+                                         @Nonnull RestPuzzleUserData.RestPuzzleUserDataHolder dataHolder)
     {
         RestPuzzle puzzle = holder.getPuzzle();
+        RestPuzzleUserData puzzleUserData = dataHolder.getPuzzleUserData();
         if (puzzle != null)
         {
-            List<RestPuzzleQuestion> questionList = puzzle.getQuestions();
+            @Nullable List<RestPuzzleQuestion> questionList = puzzle.getQuestions();
+            @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+            @Nullable HashSet<String> solvedQuestionsIdSet = null;
+            if (puzzleUserData != null)
+            {
+                solvedQuestions = puzzleUserData.getSolvedQuestions();
+                if (solvedQuestions != null)
+                {
+                    solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+                }
+            }
             List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
             for (RestPuzzleQuestion restQ : questionList)
             {
                 PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
-                                    restQ.getAnswer(), restQ.getAnswerPosition());
+                                    restQ.getAnswer(), restQ.getAnswerPosition(), false);
+                RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
                 questions.add(q);
             }
+            int timeLeft = puzzle.getTimeGiven();
+            int score = 0;
+            if (puzzleUserData != null)
+            {
+                timeLeft = puzzleUserData.getTimeLeft();
+                score = puzzleUserData.getScore();
+            }
             return new Puzzle(0, 0, puzzle.getPuzzleId(), puzzle.getName(), puzzle.getIssuedAt(),
-                            puzzle.getBaseScore(), puzzle.getTimeGiven(), puzzle.getTimeGiven(), 0,
+                            puzzle.getBaseScore(), puzzle.getTimeGiven(),
+                            timeLeft, score,
                             false, questions);
         }
         return null;

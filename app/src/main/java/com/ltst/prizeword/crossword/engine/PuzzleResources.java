@@ -112,7 +112,7 @@ public class PuzzleResources
             return;
         if(index < 0 || index >= mPuzzleQuestions.size())
             return;
-        mPuzzleQuestions.get(index).correct = correct;
+        mPuzzleQuestions.get(index).isAnswered = correct;
     }
 
     public static int getArrowResource(int type)

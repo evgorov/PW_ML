@@ -324,6 +324,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.questionText);
             cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
             cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
+            cv.put(ColsPuzzleQuestions.IS_ANSWERED, object.isAnswered);
             return cv;
         }
     };

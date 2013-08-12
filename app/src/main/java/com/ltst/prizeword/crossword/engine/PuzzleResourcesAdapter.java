@@ -124,7 +124,7 @@ public class PuzzleResourcesAdapter
             return false;
         }
 
-        if(question.correct)
+        if(question.isAnswered)
             return false;
 
         state.setQuestionState(isInput ? PuzzleTileState.QuestionState.QUESTION_INPUT :

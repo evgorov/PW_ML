@@ -1,11 +1,17 @@
 package com.ltst.prizeword.rest;
 
+import android.util.SparseArray;
+
+import com.ltst.prizeword.crossword.model.PuzzleQuestion;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
+import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RestPuzzleUserData
@@ -48,7 +54,7 @@ public class RestPuzzleUserData
         this.solvedQuestions = solvedQuestions;
     }
 
-    private class RestSolvedQuestion
+    public static class RestSolvedQuestion
     {
         private @JsonProperty("id") String id;
         private @JsonProperty("column") int column;
@@ -113,6 +119,38 @@ public class RestPuzzleUserData
         public void setStatus(HttpStatus status)
         {
             this.status = status;
+        }
+    }
+
+    public static @Nonnull
+    HashSet<String> prepareQuestionIdsSet(@Nonnull List<RestSolvedQuestion> solvedQuestionsList)
+    {
+        @Nonnull HashSet<String> set = new HashSet<String>(solvedQuestionsList.size());
+        for (RestSolvedQuestion question : solvedQuestionsList)
+        {
+            int col = question.column + 1;
+            int row = question.row + 1;
+            set.add(getQuestionCRID(col, row));
+        }
+        return set;
+    }
+    
+    // get question id by its column/row
+    public static @Nonnull String getQuestionCRID(int col, int row)
+    {
+        return  col + "_" + row;
+    }
+
+    public static void checkQuestionOnAnswered(@Nonnull PuzzleQuestion q, @Nullable HashSet<String> solvedQuestionIdsSet)
+    {
+        if (solvedQuestionIdsSet == null)
+        {
+            return;
+        }
+        String id = getQuestionCRID(q.column, q.row);
+        if(solvedQuestionIdsSet.contains(id))
+        {
+            q.isAnswered = true;
         }
     }
 }
