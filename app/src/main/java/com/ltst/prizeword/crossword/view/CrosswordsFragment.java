@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
@@ -102,6 +101,16 @@ public class CrosswordsFragment extends SherlockFragment
 
         mViewArchiveContainer.addView(viewArchiveGold);
         mViewArchiveContainer.addView(viewArchiveSilver);
+
+        CrosswordFragmentHolder.ArchiveCrosswordPanel mArchiveCrosswordPanel = new CrosswordFragmentHolder.ArchiveCrosswordPanel(v);
+        CrosswordFragmentHolder.CurrentCrosswordPanel mCurrentCrosswordPanel = new CrosswordFragmentHolder.CurrentCrosswordPanel(v);
+        CrosswordFragmentHolder.BuyCrosswordPanel mBuyCrosswordPanel = new CrosswordFragmentHolder.BuyCrosswordPanel(v);
+
+//        CrosswordFragmentHolder.ArchivePanelItemBrilliant mArchivePanelItemBrilliant = new CrosswordFragmentHolder.ArchivePanelItemBrilliant(inflater);
+//        CrosswordFragmentHolder.ArchivePanelItemGold mArchivePanelItemGold = new CrosswordFragmentHolder.ArchivePanelItemGold(inflater);
+//
+//        mArchiveCrosswordPanel.mCrosswordsContainerLL.addView(mArchivePanelItemBrilliant);
+//        mArchiveCrosswordPanel.mCrosswordsContainerLL.addView(mArchivePanelItemGold);
 
         return v;
     }

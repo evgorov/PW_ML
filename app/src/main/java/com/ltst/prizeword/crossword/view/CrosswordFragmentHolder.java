@@ -2,7 +2,6 @@ package com.ltst.prizeword.crossword.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -16,7 +15,7 @@ import javax.annotation.Nonnull;
  */
 public class CrosswordFragmentHolder {
 
-    public class CurrentCrosswordPanel{
+    static public class CurrentCrosswordPanel{
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
@@ -33,7 +32,7 @@ public class CrosswordFragmentHolder {
 
     }
 
-    public class ArchiveCrosswordPanel{
+    static public class ArchiveCrosswordPanel{
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
         public ArchiveCrosswordPanel(@Nonnull View view){
@@ -41,7 +40,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class BuyCrosswordPanel{
+    static public class BuyCrosswordPanel{
 
         @Nonnull public TextView mRestHintsTV;
 
@@ -66,11 +65,11 @@ public class CrosswordFragmentHolder {
 
     // ================== ARCHIVE CROSSWORD PANEL ITEM ======================
 
-    public class ArrchivePanelItemBrilliant extends ArchivePanelItemAbstract{
+    static public class ArchivePanelItemBrilliant extends ArchivePanelItemAbstract{
 
-        public ArrchivePanelItemBrilliant(@Nonnull LayoutInflater inflater, int id){
+        public ArchivePanelItemBrilliant(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_archive_brilliant, null, false);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_percent);
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_score);
@@ -82,11 +81,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ArrchivePanelItemGold extends ArchivePanelItemAbstract{
+    static public class ArchivePanelItemGold extends ArchivePanelItemAbstract{
 
-        public ArrchivePanelItemGold(@Nonnull LayoutInflater inflater, int id){
+        public ArchivePanelItemGold(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_archive_gold, null, false);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_gold_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_gold_percent);
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_gold_score);
@@ -98,11 +97,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ArrchivePanelItemSilver extends ArchivePanelItemAbstract{
+    static public class ArchivePanelItemSilver extends ArchivePanelItemAbstract{
 
-        public ArrchivePanelItemSilver(@Nonnull LayoutInflater inflater, int id){
+        public ArchivePanelItemSilver(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_archive_silver, null, false);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver_percent);
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_silver_score);
@@ -114,11 +113,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ArrchivePanelItemSilver2 extends ArchivePanelItemAbstract{
+    static public class ArchivePanelItemSilver2 extends ArchivePanelItemAbstract{
 
-        public ArrchivePanelItemSilver2(@Nonnull LayoutInflater inflater, int id){
+        public ArchivePanelItemSilver2(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_archive_silver2, null, false);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_percent);
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_score);
@@ -130,11 +129,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ArrchivePanelItemFree extends ArchivePanelItemAbstract{
+    static public class ArchivePanelItemFree extends ArchivePanelItemAbstract{
 
-        public ArrchivePanelItemFree(@Nonnull LayoutInflater inflater, int id){
+        public ArchivePanelItemFree(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_archive_free, null, false);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_free_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_free_percent);
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_free_score);
@@ -148,11 +147,11 @@ public class CrosswordFragmentHolder {
 
     // ================== CURRENT CROSSWORD PANEL ITEM ======================
 
-    public class CurrentPanelItemBrilliant extends CurrentPanelItemAbstract{
+    static public class CurrentPanelItemBrilliant extends CurrentPanelItemAbstract{
 
-        public CurrentPanelItemBrilliant(@Nonnull LayoutInflater inflater, int id){
+        public CurrentPanelItemBrilliant(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_current_brilliant, null, false);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_buy_count);
             mCountScoreTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_buy_count);
             mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_buy_button);
@@ -165,11 +164,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class CurrentPanelItemGold extends CurrentPanelItemAbstract{
+    static public class CurrentPanelItemGold extends CurrentPanelItemAbstract{
 
-        public CurrentPanelItemGold(@Nonnull LayoutInflater inflater, int id){
+        public CurrentPanelItemGold(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_current_gold, null, false);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_current_gold_buy_count);
             mCountScoreTV = (TextView) view.findViewById(R.id.crossword_current_gold_buy_count);
             mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_current_gold_buy_button);
@@ -182,11 +181,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class CurrentPanelItemSilver extends CurrentPanelItemAbstract{
+    static public class CurrentPanelItemSilver extends CurrentPanelItemAbstract{
 
-        public CurrentPanelItemSilver(@Nonnull LayoutInflater inflater, int id){
+        public CurrentPanelItemSilver(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_current_silver, null, false);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_current_silver_buy_count);
             mCountScoreTV = (TextView) view.findViewById(R.id.crossword_current_silver_buy_count);
             mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_current_silver_buy_button);
@@ -199,11 +198,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class CurrentPanelItemSilver2 extends CurrentPanelItemAbstract{
+    static public class CurrentPanelItemSilver2 extends CurrentPanelItemAbstract{
 
-        public CurrentPanelItemSilver2(@Nonnull LayoutInflater inflater, int id){
+        public CurrentPanelItemSilver2(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_current_silver2, null, false);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_current_silver2_buy_count);
             mCountScoreTV = (TextView) view.findViewById(R.id.crossword_current_silver2_buy_count);
             mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_current_silver2_buy_button);
@@ -216,11 +215,11 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class CurrentPanelItemFree extends CurrentPanelItemAbstract{
+    static public class CurrentPanelItemFree extends CurrentPanelItemAbstract{
 
-        public CurrentPanelItemFree(@Nonnull LayoutInflater inflater, int id){
+        public CurrentPanelItemFree(@Nonnull LayoutInflater inflater){
 
-            @Nonnull View view = inflater.inflate(id, null, false);
+            @Nonnull View view = inflater.inflate(R.layout.crossword_current_free, null, false);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_current_free_buy_count);
             mCountScoreTV = (TextView) view.findViewById(R.id.crossword_current_free_buy_count);
             mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_current_free_buy_button);
@@ -235,7 +234,7 @@ public class CrosswordFragmentHolder {
 
     // ================== BADGE RESOLVE ======================
 
-    public class ReloveBadgeItemBrilliant extends ReloveBadgeItemAbstract{
+    static public class ReloveBadgeItemBrilliant extends ReloveBadgeItemAbstract{
 
         public ReloveBadgeItemBrilliant(@Nonnull LayoutInflater inflater, int id){
 
@@ -245,7 +244,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ReloveBadgeItemGold extends ReloveBadgeItemAbstract{
+    static public class ReloveBadgeItemGold extends ReloveBadgeItemAbstract{
 
         public ReloveBadgeItemGold(@Nonnull LayoutInflater inflater, int id){
 
@@ -255,7 +254,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ReloveBadgeItemSilver extends ReloveBadgeItemAbstract{
+    static public class ReloveBadgeItemSilver extends ReloveBadgeItemAbstract{
 
         public ReloveBadgeItemSilver(@Nonnull LayoutInflater inflater, int id){
 
@@ -265,7 +264,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class ReloveBadgeItemFree extends ReloveBadgeItemAbstract{
+    static public class ReloveBadgeItemFree extends ReloveBadgeItemAbstract{
 
         public ReloveBadgeItemFree(@Nonnull LayoutInflater inflater, int id){
 
@@ -277,7 +276,7 @@ public class CrosswordFragmentHolder {
 
     // ================== BADGE UNRESOLVE ======================
 
-    public class UnreloveBadgeItemBrilliant extends UnreloveBadgeItemAbstract{
+    static public class UnreloveBadgeItemBrilliant extends UnreloveBadgeItemAbstract{
 
         public UnreloveBadgeItemBrilliant(@Nonnull LayoutInflater inflater, int id){
 
@@ -289,7 +288,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class UnreloveBadgeItemGold extends UnreloveBadgeItemAbstract{
+    static public class UnreloveBadgeItemGold extends UnreloveBadgeItemAbstract{
 
         public UnreloveBadgeItemGold(@Nonnull LayoutInflater inflater, int id){
 
@@ -301,7 +300,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class UnreloveBadgeItemSilver extends UnreloveBadgeItemAbstract{
+    static public class UnreloveBadgeItemSilver extends UnreloveBadgeItemAbstract{
 
         public UnreloveBadgeItemSilver(@Nonnull LayoutInflater inflater, int id){
 
@@ -313,7 +312,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public class UnreloveBadgeItemFree extends UnreloveBadgeItemAbstract{
+    static public class UnreloveBadgeItemFree extends UnreloveBadgeItemAbstract{
 
         public UnreloveBadgeItemFree(@Nonnull LayoutInflater inflater, int id){
 
@@ -328,7 +327,7 @@ public class CrosswordFragmentHolder {
     // ================== ABSTRACT CROSSWORD PANELS ITEM ======================
 
 
-    public class ArchivePanelItemAbstract{
+    static public class ArchivePanelItemAbstract{
         @Nonnull public TextView mRatioResolvedTV;
         @Nonnull public TextView mPercentResolvedTV;
         @Nonnull public TextView mTotalScoreTV;
@@ -341,7 +340,7 @@ public class CrosswordFragmentHolder {
         @Nonnull public ToggleButton mSwitchToogleButton;
     }
 
-    public class CurrentPanelItemAbstract{
+    static public class CurrentPanelItemAbstract{
         @Nonnull public TextView mCountCrosswordsTV;
         @Nonnull public TextView mCountScoreTV;
         @Nonnull public LinearLayout mBuyButton;
@@ -353,12 +352,12 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mProgressForegroudLL;
     }
 
-    public class ReloveBadgeItemAbstract{
+    static public class ReloveBadgeItemAbstract{
         @Nonnull public LinearLayout mBitmapLL;
         @Nonnull public TextView mScoreTV;
     }
 
-    public class UnreloveBadgeItemAbstract{
+    static public class UnreloveBadgeItemAbstract{
         @Nonnull public TextView mPercentTV;
         @Nonnull public LinearLayout mBitmapLL;
         @Nonnull public LinearLayout mProgressBGLL;
