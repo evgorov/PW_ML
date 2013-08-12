@@ -1,8 +1,12 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class RestPuzzleUserData
 {
@@ -82,6 +86,33 @@ public class RestPuzzleUserData
         private void setRow(int row)
         {
             this.row = row;
+        }
+    }
+
+    public static class RestPuzzleUserDataHolder
+    {
+        private @Nullable RestPuzzleUserData mPuzzleUserData;
+        private @JsonIgnore HttpStatus status;
+
+        @Nullable
+        public RestPuzzleUserData getPuzzleUserData()
+        {
+            return mPuzzleUserData;
+        }
+
+        public void setPuzzleUserData(@Nullable RestPuzzleUserData puzzleUserData)
+        {
+            mPuzzleUserData = puzzleUserData;
+        }
+
+        public HttpStatus getStatus()
+        {
+            return status;
+        }
+
+        public void setStatus(HttpStatus status)
+        {
+            this.status = status;
         }
     }
 }
