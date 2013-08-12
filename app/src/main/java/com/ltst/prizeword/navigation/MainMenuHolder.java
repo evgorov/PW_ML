@@ -14,9 +14,7 @@ import java.util.Calendar;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/**
- * Created by cosic on 26.07.13.
- */
+
 public class MainMenuHolder {
     private @Nonnull Context mContext;
     public @Nonnull ImageView mImage;
@@ -26,6 +24,7 @@ public class MainMenuHolder {
     public @Nonnull View mMyCrossword;
     public @Nonnull View mShowRulesBtn;
     public @Nonnull View mLogoutBtn;
+    public @Nonnull View mInviteFriendsBtn;
 
     public @Nonnull ToggleButton mVkontakteSwitcher;
     public @Nonnull ToggleButton mFacebookSwitcher;
@@ -43,6 +42,7 @@ public class MainMenuHolder {
         this.mNickname = (TextView) view.findViewById(R.id.header_listview_nickname_tview);
         this.mHightRecord = (TextView) view.findViewById(R.id.header_listview_points_tview);
         this.mLogoutBtn = (View) view.findViewById(R.id.header_listview_logout_btn);
+        this.mInviteFriendsBtn = (View) view.findViewById(R.id.menu_invite_friends_btn);
 
         this.mMonth = (TextView) view.findViewById(R.id.menu_current_month_txt);
         this.mMyCrossword = (View) view.findViewById(R.id.menu_mypuzzle_btn);

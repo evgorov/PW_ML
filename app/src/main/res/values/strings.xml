@@ -14,6 +14,7 @@
     <string name="forgetpass_fragment_title">Забыли пароль?</string>
     <string name="registration_fragment_title">Регистрация</string>
     <string name="rules_fragment_title">Правила</string>
+    <string name="invite_fragment_title">Пригласить друзей</string>
 
     <string name="ending">-й</string>
     <string name="points">очков</string>
@@ -31,6 +32,11 @@
     <string name="puzzless_hint_resolved">Разгаданно</string>
     <string name="puzzless_hint_get_score">Набранно</string>
     <string name="puzzless_hint_brilliant_crossword">Бриллиантовый</string>
+    <string name="puzzless_hint_gold_crossword">Золотой</string>
+    <string name="puzzless_hint_silver_crossword">Серебрянный</string>
+    <string name="puzzless_hint_silver2_crossword">2-й Серебрянный</string>
+    <string name="puzzless_hint_free_crossword">Бесплатный</string>
+    <string name="puzzless_hint_actionbar_title">Сканворды</string>
     <string name="in_rating">в рейтинге</string>
     <string name="not_found_camera">Ошибка. На устройстве отсутствует фронтальная камера.</string>
     <string name="personal_record">Персональный рекорд:</string>

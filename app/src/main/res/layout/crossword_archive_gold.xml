@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:id="@+id/crossword_archive_gold_splitter"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/puzzles_set_delimeter"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+        <TextView
+                android:textSize="@dimen/puzzles_badge_title_text_size"
+                style="@style/PuzzlesHintParagraphTextStyle"
+                android:text="@string/puzzless_hint_gold_crossword"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+            <ToggleButton
+                    android:id="@+id/crossword_archive_gold_switcher"
+                    android:layout_width="34dp"
+                    android:layout_height="32dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/puzzles_archive_showmore_bun"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical">
+
+
+            <TextView
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="@string/puzzless_hint_resolved"/>
+
+            <TextView
+                    android:id="@+id/crossword_archive_gold_partition"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:textStyle="bold"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="4/12"/>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/puzzles_set_progressbar_bg">
+
+                <LinearLayout
+                        android:layout_width="17dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/puzzles_set_progressbar_progress"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/crossword_archive_gold_percent"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:textStyle="bold"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="30%"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="@string/puzzless_hint_get_score"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:background="@drawable/puzzles_badge_star"/>
+
+            <TextView
+                    android:id="@+id/crossword_archive_gold_score"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:textStyle="bold"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="23 000"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/crossword_archive_gold_badges_container"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--@TODO with crosswordss-->
+
+    </LinearLayout>
+
+</LinearLayout>
