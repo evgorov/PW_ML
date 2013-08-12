@@ -233,6 +233,98 @@ public class CrosswordFragmentHolder {
         }
     }
 
+    // ================== BADGE RESOLVE ======================
+
+    public class ReloveBadgeItemBrilliant extends ReloveBadgeItemAbstract{
+
+        public ReloveBadgeItemBrilliant(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
+        }
+    }
+
+    public class ReloveBadgeItemGold extends ReloveBadgeItemAbstract{
+
+        public ReloveBadgeItemGold(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_gold_score);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_gold_number_container);
+        }
+    }
+
+    public class ReloveBadgeItemSilver extends ReloveBadgeItemAbstract{
+
+        public ReloveBadgeItemSilver(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_silver_score);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_silver_number_container);
+        }
+    }
+
+    public class ReloveBadgeItemFree extends ReloveBadgeItemAbstract{
+
+        public ReloveBadgeItemFree(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_free_score);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_free_number_container);
+        }
+    }
+
+    // ================== BADGE UNRESOLVE ======================
+
+    public class UnreloveBadgeItemBrilliant extends UnreloveBadgeItemAbstract{
+
+        public UnreloveBadgeItemBrilliant(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
+            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
+            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
+        }
+    }
+
+    public class UnreloveBadgeItemGold extends UnreloveBadgeItemAbstract{
+
+        public UnreloveBadgeItemGold(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_gold_percent);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_number_container);
+            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_progress_bg);
+            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_progress_fg);
+        }
+    }
+
+    public class UnreloveBadgeItemSilver extends UnreloveBadgeItemAbstract{
+
+        public UnreloveBadgeItemSilver(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_silver_percent);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_number_container);
+            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_progress_bg);
+            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_progress_fg);
+        }
+    }
+
+    public class UnreloveBadgeItemFree extends UnreloveBadgeItemAbstract{
+
+        public UnreloveBadgeItemFree(@Nonnull LayoutInflater inflater, int id){
+
+            @Nonnull View view = inflater.inflate(id, null, false);
+            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_free_percent);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_number_container);
+            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_progress_bg);
+            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_progress_fg);
+        }
+    }
+
     // ================== ABSTRACT CROSSWORD PANELS ITEM ======================
 
 
@@ -259,6 +351,18 @@ public class CrosswordFragmentHolder {
         @Nonnull public TextView mTotalScoreTV;
         @Nonnull public LinearLayout mProgressBackgroudLL;
         @Nonnull public LinearLayout mProgressForegroudLL;
+    }
+
+    public class ReloveBadgeItemAbstract{
+        @Nonnull public LinearLayout mBitmapLL;
+        @Nonnull public TextView mScoreTV;
+    }
+
+    public class UnreloveBadgeItemAbstract{
+        @Nonnull public TextView mPercentTV;
+        @Nonnull public LinearLayout mBitmapLL;
+        @Nonnull public LinearLayout mProgressBGLL;
+        @Nonnull public LinearLayout mProgressFGLL;
     }
 
 }

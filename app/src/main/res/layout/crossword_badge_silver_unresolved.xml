@@ -46,6 +46,7 @@
                 />
 
         <LinearLayout
+                android:id="@+id/crossword_badge_unresolved_silver_progress_bg"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
                 android:background="@drawable/puzzles_badge_progress_bg">
 
             <LinearLayout
-                    android:id="@+id/crossword_badge_unresolved_silver_progress"
+                    android:id="@+id/crossword_badge_unresolved_silver_progress_fg"
                     android:orientation="horizontal"
                     android:layout_width="21dp"
                     android:layout_height="wrap_content"
