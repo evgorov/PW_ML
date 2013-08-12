@@ -1,7 +1,5 @@
 package com.ltst.prizeword.rest;
 
-import android.util.SparseArray;
-
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -134,7 +132,7 @@ public class RestPuzzleUserData
         }
         return set;
     }
-    
+
     // get question id by its column/row
     public static @Nonnull String getQuestionCRID(int col, int row)
     {

@@ -21,4 +21,5 @@ public interface IDbWriter extends IDbReader
     void putPuzzleSet(@Nonnull PuzzleSet set);
 
     void putPuzzle(@Nonnull Puzzle puzzle);
+
 }

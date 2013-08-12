@@ -15,6 +15,8 @@ import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 
+import org.omich.velo.handlers.IListener;
+
 public class PuzzleResources
 {
     private static final int DEFAULT_CELL_WIDTH = 14;
@@ -72,13 +74,38 @@ public class PuzzleResources
             int col = question.column - 1;
             int row = question.row - 1;
             int arrowType = question.getAnswerPosition();
-            mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
-            mStateMatrix[col][row].setQuestionIndex(index);
             Point p = ArrowType.positionToPoint(arrowType, col, row);
-            if (p != null)
+            if(question.isAnswered)
             {
-                mStateMatrix[p.x][p.y].addArrow(arrowType, index);
+                mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_CORRECT);
+                if (p != null)
+                {
+                    final AnswerLetterPointIterator letterIterator = new AnswerLetterPointIterator(p,
+                            PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
+                    PuzzleResourcesAdapter.setLetterStateByPointIterator(this, letterIterator, new IListener<PuzzleTileState>()
+                    {
+                        @Override
+                        public void handle(@Nullable PuzzleTileState puzzleTileState)
+                        {
+                            if (puzzleTileState != null)
+                            {
+                                String letter = String.valueOf(letterIterator.getCurrentLetter()).toUpperCase();
+                                puzzleTileState.setInputLetter(letter);
+                                puzzleTileState.setLetterCorrect(true);
+                            }
+                        }
+                    });
+                }
             }
+            else
+            {
+                mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
+                if (p != null)
+                {
+                    mStateMatrix[p.x][p.y].addArrow(arrowType, index);
+                }
+            }
+            mStateMatrix[col][row].setQuestionIndex(index);
         }
     }
 

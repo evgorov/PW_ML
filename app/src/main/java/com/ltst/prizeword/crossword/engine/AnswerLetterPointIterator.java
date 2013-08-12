@@ -115,6 +115,14 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         offsetPointByDirection(p, -1, -1);
     }
 
+    public char getCurrentLetter()
+    {
+        int index = currentLetterIndex - 1;
+        if(index < 0 || index >= mAnswer.length())
+            return PuzzleResources.LETTER_UNKNOWN;
+        return mAnswer.charAt(currentLetterIndex - 1);
+    }
+
     @Override
     public void remove()
     {

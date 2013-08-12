@@ -149,7 +149,7 @@ public class PuzzleResourcesAdapter
                 mCurrentAnswer = question.answer;
                 mCurrentInputQuestionIndex = questionIndex;
                 final StringBuffer answerWithSkippedBuffer = new StringBuffer();
-                setLetterStateByPointIterator(mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+                setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
                 {
                     @Override
                     public void handle(@Nullable PuzzleTileState puzzleTileState)
@@ -182,7 +182,7 @@ public class PuzzleResourcesAdapter
             else
                 mCurrentAnswer = null;
 
-            setLetterStateByPointIterator(mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+            setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
             {
                 @Override
                 public void handle(@Nullable PuzzleTileState puzzleTileState)
@@ -291,7 +291,7 @@ public class PuzzleResourcesAdapter
                 }
             }
             mCurrentAnswerIterator.reset();
-            setLetterStateByPointIterator(mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+            setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
             {
                 @Override
                 public void handle(@Nullable PuzzleTileState puzzleTileState)
@@ -372,16 +372,18 @@ public class PuzzleResourcesAdapter
         }
     }
 
-    private void setLetterStateByPointIterator(@Nonnull AnswerLetterPointIterator iter, @Nonnull IListener<PuzzleTileState> handler)
+    public static void setLetterStateByPointIterator(@Nullable PuzzleResources resources,
+                                                     @Nonnull AnswerLetterPointIterator iter,
+                                                     @Nonnull IListener<PuzzleTileState> handler)
     {
-        if (mResources == null)
+        if (resources == null)
         {
             return;
         }
         while (iter.hasNext())
         {
             Point next = iter.next();
-            @Nullable PuzzleTileState state = mResources.getPuzzleState(next.x, next.y);
+            @Nullable PuzzleTileState state = resources.getPuzzleState(next.x, next.y);
             if (state != null)
             {
                 handler.handle(state);
