@@ -70,6 +70,7 @@
                     android:text="4/12"/>
 
             <LinearLayout
+                    android:id="@+id/crossword_archive_brilliant_progress_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -78,6 +79,7 @@
                     android:background="@drawable/puzzles_set_progressbar_bg">
 
                 <LinearLayout
+                        android:id="@+id/crossword_archive_brilliant_progress_fg"
                         android:layout_width="17dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
