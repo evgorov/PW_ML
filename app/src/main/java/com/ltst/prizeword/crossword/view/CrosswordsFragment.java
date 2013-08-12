@@ -22,6 +22,7 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -44,6 +45,7 @@ public class CrosswordsFragment extends SherlockFragment
     private static final int BADGE_ID = 1;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
 
@@ -59,6 +61,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
+        mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
         super.onAttach(activity);
     }
@@ -134,7 +137,10 @@ public class CrosswordsFragment extends SherlockFragment
                 break;
 
             case R.id.crossword_fragment_header_menu_btn:
-
+                if(mINavigationDrawerHolder.isLockDrawerOpen())
+                    mINavigationDrawerHolder.lockDrawerClosed();
+                else
+                    mINavigationDrawerHolder.lockDrawerOpened();
                 break;
 
             default:
