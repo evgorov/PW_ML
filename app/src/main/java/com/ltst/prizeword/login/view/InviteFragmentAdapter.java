@@ -9,11 +9,15 @@ import android.widget.TextView;
 
 import com.ltst.prizeword.R;
 
+
 public class InviteFragmentAdapter extends ArrayAdapter<String>
 {
     private Context context;
     private String[] names;
 
+    static class viewHolder{
+        public TextView text;
+    }
 
     public InviteFragmentAdapter(Context context, String[] names)
     {
@@ -24,12 +28,19 @@ public class InviteFragmentAdapter extends ArrayAdapter<String>
 
     @Override public View getView(int position, View convertView, ViewGroup parent)
     {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.invite_simple_item, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.invite_item_name_textview);
-        textView.setText(names[position]);
+        View rowView = convertView;
+        if(rowView==null){
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.invite_simple_item, null);
+            viewHolder viewHolder = new viewHolder();
+            viewHolder.text=(TextView) rowView.findViewById(R.id.invite_item_name_textview);
+            rowView.setTag(viewHolder);
+        }
 
+        viewHolder holder = (viewHolder) rowView.getTag();
+        String s  = names[position];
+        holder.text.setText(s);
         return rowView;
     }
 
