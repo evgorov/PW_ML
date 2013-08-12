@@ -105,9 +105,9 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(this, inflater, v);
 
-//        CrosswordFragmentHolder.ArchiveCrosswordPanel mArchiveCrosswordPanel = new CrosswordFragmentHolder.ArchiveCrosswordPanel(v);
-//        CrosswordFragmentHolder.CurrentCrosswordPanel mCurrentCrosswordPanel = new CrosswordFragmentHolder.CurrentCrosswordPanel(v);
-//        CrosswordFragmentHolder.BuyCrosswordPanel mBuyCrosswordPanel = new CrosswordFragmentHolder.BuyCrosswordPanel(v);
+//        CrosswordFragmentHolder.CrosswordPanelArchive mArchiveCrosswordPanel = new CrosswordFragmentHolder.CrosswordPanelArchive(v);
+//        CrosswordFragmentHolder.CrosswordPanelCurrent mCurrentCrosswordPanel = new CrosswordFragmentHolder.CrosswordPanelCurrent(v);
+//        CrosswordFragmentHolder.CrosswordPanelBuy mBuyCrosswordPanel = new CrosswordFragmentHolder.CrosswordPanelBuy(v);
 //
 //        CrosswordFragmentHolder.ArchivePanelItemBrilliant mArchivePanelItemBrilliant = new CrosswordFragmentHolder.ArchivePanelItemBrilliant(inflater);
 //        CrosswordFragmentHolder.ArchivePanelItemGold mArchivePanelItemGold = new CrosswordFragmentHolder.ArchivePanelItemGold(inflater);
