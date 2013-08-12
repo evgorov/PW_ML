@@ -10,4 +10,5 @@ public interface IOnePuzzleModel
     void updateDataByDb(@Nonnull IListenerVoid handler);
     void updateDataByInternet(@Nonnull IListenerVoid handler);
     @Nullable Puzzle getPuzzle();
+    void setQuestionAnswered(@Nonnull PuzzleQuestion q, boolean answered);
 }

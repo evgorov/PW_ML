@@ -71,7 +71,7 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
                 {
                     puzzle.setId = setId;
                     env.dbw.putPuzzle(puzzle);
-                    return packToBundle(puzzle, holder.getStatus().value());
+                    return getFromDatabase(env, puzzleId);
                 }
             }
         }

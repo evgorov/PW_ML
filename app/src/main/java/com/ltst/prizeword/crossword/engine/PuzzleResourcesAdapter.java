@@ -328,8 +328,17 @@ public class PuzzleResourcesAdapter
         {
             state.setQuestionState(correct ? PuzzleTileState.QuestionState.QUESTION_CORRECT :
                     PuzzleTileState.QuestionState.QUESTION_WRONG);
-            int questionIndex = state.getQuestionIndex();
-            mResources.setQuestionCorrect(questionIndex, correct);
+            int index = state.getQuestionIndex();
+            List<PuzzleQuestion> qList = mResources.getPuzzleQuestions();
+            if (qList != null)
+            {
+                if(index >= 0 && index < qList.size())
+                {
+                    PuzzleQuestion q = qList.get(index);
+                    q.isAnswered = true;
+                    mPuzzleModel.setQuestionAnswered(q, true);
+                }
+            }
         }
     }
 

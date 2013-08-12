@@ -22,4 +22,5 @@ public interface IDbWriter extends IDbReader
 
     void putPuzzle(@Nonnull Puzzle puzzle);
 
+    void setQuestionAnswered(long questionId, boolean answered);
 }

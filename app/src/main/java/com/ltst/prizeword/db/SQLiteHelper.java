@@ -138,7 +138,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final class ColsPuzzleQuestions
     {
         public static final @Nonnull String ID              = "_id";
-        public static final @Nonnull String PUZZLE_ID = "puzzleDataId";
+        public static final @Nonnull String PUZZLE_ID       = "puzzleDataId";
         public static final @Nonnull String COLUMN          = "column";
         public static final @Nonnull String ROW             = "row";
         public static final @Nonnull String QUESTION_TEXT   = "questionText";

@@ -54,6 +54,23 @@ public class OnePuzzleModel implements IOnePuzzleModel
         mPuzzleInternetUpdater.update(handler);
     }
 
+    @Override
+    public void setQuestionAnswered(@Nonnull PuzzleQuestion q, boolean answered)
+    {
+        final long id = q.id;
+        final boolean isAnswered = answered;
+        SetQuestionAnsweredUpdater updater = new SetQuestionAnsweredUpdater()
+        {
+            @Nonnull
+            @Override
+            protected Intent createIntent()
+            {
+                return SetQuestionAnsweredTask.createIntent(id, isAnswered);
+            }
+        };
+        updater.update(null);
+    }
+
     // ==== updaters ==================================================
 
     private Updater mPuzzleInternetUpdater = new Updater()
@@ -89,6 +106,36 @@ public class OnePuzzleModel implements IOnePuzzleModel
             return LoadOnePuzzleFromDatabase.class;
         }
     };
+
+    private abstract class SetQuestionAnsweredUpdater extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return SetQuestionAnsweredTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            // ничего делать не надо
+        }
+    }
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
