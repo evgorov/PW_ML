@@ -25,4 +25,5 @@ public interface IRestClient
     RestUserData.RestAnswerMessageHolder mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2);
 
     @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder getPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId);
+    HttpStatus putPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId, @Nonnull String puzzleUserData);
 }

@@ -42,6 +42,7 @@ public class RestParams
     public static final @Nonnull String MONTH = "month";
     public static final @Nonnull String MODE = "mode";
     public static final @Nonnull String MODE_SHORT = "short";
+    public static final @Nonnull String PUZZLE_DATA = "puzzle_data";
 
     // == API URLS ==
 
@@ -92,6 +93,7 @@ public class RestParams
     public static final @Nonnull String URL_GET_USER_PUZZLES = URL_API + "/user_puzzles" + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
     public static final @Nonnull String URL_GET_PUZZLE_USERDATA = URL_API + "/puzzles/%s" + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_PUT_PUZZLE_USERDATA = URL_API + "/puzzles/%s" + addParam(SESSION_KEY, true) + addParam(PUZZLE_DATA, false);
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)

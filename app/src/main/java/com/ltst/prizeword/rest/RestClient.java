@@ -297,7 +297,7 @@ public class RestClient implements IRestClient
         {
             if (entity == null)
             {
-                HttpStatus status = HttpStatus.valueOf(404);
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
                 return status;
             }
         }
@@ -439,5 +439,42 @@ public class RestClient implements IRestClient
         holder.setPuzzleUserData(data);
         holder.setStatus(entity.getStatusCode());
         return holder;
+    }
+
+    @Override
+    public HttpStatus putPuzzleUserData(@Nonnull String sessionKey,
+                                        @Nonnull String puzzleId,
+                                        @Nonnull String puzzleUserData)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.PUZZLE_DATA, puzzleUserData);
+        String url = String.format(RestParams.URL_GET_PUZZLE_USERDATA, puzzleId);
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        @Nullable ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
+                return status;
+            }
+        }
+        if (entity != null)
+            return entity.getStatusCode();
+        else
+            return null;
     }
 }
