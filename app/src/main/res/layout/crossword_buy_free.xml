@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/puzzles_set_delimeter"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/puzzles_set_fr"/>
+
+        <TextView
+                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                android:textSize="@dimen/puzzles_badge_title_text_size"
+                style="@style/PuzzlesHintParagraphTextStyle"
+                android:text="@string/puzzless_hint_free_crossword"/>
+
+    </LinearLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:id="@+id/crossword_buy_free_buy_count"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:textStyle="bold"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="7"/>
+
+            <TextView
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="@string/puzzless_hint_crosswords"/>
+
+            <TextView
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text=","/>
+
+            <TextView
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="@string/puzzless_hint_minimal"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:background="@drawable/puzzles_badge_star"/>
+
+            <TextView
+                    android:id="@+id/crossword_buy_free_buy_score"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                    android:textStyle="bold"
+                    style="@style/PuzzlesHintCommonTextStyle"
+                    android:text="85 000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/crossword_buy_free_buy_button"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/puzzles_buy_crossword_but">
+
+            <TextView
+                    android:id="@+id/crossword_buy_free_buy_price"
+                    android:textSize="@dimen/puzzles_badge_text_size"
+                    style="@style/PuzzlesHintWhiteTextStyle"
+                    android:text="@string/buy_one_dollar"/>
+
+        </LinearLayout>
+
+</LinearLayout>
