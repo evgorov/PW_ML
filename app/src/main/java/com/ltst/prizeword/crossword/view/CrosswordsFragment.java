@@ -46,7 +46,9 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
+    private @Nonnull HintsManager mHintsManager;
 
+    private @Nonnull View mRoot;
     private @Nonnull LinearLayout mViewCurrentContainer;
     private @Nonnull LinearLayout mViewArchiveContainer;
 
@@ -67,6 +69,7 @@ public class CrosswordsFragment extends SherlockFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
+
         mViewCurrentContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_current_container);
         mViewArchiveContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_archive_container);
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
@@ -99,7 +102,7 @@ public class CrosswordsFragment extends SherlockFragment
 
         mViewArchiveContainer.addView(viewArchiveGold);
         mViewArchiveContainer.addView(viewArchiveSilver);
-
+        mRoot = v;
         return v;
     }
 
@@ -107,6 +110,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mPuzzleSetModel.updateDataByInternet(updateHandler);
         mPuzzleSetModel.updateDataByDb(updateHandler);
