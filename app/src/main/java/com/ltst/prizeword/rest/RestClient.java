@@ -3,9 +3,6 @@ package com.ltst.prizeword.rest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
@@ -19,7 +16,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -66,11 +62,13 @@ public class RestClient implements IRestClient
     }
 
     @Override
-    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic){
-    // Рабочий вариант;
-        try{
+    public RestUserData resetUserPic(@Nonnull String sessionKey, @Nonnull byte[] userPic)
+    {
+        // Рабочий вариант;
+        try
+        {
 //            String url = "http://api.prize-word.com/me?session_key="+sessionKey;
-            String url = RestParams.URL_RESET_USER_PIC+sessionKey;
+            String url = RestParams.URL_RESET_USER_PIC + sessionKey;
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(url);
             MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -85,15 +83,16 @@ public class RestClient implements IRestClient
 
             String sResponse;
             StringBuilder s = new StringBuilder();
-            while ((sResponse = reader.readLine()) != null) {
+            while ((sResponse = reader.readLine()) != null)
+            {
                 s = s.append(sResponse);
             }
 
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
 
@@ -101,7 +100,8 @@ public class RestClient implements IRestClient
     }
 
     @Override
-    public RestUserData resetUserName(@Nonnull String sessionKey, @Nonnull String userName){
+    public RestUserData resetUserName(@Nonnull String sessionKey, @Nonnull String userName)
+    {
 // Отправка имени на сервер для обновления данных;
 // Create and populate a simple object to be used in the request
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
@@ -128,11 +128,10 @@ public class RestClient implements IRestClient
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.ACCESS_TOKEN, access_token);
         @Nonnull String url = Strings.EMPTY;
-        if(provider.equals(RestParams.VK_PROVIDER))
+        if (provider.equals(RestParams.VK_PROVIDER))
         {
             url = RestParams.URL_VK_AUTORITHE;
-        }
-        else if(provider.equals(RestParams.FB_PROVIDER))
+        } else if (provider.equals(RestParams.FB_PROVIDER))
         {
             url = RestParams.URL_FB_AUTORITHE;
         }
@@ -142,7 +141,7 @@ public class RestClient implements IRestClient
         ResponseEntity<RestUserData.RestUserDataHolder> holder =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
         holder.getBody().setStatusCode(holder.getStatusCode());
-        if(!url.equals(Strings.EMPTY))
+        if (!url.equals(Strings.EMPTY))
             return holder.getBody();
         else
             return null;
@@ -164,12 +163,12 @@ public class RestClient implements IRestClient
         urlVariables.put(RestParams.SURNAME, surname);
         urlVariables.put(RestParams.PASSWORD, password);
         @Nonnull String url = RestParams.URL_SIGN_UP;
-        if(birthdate != null)
+        if (birthdate != null)
         {
             urlVariables.put(RestParams.BIRTHDATE, birthdate);
             url += RestParams.addParam(RestParams.BIRTHDATE, false);
         }
-        if(city != null)
+        if (city != null)
         {
             urlVariables.put(RestParams.CITY, city);
             url += RestParams.addParam(RestParams.CITY, false);
@@ -186,12 +185,10 @@ public class RestClient implements IRestClient
         try
         {
             holder = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        }
-        catch (HttpClientErrorException e)
+        } catch (HttpClientErrorException e)
         {
             Log.e(e.getMessage());
-        }
-        finally
+        } finally
         {
             if (holder == null)
             {
@@ -202,12 +199,11 @@ public class RestClient implements IRestClient
             }
         }
 
-        if(holder != null)
+        if (holder != null)
         {
             holder.getBody().setStatusCode(holder.getStatusCode());
             return holder.getBody();
-        }
-        else
+        } else
             return null;
     }
 
@@ -248,12 +244,10 @@ public class RestClient implements IRestClient
         try
         {
             entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
-        }
-        catch (HttpClientErrorException e)
+        } catch (HttpClientErrorException e)
         {
 
-        }
-        finally
+        } finally
         {
             if (entity == null)
             {
@@ -286,11 +280,9 @@ public class RestClient implements IRestClient
         try
         {
             entity = restTemplate.exchange(RestParams.URL_RESET_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
-        }
-        catch (HttpClientErrorException e)
+        } catch (HttpClientErrorException e)
         {
-        }
-        finally
+        } finally
         {
             if (entity == null)
             {
@@ -337,7 +329,7 @@ public class RestClient implements IRestClient
         ResponseEntity<RestPuzzle[]> entity = restTemplate.exchange(RestParams.URL_GET_USER_PUZZLES, HttpMethod.GET, requestEntity, RestPuzzle[].class, urlVariables);
         RestPuzzle.RestPuzzleHolder holder = new RestPuzzle.RestPuzzleHolder();
         RestPuzzle[] puzzles = entity.getBody();
-        if(puzzles.length == 0)
+        if (puzzles.length == 0)
         {
             return null;
         }
@@ -368,27 +360,57 @@ public class RestClient implements IRestClient
         try
         {
             response = restTemplate.exchange(RestParams.URL_POST_LINK_ACCOUNTS, HttpMethod.POST, requestEntity, RestUserData.RestAnswerMessageHolder.class, urlVariables);
-        }
-        catch (HttpClientErrorException e){
-            e.printStackTrace();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        finally
+        } catch (HttpClientErrorException e)
         {
-            if(response == null)
+            e.printStackTrace();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            if (response == null)
             {
                 answer = new RestUserData.RestAnswerMessageHolder();
                 answer.setStatusCode(HttpStatus.valueOf(RestParams.SC_FORBIDDEN));
-            }
-            else
+            } else
             {
                 answer = response.getBody();
                 answer.setStatusCode(response.getStatusCode());
             }
         }
         return answer;
+    }
+
+    @Nullable @Override
+    public RestInvite.RestInviteHolder getFriendsData(@Nonnull String sessionKey, @Nonnull String providerName)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        @Nonnull String url = Strings.EMPTY;
+        if (providerName.equals(RestParams.VK_PROVIDER))
+        {
+            url = RestParams.URL_GET_VK_FRIEND_DATA;
+        } else if (providerName.equals(RestParams.FB_PROVIDER))
+        {
+            url = RestParams.URL_GET_FB_FRIEND_DATA;
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestInvite[]> entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestInvite[].class, urlVariables);
+        RestInvite.RestInviteHolder holder = new RestInvite.RestInviteHolder();
+        RestInvite[] friends = entity.getBody();
+        if (friends.length == 0)
+        {
+            return null;
+        }
+        if (friends[0] != null)
+        {
+            holder.setFriends(friends[0]);
+        }
+        holder.setStatus(entity.getStatusCode());
+        return holder;
+
     }
 
 }

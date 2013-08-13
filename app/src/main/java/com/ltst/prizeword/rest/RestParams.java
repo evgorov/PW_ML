@@ -76,6 +76,9 @@ public class RestParams
     public static final @Nonnull String URL_FB_TOKEN = "http://api.prize-word.com/facebook/authorize#";
     public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
+    public static final @Nonnull String URL_GET_FRIEND_DATA= URL_API + "/%s/friends" ;
+    public static final @Nonnull String URL_GET_FB_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, FB_PROVIDER)+ addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_VK_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, VK_PROVIDER)+ addParam(SESSION_KEY, true);
 
     // === URL parsing for launching app via http link (forgot password case)
 

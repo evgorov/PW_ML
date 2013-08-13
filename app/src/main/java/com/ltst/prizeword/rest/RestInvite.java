@@ -1,6 +1,6 @@
 package com.ltst.prizeword.rest;
 
-import org.apache.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
