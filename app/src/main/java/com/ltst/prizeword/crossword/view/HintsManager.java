@@ -6,8 +6,11 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.HintsModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerInt;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class HintsManager implements View.OnClickListener
 {
@@ -16,6 +19,7 @@ public class HintsManager implements View.OnClickListener
     private View mBuyHints_30;
 
     private HintsModel mHintsModel;
+    private @Nullable IListenerInt mHintChangeListener;
 
     public HintsManager(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey, View parentView)
     {
@@ -28,20 +32,46 @@ public class HintsManager implements View.OnClickListener
         mBuyHints_30.setOnClickListener(this);
     }
 
+    public void setHintChangeListener(@Nullable IListenerInt hintChangeListener)
+    {
+        mHintChangeListener = hintChangeListener;
+    }
+
     @Override
     public void onClick(View v)
     {
+        int count = 0;
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-                mHintsModel.changeHints(10, null);
+                count = 10;
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
-                mHintsModel.changeHints(20, null);
+                count = 20;
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
-                mHintsModel.changeHints(30, null);
+                count = 30;
                 break;
         }
+        if (count != 0)
+        {
+            changeHintsCount(count);
+        }
+    }
+
+    private void changeHintsCount(final int count)
+    {
+        mHintsModel.changeHints(count, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                if (mHintChangeListener != null)
+                {
+                    mHintChangeListener.handle(count);
+                }
+            }
+        });
+
     }
 }

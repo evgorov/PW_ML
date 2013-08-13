@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
@@ -24,6 +25,7 @@ import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull View mRoot;
     private @Nonnull LinearLayout mViewCurrentContainer;
     private @Nonnull LinearLayout mViewArchiveContainer;
-
+    private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
 
     // ==== Livecycle =================================
@@ -70,6 +72,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
 
+        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
         mViewCurrentContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_current_container);
         mViewArchiveContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_archive_container);
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
@@ -111,6 +114,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+        mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mPuzzleSetModel.updateDataByInternet(updateHandler);
         mPuzzleSetModel.updateDataByDb(updateHandler);
@@ -172,7 +176,17 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
         }
     };
+
+    private IListenerInt hintsChangeHandler = new IListenerInt()
+    {
+        @Override
+        public void handle(int i)
+        {
+            mPuzzleSetModel.updateDataByDb(updateHandler);
+        }
+    };
+
 }

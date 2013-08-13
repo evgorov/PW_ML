@@ -267,7 +267,7 @@
                                         android:textSize="12sp"
                                         android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="0"/>
+                                        />
 
                             </LinearLayout>
                         </LinearLayout>

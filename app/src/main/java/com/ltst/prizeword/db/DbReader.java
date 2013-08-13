@@ -250,6 +250,32 @@ public class DbReader implements IDbReader
         return createTypedListByCursor(cursor, mPuzzleQuestionsCreator);
     }
 
+    @Override
+    public int getUserHintsCount()
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
+                new String[]{ColsUsers.HINTS}, ColsUsers.ID, SQLiteHelper.ID_USER);
+        if (cursor == null)
+        {
+            return 0;
+        }
+        int count = 0;
+        try
+        {
+            cursor.moveToFirst();
+
+            if(!cursor.isAfterLast())
+            {
+                count = cursor.getInt(0);
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+        return count;
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
