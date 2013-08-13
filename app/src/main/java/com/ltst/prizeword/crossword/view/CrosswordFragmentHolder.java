@@ -35,31 +35,22 @@ public class CrosswordFragmentHolder {
     final static int BADGE_UNRESOLVE_SILVER2 = 9;
     final static int BADGE_UNRESOLVE_FREE = 10;
 
-    final static int PANEL_CURRENT_BRILLIANT = 11;
-    final static int PANEL_CURRENT_GOLD = 12;
-    final static int PANEL_CURRENT_SILVER = 13;
-    final static int PANEL_CURRENT_SILVER2 = 14;
-    final static int PANEL_CURRENT_FREE = 15;
-
-    final static int PANEL_ARCHIVE_BRILLIANT = 16;
-    final static int PANEL_ARCHIVE_GOLD = 17;
-    final static int PANEL_ARCHIVE_SILVER = 18;
-    final static int PANEL_ARCHIVE_SILVER2 = 19;
-    final static int PANEL_ARCHIVE_FREE = 20;
-
-    final static int PANEL_BUY_BRILLIANT = 21;
-    final static int PANEL_BUY_GOLD = 22;
-    final static int PANEL_BUY_SILVER = 23;
-    final static int PANEL_BUY_SILVER2 = 24;
-    final static int PANEL_BUY_FREE = 25;
+    final static int PANEL_BRILLIANT = 11;
+    final static int PANEL_GOLD = 12;
+    final static int PANEL_SILVER = 13;
+    final static int PANEL_SILVER2 = 14;
+    final static int PANEL_FREE = 15;
 
     private static @Nonnull LayoutInflater mInflater;
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull View mViewCrossword;
     private static @Nonnull Context mContext;
-    public @Nonnull CrosswordPanelCurrent mCrosswordPanelCurrent;
-    public @Nonnull CrosswordPanelArchive mCrosswordPanelArchive;
-    public @Nonnull CrosswordPanelBuy mCrosswordPanelBuy;
+    public @Nonnull
+    CrosswordWidgetCurrent mCrosswordPanelCurrent;
+    public @Nonnull
+    CrosswordWidgetArchive mCrosswordPanelArchive;
+    public @Nonnull
+    CrosswordWidgetBuy mCrosswordPanelBuy;
 
     private static @Nonnull HashMap<Integer,Integer> mapBadgeNumbersBrilliant = new HashMap<Integer, Integer>();
     private static @Nonnull HashMap<Integer,Integer> mapBadgeNumbersGold = new HashMap<Integer, Integer>();
@@ -77,28 +68,41 @@ public class CrosswordFragmentHolder {
 
         fillBadgesNumbers();
 
-        mCrosswordPanelCurrent = new CrosswordPanelCurrent(view);
-        mCrosswordPanelArchive = new CrosswordPanelArchive(view);
-        mCrosswordPanelBuy = new CrosswordPanelBuy(view);
+        mCrosswordPanelCurrent = new CrosswordWidgetCurrent(view);
+        mCrosswordPanelArchive = new CrosswordWidgetArchive(view);
+        mCrosswordPanelBuy = new CrosswordWidgetBuy(view);
 
-        View vCrossordArchiveBrilliant = CrosswordFragmentHolder.CrosswordElementArchive.addView(PANEL_ARCHIVE_BRILLIANT);
-        View vCrossordArchiveGold = CrosswordFragmentHolder.CrosswordElementArchive.addView(PANEL_ARCHIVE_GOLD);
-        View vCrossordArchiveGFree = CrosswordFragmentHolder.CrosswordElementArchive.addView(PANEL_ARCHIVE_FREE);
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(MonthSplitterView.addView("Апрель"));
+        View vCrossordCurrentBrilliant = CrosswordPanelCurrent.addView(PANEL_BRILLIANT);
+
+        View vCrossordBuyGold = CrosswordPanelBuy.addView(PANEL_GOLD);
+
+        View vCrossordArchiveBrilliant = CrosswordPanelArchive.addView(PANEL_BRILLIANT);
+        View vCrossordArchiveGold = CrosswordPanelArchive.addView(PANEL_GOLD);
+        View vCrossordArchiveGFree = CrosswordPanelArchive.addView(PANEL_FREE);
+
+        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordCurrentBrilliant);
+        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordBuyGold);
+
+        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterMonthView.addView("Апрель"));
         mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveBrilliant);
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(PanelSplitterView.addView());
+        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
         mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGold);
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(PanelSplitterView.addView());
+        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
         mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGFree);
 
-        View vBadgeUnresolved = CrosswordFragmentHolder.BadgeUnresolved.addView(BADGE_UNRESOLVE_FREE, 1);
+        View vBadgeUnresolved = BadgeUnresolved.addView(BADGE_UNRESOLVE_FREE, 1);
+        CrosswordPanelArchive.mBadgeContainerLL.addView(vBadgeUnresolved);
 
-        CrosswordFragmentHolder.CrosswordElementArchive.mBadgeContainerLL.addView(vBadgeUnresolved);
+        View vBadgeResolved2 = BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 2);
+        View vBadgeResolved21 = BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 21);
+        CrosswordPanelCurrent.mBadgeContainerLL.addView(vBadgeResolved2);
+        CrosswordPanelCurrent.mBadgeContainerLL.addView(vBadgeResolved21);
+
     }
 
     // ================== SPLITTER WITH MONTH ======================
 
-    static public class MonthSplitterView {
+    static public class SplitterMonthView {
 
         @Nonnull static public TextView mMonthTV;
 
@@ -112,7 +116,7 @@ public class CrosswordFragmentHolder {
 
     }
 
-    static public class PanelSplitterView {
+    static public class SplitterPanelView {
 
         static View addView()
         {
@@ -124,14 +128,14 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ======================
 
-    static public class CrosswordPanelCurrent {
+    static public class CrosswordWidgetCurrent {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
         @Nonnull public LinearLayout mRestPanelLL;
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
-        public CrosswordPanelCurrent(@Nonnull View view){
+        public CrosswordWidgetCurrent(@Nonnull View view){
 
             mMonthTV = (TextView) view.findViewById(R.id.crossword_fragment_current_month);
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
@@ -140,15 +144,15 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    static public class CrosswordPanelArchive {
+    static public class CrosswordWidgetArchive {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
-        public CrosswordPanelArchive(@Nonnull View view){
+        public CrosswordWidgetArchive(@Nonnull View view){
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
         }
     }
 
-    static public class CrosswordPanelBuy {
+    static public class CrosswordWidgetBuy {
 
         @Nonnull public TextView mRestHintsTV;
 
@@ -160,7 +164,7 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mBuy20Button;
         @Nonnull public LinearLayout mBuy30Button;
 
-        public CrosswordPanelBuy(@Nonnull View view){
+        public CrosswordWidgetBuy(@Nonnull View view){
             mRestHintsTV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_count);
             mBuy10TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_10_price);
             mBuy20TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_20_price);
@@ -174,7 +178,7 @@ public class CrosswordFragmentHolder {
     // ================== CROSSWORD PANELS ITEM ======================
 
 
-    static public class CrosswordElementArchive{
+    static public class CrosswordPanelArchive {
         @Nonnull static public TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
         @Nonnull static public TextView mPercentResolvedTV;
@@ -182,7 +186,7 @@ public class CrosswordFragmentHolder {
         @Nonnull static public LinearLayout mProgressBackgroudLL;
         @Nonnull static public LinearLayout mProgressForegroudLL;
 
-        @Nonnull static private LinearLayout mBadgeContainerLL;
+        @Nonnull static public LinearLayout mBadgeContainerLL;
 
         @Nonnull static public ToggleButton mSwitchToogleButton;
 
@@ -199,19 +203,19 @@ public class CrosswordFragmentHolder {
             mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_brilliant_switcher);
 
             switch (view_id){
-                case PANEL_ARCHIVE_BRILLIANT:{
+                case PANEL_BRILLIANT:{
                     mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
-                case PANEL_ARCHIVE_GOLD:{
+                case PANEL_GOLD:{
                     mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
-                case PANEL_ARCHIVE_SILVER:{
+                case PANEL_SILVER:{
                     mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
-                case PANEL_ARCHIVE_SILVER2:{
+                case PANEL_SILVER2:{
                     mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
-                case PANEL_ARCHIVE_FREE:{
+                case PANEL_FREE:{
                     mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
 
@@ -221,7 +225,7 @@ public class CrosswordFragmentHolder {
             mSwitchToogleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                    mBadgeContainerLL->setVisibility(LinearLayout.GONE);
+//                    mProgressForegroudLL->setVisibility(LinearLayout.GONE);
                 }
             });
 
@@ -231,7 +235,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
-    static public class CrosswordElementCurrent{
+    static public class CrosswordPanelCurrent {
         @Nonnull static private ImageView mImage;
         @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
@@ -239,6 +243,7 @@ public class CrosswordFragmentHolder {
         @Nonnull static public TextView mTotalScoreTV;
         @Nonnull static public LinearLayout mProgressBackgroudLL;
         @Nonnull static public LinearLayout mProgressForegroudLL;
+        @Nonnull static public LinearLayout mBadgeContainerLL;
 
         static View addView(final int view_id)
         {
@@ -250,27 +255,28 @@ public class CrosswordFragmentHolder {
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_score);
             mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_bg);
             mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_fg);
+            mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_badges_container);
 
             Bitmap bitmap = null;
 
             switch (view_id){
-                case PANEL_CURRENT_BRILLIANT:{
+                case PANEL_BRILLIANT:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
                     mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
-                case PANEL_CURRENT_GOLD:{
+                case PANEL_GOLD:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
                     mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
-                case PANEL_CURRENT_SILVER:{
+                case PANEL_SILVER:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
                     mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
-                case PANEL_CURRENT_SILVER2:{
+                case PANEL_SILVER2:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag2);
                     mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
-                case PANEL_CURRENT_FREE:{
+                case PANEL_FREE:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
                     mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
@@ -283,7 +289,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
-    static public class CrosswordElementBuy{
+    static public class CrosswordPanelBuy {
         @Nonnull static private ImageView mImage;
         @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mCountCrosswordsTV;
@@ -304,23 +310,23 @@ public class CrosswordFragmentHolder {
             Bitmap bitmap = null;
 
             switch (view_id){
-                case PANEL_CURRENT_BRILLIANT:{
+                case PANEL_BRILLIANT:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
                     mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
-                case PANEL_CURRENT_GOLD:{
+                case PANEL_GOLD:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
                     mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
-                case PANEL_CURRENT_SILVER:{
+                case PANEL_SILVER:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
                     mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
-                case PANEL_CURRENT_SILVER2:{
+                case PANEL_SILVER2:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag2);
                     mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
-                case PANEL_CURRENT_FREE:{
+                case PANEL_FREE:{
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
                     mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
