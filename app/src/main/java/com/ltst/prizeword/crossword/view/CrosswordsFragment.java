@@ -76,17 +76,6 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-        View vCrossordArchiveBrilliant = CrosswordFragmentHolder.CrosswordElementArchive.addView(inflater, CrosswordFragmentHolder.PANEL_ARCHIVE_BRILLIANT);
-        View vCrossordArchiveGold = CrosswordFragmentHolder.CrosswordElementArchive.addView(inflater, CrosswordFragmentHolder.PANEL_ARCHIVE_GOLD);
-        View vCrossordArchiveGFree = CrosswordFragmentHolder.CrosswordElementArchive.addView(inflater, CrosswordFragmentHolder.PANEL_ARCHIVE_FREE);
-        mCrosswordFragmentHolder.mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveBrilliant);
-        mCrosswordFragmentHolder.mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGold);
-        mCrosswordFragmentHolder.mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGFree);
-
-        View vBadgeUnresolved = CrosswordFragmentHolder.BadgeUnresolved.addView(inflater, mCrosswordFragmentHolder.BADGE_UNRESOLVE_FREE, 1);
-
-        CrosswordFragmentHolder.CrosswordElementArchive.mCrosswordContainerLL.addView(vBadgeUnresolved);
-
         return v;
     }
 
