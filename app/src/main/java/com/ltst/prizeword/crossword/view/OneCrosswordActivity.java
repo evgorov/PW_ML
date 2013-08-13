@@ -24,6 +24,7 @@ import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -33,6 +34,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
+
+    public static final @Nonnull String TIMER_TEXT_FORMAT = "%d:%2d";
 
     public static @Nonnull Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, int hintsCount)
     {
@@ -51,6 +54,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull String mCurrentPuzzleServerId;
     private @Nonnull HintsModel mHintsModel;
     private int mHintsCount;
+    private int mTimeLeft;
+    private int mTimeGiven;
+    private boolean mTickerLaunched = false;
 
     private @Nonnull Button mStopPlayBtn;
     private @Nonnull Button mHintBtn;
@@ -61,6 +67,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull TextView mProgressTextView;
     private @Nonnull SeekBar mProgressSeekBar;
 
+    private @Nonnull TextView mTimerTextView;
 
     private boolean mStopPlayFlag;
     private @Nonnull Animation mAnimationSlideInTop;
@@ -97,7 +104,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mProgressTextView = (TextView) findViewById(R.id.gamefield_progressbar_percent);
         mProgressSeekBar = (SeekBar)findViewById(R.id.gamefield_progressbar);
         mProgressSeekBar.setEnabled(false);
-        mStopPlayFlag = true;
+        mTimerTextView = (TextView) findViewById(R.id.header_timer_textview);
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
         super.onStart();
@@ -106,6 +113,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onResume()
     {
+        mStopPlayFlag = true;
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(new IListenerVoid()
         {
@@ -115,6 +123,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 int percent = mPuzzleAdapter.getSolvedQuestionsPercent();
                 mProgressTextView.setText(String.valueOf(percent));
                 mProgressSeekBar.setProgress(percent);
+                mTimeLeft = mPuzzleAdapter.getTimeLeft();
+                mTimeGiven = mPuzzleAdapter.getTimeGiven();
+                fillTimer();
+                if(!mTickerLaunched)
+                    tick();
             }
         });
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
@@ -128,12 +141,20 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     }
 
     @Override
+    protected void onPause()
+    {
+        mStopPlayFlag = false;
+        mTickerLaunched = false;
+        super.onPause();
+    }
+
+    @Override
     protected void onStop()
     {
         mPuzzleView.recycle();
+        mPuzzleAdapter.updatePuzzleUserData();
         super.onStop();
     }
-
 
     @Override
     protected void onDestroy()
@@ -154,27 +175,35 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 useHint();
                 break;
             case R.id.header_stop_play_btn:
-                if (!mStopPlayFlag)
+                if (mStopPlayFlag)
                 {
-
                     mAlertPauseBg.setVisibility(View.VISIBLE);
                     mAnimationSlideInTop.reset();
                     mAlertPause.clearAnimation();
                     mAlertPause.startAnimation(mAnimationSlideInTop);
                     mStopPlayBtn.setBackgroundResource(R.drawable.header_play_but);
-                    mStopPlayFlag=true;
-
-                } else
+                }
+                else
                 {
                     mAnimationSlideOutTop.reset();
                     mAlertPause.clearAnimation();
                     mAlertPause.startAnimation(mAnimationSlideOutTop);
                     mAlertPauseBg.setVisibility(View.GONE);
                     mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
-                    mStopPlayFlag=false;
+                    tick();
                 }
+                mStopPlayFlag = !mStopPlayFlag;
                 break;
         }
+    }
+
+    private void fillTimer()
+    {
+        int time = mTimeGiven - mTimeLeft;
+        int min = time/60;
+        int sec = time - min * 60;
+        String timeText = String.format(TIMER_TEXT_FORMAT, min, sec);
+        mTimerTextView.setText(timeText);
     }
 
     private void useHint()
@@ -214,4 +243,30 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                });
         builder.create().show();
     }
+
+    private void tick()
+    {
+        mTickerLaunched = true;
+        mTimerTextView.postDelayed(mTicker, 1000);
+    }
+
+    private void makeTick()
+    {
+        mTimeLeft --;
+        mPuzzleAdapter.setTimeLeft(mTimeLeft);
+        fillTimer();
+    }
+
+    private Runnable mTicker = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if(mStopPlayFlag)
+            {
+                makeTick();
+                tick();
+            }
+        }
+    };
 }

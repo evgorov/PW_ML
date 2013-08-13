@@ -79,6 +79,32 @@ public class PuzzleResourcesAdapter
         mCurrentInputQuestionIndex = -1;
     }
 
+    public int getTimeLeft()
+    {
+        if (mPuzzle == null)
+        {
+            return 0;
+        }
+        return mPuzzle.timeLeft;
+    }
+
+    public int getTimeGiven()
+    {
+        if (mPuzzle == null)
+        {
+            return 0;
+        }
+        return mPuzzle.timeGiven;
+    }
+
+    public void setTimeLeft(int timeLeft)
+    {
+        if (mPuzzle != null)
+        {
+            mPuzzle.timeLeft = timeLeft;
+        }
+    }
+
     public int getSolvedQuestionsPercent()
     {
         if (mPuzzle == null)
@@ -86,6 +112,11 @@ public class PuzzleResourcesAdapter
             return 0;
         }
         return mPuzzle.solvedPercent;
+    }
+
+    public void updatePuzzleUserData()
+    {
+        mPuzzleModel.updatePuzzleUserData();
     }
 
     public void updatePuzzleStateByTap(int column, int row, @Nullable IListenerVoid confirmedHandler)
@@ -381,7 +412,7 @@ public class PuzzleResourcesAdapter
                     PuzzleQuestion q = qList.get(index);
                     q.isAnswered = true;
                     mPuzzleModel.setQuestionAnswered(q, true);
-                    mPuzzleModel.updatePuzzleUserData();
+                    updatePuzzleUserData();
                 }
             }
         }
