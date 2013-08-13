@@ -1,6 +1,8 @@
 package com.ltst.prizeword.crossword.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +18,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -28,11 +32,13 @@ import javax.annotation.Nullable;
 public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
+    public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
-    public static @Nonnull Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set)
+    public static @Nonnull Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, int hintsCount)
     {
         Intent intent = new Intent(context, OneCrosswordActivity.class);
         intent.putExtra(BF_PUZZLE_SET, set);
+        intent.putExtra(BF_HINTS_COUNT, hintsCount);
         return intent;
     }
 
@@ -43,6 +49,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull PuzzleView mPuzzleView;
     private @Nonnull PuzzleResourcesAdapter mPuzzleAdapter;
     private @Nonnull String mCurrentPuzzleServerId;
+    private @Nonnull HintsModel mHintsModel;
+    private int mHintsCount;
 
     private @Nonnull Button mStopPlayBtn;
     private @Nonnull Button mHintBtn;
@@ -68,9 +76,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         if (extras != null)
         {
             mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
+            mHintsCount = extras.getInt(BF_HINTS_COUNT);
         }
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
         mBcConnector = new BcConnector(this);
+        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
         mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(0);
     }
 
@@ -113,6 +123,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mMenuBtn.setOnClickListener(this);
         mStopPlayBtn.setOnClickListener(this);
         mHintBtn.setOnClickListener(this);
+        mHintBtn.setText(String.valueOf(mHintsCount));
         super.onResume();
     }
 
@@ -140,6 +151,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             case R.id.gamefild_next_btn:
                 break;
             case R.id.header_hint_btn:
+                useHint();
                 break;
             case R.id.header_stop_play_btn:
                 if (!mStopPlayFlag)
@@ -163,5 +175,43 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
                 break;
         }
+    }
+
+    private void useHint()
+    {
+        if(!mPuzzleAdapter.isInputMode())
+            return;
+
+        mPuzzleView.hideKeyboard();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.gamefield_hint_dialog_message)
+               .setTitle(R.string.gamefield_hint_dialog_title)
+               .setPositiveButton(R.string.gamefield_hint_dialog_ok, new DialogInterface.OnClickListener()
+               {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which)
+                   {
+                       mHintsCount --;
+                       mHintsModel.changeHints(-1, new IListenerVoid()
+                       {
+                           @Override
+                           public void handle()
+                           {
+                               mHintBtn.setText(String.valueOf(mHintsCount));
+                               mPuzzleAdapter.setCurrentQuestionCorrect();
+                               mPuzzleView.invalidate();
+                           }
+                       });
+                   }
+               })
+               .setNegativeButton(R.string.gamefield_hint_dialog_cancel, new DialogInterface.OnClickListener()
+               {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which)
+                   {
+                        mPuzzleView.openKeyboard();
+                   }
+               });
+        builder.create().show();
     }
 }

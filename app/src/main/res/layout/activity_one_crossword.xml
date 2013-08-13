@@ -39,7 +39,7 @@
                 style="@style/GamefieldHintBtnText"
                 android:background="@drawable/header_hint_but"
                 android:drawableLeft="@drawable/header_hint_draw"
-                android:text="10"/>
+                />
     </FrameLayout>
 
     <FrameLayout

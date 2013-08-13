@@ -160,7 +160,7 @@ public class PuzzleView extends View
         }
     }
 
-    private void openKeyboard()
+    public void openKeyboard()
     {
         if (this.requestFocus())
         {
@@ -171,7 +171,7 @@ public class PuzzleView extends View
         }
     }
 
-    private void hideKeyboard()
+    public void hideKeyboard()
     {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);

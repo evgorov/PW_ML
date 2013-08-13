@@ -64,6 +64,12 @@ public class PuzzleResourcesAdapter
         isInputMode = true;
         mCurrentInputBuffer = new StringBuffer();
     }
+
+    public boolean isInputMode()
+    {
+        return isInputMode;
+    }
+
     private void resetInputMode()
     {
         isInputMode = false;
@@ -320,6 +326,35 @@ public class PuzzleResourcesAdapter
         else
             return false;
 
+    }
+
+    public void setCurrentQuestionCorrect()
+    {
+        if (mCurrentAnswerIterator == null)
+        {
+            return;
+        }
+        mCurrentAnswerIterator.reset();
+        setCurrentQuestionCorrect(true);
+        setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleTileState puzzleTileState)
+            {
+                if (puzzleTileState == null)
+                {
+                    return;
+                }
+
+                if(puzzleTileState.getLetterState() != PuzzleTileState.LetterState.LETTER_CORRECT)
+                {
+                    String letter = String.valueOf(mCurrentAnswerIterator.getCurrentLetter()).toUpperCase();
+                    puzzleTileState.setInputLetter(letter);
+                    puzzleTileState.setLetterCorrect(true);
+                }
+            }
+        });
+        resetInputMode();
     }
 
     private void setCurrentQuestionCorrect(boolean correct)

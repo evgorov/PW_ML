@@ -166,7 +166,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
         if (freeSet != null)
         {
-            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet);
+            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
             mContext.startActivity(intent);
         }
     }
