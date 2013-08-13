@@ -473,4 +473,21 @@ public class RestClient implements IRestClient
         }
         return entity.getStatusCode();
     }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder addOrRemoveHints(@Nonnull String sessionKey, int hintsToChange)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.HINTS_CHANGE, hintsToChange);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestUserData.RestUserDataHolder> holder =
+                restTemplate.exchange(RestParams.URL_ADD_REMOVE_HINTS, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+        holder.getBody().setStatusCode(holder.getStatusCode());
+        return holder.getBody();
+    }
 }
