@@ -58,40 +58,41 @@ public class RestPuzzleUserData
         private @JsonProperty("column") int column;
         private @JsonProperty("row") int row;
 
-        private RestSolvedQuestion()
+        public RestSolvedQuestion()
         {
         }
 
-        private String getId()
+        public String getId()
         {
             return id;
         }
 
-        private void setId(String id)
+        public void setId(String id)
         {
             this.id = id;
         }
 
-        private int getColumn()
+        public int getColumn()
         {
             return column;
         }
 
-        private void setColumn(int column)
+        public void setColumn(int column)
         {
             this.column = column;
         }
 
-        private int getRow()
+        public int getRow()
         {
             return row;
         }
 
-        private void setRow(int row)
+        public void setRow(int row)
         {
             this.row = row;
         }
     }
+
 
     public static class RestPuzzleUserDataHolder
     {
@@ -137,6 +138,11 @@ public class RestPuzzleUserData
     public static @Nonnull String getQuestionCRID(int col, int row)
     {
         return  col + "_" + row;
+    }
+
+    public static @Nonnull String getSolvedQuestionId(@Nonnull String puzzleId, int col, int row)
+    {
+        return puzzleId + "_" + (col) + "_" + (row);
     }
 
     public static void checkQuestionOnAnswered(@Nonnull PuzzleQuestion q, @Nullable HashSet<String> solvedQuestionIdsSet)

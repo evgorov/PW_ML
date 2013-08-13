@@ -10,7 +10,11 @@ import com.ltst.prizeword.rest.RestParams;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
+
+import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -68,6 +72,13 @@ public class OnePuzzleModel implements IOnePuzzleModel
                 return SetQuestionAnsweredTask.createIntent(id, isAnswered);
             }
         };
+        updater.update(null);
+    }
+
+    @Override
+    public void updatePuzzleUserData()
+    {
+        PuzzleUserDataUpdater updater = new PuzzleUserDataUpdater();
         updater.update(null);
     }
 
@@ -134,6 +145,48 @@ public class OnePuzzleModel implements IOnePuzzleModel
         protected void handleData(@Nullable Bundle result)
         {
             // ничего делать не надо
+        }
+    }
+
+    private class PuzzleUserDataUpdater extends ModelUpdater<IBcTask.BcTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            ArrayList<PuzzleQuestion> questions = (ArrayList<PuzzleQuestion>) mPuzzle.questions;
+            return UpdatePuzzleUserDataOnServerTask.createIntent(mSessionKey,
+                    mPuzzleServerId,
+                    mPuzzle.timeLeft,
+                    mPuzzle.score,
+                    questions);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        {
+            return UpdatePuzzleUserDataOnServerTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        {
+            return BcService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            // пока ничего не обрабатываем
         }
     }
 

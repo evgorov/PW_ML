@@ -337,6 +337,7 @@ public class PuzzleResourcesAdapter
                     PuzzleQuestion q = qList.get(index);
                     q.isAnswered = true;
                     mPuzzleModel.setQuestionAnswered(q, true);
+                    mPuzzleModel.updatePuzzleUserData();
                 }
             }
         }

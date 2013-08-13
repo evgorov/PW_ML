@@ -1,10 +1,6 @@
 package com.ltst.prizeword.rest;
 
-import android.util.SparseArray;
-
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import javax.annotation.Nonnull;
 
 public class RestPuzzleQuestion
 {

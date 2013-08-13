@@ -449,20 +449,19 @@ public class RestClient implements IRestClient
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         urlVariables.put(RestParams.PUZZLE_DATA, puzzleUserData);
-        String url = String.format(RestParams.URL_GET_PUZZLE_USERDATA, puzzleId);
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-        messageConverters.add(new FormHttpMessageConverter());
-        messageConverters.add(new StringHttpMessageConverter());
-        restTemplate.setMessageConverters(messageConverters);
+        String url = String.format(RestParams.URL_PUT_PUZZLE_USERDATA, puzzleId);
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        @Nullable ResponseEntity<String> entity = null;
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        @Nullable ResponseEntity<RestUserData.RestAnswerMessageHolder> entity = null;
         try
         {
-            entity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class, urlVariables);
+            entity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, RestUserData.RestAnswerMessageHolder.class, urlVariables);
         }
-        catch (HttpClientErrorException e)
-        {
+        catch (Exception e){
+            Log.e(e.getMessage());
         }
         finally
         {
@@ -472,9 +471,6 @@ public class RestClient implements IRestClient
                 return status;
             }
         }
-        if (entity != null)
-            return entity.getStatusCode();
-        else
-            return null;
+        return entity.getStatusCode();
     }
 }

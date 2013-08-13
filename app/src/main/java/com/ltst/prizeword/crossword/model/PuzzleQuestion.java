@@ -3,6 +3,9 @@ package com.ltst.prizeword.crossword.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.ltst.prizeword.rest.RESTable;
+import com.ltst.prizeword.rest.RestPuzzleQuestion;
+import com.ltst.prizeword.rest.RestPuzzleUserData;
 import com.ltst.prizeword.tools.ParcelableTools;
 
 import javax.annotation.Nonnull;
