@@ -112,15 +112,20 @@
 
     </LinearLayout>
 
-    <LinearLayout
-            android:id="@+id/crossword_current_brilliant_badges_container"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <GridView
+              android:id="@+id/crossword_current_brilliant_badges_container"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:columnWidth="90dp"
+              android:numColumns="auto_fit"
+              android:verticalSpacing="8dp"
+              android:horizontalSpacing="8dp"
+              android:stretchMode="columnWidth"
+              android:gravity="left">
 
-        <!--@TODO with crosswordss-->
+            <!--@TODO add crosswords panels-->
 
-    </LinearLayout>
+    </GridView>
 
 </LinearLayout>

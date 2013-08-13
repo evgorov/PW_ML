@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -90,13 +91,9 @@ public class CrosswordFragmentHolder {
         mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
         mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGFree);
 
-        View vBadgeUnresolved = BadgeUnresolved.addView(BADGE_UNRESOLVE_FREE, 1);
-        CrosswordPanelArchive.mBadgeContainerLL.addView(vBadgeUnresolved);
-
-        View vBadgeResolved2 = BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 2);
-        View vBadgeResolved21 = BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 21);
-        CrosswordPanelCurrent.mBadgeContainerLL.addView(vBadgeResolved2);
-        CrosswordPanelCurrent.mBadgeContainerLL.addView(vBadgeResolved21);
+        CrosswordPanelArchive.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_UNRESOLVE_FREE, 1));
+        CrosswordPanelCurrent.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 2));
+        CrosswordPanelCurrent.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 21));
 
     }
 
@@ -186,7 +183,7 @@ public class CrosswordFragmentHolder {
         @Nonnull static public LinearLayout mProgressBackgroudLL;
         @Nonnull static public LinearLayout mProgressForegroudLL;
 
-        @Nonnull static public LinearLayout mBadgeContainerLL;
+        @Nonnull static public GridView mBadgeContainerLL;
 
         @Nonnull static public ToggleButton mSwitchToogleButton;
 
@@ -199,7 +196,7 @@ public class CrosswordFragmentHolder {
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_score);
             mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_bg);
             mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_fg);
-            mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_badges_container);
+            mBadgeContainerLL = (GridView) view.findViewById(R.id.crossword_archive_brilliant_badges_container);
             mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_brilliant_switcher);
 
             switch (view_id){
@@ -243,7 +240,7 @@ public class CrosswordFragmentHolder {
         @Nonnull static public TextView mTotalScoreTV;
         @Nonnull static public LinearLayout mProgressBackgroudLL;
         @Nonnull static public LinearLayout mProgressForegroudLL;
-        @Nonnull static public LinearLayout mBadgeContainerLL;
+        @Nonnull static public GridView mBadgeContainerLL;
 
         static View addView(final int view_id)
         {
@@ -255,7 +252,7 @@ public class CrosswordFragmentHolder {
             mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_score);
             mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_bg);
             mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_fg);
-            mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_badges_container);
+            mBadgeContainerLL = (GridView) view.findViewById(R.id.crossword_current_brilliant_badges_container);
 
             Bitmap bitmap = null;
 
