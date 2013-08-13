@@ -395,7 +395,6 @@ public class CrosswordFragmentHolder {
             mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
 
             @Nonnull Bitmap bitmap = null;
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
 
             switch (view_id){
                 case BADGE_UNRESOLVE_BRILLIANT:{
