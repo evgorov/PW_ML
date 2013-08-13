@@ -19,13 +19,15 @@
             android:gravity="center_vertical"
             android:layout_marginTop="8dp">
 
-        <LinearLayout
+        <ImageView
+                android:id="@+id/crossword_buy_brilliant_logo_image"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/puzzles_set_br"/>
 
         <TextView
+                android:id="@+id/crossword_buy_brilliant_title_text"
                 android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                 android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"

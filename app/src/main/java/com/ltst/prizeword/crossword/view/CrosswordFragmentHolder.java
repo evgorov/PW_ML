@@ -175,6 +175,7 @@ public class CrosswordFragmentHolder {
 
 
     static public class CrosswordElementArchive{
+        @Nonnull static public TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
         @Nonnull static public TextView mPercentResolvedTV;
         @Nonnull static public TextView mTotalScoreTV;
@@ -187,58 +188,31 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view = null;
+            @Nonnull View view =  mInflater.inflate(R.layout.crossword_archive_brilliant, null, false);
+            mTitleTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_title_text);
+            mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_partition);
+            mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_percent);
+            mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_score);
+            mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_bg);
+            mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_fg);
+            mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_badges_container);
+            mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_brilliant_switcher);
 
             switch (view_id){
                 case PANEL_ARCHIVE_BRILLIANT:{
-                    view =  mInflater.inflate(R.layout.crossword_archive_brilliant, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_progress_fg);
-                    mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_brilliant_badges_container);
-                    mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_brilliant_switcher);
+                    mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
                 case PANEL_ARCHIVE_GOLD:{
-                    view = mInflater.inflate(R.layout.crossword_archive_gold, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_gold_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_gold_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_gold_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_gold_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_gold_progress_fg);
-                    mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_gold_badges_container);
-                    mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_gold_switcher);
+                    mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
                 case PANEL_ARCHIVE_SILVER:{
-                    view = mInflater.inflate(R.layout.crossword_archive_silver, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_silver_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver_progress_fg);
-                    mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver_badges_container);
-                    mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_silver_switcher);
+                    mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
                 case PANEL_ARCHIVE_SILVER2:{
-                    view = mInflater.inflate(R.layout.crossword_archive_silver2, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_silver2_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver2_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver2_progress_fg);
-                    mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_silver2_badges_container);
-                    mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_silver2_switcher);
+                    mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
                 case PANEL_ARCHIVE_FREE:{
-                    view = mInflater.inflate(R.layout.crossword_archive_free, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_free_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_free_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_archive_free_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_free_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_archive_free_progress_fg);
-                    mBadgeContainerLL = (LinearLayout) view.findViewById(R.id.crossword_archive_free_badges_container);
-                    mSwitchToogleButton = (ToggleButton) view.findViewById(R.id.crossword_archive_free_switcher);
+                    mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
 
                 default: break;
@@ -258,6 +232,8 @@ public class CrosswordFragmentHolder {
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
     static public class CrosswordElementCurrent{
+        @Nonnull static private ImageView mImage;
+        @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
         @Nonnull static public TextView mPercentResolvedTV;
         @Nonnull static public TextView mTotalScoreTV;
@@ -266,50 +242,41 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view = null;
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_current_brilliant, null, false);
+            mImage = (ImageView) view.findViewById(R.id.crossword_current_brilliant_logo_image);
+            mTitleTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_title_text);
+            mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_partition);
+            mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_percent);
+            mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_score);
+            mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_bg);
+            mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_fg);
+
+            Bitmap bitmap = null;
+
             switch (view_id){
                 case PANEL_CURRENT_BRILLIANT:{
-                    view = mInflater.inflate(R.layout.crossword_current_brilliant, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_brilliant_progress_fg);
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
+                    mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
                 case PANEL_CURRENT_GOLD:{
-                    view = mInflater.inflate(R.layout.crossword_current_gold, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_gold_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_gold_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_gold_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_gold_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_gold_progress_fg);
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
+                    mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
                 case PANEL_CURRENT_SILVER:{
-                    view = mInflater.inflate(R.layout.crossword_current_silver, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_silver_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_silver_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_silver_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_silver_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_silver_progress_fg);
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
+                    mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
                 case PANEL_CURRENT_SILVER2:{
-                    view = mInflater.inflate(R.layout.crossword_current_silver2, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_silver2_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_silver2_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_silver2_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_silver2_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_silver2_progress_fg);
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag2);
+                    mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
                 case PANEL_CURRENT_FREE:{
-                    view = mInflater.inflate(R.layout.crossword_current_free, null, false);
-                    mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_free_partition);
-                    mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_current_free_percent);
-                    mTotalScoreTV = (TextView) view.findViewById(R.id.crossword_current_free_score);
-                    mProgressBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_free_progress_bg);
-                    mProgressForegroudLL = (LinearLayout) view.findViewById(R.id.crossword_current_free_progress_fg);
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
+                    mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
                 default: break;
             }
+            mImage.setImageBitmap(bitmap);
             return view;
         }
     }
@@ -317,6 +284,8 @@ public class CrosswordFragmentHolder {
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
     static public class CrosswordElementBuy{
+        @Nonnull static private ImageView mImage;
+        @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mCountCrosswordsTV;
         @Nonnull static public TextView mCountScoreTV;
         @Nonnull static public LinearLayout mBuyButton;
@@ -324,45 +293,41 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view = null;
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_buy_brilliant, null, false);
+            mImage = (ImageView) view.findViewById(R.id.crossword_buy_brilliant_logo_image);
+            mTitleTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_title_text);
+            mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_count);
+            mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_count);
+            mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_brilliant_buy_button);
+            mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_price);
+
+            Bitmap bitmap = null;
+
             switch (view_id){
-                case PANEL_BUY_BRILLIANT:{
-                    view = mInflater.inflate(R.layout.crossword_buy_brilliant, null, false);
-                    mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_count);
-                    mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_count);
-                    mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_brilliant_buy_button);
-                    mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_price);
+                case PANEL_CURRENT_BRILLIANT:{
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
+                    mTitleTV.setText(R.string.puzzless_hint_brilliant_crossword);
                 }break;
-                case PANEL_BUY_GOLD:{
-                    view = mInflater.inflate(R.layout.crossword_buy_gold, null, false);
-                    mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_gold_buy_count);
-                    mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_gold_buy_count);
-                    mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_gold_buy_button);
-                    mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_gold_buy_price);
+                case PANEL_CURRENT_GOLD:{
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
+                    mTitleTV.setText(R.string.puzzless_hint_gold_crossword);
                 }break;
-                case PANEL_BUY_SILVER:{
-                    view = mInflater.inflate(R.layout.crossword_buy_silver, null, false);
-                    mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_silver_buy_count);
-                    mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_silver_buy_count);
-                    mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_silver_buy_button);
-                    mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_silver_buy_price);
+                case PANEL_CURRENT_SILVER:{
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
+                    mTitleTV.setText(R.string.puzzless_hint_silver_crossword);
                 }break;
-                case PANEL_BUY_SILVER2:{
-                    view = mInflater.inflate(R.layout.crossword_buy_silver2, null, false);
-                    mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_silver2_buy_count);
-                    mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_silver2_buy_count);
-                    mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_silver2_buy_button);
-                    mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_silver2_buy_price);
+                case PANEL_CURRENT_SILVER2:{
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag2);
+                    mTitleTV.setText(R.string.puzzless_hint_silver2_crossword);
                 }break;
-                case PANEL_BUY_FREE:{
-                    view = mInflater.inflate(R.layout.crossword_buy_free, null, false);
-                    mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_free_buy_count);
-                    mCountScoreTV = (TextView) view.findViewById(R.id.crossword_buy_free_buy_count);
-                    mBuyButton = (LinearLayout) view.findViewById(R.id.crossword_buy_free_buy_button);
-                    mBuyPriceTV = (TextView) view.findViewById(R.id.crossword_buy_free_buy_price);
+                case PANEL_CURRENT_FREE:{
+                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
+                    mTitleTV.setText(R.string.puzzless_hint_free_crossword);
                 }break;
                 default: break;
             }
+            mImage.setImageBitmap(bitmap);
+
             return view;
         }
     }
@@ -370,37 +335,34 @@ public class CrosswordFragmentHolder {
     // ================== CROSSWORD BADGES ======================
 
     static public class BadgeResolved{
+        @Nonnull static public LinearLayout mBackgroudLL;
         @Nonnull static public LinearLayout mBitmapLL;
         @Nonnull static public TextView mScoreTV;
 
         static View addView(final int view_id, final int number)
         {
-            @Nonnull View view = null;
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_brilliant_resolved, null, false);
+            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
+            mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_badge_bg);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
             @Nonnull Bitmap bitmap = null;
+
             switch (view_id){
                 case BADGE_RESOLVE_BRILLIANT:{
-                    view = mInflater.inflate(R.layout.crossword_badge_brilliant_resolved, null, false);
-                    mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_brilliant));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
                 }break;
                 case BADGE_RESOLVE_GOLD:{
-                    view = mInflater.inflate(R.layout.crossword_badge_gold_resolved, null, false);
-                    mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_gold_score);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_gold_number_container);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_gold));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersGold.get(number));
                 }break;
                 case BADGE_RESOLVE_SILVER:
                 case BADGE_RESOLVE_SILVER2:{
-                    view = mInflater.inflate(R.layout.crossword_badge_silver_resolved, null, false);
-                    mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_silver_score);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_silver_number_container);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_silver));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersSilver.get(number));
                 }break;
                 case BADGE_RESOLVE_FREE:{
-                    view = mInflater.inflate(R.layout.crossword_badge_free_resolved, null, false);
-                    mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_free_score);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_free_number_container);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_free));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersFree.get(number));
                 }break;
                 default: break;
@@ -416,46 +378,38 @@ public class CrosswordFragmentHolder {
     static public class BadgeUnresolved{
         @Nonnull static public TextView mPercentTV;
         @Nonnull static public LinearLayout mBitmapLL;
+        @Nonnull static public LinearLayout mBackgroudLL;
         @Nonnull static public LinearLayout mProgressBGLL;
         @Nonnull static public LinearLayout mProgressFGLL;
 
         static View addView(final int view_id, final int number)
         {
-            @Nonnull View view = null;
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_brilliant_unresolved, null, false);
+            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
+            mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_badge_bg);
+            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
+            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
+            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
+
             @Nonnull Bitmap bitmap = null;
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
 
             switch (view_id){
                 case BADGE_UNRESOLVE_BRILLIANT:{
-                    view = mInflater.inflate(R.layout.crossword_badge_brilliant_unresolved, null, false);
-                    mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
-                    mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
-                    mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_brilliant));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
                 }break;
                 case BADGE_UNRESOLVE_GOLD:{
-                    view = mInflater.inflate(R.layout.crossword_badge_gold_unresolved, null, false);
-                    mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_gold_percent);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_number_container);
-                    mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_progress_bg);
-                    mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_gold_progress_fg);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_gold));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersGold.get(number));
                 }break;
                 case BADGE_UNRESOLVE_SILVER:
                 case BADGE_UNRESOLVE_SILVER2:{
-                    view = mInflater.inflate(R.layout.crossword_badge_silver_unresolved, null, false);
-                    mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_silver_percent);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_number_container);
-                    mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_progress_bg);
-                    mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_silver_progress_fg);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_silver));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersSilver.get(number));
                 }break;
                 case BADGE_UNRESOLVE_FREE:{
-                    view = mInflater.inflate(R.layout.crossword_badge_free_unresolved, null, false);
-                    mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_free_percent);
-                    mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_number_container);
-                    mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_progress_bg);
-                    mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_free_progress_fg);
+                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_free));
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersFree.get(number));
                 }break;
                 default: break;

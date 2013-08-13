@@ -13,6 +13,7 @@
             android:background="@drawable/puzzles_badge_done_bg">
 
         <LinearLayout
+                android:id="@+id/crossword_badge_unresolved_brilliant_badge_bg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

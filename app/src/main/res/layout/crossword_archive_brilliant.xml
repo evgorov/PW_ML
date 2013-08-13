@@ -13,6 +13,7 @@
             android:layout_marginTop="8dp">
 
         <TextView
+                android:id="@+id/crossword_archive_brilliant_title_text"
                 android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"
                 android:text="@string/puzzless_hint_brilliant_crossword"/>
