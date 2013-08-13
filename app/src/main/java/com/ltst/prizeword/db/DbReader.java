@@ -221,6 +221,7 @@ public class DbReader implements IDbReader
         if (puzzle != null)
         {
             puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+            puzzle.countSolvedPercent();
         }
         return puzzle;
     }

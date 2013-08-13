@@ -73,6 +73,15 @@ public class PuzzleResourcesAdapter
         mCurrentInputQuestionIndex = -1;
     }
 
+    public int getSolvedQuestionsPercent()
+    {
+        if (mPuzzle == null)
+        {
+            return 0;
+        }
+        return mPuzzle.solvedPercent;
+    }
+
     public void updatePuzzleStateByTap(int column, int row, @Nullable IListenerVoid confirmedHandler)
     {
         if (mResources == null)
@@ -443,11 +452,11 @@ public class PuzzleResourcesAdapter
         @Override
         public void handle()
         {
+            mPuzzle = mPuzzleModel.getPuzzle();
             if (mPuzzleUpdater != null)
             {
                 mPuzzleUpdater.handle();
             }
-            mPuzzle = mPuzzleModel.getPuzzle();
             updateResources();
         }
     };

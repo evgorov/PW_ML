@@ -2,11 +2,15 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
@@ -46,8 +50,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mNextBtn;
     private @Nonnull View mAlertPause;
     private @Nonnull View mAlertPauseBg;
+    private @Nonnull TextView mProgressTextView;
+    private @Nonnull SeekBar mProgressSeekBar;
 
-    private @Nonnull boolean mStopPlayFlag;
+
+    private boolean mStopPlayFlag;
     private @Nonnull Animation mAnimationSlideInTop;
     private @Nonnull Animation mAnimationSlideOutTop;
 
@@ -77,6 +84,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mHintBtn = (Button) findViewById(R.id.header_hint_btn);
         mAlertPause = findViewById(R.id.gamefild_pause_alert);
         mAlertPauseBg = findViewById(R.id.gamefild_pause_bg);
+        mProgressTextView = (TextView) findViewById(R.id.gamefield_progressbar_percent);
+        mProgressSeekBar = (SeekBar)findViewById(R.id.gamefield_progressbar);
+        mProgressSeekBar.setEnabled(false);
         mStopPlayFlag = true;
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
@@ -87,8 +97,18 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onResume()
     {
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
-        mPuzzleView.setAdapter(mPuzzleAdapter);
+        mPuzzleAdapter.setPuzzleUpdater(new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                int percent = mPuzzleAdapter.getSolvedQuestionsPercent();
+                mProgressTextView.setText(String.valueOf(percent));
+                mProgressSeekBar.setProgress(percent);
+            }
+        });
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
+        mPuzzleView.setAdapter(mPuzzleAdapter);
         mNextBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
         mStopPlayBtn.setOnClickListener(this);
