@@ -188,7 +188,7 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view =  mInflater.inflate(R.layout.crossword_archive_brilliant, null, false);
+            @Nonnull View view =  mInflater.inflate(R.layout.crossword_panel_archive, null, false);
             mTitleTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_title_text);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_partition);
             mPercentResolvedTV = (TextView) view.findViewById(R.id.crossword_archive_brilliant_percent);
@@ -242,7 +242,7 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_current_brilliant, null, false);
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_panel_current, null, false);
             mImage = (ImageView) view.findViewById(R.id.crossword_current_brilliant_logo_image);
             mTitleTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_title_text);
             mRatioResolvedTV = (TextView) view.findViewById(R.id.crossword_current_brilliant_partition);
@@ -293,7 +293,7 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id)
         {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_buy_brilliant, null, false);
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_panel_buy, null, false);
             mImage = (ImageView) view.findViewById(R.id.crossword_buy_brilliant_logo_image);
             mTitleTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_title_text);
             mCountCrosswordsTV = (TextView) view.findViewById(R.id.crossword_buy_brilliant_buy_count);
@@ -341,7 +341,7 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id, final int number)
         {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_brilliant_resolved, null, false);
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_resolved, null, false);
             mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
             mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_badge_bg);
             mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
@@ -384,7 +384,7 @@ public class CrosswordFragmentHolder {
 
         static View addView(final int view_id, final int number)
         {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_brilliant_unresolved, null, false);
+            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_unresolved, null, false);
             mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
             mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_badge_bg);
             mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
