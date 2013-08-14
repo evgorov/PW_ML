@@ -135,6 +135,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"/>
                         <TextView
+                                android:id="@+id/crossword_fragment_current_month"
                                 android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                 android:textSize="@dimen/puzzles_badge_set_title_text_size"
                                 style="@style/PuzzlesHintTitleTextStyle"
@@ -194,11 +195,12 @@
                     <LinearLayout
                             android:id="@+id/crossword_fragment_current_container"
                             android:orientation="vertical"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:layout_width="match_parent">
 
                         <!--@TODO input brillian current crossword-->
-                        <!--<include layout="@layout/crossword_current_brilliant"/>-->
+                        <!--<include layout="@layout/crossword_panel_current"/>-->
 
                     </LinearLayout>
 
@@ -406,10 +408,6 @@
                             android:text="@string/puzzless_hint_archives"/>
 
                     <!--@TODO input brillian current crossword-->
-
-                    <include layout="@layout/crossword_spliter_month"/>
-
-                    <!--<include layout="@layout/crossword_archive_brilliant"/>-->
 
                 </LinearLayout>
             </FrameLayout>
