@@ -60,6 +60,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsPuzzleQuestions.QUESTION_TEXT     + " text not null, "
             + ColsPuzzleQuestions.ANSWER            + " text not null, "
             + ColsPuzzleQuestions.ANSWER_POSITION   + " text not null, "
+            + ColsPuzzleQuestions.IS_ANSWERED + " boolean default false, "
             + " foreign key (" + ColsPuzzleQuestions.PUZZLE_ID + ") references "
             + TNAME_PUZZLES + " (" + ColsPuzzles.ID + ") on delete cascade)";
 
@@ -137,12 +138,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final class ColsPuzzleQuestions
     {
         public static final @Nonnull String ID              = "_id";
-        public static final @Nonnull String PUZZLE_ID = "puzzleDataId";
+        public static final @Nonnull String PUZZLE_ID       = "puzzleDataId";
         public static final @Nonnull String COLUMN          = "column";
         public static final @Nonnull String ROW             = "row";
         public static final @Nonnull String QUESTION_TEXT   = "questionText";
         public static final @Nonnull String ANSWER          = "answer";
         public static final @Nonnull String ANSWER_POSITION = "answerPosition";
+        public static final @Nonnull String IS_ANSWERED     = "isAnswered";
     }
 
     public static final class ColsUsers

@@ -11,4 +11,5 @@ public interface IPuzzleSetModel
     void updateDataByDb(@Nonnull IListenerVoid handler);
     void updateDataByInternet(@Nonnull IListenerVoid handler);
     @Nonnull List<PuzzleSet> getPuzzleSets();
+    int getHintsCount();
 }

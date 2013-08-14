@@ -25,6 +25,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadPuzzleSetsFromInternet.sessionKey";
     public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
 
     public static final @Nonnull Intent createIntent(@Nonnull String sessionKey)
@@ -62,7 +63,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             {
                 ArrayList<PuzzleSet> sets = extractFromRest(data);
                 env.dbw.putPuzzleSetList(sets);
-                return packToBundle(sets, data.getHttpStatus().value());
+                return getFromDatabase(env);
             }
         }
         return getFromDatabase(env);
@@ -96,21 +97,19 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return sets;
     }
 
-    private static @Nonnull Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int status)
+    private static @Nonnull Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, int status)
     {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PUZZLE_SETS, sets);
         bundle.putInt(BF_STATUS_CODE, status);
+        bundle.putInt(BF_HINTS_COUNT, hintsCount);
         return  bundle;
     }
 
     public static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
-        for (PuzzleSet set : sets)
-        {
-            set.isBought = false;
-        }
-        return packToBundle(new ArrayList<PuzzleSet>(sets), RestParams.SC_SUCCESS);
+        int hintsCount = env.dbw.getUserHintsCount();
+        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, RestParams.SC_SUCCESS);
     }
 }

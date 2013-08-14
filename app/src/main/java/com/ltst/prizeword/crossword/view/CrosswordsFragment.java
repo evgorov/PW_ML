@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
@@ -25,6 +26,7 @@ import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.List;
@@ -47,7 +49,10 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
+    private @Nonnull HintsManager mHintsManager;
 
+    private @Nonnull View mRoot;
+    private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
 
@@ -120,13 +125,18 @@ public class CrosswordsFragment extends SherlockFragment
 //        mCrosswordFragmentHolder.addPanel(dataPanel1);
 //        mCrosswordFragmentHolder.addPanel(dataPanel2);
 
-        return v;
+       mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
+
+        mRoot = v;
+       return v;
     }
 
     @Override
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+        mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mPuzzleSetModel.updateDataByInternet(updateHandler);
         mPuzzleSetModel.updateDataByDb(updateHandler);
@@ -181,7 +191,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
         if (freeSet != null)
         {
-            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet);
+            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
             mContext.startActivity(intent);
         }
     }
@@ -191,7 +201,16 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+        }
+    };
 
+    private IListenerInt hintsChangeHandler = new IListenerInt()
+    {
+        @Override
+        public void handle(int i)
+        {
+            mPuzzleSetModel.updateDataByDb(updateHandler);
         }
     };
 
@@ -247,4 +266,5 @@ public class CrosswordsFragment extends SherlockFragment
             }
         }
     }
+
 }

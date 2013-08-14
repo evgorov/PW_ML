@@ -210,6 +210,21 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     }
 
+    @Override
+    public void setQuestionAnswered(final long questionId, final boolean answered)
+    {
+        final ContentValues values = new ContentValues();
+        values.put(ColsPuzzleQuestions.IS_ANSWERED, answered);
+
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.update(TNAME_PUZZLE_QUESTIONS, values, ColsPuzzleQuestions.ID + "=" + questionId, null);
+            }
+        });
+    }
 
     //===== ContentValues creators =======================
 
@@ -324,6 +339,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.questionText);
             cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
             cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
+            cv.put(ColsPuzzleQuestions.IS_ANSWERED, object.isAnswered);
             return cv;
         }
     };
