@@ -572,7 +572,8 @@ public class PuzzleResourcesAdapter
             {
                 mPuzzleUpdater.handle();
             }
-            updateResources();
+            if(mPuzzle != null && !mPuzzle.isSolved)
+                updateResources();
         }
     };
 }

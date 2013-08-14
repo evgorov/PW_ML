@@ -38,7 +38,7 @@ public class PuzzleManager
 
     private float MIN_SCALE;
     private float MAX_SCALE = 1.0f;
-    private boolean mScaled;
+    private boolean mScaled = true;
     private volatile float mCurrentScale = MAX_SCALE;
     private boolean mIsAnimating;
 
@@ -81,14 +81,14 @@ public class PuzzleManager
         MIN_SCALE = Math.min(scaleHeight, scaleWidth);
         mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
 
-        mScaled = true;
         mScaledViewRect = new Rect(0, 0,
                 mFieldDrawer.getActualWidth(),
                 mFieldDrawer.getActualHeight());
 
         mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+        checkFocusViewPoint();
         mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
-                focusOffsetRect, oldViewRect, mPuzzleViewRect);
+                focusOffsetRect, oldViewRect, mScaled ? mPuzzleViewRect : mScaledViewRect);
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
