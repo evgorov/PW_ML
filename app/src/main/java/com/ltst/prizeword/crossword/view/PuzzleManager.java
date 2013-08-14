@@ -66,6 +66,8 @@ public class PuzzleManager
         if (mPuzzleViewRect != null)
         {
             oldViewRect = new Rect(mPuzzleViewRect);
+            if (oldViewRect.equals(puzzleViewRect))
+                return;
         }
         if (mFocusViewPoint != null)
         {
