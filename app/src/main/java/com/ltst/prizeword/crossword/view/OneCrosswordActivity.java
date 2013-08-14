@@ -52,6 +52,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull PuzzleView mPuzzleView;
     private @Nonnull PuzzleResourcesAdapter mPuzzleAdapter;
     private @Nonnull String mCurrentPuzzleServerId;
+    private int mCurrentPuzzleIndex = 0;
+    private int mPuzzlesCount;
+
     private @Nonnull HintsModel mHintsModel;
     private int mHintsCount;
     private int mTimeLeft;
@@ -88,7 +91,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
         mBcConnector = new BcConnector(this);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
-        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(0);
+        mPuzzlesCount = mPuzzleSet.puzzlesId.size();
     }
 
     @Override
@@ -115,28 +118,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         mStopPlayFlag = true;
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
-        mPuzzleAdapter.setPuzzleUpdater(new IListenerVoid()
-        {
-            @Override
-            public void handle()
-            {
-                int percent = mPuzzleAdapter.getSolvedQuestionsPercent();
-                mProgressTextView.setText(String.valueOf(percent));
-                mProgressSeekBar.setProgress(percent);
-                mTimeLeft = mPuzzleAdapter.getTimeLeft();
-                mTimeGiven = mPuzzleAdapter.getTimeGiven();
-                fillTimer();
-                if(!mTickerLaunched)
-                    tick();
-            }
-        });
-        mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
+        mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
+        selectNextUnsolvedPuzzle();
         mPuzzleView.setAdapter(mPuzzleAdapter);
+
         mNextBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
         mStopPlayBtn.setOnClickListener(this);
         mHintBtn.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
+
         super.onResume();
     }
 
@@ -162,6 +153,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         super.onDestroy();
     }
 
+    private void fillTimer()
+    {
+        int time = mTimeGiven - mTimeLeft;
+        int min = time/60;
+        int sec = time - min * 60;
+        String timeText = String.format(TIMER_TEXT_FORMAT, min, sec);
+        mTimerTextView.setText(timeText);
+    }
+
     @Override public void onClick(View v)
     {
         switch (v.getId())
@@ -170,40 +170,39 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 onBackPressed();
                 break;
             case R.id.gamefild_next_btn:
+                selectNextUnsolvedPuzzle();
                 break;
             case R.id.header_hint_btn:
                 useHint();
                 break;
             case R.id.header_stop_play_btn:
-                if (mStopPlayFlag)
-                {
-                    mAlertPauseBg.setVisibility(View.VISIBLE);
-                    mAnimationSlideInTop.reset();
-                    mAlertPause.clearAnimation();
-                    mAlertPause.startAnimation(mAnimationSlideInTop);
-                    mStopPlayBtn.setBackgroundResource(R.drawable.header_play_but);
-                }
-                else
-                {
-                    mAnimationSlideOutTop.reset();
-                    mAlertPause.clearAnimation();
-                    mAlertPause.startAnimation(mAnimationSlideOutTop);
-                    mAlertPauseBg.setVisibility(View.GONE);
-                    mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
-                    tick();
-                }
-                mStopPlayFlag = !mStopPlayFlag;
+                showPauseDialog(mStopPlayFlag);
                 break;
         }
     }
 
-    private void fillTimer()
+    private void showPauseDialog(boolean show)
     {
-        int time = mTimeGiven - mTimeLeft;
-        int min = time/60;
-        int sec = time - min * 60;
-        String timeText = String.format(TIMER_TEXT_FORMAT, min, sec);
-        mTimerTextView.setText(timeText);
+        if (show)
+        {
+            mPuzzleView.cancelInput();
+            mAlertPauseBg.setVisibility(View.VISIBLE);
+            mAnimationSlideInTop.reset();
+            mAlertPause.clearAnimation();
+            mAlertPause.startAnimation(mAnimationSlideInTop);
+            mStopPlayBtn.setBackgroundResource(R.drawable.header_play_but);
+        }
+        else
+        {
+            mAnimationSlideOutTop.reset();
+            mAlertPause.clearAnimation();
+            mAlertPause.startAnimation(mAnimationSlideOutTop);
+            mAlertPauseBg.setVisibility(View.GONE);
+            mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
+            if(!mTickerLaunched)
+                tick();
+        }
+        mStopPlayFlag = !show;
     }
 
     private void useHint()
@@ -244,6 +243,18 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         builder.create().show();
     }
 
+    private void selectNextUnsolvedPuzzle()
+    {
+        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
+        showPauseDialog(false);
+        mCurrentPuzzleIndex++;
+        if(mCurrentPuzzleIndex >= mPuzzlesCount)
+        {
+            mCurrentPuzzleIndex = 0;
+        }
+    }
+
     private void tick()
     {
         mTickerLaunched = true;
@@ -267,6 +278,26 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 makeTick();
                 tick();
             }
+            else
+                mTickerLaunched = false;
+        }
+    };
+
+    private final @Nonnull IListenerVoid mPuzzleUpdater = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            if(mPuzzleAdapter.isPuzzleSolved())
+                selectNextUnsolvedPuzzle();
+            int percent = mPuzzleAdapter.getSolvedQuestionsPercent();
+            mProgressTextView.setText(String.valueOf(percent));
+            mProgressSeekBar.setProgress(percent);
+            mTimeLeft = mPuzzleAdapter.getTimeLeft();
+            mTimeGiven = mPuzzleAdapter.getTimeGiven();
+            fillTimer();
+            if(!mTickerLaunched)
+                tick();
         }
     };
 }

@@ -118,6 +118,15 @@ public class PuzzleResourcesAdapter
         return mPuzzle.solvedPercent;
     }
 
+    public boolean isPuzzleSolved()
+    {
+        if (mPuzzle == null)
+        {
+            return false;
+        }
+        return mPuzzle.isSolved;
+    }
+
     public void updatePuzzleUserData()
     {
         mPuzzleModel.updatePuzzleUserData();

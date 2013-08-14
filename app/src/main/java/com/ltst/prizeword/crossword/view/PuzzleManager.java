@@ -89,6 +89,7 @@ public class PuzzleManager
         mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
         mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
                 focusOffsetRect, oldViewRect, mPuzzleViewRect);
+        mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
     private boolean checkFocusViewPoint()
@@ -261,7 +262,7 @@ public class PuzzleManager
         }
     }
 
-    private void cancelLastQuestion()
+    public void cancelLastQuestion()
     {
         if(mLastQuestionTapPoint != null)
         {

@@ -160,6 +160,19 @@ public class PuzzleView extends View
         }
     }
 
+    public void cancelInput()
+    {
+        if (mPuzzleManager == null)
+        {
+            return;
+        }
+        if(mAdapter.isInputMode() && mKeyboardOpened)
+        {
+            mPuzzleManager.cancelLastQuestion();
+            hideKeyboard();
+        }
+    }
+
     public void openKeyboard()
     {
         if (this.requestFocus())
