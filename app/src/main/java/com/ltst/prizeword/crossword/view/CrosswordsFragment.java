@@ -10,16 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromInternet;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
+import org.omich.velo.bcops.BcBaseService;
+import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -69,52 +73,52 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-
-        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
-        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-        dataPanel1.mType = BadgeData.TYPE_FREE;
-        dataPanel1.mMonth = "Апрель";
-
-        dataPanel1.mBadgeData = new BadgeData[23];
-        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
-            BadgeData badge = new BadgeData();
-            badge.mNumber = i+1;
-            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
-            badge.mProgress = 95;
-            badge.mScore = 9000;
-            dataPanel1.mBadgeData[i] = badge;
-        }
-
-        CrosswordPanelData dataPanel2 = new CrosswordPanelData();
-        dataPanel2.mKind = CrosswordPanelData.KIND_CURRENT;
-        dataPanel2.mType = BadgeData.TYPE_SILVER;
-
-        dataPanel2.mBadgeData = new BadgeData[12];
-        for(int i=0; i<dataPanel2.mBadgeData.length; i++){
-            BadgeData badge = new BadgeData();
-            badge.mNumber = i+1;
-            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
-            badge.mProgress = 95;
-            badge.mScore = 9000;
-            dataPanel2.mBadgeData[i] = badge;
-        }
-
-        CrosswordPanelData dataPanel3 = new CrosswordPanelData();
-        dataPanel3.mKind = CrosswordPanelData.KIND_BUY;
-        dataPanel3.mType = BadgeData.TYPE_GOLD;
-        dataPanel3.mBuyCount = 3;
-        dataPanel3.mBuyScore = 12587;
-
-        CrosswordPanelData dataPanel4 = new CrosswordPanelData();
-        dataPanel4.mKind = CrosswordPanelData.KIND_BUY;
-        dataPanel4.mType = BadgeData.TYPE_FREE;
-        dataPanel4.mBuyCount = 3;
-        dataPanel4.mBuyScore = 12587;
-
-        mCrosswordFragmentHolder.addPanel(dataPanel3);
-        mCrosswordFragmentHolder.addPanel(dataPanel4);
-        mCrosswordFragmentHolder.addPanel(dataPanel1);
-        mCrosswordFragmentHolder.addPanel(dataPanel2);
+//
+//        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+//        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+//        dataPanel1.mType = BadgeData.TYPE_FREE;
+//        dataPanel1.mMonth = "Апрель";
+//
+//        dataPanel1.mBadgeData = new BadgeData[23];
+//        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
+//            BadgeData badge = new BadgeData();
+//            badge.mNumber = i+1;
+//            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
+//            badge.mProgress = 95;
+//            badge.mScore = 9000;
+//            dataPanel1.mBadgeData[i] = badge;
+//        }
+//
+//        CrosswordPanelData dataPanel2 = new CrosswordPanelData();
+//        dataPanel2.mKind = CrosswordPanelData.KIND_CURRENT;
+//        dataPanel2.mType = BadgeData.TYPE_SILVER;
+//
+//        dataPanel2.mBadgeData = new BadgeData[12];
+//        for(int i=0; i<dataPanel2.mBadgeData.length; i++){
+//            BadgeData badge = new BadgeData();
+//            badge.mNumber = i+1;
+//            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
+//            badge.mProgress = 95;
+//            badge.mScore = 9000;
+//            dataPanel2.mBadgeData[i] = badge;
+//        }
+//
+//        CrosswordPanelData dataPanel3 = new CrosswordPanelData();
+//        dataPanel3.mKind = CrosswordPanelData.KIND_BUY;
+//        dataPanel3.mType = BadgeData.TYPE_GOLD;
+//        dataPanel3.mBuyCount = 3;
+//        dataPanel3.mBuyScore = 12587;
+//
+//        CrosswordPanelData dataPanel4 = new CrosswordPanelData();
+//        dataPanel4.mKind = CrosswordPanelData.KIND_BUY;
+//        dataPanel4.mType = BadgeData.TYPE_FREE;
+//        dataPanel4.mBuyCount = 3;
+//        dataPanel4.mBuyScore = 12587;
+//
+//        mCrosswordFragmentHolder.addPanel(dataPanel3);
+//        mCrosswordFragmentHolder.addPanel(dataPanel4);
+//        mCrosswordFragmentHolder.addPanel(dataPanel1);
+//        mCrosswordFragmentHolder.addPanel(dataPanel2);
 
         return v;
     }
@@ -194,5 +198,53 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void buyCrosswordSet() {
 
+    }
+
+    private void reloadCrosswordsFromInternet()
+    {
+        LoadCrosswordFromInternetSession session = new LoadCrosswordFromInternetSession() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
+            }
+        };
+        session.update(new IListenerVoid() {
+            @Override
+            public void handle() {
+
+            }
+        });
+    }
+
+    private abstract class LoadCrosswordFromInternetSession extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            if (result == null){
+                return;
+            }
+        }
     }
 }
