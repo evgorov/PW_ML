@@ -80,6 +80,11 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             return null;
     }
 
+    public @Nonnull Point current()
+    {
+        return mPoint;
+    }
+
     public void reset()
     {
         currentLetterIndex = 0;

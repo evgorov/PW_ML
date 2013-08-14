@@ -8,14 +8,16 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
-
 import org.omich.velo.handlers.IListener;
+import com.ltst.prizeword.crossword.wordcheck.WordCompletenessChecker.*;
+import com.ltst.prizeword.crossword.wordcheck.WordsGraph;
 
 public class PuzzleResources
 {
@@ -34,6 +36,8 @@ public class PuzzleResources
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
     private @Nullable PuzzleTileState[][] mStateMatrix;
+    private @Nullable WordsGraph mWordsGraph;
+
 
     public PuzzleResources(@Nullable PuzzleSetModel.PuzzleSetType setType,
                            @Nullable List<PuzzleQuestion> puzzleQuestions)
@@ -54,7 +58,14 @@ public class PuzzleResources
 
     private void initStateMatrix()
     {
+
+        if (mPuzzleQuestions == null)
+        {
+            return;
+        }
+
         mStateMatrix = new PuzzleTileState[mPuzzleColumnsCount][mPuzzleRowsCount];
+
         for (int i = 0; i < mPuzzleColumnsCount; i++)
         {
             for (int j = 0; j < mPuzzleRowsCount; j++)
@@ -63,14 +74,39 @@ public class PuzzleResources
                 mStateMatrix[i][j].setLetterState(LetterState.LETTER_EMPTY);
             }
         }
-        if (mPuzzleQuestions == null)
-        {
-            return;
-        }
+
+        final HashMap<LetterCell, CrossingQuestionsPair> mCrossingQuestions
+                = new HashMap<LetterCell, CrossingQuestionsPair>
+                (mPuzzleColumnsCount * mPuzzleRowsCount);
+
 
         for (PuzzleQuestion question : mPuzzleQuestions)
         {
-            int index = mPuzzleQuestions.indexOf(question);
+            final int index = mPuzzleQuestions.indexOf(question);
+
+            final IListener<AnswerLetterPointIterator> crossingQuestionsFiller = new IListener<AnswerLetterPointIterator>()
+            {
+                @Override
+                public void handle(@Nullable AnswerLetterPointIterator iterator)
+                {
+                    if (iterator == null)
+                        return;
+
+                    Point current = iterator.current();
+                    LetterCell letterCell = new LetterCell(current.x, current.y);
+                    if (mCrossingQuestions.containsKey(letterCell))
+                    {
+                        mCrossingQuestions.get(letterCell).putIndex(index);
+                    }
+                    else
+                    {
+                        CrossingQuestionsPair pair = new CrossingQuestionsPair();
+                        pair.putIndex(index);
+                        mCrossingQuestions.put(letterCell, pair);
+                    }
+                }
+            };
+
             int col = question.column - 1;
             int row = question.row - 1;
             int arrowType = question.getAnswerPosition();
@@ -87,12 +123,15 @@ public class PuzzleResources
                         @Override
                         public void handle(@Nullable PuzzleTileState puzzleTileState)
                         {
-                            if (puzzleTileState != null)
+                            if(puzzleTileState == null)
                             {
-                                String letter = String.valueOf(letterIterator.getCurrentLetter()).toUpperCase();
-                                puzzleTileState.setInputLetter(letter);
-                                puzzleTileState.setLetterCorrect(true);
+                                return;
                             }
+                            String letter = String.valueOf(letterIterator.getCurrentLetter()).toUpperCase();
+                            puzzleTileState.setInputLetter(letter);
+                            puzzleTileState.setLetterCorrect(true);
+
+                            crossingQuestionsFiller.handle(letterIterator);
                         }
                     });
                 }
@@ -103,10 +142,27 @@ public class PuzzleResources
                 if (p != null)
                 {
                     mStateMatrix[p.x][p.y].addArrow(arrowType, index);
+                    final AnswerLetterPointIterator letterIterator = new AnswerLetterPointIterator(p,
+                            PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
+                    PuzzleResourcesAdapter.setLetterStateByPointIterator(this, letterIterator, new IListener<PuzzleTileState>()
+                    {
+                        @Override
+                        public void handle(@Nullable PuzzleTileState puzzleTileState)
+                        {
+                            if(puzzleTileState == null)
+                            {
+                                return;
+                            }
+
+                            crossingQuestionsFiller.handle(letterIterator);
+                        }
+                    });
+
                 }
             }
             mStateMatrix[col][row].setQuestionIndex(index);
         }
+        mWordsGraph = new WordsGraph(mCrossingQuestions);
     }
 
     public @Nullable PuzzleTileState getPuzzleState(int column, int row)
@@ -133,13 +189,21 @@ public class PuzzleResources
         return mPuzzleQuestions;
     }
 
+    @Nullable
+    public WordsGraph getWordsGraph()
+    {
+        return mWordsGraph;
+    }
+
     public void setQuestionCorrect(int index, boolean correct)
     {
-        if (mPuzzleQuestions == null)
+        if (mPuzzleQuestions == null || mStateMatrix == null)
             return;
         if(index < 0 || index >= mPuzzleQuestions.size())
             return;
-        mPuzzleQuestions.get(index).isAnswered = correct;
+        PuzzleQuestion q = mPuzzleQuestions.get(index);
+        q.isAnswered = correct;
+        mStateMatrix[q.column - 1][q.row - 1].setQuestionState(QuestionState.QUESTION_CORRECT);
     }
 
     public static int getArrowResource(int type)

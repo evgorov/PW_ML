@@ -9,9 +9,13 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.crossword.wordcheck.WordCompletenessChecker;
+import com.ltst.prizeword.crossword.wordcheck.WordsGraph;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.events.PairListeners;
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.ArrayList;
@@ -334,6 +338,7 @@ public class PuzzleResourcesAdapter
                 if (state != null && mCurrentInputQuestionIndex >= 0)
                 {
                     state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
+
                 }
             }
             mCurrentAnswerIterator.reset();
@@ -349,6 +354,7 @@ public class PuzzleResourcesAdapter
                     puzzleTileState.setLetterCorrect(true);
                 }
             });
+            checkCurrectCrossingQuestions();
             setCurrentQuestionCorrect(true);
             resetInputMode();
             correctAnswerHandler.handle();
@@ -357,6 +363,28 @@ public class PuzzleResourcesAdapter
         else
             return false;
 
+    }
+
+    private void checkCurrectCrossingQuestions()
+    {
+        if(mCurrentInputQuestionIndex < 0 || mResources == null)
+            return;
+        final @Nullable List<PuzzleQuestion> questions = mResources.getPuzzleQuestions();
+        if (questions == null)
+        {
+            return;
+        }
+
+        WordCompletenessChecker.checkWords(mCurrentInputQuestionIndex, mResources,
+        new IListenerInt()
+        {
+            @Override
+            public void handle(int i)
+            {
+                mResources.setQuestionCorrect(i, true);
+                mPuzzleModel.setQuestionAnswered(questions.get(i), true);
+            }
+        });
     }
 
     public void setCurrentQuestionCorrect()
@@ -469,10 +497,7 @@ public class PuzzleResourcesAdapter
         {
             Point next = iter.next();
             @Nullable PuzzleTileState state = resources.getPuzzleState(next.x, next.y);
-            if (state != null)
-            {
-                handler.handle(state);
-            }
+            handler.handle(state);
         }
     }
 
