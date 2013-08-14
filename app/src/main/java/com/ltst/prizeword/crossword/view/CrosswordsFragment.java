@@ -190,4 +190,9 @@ public class CrosswordsFragment extends SherlockFragment
 
         }
     };
+
+    @Override
+    public void buyCrosswordSet() {
+
+    }
 }
