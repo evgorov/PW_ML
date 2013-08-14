@@ -118,5 +118,7 @@ public class Puzzle implements Parcelable
                 solved ++;
         }
         solvedPercent = (int)((float)solved/(float)questions.size() * 100);
+        if(solvedPercent == 100)
+            isSolved = true;
     }
 }

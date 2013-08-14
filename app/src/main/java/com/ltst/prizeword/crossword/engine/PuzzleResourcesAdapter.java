@@ -428,7 +428,7 @@ public class PuzzleResourcesAdapter
 
     private void setCurrentQuestionCorrect(boolean correct)
     {
-        if (mCurrentQuestionPoint == null || mResources == null)
+        if (mCurrentQuestionPoint == null || mResources == null || mPuzzle == null)
             return;
 
         @Nullable PuzzleTileState state = mResources.getPuzzleState(mCurrentQuestionPoint.x, mCurrentQuestionPoint.y);
@@ -450,6 +450,11 @@ public class PuzzleResourcesAdapter
                     PuzzleQuestion q = qList.get(index);
                     q.isAnswered = true;
                     mPuzzleModel.setQuestionAnswered(q, true);
+                    mPuzzle.countSolvedPercent();
+                    if (mPuzzleUpdater != null)
+                    {
+                        mPuzzleUpdater.handle();
+                    }
                     updatePuzzleUserData();
                 }
             }
