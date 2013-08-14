@@ -66,8 +66,6 @@ public class PuzzleManager
         if (mPuzzleViewRect != null)
         {
             oldViewRect = new Rect(mPuzzleViewRect);
-            if (oldViewRect.equals(puzzleViewRect))
-                return;
         }
         if (mFocusViewPoint != null)
         {
@@ -90,7 +88,7 @@ public class PuzzleManager
         mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
         checkFocusViewPoint();
         mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
-                focusOffsetRect, oldViewRect, mScaled ? mPuzzleViewRect : mScaledViewRect);
+                focusOffsetRect, oldViewRect, mPuzzleViewRect);
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
 

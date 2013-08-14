@@ -275,6 +275,11 @@ public class PuzzleFieldDrawer
             p.set(getCenterX(), getCenterY());
             return;
         }
+        if(oldViewRect.equals(newViewRect))
+        {
+            p.set(getCenterX(), getCenterY());
+            return;
+        }
         int allowedOffset = mResources.getPadding();
 
         p.set(getCenterX(), getCenterY());
