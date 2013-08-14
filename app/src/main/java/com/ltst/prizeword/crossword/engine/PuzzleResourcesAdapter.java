@@ -338,7 +338,6 @@ public class PuzzleResourcesAdapter
                 if (state != null && mCurrentInputQuestionIndex >= 0)
                 {
                     state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
-
                 }
             }
             mCurrentAnswerIterator.reset();
@@ -389,12 +388,21 @@ public class PuzzleResourcesAdapter
 
     public void setCurrentQuestionCorrect()
     {
-        if (mCurrentAnswerIterator == null)
+        if (mCurrentAnswerIterator == null || mResources == null)
         {
             return;
         }
         mCurrentAnswerIterator.reset();
-        setCurrentQuestionCorrect(true);
+        Point p = mCurrentAnswerIterator.next();
+        if (p != null)
+        {
+            @Nullable PuzzleTileState state = mResources.getPuzzleState(p.x, p.y);
+            if (state != null && mCurrentInputQuestionIndex >= 0)
+            {
+                state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
+            }
+        }
+        mCurrentAnswerIterator.reset();
         setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
         {
             @Override
@@ -413,6 +421,8 @@ public class PuzzleResourcesAdapter
                 }
             }
         });
+        checkCurrectCrossingQuestions();
+        setCurrentQuestionCorrect(true);
         resetInputMode();
     }
 

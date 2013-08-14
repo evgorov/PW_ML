@@ -9,7 +9,6 @@ import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleTileState;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
-import org.omich.velo.events.PairListeners;
 import org.omich.velo.handlers.IListenerInt;
 
 import java.util.LinkedList;
@@ -39,7 +38,7 @@ public class WordCompletenessChecker
 
         while (!nodesQueue.isEmpty())
         {
-            Integer node = nodesQueue.getLast();
+            Integer node = nodesQueue.removeLast();
             for (Pair<Integer,Integer> edge : graph.edges)
             {
                 if(edge.first.equals(node))

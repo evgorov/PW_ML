@@ -203,7 +203,14 @@ public class PuzzleResources
             return;
         PuzzleQuestion q = mPuzzleQuestions.get(index);
         q.isAnswered = correct;
-        mStateMatrix[q.column - 1][q.row - 1].setQuestionState(QuestionState.QUESTION_CORRECT);
+        int column = q.column - 1;
+        int row = q.row - 1;
+        mStateMatrix[column][row].setQuestionState(QuestionState.QUESTION_CORRECT);
+        Point answerStart = PuzzleTileState.ArrowType.positionToPoint(q.getAnswerPosition(), column, row);
+        if (answerStart != null)
+        {
+            mStateMatrix[answerStart.x][answerStart.y].removeArrowByQuestionIndex(index);
+        }
     }
 
     public static int getArrowResource(int type)

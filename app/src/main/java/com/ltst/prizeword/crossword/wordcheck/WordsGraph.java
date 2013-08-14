@@ -23,6 +23,8 @@ public class WordsGraph
         for (Map.Entry<LetterCell, CrossingQuestionsPair> entry : questionsMap.entrySet())
         {
             CrossingQuestionsPair pair = entry.getValue();
+            if(pair.firstQuestionIndex < 0 || pair.secondQuestionIndex < 0)
+                continue; 
             nodes.add(pair.firstQuestionIndex);
             nodes.add(pair.secondQuestionIndex);
             edges.add(new Pair<Integer, Integer>(pair.firstQuestionIndex, pair.secondQuestionIndex));
