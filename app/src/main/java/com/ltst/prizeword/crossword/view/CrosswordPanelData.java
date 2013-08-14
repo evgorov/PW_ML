@@ -12,20 +12,17 @@ public class CrosswordPanelData {
     final static public int KIND_ARCHIVE = 2;
     final static public int KIND_BUY = 3;
 
-    final static public int TYPE_BRILLIANT = 1;
-    final static public int TYPE_GOLD = 2;
-    final static public int TYPE_SILVER = 3;
-    final static public int TYPE_SILVER2 = 4;
-    final static public int TYPE_FREE = 5;
+    public int mKind = 0;
+    public int mType = 0;
+    public int mResolveCount = 0;
+    public int mTotalCount = 0;
+    public int mProgress = 0;
+    public int mScore = 0;
+    public int mBuyCount = 0;
+    public int mBuyScore = 0;
 
-    public int mKind;
-    public int mType;
-    public int mResolveCount;
-    public int mTotalCount;
-    public int mProgress;
-    public int mScore;
-    public @Nonnull String mMonth;
-    public @Nullable BadgeData[] mBadgeData;
+    public @Nonnull String mMonth = null;
+    public @Nullable BadgeData[] mBadgeData = null;
 
     public CrosswordPanelData() {
     }

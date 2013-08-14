@@ -45,6 +45,7 @@ public class BadgeAdapter extends BaseAdapter {
                 idBackground = R.drawable.puzzles_badges_bg_gold;
                 break;
             case BadgeData.TYPE_SILVER:
+            case BadgeData.TYPE_SILVER2:
                 idBackground = R.drawable.puzzles_badges_bg_silver;
                 break;
             case BadgeData.TYPE_FREE:
@@ -66,6 +67,7 @@ public class BadgeAdapter extends BaseAdapter {
                     idForeground = R.drawable.puzzles_badges_bg_gold_resolved;
                     break;
                 case BadgeData.TYPE_SILVER:
+                case BadgeData.TYPE_SILVER2:
                     idForeground = R.drawable.puzzles_badges_bg_silver_resolved;
                     break;
                 case BadgeData.TYPE_FREE:
@@ -160,7 +162,7 @@ public class BadgeAdapter extends BaseAdapter {
                 default: break;
             }
         }
-        else if(data.mType == BadgeData.TYPE_SILVER)
+        else if(data.mType == BadgeData.TYPE_SILVER || data.mType == BadgeData.TYPE_SILVER2)
         {
             switch (data.mNumber)
             {

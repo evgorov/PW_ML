@@ -8,7 +8,8 @@ public class BadgeData {
     final static public int TYPE_BRILLIANT = 1;
     final static public int TYPE_GOLD = 2;
     final static public int TYPE_SILVER = 3;
-    final static public int TYPE_FREE = 4;
+    final static public int TYPE_SILVER2 = 4;
+    final static public int TYPE_FREE = 5;
 
     final static public int STATUS_RESOLVED = 6;
     final static public int STATUS_UNRESOLVED = 7;

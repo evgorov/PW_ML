@@ -32,8 +32,7 @@ public class CrosswordsFragment extends SherlockFragment
                                 implements View.OnClickListener,
                                 ICrosswordFragment
 {
-    public static final @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
@@ -72,6 +71,48 @@ public class CrosswordsFragment extends SherlockFragment
         mMenuBackButton.setOnClickListener(this);
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
+
+
+        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+        dataPanel1.mType = BadgeData.TYPE_FREE;
+        dataPanel1.mMonth = "Апрель";
+
+        dataPanel1.mBadgeData = new BadgeData[10];
+        for(int i=0; i<10; i++){
+            BadgeData badge = new BadgeData();
+            badge.mNumber = i+1;
+            badge.mStatus = BadgeData.STATUS_UNRESOLVED;
+            badge.mType = BadgeData.TYPE_FREE;
+            badge.mProgress = 95;
+            badge.mScore = 98000;
+            dataPanel1.mBadgeData[i] = badge;
+        }
+
+        CrosswordPanelData dataPanel2 = new CrosswordPanelData();
+        dataPanel2.mKind = CrosswordPanelData.KIND_CURRENT;
+        dataPanel2.mType = BadgeData.TYPE_SILVER;
+
+        dataPanel2.mBadgeData = new BadgeData[10];
+        for(int i=0; i<10; i++){
+            BadgeData badge = new BadgeData();
+            badge.mNumber = i+1;
+            badge.mStatus = BadgeData.STATUS_UNRESOLVED;
+            badge.mType = BadgeData.TYPE_SILVER;
+            badge.mProgress = 95;
+            badge.mScore = 98000;
+            dataPanel2.mBadgeData[i] = badge;
+        }
+
+        CrosswordPanelData dataPanel3 = new CrosswordPanelData();
+        dataPanel3.mKind = CrosswordPanelData.KIND_BUY;
+        dataPanel3.mType = BadgeData.TYPE_GOLD;
+        dataPanel3.mBuyCount = 3;
+        dataPanel3.mBuyScore = 12587;
+
+        mCrosswordFragmentHolder.addPanel(dataPanel1);
+        mCrosswordFragmentHolder.addPanel(dataPanel2);
+        mCrosswordFragmentHolder.addPanel(dataPanel3);
 
         return v;
     }
