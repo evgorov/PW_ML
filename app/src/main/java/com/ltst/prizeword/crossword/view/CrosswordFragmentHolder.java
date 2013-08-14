@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -120,7 +121,7 @@ public class CrosswordFragmentHolder {
         @Nonnull LinearLayout pBuyButton = (LinearLayout) view.findViewById(R.id.crossword_panel_buy_button);
         @Nonnull TextView pBuyPrice = (TextView) view.findViewById(R.id.crossword_panel_buy_price);
 
-        @Nonnull BadgeGridView pBadgeContainer = (BadgeGridView) view.findViewById(R.id.crossword_panel_badges_container);
+        @Nonnull final BadgeGridView pBadgeContainer = (BadgeGridView) view.findViewById(R.id.crossword_panel_badges_container);
 
         @Nonnull Bitmap bitmap = null;
 
@@ -206,6 +207,20 @@ public class CrosswordFragmentHolder {
                 pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
             }
             mCrosswordPanelArchive.mCrosswordsContainerLL.addView(view);
+
+            pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    pBadgeContainer.setVisibility(b ? View.VISIBLE : View.GONE);
+                }
+            });
+
+            pBuyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    mICrosswordFragment.
+                }
+            });
         }
 
     }

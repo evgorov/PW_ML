@@ -84,6 +84,7 @@
                     android:layout_height="32dp"
                     android:textOn=""
                     android:textOff=""
+                    android:checked="true"
                     android:background="@drawable/puzzles_archive_showmore_bun"/>
 
         </LinearLayout>

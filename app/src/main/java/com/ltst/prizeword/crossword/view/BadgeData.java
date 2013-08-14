@@ -1,5 +1,7 @@
 package com.ltst.prizeword.crossword.view;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by cosic on 13.08.13.
  */
@@ -14,10 +16,10 @@ public class BadgeData {
     final static public int STATUS_RESOLVED = 6;
     final static public int STATUS_UNRESOLVED = 7;
 
-    public int mStatus;
-    public int mProgress;
-    public int mScore;
-    public int mNumber;
+    public int mStatus = 0;
+    public int mProgress = 0;
+    public int mScore = 0;
+    public int mNumber = 0;
 
     public BadgeData() {
     }

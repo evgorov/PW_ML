@@ -79,9 +79,9 @@ public class CrosswordsFragment extends SherlockFragment
         for(int i=0; i<dataPanel1.mBadgeData.length; i++){
             BadgeData badge = new BadgeData();
             badge.mNumber = i+1;
-            badge.mStatus = BadgeData.STATUS_UNRESOLVED;
+            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
             badge.mProgress = 95;
-            badge.mScore = 98000;
+            badge.mScore = 9000;
             dataPanel1.mBadgeData[i] = badge;
         }
 
@@ -93,9 +93,9 @@ public class CrosswordsFragment extends SherlockFragment
         for(int i=0; i<dataPanel2.mBadgeData.length; i++){
             BadgeData badge = new BadgeData();
             badge.mNumber = i+1;
-            badge.mStatus = BadgeData.STATUS_UNRESOLVED;
+            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
             badge.mProgress = 95;
-            badge.mScore = 98000;
+            badge.mScore = 9000;
             dataPanel2.mBadgeData[i] = badge;
         }
 
