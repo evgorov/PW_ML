@@ -67,34 +67,40 @@ public class CrosswordFragmentHolder {
         this.mViewCrossword = view;
         this.mContext = context;
 
-        fillBadgesNumbers();
-
         mCrosswordPanelCurrent = new CrosswordWidgetCurrent(view);
         mCrosswordPanelArchive = new CrosswordWidgetArchive(view);
         mCrosswordPanelBuy = new CrosswordWidgetBuy(view);
 
-        View vCrossordCurrentBrilliant = CrosswordPanelCurrent.addView(PANEL_BRILLIANT);
-
-        View vCrossordBuyGold = CrosswordPanelBuy.addView(PANEL_GOLD);
-
-        View vCrossordArchiveBrilliant = CrosswordPanelArchive.addView(PANEL_BRILLIANT);
-        View vCrossordArchiveGold = CrosswordPanelArchive.addView(PANEL_GOLD);
-        View vCrossordArchiveGFree = CrosswordPanelArchive.addView(PANEL_FREE);
-
-        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordCurrentBrilliant);
-        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordBuyGold);
-
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterMonthView.addView("Апрель"));
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveBrilliant);
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGold);
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
-        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGFree);
-
-        CrosswordPanelArchive.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_UNRESOLVE_FREE, 1));
-        CrosswordPanelCurrent.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 2));
-        CrosswordPanelCurrent.mBadgeContainerLL.addView(BadgeUnresolved.addView(BADGE_RESOLVE_BRILLIANT, 21));
-
+//        View vCrossordCurrentBrilliant = CrosswordPanelCurrent.addView(PANEL_BRILLIANT);
+//
+//        View vCrossordBuyGold = CrosswordPanelBuy.addView(PANEL_GOLD);
+//
+//        View vCrossordArchiveBrilliant = CrosswordPanelArchive.addView(PANEL_BRILLIANT);
+//        View vCrossordArchiveGold = CrosswordPanelArchive.addView(PANEL_GOLD);
+//        View vCrossordArchiveGFree = CrosswordPanelArchive.addView(PANEL_FREE);
+//
+//        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordCurrentBrilliant);
+//        mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(vCrossordBuyGold);
+//
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterMonthView.addView("Апрель"));
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveBrilliant);
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGold);
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(SplitterPanelView.addView());
+//        mCrosswordPanelArchive.mCrosswordsContainerLL.addView(vCrossordArchiveGFree);
+//
+//        BadgeData[] data = new BadgeData[10];
+//        for(int i=0; i<10; i++){
+//            BadgeData badge = new BadgeData();
+//            badge.mNumber = 29;
+//            badge.mStatus = BadgeData.STATUS_UNRESOLVED;
+//            badge.mType = BadgeData.TYPE_BRILLIANT;
+//            badge.mProgress = 95;
+//            badge.mScore = 98000;
+//            data[i] = badge;
+//        }
+//
+//        CrosswordPanelArchive.mBadgeContainerLL.setAdapter(new BadgeAdapter(mContext,data));
     }
 
     // ================== SPLITTER WITH MONTH ======================
@@ -174,8 +180,27 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ITEM ======================
 
+    public void addPanel(@Nonnull CrosswordPanelData data)
+    {
+        if(data.mKind == CrosswordPanelData.KIND_ARCHIVE)
+        {
+            
+        }
+        else if(data.mKind == CrosswordPanelData.KIND_ARCHIVE)
+        {
 
-    static public class CrosswordPanelArchive {
+        }
+        else if(data.mKind == CrosswordPanelData.KIND_ARCHIVE)
+        {
+
+        }
+
+    }
+
+    // ================== CROSSWORD PANELS ITEM ======================
+
+
+    static private class CrosswordPanelArchive {
         @Nonnull static public TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
         @Nonnull static public TextView mPercentResolvedTV;
@@ -232,7 +257,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
-    static public class CrosswordPanelCurrent {
+    static private class CrosswordPanelCurrent {
         @Nonnull static private ImageView mImage;
         @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mRatioResolvedTV;
@@ -286,7 +311,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ELEMENTS ======================
 
-    static public class CrosswordPanelBuy {
+    static private class CrosswordPanelBuy {
         @Nonnull static private ImageView mImage;
         @Nonnull static private TextView mTitleTV;
         @Nonnull static public TextView mCountCrosswordsTV;
@@ -333,232 +358,5 @@ public class CrosswordFragmentHolder {
 
             return view;
         }
-    }
-
-    // ================== CROSSWORD BADGES ======================
-
-    static public class BadgeResolved{
-        @Nonnull static public LinearLayout mBackgroudLL;
-        @Nonnull static public LinearLayout mBitmapLL;
-        @Nonnull static public TextView mScoreTV;
-
-        static View addView(final int view_id, final int number)
-        {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_resolved, null, false);
-            mScoreTV = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
-            mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_badge_bg);
-            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
-            @Nonnull Bitmap bitmap = null;
-
-            switch (view_id){
-                case BADGE_RESOLVE_BRILLIANT:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_brilliant));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
-                }break;
-                case BADGE_RESOLVE_GOLD:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_gold));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersGold.get(number));
-                }break;
-                case BADGE_RESOLVE_SILVER:
-                case BADGE_RESOLVE_SILVER2:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_silver));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersSilver.get(number));
-                }break;
-                case BADGE_RESOLVE_FREE:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_free));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersFree.get(number));
-                }break;
-                default: break;
-            }
-            ImageView image = new ImageView(mContext);
-            image.setImageBitmap(bitmap);
-            mBitmapLL.addView(image);
-//            bitmap.recycle();
-            return view;
-        }
-    }
-
-    static public class BadgeUnresolved{
-        @Nonnull static public TextView mPercentTV;
-        @Nonnull static public LinearLayout mBitmapLL;
-        @Nonnull static public LinearLayout mBackgroudLL;
-        @Nonnull static public LinearLayout mProgressBGLL;
-        @Nonnull static public LinearLayout mProgressFGLL;
-
-        static View addView(final int view_id, final int number)
-        {
-            @Nonnull View view = mInflater.inflate(R.layout.crossword_badge_unresolved, null, false);
-            mPercentTV = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
-            mBackgroudLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_badge_bg);
-            mBitmapLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
-            mProgressBGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
-            mProgressFGLL = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
-
-            @Nonnull Bitmap bitmap = null;
-
-            switch (view_id){
-                case BADGE_UNRESOLVE_BRILLIANT:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_brilliant));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersBrilliant.get(number));
-                }break;
-                case BADGE_UNRESOLVE_GOLD:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_gold));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersGold.get(number));
-                }break;
-                case BADGE_UNRESOLVE_SILVER:
-                case BADGE_UNRESOLVE_SILVER2:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_silver));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersSilver.get(number));
-                }break;
-                case BADGE_UNRESOLVE_FREE:{
-                    mBackgroudLL.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_badges_bg_free));
-                    bitmap = BitmapFactory.decodeResource(mContext.getResources(), mapBadgeNumbersFree.get(number));
-                }break;
-                default: break;
-            }
-
-            ImageView image = new ImageView(mContext);
-            image.setImageBitmap(bitmap);
-            mBitmapLL.addView(image);
-//            bitmap.recycle();
-            return view;
-        }
-    }
-
-    // ================== BADGES NUMBERS ======================
-
-    private void fillBadgesNumbers()
-    {
-        mapBadgeNumbersBrilliant.put(1, R.drawable.crossword_number_brilliant_1);
-        mapBadgeNumbersBrilliant.put(2, R.drawable.crossword_number_brilliant_2);
-        mapBadgeNumbersBrilliant.put(3, R.drawable.crossword_number_brilliant_3);
-        mapBadgeNumbersBrilliant.put(4, R.drawable.crossword_number_brilliant_4);
-        mapBadgeNumbersBrilliant.put(5, R.drawable.crossword_number_brilliant_5);
-        mapBadgeNumbersBrilliant.put(6, R.drawable.crossword_number_brilliant_6);
-        mapBadgeNumbersBrilliant.put(7, R.drawable.crossword_number_brilliant_7);
-        mapBadgeNumbersBrilliant.put(8, R.drawable.crossword_number_brilliant_8);
-        mapBadgeNumbersBrilliant.put(9, R.drawable.crossword_number_brilliant_9);
-        mapBadgeNumbersBrilliant.put(10, R.drawable.crossword_number_brilliant_10);
-        mapBadgeNumbersBrilliant.put(11, R.drawable.crossword_number_brilliant_11);
-        mapBadgeNumbersBrilliant.put(12, R.drawable.crossword_number_brilliant_12);
-        mapBadgeNumbersBrilliant.put(13, R.drawable.crossword_number_brilliant_13);
-        mapBadgeNumbersBrilliant.put(14, R.drawable.crossword_number_brilliant_14);
-        mapBadgeNumbersBrilliant.put(15, R.drawable.crossword_number_brilliant_15);
-        mapBadgeNumbersBrilliant.put(16, R.drawable.crossword_number_brilliant_16);
-        mapBadgeNumbersBrilliant.put(17, R.drawable.crossword_number_brilliant_17);
-        mapBadgeNumbersBrilliant.put(18, R.drawable.crossword_number_brilliant_18);
-        mapBadgeNumbersBrilliant.put(19, R.drawable.crossword_number_brilliant_19);
-        mapBadgeNumbersBrilliant.put(20, R.drawable.crossword_number_brilliant_20);
-        mapBadgeNumbersBrilliant.put(21, R.drawable.crossword_number_brilliant_21);
-        mapBadgeNumbersBrilliant.put(22, R.drawable.crossword_number_brilliant_22);
-        mapBadgeNumbersBrilliant.put(23, R.drawable.crossword_number_brilliant_23);
-        mapBadgeNumbersBrilliant.put(24, R.drawable.crossword_number_brilliant_24);
-        mapBadgeNumbersBrilliant.put(25, R.drawable.crossword_number_brilliant_25);
-        mapBadgeNumbersBrilliant.put(26, R.drawable.crossword_number_brilliant_26);
-        mapBadgeNumbersBrilliant.put(27, R.drawable.crossword_number_brilliant_27);
-        mapBadgeNumbersBrilliant.put(28, R.drawable.crossword_number_brilliant_28);
-        mapBadgeNumbersBrilliant.put(29, R.drawable.crossword_number_brilliant_29);
-        mapBadgeNumbersBrilliant.put(30, R.drawable.crossword_number_brilliant_30);
-        mapBadgeNumbersBrilliant.put(31, R.drawable.crossword_number_brilliant_31);
-        mapBadgeNumbersBrilliant.put(32, R.drawable.crossword_number_brilliant_32);
-
-        mapBadgeNumbersGold.put(1, R.drawable.crossword_number_gold_1);
-        mapBadgeNumbersGold.put(2, R.drawable.crossword_number_gold_2);
-        mapBadgeNumbersGold.put(3, R.drawable.crossword_number_gold_3);
-        mapBadgeNumbersGold.put(4, R.drawable.crossword_number_gold_4);
-        mapBadgeNumbersGold.put(5, R.drawable.crossword_number_gold_5);
-        mapBadgeNumbersGold.put(6, R.drawable.crossword_number_gold_6);
-        mapBadgeNumbersGold.put(7, R.drawable.crossword_number_gold_7);
-        mapBadgeNumbersGold.put(8, R.drawable.crossword_number_gold_8);
-        mapBadgeNumbersGold.put(9, R.drawable.crossword_number_gold_9);
-        mapBadgeNumbersGold.put(10, R.drawable.crossword_number_gold_10);
-        mapBadgeNumbersGold.put(11, R.drawable.crossword_number_gold_11);
-        mapBadgeNumbersGold.put(12, R.drawable.crossword_number_gold_12);
-        mapBadgeNumbersGold.put(13, R.drawable.crossword_number_gold_13);
-        mapBadgeNumbersGold.put(14, R.drawable.crossword_number_gold_14);
-        mapBadgeNumbersGold.put(15, R.drawable.crossword_number_gold_15);
-        mapBadgeNumbersGold.put(16, R.drawable.crossword_number_gold_16);
-        mapBadgeNumbersGold.put(17, R.drawable.crossword_number_gold_17);
-        mapBadgeNumbersGold.put(18, R.drawable.crossword_number_gold_18);
-        mapBadgeNumbersGold.put(19, R.drawable.crossword_number_gold_19);
-        mapBadgeNumbersGold.put(20, R.drawable.crossword_number_gold_20);
-        mapBadgeNumbersGold.put(21, R.drawable.crossword_number_gold_21);
-        mapBadgeNumbersGold.put(22, R.drawable.crossword_number_gold_22);
-        mapBadgeNumbersGold.put(23, R.drawable.crossword_number_gold_23);
-        mapBadgeNumbersGold.put(24, R.drawable.crossword_number_gold_24);
-        mapBadgeNumbersGold.put(25, R.drawable.crossword_number_gold_25);
-        mapBadgeNumbersGold.put(26, R.drawable.crossword_number_gold_26);
-        mapBadgeNumbersGold.put(27, R.drawable.crossword_number_gold_27);
-        mapBadgeNumbersGold.put(28, R.drawable.crossword_number_gold_28);
-        mapBadgeNumbersGold.put(29, R.drawable.crossword_number_gold_29);
-        mapBadgeNumbersGold.put(30, R.drawable.crossword_number_gold_30);
-        mapBadgeNumbersGold.put(31, R.drawable.crossword_number_gold_31);
-        mapBadgeNumbersGold.put(32, R.drawable.crossword_number_gold_32);
-
-        mapBadgeNumbersSilver.put(1, R.drawable.crossword_number_silver_1);
-        mapBadgeNumbersSilver.put(2, R.drawable.crossword_number_silver_2);
-        mapBadgeNumbersSilver.put(3, R.drawable.crossword_number_silver_3);
-        mapBadgeNumbersSilver.put(4, R.drawable.crossword_number_silver_4);
-        mapBadgeNumbersSilver.put(5, R.drawable.crossword_number_silver_5);
-        mapBadgeNumbersSilver.put(6, R.drawable.crossword_number_silver_6);
-        mapBadgeNumbersSilver.put(7, R.drawable.crossword_number_silver_7);
-        mapBadgeNumbersSilver.put(8, R.drawable.crossword_number_silver_8);
-        mapBadgeNumbersSilver.put(9, R.drawable.crossword_number_silver_9);
-        mapBadgeNumbersSilver.put(10, R.drawable.crossword_number_silver_10);
-        mapBadgeNumbersSilver.put(11, R.drawable.crossword_number_silver_11);
-        mapBadgeNumbersSilver.put(12, R.drawable.crossword_number_silver_12);
-        mapBadgeNumbersSilver.put(13, R.drawable.crossword_number_silver_13);
-        mapBadgeNumbersSilver.put(14, R.drawable.crossword_number_silver_14);
-        mapBadgeNumbersSilver.put(15, R.drawable.crossword_number_silver_15);
-        mapBadgeNumbersSilver.put(16, R.drawable.crossword_number_silver_16);
-        mapBadgeNumbersSilver.put(17, R.drawable.crossword_number_silver_17);
-        mapBadgeNumbersSilver.put(18, R.drawable.crossword_number_silver_18);
-        mapBadgeNumbersSilver.put(19, R.drawable.crossword_number_silver_19);
-        mapBadgeNumbersSilver.put(20, R.drawable.crossword_number_silver_20);
-        mapBadgeNumbersSilver.put(21, R.drawable.crossword_number_silver_21);
-        mapBadgeNumbersSilver.put(22, R.drawable.crossword_number_silver_22);
-        mapBadgeNumbersSilver.put(23, R.drawable.crossword_number_silver_23);
-        mapBadgeNumbersSilver.put(24, R.drawable.crossword_number_silver_24);
-        mapBadgeNumbersSilver.put(25, R.drawable.crossword_number_silver_25);
-        mapBadgeNumbersSilver.put(26, R.drawable.crossword_number_silver_26);
-        mapBadgeNumbersSilver.put(27, R.drawable.crossword_number_silver_27);
-        mapBadgeNumbersSilver.put(28, R.drawable.crossword_number_silver_28);
-        mapBadgeNumbersSilver.put(29, R.drawable.crossword_number_silver_29);
-        mapBadgeNumbersSilver.put(30, R.drawable.crossword_number_silver_30);
-        mapBadgeNumbersSilver.put(31, R.drawable.crossword_number_silver_31);
-        mapBadgeNumbersSilver.put(32, R.drawable.crossword_number_silver_32);
-
-        mapBadgeNumbersFree.put(1, R.drawable.crossword_number_free_1);
-        mapBadgeNumbersFree.put(2, R.drawable.crossword_number_free_2);
-        mapBadgeNumbersFree.put(3, R.drawable.crossword_number_free_3);
-        mapBadgeNumbersFree.put(4, R.drawable.crossword_number_free_4);
-        mapBadgeNumbersFree.put(5, R.drawable.crossword_number_free_5);
-        mapBadgeNumbersFree.put(6, R.drawable.crossword_number_free_6);
-        mapBadgeNumbersFree.put(7, R.drawable.crossword_number_free_7);
-        mapBadgeNumbersFree.put(8, R.drawable.crossword_number_free_8);
-        mapBadgeNumbersFree.put(9, R.drawable.crossword_number_free_9);
-        mapBadgeNumbersFree.put(10, R.drawable.crossword_number_free_10);
-        mapBadgeNumbersFree.put(11, R.drawable.crossword_number_free_11);
-        mapBadgeNumbersFree.put(12, R.drawable.crossword_number_free_12);
-        mapBadgeNumbersFree.put(13, R.drawable.crossword_number_free_13);
-        mapBadgeNumbersFree.put(14, R.drawable.crossword_number_free_14);
-        mapBadgeNumbersFree.put(15, R.drawable.crossword_number_free_15);
-        mapBadgeNumbersFree.put(16, R.drawable.crossword_number_free_16);
-        mapBadgeNumbersFree.put(17, R.drawable.crossword_number_free_17);
-        mapBadgeNumbersFree.put(18, R.drawable.crossword_number_free_18);
-        mapBadgeNumbersFree.put(19, R.drawable.crossword_number_free_19);
-        mapBadgeNumbersFree.put(20, R.drawable.crossword_number_free_20);
-        mapBadgeNumbersFree.put(21, R.drawable.crossword_number_free_21);
-        mapBadgeNumbersFree.put(22, R.drawable.crossword_number_free_22);
-        mapBadgeNumbersFree.put(23, R.drawable.crossword_number_free_23);
-        mapBadgeNumbersFree.put(24, R.drawable.crossword_number_free_24);
-        mapBadgeNumbersFree.put(25, R.drawable.crossword_number_free_25);
-        mapBadgeNumbersFree.put(26, R.drawable.crossword_number_free_26);
-        mapBadgeNumbersFree.put(27, R.drawable.crossword_number_free_27);
-        mapBadgeNumbersFree.put(28, R.drawable.crossword_number_free_28);
-        mapBadgeNumbersFree.put(29, R.drawable.crossword_number_free_29);
-        mapBadgeNumbersFree.put(30, R.drawable.crossword_number_free_30);
-        mapBadgeNumbersFree.put(31, R.drawable.crossword_number_free_31);
-        mapBadgeNumbersFree.put(32, R.drawable.crossword_number_free_32);
     }
 }

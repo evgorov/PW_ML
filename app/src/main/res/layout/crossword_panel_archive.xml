@@ -123,12 +123,13 @@
             android:id="@+id/crossword_archive_brilliant_badges_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:columnWidth="90dp"
+            android:layout_margin="4dp"
+            android:columnWidth="58dp"
             android:numColumns="auto_fit"
             android:verticalSpacing="8dp"
             android:horizontalSpacing="8dp"
-            android:stretchMode="columnWidth"
+            android:stretchMode="none"
+            android:choiceMode="singleChoice"
             android:gravity="left">
 
         <!--@TODO add crosswords panels-->
