@@ -14,7 +14,6 @@ public class BadgeData {
     final static public int STATUS_RESOLVED = 6;
     final static public int STATUS_UNRESOLVED = 7;
 
-    public int mType;
     public int mStatus;
     public int mProgress;
     public int mScore;

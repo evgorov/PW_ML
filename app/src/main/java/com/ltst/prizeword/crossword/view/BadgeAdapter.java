@@ -24,10 +24,12 @@ public class BadgeAdapter extends BaseAdapter {
 
     private @Nonnull Context mContext;
     private BadgeData[] mData;
+    private int mType;
 
-    public BadgeAdapter(@Nonnull Context context, BadgeData[] data) {
+    public BadgeAdapter(@Nonnull Context context, int type, BadgeData[] data) {
         this.mContext = context;
         this.mData = data;
+        this.mType = type;
     }
 
     @Nullable
@@ -37,7 +39,7 @@ public class BadgeAdapter extends BaseAdapter {
         // Выбираем фон эмблемы;
         BadgeData data = mData[position];
         int idBackground = 0;
-        switch (data.mType){
+        switch (mType){
             case BadgeData.TYPE_BRILLIANT:
                 idBackground = R.drawable.puzzles_badges_bg_brilliant;
                 break;
@@ -59,7 +61,7 @@ public class BadgeAdapter extends BaseAdapter {
         int idForeground = 0;
         if(data.mStatus == BadgeData.STATUS_RESOLVED)
         {
-            switch (data.mType){
+            switch (mType){
                 case BadgeData.TYPE_BRILLIANT:
                     idForeground = R.drawable.puzzles_badges_bg_brilliant_resolved;
                     break;
@@ -84,7 +86,7 @@ public class BadgeAdapter extends BaseAdapter {
 
         // Выбираем цифорку;
         int idNumber = 0;
-        if(data.mType == BadgeData.TYPE_BRILLIANT)
+        if(mType == BadgeData.TYPE_BRILLIANT)
         {
             switch (data.mNumber)
             {
@@ -123,7 +125,7 @@ public class BadgeAdapter extends BaseAdapter {
                 default: break;
             }
         }
-        else if(data.mType == BadgeData.TYPE_GOLD)
+        else if(mType == BadgeData.TYPE_GOLD)
         {
             switch (data.mNumber)
             {
@@ -162,7 +164,7 @@ public class BadgeAdapter extends BaseAdapter {
                 default: break;
             }
         }
-        else if(data.mType == BadgeData.TYPE_SILVER || data.mType == BadgeData.TYPE_SILVER2)
+        else if(mType == BadgeData.TYPE_SILVER || mType == BadgeData.TYPE_SILVER2)
         {
             switch (data.mNumber)
             {
@@ -201,7 +203,7 @@ public class BadgeAdapter extends BaseAdapter {
                 default: break;
             }
         }
-        else if(data.mType == BadgeData.TYPE_FREE)
+        else if(mType == BadgeData.TYPE_FREE)
         {
             switch (data.mNumber)
             {
@@ -272,7 +274,7 @@ public class BadgeAdapter extends BaseAdapter {
                 LinearLayout layout_progress_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
                 LinearLayout layout_progress_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
 
-                percent.setText(String.valueOf(data.mProgress));
+                percent.setText(String.valueOf(data.mProgress)+"%");
                 layout_bg.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
                 layout_fg.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
                 Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), idNumber);

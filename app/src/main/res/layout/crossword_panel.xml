@@ -249,10 +249,11 @@
 
     </LinearLayout>
 
-    <GridView
+    <com.ltst.prizeword.crossword.view.BadgeGridView
             android:id="@+id/crossword_panel_badges_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_margin="4dp"
             android:columnWidth="58dp"
             android:numColumns="auto_fit"
@@ -260,11 +261,13 @@
             android:horizontalSpacing="8dp"
             android:stretchMode="none"
             android:choiceMode="singleChoice"
+            android:isScrollContainer="false"
+            android:smoothScrollbar="true"
             android:gravity="left">
 
         <!--@TODO add crosswords panels-->
 
-    </GridView>
+    </com.ltst.prizeword.crossword.view.BadgeGridView>
 
 
 </LinearLayout>

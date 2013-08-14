@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +13,6 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
-
-import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 
@@ -29,11 +26,11 @@ public class CrosswordFragmentHolder {
     private @Nonnull View mViewCrossword;
     private static @Nonnull Context mContext;
     public @Nonnull
-    CrosswordWidgetCurrent mCrosswordPanelCurrent;
+    CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull
-    CrosswordWidgetArchive mCrosswordPanelArchive;
+    CrosswordPanelArchiveHolder mCrosswordPanelArchive;
     public @Nonnull
-    CrosswordWidgetBuy mCrosswordPanelBuy;
+    CrosswordPanelBuyHolder mCrosswordPanelBuy;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
@@ -43,22 +40,22 @@ public class CrosswordFragmentHolder {
         this.mViewCrossword = view;
         this.mContext = context;
 
-        mCrosswordPanelCurrent = new CrosswordWidgetCurrent(view);
-        mCrosswordPanelArchive = new CrosswordWidgetArchive(view);
-        mCrosswordPanelBuy = new CrosswordWidgetBuy(view);
+        mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
+        mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
+        mCrosswordPanelBuy = new CrosswordPanelBuyHolder(view);
 
     }
 
     // ================== CROSSWORD PANELS ======================
 
-    static public class CrosswordWidgetCurrent {
+    static public class CrosswordPanelCurrentHolder {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
         @Nonnull public LinearLayout mRestPanelLL;
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
-        public CrosswordWidgetCurrent(@Nonnull View view){
+        public CrosswordPanelCurrentHolder(@Nonnull View view){
 
             mMonthTV = (TextView) view.findViewById(R.id.crossword_fragment_current_month);
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
@@ -67,15 +64,15 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    static public class CrosswordWidgetArchive {
+    static public class CrosswordPanelArchiveHolder {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
-        public CrosswordWidgetArchive(@Nonnull View view){
+        public CrosswordPanelArchiveHolder(@Nonnull View view){
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
         }
     }
 
-    static public class CrosswordWidgetBuy {
+    static public class CrosswordPanelBuyHolder {
 
         @Nonnull public TextView mRestHintsTV;
 
@@ -87,7 +84,7 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mBuy20Button;
         @Nonnull public LinearLayout mBuy30Button;
 
-        public CrosswordWidgetBuy(@Nonnull View view){
+        public CrosswordPanelBuyHolder(@Nonnull View view){
             mRestHintsTV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_count);
             mBuy10TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_10_price);
             mBuy20TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_20_price);
@@ -123,7 +120,7 @@ public class CrosswordFragmentHolder {
         @Nonnull LinearLayout pBuyButton = (LinearLayout) view.findViewById(R.id.crossword_panel_buy_button);
         @Nonnull TextView pBuyPrice = (TextView) view.findViewById(R.id.crossword_panel_buy_price);
 
-        @Nonnull GridView pBadgeContainer = (GridView) view.findViewById(R.id.crossword_panel_badges_container);
+        @Nonnull BadgeGridView pBadgeContainer = (BadgeGridView) view.findViewById(R.id.crossword_panel_badges_container);
 
         @Nonnull Bitmap bitmap = null;
 
@@ -183,7 +180,7 @@ public class CrosswordFragmentHolder {
             pMonthBackground.setVisibility(View.GONE);
 
             if(data.mBadgeData != null){
-                pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mBadgeData));
+                pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
             }
             mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(view);
         }
@@ -206,7 +203,7 @@ public class CrosswordFragmentHolder {
                 pMonthText.setText(data.mMonth);
 
             if(data.mBadgeData != null){
-                pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mBadgeData));
+                pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
             }
             mCrosswordPanelArchive.mCrosswordsContainerLL.addView(view);
         }
