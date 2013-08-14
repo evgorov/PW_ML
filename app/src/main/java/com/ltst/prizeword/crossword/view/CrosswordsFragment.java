@@ -78,56 +78,25 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-//
-//        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
-//        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-//        dataPanel1.mType = BadgeData.TYPE_FREE;
-//        dataPanel1.mMonth = "Апрель";
-//
-//        dataPanel1.mBadgeData = new BadgeData[23];
-//        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
-//            BadgeData badge = new BadgeData();
-//            badge.mNumber = i+1;
-//            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
-//            badge.mProgress = 95;
-//            badge.mScore = 9000;
-//            dataPanel1.mBadgeData[i] = badge;
-//        }
-//
-//        CrosswordPanelData dataPanel2 = new CrosswordPanelData();
-//        dataPanel2.mKind = CrosswordPanelData.KIND_CURRENT;
-//        dataPanel2.mType = BadgeData.TYPE_SILVER;
-//
-//        dataPanel2.mBadgeData = new BadgeData[12];
-//        for(int i=0; i<dataPanel2.mBadgeData.length; i++){
-//            BadgeData badge = new BadgeData();
-//            badge.mNumber = i+1;
-//            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
-//            badge.mProgress = 95;
-//            badge.mScore = 9000;
-//            dataPanel2.mBadgeData[i] = badge;
-//        }
-//
-//        CrosswordPanelData dataPanel3 = new CrosswordPanelData();
-//        dataPanel3.mKind = CrosswordPanelData.KIND_BUY;
-//        dataPanel3.mType = BadgeData.TYPE_GOLD;
-//        dataPanel3.mBuyCount = 3;
-//        dataPanel3.mBuyScore = 12587;
-//
-//        CrosswordPanelData dataPanel4 = new CrosswordPanelData();
-//        dataPanel4.mKind = CrosswordPanelData.KIND_BUY;
-//        dataPanel4.mType = BadgeData.TYPE_FREE;
-//        dataPanel4.mBuyCount = 3;
-//        dataPanel4.mBuyScore = 12587;
-//
-//        mCrosswordFragmentHolder.addPanel(dataPanel3);
-//        mCrosswordFragmentHolder.addPanel(dataPanel4);
-//        mCrosswordFragmentHolder.addPanel(dataPanel1);
-//        mCrosswordFragmentHolder.addPanel(dataPanel2);
+        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+        dataPanel1.mType = BadgeData.TYPE_FREE;
+        dataPanel1.mMonth = "Июнь";
+
+        dataPanel1.mBadgeData = new BadgeData[1];
+        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
+            BadgeData badge = new BadgeData();
+            badge.mNumber = i+1;
+            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
+            badge.mProgress = 95;
+            badge.mScore = 9000;
+            dataPanel1.mBadgeData[i] = badge;
+        }
+        mCrosswordFragmentHolder.addPanel(dataPanel1);
 
        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
-        mRoot = v;
+       mRoot = v;
        return v;
     }
 
@@ -217,6 +186,11 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void buyCrosswordSet() {
 
+    }
+
+    @Override
+    public void choiceCrossword() {
+        launchCrosswordActivity();
     }
 
     private void reloadCrosswordsFromInternet()

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -219,6 +220,13 @@ public class CrosswordFragmentHolder {
                 @Override
                 public void onClick(View view) {
                     mICrosswordFragment.buyCrosswordSet();
+                }
+            });
+
+            pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    mICrosswordFragment.choiceCrossword();
                 }
             });
         }
