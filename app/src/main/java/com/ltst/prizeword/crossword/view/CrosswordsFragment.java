@@ -71,21 +71,21 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
-        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-        dataPanel1.mType = PuzzleSetModel.PuzzleSetType.FREE;
-        dataPanel1.mMonth = "Июнь";
-
-        dataPanel1.mBadgeData = new BadgeData[1];
-        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
-            BadgeData badge = new BadgeData();
-            badge.mNumber = i+1;
-            badge.mStatus = (i%2 == 0) ? true : false;
-            badge.mProgress = 95;
-            badge.mScore = 9000;
-            dataPanel1.mBadgeData[i] = badge;
-        }
-        mCrosswordFragmentHolder.addPanel(dataPanel1);
+//        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+//        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+//        dataPanel1.mType = PuzzleSetModel.PuzzleSetType.FREE;
+//        dataPanel1.mMonth = "Июнь";
+//
+//        dataPanel1.mBadgeData = new BadgeData[1];
+//        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
+//            BadgeData badge = new BadgeData();
+//            badge.mNumber = i+1;
+//            badge.mStatus = (i%2 == 0) ? true : false;
+//            badge.mProgress = 95;
+//            badge.mScore = 9000;
+//            dataPanel1.mBadgeData[i] = badge;
+//        }
+//        mCrosswordFragmentHolder.addPanel(dataPanel1);
 
        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
@@ -157,9 +157,17 @@ public class CrosswordsFragment extends SherlockFragment
         List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         for (PuzzleSet set : sets)
         {
+            List<String> puzzlesId = set.puzzlesId;
 //            CrosswordPanelData data = new CrosswordPanelData();
-//            data.mType = set.type;
+//            data.mId = set.id;
+//            data.mServerId = set.serverId;
+//            data.mKind = CrosswordPanelData.KIND_CURRENT;
+//            data.mType = PuzzleSetModel.getPuzzleTypeByString(set.type);
+//            data.mBought = set.isBought;
+//            data.mMonth = set.month;
+//            data.mYear = set.year;
 //            mCrosswordFragmentHolder.addPanel(data);
+            mCrosswordFragmentHolder.addPanel(set);
         }
     }
 

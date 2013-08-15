@@ -15,7 +15,11 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+
+import java.text.DateFormatSymbols;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +49,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ======================
 
-    static public class CrosswordPanelCurrentHolder {
+    static private class CrosswordPanelCurrentHolder {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
@@ -61,7 +65,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    static public class CrosswordPanelArchiveHolder {
+    static private class CrosswordPanelArchiveHolder {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
         public CrosswordPanelArchiveHolder(@Nonnull View view){
@@ -69,7 +73,28 @@ public class CrosswordFragmentHolder {
         }
     }
 
+    public void addPanel(@Nonnull PuzzleSet set)
+    {
+        CrosswordPanelData data = new CrosswordPanelData();
+        data.mId = set.id;
+        data.mServerId = set.serverId;
+        data.mKind = CrosswordPanelData.KIND_CURRENT;
+        data.mType = PuzzleSetModel.getPuzzleTypeByString(set.type);
+        data.mBought = set.isBought;
+        data.mMonth = set.month;
+        data.mYear = set.year;
+        addPanel(data);
+    }
+
     // ================== CROSSWORD PANELS ITEM ======================
+
+    private static class CrosswordSet
+    {
+        private CrosswordSet() {
+
+        }
+    }
+
 
     public void addPanel(@Nonnull CrosswordPanelData data)
     {
@@ -144,32 +169,42 @@ public class CrosswordFragmentHolder {
 
         if(data.mKind == CrosswordPanelData.KIND_CURRENT)
         {
-            pSwitcher.setVisibility(View.GONE);
-            pBuyCrosswordContaiter.setVisibility(View.GONE);
-            pMonthBackground.setVisibility(View.GONE);
+            if(data.mBought)
+            {
+                // Куплены;
+                pSwitcher.setVisibility(View.GONE);
+                pBuyCrosswordContaiter.setVisibility(View.GONE);
+                pMonthBackground.setVisibility(View.GONE);
 
-            if(data.mBadgeData != null){
-                pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
+                if(data.mBadgeData != null){
+                    pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
+                }
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(view);
             }
-            mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(view);
-        }
-        else if(data.mKind == CrosswordPanelData.KIND_BUY)
-        {
-            pSwitcher.setVisibility(View.GONE);
-            pCurrentCrosswordContaiter.setVisibility(View.GONE);
-            pMonthBackground.setVisibility(View.GONE);
-            pBadgeContainer.setVisibility(View.GONE);
+            else
+            {
+                // Некуплены;
+                pSwitcher.setVisibility(View.GONE);
+                pCurrentCrosswordContaiter.setVisibility(View.GONE);
+                pMonthBackground.setVisibility(View.GONE);
+                pBadgeContainer.setVisibility(View.GONE);
 
-            mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(view);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(view);
+            }
         }
         else if(data.mKind == CrosswordPanelData.KIND_ARCHIVE)
         {
             pTitleImage.setVisibility(View.GONE);
             pBuyCrosswordContaiter.setVisibility(View.GONE);
-            if(data.mMonth == null)
+            if(data.mMonth == 0)
+            {
                 pMonthBackground.setVisibility(View.GONE);
+            }
             else
-                pMonthText.setText(data.mMonth);
+            {
+                DateFormatSymbols symbols = new DateFormatSymbols();
+                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+            }
 
             if(data.mBadgeData != null){
                 pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
