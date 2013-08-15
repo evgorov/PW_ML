@@ -227,47 +227,28 @@ public class BadgeAdapter extends BaseAdapter {
         }
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if(view == null)
+        BadgeHolder badge = new BadgeHolder(inflater, view);
+        if(badge.mRootView == null)
         {
             if(data.mStatus)
             {
                 // Решенные;
-                view = inflater.inflate(R.layout.crossword_badge_resolved, null, false);
-                LinearLayout layout_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_badge_bg);
-                LinearLayout layout_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
-                TextView score = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
-
-                score.setText(String.valueOf(data.mScore));
-                layout_bg.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                layout_fg.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), idNumber);
-
-                ImageView image = new ImageView(mContext);
-                image.setImageBitmap(bitmap);
-                layout_fg.addView(image);
-//            bitmap.recycle();
-
+                badge.mScore.setText(String.valueOf(data.mScore));
+                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
+                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
+                badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
+                badge.mUnresolverContainer.setVisibility(View.GONE);
+                badge.mResolverContainer.setVisibility(View.VISIBLE);
             }
             else
             {
                 // Нерешенные;
-                view = inflater.inflate(R.layout.crossword_badge_unresolved, null, false);
-                LinearLayout layout_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_badge_bg);
-                LinearLayout layout_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
-                TextView percent = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
-                LinearLayout layout_progress_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
-                LinearLayout layout_progress_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
-
-                percent.setText(String.valueOf(data.mProgress)+"%");
-                layout_bg.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                layout_fg.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), idNumber);
-
-                ImageView image = new ImageView(mContext);
-                image.setImageBitmap(bitmap);
-                layout_fg.addView(image);
-//            bitmap.recycle();
+                badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
+                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
+                badge.mForegroud.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
+                badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
+                badge.mResolverContainer.setVisibility(View.GONE);
+                badge.mUnresolverContainer.setVisibility(View.VISIBLE);
             }
         }
 
