@@ -6,10 +6,10 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.ltst.prizeword.crossword.engine.AnswerLetterPointIterator;
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
+    public static final @Nonnull String BF_FOCUS_POINT = "PuzzleManager.focusPoint";
+
     private volatile @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
@@ -45,6 +47,8 @@ public class PuzzleManager
     private @Nullable Point mLastQuestionTapPoint;
     private @Nullable Point mLastQuestionInputPuzzlePoint;
 
+    private boolean isRestored;
+
     private final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     public PuzzleManager(@Nonnull Context context,
@@ -56,19 +60,18 @@ public class PuzzleManager
         mMatrix = new Matrix();
         mInvalidateHandler = invalidateHandler;
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
+        isRestored = false;
     }
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
+        Log.i("set puzzle view rect");
         @Nullable Rect oldViewRect = null;
         @Nullable Rect focusOffsetRect = null;
         @Nullable Point focusOffsetPoint = null;
-        if (mPuzzleViewRect != null)
+        if (mFocusViewPoint != null && mPuzzleViewRect != null)
         {
             oldViewRect = new Rect(mPuzzleViewRect);
-        }
-        if (mFocusViewPoint != null)
-        {
             focusOffsetPoint = new Point(mFocusViewPoint.x - mFieldDrawer.getCenterX(),
                     mFocusViewPoint.y - mFieldDrawer.getCenterY());
             focusOffsetRect = mFieldDrawer.getFocusOffsetRect(mFocusViewPoint, mPuzzleViewRect);
@@ -85,11 +88,20 @@ public class PuzzleManager
                 mFieldDrawer.getActualWidth(),
                 mFieldDrawer.getActualHeight());
 
-        mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+        if(isRestored)
+        {
+            mCurrentScale = mScaled ? MAX_SCALE : MIN_SCALE;
+        }
+        else
+        {
+            mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+        }
+
         checkFocusViewPoint();
         mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
                 focusOffsetRect, oldViewRect, mPuzzleViewRect);
         mInvalidateHandler.handle(mPuzzleViewRect);
+
     }
 
     private boolean checkFocusViewPoint()
@@ -99,6 +111,20 @@ public class PuzzleManager
             return false;
         }
         return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
+    }
+
+    public void saveState(@Nonnull Bundle dest)
+    {
+        dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
+    }
+
+    public void restoreState(@Nonnull Bundle source)
+    {
+        isRestored = true;
+        Log.i("restore state");
+        mFocusViewPoint = source.getParcelable(BF_FOCUS_POINT);
+        mScaled = source.getBoolean(PuzzleView.BF_SCALED);
+        mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
     public boolean onScrollEvent(float offsetX, float offsetY)
@@ -192,9 +218,7 @@ public class PuzzleManager
             // back button, enter key
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
-                mResourcesAdapter.setCurrentQuestionWrong();
-                mLastQuestionTapPoint = null;
-                mInvalidateHandler.handle(mPuzzleViewRect);
+                clearInput();
                 break;
             // backspace key
             case KeyEvent.KEYCODE_DEL:
@@ -263,6 +287,13 @@ public class PuzzleManager
         }
     }
 
+    private void clearInput()
+    {
+        mResourcesAdapter.setCurrentQuestionWrong();
+        mLastQuestionTapPoint = null;
+        mInvalidateHandler.handle(mPuzzleViewRect);
+    }
+
     public void cancelLastQuestion()
     {
         if(mLastQuestionTapPoint != null)
@@ -305,6 +336,7 @@ public class PuzzleManager
 
     public void recycle()
     {
+        clearInput();
         mFieldDrawer.unloadResources();
     }
 

@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.engine;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Bundle;
 
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
@@ -26,6 +27,9 @@ import javax.annotation.Nullable;
 
 public class PuzzleResourcesAdapter
 {
+    public static final @Nonnull String BF_PUZZLE = "PuzzleResourcesAdapter.puzzle";
+    public static final @Nonnull String BF_RESOURCES = "PuzzleResourcesAdapter.resources";
+
     private @Nonnull IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
@@ -61,6 +65,26 @@ public class PuzzleResourcesAdapter
         mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
+    }
+
+    public void saveState(@Nonnull Bundle bundle)
+    {
+        bundle.putParcelable(BF_PUZZLE, mPuzzle);
+        bundle.putParcelable(BF_RESOURCES, mResources);
+    }
+
+    public void restoreState(@Nonnull Bundle bundle)
+    {
+        mPuzzle = bundle.getParcelable(BF_PUZZLE);
+        mResources = bundle.getParcelable(BF_RESOURCES);
+        if (mPuzzle != null)
+        {
+            mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mPuzzle.serverId, mPuzzleSet.id);
+        }
+        for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
+        {
+            puzzleResourcesHandler.handle(mResources);
+        }
     }
 
     private void setInputMode()

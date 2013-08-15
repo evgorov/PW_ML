@@ -3,11 +3,14 @@ package com.ltst.prizeword.crossword.engine;
 import android.content.res.Resources;
 
 import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,8 +21,9 @@ import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
 import org.omich.velo.handlers.IListener;
 import com.ltst.prizeword.crossword.wordcheck.WordCompletenessChecker.*;
 import com.ltst.prizeword.crossword.wordcheck.WordsGraph;
+import com.ltst.prizeword.tools.ParcelableTools;
 
-public class PuzzleResources
+public class PuzzleResources implements Parcelable
 {
     private static final int DEFAULT_CELL_WIDTH = 14;
     private static final int DEFAULT_CELL_HEIGHT = 20;
@@ -478,5 +482,41 @@ public class PuzzleResources
     public static int getCanvasBackgroundTileRes()
     {
         return R.drawable.bg_dark_tile;
+    }
+
+    // ==== Parcelable implementation ==================================
+
+    public static Creator<PuzzleResources> CREATOR = new Creator<PuzzleResources>()
+    {
+        public PuzzleResources createFromParcel(Parcel source)
+        {
+            int cols = source.readInt();
+            int rows = source.readInt();
+            PuzzleSetModel.PuzzleSetType type =
+                    PuzzleSetModel.PuzzleSetType.valueOf(ParcelableTools.getNonnullString(source.readString()));
+            List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>();
+            source.readTypedList(questions, PuzzleQuestion.CREATOR);
+            return new PuzzleResources(cols, rows, type, questions);
+        }
+
+        public PuzzleResources[] newArray(int size)
+        {
+            return null;
+        }
+    };
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(mPuzzleColumnsCount);
+        dest.writeInt(mPuzzleRowsCount);
+        dest.writeString(mSetType.name());
+        dest.writeTypedList(mPuzzleQuestions);
     }
 }
