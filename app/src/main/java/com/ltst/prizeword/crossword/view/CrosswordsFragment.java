@@ -33,7 +33,7 @@ public class CrosswordsFragment extends SherlockFragment
                                 implements View.OnClickListener,
                                 ICrosswordFragment
 {
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
@@ -157,17 +157,12 @@ public class CrosswordsFragment extends SherlockFragment
         List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         for (PuzzleSet set : sets)
         {
-            List<String> puzzlesId = set.puzzlesId;
-//            CrosswordPanelData data = new CrosswordPanelData();
-//            data.mId = set.id;
-//            data.mServerId = set.serverId;
-//            data.mKind = CrosswordPanelData.KIND_CURRENT;
-//            data.mType = PuzzleSetModel.getPuzzleTypeByString(set.type);
-//            data.mBought = set.isBought;
-//            data.mMonth = set.month;
-//            data.mYear = set.year;
-//            mCrosswordFragmentHolder.addPanel(data);
             mCrosswordFragmentHolder.addPanel(set);
+            List<String> puzzlesId = set.puzzlesId;
+            for(String puzzId : puzzlesId)
+            {
+
+            }
         }
     }
 
@@ -191,7 +186,7 @@ public class CrosswordsFragment extends SherlockFragment
     };
 
     @Override
-    public void buyCrosswordSet() {
+    public void buyCrosswordSet(String crosswordSetServerId) {
 
     }
 
