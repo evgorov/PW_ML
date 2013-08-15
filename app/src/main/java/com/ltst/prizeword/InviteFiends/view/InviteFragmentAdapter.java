@@ -58,14 +58,15 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     @Override protected @Nonnull ViewHolder createViewHolderOfView(@Nonnull View view)
     {
         TextView nameView = (TextView) view.findViewById(R.id.invite_item_name_textview);
+        TextView surnameView = (TextView) view.findViewById(R.id.invite_item_surname_textview);
         ImageView imageView = (ImageView) view.findViewById(R.id.invite_item_ava);
         Button inviteBtn = (Button) view.findViewById(R.id.invite_add_btn);
-        if (nameView == null || imageView == null || inviteBtn == null)
+        if (nameView == null || surnameView == null || imageView == null || inviteBtn == null)
         {
             //Log.w(getClass(), "Elements titleView or imageView or dateView of NewsList Item was null, but they must not be"); //$NON-NLS-1$
             throw new NullPointerException("Elements titleView or imageView or dateView of NewsList Item was null, but they must not be"); //$NON-NLS-1$
         }
-        return new ViewHolder(nameView, imageView, inviteBtn);
+        return new ViewHolder(nameView,surnameView, imageView, inviteBtn);
     }
 
 
@@ -73,6 +74,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull InviteFriendsData quick, @Deprecated @Nonnull View view, @Deprecated int position)
     {
         viewHolder.nameView.setText(quick.firstName);
+        viewHolder.surnameView.setText(quick.lastName);
         if(quick.status.equals("already_registered")){
         viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_add_btn_selected);
         viewHolder.inviteBtn.setClickable(false);
@@ -95,13 +97,15 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     protected static class ViewHolder
     {
         final @Nonnull TextView nameView;
+        final @Nonnull TextView surnameView;
         final @Nonnull ImageView imageView;
         final @Nonnull Button inviteBtn;
 
-        private ViewHolder(@Nonnull TextView nameView,
+        private ViewHolder(@Nonnull TextView nameView,@Nonnull TextView surnameView,
                            @Nonnull ImageView imageView, @Nonnull Button inviteBtn)
         {
             this.nameView = nameView;
+            this.surnameView = surnameView;
             this.imageView = imageView;
             this.inviteBtn = inviteBtn;
         }

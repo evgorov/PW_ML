@@ -82,7 +82,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             model = new InviteFriendsDataModel(mContext,mBcConnector);
             mModel = model;
 
-            Log.i(LOG_TAG, "Create MOdel"); //$NON-NLS-1$
+            Log.i(LOG_TAG, "Create Model"); //$NON-NLS-1$
         }
 
         InviteFragmentAdapter adapter = mVkAdapter;

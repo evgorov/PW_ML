@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ltst.prizeword.InviteFiends.view.CustomListView;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
@@ -33,7 +34,6 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
 {
     private @Nonnull Context mContext;
     private boolean mIsDestroyed;
-
 
     private @Nullable Source mSource;
     private @Nonnull IBcConnector mBcConnector;
