@@ -1,97 +1,143 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class RestInviteFriend
 {
-    private @JsonProperty("provider") String provider;
-    private @JsonProperty("id") String friendsId;
-    private @JsonProperty("name") String name;
-    private @JsonProperty("email") String email;
-    private @JsonProperty("invite_send") boolean inviteSend;
-    private @JsonProperty("invite_used") boolean inviteUsed;
-    private @JsonProperty("invited_at") String invitedAt;
-    private @JsonProperty("userpic_url") String userpicUrl;
+    private @JsonProperty("first_name") String firstName;
+    private @JsonProperty("last_name") String lastName;
+    private @JsonProperty("deactivated") String deactivated;
+    private @JsonProperty("online") int online;
+    private @JsonProperty("user_id") long userId;
+    private @JsonProperty("lists") int[] lists;
+    private @JsonProperty("id") String id;
+    private @JsonProperty("userpic") String userpic;
+    private @JsonProperty("status") String status;
 
     public RestInviteFriend(){}
 
-    public String getProvider()
+    public String getFirstName()
     {
-        return provider;
+        return firstName;
     }
 
-    public void setProvider(String provider)
+    public void setFirstName(String firstName)
     {
-        this.provider = provider;
+        this.firstName = firstName;
     }
 
-    public String getFriendsId()
+    public String getLastName()
     {
-        return friendsId;
+        return lastName;
     }
 
-    public void setFriendsId(String friendsId)
+    public void setLastName(String lastName)
     {
-        this.friendsId = friendsId;
+        this.lastName = lastName;
     }
 
-    public String getName()
+    public String getDeactivated()
     {
-        return name;
+        return deactivated;
     }
 
-    public void setName(String name)
+    public void setDeactivated(String deactivated)
     {
-        this.name = name;
+        this.deactivated = deactivated;
     }
 
-    public String getEmail()
+    public int getOnline()
     {
-        return email;
+        return online;
     }
 
-    public void setEmail(String email)
+    public void setOnline(int online)
     {
-        this.email = email;
+        this.online = online;
     }
 
-    public boolean isInviteSend()
+    public long getUserId()
     {
-        return inviteSend;
+        return userId;
     }
 
-    public void setInviteSend(boolean inviteSend)
+    public void setUserId(long userId)
     {
-        this.inviteSend = inviteSend;
+        this.userId = userId;
     }
 
-    public boolean isInviteUsed()
+    public int[] getLists()
     {
-        return inviteUsed;
+        return lists;
     }
 
-    public void setInviteUsed(boolean inviteUsed)
+    public void setLists(int[] lists)
     {
-        this.inviteUsed = inviteUsed;
+        this.lists = lists;
     }
 
-    public String getInvitedAt()
+    public String getId()
     {
-        return invitedAt;
+        return id;
     }
 
-    public void setInvitedAt(String invitedAt)
+    public void setId(String id)
     {
-        this.invitedAt = invitedAt;
+        this.id = id;
     }
 
-    public String getUserpicUrl()
+    public String getUserpic()
     {
-        return userpicUrl;
+        return userpic;
     }
 
-    public void setUserpicUrl(String userpicUrl)
+    public void setUserpic(String userpic)
     {
-        this.userpicUrl = userpicUrl;
+        this.userpic = userpic;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
+
+
+    public static class RestInviteFriendHolder
+    {
+        private @JsonProperty() List<RestInviteFriend> friends;
+        private @JsonIgnore HttpStatus status;
+
+        public RestInviteFriendHolder(){}
+
+         public List<RestInviteFriend> getFriends()
+        {
+            return friends;
+        }
+
+        public void setFriends(List<RestInviteFriend> friends)
+        {
+            this.friends = friends;
+        }
+
+        public HttpStatus getStatus()
+        {
+            return status;
+        }
+
+        public void setStatus(HttpStatus status)
+        {
+            this.status = status;
+        }
     }
 }

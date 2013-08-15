@@ -3,6 +3,9 @@ package com.ltst.prizeword.rest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
@@ -382,7 +385,7 @@ public class RestClient implements IRestClient
     }
 
     @Nullable @Override
-    public RestInvite.RestInviteHolder getFriendsData(@Nonnull String sessionKey, @Nonnull String providerName)
+    public RestInviteFriend.RestInviteFriendHolder getFriendsData(@Nonnull String sessionKey, @Nonnull String providerName)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
@@ -397,19 +400,14 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<RestInvite[]> entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestInvite[].class, urlVariables);
-        RestInvite.RestInviteHolder holder = new RestInvite.RestInviteHolder();
-        RestInvite[] friends = entity.getBody();
-        if (friends.length == 0)
-        {
-            return null;
-        }
-        if (friends[0] != null)
-        {
-            holder.setFriends(friends[0]);
-        }
+        ResponseEntity<RestInviteFriend[]> entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestInviteFriend[].class, urlVariables);
+        RestInviteFriend.RestInviteFriendHolder holder = new RestInviteFriend.RestInviteFriendHolder();
+        List<RestInviteFriend> friends = Arrays.asList(entity.getBody());
+        holder.setFriends(friends);
         holder.setStatus(entity.getStatusCode());
         return holder;
+
+
 
     }
 

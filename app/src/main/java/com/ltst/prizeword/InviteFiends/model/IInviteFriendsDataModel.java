@@ -1,4 +1,4 @@
-package com.ltst.prizeword.login.model;
+package com.ltst.prizeword.InviteFiends.model;
 
 import android.graphics.Bitmap;
 
@@ -9,6 +9,6 @@ import javax.annotation.Nonnull;
 
 public interface IInviteFriendsDataModel
 {
-    void loadFriendImageFromServer(@Nonnull final String url, @Nonnull IListenerVoid handler);
-    void loadFriendDataFromInternet(@Nonnull IListenerVoid handler);
+    @Nonnull ISlowSource<InviteFriendsData,Bitmap> getSource();
+    void updateDataByInternet(@Nonnull IListenerVoid handler);
 }

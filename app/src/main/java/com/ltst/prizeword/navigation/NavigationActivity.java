@@ -31,7 +31,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
-import com.ltst.prizeword.login.view.InviteFriendsFragment;
+import com.ltst.prizeword.InviteFiends.view.InviteFriendsFragment;
 import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;

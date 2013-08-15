@@ -10,8 +10,10 @@
 
     <ImageView
             android:id="@+id/invite_item_ava"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_avatar"
+            android:layout_width="@dimen/size_avatar"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:layout_gravity="center_vertical|left"
             android:layout_marginLeft="20dp"
             android:background="@drawable/invite_empty_ava"/>

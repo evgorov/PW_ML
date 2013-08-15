@@ -24,5 +24,5 @@ public interface IRestClient
     @Nullable
     RestUserData.RestAnswerMessageHolder mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2);
 
-    @Nullable RestInvite.RestInviteHolder getFriendsData(@Nonnull String sessionToken,@Nonnull String providerName);
+    @Nullable RestInviteFriend.RestInviteFriendHolder getFriendsData(@Nonnull String sessionToken,@Nonnull String providerName);
 }
