@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import javax.annotation.Nonnull;
 
@@ -27,12 +28,8 @@ public class CrosswordFragmentHolder {
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull View mViewCrossword;
     private static @Nonnull Context mContext;
-    public @Nonnull
-    CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
-    public @Nonnull
-    CrosswordPanelArchiveHolder mCrosswordPanelArchive;
-    public @Nonnull
-    CrosswordPanelBuyHolder mCrosswordPanelBuy;
+    public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
+    public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
@@ -44,8 +41,6 @@ public class CrosswordFragmentHolder {
 
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
-        mCrosswordPanelBuy = new CrosswordPanelBuyHolder(view);
-
     }
 
     // ================== CROSSWORD PANELS ======================
@@ -71,29 +66,6 @@ public class CrosswordFragmentHolder {
 
         public CrosswordPanelArchiveHolder(@Nonnull View view){
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
-        }
-    }
-
-    static public class CrosswordPanelBuyHolder {
-
-        @Nonnull public TextView mRestHintsTV;
-
-        @Nonnull public TextView mBuy10TV;
-        @Nonnull public TextView mBuy20TV;
-        @Nonnull public TextView mBuy30TV;
-
-        @Nonnull public LinearLayout mBuy10Button;
-        @Nonnull public LinearLayout mBuy20Button;
-        @Nonnull public LinearLayout mBuy30Button;
-
-        public CrosswordPanelBuyHolder(@Nonnull View view){
-            mRestHintsTV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_count);
-            mBuy10TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_10_price);
-            mBuy20TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_20_price);
-            mBuy30TV = (TextView) view.findViewById(R.id.crossword_fragment_current_rest_buy_30_price);
-            mBuy10Button = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_rest_buy_10_btn);
-            mBuy20Button = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_rest_buy_20_btn);
-            mBuy30Button = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_rest_buy_30_btn);
         }
     }
 
@@ -126,34 +98,29 @@ public class CrosswordFragmentHolder {
 
         @Nonnull Bitmap bitmap = null;
 
-        switch (data.mType){
-            case BadgeData.TYPE_BRILLIANT:
-                pBuyPrice.setText(R.string.buy_three_dollar);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
-                pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
-                break;
-            case BadgeData.TYPE_GOLD:
-                pBuyPrice.setText(R.string.buy_two_dollar);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
-                pTitleText.setText(R.string.puzzless_hint_gold_crossword);
-                break;
-            case BadgeData.TYPE_SILVER:
-                pBuyPrice.setText(R.string.buy_two_dollar);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
-                pTitleText.setText(R.string.puzzless_hint_silver_crossword);
-                break;
-            case BadgeData.TYPE_SILVER2:
-                pBuyPrice.setText(R.string.buy_one_dollar);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag2);
-                pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
-                break;
-            case BadgeData.TYPE_FREE:
-                pBuyPrice.setText(R.string.buy_free);
-                bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
-                pTitleText.setText(R.string.puzzless_hint_free_crossword);
-                break;
-            default:
-                break;
+        if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
+        {
+            pBuyPrice.setText(R.string.buy_three_dollar);
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
+            pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
+        {
+            pBuyPrice.setText(R.string.buy_two_dollar);
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
+            pTitleText.setText(R.string.puzzless_hint_gold_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
+        {
+            pBuyPrice.setText(R.string.buy_two_dollar);
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
+            pTitleText.setText(R.string.puzzless_hint_silver_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
+        {
+            pBuyPrice.setText(R.string.buy_free);
+            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
+            pTitleText.setText(R.string.puzzless_hint_free_crossword);
         }
         pTitleImage.setImageBitmap(bitmap);
 //        bitmap.recycle();

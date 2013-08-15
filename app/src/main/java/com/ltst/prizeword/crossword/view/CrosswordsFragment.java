@@ -14,17 +14,12 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
-import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
-import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromInternet;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
-import org.omich.velo.bcops.BcBaseService;
-import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
@@ -42,8 +37,6 @@ public class CrosswordsFragment extends SherlockFragment
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
-
-    private static final int BADGE_ID = 1;
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
@@ -80,14 +73,14 @@ public class CrosswordsFragment extends SherlockFragment
 
         CrosswordPanelData dataPanel1 = new CrosswordPanelData();
         dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-        dataPanel1.mType = BadgeData.TYPE_FREE;
+        dataPanel1.mType = PuzzleSetModel.PuzzleSetType.FREE;
         dataPanel1.mMonth = "Июнь";
 
         dataPanel1.mBadgeData = new BadgeData[1];
         for(int i=0; i<dataPanel1.mBadgeData.length; i++){
             BadgeData badge = new BadgeData();
             badge.mNumber = i+1;
-            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
+            badge.mStatus = (i%2 == 0) ? true : false;
             badge.mProgress = 95;
             badge.mScore = 9000;
             dataPanel1.mBadgeData[i] = badge;
@@ -127,11 +120,6 @@ public class CrosswordsFragment extends SherlockFragment
     {
         switch (view.getId())
         {
-            case BADGE_ID:
-//            case R.id.view_crossword:
-                launchCrosswordActivity();
-                break;
-
             case R.id.crossword_fragment_header_menu_btn:
                 if(mINavigationDrawerHolder.isLockDrawerOpen())
                     mINavigationDrawerHolder.lockDrawerClosed();
@@ -165,12 +153,23 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
+    private void createCrosswordPanel(){
+        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        for (PuzzleSet set : sets)
+        {
+//            CrosswordPanelData data = new CrosswordPanelData();
+//            data.mType = set.type;
+//            mCrosswordFragmentHolder.addPanel(data);
+        }
+    }
+
     private IListenerVoid updateHandler = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            createCrosswordPanel();
         }
     };
 
@@ -193,52 +192,5 @@ public class CrosswordsFragment extends SherlockFragment
         launchCrosswordActivity();
     }
 
-    private void reloadCrosswordsFromInternet()
-    {
-        LoadCrosswordFromInternetSession session = new LoadCrosswordFromInternetSession() {
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
-            }
-        };
-        session.update(new IListenerVoid() {
-            @Override
-            public void handle() {
-
-            }
-        });
-    }
-
-    private abstract class LoadCrosswordFromInternetSession extends ModelUpdater<DbService.DbTaskEnv>
-    {
-        @Nonnull
-        @Override
-        protected IBcConnector getBcConnector()
-        {
-            return mBcConnector;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
-        {
-            return DbService.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return LoadPuzzleSetsFromInternet.class;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result)
-        {
-            if (result == null){
-                return;
-            }
-        }
-    }
 
 }

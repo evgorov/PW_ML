@@ -1,5 +1,7 @@
 package com.ltst.prizeword.crossword.view;
 
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -13,7 +15,7 @@ public class CrosswordPanelData {
     final static public int KIND_BUY = 3;
 
     public int mKind = 0;
-    public int mType = 0;
+    public @Nonnull PuzzleSetModel.PuzzleSetType mType = null;
     public int mResolveCount = 0;
     public int mTotalCount = 0;
     public int mProgress = 0;
