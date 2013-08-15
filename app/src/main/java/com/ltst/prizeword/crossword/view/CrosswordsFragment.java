@@ -15,7 +15,10 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.OnePuzzleModel;
+import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
@@ -48,6 +51,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
+    private @Nonnull IOnePuzzleModel mPuzzleModel;
 
     // ==== Livecycle =================================
 
@@ -100,8 +104,8 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
-        mPuzzleSetModel.updateDataByInternet(updateHandler);
-        mPuzzleSetModel.updateDataByDb(updateHandler);
+        mPuzzleSetModel.updateDataByInternet(updateSetHandler);
+        mPuzzleSetModel.updateDataByDb(updateSetHandler);
         super.onResume();
     }
 
@@ -161,12 +165,14 @@ public class CrosswordsFragment extends SherlockFragment
             List<String> puzzlesId = set.puzzlesId;
             for(String puzzId : puzzlesId)
             {
-
+                mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
+                mPuzzleModel.updateDataByDb(updatePuzzleHandler);
+                mPuzzleModel.updateDataByInternet(updatePuzzleHandler);
             }
         }
     }
 
-    private IListenerVoid updateHandler = new IListenerVoid()
+    private IListenerVoid updateSetHandler = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -176,12 +182,22 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
+    private IListenerVoid updatePuzzleHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            Puzzle mPuzzle = mPuzzleModel.getPuzzle();
+
+        }
+    };
+
     private IListenerInt hintsChangeHandler = new IListenerInt()
     {
         @Override
         public void handle(int i)
         {
-            mPuzzleSetModel.updateDataByDb(updateHandler);
+            mPuzzleSetModel.updateDataByDb(updateSetHandler);
         }
     };
 

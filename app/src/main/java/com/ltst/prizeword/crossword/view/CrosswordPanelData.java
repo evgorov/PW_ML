@@ -12,7 +12,6 @@ public class CrosswordPanelData {
 
     final static public int KIND_CURRENT = 1;
     final static public int KIND_ARCHIVE = 2;
-//    final static public int KIND_BUY = 3;
 
     public long mId = 0;
     public @Nonnull String mServerId = null;

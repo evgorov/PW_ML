@@ -200,6 +200,7 @@ public class CrosswordFragmentHolder {
 
         if(data.mKind == CrosswordPanelData.KIND_CURRENT)
         {
+            // Текущие наборы сетов сканвордов;
             if(data.mBought)
             {
                 // Куплены;
@@ -226,8 +227,9 @@ public class CrosswordFragmentHolder {
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
             }
         }
-        else if(data.mKind == CrosswordPanelData.KIND_ARCHIVE)
+        else
         {
+            // Архивные наборы сетов сканвордов;
             crosswordSet.pTitleImage.setVisibility(View.GONE);
             crosswordSet.pBuyCrosswordContaiter.setVisibility(View.GONE);
             if(data.mMonth == 0)
