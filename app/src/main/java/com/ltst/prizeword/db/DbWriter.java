@@ -200,6 +200,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                             continue;
 
                         mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
+                                ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
                                 ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
                                 + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
                         questionIndex ++;
