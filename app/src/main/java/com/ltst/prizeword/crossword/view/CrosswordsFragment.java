@@ -107,8 +107,8 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
-        mPuzzleSetModel.updateDataByInternet(updateHandler);
         mPuzzleSetModel.updateDataByDb(updateHandler);
+        mPuzzleSetModel.updateDataByInternet(updateHandler);
         super.onResume();
     }
 
