@@ -279,6 +279,7 @@ public class PuzzleResourcesAdapter
 
         if(state.hasQuestion)
         {
+
             updateQuestionState(state, column, row, false);
             resetInputMode();
             return;
@@ -436,6 +437,35 @@ public class PuzzleResourcesAdapter
         resetInputMode();
     }
 
+    public void setCurrentQuestionWrong()
+    {
+        if (mCurrentAnswerIterator == null || mResources == null)
+        {
+            return;
+        }
+        setCurrentQuestionCorrect(false);
+        mCurrentAnswerIterator.reset();
+        setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+        {
+            @Override
+            public void handle(@Nullable PuzzleTileState puzzleTileState)
+            {
+                if (puzzleTileState == null)
+                {
+                    return;
+                }
+
+                if(puzzleTileState.getLetterState() != PuzzleTileState.LetterState.LETTER_CORRECT)
+                {
+                    if(puzzleTileState.hasInputLetter)
+                        puzzleTileState.setLetterCorrect(false);
+                    else
+                        puzzleTileState.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY);
+                }
+            }
+        });
+    }
+
     private void setCurrentQuestionCorrect(boolean correct)
     {
         if (mCurrentQuestionPoint == null || mResources == null || mPuzzle == null)
@@ -451,6 +481,9 @@ public class PuzzleResourcesAdapter
         {
             state.setQuestionState(correct ? PuzzleTileState.QuestionState.QUESTION_CORRECT :
                     PuzzleTileState.QuestionState.QUESTION_WRONG);
+            if(!correct)
+                return;
+
             int index = state.getQuestionIndex();
             List<PuzzleQuestion> qList = mResources.getPuzzleQuestions();
             if (qList != null)

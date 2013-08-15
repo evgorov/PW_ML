@@ -192,7 +192,8 @@ public class PuzzleManager
             // back button, enter key
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
-                cancelLastQuestion();
+                mResourcesAdapter.setCurrentQuestionWrong();
+                mLastQuestionTapPoint = null;
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
             // backspace key
