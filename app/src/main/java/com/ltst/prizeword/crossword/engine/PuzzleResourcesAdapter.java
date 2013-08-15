@@ -303,7 +303,8 @@ public class PuzzleResourcesAdapter
                     int letterState = state.getLetterState();
                     if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                     {
-                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
+                        if(!mCurrentAnswerIterator.isLast())
+                            mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(AnswerLetterPointIterator.SKIP_LETTER_CHARACTER);
@@ -489,11 +490,12 @@ public class PuzzleResourcesAdapter
                 if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                 {
                     last = mCurrentAnswerIterator.last();
-                    if(mCurrentInputBuffer.length() >= 1)
+                    if(mCurrentInputBuffer.length() > 1 || !mCurrentAnswerIterator.isFirst())
                     {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
                         mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
                     }
+                    else break;
                 }
                 else
                 {
