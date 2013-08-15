@@ -144,7 +144,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Nullable PuzzleSet freeSet = null;
         for (PuzzleSet set : sets)
         {
-            if(set.type.eiquals(PuzzleSetModel.FREE))
+            if(set.type.equals(PuzzleSetModel.FREE))
             {
                 freeSet = set;
                 break;
@@ -187,8 +187,8 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-            Puzzle mPuzzle = mPuzzleModel.getPuzzle();
-
+            Puzzle puzzle = mPuzzleModel.getPuzzle();
+            mCrosswordFragmentHolder.addBadge(puzzle);
         }
     };
 

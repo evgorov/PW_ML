@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
@@ -36,7 +37,7 @@ public class CrosswordFragmentHolder {
     private static @Nonnull Context mContext;
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
-    private @Nonnull HashMap<String, CrosswordSet> mListCrosswordSet;
+    private @Nonnull HashMap<Long, CrosswordSet> mListCrosswordSet;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
@@ -46,7 +47,7 @@ public class CrosswordFragmentHolder {
         this.mViewCrossword = view;
         this.mContext = context;
 
-        mListCrosswordSet = new HashMap<String, CrosswordSet>();
+        mListCrosswordSet = new HashMap<Long, CrosswordSet>();
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
     }
@@ -77,9 +78,9 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    private CrosswordSet getCrosswordSet(@Nonnull String serverId)
+    private CrosswordSet getCrosswordSet(long id)
     {
-        return (serverId != Strings.EMPTY && mListCrosswordSet.containsKey(serverId)) ? mListCrosswordSet.get(serverId) : new CrosswordSet();
+        return (id <= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet();
     }
 
     // ================== CROSSWORD PANELS ITEM ======================
@@ -145,13 +146,12 @@ public class CrosswordFragmentHolder {
         data.mMonth = set.month;
         data.mYear = set.year;
 
-        CrosswordSet crosswordSet = getCrosswordSet(data.mServerId);
+        CrosswordSet crosswordSet = getCrosswordSet(data.mId);
         fillPanel(crosswordSet, data);
     }
 
     private void fillPanel(@Nonnull CrosswordSet crosswordSet, @Nonnull CrosswordPanelData data)
     {
-
         @Nonnull Bitmap bitmap = null;
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
@@ -221,9 +221,9 @@ public class CrosswordFragmentHolder {
                 crosswordSet.pBadgeContainer.setVisibility(View.GONE);
             }
             // Если такого сета еще нет, то сохраняем его и добавляем на панель;
-            if(!mListCrosswordSet.containsKey(data.mServerId))
+            if(!mListCrosswordSet.containsKey(data.mId))
             {
-                mListCrosswordSet.put(data.mServerId, crosswordSet);
+                mListCrosswordSet.put(data.mId, crosswordSet);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
             }
         }
@@ -247,9 +247,9 @@ public class CrosswordFragmentHolder {
             }
 
             // Если такого сета еще нет, то сохраняем его и добавляем на панель;
-            if(!mListCrosswordSet.containsKey(data.mServerId))
+            if(!mListCrosswordSet.containsKey(data.mId))
             {
-                mListCrosswordSet.put(data.mServerId, crosswordSet);
+                mListCrosswordSet.put(data.mId, crosswordSet);
                 mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
             }
 
@@ -276,9 +276,18 @@ public class CrosswordFragmentHolder {
                 }
             });
         }
+    }
 
-
-
+    public void addBadge(@Nonnull Puzzle puzzle){
+        BadgeData data = new BadgeData();
+        data.mId = puzzle.id;
+        data.mServerId = puzzle.serverId;
+        data.mStatus = puzzle.isSolved;
+        data.mScore = puzzle.score;
+        data.mProgress = puzzle.solvedPercent;
+        data.mSetId = puzzle.setId;
+        CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
+        crosswordSet.pBadgeContainer.addView(new View(mContext));
     }
 
 }

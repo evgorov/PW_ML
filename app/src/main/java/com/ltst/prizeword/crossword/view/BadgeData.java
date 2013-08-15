@@ -7,7 +7,9 @@ import javax.annotation.Nonnull;
  */
 public class BadgeData {
 
-    public boolean mResolve = false;
+    public long mSetId = 0;
+    public long mId = 0;
+    public @Nonnull String mServerId = null;
     public boolean mStatus = false;
     public int mProgress = 0;
     public int mScore = 0;

@@ -16,6 +16,8 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -26,11 +28,17 @@ public class BadgeAdapter extends BaseAdapter {
     private @Nonnull Context mContext;
     private BadgeData[] mData;
     private @Nonnull PuzzleSetModel.PuzzleSetType mType;
+    private @Nonnull HashMap<String, BadgeHolder> mBadgeHolders;
 
     public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type, BadgeData[] data) {
         this.mContext = context;
         this.mData = data;
         this.mType = type;
+    }
+
+    private @Nullable BadgeHolder getBadgeHolder(@Nonnull String serverId)
+    {
+        return mBadgeHolders.containsKey(serverId) ? mBadgeHolders.get(serverId) : null;
     }
 
     @Nullable
@@ -39,6 +47,8 @@ public class BadgeAdapter extends BaseAdapter {
 
         // Выбираем фон эмблемы;
         BadgeData data = mData[position];
+        BadgeHolder badge = mBadgeHolders.containsKey(data.mServerId) ? getBadgeHolder(data.mServerId) : new BadgeHolder(mContext, view);
+
         int idBackground = 0;
         if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
                 idBackground = R.drawable.puzzles_badges_bg_brilliant;
@@ -71,7 +81,7 @@ public class BadgeAdapter extends BaseAdapter {
         int idNumber = 0;
         if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_brilliant_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_brilliant_2; break;
@@ -105,12 +115,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_brilliant_30; break;
                 case 31: idNumber = R.drawable.crossword_number_brilliant_31; break;
                 case 32: idNumber = R.drawable.crossword_number_brilliant_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_brilliant_32; break;
             }
         }
         else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_gold_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_gold_2; break;
@@ -144,12 +154,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_gold_30; break;
                 case 31: idNumber = R.drawable.crossword_number_gold_31; break;
                 case 32: idNumber = R.drawable.crossword_number_gold_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_gold_32; break;
             }
         }
         else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_silver_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_silver_2; break;
@@ -183,12 +193,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_silver_30; break;
                 case 31: idNumber = R.drawable.crossword_number_silver_31; break;
                 case 32: idNumber = R.drawable.crossword_number_silver_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_silver_32; break;
             }
         }
         else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_free_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_free_2; break;
@@ -222,12 +232,10 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_free_30; break;
                 case 31: idNumber = R.drawable.crossword_number_free_31; break;
                 case 32: idNumber = R.drawable.crossword_number_free_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_free_32; break;
             }
         }
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        BadgeHolder badge = new BadgeHolder(inflater, view);
         if(badge.mRootView == null)
         {
             if(data.mStatus)
@@ -255,19 +263,21 @@ public class BadgeAdapter extends BaseAdapter {
         return view;
     }
 
+
+
     @Override
     public int getCount() {
-        return mData.length;
+        return mData == null ? 0 : mData.length;
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public Object getItem(int position) {
+        return mData == null ? null : getBadgeHolder(mData[position].mServerId);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return mData == null ? 0 : mData[position].mId;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,7 +29,9 @@ public class BadgeHolder {
     @Nonnull LinearLayout mResolverContainer;
 
 
-    public BadgeHolder( @Nonnull LayoutInflater inflater, @Nullable View view ) {
+    public BadgeHolder( @Nonnull Context context, @Nullable View view ) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mRootView = (view == null) ? inflater.inflate(R.layout.crossword_badge, null, false) : view;
         mBackground = (LinearLayout) inflater.inflate(R.id.crossword_badge_bg, null, false);
         mForegroud = (LinearLayout) inflater.inflate(R.id.crossword_badge_fg, null, false);
