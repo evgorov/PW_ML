@@ -26,7 +26,8 @@ import javax.annotation.Nullable;
 public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadFriendsDataFromInternetTask.sessionKey";
-    public static final @Nonnull String BF_FRIEND_VK_DATA = "LoadFriendsDataFromInternetTask.friendData";
+    public static final @Nonnull String BF_FRIEND_VK_DATA = "LoadFriendsDataFromInternetTask.VkFriendData";
+    public static final @Nonnull String BF_FRIEND_FB_DATA = "LoadFriendsDataFromInternetTask.FbFriendData";
 
     public static @Nonnull Intent createIntent(@Nonnull String sessionKey)
     {
@@ -42,6 +43,7 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
             return null;
 
         List<InviteFriendsData> VkFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_VK_DATA);
+        List<InviteFriendsData> FbFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_FB_DATA);
 
         if(VkFriendsItems == null)
             return null;
@@ -49,6 +51,17 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
         List<ISlowSource.Item<InviteFriendsData,Bitmap>> resultItems = new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>();
 
         for(InviteFriendsData item : VkFriendsItems)
+        {
+            if(item != null)
+            {
+                byte[] image = item.pngImage;
+                Bitmap bitmap = (image == null)
+                        ? null
+                        : BitmapFactory.decodeByteArray(image, 0, image.length);
+                resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+            }
+        }
+        for(InviteFriendsData item : FbFriendsItems)
         {
             if(item != null)
             {
@@ -72,7 +85,7 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
             return null;
         }
         @Nonnull String sessionKey = extras.getString(BF_SESSION_KEY);
-        @Nonnull String friendVkData = extras.getString(BF_FRIEND_VK_DATA);
+        @Nonnull String VkFriendData = extras.getString(BF_FRIEND_VK_DATA);
 
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
@@ -82,14 +95,24 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
         }
         else
         {
+            Bundle bundle = new Bundle();
             RestInviteFriend.RestInviteFriendHolder holder = loadRestFriendDataFromInternet(sessionKey,RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<InviteFriendsData> friends = parseFriendData(holder);
                 if (friends != null)
                 {
-                    Bundle bundle = new Bundle();
+
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
+                }
+            }
+            holder = loadRestFriendDataFromInternet(sessionKey,RestParams.FB_PROVIDER);
+            if (holder != null)
+            {
+                ArrayList<InviteFriendsData> friends1 = parseFriendData(holder);
+                if (friends1 != null)
+                {
+                    bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends1);
                     return bundle;
                 }
             }
