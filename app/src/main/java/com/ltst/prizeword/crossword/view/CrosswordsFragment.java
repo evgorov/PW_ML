@@ -53,7 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
-    private @Nonnull IOnePuzzleModel mPuzzleModel;
+//    private @Nonnull IOnePuzzleModel mPuzzleModel;
 
     // ==== Livecycle =================================
 
@@ -167,12 +167,23 @@ public class CrosswordsFragment extends SherlockFragment
             List<String> puzzlesId = set.puzzlesId;
             for(String puzzId : puzzlesId)
             {
-                if(mPuzzleModel == null)
-                {
-                    mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
-                    mPuzzleModel.updateDataByDb(updatePuzzleHandler);
-                    mPuzzleModel.updateDataByInternet(updatePuzzleHandler);
-                }
+                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
+                mPuzzleModel.updateDataByDb(new IListenerVoid(){
+
+                    @Override
+                    public void handle() {
+                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+                        mCrosswordFragmentHolder.addBadge(puzzle);
+                    }
+                });
+                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
+
+                    @Override
+                    public void handle() {
+                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+                        mCrosswordFragmentHolder.addBadge(puzzle);
+                    }
+                });
             }
         }
     }
@@ -184,16 +195,6 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
-        }
-    };
-
-    private IListenerVoid updatePuzzleHandler = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-                @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-                mCrosswordFragmentHolder.addBadge(puzzle);
         }
     };
 

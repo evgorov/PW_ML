@@ -66,6 +66,8 @@ public class BadgeAdapter extends BaseAdapter {
                 idBackground = R.drawable.puzzles_badges_bg_silver;
         else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
                 idBackground = R.drawable.puzzles_badges_bg_free;
+        else
+            idBackground = R.drawable.puzzles_badges_bg_free;
 
         // Выбираем фасад эмблемы;
         int idForeground = 0;
