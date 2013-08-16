@@ -1,15 +1,11 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -19,14 +15,9 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
-import org.omich.velo.constants.Strings;
-
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Formatter;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -57,9 +48,19 @@ public class CrosswordFragmentHolder {
 
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
+        int restDays = monthMaxDays - day;
 
         DateFormatSymbols symbols = new DateFormatSymbols();
         mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+
+        mCrosswordPanelCurrent.mRestDaysTV.setText(String.valueOf(restDays));
+        mCrosswordPanelCurrent.mRestPanelLL.setBackgroundDrawable(
+                mContext.getResources().getDrawable(restDays > scopeDays
+                ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
+                : R.drawable.puzzles_current_puzzles_head_rest_panel_clitical));
 
     }
 

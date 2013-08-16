@@ -21,6 +21,7 @@
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
     <string name="error_merge_accounts">Ошибка! Этот аккаунт уже привязан к другой учетной записи</string>
+    <string name="puzzless_rest_scope_days">7</string>
     <string name="puzzless_hint_hints">Подсказки</string>
     <string name="puzzless_hint_rest_abr">Ост.</string>
     <string name="puzzless_hint_rest_days">дня</string>
