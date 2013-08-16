@@ -12,8 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -23,13 +28,32 @@ import javax.annotation.Nonnull;
 public class BadgeAdapter extends BaseAdapter {
 
     private @Nonnull Context mContext;
-    private BadgeData[] mData;
-    private int mType;
+    private @Nonnull List<BadgeData> mData;
+    private @Nonnull PuzzleSetModel.PuzzleSetType mType;
 
-    public BadgeAdapter(@Nonnull Context context, int type, BadgeData[] data) {
+    public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type) {
         this.mContext = context;
-        this.mData = data;
+        this.mData = new ArrayList<BadgeData>();
         this.mType = type;
+    }
+
+    public void addBadgeData(@Nonnull BadgeData data)
+    {
+        boolean flag = false;
+        for(int i=0; i<mData.size(); i++)
+        {
+            BadgeData bd = mData.get(i);
+            if(bd.mServerId.equals(data.mServerId))
+            {
+                flag = true;
+                mData.remove(i);
+                mData.add(i,data);
+                break;
+            }
+        }
+        if(!flag){
+            mData.add(data);
+        }
     }
 
     @Nullable
@@ -37,58 +61,44 @@ public class BadgeAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
 
         // Выбираем фон эмблемы;
-        BadgeData data = mData[position];
+        @Nonnull BadgeData data = mData.get(position);
+        @Nonnull BadgeHolder badge = new BadgeHolder(mContext, view);
+
         int idBackground = 0;
-        switch (mType){
-            case BadgeData.TYPE_BRILLIANT:
+        if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
                 idBackground = R.drawable.puzzles_badges_bg_brilliant;
-                break;
-            case BadgeData.TYPE_GOLD:
+        else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
                 idBackground = R.drawable.puzzles_badges_bg_gold;
-                break;
-            case BadgeData.TYPE_SILVER:
-            case BadgeData.TYPE_SILVER2:
+        else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
                 idBackground = R.drawable.puzzles_badges_bg_silver;
-                break;
-            case BadgeData.TYPE_FREE:
+        else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
                 idBackground = R.drawable.puzzles_badges_bg_free;
-                break;
-            default:
-                break;
-        }
+        else
+            idBackground = R.drawable.puzzles_badges_bg_free;
 
         // Выбираем фасад эмблемы;
         int idForeground = 0;
-        if(data.mStatus == BadgeData.STATUS_RESOLVED)
+        if(data.mStatus)
         {
-            switch (mType){
-                case BadgeData.TYPE_BRILLIANT:
+            if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
                     idForeground = R.drawable.puzzles_badges_bg_brilliant_resolved;
-                    break;
-                case BadgeData.TYPE_GOLD:
+            else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
                     idForeground = R.drawable.puzzles_badges_bg_gold_resolved;
-                    break;
-                case BadgeData.TYPE_SILVER:
-                case BadgeData.TYPE_SILVER2:
+            else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
                     idForeground = R.drawable.puzzles_badges_bg_silver_resolved;
-                    break;
-                case BadgeData.TYPE_FREE:
+            else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
                     idForeground = R.drawable.puzzles_badges_bg_unresolved;
-                    break;
-                default:
-                    break;
-            }
         }
-        else if(data.mStatus == BadgeData.STATUS_UNRESOLVED)
+        else
         {
             idForeground = R.drawable.puzzles_badges_bg_unresolved;
         }
 
         // Выбираем цифорку;
         int idNumber = 0;
-        if(mType == BadgeData.TYPE_BRILLIANT)
+        if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_brilliant_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_brilliant_2; break;
@@ -122,12 +132,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_brilliant_30; break;
                 case 31: idNumber = R.drawable.crossword_number_brilliant_31; break;
                 case 32: idNumber = R.drawable.crossword_number_brilliant_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_brilliant_32; break;
             }
         }
-        else if(mType == BadgeData.TYPE_GOLD)
+        else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_gold_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_gold_2; break;
@@ -161,12 +171,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_gold_30; break;
                 case 31: idNumber = R.drawable.crossword_number_gold_31; break;
                 case 32: idNumber = R.drawable.crossword_number_gold_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_gold_32; break;
             }
         }
-        else if(mType == BadgeData.TYPE_SILVER || mType == BadgeData.TYPE_SILVER2)
+        else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_silver_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_silver_2; break;
@@ -200,12 +210,12 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_silver_30; break;
                 case 31: idNumber = R.drawable.crossword_number_silver_31; break;
                 case 32: idNumber = R.drawable.crossword_number_silver_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_silver_32; break;
             }
         }
-        else if(mType == BadgeData.TYPE_FREE)
+        else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
         {
-            switch (data.mNumber)
+            switch (position+1)
             {
                 case 1:  idNumber = R.drawable.crossword_number_free_1; break;
                 case 2:  idNumber = R.drawable.crossword_number_free_2; break;
@@ -239,69 +249,47 @@ public class BadgeAdapter extends BaseAdapter {
                 case 30: idNumber = R.drawable.crossword_number_free_30; break;
                 case 31: idNumber = R.drawable.crossword_number_free_31; break;
                 case 32: idNumber = R.drawable.crossword_number_free_32; break;
-                default: break;
+                default: idNumber = R.drawable.crossword_number_free_32; break;
             }
         }
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
+        badge.mScore.setText(String.valueOf(data.mScore));
+        badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
+        badge.mForegroud.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
+        badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
 
-        if(view == null)
+        if(data.mStatus)
         {
-            if(data.mStatus == BadgeData.STATUS_RESOLVED)
-            {
-                view = inflater.inflate(R.layout.crossword_badge_resolved, null, false);
-                LinearLayout layout_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_badge_bg);
-                LinearLayout layout_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_resolved_brilliant_number_container);
-                TextView score = (TextView) view.findViewById(R.id.crossword_badge_resolved_brilliant_score);
-
-                score.setText(String.valueOf(data.mScore));
-                layout_bg.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                layout_fg.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), idNumber);
-
-                ImageView image = new ImageView(mContext);
-                image.setImageBitmap(bitmap);
-                layout_fg.addView(image);
-//            bitmap.recycle();
-
-            }
-            else if(data.mStatus == BadgeData.STATUS_UNRESOLVED)
-            {
-                view = inflater.inflate(R.layout.crossword_badge_unresolved, null, false);
-                LinearLayout layout_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_badge_bg);
-                LinearLayout layout_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_number_container);
-                TextView percent = (TextView) view.findViewById(R.id.crossword_badge_unresolved_brilliant_percent);
-                LinearLayout layout_progress_bg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_bg);
-                LinearLayout layout_progress_fg = (LinearLayout) view.findViewById(R.id.crossword_badge_unresolved_brilliant_progress_fg);
-
-                percent.setText(String.valueOf(data.mProgress)+"%");
-                layout_bg.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                layout_fg.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), idNumber);
-
-                ImageView image = new ImageView(mContext);
-                image.setImageBitmap(bitmap);
-                layout_fg.addView(image);
-//            bitmap.recycle();
-            }
+            // Решенные;
+            badge.mUnresolverContainer.setVisibility(View.GONE);
+            badge.mResolverContainer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            // Нерешенные;
+            badge.mResolverContainer.setVisibility(View.GONE);
+            badge.mUnresolverContainer.setVisibility(View.VISIBLE);
         }
 
-        return view;
+        return badge.mRootView;
     }
+
+
 
     @Override
     public int getCount() {
-        return mData.length;
+        return mData.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public Object getItem(int position) {
+        return mData.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return mData.get(position).mId;
     }
 
 }

@@ -7,16 +7,10 @@ import javax.annotation.Nonnull;
  */
 public class BadgeData {
 
-    final static public int TYPE_BRILLIANT = 1;
-    final static public int TYPE_GOLD = 2;
-    final static public int TYPE_SILVER = 3;
-    final static public int TYPE_SILVER2 = 4;
-    final static public int TYPE_FREE = 5;
-
-    final static public int STATUS_RESOLVED = 6;
-    final static public int STATUS_UNRESOLVED = 7;
-
-    public int mStatus = 0;
+    public long mSetId = 0;
+    public long mId = 0;
+    public @Nonnull String mServerId = null;
+    public boolean mStatus = false;
     public int mProgress = 0;
     public int mScore = 0;
     public int mNumber = 0;

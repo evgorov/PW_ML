@@ -14,21 +14,21 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
-import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
-import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromInternet;
+import com.ltst.prizeword.crossword.model.OnePuzzleModel;
+import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
-import org.omich.velo.bcops.BcBaseService;
-import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -38,12 +38,10 @@ public class CrosswordsFragment extends SherlockFragment
                                 implements View.OnClickListener,
                                 ICrosswordFragment
 {
-    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
-
-    private static final int BADGE_ID = 1;
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
@@ -55,6 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
+//    private @Nonnull IOnePuzzleModel mPuzzleModel;
 
     // ==== Livecycle =================================
 
@@ -78,21 +77,21 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
-        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-        dataPanel1.mType = BadgeData.TYPE_FREE;
-        dataPanel1.mMonth = "Июнь";
-
-        dataPanel1.mBadgeData = new BadgeData[1];
-        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
-            BadgeData badge = new BadgeData();
-            badge.mNumber = i+1;
-            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
-            badge.mProgress = 95;
-            badge.mScore = 9000;
-            dataPanel1.mBadgeData[i] = badge;
-        }
-        mCrosswordFragmentHolder.addPanel(dataPanel1);
+//        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+//        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+//        dataPanel1.mType = PuzzleSetModel.PuzzleSetType.FREE;
+//        dataPanel1.mMonth = "Июнь";
+//
+//        dataPanel1.mBadgeData = new BadgeData[1];
+//        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
+//            BadgeData badge = new BadgeData();
+//            badge.mNumber = i+1;
+//            badge.mStatus = (i%2 == 0) ? true : false;
+//            badge.mProgress = 95;
+//            badge.mScore = 9000;
+//            dataPanel1.mBadgeData[i] = badge;
+//        }
+//        mCrosswordFragmentHolder.addPanel(dataPanel1);
 
        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
@@ -107,8 +106,8 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
-        mPuzzleSetModel.updateDataByDb(updateHandler);
-        mPuzzleSetModel.updateDataByInternet(updateHandler);
+        mPuzzleSetModel.updateDataByInternet(updateSetHandler);
+        mPuzzleSetModel.updateDataByDb(updateSetHandler);
         super.onResume();
     }
 
@@ -127,11 +126,6 @@ public class CrosswordsFragment extends SherlockFragment
     {
         switch (view.getId())
         {
-            case BADGE_ID:
-//            case R.id.view_crossword:
-                launchCrosswordActivity();
-                break;
-
             case R.id.crossword_fragment_header_menu_btn:
                 if(mINavigationDrawerHolder.isLockDrawerOpen())
                     mINavigationDrawerHolder.lockDrawerClosed();
@@ -165,12 +159,42 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
-    private IListenerVoid updateHandler = new IListenerVoid()
+    private void createCrosswordPanel(){
+        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        for (PuzzleSet set : sets)
+        {
+            mCrosswordFragmentHolder.addPanel(set);
+            List<String> puzzlesId = set.puzzlesId;
+            for(String puzzId : puzzlesId)
+            {
+                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
+                mPuzzleModel.updateDataByDb(new IListenerVoid(){
+
+                    @Override
+                    public void handle() {
+                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+                        mCrosswordFragmentHolder.addBadge(puzzle);
+                    }
+                });
+                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
+
+                    @Override
+                    public void handle() {
+                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+                        mCrosswordFragmentHolder.addBadge(puzzle);
+                    }
+                });
+            }
+        }
+    }
+
+    private IListenerVoid updateSetHandler = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            createCrosswordPanel();
         }
     };
 
@@ -179,12 +203,12 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle(int i)
         {
-            mPuzzleSetModel.updateDataByDb(updateHandler);
+            mPuzzleSetModel.updateDataByDb(updateSetHandler);
         }
     };
 
     @Override
-    public void buyCrosswordSet() {
+    public void buyCrosswordSet(String crosswordSetServerId) {
 
     }
 
@@ -193,52 +217,5 @@ public class CrosswordsFragment extends SherlockFragment
         launchCrosswordActivity();
     }
 
-    private void reloadCrosswordsFromInternet()
-    {
-        LoadCrosswordFromInternetSession session = new LoadCrosswordFromInternetSession() {
-            @Nonnull
-            @Override
-            protected Intent createIntent() {
-                return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
-            }
-        };
-        session.update(new IListenerVoid() {
-            @Override
-            public void handle() {
-
-            }
-        });
-    }
-
-    private abstract class LoadCrosswordFromInternetSession extends ModelUpdater<DbService.DbTaskEnv>
-    {
-        @Nonnull
-        @Override
-        protected IBcConnector getBcConnector()
-        {
-            return mBcConnector;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
-        {
-            return DbService.class;
-        }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return LoadPuzzleSetsFromInternet.class;
-        }
-
-        @Override
-        protected void handleData(@Nullable Bundle result)
-        {
-            if (result == null){
-                return;
-            }
-        }
-    }
 
 }

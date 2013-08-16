@@ -5,6 +5,6 @@ package com.ltst.prizeword.crossword.view;
  */
 public interface ICrosswordFragment {
 
-    public void buyCrosswordSet();
+    public void buyCrosswordSet(String crosswordSetServerId);
     public void choiceCrossword();
 }
