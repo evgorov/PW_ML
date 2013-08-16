@@ -48,10 +48,13 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
 
         if(mTaskId != null)
             return;
+        @Nullable Intent intent = createIntent();
 
+        if(intent == null)
+            return;
         mTaskId = connector.startTask(getServiceClass(),
                 getTaskClass(),
-                createIntent(), this);
+                intent, this);
     }
 
     public void handle (@Nullable Bundle result)
@@ -70,7 +73,7 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
     }
 
     abstract protected @Nonnull IBcConnector getBcConnector();
-    abstract protected @Nonnull Intent createIntent();
+    abstract protected @Nullable Intent createIntent();
     abstract protected @Nonnull Class<? extends IBcBaseTask<TaskEnv>> getTaskClass();
     abstract protected @Nonnull Class<? extends BcBaseService<TaskEnv>> getServiceClass();
     abstract protected void handleData (@Nullable Bundle result);

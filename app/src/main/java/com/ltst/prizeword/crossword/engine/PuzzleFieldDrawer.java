@@ -265,62 +265,6 @@ public class PuzzleFieldDrawer
         return offBorder;
     }
 
-    public void traslateFocusViewPoint(@Nonnull Point p, @Nullable Point focusOffsetPoint,
-                                       @Nullable Rect focusOffsetRect,
-                                       @Nullable Rect oldViewRect, @Nonnull Rect newViewRect)
-    {
-        if(oldViewRect == null || focusOffsetPoint == null
-                || focusOffsetRect == null || mPuzzleRect == null || mResources == null)
-        {
-            p.set(getCenterX(), getCenterY());
-            return;
-        }
-        if(oldViewRect.equals(newViewRect))
-        {
-            p.set(getCenterX(), getCenterY());
-            return;
-        }
-        int allowedOffset = mResources.getPadding();
-
-        p.set(getCenterX(), getCenterY());
-
-        if(inBetween(focusOffsetRect.left, allowedOffset))
-            p.set(mDrawingOffsetX, p.y);
-        if(inBetween(focusOffsetRect.right, allowedOffset))
-            p.set(mPuzzleRect.right - mDrawingOffsetX, p.y);
-        if(inBetween(focusOffsetRect.top, allowedOffset))
-            p.set(p.x, mDrawingOffsetY);
-        if(inBetween(focusOffsetRect.bottom, allowedOffset))
-            p.set(p.x, mPuzzleRect.bottom - mDrawingOffsetY);
-
-        p.offset(focusOffsetPoint.x, focusOffsetPoint.y);
-        checkFocusPoint(p, newViewRect);
-    }
-
-    private boolean inBetween(int value, int offset)
-    {
-        if(value >= 0 && value <= offset)
-            return true;
-        else return false;
-    }
-
-    public @Nullable Rect getFocusOffsetRect(@Nonnull Point p, @Nonnull Rect viewRect)
-    {
-        if (mPuzzleRect == null)
-        {
-            return null;
-        }
-        Rect offsetRect = new Rect();
-        int halfWidth = viewRect.width()/2;
-        int halfHeight = viewRect.height()/2;
-
-        offsetRect.left = p.x - halfWidth - (mPuzzleRect.left + mDrawingOffsetX);
-        offsetRect.right = mPuzzleRect.right - mDrawingOffsetX - (p.x + halfWidth);
-        offsetRect.top = p.y - halfHeight - (mPuzzleRect.top + mDrawingOffsetY);
-        offsetRect.bottom = mPuzzleRect.bottom - mDrawingOffsetY - (p.y + halfHeight);
-        return offsetRect;
-    }
-
     public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p)
     {
         if (mResources == null)
@@ -333,6 +277,21 @@ public class PuzzleFieldDrawer
 
         float x = p.x - (mDrawingOffsetX + 4 * framePadding + 2 * padding);
         float y = p.y - (mDrawingOffsetY + 4 * framePadding + 2 * padding);
+        p.set(x, y);
+    }
+
+    public void convertPointFromTilesAreaCoordsToScreenCoords(@Nonnull PointF p)
+    {
+        if (mResources == null)
+        {
+            return;
+        }
+
+        int framePadding = mResources.getFramePadding(mContext.getResources());
+        int padding = mResources.getPadding();
+
+        float x = p.x + (mDrawingOffsetX + 4 * framePadding + 2 * padding);
+        float y = p.y + (mDrawingOffsetY + 4 * framePadding + 2 * padding);
         p.set(x, y);
     }
 

@@ -28,7 +28,6 @@
                 style="@style/GamefieldTimerText"
                 android:layout_gravity="center_vertical|center"
                 android:background="@drawable/header_timer_bg"
-                android:text="24:59"
                 />
 
         <Button
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content">
 
-        <LinearLayout
+        <View
                 android:focusable="true" android:focusableInTouchMode="true"
                 android:layout_width="0px" android:layout_height="0px"/>
 

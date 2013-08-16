@@ -6,10 +6,10 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.ltst.prizeword.crossword.engine.AnswerLetterPointIterator;
 import com.ltst.prizeword.crossword.engine.PuzzleFieldDrawer;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
@@ -27,7 +27,12 @@ import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
+    public static final @Nonnull String BF_FOCUS_PUZZLE_POINT = "PuzzleManager.focusPuzzlePoint";
+    public static final @Nonnull String BF_FOCUS_POINT = "PuzzleManager.focusPoint";
+    public static final @Nonnull String BF_VIEW_RECT = "PuzzleManager.viewRect";
+
     private volatile @Nullable Point mFocusViewPoint;
+    private @Nullable PointF mFocusPuzzlePoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
@@ -45,6 +50,8 @@ public class PuzzleManager
     private @Nullable Point mLastQuestionTapPoint;
     private @Nullable Point mLastQuestionInputPuzzlePoint;
 
+    private boolean isRestored;
+
     private final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     public PuzzleManager(@Nonnull Context context,
@@ -56,50 +63,30 @@ public class PuzzleManager
         mMatrix = new Matrix();
         mInvalidateHandler = invalidateHandler;
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
+        isRestored = false;
     }
 
-    public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
+    public void saveState(@Nonnull Bundle dest)
     {
-        @Nullable Rect oldViewRect = null;
-        @Nullable Rect focusOffsetRect = null;
-        @Nullable Point focusOffsetPoint = null;
-        if (mPuzzleViewRect != null)
-        {
-            oldViewRect = new Rect(mPuzzleViewRect);
-        }
-        if (mFocusViewPoint != null)
-        {
-            focusOffsetPoint = new Point(mFocusViewPoint.x - mFieldDrawer.getCenterX(),
-                    mFocusViewPoint.y - mFieldDrawer.getCenterY());
-            focusOffsetRect = mFieldDrawer.getFocusOffsetRect(mFocusViewPoint, mPuzzleViewRect);
-        }
+        dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
+        dest.putParcelable(BF_VIEW_RECT, mPuzzleViewRect);
+        PointF focusPuzzlePoint = new PointF((int)mFocusViewPoint.x, (int)mFocusViewPoint.y);
+        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(focusPuzzlePoint);
+        dest.putParcelable(BF_FOCUS_PUZZLE_POINT, focusPuzzlePoint);
+    }
 
-        mPuzzleViewRect = puzzleViewRect;
-        mFieldDrawer.disableScaling();
-        float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
-        float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
-        MIN_SCALE = Math.min(scaleHeight, scaleWidth);
-        mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
-
-        mScaledViewRect = new Rect(0, 0,
-                mFieldDrawer.getActualWidth(),
-                mFieldDrawer.getActualHeight());
-
-        mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
-        checkFocusViewPoint();
-        mFieldDrawer.traslateFocusViewPoint(mFocusViewPoint, focusOffsetPoint,
-                focusOffsetRect, oldViewRect, mPuzzleViewRect);
+    public void restoreState(@Nonnull Bundle source)
+    {
+        isRestored = true;
+        Log.i("restore state");
+        mFocusViewPoint = source.getParcelable(BF_FOCUS_POINT);
+        mPuzzleViewRect = source.getParcelable(BF_VIEW_RECT);
+        mFocusPuzzlePoint = source.getParcelable(BF_FOCUS_PUZZLE_POINT);
+        mScaled = source.getBoolean(PuzzleView.BF_SCALED);
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
 
-    private boolean checkFocusViewPoint()
-    {
-        if (mFocusViewPoint == null || mPuzzleViewRect == null || mScaledViewRect == null)
-        {
-            return false;
-        }
-        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
-    }
+    // ==== events managing ==================================
 
     public boolean onScrollEvent(float offsetX, float offsetY)
     {
@@ -192,9 +179,7 @@ public class PuzzleManager
             // back button, enter key
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ENTER:
-                mResourcesAdapter.setCurrentQuestionWrong();
-                mLastQuestionTapPoint = null;
-                mInvalidateHandler.handle(mPuzzleViewRect);
+                clearInput();
                 break;
             // backspace key
             case KeyEvent.KEYCODE_DEL:
@@ -263,6 +248,13 @@ public class PuzzleManager
         }
     }
 
+    private void clearInput()
+    {
+        mResourcesAdapter.setCurrentQuestionWrong();
+        mLastQuestionTapPoint = null;
+        mInvalidateHandler.handle(mPuzzleViewRect);
+    }
+
     public void cancelLastQuestion()
     {
         if(mLastQuestionTapPoint != null)
@@ -270,6 +262,66 @@ public class PuzzleManager
             mResourcesAdapter.cancelLastQuestionState(mLastQuestionTapPoint.x, mLastQuestionTapPoint.y);
             mLastQuestionTapPoint = null;
         }
+    }
+
+    // ==== configuring view ==================================
+
+    public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
+    {
+        PointF puzzleFocusPoint = new PointF();
+        if (mFocusViewPoint != null)
+        {
+            float puzzleX = mFocusViewPoint.x;
+            float puzzleY = mFocusViewPoint.y;
+
+            puzzleFocusPoint.set(puzzleX, puzzleY);
+
+            mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(puzzleFocusPoint);
+        }
+
+        mPuzzleViewRect = puzzleViewRect;
+        mFieldDrawer.disableScaling();
+        float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
+        float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
+        MIN_SCALE = Math.min(scaleHeight, scaleWidth);
+        mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
+
+        mScaledViewRect = new Rect(0, 0,
+                mFieldDrawer.getActualWidth(),
+                mFieldDrawer.getActualHeight());
+
+        if(isRestored)
+        {
+            mCurrentScale = mScaled ? MAX_SCALE : MIN_SCALE;
+            if (mFocusPuzzlePoint != null)
+            {
+                mFieldDrawer.convertPointFromTilesAreaCoordsToScreenCoords(mFocusPuzzlePoint);
+                mFocusViewPoint = new Point((int)mFocusPuzzlePoint.x, (int)mFocusPuzzlePoint.y);
+            }
+        }
+        else
+        {
+            if (puzzleFocusPoint != null)
+            {
+                mFieldDrawer.convertPointFromTilesAreaCoordsToScreenCoords(puzzleFocusPoint);
+                mFocusViewPoint = new Point((int)puzzleFocusPoint.x, (int)puzzleFocusPoint.y);
+            }
+            else
+                mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+        }
+
+        checkFocusViewPoint();
+        mInvalidateHandler.handle(mPuzzleViewRect);
+
+    }
+
+    private boolean checkFocusViewPoint()
+    {
+        if (mFocusViewPoint == null || mPuzzleViewRect == null || mScaledViewRect == null)
+        {
+            return false;
+        }
+        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
     }
 
     private void configureMatrix()
@@ -305,8 +357,11 @@ public class PuzzleManager
 
     public void recycle()
     {
+        clearInput();
         mFieldDrawer.unloadResources();
     }
+
+    // ==== animation threads ===========================
 
     private class ScaleAndTranslateAnimationThread extends Thread
     {

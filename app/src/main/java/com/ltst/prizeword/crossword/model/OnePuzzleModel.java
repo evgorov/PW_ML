@@ -157,10 +157,15 @@ public class OnePuzzleModel implements IOnePuzzleModel
             return mBcConnector;
         }
 
-        @Nonnull
+        @Nullable
         @Override
         protected Intent createIntent()
         {
+            if (mPuzzle == null)
+            {
+                return null;
+            }
+
             ArrayList<PuzzleQuestion> questions = (ArrayList<PuzzleQuestion>) mPuzzle.questions;
             return UpdatePuzzleUserDataOnServerTask.createIntent(mSessionKey,
                     mPuzzleServerId,

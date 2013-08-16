@@ -45,6 +45,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         return intent;
     }
 
+    public static final @Nonnull String BF_SESSION_KEY = "OneCrosswordActivity.sessionKey";
+    public static final @Nonnull String BF_CURRENT_PUZZLE_SERVER_ID = "OneCrosswordActivity.currentPuzzleServerId";
+    public static final @Nonnull String BF_CURRENT_PUZZLE_INDEX = "OneCrosswordActivity.currentPuzzleIndex";
+    public static final @Nonnull String BF_TIME_LEFT = "OneCrosswordActivity.timeLeft";
+    public static final @Nonnull String BF_TIME_GIVEN = "OneCrosswordActivity.timeGiven";
+
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
     private @Nonnull String mSessionKey;
@@ -76,19 +82,36 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Animation mAnimationSlideInTop;
     private @Nonnull Animation mAnimationSlideOutTop;
 
+    private @Nullable Bundle restoredBundle;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle bundle)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
+        if (bundle != null)
         {
-            mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
-            mHintsCount = extras.getInt(BF_HINTS_COUNT);
+            restoredBundle = bundle;
+            mPuzzleSet = bundle.getParcelable(BF_PUZZLE_SET);
+            mSessionKey = bundle.getString(BF_SESSION_KEY);
+            mHintsCount = bundle.getInt(BF_HINTS_COUNT);
+            mCurrentPuzzleServerId = bundle.getString(BF_CURRENT_PUZZLE_SERVER_ID);
+            mCurrentPuzzleIndex = bundle.getInt(BF_CURRENT_PUZZLE_INDEX);
+            mTimeGiven = bundle.getInt(BF_TIME_GIVEN);
+            mTimeLeft = bundle.getInt(BF_TIME_LEFT);
         }
-        mSessionKey = SharedPreferencesValues.getSessionKey(this);
+        else
+        {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null)
+            {
+                mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
+                mHintsCount = extras.getInt(BF_HINTS_COUNT);
+            }
+            mSessionKey = SharedPreferencesValues.getSessionKey(this);
+        }
+
         mBcConnector = new BcConnector(this);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
@@ -110,6 +133,28 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mTimerTextView = (TextView) findViewById(R.id.header_timer_textview);
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
+
+        mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
+        mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
+        mPuzzleView.setAdapter(mPuzzleAdapter);
+
+        if (restoredBundle != null)
+        {
+            mPuzzleAdapter.restoreState(restoredBundle);
+            mPuzzleView.restoreState(restoredBundle);
+            if(!mTickerLaunched)
+                tick();
+        }
+        else
+        {
+            selectNextUnsolvedPuzzle();
+        }
+
+        mNextBtn.setOnClickListener(this);
+        mMenuBtn.setOnClickListener(this);
+        mStopPlayBtn.setOnClickListener(this);
+        mHintBtn.setOnClickListener(this);
+        mHintBtn.setText(String.valueOf(mHintsCount));
         super.onStart();
     }
 
@@ -117,17 +162,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onResume()
     {
         mStopPlayFlag = true;
-        mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
-        mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
-        selectNextUnsolvedPuzzle();
-        mPuzzleView.setAdapter(mPuzzleAdapter);
-
-        mNextBtn.setOnClickListener(this);
-        mMenuBtn.setOnClickListener(this);
-        mStopPlayBtn.setOnClickListener(this);
-        mHintBtn.setOnClickListener(this);
-        mHintBtn.setText(String.valueOf(mHintsCount));
-
         super.onResume();
     }
 
@@ -143,8 +177,22 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onStop()
     {
         mPuzzleView.recycle();
-        mPuzzleAdapter.updatePuzzleUserData();
         super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putString(BF_SESSION_KEY, mSessionKey);
+        outState.putParcelable(BF_PUZZLE_SET, mPuzzleSet);
+        outState.putInt(BF_HINTS_COUNT, mHintsCount);
+        outState.putString(BF_CURRENT_PUZZLE_SERVER_ID, mCurrentPuzzleServerId);
+        outState.putInt(BF_CURRENT_PUZZLE_INDEX, mCurrentPuzzleIndex);
+        outState.putInt(BF_TIME_GIVEN, mTimeGiven);
+        outState.putInt(BF_TIME_LEFT, mTimeLeft);
+        mPuzzleAdapter.saveState(outState);
+        mPuzzleView.saveState(outState);
     }
 
     @Override
@@ -295,7 +343,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mProgressSeekBar.setProgress(percent);
             mTimeLeft = mPuzzleAdapter.getTimeLeft();
             mTimeGiven = mPuzzleAdapter.getTimeGiven();
-//            fillTimer();
             if(!mTickerLaunched)
                 tick();
         }
