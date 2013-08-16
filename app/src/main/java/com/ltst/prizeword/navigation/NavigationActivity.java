@@ -44,6 +44,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
+import com.ltst.prizeword.raiting.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -137,6 +138,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
+        mDrawerMenu.mRatingBtn.setOnClickListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -271,6 +273,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME,true);
+            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME,true);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
         }
@@ -338,6 +341,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.forgetpass_fragment_title);
         else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
             title = res.getString(R.string.invite_fragment_title);
+        else if (id.equals(RatingFragment.FRAGMENT_ID))
+            title = res.getString(R.string.rating_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
         {
@@ -474,6 +479,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case  R.id.menu_invite_friends_btn:
                 selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
+                break;
+            case  R.id.menu_pride_rating_btn:
+                selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
