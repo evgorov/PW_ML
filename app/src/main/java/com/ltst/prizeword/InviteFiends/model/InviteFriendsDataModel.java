@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.ltst.prizeword.InviteFiends.view.CustomListView;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
@@ -15,6 +14,7 @@ import com.ltst.prizeword.dowloading.BgImageDownloader;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.login.model.LoadFriendsImageTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -38,8 +38,9 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
     private @Nullable Source mSource;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull BgImageDownloader mDownloader;
+    private @Nonnull String mProviderName;
 
-    public InviteFriendsDataModel(@Nonnull Context context,@Nonnull IBcConnector mBcConnector)
+    public InviteFriendsDataModel(@Nonnull Context context,@Nonnull IBcConnector mBcConnector,@Nonnull String provider)
     {
         this.mContext = context;
         this.mBcConnector = mBcConnector;
@@ -47,6 +48,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         BgImageDownloader downloader = new FriendsImageDownloader(mBcConnector, LoadFriendsImageTask.class);
         mDownloader = downloader;
         mSource = new Source(new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>(), downloader);
+        mProviderName  = provider;
         mIsDestroyed = false;
     }
 
@@ -112,7 +114,14 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
-            return LoadFriendsDataFromInternetTask.class;
+            if (mProviderName.equals(RestParams.VK_PROVIDER))
+            {
+                return LoadVkFriendsDataFromInternetTask.class;
+
+            } else
+            {
+                return LoadFbFriendsDataFromInternetTask.class;
+            }
         }
 
         @Nonnull
@@ -121,7 +130,13 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         {
             final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
             Log.d(NavigationActivity.LOG_TAG, "RELOAD USERDATA SessionKey = " + sessionKey);
-            return LoadFriendsDataFromInternetTask.createIntent(sessionKey);
+            if (mProviderName.equals(RestParams.VK_PROVIDER))
+            {
+                return LoadVkFriendsDataFromInternetTask.createIntent(sessionKey);
+            } else
+            {
+                return LoadFbFriendsDataFromInternetTask.createIntent(sessionKey);
+            }
         }
     };
 
@@ -157,8 +172,14 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
             BgImageDownloader downloader = mDownloader;
             if(mIsDestroyed)
                 return;
-
-            List<ISlowSource.Item<InviteFriendsData,Bitmap>> list = LoadFriendsDataFromInternetTask.extractFriendsFromBundle(result);
+            List<ISlowSource.Item<InviteFriendsData,Bitmap>> list;
+            if (mProviderName.equals(RestParams.VK_PROVIDER))
+            {
+                list = LoadVkFriendsDataFromInternetTask.extractFriendsFromBundle(result);
+            } else
+            {
+                list = LoadFbFriendsDataFromInternetTask.extractFriendsFromBundle(result);
+            }
 
             if(list != null)
             {

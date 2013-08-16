@@ -20,8 +20,12 @@ public class InviteFriendsData implements Parcelable
     public final @Nonnull String userpic;
     public final @Nonnull String status;
     public final @Nullable byte[] pngImage;
+    public final @Nonnull String providerName;
 
-    public InviteFriendsData(@Nonnull String firstName, @Nonnull String lastName, @Nullable String deactivated, int online, long userId, @Nonnull int[] lists, @Nonnull String id, @Nonnull String userpic, @Nonnull String status,@Nullable byte[] pngImage)
+    public InviteFriendsData(@Nonnull String firstName, @Nonnull String lastName,
+                             @Nullable String deactivated, int online, long userId, @Nonnull int[] lists,
+                             @Nonnull String id, @Nonnull String userpic, @Nonnull String status,@Nullable byte[] pngImage,
+                             @Nonnull String providerName)
     {
         this.firstName = ParcelableTools.getNonnullString(firstName);
         this.lastName = ParcelableTools.getNonnullString(lastName);
@@ -33,6 +37,7 @@ public class InviteFriendsData implements Parcelable
         this.userpic = ParcelableTools.getNonnullString(userpic);
         this.status = ParcelableTools.getNonnullString(status);
         this.pngImage = pngImage;
+        this.providerName = providerName;
     }
 
 
@@ -76,6 +81,8 @@ public class InviteFriendsData implements Parcelable
         {
             pngImage = null;
         }
+
+        providerName = ParcelableTools.getNonnullString(source.readString());
     }
 
     @Override public int describeContents()
@@ -102,5 +109,7 @@ public class InviteFriendsData implements Parcelable
         {
             dest.writeInt(0);
         }
+
+        dest.writeString(providerName);
     }
 }

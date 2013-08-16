@@ -66,26 +66,31 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
             //Log.w(getClass(), "Elements titleView or imageView or dateView of NewsList Item was null, but they must not be"); //$NON-NLS-1$
             throw new NullPointerException("Elements titleView or imageView or dateView of NewsList Item was null, but they must not be"); //$NON-NLS-1$
         }
-        return new ViewHolder(nameView,surnameView, imageView, inviteBtn);
+        return new ViewHolder(nameView, surnameView, imageView, inviteBtn);
     }
 
 
     @Override
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull InviteFriendsData quick, @Deprecated @Nonnull View view, @Deprecated int position)
     {
-        viewHolder.nameView.setText(quick.firstName);
-        viewHolder.surnameView.setText(quick.lastName);
+            viewHolder.nameView.setText(quick.firstName);
+            viewHolder.surnameView.setText(quick.lastName);
         if(quick.status.equals("already_registered")){
-        viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_add_btn_selected);
-        viewHolder.inviteBtn.setClickable(false);
+                viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_add_btn_selected);
+                viewHolder.inviteBtn.setClickable(false);
+            
+            }
+        else if (quick.status.equals("uninvited")){
+            viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_invite_but);
+            viewHolder.inviteBtn.setClickable(true);
         }
     }
 
     @Override
     protected void appendSlowDataToView(@Nonnull ViewHolder viewHolder, @Nonnull Bitmap slow, @Deprecated @Nonnull View view, @Deprecated int position)
     {
-        viewHolder.imageView.setImageBitmap(slow);
-    }
+            viewHolder.imageView.setImageBitmap(slow);
+        }
 
     @Override protected int getItemViewResId()
     {
@@ -101,7 +106,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         final @Nonnull ImageView imageView;
         final @Nonnull Button inviteBtn;
 
-        private ViewHolder(@Nonnull TextView nameView,@Nonnull TextView surnameView,
+        private ViewHolder(@Nonnull TextView nameView, @Nonnull TextView surnameView,
                            @Nonnull ImageView imageView, @Nonnull Button inviteBtn)
         {
             this.nameView = nameView;
