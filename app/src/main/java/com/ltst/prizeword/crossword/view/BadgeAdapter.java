@@ -30,23 +30,27 @@ public class BadgeAdapter extends BaseAdapter {
     private @Nonnull Context mContext;
     private @Nonnull List<BadgeData> mData;
     private @Nonnull PuzzleSetModel.PuzzleSetType mType;
-    private @Nonnull HashMap<String, BadgeHolder> mBadgeHolders;
 
     public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type) {
         this.mContext = context;
         this.mData = new ArrayList<BadgeData>();
         this.mType = type;
-        mBadgeHolders = new HashMap<String, BadgeHolder>();
-    }
-
-    private @Nullable BadgeHolder getBadgeHolder(@Nonnull String serverId)
-    {
-        return mBadgeHolders.containsKey(serverId) ? mBadgeHolders.get(serverId) : null;
     }
 
     public void addBadgeData(@Nonnull BadgeData data)
     {
-        mData.add(data);
+        boolean flag = false;
+        for(BadgeData bd : mData)
+        {
+            if(bd.mServerId.equals(data.mServerId))
+            {
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
+            mData.add(data);
+        }
     }
 
     @Nullable
@@ -54,8 +58,8 @@ public class BadgeAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
 
         // Выбираем фон эмблемы;
-        BadgeData data = mData.get(position);
-        BadgeHolder badge = mBadgeHolders.containsKey(data.mServerId) ? getBadgeHolder(data.mServerId) : new BadgeHolder(mContext, view);
+        @Nonnull BadgeData data = mData.get(position);
+        @Nonnull BadgeHolder badge = new BadgeHolder(mContext, view);
 
         int idBackground = 0;
         if(mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
@@ -282,7 +286,7 @@ public class BadgeAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return getBadgeHolder(mData.get(position).mServerId);
+        return mData.get(position);
     }
 
     @Override

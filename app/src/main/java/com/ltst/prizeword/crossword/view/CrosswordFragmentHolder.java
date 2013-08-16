@@ -292,7 +292,6 @@ public class CrosswordFragmentHolder {
             adapter = new BadgeAdapter(mContext, PuzzleSetModel.PuzzleSetType.FREE);
             crosswordSet.pBadgeContainer.setAdapter(adapter);
         }
-
         adapter.addBadgeData(data);
         adapter.notifyDataSetChanged();
     }
