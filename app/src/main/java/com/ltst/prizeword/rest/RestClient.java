@@ -411,4 +411,28 @@ public class RestClient implements IRestClient
 
     }
 
+    @Override
+    public RestInviteFriend.RestInviteFriendHolder sendInviteToFriends(@Nonnull String sessionKey, @Nonnull String providerName, @Nonnull String ids)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY,sessionKey);
+        urlVariables.put(RestParams.USER_PUZZLE_IDS,ids);
+        @Nonnull String url = Strings.EMPTY;
+        if (providerName.equals(RestParams.VK_PROVIDER))
+        {
+            url = RestParams.URL_POST_VK_FRIEND_INVITE;
+        } else if (providerName.equals(RestParams.FB_PROVIDER))
+        {
+            url = RestParams.URL_POST_FB_FRIEND_INVITE;
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        //HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        //ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity,String.class, urlVariables);
+        restTemplate.postForLocation(url, null, urlVariables);
+
+        RestInviteFriend.RestInviteFriendHolder holder = new RestInviteFriend.RestInviteFriendHolder();
+        //holder.setStatus(entity.getStatusCode());
+        return holder;
+    }
+
 }

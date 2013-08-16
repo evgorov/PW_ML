@@ -73,16 +73,27 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     @Override
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull InviteFriendsData quick, @Deprecated @Nonnull View view, @Deprecated int position)
     {
+        final String id = quick.id;
+        final String provider = quick.providerName;
+
             viewHolder.nameView.setText(quick.firstName);
             viewHolder.surnameView.setText(quick.lastName);
         if(quick.status.equals("already_registered")){
-                viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_add_btn_selected);
-                viewHolder.inviteBtn.setClickable(false);
-            
+                viewHolder.inviteBtn.setEnabled(false);
+            viewHolder.inviteBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override public void onClick(View v)
+                {
+                    switch(v.getId()){
+                        case R.id.invite_add_btn:
+                            mModel.sendInviteFriends(id,provider,null);
+                            break;
+                    }
+                }
+            });
             }
-        else if (quick.status.equals("uninvited")){
-            viewHolder.inviteBtn.setBackgroundResource(R.drawable.invite_invite_but);
-            viewHolder.inviteBtn.setClickable(true);
+        else if (quick.status.equals("uninvited")||quick.status.equals("invite_sent")){
+            viewHolder.inviteBtn.setEnabled(true);
         }
     }
 

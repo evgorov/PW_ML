@@ -107,6 +107,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         session.update(updateHandler);
     }
 
+
     //==========================================================================
     private final Updater session = new Updater()
     {
@@ -139,6 +140,34 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
             }
         }
     };
+
+
+
+    public void sendInviteFriends( final String ids, final String providerName, @Nonnull IListenerVoid handler) {
+
+        final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        Inviter session = new Inviter() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return SendInviteToFriendsTask.createIntent(sessionKey,ids,providerName);
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return SendInviteToFriendsTask.class;
+            }
+
+            @Override protected void handleData(@Nullable Bundle result)
+            {
+
+            }
+
+        };
+        session.update(handler);
+    }
+
 
 
     //========================================================================
@@ -187,6 +216,26 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
                 mSource = new Source(list, downloader);
             }
         }
+
+    }
+
+    private abstract class Inviter extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+
 
     }
 

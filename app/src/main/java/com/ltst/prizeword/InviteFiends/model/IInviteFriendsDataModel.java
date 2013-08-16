@@ -11,4 +11,5 @@ public interface IInviteFriendsDataModel
 {
     @Nonnull ISlowSource<InviteFriendsData,Bitmap> getSource();
     void updateDataByInternet(@Nonnull IListenerVoid handler);
+    void sendInviteFriends(String ids, String providerName, @Nonnull IListenerVoid handler);
 }
