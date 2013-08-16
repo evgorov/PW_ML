@@ -429,6 +429,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     @Override
+    public boolean isLockDrawerOpen() {
+        return mDrawerLayout.isDrawerOpen(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+    }
+
+    @Override
     public void unlockDrawer()
     {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

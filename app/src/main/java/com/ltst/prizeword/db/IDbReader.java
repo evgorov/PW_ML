@@ -29,4 +29,5 @@ public interface IDbReader
     @Nullable List<Puzzle> getPuzzleListBySetId(long setId);
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
+    int getUserHintsCount();
 }

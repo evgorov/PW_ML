@@ -4,5 +4,6 @@ public interface INavigationDrawerHolder
 {
     void lockDrawerClosed();
     void lockDrawerOpened();
+    boolean isLockDrawerOpen();
     void unlockDrawer();
 }

@@ -18,9 +18,13 @@ public class PuzzleQuestion implements Parcelable
     public @Nonnull String questionText;
     public @Nonnull String answer;
     public @Nonnull String answerPosition;
-    public boolean correct;
+    public boolean isAnswered;
 
-    public PuzzleQuestion(long id, long puzzleId, int column, int row, @Nonnull String quesitonText, @Nonnull String answer, @Nonnull String answerPosition)
+    public PuzzleQuestion(long id, long puzzleId, int column, int row,
+                          @Nonnull String quesitonText,
+                          @Nonnull String answer,
+                          @Nonnull String answerPosition,
+                          boolean is_answered)
     {
         this.id = id;
         this.puzzleId = puzzleId;
@@ -29,7 +33,7 @@ public class PuzzleQuestion implements Parcelable
         this.questionText = quesitonText;
         this.answer = answer;
         this.answerPosition = answerPosition;
-        correct = false;
+        isAnswered = is_answered;
     }
 
     //==== Parcelable implementation ==========================================
@@ -45,8 +49,7 @@ public class PuzzleQuestion implements Parcelable
             @Nonnull String answer = ParcelableTools.getNonnullString(source.readString());
             @Nonnull String answerPosition = ParcelableTools.getNonnullString(source.readString());
             boolean correct = ParcelableTools.getBooleanFromInt(source.readInt());
-            PuzzleQuestion q = new PuzzleQuestion(id, puzzleId, col, row, text, answer, answerPosition);
-            q.correct = correct;
+            PuzzleQuestion q = new PuzzleQuestion(id, puzzleId, col, row, text, answer, answerPosition, correct);
             return q;
         }
 
@@ -72,7 +75,7 @@ public class PuzzleQuestion implements Parcelable
         dest.writeString(questionText);
         dest.writeString(answer);
         dest.writeString(answerPosition);
-        dest.writeInt(correct ? 1 : 0);
+        dest.writeInt(isAnswered ? 1 : 0);
     }
 
     public int getAnswerPosition()

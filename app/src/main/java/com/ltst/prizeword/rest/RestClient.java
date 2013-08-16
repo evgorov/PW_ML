@@ -7,6 +7,9 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
 import org.springframework.http.HttpEntity;
@@ -289,7 +292,7 @@ public class RestClient implements IRestClient
         {
             if (entity == null)
             {
-                HttpStatus status = HttpStatus.valueOf(404);
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
                 return status;
             }
         }
@@ -384,6 +387,7 @@ public class RestClient implements IRestClient
         return answer;
     }
 
+
     @Nullable @Override
     public RestInviteFriend.RestInviteFriendHolder getFriendsData(@Nonnull String sessionKey, @Nonnull String providerName)
     {
@@ -433,6 +437,105 @@ public class RestClient implements IRestClient
         RestInviteFriend.RestInviteFriendHolder holder = new RestInviteFriend.RestInviteFriendHolder();
         //holder.setStatus(entity.getStatusCode());
         return holder;
+    }
+
+
+    @Nullable
+    @Override
+    public RestPuzzleUserData.RestPuzzleUserDataHolder getPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        String url = String.format(RestParams.URL_GET_PUZZLE_USERDATA, puzzleId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<String> entity = null;
+        RestPuzzleUserData.RestPuzzleUserDataHolder holder = new RestPuzzleUserData.RestPuzzleUserDataHolder();
+        try
+        {
+            entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class, urlVariables);
+        }
+        catch (HttpClientErrorException e)
+        {
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(404);
+                holder.setStatus(status);
+                return holder;
+            }
+        }
+        @Nullable RestPuzzleUserData data = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonFactory jsonFactory = new JsonFactory();
+        try
+        {
+            JsonParser jsonParser = jsonFactory.createJsonParser(entity.getBody());
+            data = objectMapper.readValue(jsonParser, RestPuzzleUserData.class);
+        } catch (IOException e)
+        {
+            Log.e(e.getMessage());
+        }
+
+        holder.setPuzzleUserData(data);
+        holder.setStatus(entity.getStatusCode());
+        return holder;
+    }
+
+    @Override
+    public HttpStatus putPuzzleUserData(@Nonnull String sessionKey,
+                                        @Nonnull String puzzleId,
+                                        @Nonnull String puzzleUserData)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.PUZZLE_DATA, puzzleUserData);
+        String url = String.format(RestParams.URL_PUT_PUZZLE_USERDATA, puzzleId);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        @Nullable ResponseEntity<RestUserData.RestAnswerMessageHolder> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, RestUserData.RestAnswerMessageHolder.class, urlVariables);
+        }
+        catch (Exception e){
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
+                return status;
+            }
+        }
+        return entity.getStatusCode();
+    }
+
+    @Nullable
+    @Override
+    public RestUserData.RestUserDataHolder addOrRemoveHints(@Nonnull String sessionKey, int hintsToChange)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.HINTS_CHANGE, hintsToChange);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        ResponseEntity<RestUserData.RestUserDataHolder> holder =
+                restTemplate.exchange(RestParams.URL_ADD_REMOVE_HINTS, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+        holder.getBody().setStatusCode(holder.getStatusCode());
+        return holder.getBody();
     }
 
 }

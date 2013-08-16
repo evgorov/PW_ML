@@ -24,6 +24,7 @@ public class Puzzle implements Parcelable
     public int score;
     public boolean isSolved;
     public @Nullable List<PuzzleQuestion> questions;
+    public int solvedPercent;
 
     public Puzzle(long id,
                   long setId,
@@ -48,6 +49,8 @@ public class Puzzle implements Parcelable
         this.score = score;
         this.isSolved = solved;
         this.questions = questions;
+        solvedPercent = 0;
+        countSolvedPercent();
     }
 
     //==== Parcelable implementation ==========================================
@@ -99,6 +102,23 @@ public class Puzzle implements Parcelable
         dest.writeInt(score);
         dest.writeInt(isSolved ? 1 : 0);
         dest.writeTypedList(questions);
+        dest.writeInt(solvedPercent);
     }
 
+    public void countSolvedPercent()
+    {
+        if (questions == null)
+        {
+            return;
+        }
+        int solved = 0;
+        for (PuzzleQuestion question : questions)
+        {
+            if (question.isAnswered)
+                solved ++;
+        }
+        solvedPercent = (int)((float)solved/(float)questions.size() * 100);
+        if(solvedPercent == 100)
+            isSolved = true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
@@ -355,7 +356,7 @@ public class RestUserData
     public static class RestAnswerMessageHolder
     {
         private @JsonProperty("message") String mMessage;
-        private HttpStatus mStatusCode;
+        private @JsonIgnore HttpStatus mStatusCode;
 
         public RestAnswerMessageHolder() {
         }

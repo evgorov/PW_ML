@@ -22,11 +22,13 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
+    private int hintsCount;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
+        hintsCount = 0;
     }
 
     @Override
@@ -43,6 +45,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
             return mPuzzleSetList;
         }
         return new ArrayList<PuzzleSet>();
+    }
+
+    @Override
+    public int getHintsCount()
+    {
+        return hintsCount;
     }
 
     @Override
@@ -106,7 +114,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
         @Override
         protected void handleData(@Nullable Bundle result)
         {
+            if (result == null)
+            {
+                return;
+            }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
+            hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
         }
     }
 

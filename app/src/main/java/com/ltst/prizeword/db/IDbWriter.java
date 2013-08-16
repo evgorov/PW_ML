@@ -23,4 +23,5 @@ public interface IDbWriter extends IDbReader
     void putPuzzle(@Nonnull Puzzle puzzle);
 
     void putFriendsImage(@Nonnull String url, @Nonnull byte[] bytes);
+    void setQuestionAnswered(long questionId, boolean answered);
 }

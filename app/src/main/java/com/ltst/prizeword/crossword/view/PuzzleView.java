@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -28,6 +29,9 @@ import javax.annotation.Nullable;
 
 public class PuzzleView extends View
 {
+    public static final @Nonnull String BF_SCALED = "PuzzleView.scaled";
+    public static final @Nonnull String BF_KEYBOARD_STATUS = "PuzzleView.keyboardStatus";
+
     private @Nonnull Context mContext;
     private @Nullable Rect mViewScreenRect;
     private @Nullable PuzzleManager mPuzzleManager;
@@ -104,7 +108,6 @@ public class PuzzleView extends View
                 }
             }
         });
-
     }
 
     @Override
@@ -117,6 +120,29 @@ public class PuzzleView extends View
         }
         invalidate(mViewScreenRect);
         super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    public void saveState(@Nonnull Bundle bundle)
+    {
+        bundle.putBoolean(BF_SCALED, mScaled);
+        bundle.putBoolean(BF_KEYBOARD_STATUS, mKeyboardOpened);
+        if (mPuzzleManager != null)
+        {
+            mPuzzleManager.saveState(bundle);
+        }
+    }
+
+    public void  restoreState(@Nonnull Bundle bundle)
+    {
+        mScaled = bundle.getBoolean(BF_SCALED);
+        mKeyboardOpened = bundle.getBoolean(BF_KEYBOARD_STATUS);
+        if(mKeyboardOpened)
+            hideKeyboard();
+        if (mPuzzleManager != null)
+        {
+            mPuzzleManager.restoreState(bundle);
+        }
+
     }
 
     @Override
@@ -158,10 +184,26 @@ public class PuzzleView extends View
             mPuzzleManager.recycle();
             mPuzzleManager = null;
         }
+        hideKeyboard();
     }
 
-    private void openKeyboard()
+    public void cancelInput()
     {
+        if (mPuzzleManager == null)
+        {
+            return;
+        }
+        if(mAdapter.isInputMode() && mKeyboardOpened)
+        {
+            mPuzzleManager.cancelLastQuestion();
+            hideKeyboard();
+        }
+    }
+
+    public void openKeyboard()
+    {
+        if(mKeyboardOpened)
+            return;
         if (this.requestFocus())
         {
             InputMethodManager imm = (InputMethodManager)
@@ -171,11 +213,15 @@ public class PuzzleView extends View
         }
     }
 
-    private void hideKeyboard()
+    public void hideKeyboard()
     {
-        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
-        mKeyboardOpened = false;
+        if(mKeyboardOpened)
+        {
+            this.clearFocus();
+            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+            mKeyboardOpened = false;
+        }
     }
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener

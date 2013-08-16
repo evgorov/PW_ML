@@ -26,4 +26,9 @@ public interface IRestClient
 
     @Nullable RestInviteFriend.RestInviteFriendHolder getFriendsData(@Nonnull String sessionToken,@Nonnull String providerName);
     @Nullable RestInviteFriend.RestInviteFriendHolder sendInviteToFriends(@Nonnull String sessionToken,@Nonnull String providerName, @Nonnull String ids);
+
+    @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder getPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId);
+    HttpStatus putPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId, @Nonnull String puzzleUserData);
+
+    @Nullable RestUserData.RestUserDataHolder addOrRemoveHints(@Nonnull String sessionKey, int hintsToChange);
 }

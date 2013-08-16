@@ -58,6 +58,7 @@
     <string name="buy_one_dollar">$0.99</string>
     <string name="buy_two_dollar">$1.99</string>
     <string name="buy_three_dollar">$2.99</string>
+    <string name="buy_free">Скачать</string>
 
 
     <string name="menu_main_my_crosswords">Мои сканворды</string>
@@ -134,5 +135,9 @@
     <string name="gamefield_sound">Звуки</string>
     <string name="gamefield_music">Музыка</string>
     <string name="gamefield_pause">Пауза</string>
+    <string name="gamefield_hint_dialog_title">Подсказка</string>
+    <string name="gamefield_hint_dialog_message">Вы действительно хотите воспользоваться подсказкой?</string>
+    <string name="gamefield_hint_dialog_ok">Да</string>
+    <string name="gamefield_hint_dialog_cancel">Нет</string>
 
 </resources>

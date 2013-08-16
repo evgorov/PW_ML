@@ -88,8 +88,8 @@ public class DbReader implements IDbReader
             ColsPuzzleQuestions.ROW,
             ColsPuzzleQuestions.QUESTION_TEXT,
             ColsPuzzleQuestions.ANSWER,
-            ColsPuzzleQuestions.ANSWER_POSITION
-
+            ColsPuzzleQuestions.ANSWER_POSITION,
+            ColsPuzzleQuestions.IS_ANSWERED
     };
 
     public static final @Nonnull String[] FIELDS_P_IMAGES =
@@ -221,6 +221,7 @@ public class DbReader implements IDbReader
         if (puzzle != null)
         {
             puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+            puzzle.countSolvedPercent();
         }
         return puzzle;
     }
@@ -247,6 +248,32 @@ public class DbReader implements IDbReader
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_QUESTIONS, FIELDS_P_PUZZLE_QUESTIONS, ColsPuzzleQuestions.PUZZLE_ID, puzzleId);
         return createTypedListByCursor(cursor, mPuzzleQuestionsCreator);
+    }
+
+    @Override
+    public int getUserHintsCount()
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_USERS,
+                new String[]{ColsUsers.HINTS}, ColsUsers.ID, SQLiteHelper.ID_USER);
+        if (cursor == null)
+        {
+            return 0;
+        }
+        int count = 0;
+        try
+        {
+            cursor.moveToFirst();
+
+            if(!cursor.isAfterLast())
+            {
+                count = cursor.getInt(0);
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+        return count;
     }
 
     // ==== object creators =====================
@@ -333,7 +360,8 @@ public class DbReader implements IDbReader
                             c.getInt(3),
                             c.getString(4),
                             c.getString(5),
-                            c.getString(6));
+                            c.getString(6),
+                            c.getInt(7) == 1);
         }
     };
 

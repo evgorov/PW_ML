@@ -5,25 +5,28 @@ import com.ltst.prizeword.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromInternet;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
+import org.omich.velo.bcops.BcBaseService;
+import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.List;
@@ -32,25 +35,26 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
-                                implements View.OnClickListener
+                                implements View.OnClickListener,
+                                ICrosswordFragment
 {
-    public static final @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.view.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     private @Nonnull Context mContext;
-//    private @Nonnull Button mCrossWordButton;
 
     private static final int BADGE_ID = 1;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
+    private @Nonnull HintsManager mHintsManager;
 
-    private @Nonnull LinearLayout mViewCurrentContainer;
-    private @Nonnull LinearLayout mViewArchiveContainer;
-
+    private @Nonnull View mRoot;
+    private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
+    private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
 
     // ==== Livecycle =================================
 
@@ -59,6 +63,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
+        mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
         super.onAttach(activity);
     }
@@ -67,49 +72,43 @@ public class CrosswordsFragment extends SherlockFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
-        mViewCurrentContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_current_container);
-        mViewArchiveContainer = (LinearLayout) v.findViewById(R.id.crossword_fragment_archive_container);
+
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
         mMenuBackButton.setOnClickListener(this);
 
-        LinearLayout viewCurrentBrilliant = (LinearLayout) inflater.inflate(R.layout.crossword_current_brilliant, null, false);
-        LinearLayout viewCurrentFree = (LinearLayout) inflater.inflate(R.layout.crossword_current_free, null, false);
+        mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-        LinearLayout viewArchiveGold = (LinearLayout) inflater.inflate(R.layout.crossword_archive_gold, null, false);
-        LinearLayout viewArchiveSilver = (LinearLayout) inflater.inflate(R.layout.crossword_archive_silver, null, false);
+        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
+        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
+        dataPanel1.mType = BadgeData.TYPE_FREE;
+        dataPanel1.mMonth = "Июнь";
 
-        ((LinearLayout) viewCurrentFree.findViewById(R.id.crossword_current_free_buy_panel)).setVisibility(View.GONE);
-        ((LinearLayout) viewArchiveGold.findViewById(R.id.crossword_archive_gold_splitter)).setVisibility(View.GONE);
+        dataPanel1.mBadgeData = new BadgeData[1];
+        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
+            BadgeData badge = new BadgeData();
+            badge.mNumber = i+1;
+            badge.mStatus = (i%2 == 0) ? BadgeData.STATUS_UNRESOLVED : BadgeData.STATUS_RESOLVED;
+            badge.mProgress = 95;
+            badge.mScore = 9000;
+            dataPanel1.mBadgeData[i] = badge;
+        }
+        mCrosswordFragmentHolder.addPanel(dataPanel1);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.crossword_number_free_1);
-        ImageView iv = new ImageView(mContext);
-        iv.setImageBitmap(bitmap);
-//        bitmap.recycle();
+       mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
-        View badgeCurrentFree1 = inflater.inflate(R.layout.crossword_badge_free_unresolved, null, false);
-        badgeCurrentFree1.setId(BADGE_ID);
-        badgeCurrentFree1.setOnClickListener(this);
-
-        ((LinearLayout)badgeCurrentFree1.findViewById(R.id.crossword_badge_unresolved_free_number_container)).addView(iv);
-
-        viewCurrentFree.addView(badgeCurrentFree1);
-
-        mViewCurrentContainer.addView(viewCurrentBrilliant);
-        mViewCurrentContainer.addView(viewCurrentFree);
-
-        mViewArchiveContainer.addView(viewArchiveGold);
-        mViewArchiveContainer.addView(viewArchiveSilver);
-
-        return v;
+       mRoot = v;
+       return v;
     }
 
     @Override
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+        mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
-        mPuzzleSetModel.updateDataByInternet(updateHandler);
         mPuzzleSetModel.updateDataByDb(updateHandler);
+        mPuzzleSetModel.updateDataByInternet(updateHandler);
         super.onResume();
     }
 
@@ -134,7 +133,10 @@ public class CrosswordsFragment extends SherlockFragment
                 break;
 
             case R.id.crossword_fragment_header_menu_btn:
-
+                if(mINavigationDrawerHolder.isLockDrawerOpen())
+                    mINavigationDrawerHolder.lockDrawerClosed();
+                else
+                    mINavigationDrawerHolder.lockDrawerOpened();
                 break;
 
             default:
@@ -158,7 +160,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
         if (freeSet != null)
         {
-            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet);
+            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
             mContext.startActivity(intent);
         }
     }
@@ -168,7 +170,75 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
         }
     };
+
+    private IListenerInt hintsChangeHandler = new IListenerInt()
+    {
+        @Override
+        public void handle(int i)
+        {
+            mPuzzleSetModel.updateDataByDb(updateHandler);
+        }
+    };
+
+    @Override
+    public void buyCrosswordSet() {
+
+    }
+
+    @Override
+    public void choiceCrossword() {
+        launchCrosswordActivity();
+    }
+
+    private void reloadCrosswordsFromInternet()
+    {
+        LoadCrosswordFromInternetSession session = new LoadCrosswordFromInternetSession() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
+            }
+        };
+        session.update(new IListenerVoid() {
+            @Override
+            public void handle() {
+
+            }
+        });
+    }
+
+    private abstract class LoadCrosswordFromInternetSession extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            if (result == null){
+                return;
+            }
+        }
+    }
+
 }

@@ -157,6 +157,7 @@ public class DbWriter extends  DbReader implements IDbWriter
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
         final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
+
         final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
         final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
 
@@ -177,14 +178,33 @@ public class DbWriter extends  DbReader implements IDbWriter
                 }
             });
         }
-        else // нужно обновить старые кроссворды, вопросы обновлять не надо.
+        else // нужно обновить старые кроссворды и вопросы к ним (для синхронизации правильных ответов)
         {
+            final @Nullable List<PuzzleQuestion> existingQuestions = puzzle.questions;
             DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
             {
                 @Override
                 public void handle()
                 {
                     mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
+                    if (existingQuestions == null)
+                    {
+                        return;
+                    }
+
+                    int questionIndex = 0;
+                    for (ContentValues contentValues : questionCv)
+                    {
+                        @Nullable PuzzleQuestion existingQuestion = existingQuestions.get(questionIndex);
+                        if (existingQuestion == null)
+                            continue;
+
+                        mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
+                                ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
+                                ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
+                                + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
+                        questionIndex ++;
+                    }
                 }
             });
         }
@@ -199,22 +219,40 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzleSetList(final @Nonnull List<PuzzleSet> list)
     {
+        for (final PuzzleSet puzzleSet : list)
+        {
+            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleSet.serverId);
+            if(existingSet != null)
+                continue;
+
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                    mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void setQuestionAnswered(final long questionId, final boolean answered)
+    {
+        final ContentValues values = new ContentValues();
+        values.put(ColsPuzzleQuestions.IS_ANSWERED, answered);
+
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
             @Override
             public void handle()
             {
-                mDb.delete(TNAME_PUZZLE_SETS, null, null); // clean puzzle sets
-                for (PuzzleSet puzzleSet : list)
-                {
-                    ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                    mDb.insert(TNAME_PUZZLE_SETS, null, values);
-                }
+                mDb.update(TNAME_PUZZLE_QUESTIONS, values, ColsPuzzleQuestions.ID + "=" + questionId, null);
             }
         });
-
     }
-
 
     //===== ContentValues creators =======================
 
@@ -329,6 +367,7 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsPuzzleQuestions.QUESTION_TEXT, object.questionText);
             cv.put(ColsPuzzleQuestions.ANSWER, object.answer);
             cv.put(ColsPuzzleQuestions.ANSWER_POSITION, object.answerPosition);
+            cv.put(ColsPuzzleQuestions.IS_ANSWERED, object.isAnswered);
             return cv;
         }
     };

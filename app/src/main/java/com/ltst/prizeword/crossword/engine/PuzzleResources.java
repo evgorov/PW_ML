@@ -3,19 +3,27 @@ package com.ltst.prizeword.crossword.engine;
 import android.content.res.Resources;
 
 import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.ltst.prizeword.crossword.engine.PuzzleTileState.*;
+import org.omich.velo.handlers.IListener;
+import com.ltst.prizeword.crossword.wordcheck.WordCompletenessChecker.*;
+import com.ltst.prizeword.crossword.wordcheck.WordsGraph;
+import com.ltst.prizeword.tools.ParcelableTools;
 
-public class PuzzleResources
+public class PuzzleResources implements Parcelable
 {
     private static final int DEFAULT_CELL_WIDTH = 14;
     private static final int DEFAULT_CELL_HEIGHT = 20;
@@ -32,6 +40,8 @@ public class PuzzleResources
     private @Nullable PuzzleSetModel.PuzzleSetType mSetType;
     private @Nullable List<PuzzleQuestion> mPuzzleQuestions;
     private @Nullable PuzzleTileState[][] mStateMatrix;
+    private @Nullable WordsGraph mWordsGraph;
+
 
     public PuzzleResources(@Nullable PuzzleSetModel.PuzzleSetType setType,
                            @Nullable List<PuzzleQuestion> puzzleQuestions)
@@ -52,7 +62,14 @@ public class PuzzleResources
 
     private void initStateMatrix()
     {
+
+        if (mPuzzleQuestions == null)
+        {
+            return;
+        }
+
         mStateMatrix = new PuzzleTileState[mPuzzleColumnsCount][mPuzzleRowsCount];
+
         for (int i = 0; i < mPuzzleColumnsCount; i++)
         {
             for (int j = 0; j < mPuzzleRowsCount; j++)
@@ -61,25 +78,95 @@ public class PuzzleResources
                 mStateMatrix[i][j].setLetterState(LetterState.LETTER_EMPTY);
             }
         }
-        if (mPuzzleQuestions == null)
-        {
-            return;
-        }
+
+        final HashMap<LetterCell, CrossingQuestionsPair> mCrossingQuestions
+                = new HashMap<LetterCell, CrossingQuestionsPair>
+                (mPuzzleColumnsCount * mPuzzleRowsCount);
+
 
         for (PuzzleQuestion question : mPuzzleQuestions)
         {
-            int index = mPuzzleQuestions.indexOf(question);
+            final int index = mPuzzleQuestions.indexOf(question);
+
+            final IListener<AnswerLetterPointIterator> crossingQuestionsFiller = new IListener<AnswerLetterPointIterator>()
+            {
+                @Override
+                public void handle(@Nullable AnswerLetterPointIterator iterator)
+                {
+                    if (iterator == null)
+                        return;
+
+                    Point current = iterator.current();
+                    LetterCell letterCell = new LetterCell(current.x, current.y);
+                    if (mCrossingQuestions.containsKey(letterCell))
+                    {
+                        mCrossingQuestions.get(letterCell).putIndex(index);
+                    }
+                    else
+                    {
+                        CrossingQuestionsPair pair = new CrossingQuestionsPair();
+                        pair.putIndex(index);
+                        mCrossingQuestions.put(letterCell, pair);
+                    }
+                }
+            };
+
             int col = question.column - 1;
             int row = question.row - 1;
             int arrowType = question.getAnswerPosition();
-            mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
-            mStateMatrix[col][row].setQuestionIndex(index);
             Point p = ArrowType.positionToPoint(arrowType, col, row);
-            if (p != null)
+            if(question.isAnswered)
             {
-                mStateMatrix[p.x][p.y].addArrow(arrowType, index);
+                mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_CORRECT);
+                if (p != null)
+                {
+                    final AnswerLetterPointIterator letterIterator = new AnswerLetterPointIterator(p,
+                            PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
+                    PuzzleResourcesAdapter.setLetterStateByPointIterator(this, letterIterator, new IListener<PuzzleTileState>()
+                    {
+                        @Override
+                        public void handle(@Nullable PuzzleTileState puzzleTileState)
+                        {
+                            if(puzzleTileState == null)
+                            {
+                                return;
+                            }
+                            String letter = String.valueOf(letterIterator.getCurrentLetter()).toUpperCase();
+                            puzzleTileState.setInputLetter(letter);
+                            puzzleTileState.setLetterCorrect(true);
+
+                            crossingQuestionsFiller.handle(letterIterator);
+                        }
+                    });
+                }
             }
+            else
+            {
+                mStateMatrix[col][row].setQuestionState(QuestionState.QUESTION_EMPTY);
+                if (p != null)
+                {
+                    mStateMatrix[p.x][p.y].addArrow(arrowType, index);
+                    final AnswerLetterPointIterator letterIterator = new AnswerLetterPointIterator(p,
+                            PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
+                    PuzzleResourcesAdapter.setLetterStateByPointIterator(this, letterIterator, new IListener<PuzzleTileState>()
+                    {
+                        @Override
+                        public void handle(@Nullable PuzzleTileState puzzleTileState)
+                        {
+                            if(puzzleTileState == null)
+                            {
+                                return;
+                            }
+
+                            crossingQuestionsFiller.handle(letterIterator);
+                        }
+                    });
+
+                }
+            }
+            mStateMatrix[col][row].setQuestionIndex(index);
         }
+        mWordsGraph = new WordsGraph(mCrossingQuestions);
     }
 
     public @Nullable PuzzleTileState getPuzzleState(int column, int row)
@@ -106,13 +193,28 @@ public class PuzzleResources
         return mPuzzleQuestions;
     }
 
+    @Nullable
+    public WordsGraph getWordsGraph()
+    {
+        return mWordsGraph;
+    }
+
     public void setQuestionCorrect(int index, boolean correct)
     {
-        if (mPuzzleQuestions == null)
+        if (mPuzzleQuestions == null || mStateMatrix == null)
             return;
         if(index < 0 || index >= mPuzzleQuestions.size())
             return;
-        mPuzzleQuestions.get(index).correct = correct;
+        PuzzleQuestion q = mPuzzleQuestions.get(index);
+        q.isAnswered = correct;
+        int column = q.column - 1;
+        int row = q.row - 1;
+        mStateMatrix[column][row].setQuestionState(QuestionState.QUESTION_CORRECT);
+        Point answerStart = PuzzleTileState.ArrowType.positionToPoint(q.getAnswerPosition(), column, row);
+        if (answerStart != null)
+        {
+            mStateMatrix[answerStart.x][answerStart.y].removeArrowByQuestionIndex(index);
+        }
     }
 
     public static int getArrowResource(int type)
@@ -380,5 +482,41 @@ public class PuzzleResources
     public static int getCanvasBackgroundTileRes()
     {
         return R.drawable.bg_dark_tile;
+    }
+
+    // ==== Parcelable implementation ==================================
+
+    public static Creator<PuzzleResources> CREATOR = new Creator<PuzzleResources>()
+    {
+        public PuzzleResources createFromParcel(Parcel source)
+        {
+            int cols = source.readInt();
+            int rows = source.readInt();
+            PuzzleSetModel.PuzzleSetType type =
+                    PuzzleSetModel.PuzzleSetType.valueOf(ParcelableTools.getNonnullString(source.readString()));
+            List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>();
+            source.readTypedList(questions, PuzzleQuestion.CREATOR);
+            return new PuzzleResources(cols, rows, type, questions);
+        }
+
+        public PuzzleResources[] newArray(int size)
+        {
+            return null;
+        }
+    };
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(mPuzzleColumnsCount);
+        dest.writeInt(mPuzzleRowsCount);
+        dest.writeString(mSetType.name());
+        dest.writeTypedList(mPuzzleQuestions);
     }
 }

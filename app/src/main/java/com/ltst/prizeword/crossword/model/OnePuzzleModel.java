@@ -10,7 +10,11 @@ import com.ltst.prizeword.rest.RestParams;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
+
+import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,6 +58,30 @@ public class OnePuzzleModel implements IOnePuzzleModel
         mPuzzleInternetUpdater.update(handler);
     }
 
+    @Override
+    public void setQuestionAnswered(@Nonnull PuzzleQuestion q, boolean answered)
+    {
+        final long id = q.id;
+        final boolean isAnswered = answered;
+        SetQuestionAnsweredUpdater updater = new SetQuestionAnsweredUpdater()
+        {
+            @Nonnull
+            @Override
+            protected Intent createIntent()
+            {
+                return SetQuestionAnsweredTask.createIntent(id, isAnswered);
+            }
+        };
+        updater.update(null);
+    }
+
+    @Override
+    public void updatePuzzleUserData()
+    {
+        PuzzleUserDataUpdater updater = new PuzzleUserDataUpdater();
+        updater.update(null);
+    }
+
     // ==== updaters ==================================================
 
     private Updater mPuzzleInternetUpdater = new Updater()
@@ -89,6 +117,83 @@ public class OnePuzzleModel implements IOnePuzzleModel
             return LoadOnePuzzleFromDatabase.class;
         }
     };
+
+    private abstract class SetQuestionAnsweredUpdater extends ModelUpdater<DbService.DbTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return SetQuestionAnsweredTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
+            return DbService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            // ничего делать не надо
+        }
+    }
+
+    private class PuzzleUserDataUpdater extends ModelUpdater<IBcTask.BcTaskEnv>
+    {
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nullable
+        @Override
+        protected Intent createIntent()
+        {
+            if (mPuzzle == null)
+            {
+                return null;
+            }
+
+            ArrayList<PuzzleQuestion> questions = (ArrayList<PuzzleQuestion>) mPuzzle.questions;
+            return UpdatePuzzleUserDataOnServerTask.createIntent(mSessionKey,
+                    mPuzzleServerId,
+                    mPuzzle.timeLeft,
+                    mPuzzle.score,
+                    questions);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        {
+            return UpdatePuzzleUserDataOnServerTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        {
+            return BcService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            // пока ничего не обрабатываем
+        }
+    }
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {

@@ -80,6 +80,21 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             return null;
     }
 
+    public @Nonnull Point current()
+    {
+        return mPoint;
+    }
+
+    public boolean isLast()
+    {
+        return currentLetterIndex >= mAnswer.length();
+    }
+
+    public boolean isFirst()
+    {
+        return mPoint.equals(mStartPoint);
+    }
+
     public void reset()
     {
         currentLetterIndex = 0;
@@ -113,6 +128,14 @@ public class AnswerLetterPointIterator implements Iterator<Point>
     private void negateOffsetPointByDirection(@Nonnull Point p)
     {
         offsetPointByDirection(p, -1, -1);
+    }
+
+    public char getCurrentLetter()
+    {
+        int index = currentLetterIndex - 1;
+        if(index < 0 || index >= mAnswer.length())
+            return PuzzleResources.LETTER_UNKNOWN;
+        return mAnswer.charAt(currentLetterIndex - 1);
     }
 
     @Override
