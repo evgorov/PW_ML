@@ -27,10 +27,12 @@ import javax.annotation.Nullable;
 
 public class PuzzleManager
 {
+    public static final @Nonnull String BF_FOCUS_PUZZLE_POINT = "PuzzleManager.focusPuzzlePoint";
     public static final @Nonnull String BF_FOCUS_POINT = "PuzzleManager.focusPoint";
     public static final @Nonnull String BF_VIEW_RECT = "PuzzleManager.viewRect";
 
     private volatile @Nullable Point mFocusViewPoint;
+    private @Nullable PointF mFocusPuzzlePoint;
     private @Nonnull Context mContext;
     private @Nonnull PuzzleFieldDrawer mFieldDrawer;
     private @Nonnull Matrix mMatrix;
@@ -68,6 +70,9 @@ public class PuzzleManager
     {
         dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
         dest.putParcelable(BF_VIEW_RECT, mPuzzleViewRect);
+        PointF focusPuzzlePoint = new PointF((int)mFocusViewPoint.x, (int)mFocusViewPoint.y);
+        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(focusPuzzlePoint);
+        dest.putParcelable(BF_FOCUS_PUZZLE_POINT, focusPuzzlePoint);
     }
 
     public void restoreState(@Nonnull Bundle source)
@@ -76,6 +81,7 @@ public class PuzzleManager
         Log.i("restore state");
         mFocusViewPoint = source.getParcelable(BF_FOCUS_POINT);
         mPuzzleViewRect = source.getParcelable(BF_VIEW_RECT);
+        mFocusPuzzlePoint = source.getParcelable(BF_FOCUS_PUZZLE_POINT);
         mScaled = source.getBoolean(PuzzleView.BF_SCALED);
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
@@ -263,7 +269,7 @@ public class PuzzleManager
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
         PointF puzzleFocusPoint = new PointF();
-        if (mFocusViewPoint != null && mPuzzleViewRect != null)
+        if (mFocusViewPoint != null)
         {
             float puzzleX = mFocusViewPoint.x;
             float puzzleY = mFocusViewPoint.y;
@@ -287,15 +293,21 @@ public class PuzzleManager
         if(isRestored)
         {
             mCurrentScale = mScaled ? MAX_SCALE : MIN_SCALE;
+            if (mFocusPuzzlePoint != null)
+            {
+                mFieldDrawer.convertPointFromTilesAreaCoordsToScreenCoords(mFocusPuzzlePoint);
+                mFocusViewPoint = new Point((int)mFocusPuzzlePoint.x, (int)mFocusPuzzlePoint.y);
+            }
+        }
+        else
+        {
             if (puzzleFocusPoint != null)
             {
                 mFieldDrawer.convertPointFromTilesAreaCoordsToScreenCoords(puzzleFocusPoint);
                 mFocusViewPoint = new Point((int)puzzleFocusPoint.x, (int)puzzleFocusPoint.y);
             }
-        }
-        else
-        {
-            mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+            else
+                mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
         }
 
         checkFocusViewPoint();

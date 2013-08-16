@@ -265,13 +265,6 @@ public class PuzzleFieldDrawer
         return offBorder;
     }
 
-    private boolean inBetween(int value, int offset)
-    {
-        if(value >= 0 && value <= offset)
-            return true;
-        else return false;
-    }
-
     public void convertPointFromScreenCoordsToTilesAreaCoords(@Nonnull PointF p)
     {
         if (mResources == null)
