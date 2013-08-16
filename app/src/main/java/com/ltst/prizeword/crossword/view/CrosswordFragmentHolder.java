@@ -22,6 +22,9 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import org.omich.velo.constants.Strings;
 
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,6 +54,13 @@ public class CrosswordFragmentHolder {
         mListCrosswordSet = new HashMap<Long, CrosswordSet>();
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
+
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH);
+
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+
     }
 
     // ================== CROSSWORD PANELS ======================
@@ -91,7 +101,7 @@ public class CrosswordFragmentHolder {
         @Nonnull View mRootView;
         @Nonnull LinearLayout pMonthBackground;
         @Nonnull TextView pMonthText;
-        @Nonnull ImageView pTitleImage;
+        @Nonnull LinearLayout pTitleImage;
         @Nonnull TextView pTitleText;
         @Nonnull ToggleButton pSwitcher;
 
@@ -115,7 +125,7 @@ public class CrosswordFragmentHolder {
             mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
             pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
             pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
-            pTitleImage = (ImageView) mRootView.findViewById(R.id.crossword_panel_logo_image);
+            pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
             pTitleText = (TextView) mRootView.findViewById(R.id.crossword_panel_title_text);
             pSwitcher = (ToggleButton) mRootView.findViewById(R.id.crossword_panel_switcher);
 
@@ -153,34 +163,30 @@ public class CrosswordFragmentHolder {
 
     private void fillPanel(@Nonnull CrosswordSet crosswordSet, @Nonnull CrosswordPanelData data)
     {
-        @Nonnull Bitmap bitmap = null;
-
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
             crosswordSet.pBuyPrice.setText(R.string.buy_three_dollar);
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_br);
+            crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_br));
             crosswordSet.pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
         {
             crosswordSet.pBuyPrice.setText(R.string.buy_two_dollar);
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_au);
+            crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_au));
             crosswordSet.pTitleText.setText(R.string.puzzless_hint_gold_crossword);
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
         {
             crosswordSet.pBuyPrice.setText(R.string.buy_two_dollar);
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_ag);
+            crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
             crosswordSet.pTitleText.setText(R.string.puzzless_hint_silver_crossword);
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
         {
             crosswordSet.pBuyPrice.setText(R.string.buy_free);
-            bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.puzzles_set_fr);
+            crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_fr));
             crosswordSet.pTitleText.setText(R.string.puzzless_hint_free_crossword);
         }
-        crosswordSet.pTitleImage.setImageBitmap(bitmap);
-//        bitmap.recycle();
 
         StringBuilder sbRatio = new StringBuilder();
         sbRatio.append(data.mResolveCount);
@@ -201,7 +207,9 @@ public class CrosswordFragmentHolder {
 
         crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
-        if(data.mKind == CrosswordPanelData.KIND_CURRENT)
+//        if(data.mKind == CrosswordPanelData.KIND_CURRENT)
+
+        if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
         {
             // Текущие наборы сетов сканвордов;
             if(data.mBought)
@@ -210,7 +218,6 @@ public class CrosswordFragmentHolder {
                 crosswordSet.pSwitcher.setVisibility(View.GONE);
                 crosswordSet.pBuyCrosswordContaiter.setVisibility(View.GONE);
                 crosswordSet.pMonthBackground.setVisibility(View.GONE);
-//                crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
             }
             else
             {
@@ -225,6 +232,7 @@ public class CrosswordFragmentHolder {
             {
                 mListCrosswordSet.put(data.mId, crosswordSet);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
+                crosswordSet.pBadgeContainer.setVisibility(View.VISIBLE);
             }
         }
         else
@@ -242,38 +250,37 @@ public class CrosswordFragmentHolder {
                 crosswordSet.pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
             }
 
-//            crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
-
             // Если такого сета еще нет, то сохраняем его и добавляем на панель;
             if(!mListCrosswordSet.containsKey(data.mId))
             {
                 mListCrosswordSet.put(data.mId, crosswordSet);
                 mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
+                crosswordSet.pBadgeContainer.setVisibility(View.GONE);
             }
-
-            final @Nonnull CrosswordSet crosswordSetFinal = crosswordSet;
-            final @Nonnull CrosswordPanelData dataFinal = data;
-            crosswordSet.pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    crosswordSetFinal.pBadgeContainer.setVisibility(b ? View.VISIBLE : View.GONE);
-                }
-            });
-
-            crosswordSet.pBuyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mICrosswordFragment.buyCrosswordSet(dataFinal.mServerId);
-                }
-            });
-
-            crosswordSet.pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    mICrosswordFragment.choiceCrossword();
-                }
-            });
         }
+
+        final @Nonnull CrosswordSet crosswordSetFinal = crosswordSet;
+        final @Nonnull CrosswordPanelData dataFinal = data;
+        crosswordSet.pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                crosswordSetFinal.pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
+            }
+        });
+
+        crosswordSet.pBuyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mICrosswordFragment.buyCrosswordSet(dataFinal.mServerId);
+            }
+        });
+
+        crosswordSet.pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                mICrosswordFragment.choiceCrossword();
+            }
+        });
     }
 
     public void addBadge(@Nonnull Puzzle puzzle){
@@ -287,11 +294,11 @@ public class CrosswordFragmentHolder {
         data.mSetId = puzzle.setId;
         CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
         BadgeAdapter adapter = (BadgeAdapter) crosswordSet.pBadgeContainer.getAdapter();
-        if(adapter == null)
-        {
-            adapter = new BadgeAdapter(mContext, PuzzleSetModel.PuzzleSetType.FREE);
-            crosswordSet.pBadgeContainer.setAdapter(adapter);
-        }
+//        if(adapter == null)
+//        {
+//            adapter = new BadgeAdapter(mContext, PuzzleSetModel.PuzzleSetType.FREE);
+//            crosswordSet.pBadgeContainer.setAdapter(adapter);
+//        }
         adapter.addBadgeData(data);
         adapter.notifyDataSetChanged();
     }

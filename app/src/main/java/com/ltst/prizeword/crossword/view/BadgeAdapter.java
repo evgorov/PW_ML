@@ -40,11 +40,14 @@ public class BadgeAdapter extends BaseAdapter {
     public void addBadgeData(@Nonnull BadgeData data)
     {
         boolean flag = false;
-        for(BadgeData bd : mData)
+        for(int i=0; i<mData.size(); i++)
         {
+            BadgeData bd = mData.get(i);
             if(bd.mServerId.equals(data.mServerId))
             {
                 flag = true;
+                mData.remove(i);
+                mData.add(i,data);
                 break;
             }
         }
@@ -250,28 +253,23 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
-        if(badge.mRootView != null)
+        badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
+        badge.mScore.setText(String.valueOf(data.mScore));
+        badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
+        badge.mForegroud.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
+        badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
+
+        if(data.mStatus)
         {
-            if(data.mStatus)
-            {
-                // Решенные;
-                badge.mScore.setText(String.valueOf(data.mScore));
-                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
-                badge.mUnresolverContainer.setVisibility(View.GONE);
-                badge.mResolverContainer.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                // Нерешенные;
-                badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
-                badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
-                badge.mForegroud.setBackgroundDrawable(mContext.getResources().getDrawable(idForeground));
-                badge.mNumber.setBackgroundDrawable(mContext.getResources().getDrawable(idNumber));
-                badge.mResolverContainer.setVisibility(View.GONE);
-                badge.mUnresolverContainer.setVisibility(View.VISIBLE);
-            }
+            // Решенные;
+            badge.mUnresolverContainer.setVisibility(View.GONE);
+            badge.mResolverContainer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            // Нерешенные;
+            badge.mResolverContainer.setVisibility(View.GONE);
+            badge.mUnresolverContainer.setVisibility(View.VISIBLE);
         }
 
         return badge.mRootView;

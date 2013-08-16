@@ -2,6 +2,7 @@ package com.ltst.prizeword.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
@@ -109,6 +111,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
+
+        // Устанавливаем русскую локаль для всего приложения;
+        Locale locale = new Locale("ru");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
         mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);

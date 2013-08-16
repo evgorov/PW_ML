@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import com.ltst.prizeword.tools.ParcelableTools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -44,6 +47,7 @@ public class PuzzleSet implements Parcelable
         this.createdAt = createdAt;
         this.isPublished = published;
         this.puzzlesId = puzzlesId;
+        Collections.sort(this.puzzlesId);
     }
 
     //==== Parcelable implementation ==========================================
