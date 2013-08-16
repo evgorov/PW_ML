@@ -33,15 +33,15 @@ public class BadgeHolder {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mRootView = (view == null) ? inflater.inflate(R.layout.crossword_badge, null, false) : view;
-        mBackground = (LinearLayout) inflater.inflate(R.id.crossword_badge_bg, null, false);
-        mForegroud = (LinearLayout) inflater.inflate(R.id.crossword_badge_fg, null, false);
-        mNumber = (LinearLayout) inflater.inflate(R.id.crossword_badge_number, null, false);
-        mProgressBackgroud = (LinearLayout) inflater.inflate(R.id.crossword_badge_progress_bg, null, false);
-        mProgressForegroud = (LinearLayout) inflater.inflate(R.id.crossword_badge_progress_fg, null, false);
-        mScore = (TextView) inflater.inflate(R.id.crossword_badge_score, null, false);
-        mPercent = (TextView) inflater.inflate(R.id.crossword_badge_rercent, null, false);
+        mBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_bg);
+        mForegroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_fg);
+        mNumber = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_number);
+        mProgressBackgroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_progress_bg);
+        mProgressForegroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_progress_fg);
+        mScore = (TextView) mRootView.findViewById(R.id.crossword_badge_score);
+        mPercent = (TextView) mRootView.findViewById(R.id.crossword_badge_rercent);
 
-        mUnresolverContainer = (LinearLayout) inflater.inflate(R.id.crossword_badge_unresolved_container, null, false);
-        mResolverContainer = (LinearLayout) inflater.inflate(R.id.crossword_badge_resolved_container, null, false);
+        mUnresolverContainer = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_unresolved_container);
+        mResolverContainer = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_resolved_container);
     }
 }

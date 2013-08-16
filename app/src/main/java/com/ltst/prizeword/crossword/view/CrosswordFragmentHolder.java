@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -80,7 +81,7 @@ public class CrosswordFragmentHolder {
 
     private CrosswordSet getCrosswordSet(long id)
     {
-        return (id <= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet();
+        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet();
     }
 
     // ================== CROSSWORD PANELS ITEM ======================
@@ -198,6 +199,8 @@ public class CrosswordFragmentHolder {
 
         crosswordSet.pBuyScore.setText(String.valueOf(data.mBuyScore));
 
+        crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
+
         if(data.mKind == CrosswordPanelData.KIND_CURRENT)
         {
             // Текущие наборы сетов сканвордов;
@@ -207,10 +210,7 @@ public class CrosswordFragmentHolder {
                 crosswordSet.pSwitcher.setVisibility(View.GONE);
                 crosswordSet.pBuyCrosswordContaiter.setVisibility(View.GONE);
                 crosswordSet.pMonthBackground.setVisibility(View.GONE);
-
-                if(data.mBadgeData != null){
-                    crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
-                }
+//                crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
             }
             else
             {
@@ -242,9 +242,7 @@ public class CrosswordFragmentHolder {
                 crosswordSet.pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
             }
 
-            if(data.mBadgeData != null){
-                crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType,data.mBadgeData));
-            }
+//            crosswordSet.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
             // Если такого сета еще нет, то сохраняем его и добавляем на панель;
             if(!mListCrosswordSet.containsKey(data.mId))
@@ -279,6 +277,7 @@ public class CrosswordFragmentHolder {
     }
 
     public void addBadge(@Nonnull Puzzle puzzle){
+        if(puzzle == null) return;
         BadgeData data = new BadgeData();
         data.mId = puzzle.id;
         data.mServerId = puzzle.serverId;
@@ -287,7 +286,15 @@ public class CrosswordFragmentHolder {
         data.mProgress = puzzle.solvedPercent;
         data.mSetId = puzzle.setId;
         CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
-        crosswordSet.pBadgeContainer.addView(new View(mContext));
+        BadgeAdapter adapter = (BadgeAdapter) crosswordSet.pBadgeContainer.getAdapter();
+        if(adapter == null)
+        {
+            adapter = new BadgeAdapter(mContext, PuzzleSetModel.PuzzleSetType.FREE);
+            crosswordSet.pBadgeContainer.setAdapter(adapter);
+        }
+
+        adapter.addBadgeData(data);
+        adapter.notifyDataSetChanged();
     }
 
 }

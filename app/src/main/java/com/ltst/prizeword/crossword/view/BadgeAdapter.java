@@ -16,7 +16,9 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -26,14 +28,15 @@ import javax.annotation.Nonnull;
 public class BadgeAdapter extends BaseAdapter {
 
     private @Nonnull Context mContext;
-    private BadgeData[] mData;
+    private @Nonnull List<BadgeData> mData;
     private @Nonnull PuzzleSetModel.PuzzleSetType mType;
     private @Nonnull HashMap<String, BadgeHolder> mBadgeHolders;
 
-    public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type, BadgeData[] data) {
+    public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type) {
         this.mContext = context;
-        this.mData = data;
+        this.mData = new ArrayList<BadgeData>();
         this.mType = type;
+        mBadgeHolders = new HashMap<String, BadgeHolder>();
     }
 
     private @Nullable BadgeHolder getBadgeHolder(@Nonnull String serverId)
@@ -41,12 +44,17 @@ public class BadgeAdapter extends BaseAdapter {
         return mBadgeHolders.containsKey(serverId) ? mBadgeHolders.get(serverId) : null;
     }
 
+    public void addBadgeData(@Nonnull BadgeData data)
+    {
+        mData.add(data);
+    }
+
     @Nullable
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
         // Выбираем фон эмблемы;
-        BadgeData data = mData[position];
+        BadgeData data = mData.get(position);
         BadgeHolder badge = mBadgeHolders.containsKey(data.mServerId) ? getBadgeHolder(data.mServerId) : new BadgeHolder(mContext, view);
 
         int idBackground = 0;
@@ -236,7 +244,7 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
-        if(badge.mRootView == null)
+        if(badge.mRootView != null)
         {
             if(data.mStatus)
             {
@@ -260,24 +268,24 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
-        return view;
+        return badge.mRootView;
     }
 
 
 
     @Override
     public int getCount() {
-        return mData == null ? 0 : mData.length;
+        return mData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mData == null ? null : getBadgeHolder(mData[position].mServerId);
+        return getBadgeHolder(mData.get(position).mServerId);
     }
 
     @Override
     public long getItemId(int position) {
-        return mData == null ? 0 : mData[position].mId;
+        return mData.get(position).mId;
     }
 
 }

@@ -27,6 +27,8 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -165,9 +167,12 @@ public class CrosswordsFragment extends SherlockFragment
             List<String> puzzlesId = set.puzzlesId;
             for(String puzzId : puzzlesId)
             {
-                mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
-                mPuzzleModel.updateDataByDb(updatePuzzleHandler);
-                mPuzzleModel.updateDataByInternet(updatePuzzleHandler);
+                if(mPuzzleModel == null)
+                {
+                    mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
+                    mPuzzleModel.updateDataByDb(updatePuzzleHandler);
+                    mPuzzleModel.updateDataByInternet(updatePuzzleHandler);
+                }
             }
         }
     }
@@ -187,8 +192,8 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-            Puzzle puzzle = mPuzzleModel.getPuzzle();
-            mCrosswordFragmentHolder.addBadge(puzzle);
+                @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+                mCrosswordFragmentHolder.addBadge(puzzle);
         }
     };
 
