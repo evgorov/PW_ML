@@ -157,6 +157,7 @@ public class DbWriter extends  DbReader implements IDbWriter
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
         final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
+
         final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
         final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
 
@@ -177,14 +178,33 @@ public class DbWriter extends  DbReader implements IDbWriter
                 }
             });
         }
-        else // нужно обновить старые кроссворды, вопросы обновлять не надо.
+        else // нужно обновить старые кроссворды и вопросы к ним (для синхронизации правильных ответов)
         {
+            final @Nullable List<PuzzleQuestion> existingQuestions = puzzle.questions;
             DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
             {
                 @Override
                 public void handle()
                 {
                     mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
+                    if (existingQuestions == null)
+                    {
+                        return;
+                    }
+
+                    int questionIndex = 0;
+                    for (ContentValues contentValues : questionCv)
+                    {
+                        @Nullable PuzzleQuestion existingQuestion = existingQuestions.get(questionIndex);
+                        if (existingQuestion == null)
+                            continue;
+
+                        mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
+                                ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
+                                ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
+                                + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
+                        questionIndex ++;
+                    }
                 }
             });
         }
@@ -194,19 +214,22 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzleSetList(final @Nonnull List<PuzzleSet> list)
     {
-        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        for (final PuzzleSet puzzleSet : list)
         {
-            @Override
-            public void handle()
+            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleSet.serverId);
+            if(existingSet != null)
+                continue;
+
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
             {
-                mDb.delete(TNAME_PUZZLE_SETS, null, null); // clean puzzle sets
-                for (PuzzleSet puzzleSet : list)
+                @Override
+                public void handle()
                 {
                     ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
                     mDb.insert(TNAME_PUZZLE_SETS, null, values);
                 }
-            }
-        });
+            });
+        }
 
     }
 

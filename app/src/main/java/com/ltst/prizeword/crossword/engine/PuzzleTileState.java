@@ -11,13 +11,13 @@ public class PuzzleTileState
     public boolean hasQuestion;
     public boolean hasLetter;
     public boolean hasArrows;
+    public boolean hasInputLetter;
 
     private int questionState;
     private int questionIndex;
     private int letterState;
     private SparseIntArray arrowsState;
     private boolean hasFirstArrow;
-    private boolean hasInputLetter;
     private String mInputLetter;
 
     public PuzzleTileState()

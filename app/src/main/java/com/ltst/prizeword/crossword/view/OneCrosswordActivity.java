@@ -295,7 +295,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mProgressSeekBar.setProgress(percent);
             mTimeLeft = mPuzzleAdapter.getTimeLeft();
             mTimeGiven = mPuzzleAdapter.getTimeGiven();
-            fillTimer();
+//            fillTimer();
             if(!mTickerLaunched)
                 tick();
         }

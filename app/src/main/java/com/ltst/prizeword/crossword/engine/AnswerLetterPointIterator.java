@@ -85,6 +85,16 @@ public class AnswerLetterPointIterator implements Iterator<Point>
         return mPoint;
     }
 
+    public boolean isLast()
+    {
+        return currentLetterIndex >= mAnswer.length();
+    }
+
+    public boolean isFirst()
+    {
+        return mPoint.equals(mStartPoint);
+    }
+
     public void reset()
     {
         currentLetterIndex = 0;

@@ -497,6 +497,13 @@ public class PuzzleFieldDrawer
                 mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
             }
                 break;
+            case PuzzleTileState.LetterState.LETTER_WRONG:
+            {
+                int letterRes = PuzzleResources.getLetterTilesWrong();
+                char letter = state.getInputLetter().charAt(0);
+                mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rect);
+            }
+            break;
         }
 
     }
@@ -636,6 +643,7 @@ public class PuzzleFieldDrawer
             mBitmapManager.addBitmap(PuzzleResources.getLetterEmptyInput(), null);
             mBitmapManager.addBitmap(PuzzleResources.getQuestionInput(), null);
             mBitmapManager.addBitmap(mResources.getQuestionCorrect(), null);
+            mBitmapManager.addBitmap(PuzzleResources.getQuestionWrong(), null);
             mBitmapManager.addBitmap(PuzzleResources.getQuestionEmpty(), new IListenerVoid()
             {
                 @Override
