@@ -79,13 +79,14 @@
                         android:background="@drawable/gamefild_pause_progressbar_bg">
 
                     <TextView
-                            android:id="@+id/gamefild_progressbar_percent"
+                            android:id="@+id/gamefield_progressbar_percent"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="20dp"
                             style="@style/GamefieldPercentText"
-                            android:text="20"/>
+                            android:text="20"
+                            />
 
                     <TextView
                             android:layout_height="wrap_content"
@@ -95,21 +96,13 @@
                             android:text="@string/gamefield_percent"
                             android:textColor="@color/header_text_color"/>
 
-                    <FrameLayout
+                    <SeekBar
+                            android:id="@+id/gamefield_progressbar"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/gamefild_pause_progressbar_bg2">
-
-                        <ImageView
-                                android:layout_height="wrap_content"
-                                android:layout_width="80dp"
-                                android:background="@drawable/pause_progressbar"
-                                android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="2dp"
-                                />
-                    </FrameLayout>
+                            android:layout_width="0dip"
+                            android:layout_weight="1"
+                            android:max="100"
+                            />
                 </LinearLayout>
 
                 <TextView
