@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 public class PuzzleManager
 {
     public static final @Nonnull String BF_FOCUS_POINT = "PuzzleManager.focusPoint";
+    public static final @Nonnull String BF_VIEW_RECT = "PuzzleManager.viewRect";
 
     private volatile @Nullable Point mFocusViewPoint;
     private @Nonnull Context mContext;
@@ -66,6 +67,7 @@ public class PuzzleManager
     public void saveState(@Nonnull Bundle dest)
     {
         dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
+        dest.putParcelable(BF_VIEW_RECT, mPuzzleViewRect);
     }
 
     public void restoreState(@Nonnull Bundle source)
@@ -73,6 +75,7 @@ public class PuzzleManager
         isRestored = true;
         Log.i("restore state");
         mFocusViewPoint = source.getParcelable(BF_FOCUS_POINT);
+        mPuzzleViewRect = source.getParcelable(BF_VIEW_RECT);
         mScaled = source.getBoolean(PuzzleView.BF_SCALED);
         mInvalidateHandler.handle(mPuzzleViewRect);
     }
