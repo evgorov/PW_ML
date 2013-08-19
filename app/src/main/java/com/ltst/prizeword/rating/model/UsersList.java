@@ -57,6 +57,7 @@ public class UsersList implements Parcelable
 
     public static class User implements Parcelable
     {
+        public long idLong;
         public @Nonnull String id;
         public @Nonnull String name;
         public @Nonnull String surname;
@@ -72,7 +73,8 @@ public class UsersList implements Parcelable
         public boolean me;
 
 
-        public User(@Nonnull String id,
+        public User(long idLong,
+                    @Nonnull String id,
                     @Nonnull String name,
                     @Nonnull String surname,
                     @Nonnull String city,
@@ -84,6 +86,7 @@ public class UsersList implements Parcelable
                     @Nonnull String previewUrl,
                     @Nullable byte[] pngImage)
         {
+            this.idLong = idLong;
             this.id = id;
             this.name = name;
             this.surname = surname;
@@ -103,6 +106,7 @@ public class UsersList implements Parcelable
         {
             public User createFromParcel(Parcel source)
             {
+                long idLong = source.readLong();
                 String id = ParcelableTools.getNonnullString(source.readString());
                 String name = ParcelableTools.getNonnullString(source.readString());
                 String surname = ParcelableTools.getNonnullString(source.readString());
@@ -125,7 +129,7 @@ public class UsersList implements Parcelable
                 {
                     pngImage = null;
                 }
-                return new User(id, name,
+                return new User(idLong, id, name,
                         surname, city,
                         solved, position, monthScore, highScore,
                         dynamics, previewUrl, pngImage);
@@ -146,6 +150,7 @@ public class UsersList implements Parcelable
         @Override
         public void writeToParcel(Parcel dest, int flags)
         {
+            dest.writeLong(idLong);
             dest.writeString(id);
             dest.writeString(name);
             dest.writeString(surname);

@@ -43,9 +43,13 @@ public class LoadUsersFromInternetTask implements IBcTask
         {
             return null;
         }
-        list.me.me = true;
-
         List<ISlowSource.Item<UsersList.User, Bitmap>> users = new ArrayList<ISlowSource.Item<UsersList.User, Bitmap>>();
+
+        int index = list.otherUsers.indexOf(list.me);
+        if (index >= 0)
+        {
+            list.otherUsers.get(index).me = true;
+        }
 
         for (UsersList.User user : list.otherUsers)
         {
@@ -58,12 +62,6 @@ public class LoadUsersFromInternetTask implements IBcTask
                 users.add(new ISlowSource.Item<UsersList.User, Bitmap>(user, bitmap));
             }
         }
-
-        byte[] image = list.me.pngImage;
-        Bitmap bitmap = (image == null)
-                ? null
-                : BitmapFactory.decodeByteArray(image, 0, image.length);
-        users.add(new ISlowSource.Item<UsersList.User, Bitmap>(list.me, bitmap));
 
         return users;
     }
@@ -116,14 +114,16 @@ public class LoadUsersFromInternetTask implements IBcTask
     private @Nonnull UsersList parseUsers (@Nonnull RestPuzzleUsers restUsers)
     {
         RestUserData meRest = restUsers.getMe();
-        UsersList.User me = new UsersList.User(meRest.getId(), meRest.getName(), meRest.getSurname(), meRest.getCity(),
+        UsersList.User me = new UsersList.User(0, meRest.getId(), meRest.getName(), meRest.getSurname(), meRest.getCity(),
                 meRest.getSolved(), meRest.getPosition(), meRest.getHighScore(), meRest.getHighScore(), meRest.getDynamics(), meRest.getUserpicUrl(), null);
         List<UsersList.User> users = new ArrayList<UsersList.User>();
+        long index = 0;
         for (RestUserData rest : restUsers.getUsers())
         {
-            UsersList.User user = new UsersList.User(rest.getId(), rest.getName(), rest.getSurname(), rest.getCity(),
+            UsersList.User user = new UsersList.User(index, rest.getId(), rest.getName(), rest.getSurname(), rest.getCity(),
                     rest.getSolved(), rest.getPosition(), rest.getHighScore(), rest.getHighScore(), rest.getDynamics(), rest.getUserpicUrl(), null);
             users.add(user);
+            index++;
         }
         return new UsersList(me, users);
     }

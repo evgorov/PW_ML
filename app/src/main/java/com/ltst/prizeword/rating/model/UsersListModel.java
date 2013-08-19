@@ -20,6 +20,8 @@ import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -77,7 +79,7 @@ public class UsersListModel implements IUsersListModel
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
-
+        mUsersUpdater.update(handler);
     }
 
     @Nonnull
@@ -147,7 +149,7 @@ public class UsersListModel implements IUsersListModel
         @Override
         protected long getItemId(UsersList.User user, int position)
         {
-            return user.position;
+            return user.idLong;
         }
 
         @Nullable

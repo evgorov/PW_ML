@@ -3,95 +3,141 @@ package com.ltst.prizeword.rating.view;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.rating.model.UsersListModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class RatingFragment extends SherlockFragment implements View.OnClickListener
 {
-    private @Nonnull String LOG_TAG = "InviteFriends";
     public static final @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.rating.view.InviteFriendsFragment";
+    String FRAGMENT_ID = "com.ltst.prizeword.rating.view.RatingFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RatingFragment.class.getName();
 
+    private @Nullable Context mContext;
+    private @Nullable IBcConnector mBcConnector;
+    private @Nullable String mSessionKey;
 
-
-
-    private @Nonnull android.content.Context mContext;
-    private @Nonnull IBcConnector mBcConnector;
-
-    private @Nonnull ImageView mImagePlace;
-    private @Nonnull ImageView mItemImage;
-    private @Nonnull TextView mSurname;
-    private @Nonnull TextView mName;
-    private @Nonnull TextView mScore;
-    private @Nonnull TextView mCrossEnd;
-    private @Nonnull ListView mRatingLisView;
+    private @Nonnull ListView mRatingListView;
     private @Nonnull Button mMenuBtn;
     private @Nonnull ImageView mHeaderImage;
     private @Nonnull ImageView mFooterImage;
-    private @Nonnull RatingAdapter mRatingAdapter;
 
-
+    private @Nullable UsersListModel mModel;
+    private @Nullable RatingAdapter mRatingAdapter;
 
     @Override
     public void onAttach(Activity activity)
     {
-        Log.i(LOG_TAG, "RatingFragment.onAttach()"); //$NON-NLS-1$
-
+        Log.i("RatingFragment.onAttach()"); //$NON-NLS-1$
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         super.onAttach(activity);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.i(LOG_TAG, "RatingFragment.onCreateView()"); //$NON-NLS-1$
+        Log.i("RatingFragment.onCreateView()"); //$NON-NLS-1$
         View v = inflater.inflate(R.layout.rating_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
-        mRatingLisView = (ListView)v.findViewById(R.id.rating_listview);
+
         mHeaderImage =  new ImageView(mContext);
         mFooterImage = new ImageView(mContext);
         mHeaderImage.setBackgroundResource(R.drawable.rating_header);
         mFooterImage.setBackgroundResource(R.drawable.rating_footer);
-        String[] names = new String[] {"Николай","Петр","Август","Миротворец","Кирилл","Августин",
-                "Солнечный","Город","Город","Город","Город","Город","Николай","Петр","Август","Миротворец","Кирилл","Августин"};
-       /* mImagePlace = (ImageView)v.findViewById(R.id.rating_place_image);
-        mItemImage = (ImageView)v.findViewById(R.id.rating_item_image);
-        mSurname = (TextView)v.findViewById(R.id.rating_item_surname_textview);*/
-        mName = (TextView)v.findViewById(R.id.rating_item_name_textview);
-        mRatingAdapter = new RatingAdapter(mContext,R.layout.rating_simple_item,R.id.rating_item_name_textview,names);
+
+        mRatingListView = (ListView)v.findViewById(R.id.rating_listview);
+        mRatingListView.setDivider(null);
+        mRatingListView.addHeaderView(mHeaderImage);
+        mRatingListView.addFooterView(mFooterImage);
+
         return v;
-
     }
-
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
+    public void onStart()
     {
-        super.onActivityCreated(savedInstanceState);
-        Log.i(LOG_TAG, "InviteFriendsFragment.onActivityCreated()"); //$NON-NLS-1$
         mMenuBtn.setOnClickListener(this);
-        mRatingLisView.setDivider(null);
-        mRatingLisView.addHeaderView(mHeaderImage);
-        mRatingLisView.addFooterView(mFooterImage);
-        mRatingLisView.setAdapter(mRatingAdapter);
+        initListView();
+        super.onStart();
+    }
+
+    private void initListView()
+    {
+        assert mContext != null && mBcConnector != null && mSessionKey != null
+                : "Fragment must be attached to activity. Context, BcConnector, SessionKey must be initialized";
+
+        UsersListModel model = mModel;
+        if (model == null)
+        {
+            model = new UsersListModel(mSessionKey, mBcConnector);
+            mModel = model;
+        }
+
+        RatingAdapter adapter = mRatingAdapter;
+        if (adapter == null)
+        {
+            adapter = new RatingAdapter(mContext, mModel);
+            mRatingAdapter = adapter;
+            mRatingListView.setAdapter(mRatingAdapter);
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        UsersListModel m = mModel;
+        if(m != null)
+        {
+            m.resumeLoading();
+        }
+        RatingAdapter adapter = mRatingAdapter;
+        if(adapter != null)
+        {
+            adapter.update();
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        UsersListModel m = mModel;
+        if(m != null)
+        {
+            m.pauseLoading();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        UsersListModel model = mModel;
+        if(model != null)
+        {
+            model.close();
+        }
+        super.onDestroy();
 
     }
+
     @Override public void onClick(View view)
     {
 
