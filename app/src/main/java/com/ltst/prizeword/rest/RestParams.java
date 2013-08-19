@@ -78,6 +78,13 @@ public class RestParams
     public static final @Nonnull String URL_FB_TOKEN = "http://api.prize-word.com/facebook/authorize#";
     public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
+    public static final @Nonnull String URL_GET_FRIEND_DATA= URL_API + "/%s/friends" ;
+    public static final @Nonnull String URL_POST_FRIEND_INVITE= URL_API + "/%s/invite" ;
+    public static final @Nonnull String URL_GET_FB_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, FB_PROVIDER)+ addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_VK_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, VK_PROVIDER)+ addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_POST_VK_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, VK_PROVIDER)+ addParam(SESSION_KEY, true)+addParam(USER_PUZZLE_IDS, false);
+    public static final @Nonnull String URL_POST_FB_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, FB_PROVIDER)+ addParam(SESSION_KEY, true)+addParam(USER_PUZZLE_IDS, false);
+
 
     // === URL parsing for launching app via http link (forgot password case)
 

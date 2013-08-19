@@ -1,6 +1,8 @@
 package com.ltst.prizeword.dowloading;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
@@ -9,6 +11,7 @@ import com.ltst.prizeword.rest.RestImg;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
+import org.omich.velo.errors.OmOutOfMemoryException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +29,22 @@ public class LoadImageTask implements DbService.IDbTask {
         Intent intent = new Intent();
         intent.putExtra(BF_IMAGEID, imageId);
         return intent;
+    }
+    public static @Nullable Bitmap extractBitmapFromResult(@Nullable Bundle taskResult)
+            throws OmOutOfMemoryException
+    {
+        byte[] png = taskResult == null ? null : taskResult.getByteArray(BF_BITMAP);
+
+        if(png == null)
+            return null;
+        try
+        {
+            return BitmapFactory.decodeByteArray(png, 0, png.length);
+        }
+        catch(OutOfMemoryError e)
+        {
+            throw new OmOutOfMemoryException("Can't decode Bitmap", e); //$NON-NLS-1$
+        }
     }
 
     @Override

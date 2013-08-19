@@ -37,6 +37,9 @@
                 />
     </FrameLayout>
 
+    <ScrollView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
 
         <LinearLayout
                 android:layout_height="wrap_content"
@@ -66,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:background="@drawable/frame_border">
 
-                    <ListView
+                    <com.ltst.prizeword.InviteFiends.view.CustomListView
                             android:id="@+id/vk_friends_listview"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
@@ -98,7 +101,7 @@
                         android:layout_width="wrap_content"
                         android:background="@drawable/frame_border">
 
-                    <ListView
+                    <com.ltst.prizeword.InviteFiends.view.CustomListView
                             android:id="@+id/fb_friends_listview"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
@@ -106,5 +109,5 @@
                 </FrameLayout>
             </FrameLayout>
         </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

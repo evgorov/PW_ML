@@ -2,6 +2,7 @@ package com.ltst.prizeword.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
@@ -31,7 +33,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
-import com.ltst.prizeword.login.view.InviteFriendsFragment;
+import com.ltst.prizeword.InviteFiends.view.InviteFriendsFragment;
 import com.ltst.prizeword.login.view.RulesFragment;
 import com.ltst.prizeword.login.view.IAutorization;
 import com.ltst.prizeword.login.model.UserData;
@@ -44,6 +46,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
+import com.ltst.prizeword.raiting.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -109,6 +112,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
+
+        // Устанавливаем русскую локаль для всего приложения;
+        Locale locale = new Locale("ru");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
         mContext = this.getContext();
         mBcConnector = new BcConnector(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -137,6 +148,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
+        mDrawerMenu.mRatingBtn.setOnClickListener(this);
 
         // Вешаем swipe;
         mGestureDetector = new GestureDetector(this, new TouchDetector(this));
@@ -271,6 +283,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
             initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME,true);
+            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME,true);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
         }
@@ -338,6 +351,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.forgetpass_fragment_title);
         else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
             title = res.getString(R.string.invite_fragment_title);
+        else if (id.equals(RatingFragment.FRAGMENT_ID))
+            title = res.getString(R.string.rating_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
         {
@@ -479,6 +494,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case  R.id.menu_invite_friends_btn:
                 selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
+                break;
+            case  R.id.menu_pride_rating_btn:
+                selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
