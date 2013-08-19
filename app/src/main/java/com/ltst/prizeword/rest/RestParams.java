@@ -42,6 +42,7 @@ public class RestParams
     public static final @Nonnull String MONTH = "month";
     public static final @Nonnull String MODE = "mode";
     public static final @Nonnull String MODE_SHORT = "short";
+    public static final @Nonnull String MODE_LONG = "long";
     public static final @Nonnull String PUZZLE_DATA = "puzzle_data";
     public static final @Nonnull String HINTS_CHANGE = "hints_change";
 

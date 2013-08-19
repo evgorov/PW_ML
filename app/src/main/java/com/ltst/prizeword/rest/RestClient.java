@@ -329,6 +329,27 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
+    public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.MODE, RestParams.MODE_LONG
+        );
+        urlVariables.put(RestParams.YEAR, 2013);
+        urlVariables.put(RestParams.MONTH, 7);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestPuzzleTotalSet[]> entity = restTemplate.exchange(RestParams.URL_GET_PUBLISHED_SETS_SHORT, HttpMethod.GET, requestEntity, RestPuzzleTotalSet[].class, urlVariables);
+        RestPuzzleTotalSet.RestPuzzleSetsHolder holder = new RestPuzzleTotalSet.RestPuzzleSetsHolder();
+        List<RestPuzzleTotalSet> sets = Arrays.asList(entity.getBody());
+        holder.setPuzzleSets(sets);
+        holder.setHttpStatus(entity.getStatusCode());
+        return holder;
+    }
+
+    @Nullable
+    @Override
     public RestPuzzle.RestPuzzleHolder getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();

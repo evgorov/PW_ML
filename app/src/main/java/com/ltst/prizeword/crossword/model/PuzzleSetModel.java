@@ -59,6 +59,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleSetsInternetUpdater.update(handler);
     }
 
+    @Override
+    public void updateTotalDataByInternet(@Nonnull IListenerVoid handler)
+    {
+        mPuzzleTotalSetsInternetUpdater.update(handler);
+    }
+
     // ==== updaters =====================================
 
     private Updater mPuzzleSetsInternetUpdater = new Updater()
@@ -67,7 +73,24 @@ public class PuzzleSetModel implements IPuzzleSetModel
         @Override
         protected Intent createIntent()
         {
-            return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
+            return LoadPuzzleSetsFromInternet.createShortIntent(mSessionKey);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
+
+    private Updater mPuzzleTotalSetsInternetUpdater = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey);
         }
 
         @Nonnull
