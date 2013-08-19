@@ -31,4 +31,6 @@ public interface IRestClient
     HttpStatus putPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId, @Nonnull String puzzleUserData);
 
     @Nullable RestUserData.RestUserDataHolder addOrRemoveHints(@Nonnull String sessionKey, int hintsToChange);
+
+    @Nullable RestPuzzleUsers getUsers(@Nonnull String sessionKey);
 }

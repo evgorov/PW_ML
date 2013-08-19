@@ -104,6 +104,7 @@ public class RestParams
     public static final @Nonnull String URL_PUT_PUZZLE_USERDATA = URL_API + "/puzzles/%s" + addParam(SESSION_KEY, true) + addParam(PUZZLE_DATA, false);
 
     public static final @Nonnull String URL_ADD_REMOVE_HINTS = URL_API + "/hints" + addParam(SESSION_KEY, true) + addParam(HINTS_CHANGE, false);
+    public static final @Nonnull String URL_GET_USERS = URL_API + "/users" + addParam(SESSION_KEY, true);
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)
