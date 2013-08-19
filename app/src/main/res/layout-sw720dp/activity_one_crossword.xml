@@ -1,220 +1,692 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context=".OneCrosswordActivity"
-              android:orientation="vertical">
-    <!--<View android:layout_width="match_parent"-->
-    <!--android:layout_height="64dp"/>-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+        >
 
-
-    <FrameLayout
+    <LinearLayout
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@drawable/navigationbar_bg">
+            android:layout_height="match_parent"
+            tools:context=".OneCrosswordActivity"
+            android:orientation="vertical">
+        <!--<View android:layout_width="match_parent"-->
+        <!--android:layout_height="64dp"/>-->
 
-        <Button
-                android:id="@+id/header_stop_play_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:background="@drawable/header_stop_but"/>
-
-        <TextView
-                android:id="@+id/header_timer_textview"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center_vertical|center"
-                style="@style/GamefieldTimerText"
-                android:background="@drawable/header_timer_bg"
-                android:text="22:57"
-                />
-        <Button
-                android:id="@+id/header_hint_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                style="@style/GamefieldHintBtnText"
-                android:background="@drawable/header_hint_but"
-                android:drawableLeft="@drawable/header_hint_draw"
-                android:text="10"/>
-    </FrameLayout>
-
-    <FrameLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-
-        <com.ltst.prizeword.crossword.view.PuzzleView
-                android:id="@+id/puzzle_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
 
         <FrameLayout
-                android:id="@+id/gamefild_pause_bg"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:background="@drawable/forget_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@drawable/navigationbar_bg">
+
+            <Button
+                    android:id="@+id/header_stop_play_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:background="@drawable/header_stop_but"/>
+
+            <TextView
+                    android:id="@+id/header_timer_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical|center"
+                    style="@style/GamefieldTimerText"
+                    android:background="@drawable/header_timer_bg"
+                    android:text="22:57"
+                    />
+
+            <Button
+                    android:id="@+id/header_hint_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    style="@style/GamefieldHintBtnText"
+                    android:background="@drawable/header_hint_but"
+                    android:drawableLeft="@drawable/header_hint_draw"
+                    android:text="10"/>
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+
+            <com.ltst.prizeword.crossword.view.PuzzleView
+                    android:id="@+id/puzzle_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            <FrameLayout
+                    android:id="@+id/gamefild_pause_bg"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/forget_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    >
+
+                <LinearLayout
+                        android:id="@+id/gamefild_pause_alert"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/gamefild_pause_bg"
+                        android:layout_gravity="center_horizontal|top"
+                        >
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="30dp"
+                            android:layout_gravity="center_vertical|center"
+                            android:background="@drawable/gamefild_pause_progressbar_bg">
+
+                        <TextView
+                                android:id="@+id/gamefild_progressbar_percent"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:paddingLeft="20dp"
+                                style="@style/GamefieldPercentText"
+                                android:text="20"/>
+
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                style="@style/GamefieldPercentText"
+                                android:text="@string/gamefield_percent"
+                                android:textColor="@color/header_text_color"/>
+
+                        <FrameLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/gamefild_pause_progressbar_bg2">
+
+                            <ImageView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="80dp"
+                                    android:background="@drawable/pause_progressbar"
+                                    android:layout_gravity="center_vertical|left"
+                                    android:layout_marginLeft="2dp"
+                                    />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="@string/gamefield_pause"
+                            android:layout_gravity="center_horizontal"
+                            style="@style/GamefieldPauseText"
+                            android:layout_marginTop="40dp"
+                            />
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/gamefild_pause_textview_bg">
+
+                        <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                >
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical|left"
+                                    android:layout_marginLeft="60dp"
+                                    android:layout_marginTop="22dp"
+                                    style="@style/GamefieldNearSwitchText"
+                                    android:text="@string/gamefield_sound"/>
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical|left"
+                                    android:layout_marginLeft="60dp"
+                                    android:layout_marginTop="38dp"
+                                    style="@style/GamefieldNearSwitchText"
+                                    android:text="@string/gamefield_music"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="125dp"
+                                >
+
+                            <ToggleButton
+                                    android:id="@+id/pause_music_switcher"
+                                    android:layout_width="85dp"
+                                    android:layout_height="43dp"
+                                    android:textOn=""
+                                    android:textOff=""
+                                    android:background="@drawable/menu_switcher"
+                                    android:layout_marginTop="13dp"/>
+
+                            <ToggleButton
+                                    android:id="@+id/pause_sounds_switcher"
+                                    android:layout_width="85dp"
+                                    android:layout_height="43dp"
+                                    android:textOn=""
+                                    android:textOff=""
+                                    android:background="@drawable/menu_switcher"
+                                    android:layout_marginTop="20dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="40dp"
+                            >
+
+                        <Button
+                                android:id="@+id/gamefild_menu_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:background="@drawable/gamefild_pause_menu_but"/>
+
+                        <Button
+                                android:id="@+id/gamefild_next_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:background="@drawable/gamefild_pause_next_but"
+                                />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/navigationbar_bg_shadow"/>
+        </FrameLayout>
+
+    </LinearLayout>
+    <FrameLayout
+            android:id="@+id/final_screen"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@drawable/forget_bg"
+            android:visibility="visible"
+            android:clickable="true"
+            >
+
+        <FrameLayout
+                android:id="@+id/final_alert"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
                 >
 
             <LinearLayout
-                    android:id="@+id/gamefild_pause_alert"
+                    android:id="@+id/final_share_alert"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/gamefild_pause_bg"
-                    android:layout_gravity="center_horizontal|top"
+                    android:background="@drawable/final_share_bg"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="180dp">
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="75dp"
+                        >
+
+                    <Button
+                            android:id="@+id/final_share_fb_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_share_fb_but"/>
+
+                    <Button
+                            android:id="@+id/final_share_vk_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:background="@drawable/final_share_vk_but"
+                            />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:background="@drawable/final_bg"
                     >
 
                 <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="30dp"
-                        android:layout_gravity="center_vertical|center"
-                        android:background="@drawable/gamefild_pause_progressbar_bg">
+                        android:layout_marginTop="100dp"
+                        android:layout_marginLeft="58dp"
+                        >
 
                     <TextView
-                            android:id="@+id/gamefild_progressbar_percent"
+                            android:id="@+id/final_score"
+                            style="@style/FinalValueScoreText"
+                            android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:paddingLeft="20dp"
-                            style="@style/GamefieldPercentText"
-                            android:text="20"/>
+                            android:maxEms="3"
+                            android:singleLine="true"
+                            android:text="11111"
+                            />
 
                     <TextView
+                            android:id="@+id/final_score_type"
+                            style="@style/FinalNameScoreText"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            style="@style/GamefieldPercentText"
-                            android:text="@string/gamefield_percent"
-                            android:textColor="@color/header_text_color"/>
+                            android:singleLine="true"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="28dp"
+                            android:text="очков"
+                            />
 
-                    <FrameLayout
+                    <TextView
+                            android:id="@+id/final_bonus"
+                            style="@style/FinalValueScoreText"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:maxEms="3"
+                            android:singleLine="true"
+
+                            android:text="21412"
+                            />
+
+                    <TextView
+                            android:id="@+id/final_bonus_type"
+                            style="@style/FinalNameScoreText"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:layout_marginLeft="4dp"
+                            android:text="очка"
+                            />
+                </LinearLayout>
+
+
+                <FrameLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content">
+
+                    <LinearLayout
+                            android:id="@+id/final_flip_clock"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/gamefild_pause_progressbar_bg2">
+                            android:orientation="horizontal"
+                            android:layout_marginTop="39dp"
+                            android:layout_marginLeft="40dp"
+                            >
 
                         <ImageView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_width="80dp"
-                                android:background="@drawable/pause_progressbar"
-                                android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="2dp"
+                                android:background="@drawable/final_flip_clock_bg"
                                 />
-                    </FrameLayout>
-                </LinearLayout>
 
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="@string/gamefield_pause"
-                        android:layout_gravity="center_horizontal"
-                        style="@style/GamefieldPauseText"
-                        android:layout_marginTop="40dp"
-                        />
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/final_flip_clock_bg"
+                                />
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/final_flip_clock_bg"
+                                />
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/final_flip_clock_bg"
+                                />
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/final_flip_clock_bg"
+                                />
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                            android:id="@+id/final_flip_clock"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="37dp"
+                            android:layout_marginLeft="50dp"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                android:text="1"
+                                />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                android:text="2"
+                                android:layout_marginLeft="13dp"
+                                />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                android:layout_marginLeft="13dp"
+
+                                android:text="3"
+                                />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                android:layout_marginLeft="14dp"
+
+                                android:text="4"
+                                />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                android:layout_marginLeft="14dp"
+
+                                android:text="5"
+                                />
+
+                    </LinearLayout>
+                </FrameLayout>
 
                 <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="40dp"
-                        android:background="@drawable/gamefild_pause_textview_bg">
-
-                    <LinearLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:orientation="vertical"
-                            >
-
-                        <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="60dp"
-                                android:layout_marginTop="22dp"
-                                style="@style/GamefieldNearSwitchText"
-                                android:text="@string/gamefield_sound"/>
-
-                        <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="60dp"
-                                android:layout_marginTop="38dp"
-                                style="@style/GamefieldNearSwitchText"
-                                android:text="@string/gamefield_music"/>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginLeft="125dp"
-                            >
-
-                        <ToggleButton
-                                android:id="@+id/pause_music_switcher"
-                                android:layout_width="85dp"
-                                android:layout_height="43dp"
-                                android:textOn=""
-                                android:textOff=""
-                                android:background="@drawable/menu_switcher"
-                                android:layout_marginTop="13dp"/>
-
-                        <ToggleButton
-                                android:id="@+id/pause_sounds_switcher"
-                                android:layout_width="85dp"
-                                android:layout_height="43dp"
-                                android:textOn=""
-                                android:textOff=""
-                                android:background="@drawable/menu_switcher"
-                                android:layout_marginTop="20dp"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="25dp"
                         >
 
                     <Button
-                            android:id="@+id/gamefild_menu_btn"
+                            android:id="@+id/final_menu_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|bottom"
                             android:background="@drawable/gamefild_pause_menu_but"/>
 
                     <Button
-                            android:id="@+id/gamefild_next_btn"
+                            android:id="@+id/final_next_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginLeft="4dp"
                             android:layout_gravity="center_horizontal|bottom"
                             android:background="@drawable/gamefild_pause_next_but"
                             />
                 </LinearLayout>
             </LinearLayout>
+
         </FrameLayout>
 
-        <ImageView
+    </FrameLayout><FrameLayout
+        android:id="@+id/final_screen"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@drawable/forget_bg"
+        android:visibility="visible"
+        android:clickable="true"
+        >
+
+    <FrameLayout
+            android:id="@+id/final_alert"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            >
+
+        <LinearLayout
+                android:id="@+id/final_share_alert"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:src="@drawable/navigationbar_bg_shadow"/>
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/final_share_bg"
+                android:layout_gravity="center"
+                android:layout_marginTop="260dp">
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="105dp"
+                    >
+
+                <Button
+                        android:id="@+id/final_share_fb_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/final_share_fb_but"/>
+
+                <Button
+                        android:id="@+id/final_share_vk_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/final_share_vk_but"
+                        />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:background="@drawable/final_bg"
+                >
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="140dp"
+                    android:layout_marginLeft="75dp"
+                    >
+
+                <TextView
+                        android:id="@+id/final_score"
+                        style="@style/FinalValueScoreText"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:maxEms="3"
+                        android:singleLine="true"
+                        android:text="11111"
+                        />
+
+                <TextView
+                        android:id="@+id/final_score_type"
+                        style="@style/FinalNameScoreText"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="28dp"
+                        android:text="очков"
+                        />
+
+                <TextView
+                        android:id="@+id/final_bonus"
+                        style="@style/FinalValueScoreText"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:maxEms="3"
+                        android:singleLine="true"
+
+                        android:text="21412"
+                        />
+
+                <TextView
+                        android:id="@+id/final_bonus_type"
+                        style="@style/FinalNameScoreText"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_marginLeft="4dp"
+                        android:text="очка"
+                        />
+            </LinearLayout>
+
+
+            <FrameLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content">
+
+                <LinearLayout
+                        android:id="@+id/final_flip_clock"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="51dp"
+                        android:layout_marginLeft="51dp"
+                        >
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_flip_clock_bg"
+                            />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_flip_clock_bg"
+                            />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_flip_clock_bg"
+                            />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_flip_clock_bg"
+                            />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/final_flip_clock_bg"
+                            />
+
+
+                </LinearLayout>
+                <LinearLayout
+                        android:id="@+id/final_flip_number"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="55dp"
+                        android:layout_marginLeft="60dp"
+                        >
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            android:text="1"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            android:text="2"
+                            android:layout_marginLeft="20dp"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            android:layout_marginLeft="20dp"
+
+                            android:text="3"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            android:layout_marginLeft="20dp"
+
+                            android:text="4"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            android:layout_marginLeft="20dp"
+
+                            android:text="5"
+                            />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="35dp"
+                    >
+
+                <Button
+                        android:id="@+id/final_menu_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:background="@drawable/gamefild_pause_menu_but"/>
+
+                <Button
+                        android:id="@+id/final_next_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:background="@drawable/gamefild_pause_next_but"
+                        />
+            </LinearLayout>
+        </LinearLayout>
+
     </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>
+</FrameLayout>
