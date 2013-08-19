@@ -11,7 +11,7 @@ public class RestPuzzleUsers
 
     public RestPuzzleUsers(){}
 
-    public RestUserData getUserData()
+    public RestUserData getMe()
     {
         return mUserData;
     }
