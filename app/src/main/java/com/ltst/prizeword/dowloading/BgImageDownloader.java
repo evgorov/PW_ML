@@ -94,4 +94,19 @@ public abstract class BgImageDownloader implements ILoadingQueue.IBgDownloader<S
         mBcConnector.unsubscribeTask(taskId);
         mImageLoadingTaskId = null;
     }
+
+    public static class SimpleBgImageDownloader extends BgImageDownloader
+    {
+        public SimpleBgImageDownloader(@Nonnull IBcConnector mBcConnector, @Nonnull Class<? extends LoadImageTask> mLoadImageTask)
+        {
+            super(mBcConnector, mLoadImageTask);
+        }
+
+        @Nonnull
+        @Override
+        public Intent createIntentFromTask(@Nonnull String previewImageUrl)
+        {
+            return LoadImageTask.createIntent(previewImageUrl);
+        }
+    }
 }

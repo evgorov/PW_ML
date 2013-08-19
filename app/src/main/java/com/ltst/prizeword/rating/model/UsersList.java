@@ -69,6 +69,7 @@ public class UsersList implements Parcelable
         public int dynamics;
         public final @Nonnull String previewUrl;
         public final @Nullable byte[] pngImage;
+        public boolean me;
 
 
         public User(@Nonnull String id,
@@ -94,6 +95,7 @@ public class UsersList implements Parcelable
             this.dynamics = dynamics;
             this.previewUrl = previewUrl;
             this.pngImage = pngImage;
+            me = false;
         }
 
         //==== Parcelable implementation ==========================================

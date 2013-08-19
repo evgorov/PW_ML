@@ -1,6 +1,8 @@
 package com.ltst.prizeword.rating.model;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
@@ -12,6 +14,7 @@ import com.ltst.prizeword.rest.RestUserData;
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
+import org.omich.velo.lists.ISlowSource;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
@@ -32,6 +35,39 @@ public class LoadUsersFromInternetTask implements IBcTask
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         return intent;
     }
+
+    public static final @Nullable List<ISlowSource.Item<UsersList.User, Bitmap>> extractUsersList(@Nonnull Bundle bundle)
+    {
+        UsersList list = bundle.getParcelable(BF_USERS);
+        if (list == null)
+        {
+            return null;
+        }
+        list.me.me = true;
+
+        List<ISlowSource.Item<UsersList.User, Bitmap>> users = new ArrayList<ISlowSource.Item<UsersList.User, Bitmap>>();
+
+        for (UsersList.User user : list.otherUsers)
+        {
+            if(user != null)
+            {
+                byte[] image = user.pngImage;
+                Bitmap bitmap = (image == null)
+                        ? null
+                        : BitmapFactory.decodeByteArray(image, 0, image.length);
+                users.add(new ISlowSource.Item<UsersList.User, Bitmap>(user, bitmap));
+            }
+        }
+
+        byte[] image = list.me.pngImage;
+        Bitmap bitmap = (image == null)
+                ? null
+                : BitmapFactory.decodeByteArray(image, 0, image.length);
+        users.add(new ISlowSource.Item<UsersList.User, Bitmap>(list.me, bitmap));
+
+        return users;
+    }
+
     @Nullable
     @Override
     public Bundle execute(@Nonnull BcTaskEnv env)
