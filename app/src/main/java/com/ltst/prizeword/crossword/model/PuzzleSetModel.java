@@ -12,6 +12,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
+    private @Nonnull HashMap<String,List<Puzzle> > mPuzzleListAtSet;
     private int hintsCount;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
@@ -33,6 +35,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
     @Override
     public void updateDataByDb(@Nonnull IListenerVoid handler)
+    {
+        mPuzzleSetsDbUpdater.update(handler);
+    }
+
+    @Override
+    public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
     {
         mPuzzleSetsDbUpdater.update(handler);
     }
@@ -53,10 +61,22 @@ public class PuzzleSetModel implements IPuzzleSetModel
         return hintsCount;
     }
 
+    @Nonnull
+    @Override
+    public HashMap<String, List<Puzzle>> getPuzzleListAtSet() {
+        return mPuzzleListAtSet;
+    }
+
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
         mPuzzleSetsInternetUpdater.update(handler);
+    }
+
+    @Override
+    public void updateTotalDataByInternet(@Nonnull IListenerVoid handler)
+    {
+        mPuzzleTotalSetsInternetUpdater.update(handler);
     }
 
     // ==== updaters =====================================
@@ -67,7 +87,24 @@ public class PuzzleSetModel implements IPuzzleSetModel
         @Override
         protected Intent createIntent()
         {
-            return LoadPuzzleSetsFromInternet.createIntent(mSessionKey);
+            return LoadPuzzleSetsFromInternet.createShortIntent(mSessionKey);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
+
+    private Updater mPuzzleTotalSetsInternetUpdater = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey);
         }
 
         @Nonnull
@@ -120,6 +157,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
             }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
             hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
+            mPuzzleListAtSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
         }
     }
 
@@ -129,23 +167,27 @@ public class PuzzleSetModel implements IPuzzleSetModel
         BRILLIANT,
         GOLD,
         SILVER,
+        SILVER2,
         FREE
     }
 
     public static final @Nonnull String BRILLIANT = "brilliant";
     public static final @Nonnull String GOLD = "gold";
     public static final @Nonnull String SILVER = "silver";
+    public static final @Nonnull String SILVER2 = "silver2";
     public static final @Nonnull String FREE = "free";
 
     public static @Nullable PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
     {
-        if (type.startsWith(FREE))
+        if (type.equals(FREE))
             return PuzzleSetType.FREE;
-        if (type.startsWith(GOLD))
+        if (type.equals(GOLD))
             return PuzzleSetType.GOLD;
-        if (type.startsWith(SILVER))
+        if (type.equals(SILVER))
             return PuzzleSetType.SILVER;
-        if (type.startsWith(BRILLIANT))
+        if (type.equals(SILVER2))
+            return PuzzleSetType.SILVER2;
+        if (type.equals(BRILLIANT))
             return PuzzleSetType.BRILLIANT;
         return null;
     }

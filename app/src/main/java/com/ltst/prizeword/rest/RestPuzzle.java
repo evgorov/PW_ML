@@ -113,7 +113,7 @@ public class RestPuzzle
             return puzzles;
         }
 
-        public void setPuzzles(RestPuzzle puzzles)
+        public void setPuzzles(@Nullable RestPuzzle puzzles)
         {
             this.puzzles = puzzles;
         }

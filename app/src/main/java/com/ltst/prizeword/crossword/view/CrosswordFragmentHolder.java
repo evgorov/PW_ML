@@ -182,6 +182,12 @@ public class CrosswordFragmentHolder {
             crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
             crosswordSet.pTitleText.setText(R.string.puzzless_hint_silver_crossword);
         }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER2)
+        {
+            crosswordSet.pBuyPrice.setText(R.string.buy_two_dollar);
+            crosswordSet.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag2));
+            crosswordSet.pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
+        }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
         {
             crosswordSet.pBuyPrice.setText(R.string.buy_free);
@@ -295,11 +301,6 @@ public class CrosswordFragmentHolder {
         data.mSetId = puzzle.setId;
         CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
         BadgeAdapter adapter = (BadgeAdapter) crosswordSet.pBadgeContainer.getAdapter();
-//        if(adapter == null)
-//        {
-//            adapter = new BadgeAdapter(mContext, PuzzleSetModel.PuzzleSetType.FREE);
-//            crosswordSet.pBadgeContainer.setAdapter(adapter);
-//        }
         adapter.addBadgeData(data);
         adapter.notifyDataSetChanged();
     }
