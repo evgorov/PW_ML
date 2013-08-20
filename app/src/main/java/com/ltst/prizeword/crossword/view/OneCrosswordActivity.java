@@ -75,14 +75,22 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull View mAlertPauseBg;
     private @Nonnull TextView mProgressTextView;
     private @Nonnull SeekBar mProgressSeekBar;
-
     private @Nonnull TextView mTimerTextView;
 
     private boolean mStopPlayFlag;
+
     private @Nonnull Animation mAnimationSlideInTop;
     private @Nonnull Animation mAnimationSlideOutTop;
-
     private @Nullable Bundle restoredBundle;
+
+    private @Nonnull View mFinalScreen;
+    private @Nonnull Button mFinalShareVkButton;
+    private @Nonnull Button mFinalShareFbButton;
+    private @Nonnull TextView mFinalScore;
+    private @Nonnull TextView mFinalBonus;
+    private @Nonnull View mFinalFlipNumbersViewGroup;
+    private @Nonnull Button mFinalMenuButton;
+    private @Nonnull Button mFinalNextButton;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -134,8 +142,20 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
 
+        mFinalScreen = findViewById(R.id.final_screen);
+
+        mFinalShareVkButton = (Button)findViewById(R.id.final_share_vk_btn);
+        mFinalShareFbButton = (Button)findViewById(R.id.final_share_fb_btn);
+        mFinalScore = (TextView) findViewById(R.id.final_score);
+        mFinalBonus = (TextView) findViewById(R.id.final_bonus);
+        mFinalFlipNumbersViewGroup = findViewById(R.id.final_flip_number);
+        mFinalMenuButton = (Button)findViewById(R.id.final_menu_btn);
+        mFinalNextButton = (Button)findViewById(R.id.final_next_btn);
+
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
+        mPuzzleAdapter.setPuzzleStateHandler(mStateUpdater);
+        mPuzzleAdapter.setPuzzleSolvedHandler(mSolvedUpdater);
         mPuzzleView.setAdapter(mPuzzleAdapter);
 
         if (restoredBundle != null)
@@ -154,6 +174,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mMenuBtn.setOnClickListener(this);
         mStopPlayBtn.setOnClickListener(this);
         mHintBtn.setOnClickListener(this);
+        mFinalMenuButton.setOnClickListener(this);
+        mFinalNextButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
         super.onStart();
     }
@@ -214,9 +236,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         switch (v.getId())
         {
+            case R.id.final_menu_btn:
             case R.id.gamefild_menu_btn:
                 onBackPressed();
                 break;
+            case R.id.final_next_btn:
             case R.id.gamefild_next_btn:
                 selectNextUnsolvedPuzzle();
                 break;
@@ -251,6 +275,19 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 tick();
         }
         mStopPlayFlag = !show;
+    }
+
+    private void showFinalDialog(boolean show)
+    {
+        if(show)
+        {
+            mStopPlayFlag = false;
+            mFinalScreen.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mFinalScreen.setVisibility(View.GONE);
+        }
     }
 
     private void useHint()
@@ -296,6 +333,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         showPauseDialog(false);
+        showFinalDialog(false);
         mCurrentPuzzleIndex++;
         if(mCurrentPuzzleIndex >= mPuzzlesCount)
         {
@@ -338,13 +376,31 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             if(mPuzzleAdapter.isPuzzleSolved())
                 selectNextUnsolvedPuzzle();
+            mStateUpdater.handle();
+            if(!mTickerLaunched)
+                tick();
+        }
+    };
+
+    private final @Nonnull IListenerVoid mStateUpdater = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
             int percent = mPuzzleAdapter.getSolvedQuestionsPercent();
             mProgressTextView.setText(String.valueOf(percent));
             mProgressSeekBar.setProgress(percent);
             mTimeLeft = mPuzzleAdapter.getTimeLeft();
             mTimeGiven = mPuzzleAdapter.getTimeGiven();
-            if(!mTickerLaunched)
-                tick();
+        }
+    };
+
+    private final @Nonnull IListenerVoid mSolvedUpdater = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            showFinalDialog(true);
         }
     };
 }
