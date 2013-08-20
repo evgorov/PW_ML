@@ -99,6 +99,8 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         {
             viewHolder.mDynamicsPic.setImageDrawable(mContext.getResources().getDrawable(R.drawable.rating_cell_move_none));
         }
+
+        viewHolder.mCellLayoutView.setBackgroundResource(user.me ? R.drawable.rating_cell_me_bg : R.drawable.rating_cell_bg);
     }
 
     @Override
@@ -119,14 +121,16 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         ImageView userPic = (ImageView) view.findViewById(R.id.rating_item_image);
         ImageView dynamicsPic = (ImageView) view.findViewById(R.id.rating_item_dynamics);
         View positionBgView = view.findViewById(R.id.rating_position_background_layout);
+        View cellView = view.findViewById(R.id.rating_cell_layout);
         if(positionBgView == null || nameView == null || surnameView == null || solvedView == null ||
-                scoreView == null || positionView == null || userPic == null || dynamicsPic == null)
+                scoreView == null || positionView == null || userPic == null || dynamicsPic == null
+                || cellView == null)
         {
             Log.w("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$
             throw new NullPointerException("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$
         }
 
-        return new ViewHolder(nameView, surnameView, solvedView, scoreView, positionView, userPic, dynamicsPic, positionBgView);
+        return new ViewHolder(nameView, surnameView, solvedView, scoreView, positionView, userPic, dynamicsPic, positionBgView, cellView);
     }
 
     @Override
@@ -145,10 +149,11 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         final @Nonnull ImageView mUserPic;
         final @Nonnull ImageView mDynamicsPic;
         final @Nonnull View mPositionBgView;
+        final @Nonnull View mCellLayoutView;
 
         public ViewHolder(@Nonnull TextView nameView, @Nonnull TextView surnameView, @Nonnull TextView solvedTextView,
                           @Nonnull TextView scoreTextView, @Nonnull TextView positionTextView, @Nonnull ImageView userPic,
-                          @Nonnull ImageView dynamicsPic, @Nonnull View positionBgView)
+                          @Nonnull ImageView dynamicsPic, @Nonnull View positionBgView, @Nonnull View cellLayoutView)
         {
             mNameView = nameView;
             mSurnameView = surnameView;
@@ -158,6 +163,7 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
             mUserPic = userPic;
             mDynamicsPic = dynamicsPic;
             mPositionBgView = positionBgView;
+            mCellLayoutView = cellLayoutView;
         }
     }
 

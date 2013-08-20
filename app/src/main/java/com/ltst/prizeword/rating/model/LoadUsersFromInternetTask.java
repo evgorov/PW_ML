@@ -45,16 +45,14 @@ public class LoadUsersFromInternetTask implements IBcTask
         }
         List<ISlowSource.Item<UsersList.User, Bitmap>> users = new ArrayList<ISlowSource.Item<UsersList.User, Bitmap>>();
 
-        int index = list.otherUsers.indexOf(list.me);
-        if (index >= 0)
-        {
-            list.otherUsers.get(index).me = true;
-        }
-
         for (UsersList.User user : list.otherUsers)
         {
             if(user != null)
             {
+                if(user.position == list.me.position)
+                {
+                    user.me = true;
+                }
                 byte[] image = user.pngImage;
                 Bitmap bitmap = (image == null)
                         ? null
