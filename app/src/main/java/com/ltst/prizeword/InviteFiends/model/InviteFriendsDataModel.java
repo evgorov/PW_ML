@@ -38,9 +38,8 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
     private @Nullable Source mSource;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull BgImageDownloader mDownloader;
-    private @Nonnull String mProviderName;
 
-    public InviteFriendsDataModel(@Nonnull Context context,@Nonnull IBcConnector mBcConnector,@Nonnull String provider)
+    public InviteFriendsDataModel(@Nonnull Context context,@Nonnull IBcConnector mBcConnector)
     {
         this.mContext = context;
         this.mBcConnector = mBcConnector;
@@ -48,7 +47,6 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         BgImageDownloader downloader = new FriendsImageDownloader(mBcConnector, LoadFriendsImageTask.class);
         mDownloader = downloader;
         mSource = new Source(new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>(), downloader);
-        mProviderName  = provider;
         mIsDestroyed = false;
     }
 
@@ -115,14 +113,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         @Override
         protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
-            if (mProviderName.equals(RestParams.VK_PROVIDER))
-            {
-                return LoadVkFriendsDataFromInternetTask.class;
-
-            } else
-            {
-                return LoadFbFriendsDataFromInternetTask.class;
-            }
+                return LoadFriendsDataFromInternetTask.class;
         }
 
         @Nonnull
@@ -131,13 +122,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
         {
             final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
             Log.d(NavigationActivity.LOG_TAG, "RELOAD USERDATA SessionKey = " + sessionKey);
-            if (mProviderName.equals(RestParams.VK_PROVIDER))
-            {
-                return LoadVkFriendsDataFromInternetTask.createIntent(sessionKey);
-            } else
-            {
-                return LoadFbFriendsDataFromInternetTask.createIntent(sessionKey);
-            }
+                return LoadFriendsDataFromInternetTask.createIntent(sessionKey);
         }
     };
 
@@ -202,13 +187,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
             if(mIsDestroyed)
                 return;
             List<ISlowSource.Item<InviteFriendsData,Bitmap>> list;
-            if (mProviderName.equals(RestParams.VK_PROVIDER))
-            {
-                list = LoadVkFriendsDataFromInternetTask.extractFriendsFromBundle(result);
-            } else
-            {
-                list = LoadFbFriendsDataFromInternetTask.extractFriendsFromBundle(result);
-            }
+                list = LoadFriendsDataFromInternetTask.extractFriendsFromBundle(result);
 
             if(list != null)
             {

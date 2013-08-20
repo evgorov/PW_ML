@@ -15,7 +15,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.InviteFiends.model.InviteFriendsDataModel;
-import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -35,16 +34,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     private @Nonnull Button mMenuBtn;
     private @Nonnull Button mInviteAllBtn;
-    private @Nonnull ListView mFbListView;
-    private @Nonnull ListView mVkListView;
-    private @Nonnull InviteFragmentAdapter mFbAdapter;
-    private @Nonnull InviteFragmentAdapter mVkAdapter;
+    private @Nonnull ListView mFriendsListView;
+    private @Nonnull InviteFragmentAdapter mAdapter;
 
-    private @Nonnull ImageView mFbHeaderImage;
-    private @Nonnull ImageView mVkHeaderImage;
+    private @Nonnull ImageView mHeaderImage;
     private @Nonnull ImageView mFooterImage;
-    private @Nullable InviteFriendsDataModel mVkModel;
-    private @Nullable InviteFriendsDataModel mFbModel;
+    private @Nullable InviteFriendsDataModel mModel;
     private boolean mDataRequested = false;
     // ==== Livecycle =================================
 
@@ -66,13 +61,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         View v = inflater.inflate(R.layout.invite_friends_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
         mInviteAllBtn = (Button) v.findViewById(R.id.header_invite_all_btn);
-        mFbListView = (ListView)v.findViewById(R.id.fb_friends_listview);
-        mVkListView = (ListView)v.findViewById(R.id.vk_friends_listview);
-        mFbHeaderImage = new ImageView(mContext);
-        mVkHeaderImage = new ImageView(mContext);
+        mFriendsListView = (ListView)v.findViewById(R.id.vk_friends_listview);
+        mHeaderImage = new ImageView(mContext);
         mFooterImage = new ImageView(mContext);
-        mFbHeaderImage.setBackgroundResource(R.drawable.invite_fb_header);
-        mVkHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
+        mHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
         mFooterImage.setBackgroundResource(R.drawable.invite_footer);
         return v;
 
@@ -81,38 +73,25 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     public void onStart(){
         Log.i(LOG_TAG, "InviteFriendsFragment.onStart()"); //$NON-NLS-1$
 
-        InviteFriendsDataModel model = mVkModel;
+        InviteFriendsDataModel model = mModel;
         if(model == null)
         {
-            model = new InviteFriendsDataModel(mContext,mBcConnector,RestParams.VK_PROVIDER);
-            mVkModel = model;
+            model = new InviteFriendsDataModel(mContext,mBcConnector);
+            mModel = model;
 
             Log.i(LOG_TAG, "Create VkModel"); //$NON-NLS-1$
         }
-        InviteFriendsDataModel model1 = mFbModel;
-        if(model1 == null)
-        {
-            model1 = new InviteFriendsDataModel(mContext,mBcConnector,RestParams.FB_PROVIDER);
-            mFbModel = model1;
 
-            Log.i(LOG_TAG, "Create FbModel"); //$NON-NLS-1$
-        }
-
-        InviteFragmentAdapter adapterVk = mVkAdapter;
-        InviteFragmentAdapter adapterFb = mFbAdapter;
-        if(adapterVk == null)
+        InviteFragmentAdapter adapter = mAdapter;
+        if(adapter == null)
         {
-            adapterVk = new InviteFragmentAdapter(mContext, model);
-            adapterFb = new InviteFragmentAdapter(mContext, model1);
+            adapter = new InviteFragmentAdapter(mContext, model);
             Log.i(LOG_TAG, "create adapterVk"); //$NON-NLS-1$
-            mVkAdapter = adapterVk;
-            mFbAdapter = adapterFb;
-            adapterVk.setRefreshHandler(mRefreshHandler);
-            adapterFb.setRefreshHandler(mRefreshHandler);
+            mAdapter = adapter;
+            adapter.setRefreshHandler(mRefreshHandler);
             mDataRequested = true;
         }
-        mVkListView.setAdapter(adapterVk);
-        mFbListView.setAdapter(adapterFb);
+        mFriendsListView.setAdapter(adapter);
         super.onStart();
     }
 
@@ -120,25 +99,17 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     public void onResume()
     {
         Log.i(LOG_TAG, "InviteFriendsFragment.onResume()"); //$NON-NLS-1$
-        InviteFriendsDataModel m = mVkModel;
+        InviteFriendsDataModel m = mModel;
         if(m != null)
         {
             m.resumeLoading();
             Log.i(LOG_TAG, "resume Vkloading"); //$NON-NLS-1$
         }
-        InviteFriendsDataModel m1 = mFbModel;
-        if(m1 != null)
-        {
-            m1.resumeLoading();
-            Log.i(LOG_TAG, "resume Fbloading"); //$NON-NLS-1$
-        }
 
-        InviteFragmentAdapter adapterVk = mVkAdapter;
-        InviteFragmentAdapter adapterFb = mFbAdapter;
-        if(adapterVk != null && !mDataRequested)
+        InviteFragmentAdapter adapter = mAdapter;
+        if(adapter != null && !mDataRequested)
         {
-            adapterVk.updateByInternet();
-            adapterFb.updateByInternet();
+            adapter.updateByInternet();
             mDataRequested = true;
             Log.i(LOG_TAG, "update by internet"); //$NON-NLS-1$
         }
@@ -154,16 +125,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     public void onStop()
     {
         Log.i(LOG_TAG, "InviteFriendsFragment.onStop()"); //$NON-NLS-1$
-        InviteFriendsDataModel m = mVkModel;
+        InviteFriendsDataModel m = mModel;
         if(m != null)
         {
             m.pauseLoading();
-            Log.i(LOG_TAG, "Pause Loading"); //$NON-NLS-1$
-        }
-        InviteFriendsDataModel m1 = mFbModel;
-        if(m1 != null)
-        {
-            m1.pauseLoading();
             Log.i(LOG_TAG, "Pause Loading"); //$NON-NLS-1$
         }
         super.onStop();
@@ -173,22 +138,15 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     public void onDestroy()
     {
         Log.i(LOG_TAG, "InviteFriendsFragment.onDestroy()"); //$NON-NLS-1$
-        InviteFriendsDataModel model = mVkModel;
+        InviteFriendsDataModel model = mModel;
         if(model != null)
         {
             model.close();
             Log.i(LOG_TAG, "Close model"); //$NON-NLS-1$
 
         }
-        mVkModel = null;
-        InviteFriendsDataModel model1 = mFbModel;
-        if(model1 != null)
-        {
-            model1.close();
-            Log.i(LOG_TAG, "Close model"); //$NON-NLS-1$
-
-        }
-        mVkModel = null;
+        mModel = null;
+        mAdapter = null;
         mDataRequested =false;
         super.onDestroy();
     }
@@ -200,13 +158,9 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         Log.i(LOG_TAG, "InviteFriendsFragment.onActivityCreated()"); //$NON-NLS-1$
         mMenuBtn.setOnClickListener(this);
         mInviteAllBtn.setOnClickListener(this);
-        mFbListView.setDivider(null);
-        mVkListView.setDivider(null);
-        mFbListView.addHeaderView(mFbHeaderImage);
-        mVkListView.addHeaderView(mVkHeaderImage);
-        mFbListView.addFooterView(mFooterImage);
-        mVkListView.addFooterView(mFooterImage);
-
+        mFriendsListView.setDivider(null);
+        mFriendsListView.addHeaderView(mHeaderImage);
+        mFriendsListView.addFooterView(mFooterImage);
         super.onActivityCreated(savedInstanceState);
     }
 

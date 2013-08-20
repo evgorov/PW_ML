@@ -23,10 +23,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LoadVkFriendsDataFromInternetTask implements DbService.IDbTask
+public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY = "LoadVkFriendsDataFromInternetTask.sessionKey";
-    public static final @Nonnull String BF_FRIEND_VK_DATA = "LoadVkFriendsDataFromInternetTask.VkFriendData";
+    public static final @Nonnull String BF_SESSION_KEY = "LoadFriendsDataFromInternetTask.sessionKey";
+    public static final @Nonnull String BF_FRIEND_VK_DATA = "LoadFriendsDataFromInternetTask.VkFriendData";
+    public static final @Nonnull String BF_FRIEND_FB_DATA = "LoadFriendsDataFromInternetTask.FbFriendData";
 
     public static @Nonnull Intent createIntent(@Nonnull String sessionKey)
     {
@@ -43,21 +44,38 @@ public class LoadVkFriendsDataFromInternetTask implements DbService.IDbTask
             return null;
 
         List<InviteFriendsData> VkFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_VK_DATA);
+        List<InviteFriendsData> FbFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_FB_DATA);
 
-        if (VkFriendsItems == null)
+        if (VkFriendsItems == null && FbFriendsItems == null)
             return null;
 
         List<ISlowSource.Item<InviteFriendsData, Bitmap>> resultItems = new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>();
 
-        for (InviteFriendsData item : VkFriendsItems)
+        if (VkFriendsItems != null)
         {
-            if (item != null)
+            for (InviteFriendsData item : VkFriendsItems)
             {
-                byte[] image = item.pngImage;
-                Bitmap bitmap = (image == null)
-                        ? null
-                        : BitmapFactory.decodeByteArray(image, 0, image.length);
-                resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                if (item != null)
+                {
+                    byte[] image = item.pngImage;
+                    Bitmap bitmap = (image == null)
+                            ? null
+                            : BitmapFactory.decodeByteArray(image, 0, image.length);
+                    resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                }
+            }
+        }
+        if(FbFriendsItems != null){
+            for (InviteFriendsData item : FbFriendsItems)
+            {
+                if (item != null)
+                {
+                    byte[] image = item.pngImage;
+                    Bitmap bitmap = (image == null)
+                            ? null
+                            : BitmapFactory.decodeByteArray(image, 0, image.length);
+                    resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                }
             }
         }
 
@@ -83,17 +101,28 @@ public class LoadVkFriendsDataFromInternetTask implements DbService.IDbTask
                             env.context.getString(R.string.msg_no_internet)));
         } else
         {
+            Bundle bundle = new Bundle();
             RestInviteFriend.RestInviteFriendHolder holder = loadRestFriendDataFromInternet(sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<InviteFriendsData> friends = parseFriendData(holder, RestParams.VK_PROVIDER);
                 if (friends != null)
                 {
-                    Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
+                }
+            }
+            holder = loadRestFriendDataFromInternet(sessionKey, RestParams.FB_PROVIDER);
+            if (holder != null)
+            {
+                ArrayList<InviteFriendsData> friends = parseFriendData(holder, RestParams.FB_PROVIDER);
+                if (friends != null)
+                {
+                    bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
                     return bundle;
                 }
             }
+            else
+            return  bundle;
         }
         return null;
     }
