@@ -55,6 +55,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
         return hintsCount;
     }
 
+    @Nonnull
+    @Override
+    public HashMap<String, List<Puzzle>> getPuzzleListAtSet() {
+        return mPuzzleListAtSet;
+    }
+
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {

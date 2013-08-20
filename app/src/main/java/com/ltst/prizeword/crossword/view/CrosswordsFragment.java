@@ -27,7 +27,6 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -161,31 +160,38 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     private void createCrosswordPanel(){
-        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzleListAtSet();
         for (PuzzleSet set : sets)
         {
             mCrosswordFragmentHolder.addPanel(set);
-            List<String> puzzlesId = set.puzzlesId;
-            for(String puzzId : puzzlesId)
+            @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
+            for(@Nonnull Puzzle puzzle : puzzles)
             {
-                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
-                mPuzzleModel.updateDataByDb(new IListenerVoid(){
-
-                    @Override
-                    public void handle() {
-                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-                        mCrosswordFragmentHolder.addBadge(puzzle);
-                    }
-                });
-                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
-
-                    @Override
-                    public void handle() {
-                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-                        mCrosswordFragmentHolder.addBadge(puzzle);
-                    }
-                });
+                mCrosswordFragmentHolder.addBadge(puzzle);
             }
+
+//            List<String> puzzlesId = set.puzzlesId;
+//            for(String puzzId : puzzlesId)
+//            {
+//                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
+//                mPuzzleModel.updateDataByDb(new IListenerVoid(){
+//
+//                    @Override
+//                    public void handle() {
+//                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+//                        mCrosswordFragmentHolder.addBadge(puzzle);
+//                    }
+//                });
+//                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
+//
+//                    @Override
+//                    public void handle() {
+//                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
+//                        mCrosswordFragmentHolder.addBadge(puzzle);
+//                    }
+//                });
+//            }
         }
     }
 
@@ -204,7 +210,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle(int i)
         {
-            mPuzzleSetModel.updateDataByDb(updateSetHandler);
+//            mPuzzleSetModel.updateDataByDb(updateSetHandler);
         }
     };
 
