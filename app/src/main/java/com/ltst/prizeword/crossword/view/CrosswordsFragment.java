@@ -170,28 +170,6 @@ public class CrosswordsFragment extends SherlockFragment
             {
                 mCrosswordFragmentHolder.addBadge(puzzle);
             }
-
-//            List<String> puzzlesId = set.puzzlesId;
-//            for(String puzzId : puzzlesId)
-//            {
-//                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
-//                mPuzzleModel.updateDataByDb(new IListenerVoid(){
-//
-//                    @Override
-//                    public void handle() {
-//                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-//                        mCrosswordFragmentHolder.addBadge(puzzle);
-//                    }
-//                });
-//                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
-//
-//                    @Override
-//                    public void handle() {
-//                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-//                        mCrosswordFragmentHolder.addBadge(puzzle);
-//                    }
-//                });
-//            }
         }
     }
 
