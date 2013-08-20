@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.coefficients.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -97,6 +98,18 @@ public class DbReader implements IDbReader
             ColsImages.ID,
             ColsImages.KEY,
             ColsImages.IMAGE,
+    };
+
+    public static final @Nonnull String[] FIELDS_P_COEFFICIENTS =
+    {
+            ColsCoefficients.ID,
+            ColsCoefficients.TIME_BONUS,
+            ColsCoefficients.FRIEND_BONUS,
+            ColsCoefficients.FREE_BASE_SCORE,
+            ColsCoefficients.GOLD_BASE_SCORE,
+            ColsCoefficients.BRILLIANT_BASE_SCORE,
+            ColsCoefficients.SILVER1_BASE_SCORE,
+            ColsCoefficients.SILVER2_BASE_SCORE,
     };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -276,6 +289,14 @@ public class DbReader implements IDbReader
         return count;
     }
 
+    @Nullable
+    @Override
+    public Coefficients getCoefficients()
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_COEFFICIENTS, FIELDS_P_COEFFICIENTS, ColsCoefficients.ID, SQLiteHelper.ID_COEFFICIENTS);
+        return createObjectByCursor(cursor, mCoefficientsCreator);
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
@@ -362,6 +383,16 @@ public class DbReader implements IDbReader
                             c.getString(5),
                             c.getString(6),
                             c.getInt(7) == 1);
+        }
+    };
+
+    private ObjectCreatorByCursor<Coefficients> mCoefficientsCreator = new ObjectCreatorByCursor<Coefficients>()
+    {
+        @Override
+        public Coefficients createObject(Cursor c)
+        {
+            return new Coefficients(c.getLong(0),
+                    c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5), c.getInt(6), c.getInt(7));
         }
     };
 

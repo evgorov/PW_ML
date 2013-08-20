@@ -105,6 +105,7 @@ public class RestParams
 
     public static final @Nonnull String URL_ADD_REMOVE_HINTS = URL_API + "/hints" + addParam(SESSION_KEY, true) + addParam(HINTS_CHANGE, false);
     public static final @Nonnull String URL_GET_USERS = URL_API + "/users" + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_COEFFICIENTS = URL_API + "/coefficients" + addParam(SESSION_KEY, true);
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)

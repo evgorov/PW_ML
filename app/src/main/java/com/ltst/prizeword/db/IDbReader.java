@@ -1,5 +1,6 @@
 package com.ltst.prizeword.db;
 
+import com.ltst.prizeword.coefficients.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -30,4 +31,6 @@ public interface IDbReader
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
     int getUserHintsCount();
+
+    @Nullable Coefficients getCoefficients();
 }

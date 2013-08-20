@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
 {
     public static final int ID_USER = 1;
+    public static final int ID_COEFFICIENTS = 0;
 
     private static final String DATABASE_NAME = "app.db";
     private static final String TEST_DATABASE_NAME = "testapp.db";
@@ -22,6 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final @Nonnull String TNAME_IMAGES            = "images";
     public static final @Nonnull String TNAME_PROVIDERS         = "providers";
     public static final @Nonnull String TNAME_USERS             = "users";
+    public static final @Nonnull String TNAME_COEFFICIENTS      = "coefficients";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
@@ -96,6 +98,17 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsProviders.TOKEN	        + " text,"
             + " foreign key (" + ColsProviders.USER_ID + ") references "
             + TNAME_USERS + " (" + ColsUsers.ID + ") on delete cascade)";
+
+    public static final String CREATE_COEFFICIENTS_QUERY = "create table "
+            + TNAME_COEFFICIENTS + "("
+            + ColsCoefficients.ID                   + " integer not null primary key autoincrement, "
+            + ColsCoefficients.TIME_BONUS           + " integer not null default 0, "
+            + ColsCoefficients.FRIEND_BONUS         + " integer not null default 0, "
+            + ColsCoefficients.FREE_BASE_SCORE      + " integer not null default 0, "
+            + ColsCoefficients.GOLD_BASE_SCORE      + " integer not null default 0, "
+            + ColsCoefficients.BRILLIANT_BASE_SCORE + " integer not null default 0, "
+            + ColsCoefficients.SILVER1_BASE_SCORE   + " integer not null default 0, "
+            + ColsCoefficients.SILVER2_BASE_SCORE   + " integer not null default 0)";
 
     public static final class ColsPuzzleSets
     {
@@ -179,6 +192,18 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String KEY             = "key";
         public static final @Nonnull String IMAGE           = "image";
+    }
+
+    public static final class ColsCoefficients
+    {
+        public static final @Nonnull String ID                      = "_id";
+        public static final @Nonnull String TIME_BONUS              = "time_bonus";
+        public static final @Nonnull String FRIEND_BONUS            = "friend_bonus";
+        public static final @Nonnull String FREE_BASE_SCORE         = "free_base_score";
+        public static final @Nonnull String GOLD_BASE_SCORE         = "gold_base_score";
+        public static final @Nonnull String BRILLIANT_BASE_SCORE    = "brilliant_base_score";
+        public static final @Nonnull String SILVER1_BASE_SCORE      = "silverone_base_score";
+        public static final @Nonnull String SILVER2_BASE_SCORE      = "silvertwo_base_score";
     }
 
     // ===============================================
@@ -276,6 +301,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         db.execSQL(CREATE_PUZZLE_SETS_QUERY);
         db.execSQL(CREATE_PUZZLES_QUERY);
         db.execSQL(CREATE_PUZZLE_QUESTIONS_QUERY);
+        db.execSQL(CREATE_COEFFICIENTS_QUERY);
     }
 
     @Override

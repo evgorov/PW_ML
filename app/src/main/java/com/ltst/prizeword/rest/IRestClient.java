@@ -33,4 +33,5 @@ public interface IRestClient
     @Nullable RestUserData.RestUserDataHolder addOrRemoveHints(@Nonnull String sessionKey, int hintsToChange);
 
     @Nullable RestPuzzleUsers getUsers(@Nonnull String sessionKey);
+    @Nullable RestCoefficients getCoefficients(@Nonnull String sessionKey);
 }

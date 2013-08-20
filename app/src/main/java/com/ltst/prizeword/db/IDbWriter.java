@@ -1,5 +1,6 @@
 package com.ltst.prizeword.db;
 
+import com.ltst.prizeword.coefficients.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -24,4 +25,6 @@ public interface IDbWriter extends IDbReader
 
     void putFriendsImage(@Nonnull String url, @Nonnull byte[] bytes);
     void setQuestionAnswered(long questionId, boolean answered);
+
+    void putCoefficients(@Nonnull Coefficients coefficients);
 }
