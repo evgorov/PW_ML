@@ -10,23 +10,42 @@
 
     <ImageView
             android:id="@+id/invite_item_ava"
+            android:layout_height="@dimen/size_avatar"
+            android:layout_width="@dimen/size_avatar"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/invite_empty_ava"
+            />
+
+    <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/invite_empty_ava"/>
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
 
-    <TextView
-            android:id="@+id/invite_item_name_textview"
-            android:layout_height="wrap_content"
-            android:layout_width="100dp"
-            android:maxLines="2"
-            android:maxWidth="100dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            style="@style/InviteItemNameText"
+        <TextView
+                android:id="@+id/invite_item_name_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:maxLines="1"
+                android:maxWidth="100dp"
+                android:layout_marginLeft="15dp"
+                style="@style/InviteItemNameText"
 
-            />
+                />
+
+        <TextView
+                android:id="@+id/invite_item_surname_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:maxLines="1"
+                android:maxWidth="100dp"
+                android:layout_marginLeft="15dp"
+                style="@style/InviteItemNameText"
+                />
+    </LinearLayout>
 
     <Button
             android:id="@+id/invite_add_btn"

@@ -212,6 +212,11 @@ public class DbWriter extends  DbReader implements IDbWriter
 
     }
 
+    @Override public void putFriendsImage(@Nonnull String url, @Nonnull byte[] bytes)
+    {
+
+    }
+
     @Override
     public void putPuzzleSetList(final @Nonnull List<PuzzleSet> list)
     {

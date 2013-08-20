@@ -37,74 +37,48 @@
                 />
     </FrameLayout>
 
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                >
 
-            <FrameLayout
-                    android:layout_height="wrap_content"
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    >
+                    android:layout_height="match_parent"
+                    android:background="@drawable/invite_bg_tile"/>
 
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="10dp">
-
-                    <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/invite_bg_tile"/>
-                </LinearLayout>
-
-                <FrameLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:background="@drawable/frame_border">
-
-                    <ListView
-                            android:id="@+id/vk_friends_listview"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-
-                            />
-                </FrameLayout>
-            </FrameLayout>
-
-            <FrameLayout
+            <ListView
+                    android:id="@+id/vk_friends_listview"
                     android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+
+                    />
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                >
+
+
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    >
+                    android:layout_height="match_parent"
+                    android:background="@drawable/invite_bg_tile"/>
 
-                <FrameLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="10dp">
 
-                    <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/invite_bg_tile"/>
-                </FrameLayout>
-
-                <FrameLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:background="@drawable/frame_border">
-
-                    <ListView
-                            android:id="@+id/fb_friends_listview"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            />
-                </FrameLayout>
-            </FrameLayout>
-        </LinearLayout>
-
+            <ListView
+                    android:id="@+id/fb_friends_listview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -109,7 +109,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 response.getEmail(), response.getBirthDate(), response.getCity(),
                 response.getSolved(), response.getPosition(), response.getMonthScore(),
                 response.getHighScore(), response.getDynamics(), response.getHints(),
-                response.getUserpicUrl(), null);
+                response.getUserpicUrl(),null);
     }
 
     public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env, @Nonnull String email)
