@@ -19,6 +19,7 @@ import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadPuzzleSetsFromInternet.sessionKey";
     public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_PUZZLES_AT_SET = "LoadPuzzleSetsFromInternet.puzzles";
     public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
     public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
@@ -176,12 +178,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return sets;
     }
 
-    private static @Nonnull Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, int status)
+    private static @Nonnull Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, @Nonnull HashMap<String,List<Puzzle> > mapPuzzles, int status)
     {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PUZZLE_SETS, sets);
         bundle.putInt(BF_STATUS_CODE, status);
         bundle.putInt(BF_HINTS_COUNT, hintsCount);
+        bundle.putSerializable(BF_PUZZLES_AT_SET, mapPuzzles);
         return  bundle;
     }
 
@@ -189,6 +192,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
         int hintsCount = env.dbw.getUserHintsCount();
-        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, RestParams.SC_SUCCESS);
+        List<Puzzle> puzzles = null;
+        @Nonnull HashMap<String,List<Puzzle> > mapPuzzles = new HashMap<String, List<Puzzle>>();
+        for(PuzzleSet puzzleSet : sets)
+        {
+            puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
+            mapPuzzles.put(puzzleSet.serverId,puzzles);
+        }
+        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
     }
 }

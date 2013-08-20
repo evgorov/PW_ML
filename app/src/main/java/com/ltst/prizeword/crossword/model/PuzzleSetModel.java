@@ -12,6 +12,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
+    private @Nonnull HashMap<String,List<Puzzle> > mPuzzleListAtSet;
     private int hintsCount;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
@@ -143,6 +145,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
             }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
             hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
+            mPuzzleListAtSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
         }
     }
 

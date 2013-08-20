@@ -201,17 +201,25 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
-    public List<Puzzle> getPuzzles(List<Long> ids)
+    public List<Puzzle> getPuzzles(List<String> serverIds)
     {
-        int size = ids.size();
+        int size = serverIds.size();
         StringBuilder selection = new StringBuilder(size);
-        String[] selectionArgs = new String[size];
         for(int i=0; i<size; i++)
         {
-            selection.append(ColsPuzzles.ID +"= ? "+((i == size-1) ? " " : " OR "));
-            selectionArgs[i] = String.valueOf(ids.get(i));
+            selection.append(ColsPuzzles.SERVER_ID +"=? "+((i == size-1) ? "" : "OR "));
         }
-        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, selection.toString(), selectionArgs, null, null, null, null);
+        String[] selectArgs = serverIds.toArray(new String[size]);
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, selection.toString(), selectArgs, null, null, null, null);
+        @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
+        return set;
+    }
+
+    @Nullable
+    @Override
+    public List<Puzzle> getPuzzlesBySetId(long setId)
+    {
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID+"="+String.valueOf(setId), null, null, null, null, null);
         @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
         return set;
     }
