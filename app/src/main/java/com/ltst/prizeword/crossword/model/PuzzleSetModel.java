@@ -167,23 +167,27 @@ public class PuzzleSetModel implements IPuzzleSetModel
         BRILLIANT,
         GOLD,
         SILVER,
+        SILVER2,
         FREE
     }
 
     public static final @Nonnull String BRILLIANT = "brilliant";
     public static final @Nonnull String GOLD = "gold";
     public static final @Nonnull String SILVER = "silver";
+    public static final @Nonnull String SILVER2 = "silver2";
     public static final @Nonnull String FREE = "free";
 
     public static @Nullable PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
     {
-        if (type.startsWith(FREE))
+        if (type.equals(FREE))
             return PuzzleSetType.FREE;
-        if (type.startsWith(GOLD))
+        if (type.equals(GOLD))
             return PuzzleSetType.GOLD;
-        if (type.startsWith(SILVER))
+        if (type.equals(SILVER))
             return PuzzleSetType.SILVER;
-        if (type.startsWith(BRILLIANT))
+        if (type.equals(SILVER2))
+            return PuzzleSetType.SILVER2;
+        if (type.equals(BRILLIANT))
             return PuzzleSetType.BRILLIANT;
         return null;
     }

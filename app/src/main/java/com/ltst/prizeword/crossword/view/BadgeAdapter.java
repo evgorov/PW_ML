@@ -70,7 +70,9 @@ public class BadgeAdapter extends BaseAdapter {
         else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
                 idBackground = R.drawable.puzzles_badges_bg_gold;
         else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
-                idBackground = R.drawable.puzzles_badges_bg_silver;
+            idBackground = R.drawable.puzzles_badges_bg_silver;
+        else if(mType == PuzzleSetModel.PuzzleSetType.SILVER2)
+            idBackground = R.drawable.puzzles_badges_bg_silver;
         else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
                 idBackground = R.drawable.puzzles_badges_bg_free;
         else
@@ -85,7 +87,9 @@ public class BadgeAdapter extends BaseAdapter {
             else if(mType == PuzzleSetModel.PuzzleSetType.GOLD)
                     idForeground = R.drawable.puzzles_badges_bg_gold_resolved;
             else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
-                    idForeground = R.drawable.puzzles_badges_bg_silver_resolved;
+                idForeground = R.drawable.puzzles_badges_bg_silver_resolved;
+            else if(mType == PuzzleSetModel.PuzzleSetType.SILVER2)
+                idForeground = R.drawable.puzzles_badges_bg_silver_resolved;
             else if(mType == PuzzleSetModel.PuzzleSetType.FREE)
                     idForeground = R.drawable.puzzles_badges_bg_unresolved;
         }
@@ -174,7 +178,7 @@ public class BadgeAdapter extends BaseAdapter {
                 default: idNumber = R.drawable.crossword_number_gold_32; break;
             }
         }
-        else if(mType == PuzzleSetModel.PuzzleSetType.SILVER)
+        else if(mType == PuzzleSetModel.PuzzleSetType.SILVER || mType == PuzzleSetModel.PuzzleSetType.SILVER2)
         {
             switch (position+1)
             {
