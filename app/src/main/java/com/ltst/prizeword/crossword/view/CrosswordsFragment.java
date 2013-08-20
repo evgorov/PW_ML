@@ -15,9 +15,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
-import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -27,7 +25,6 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,26 +74,10 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-//        CrosswordPanelData dataPanel1 = new CrosswordPanelData();
-//        dataPanel1.mKind = CrosswordPanelData.KIND_ARCHIVE;
-//        dataPanel1.mType = PuzzleSetModel.PuzzleSetType.FREE;
-//        dataPanel1.mMonth = "Июнь";
-//
-//        dataPanel1.mBadgeData = new BadgeData[1];
-//        for(int i=0; i<dataPanel1.mBadgeData.length; i++){
-//            BadgeData badge = new BadgeData();
-//            badge.mNumber = i+1;
-//            badge.mStatus = (i%2 == 0) ? true : false;
-//            badge.mProgress = 95;
-//            badge.mScore = 9000;
-//            dataPanel1.mBadgeData[i] = badge;
-//        }
-//        mCrosswordFragmentHolder.addPanel(dataPanel1);
+        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
-       mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
-
-       mRoot = v;
-       return v;
+        mRoot = v;
+        return v;
     }
 
     @Override
@@ -106,8 +87,9 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
-        mPuzzleSetModel.updateDataByDb(updateSetHandler);
-        mPuzzleSetModel.updateDataByInternet(updateSetHandler);
+//        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
+        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+//        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
         super.onResume();
     }
 
@@ -160,35 +142,33 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     private void createCrosswordPanel(){
-        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzleListAtSet();
         for (PuzzleSet set : sets)
         {
             mCrosswordFragmentHolder.addPanel(set);
-            List<String> puzzlesId = set.puzzlesId;
-            for(String puzzId : puzzlesId)
+            @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
+            for(@Nonnull Puzzle puzzle : puzzles)
             {
-                final @Nonnull IOnePuzzleModel mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzId, set.id);
-                mPuzzleModel.updateDataByDb(new IListenerVoid(){
-
-                    @Override
-                    public void handle() {
-                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-                        mCrosswordFragmentHolder.addBadge(puzzle);
-                    }
-                });
-                mPuzzleModel.updateDataByInternet(new IListenerVoid(){
-
-                    @Override
-                    public void handle() {
-                        @Nullable Puzzle puzzle = mPuzzleModel.getPuzzle();
-                        mCrosswordFragmentHolder.addBadge(puzzle);
-                    }
-                });
+                mCrosswordFragmentHolder.addBadge(puzzle);
             }
         }
     }
 
-    private IListenerVoid updateSetHandler = new IListenerVoid()
+    private IListenerVoid
+            updateSetsFromDBHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            createCrosswordPanel();
+            mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
+        }
+    };
+
+    private IListenerVoid
+            updateSetsFromServerHandler = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -203,7 +183,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle(int i)
         {
-            mPuzzleSetModel.updateDataByDb(updateSetHandler);
+//            mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
         }
     };
 

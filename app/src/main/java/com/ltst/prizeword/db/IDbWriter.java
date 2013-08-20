@@ -4,6 +4,7 @@ import com.ltst.prizeword.coefficients.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.crossword.model.PuzzleTotalSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -19,6 +20,7 @@ public interface IDbWriter extends IDbReader
     void putUserImage(@Nullable byte[] buffer);
 
     void putPuzzleSetList(@Nonnull List<PuzzleSet> list);
+    void putPuzzleTotalSetList(@Nonnull List<PuzzleTotalSet> list);
     void putPuzzleSet(@Nonnull PuzzleSet set);
 
     void putPuzzle(@Nonnull Puzzle puzzle);
