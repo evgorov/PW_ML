@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.coefficients.CoefficientsModel;
+import com.ltst.prizeword.coefficients.ICoefficientsModel;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -63,6 +65,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private @Nonnull HintsModel mHintsModel;
     private int mHintsCount;
+    private @Nonnull ICoefficientsModel mCoefficientsModel;
+
     private int mTimeLeft;
     private int mTimeGiven;
     private boolean mTickerLaunched = false;
@@ -122,12 +126,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mBcConnector = new BcConnector(this);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
+        mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
     }
 
     @Override
     protected void onStart()
     {
+        mCoefficientsModel.updateFromDatabase();
+        mCoefficientsModel.updateFromInternet();
+
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         mNextBtn = (Button) findViewById(R.id.gamefild_next_btn);
         mMenuBtn = (Button) findViewById(R.id.gamefild_menu_btn);
@@ -403,4 +411,5 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             showFinalDialog(true);
         }
     };
+
 }

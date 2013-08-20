@@ -4,19 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestCoefficients;
-import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

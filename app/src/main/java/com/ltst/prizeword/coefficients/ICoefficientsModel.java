@@ -1,13 +1,12 @@
 package com.ltst.prizeword.coefficients;
 
-import org.omich.velo.handlers.IListenerVoid;
-
-import javax.annotation.Nonnull;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import javax.annotation.Nullable;
 
 public interface ICoefficientsModel
 {
-    void updateFromDatabase(@Nonnull IListenerVoid handler);
-    void updateFromInternet(@Nonnull IListenerVoid handler);
+    void updateFromDatabase();
+    void updateFromInternet();
     @Nullable Coefficients getCoefficients();
+    int calculateScore(PuzzleSetModel.PuzzleSetType setType, int timeSpent, int timeGiven);
 }

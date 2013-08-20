@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.app.ModelUpdater;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.db.DbService;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,15 +27,15 @@ public class CoefficientsModel implements ICoefficientsModel
     }
 
     @Override
-    public void updateFromDatabase(@Nonnull IListenerVoid handler)
+    public void updateFromDatabase()
     {
-        mDbUpdater.update(handler);
+        mDbUpdater.update(null);
     }
 
     @Override
-    public void updateFromInternet(@Nonnull IListenerVoid handler)
+    public void updateFromInternet()
     {
-        mInternetUpdater.update(handler);
+        mInternetUpdater.update(null);
     }
 
     @Nullable
@@ -43,6 +43,21 @@ public class CoefficientsModel implements ICoefficientsModel
     public Coefficients getCoefficients()
     {
         return mCoefficients;
+    }
+
+    @Override
+    public int calculateScore(PuzzleSetModel.PuzzleSetType setType, int timeSpent, int timeGiven)
+    {
+        if (mCoefficients == null)
+        {
+            return 0;
+        }
+        int baseScore = mCoefficients.freeBaseScore;
+        // @TODO вычисление baseScore изходя из типа
+        int score = baseScore + mCoefficients.timeBonus * (timeGiven - timeSpent)/timeSpent;
+        if(score < 0)
+            return 0;
+        return score;
     }
 
     private Updater mDbUpdater = new Updater()
