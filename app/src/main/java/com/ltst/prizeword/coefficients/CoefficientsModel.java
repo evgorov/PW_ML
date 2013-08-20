@@ -52,8 +52,21 @@ public class CoefficientsModel implements ICoefficientsModel
         {
             return 0;
         }
-        int baseScore = mCoefficients.freeBaseScore;
-        // @TODO вычисление baseScore изходя из типа
+        int baseScore = 0;
+        if (setType == PuzzleSetModel.PuzzleSetType.FREE)
+            baseScore = mCoefficients.freeBaseScore;
+        if (setType == PuzzleSetModel.PuzzleSetType.SILVER)
+            baseScore = mCoefficients.silver1BaseScore;
+        if (setType == PuzzleSetModel.PuzzleSetType.SILVER2)
+            baseScore = mCoefficients.silver2BaseScore;
+        if (setType == PuzzleSetModel.PuzzleSetType.GOLD)
+            baseScore = mCoefficients.goldBaseScore;
+        if (setType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
+            baseScore = mCoefficients.brilliantBaseScore;
+
+        if(baseScore == 0)
+            return 0;
+
         int score = baseScore + mCoefficients.timeBonus * (timeGiven - timeSpent)/timeSpent;
         if(score < 0)
             return 0;
