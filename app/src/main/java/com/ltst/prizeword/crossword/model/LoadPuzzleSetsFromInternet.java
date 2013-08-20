@@ -17,7 +17,6 @@ import com.ltst.prizeword.rest.RestPuzzleUserData;
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -92,16 +91,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey);
                 if (data != null)
                 {
-                    ArrayList<PuzzleTotalSet> sets = extractFromTotalRest(data);
-//                    List<RestPuzzleTotalSet> puzzleSets = data.getPuzzleSets();
-//                    for(RestPuzzleTotalSet puzzleSet : puzzleSets)
-//                    {
-//                        List<RestPuzzle> puzzles = puzzleSet.getPuzzles();
-//                        for(RestPuzzle puzzle : puzzles)
-//                        {
-//                            env.dbw.putPuzzle(puzzle);
-//                        }
-//                    }
+                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(data);
+                    env.dbw.putPuzzleTotalSetList(sets);
                     return getFromDatabase(env);
                 }
             }

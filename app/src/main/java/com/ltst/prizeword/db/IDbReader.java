@@ -27,6 +27,7 @@ public interface IDbReader
     @Nullable PuzzleSet getPuzzleSetById(long id);
     @Nullable Puzzle getPuzzleByServerId(@Nonnull String serverId);
     @Nullable List<Puzzle> getPuzzleListBySetId(long setId);
+    @Nullable List<Puzzle> getPuzzles(List<Long> ids);
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
     int getUserHintsCount();

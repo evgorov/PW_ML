@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.crossword.model.PuzzleTotalSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -231,6 +232,45 @@ public class DbWriter extends  DbReader implements IDbWriter
             });
         }
 
+    }
+
+    @Override
+    public void putPuzzleTotalSetList(@Nonnull List<PuzzleTotalSet> list) {
+
+        for(PuzzleTotalSet puzzleTotalSet : list)
+        {
+            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleTotalSet.serverId);
+
+            @Nonnull List<String> puzzlesIds = new ArrayList<String>();
+            final @Nonnull PuzzleSet puzzleSet = new PuzzleSet(puzzleTotalSet.id,puzzleTotalSet.serverId, puzzleTotalSet.name,
+                    puzzleTotalSet.isBought, puzzleTotalSet.type, puzzleTotalSet.month, puzzleTotalSet.year,
+                    puzzleTotalSet.createdAt, puzzleTotalSet.isPublished, puzzlesIds);
+
+            if(existingSet == null)
+            {
+                DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                        mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                    }
+                });
+            }
+            else
+            {
+                DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                        mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.ID + "=" + puzzleSet.id, null);
+                    }
+                });
+            }
+        }
     }
 
     @Override

@@ -201,6 +201,23 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
+    public List<Puzzle> getPuzzles(List<Long> ids)
+    {
+        int size = ids.size();
+        StringBuilder selection = new StringBuilder(size);
+        String[] selectionArgs = new String[size];
+        for(int i=0; i<size; i++)
+        {
+            selection.append(ColsPuzzles.ID +"= ? "+((i == size-1) ? " " : " OR "));
+            selectionArgs[i] = String.valueOf(ids.get(i));
+        }
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, selection.toString(), selectionArgs, null, null, null, null);
+        @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
+        return set;
+    }
+
+    @Nullable
+    @Override
     public Puzzle getPuzzleById(long id)
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.ID, id);
