@@ -46,7 +46,7 @@ public class CoefficientsModel implements ICoefficientsModel
     }
 
     @Override
-    public int calculateScore(PuzzleSetModel.PuzzleSetType setType, int timeSpent, int timeGiven)
+    public int getBaseScore(PuzzleSetModel.PuzzleSetType setType)
     {
         if (mCoefficients == null)
         {
@@ -67,10 +67,17 @@ public class CoefficientsModel implements ICoefficientsModel
         if(baseScore == 0)
             return 0;
 
-        int score = baseScore + mCoefficients.timeBonus * (timeGiven - timeSpent)/timeSpent;
-        if(score < 0)
+        return baseScore;
+    }
+
+    @Override
+    public int getBonusScore(int timeSpent, int timeGiven)
+    {
+        if (mCoefficients == null)
+        {
             return 0;
-        return score;
+        }
+        return mCoefficients.timeBonus * (timeGiven - timeSpent)/timeSpent;
     }
 
     private Updater mDbUpdater = new Updater()

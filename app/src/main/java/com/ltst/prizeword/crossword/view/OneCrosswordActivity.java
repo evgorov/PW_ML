@@ -22,6 +22,7 @@ import com.ltst.prizeword.coefficients.ICoefficientsModel;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.client.BcConnector;
@@ -409,6 +410,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         public void handle()
         {
             showFinalDialog(true);
+            PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
+            int timeSpent = mTimeGiven - mTimeLeft;
+            int baseScore = mCoefficientsModel.getBaseScore(type);
+            int bonusScore = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+
+            mFinalScore.setText(String.valueOf(baseScore));
+            mFinalBonus.setText(String.valueOf(bonusScore));
+            int sumScore = baseScore + bonusScore;
+            // @TODO поставить на крутилку
         }
     };
 

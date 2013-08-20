@@ -8,5 +8,6 @@ public interface ICoefficientsModel
     void updateFromDatabase();
     void updateFromInternet();
     @Nullable Coefficients getCoefficients();
-    int calculateScore(PuzzleSetModel.PuzzleSetType setType, int timeSpent, int timeGiven);
+    int getBaseScore(PuzzleSetModel.PuzzleSetType setType);
+    int getBonusScore(int timeSpent, int timeGiven);
 }
