@@ -219,6 +219,7 @@ public class CrosswordFragmentHolder {
         if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
         {
             // Текущие наборы сетов сканвордов;
+            crosswordSet.pTitleImage.setVisibility(View.VISIBLE);
             if(data.mBought)
             {
                 // Куплены;
@@ -245,7 +246,7 @@ public class CrosswordFragmentHolder {
         else
         {
             // Архивные наборы сетов сканвордов;
-            crosswordSet.pTitleImage.setVisibility(View.GONE);
+            crosswordSet.pTitleImage.setVisibility(View.VISIBLE);
             crosswordSet.pBuyCrosswordContaiter.setVisibility(View.GONE);
             if(data.mMonth == 0)
             {
