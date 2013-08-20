@@ -47,7 +47,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
-import com.ltst.prizeword.raiting.RatingFragment;
+import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -309,6 +309,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mFragmentManager.beginTransaction()
                 .replace(R.id.navigation_content_frame, fr)
+//                .addToBackStack(null)
                 .commit();
 
         mDrawerList.setItemChecked(position, true);

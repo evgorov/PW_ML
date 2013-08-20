@@ -538,4 +538,20 @@ public class RestClient implements IRestClient
         return holder.getBody();
     }
 
+    @Nullable
+    @Override
+    public RestPuzzleUsers getUsers(@Nonnull String sessionKey)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        ResponseEntity<RestPuzzleUsers> holder =
+                restTemplate.exchange(RestParams.URL_GET_USERS, HttpMethod.GET, requestEntity, RestPuzzleUsers.class, urlVariables);
+        return holder.getBody();
+    }
 }
