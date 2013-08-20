@@ -20,8 +20,6 @@ import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -149,7 +147,7 @@ public class UsersListModel implements IUsersListModel
         @Override
         protected long getItemId(UsersList.User user, int position)
         {
-            return user.idLong;
+            return user.position - 1;
         }
 
         @Nullable

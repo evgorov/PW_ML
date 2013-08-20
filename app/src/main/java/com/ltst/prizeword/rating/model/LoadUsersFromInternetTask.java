@@ -114,16 +114,14 @@ public class LoadUsersFromInternetTask implements IBcTask
     private @Nonnull UsersList parseUsers (@Nonnull RestPuzzleUsers restUsers)
     {
         RestUserData meRest = restUsers.getMe();
-        UsersList.User me = new UsersList.User(0, meRest.getId(), meRest.getName(), meRest.getSurname(), meRest.getCity(),
+        UsersList.User me = new UsersList.User(meRest.getId(), meRest.getName(), meRest.getSurname(), meRest.getCity(),
                 meRest.getSolved(), meRest.getPosition(), meRest.getHighScore(), meRest.getHighScore(), meRest.getDynamics(), meRest.getUserpicUrl(), null);
         List<UsersList.User> users = new ArrayList<UsersList.User>();
-        long index = 0;
         for (RestUserData rest : restUsers.getUsers())
         {
-            UsersList.User user = new UsersList.User(index, rest.getId(), rest.getName(), rest.getSurname(), rest.getCity(),
+            UsersList.User user = new UsersList.User(rest.getId(), rest.getName(), rest.getSurname(), rest.getCity(),
                     rest.getSolved(), rest.getPosition(), rest.getHighScore(), rest.getHighScore(), rest.getDynamics(), rest.getUserpicUrl(), null);
             users.add(user);
-            index++;
         }
         return new UsersList(me, users);
     }

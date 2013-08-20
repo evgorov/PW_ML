@@ -73,6 +73,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onStart()
     {
+        Log.i("RatingFragment.onStart()"); //$NON-NLS-1$
         mMenuBtn.setOnClickListener(this);
         initListView();
         super.onStart();
@@ -80,6 +81,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
 
     private void initListView()
     {
+        Log.i("RatingFragment.initListView()"); //$NON-NLS-1$
         assert mContext != null && mBcConnector != null && mSessionKey != null
                 : "Fragment must be attached to activity. Context, BcConnector, SessionKey must be initialized";
 
@@ -102,6 +104,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onResume()
     {
+        Log.i("RatingFragment.onResume()"); //$NON-NLS-1$
         super.onResume();
         UsersListModel m = mModel;
         if(m != null)
@@ -118,6 +121,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onPause()
     {
+        Log.i("RatingFragment.onPause()"); //$NON-NLS-1$
         UsersListModel m = mModel;
         if(m != null)
         {
@@ -129,10 +133,13 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onDestroy()
     {
+        Log.i("RatingFragment.onDestroy()"); //$NON-NLS-1$
         UsersListModel model = mModel;
         if(model != null)
         {
             model.close();
+            mModel = null;
+            mRatingAdapter = null;
         }
         super.onDestroy();
 

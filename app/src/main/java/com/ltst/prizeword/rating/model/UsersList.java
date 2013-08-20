@@ -57,36 +57,32 @@ public class UsersList implements Parcelable
 
     public static class User implements Parcelable
     {
-        public long idLong;
         public @Nonnull String id;
         public @Nonnull String name;
         public @Nonnull String surname;
-        public @Nonnull String email;
-        public @Nonnull String city;
+        public @Nullable String city;
         public int solved;
         public int position;
         public int monthScore;
         public int highScore;
         public int dynamics;
-        public final @Nonnull String previewUrl;
-        public final @Nullable byte[] pngImage;
+        public @Nullable String previewUrl;
+        public @Nullable byte[] pngImage;
         public boolean me;
 
 
-        public User(long idLong,
-                    @Nonnull String id,
+        public User(@Nonnull String id,
                     @Nonnull String name,
                     @Nonnull String surname,
-                    @Nonnull String city,
+                    @Nullable String city,
                     int solved,
                     int position,
                     int monthScore,
                     int highScore,
                     int dynamics,
-                    @Nonnull String previewUrl,
+                    @Nullable String previewUrl,
                     @Nullable byte[] pngImage)
         {
-            this.idLong = idLong;
             this.id = id;
             this.name = name;
             this.surname = surname;
@@ -129,7 +125,7 @@ public class UsersList implements Parcelable
                 {
                     pngImage = null;
                 }
-                return new User(idLong, id, name,
+                return new User( id, name,
                         surname, city,
                         solved, position, monthScore, highScore,
                         dynamics, previewUrl, pngImage);
@@ -150,7 +146,6 @@ public class UsersList implements Parcelable
         @Override
         public void writeToParcel(Parcel dest, int flags)
         {
-            dest.writeLong(idLong);
             dest.writeString(id);
             dest.writeString(name);
             dest.writeString(surname);

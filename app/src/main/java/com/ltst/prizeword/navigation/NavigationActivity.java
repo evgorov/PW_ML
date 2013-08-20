@@ -308,6 +308,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mFragmentManager.beginTransaction()
                 .replace(R.id.navigation_content_frame, fr)
+//                .addToBackStack(null)
                 .commit();
 
         mDrawerList.setItemChecked(position, true);
