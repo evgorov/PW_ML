@@ -219,7 +219,7 @@ public class DbReader implements IDbReader
     @Override
     public List<Puzzle> getPuzzlesBySetId(long setId)
     {
-        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID+"="+String.valueOf(setId), null, null, null, null, null);
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID+"="+String.valueOf(setId), null, null, null, ColsPuzzles.SERVER_ID, null);
         @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
         return set;
     }
