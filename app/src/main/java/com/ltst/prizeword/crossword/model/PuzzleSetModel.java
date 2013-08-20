@@ -40,6 +40,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
+    public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
+    {
+        mPuzzleSetsDbUpdater.update(handler);
+    }
+
+    @Override
     public @Nonnull List<PuzzleSet> getPuzzleSets()
     {
         if (mPuzzleSetList != null)

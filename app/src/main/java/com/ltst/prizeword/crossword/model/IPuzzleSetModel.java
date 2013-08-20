@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 public interface IPuzzleSetModel
 {
     void updateDataByDb(@Nonnull IListenerVoid handler);
+    void updateTotalDataByDb(@Nonnull IListenerVoid handler);
     void updateDataByInternet(@Nonnull IListenerVoid handler);
     void updateTotalDataByInternet(@Nonnull IListenerVoid handler);
     @Nonnull List<PuzzleSet> getPuzzleSets();
