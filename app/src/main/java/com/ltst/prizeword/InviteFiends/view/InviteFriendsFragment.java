@@ -42,6 +42,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     private @Nonnull ImageView mFbHeaderImage;
     private @Nonnull ImageView mVkHeaderImage;
+    private @Nonnull ImageView mFooterImage;
     private @Nullable InviteFriendsDataModel mVkModel;
     private @Nullable InviteFriendsDataModel mFbModel;
     private boolean mDataRequested = false;
@@ -69,8 +70,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mVkListView = (ListView)v.findViewById(R.id.vk_friends_listview);
         mFbHeaderImage = new ImageView(mContext);
         mVkHeaderImage = new ImageView(mContext);
+        mFooterImage = new ImageView(mContext);
         mFbHeaderImage.setBackgroundResource(R.drawable.invite_fb_header);
         mVkHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
+        mFooterImage.setBackgroundResource(R.drawable.invite_footer);
         return v;
 
     }
@@ -201,6 +204,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mVkListView.setDivider(null);
         mFbListView.addHeaderView(mFbHeaderImage);
         mVkListView.addHeaderView(mVkHeaderImage);
+        mFbListView.addFooterView(mFooterImage);
+        mVkListView.addFooterView(mFooterImage);
 
         super.onActivityCreated(savedInstanceState);
     }
