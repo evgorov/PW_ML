@@ -79,6 +79,8 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
             viewHolder.mPositionBgView.setBackgroundResource(positionBgRes);
             viewHolder.mPositionTextView.setText(String.valueOf(user.position));
             viewHolder.mPositionTextView.setVisibility(View.VISIBLE);
+            viewHolder.mDynamicsPic.setVisibility(View.VISIBLE);
+
         }
         else if(user.position > 0)
         {

@@ -30,36 +30,20 @@
                 />
     </FrameLayout>
 
-    <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="vertical">
 
-        <FrameLayout
+    <FrameLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/invite_bg_tile">
+
+
+        <ListView
+                android:id="@+id/rating_listview"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                >
-
-            <FrameLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/invite_bg_tile"/>
-            </FrameLayout>
+                android:layout_width="fill_parent"
+                />
+    </FrameLayout>
 
 
-            <ListView
-                    android:id="@+id/rating_listview"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
-
-        </FrameLayout>
-    </LinearLayout>
 </LinearLayout>

@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:background="@drawable/rating_cell_other_place_bg"
                 android:layout_gravity="center_vertical|left"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="6dp"
                 >
 
             <ImageView
@@ -31,19 +31,25 @@
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     android:src="@drawable/rating_cell_move_none"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="10dp"
                     />
 
             <TextView
                     android:id="@+id/rating_item_position_textview"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    style="@style/Rating_number_text"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="10dp"
+                    android:text="1"
                     />
         </FrameLayout>
 
         <ImageView
                 android:id="@+id/rating_item_image"
                 android:layout_height="@dimen/size_avatar"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_avatar"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_vertical|left"
@@ -81,16 +87,26 @@
             <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="7dp">
 
                 <TextView
                         android:id="@+id/rating_item_solved"
                         android:layout_height="wrap_content"
-                        android:layout_width="30dp"
+                        android:layout_width="25dp"
                         android:maxLines="1"
                         android:maxWidth="30dp"
                         android:layout_marginLeft="20dp"
-                        android:text="0"
+                        android:text="021"
+
+                        />
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:maxLines="1"
+                        android:textSize="12sp"
+                        android:text="отгадано"
 
                         />
                 <TextView
@@ -99,7 +115,7 @@
                         android:layout_width="30dp"
                         android:maxLines="1"
                         android:maxWidth="30dp"
-                        android:layout_marginLeft="65dp"
+                        android:layout_marginLeft="20dp"
                         android:text="0"
                         />
             </LinearLayout>
