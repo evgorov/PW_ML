@@ -38,47 +38,17 @@
     </FrameLayout>
 
     <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/login_bg_tile"
+            >
 
-        <FrameLayout
+        <ListView
+                android:id="@+id/vk_friends_listview"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                >
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/invite_bg_tile"/>
-
-            <ListView
-                    android:id="@+id/vk_friends_listview"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-
-                    />
-        </FrameLayout>
-
-        <FrameLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                >
-
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/invite_bg_tile"/>
-
-
-            <ListView
-                    android:id="@+id/fb_friends_listview"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
-        </FrameLayout>
+                android:layout_width="fill_parent"
+                android:background="@drawable/invite_bg_tile"
+                />
     </LinearLayout>
 </LinearLayout>
