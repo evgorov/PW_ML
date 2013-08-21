@@ -158,10 +158,16 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
-        final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
+        @Nonnull List<PuzzleQuestion> puzzleQuestions = new ArrayList<PuzzleQuestion>(puzzle.questions.size());
+        for(PuzzleQuestion pq : puzzle.questions)
+        {
+            pq.puzzleId = puzzle.id;
+            puzzleQuestions.add(pq);
+        }
 
+        final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
         final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
-        final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
+        final List<ContentValues> questionCv = createContentValuesList(puzzleQuestions, mPuzzleQuestionContentValuesCreator);
 
         if (existingPuzzle == null) // новый кроссворд
         {
@@ -188,7 +194,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                 @Override
                 public void handle()
                 {
-                    mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
+                    int rows = mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
                     if (existingQuestions == null)
                     {
                         return;
@@ -201,7 +207,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                         if (existingQuestion == null)
                             continue;
 
-                        mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
+                        int rows2 = mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
                                 ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
                                 ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
                                 + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
@@ -245,9 +251,15 @@ public class DbWriter extends  DbReader implements IDbWriter
 
         for(PuzzleTotalSet puzzleTotalSet : list)
         {
-            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleTotalSet.serverId);
+            final @Nonnull PuzzleTotalSet fPuzzleTotalSet = puzzleTotalSet;
+            final @Nullable PuzzleSet existingSet = getPuzzleSetByServerId(puzzleTotalSet.serverId);
 
             @Nonnull List<String> puzzlesIds = new ArrayList<String>();
+            for(Puzzle puzzle : puzzleTotalSet.puzzles)
+            {
+                puzzlesIds.add(puzzle.serverId);
+//                putPuzzle(puzzle);
+            }
             final @Nonnull PuzzleSet puzzleSet = new PuzzleSet(puzzleTotalSet.id,puzzleTotalSet.serverId, puzzleTotalSet.name,
                     puzzleTotalSet.isBought, puzzleTotalSet.type, puzzleTotalSet.month, puzzleTotalSet.year,
                     puzzleTotalSet.createdAt, puzzleTotalSet.isPublished, puzzlesIds);
@@ -260,7 +272,15 @@ public class DbWriter extends  DbReader implements IDbWriter
                     public void handle()
                     {
                         ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                        mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                        long id = mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                        if(id != -1)
+                        {
+                            for(Puzzle puzzle : fPuzzleTotalSet.puzzles)
+                            {
+                                puzzle.setId = id;
+                                putPuzzle(puzzle);
+                            }
+                        }
                     }
                 });
             }
@@ -272,7 +292,15 @@ public class DbWriter extends  DbReader implements IDbWriter
                     public void handle()
                     {
                         ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                        mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.ID + "=" + puzzleSet.id, null);
+                        int rows = mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.SERVER_ID + "='" + puzzleSet.serverId+"'", null);
+                        if(existingSet.id != -1)
+                        {
+                            for(Puzzle puzzle : fPuzzleTotalSet.puzzles)
+                            {
+                                puzzle.setId = existingSet.id;
+                                putPuzzle(puzzle);
+                            }
+                        }
                     }
                 });
             }

@@ -148,10 +148,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     private @Nonnull ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
     {
         ArrayList<PuzzleTotalSet> sets = new ArrayList<PuzzleTotalSet>(data.getPuzzleSets().size());
-        List<Puzzle> puzzles = new ArrayList<Puzzle>();
         for (RestPuzzleTotalSet restPuzzleSet : data.getPuzzleSets())
         {
             @Nullable HashSet<String> solvedQuestionsIdSet = null;
+            @Nonnull List<Puzzle> puzzles = new ArrayList<Puzzle>();
             for(RestPuzzle restPuzzle : restPuzzleSet.getPuzzles())
             {
                 int score = 0;
