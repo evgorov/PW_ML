@@ -775,6 +775,22 @@ Sets service message
       "service_message": "updated service message"
     }
 
+**`POST /link_accounts`**
+
+Merges two user accounts into one. Can merge only accounts from different providers (i.e. registration and facebook).
+
+*Request parameters:*
+
+- `session_key1`: Logged in session_key for first user to merge
+- `session_key2`: Logged in session_key for second user to merge
+
+*Response:*
+
+    {
+      "message": "ok"
+    }
+
+
 
 ## Puzzle data format
 
@@ -835,5 +851,3 @@ Example:
         }
       ]
     }
-
-
