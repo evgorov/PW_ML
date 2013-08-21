@@ -23,7 +23,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
-    private @Nonnull HashMap<String,List<Puzzle> > mPuzzleListAtSet;
+    private @Nonnull HashMap<String,List<Puzzle> > mPuzzlesSet;
     private int hintsCount;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
@@ -63,8 +63,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
     @Nonnull
     @Override
-    public HashMap<String, List<Puzzle>> getPuzzleListAtSet() {
-        return mPuzzleListAtSet;
+    public HashMap<String, List<Puzzle>> getPuzzlesSet() {
+        return mPuzzlesSet;
     }
 
     @Override
@@ -157,7 +157,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
             }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
             hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
-            mPuzzleListAtSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
+            mPuzzlesSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
         }
     }
 

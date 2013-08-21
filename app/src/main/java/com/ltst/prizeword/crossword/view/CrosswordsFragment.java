@@ -144,7 +144,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     private void createCrosswordPanel(){
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzleListAtSet();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         for (PuzzleSet set : sets)
         {
             mCrosswordFragmentHolder.addPanel(set);

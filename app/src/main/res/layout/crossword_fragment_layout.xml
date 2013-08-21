@@ -157,14 +157,14 @@
                                 <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/puzzles_current_puzzles_head_rest_time_icon"
-                                        />
+                                        android:layout_marginTop="1dp"
+                                        android:background="@drawable/puzzles_current_puzzles_head_rest_time_icon" />
 
                                 <LinearLayout
                                         android:orientation="horizontal"
-                                        android:layout_marginBottom="1dp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content">
+
                                     <TextView
                                             android:layout_marginLeft="1dp"
                                             android:textSize="10sp"
@@ -261,10 +261,12 @@
                                     android:background="@drawable/puzzles_hints_rest">
 
                                 <TextView
+                                        android:layout_marginBottom="1dp"
                                         android:textSize="12sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         android:text="@string/puzzless_hint_hints_rest"/>
                                 <TextView
+                                        android:layout_marginBottom="1dp"
                                         android:id="@+id/crossword_fragment_current_rest_count"
                                         android:textSize="12sp"
                                         android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
