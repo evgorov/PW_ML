@@ -79,7 +79,10 @@ public class CrosswordSet {
 
         this.pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.crossword_panel_badges_container);
 
+        this.pMonthBackground.setVisibility(View.GONE);
+
 //        this.mRootView.setVisibility(View.GONE);
+
     }
 
     public @Nonnull View getView()
@@ -145,8 +148,6 @@ public class CrosswordSet {
 
         this.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
-//        if(data.mKind == CrosswordPanelData.KIND_CURRENT)
-
         if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
         {
             // Текущие наборы сетов сканвордов;
@@ -158,14 +159,12 @@ public class CrosswordSet {
                 // Куплены;
                 this.pSwitcher.setVisibility(View.GONE);
                 this.pBuyCrosswordContaiter.setVisibility(View.GONE);
-                this.pMonthBackground.setVisibility(View.GONE);
             }
             else
             {
                 // Некуплены;
                 this.pSwitcher.setVisibility(View.GONE);
                 this.pCurrentCrosswordContaiter.setVisibility(View.GONE);
-                this.pMonthBackground.setVisibility(View.GONE);
                 this.pBadgeContainer.setVisibility(View.GONE);
             }
         }
@@ -178,7 +177,6 @@ public class CrosswordSet {
             this.pBadgeContainer.setVisibility(View.GONE);
             if(data.mMonth == 0)
             {
-                this.pMonthBackground.setVisibility(View.GONE);
             }
             else
             {
@@ -188,7 +186,6 @@ public class CrosswordSet {
 
         }
 
-//        final @Nonnull CrosswordSet crosswordSetFinal = crosswordSet;
         final @Nonnull CrosswordPanelData dataFinal = data;
         this.pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -210,6 +207,11 @@ public class CrosswordSet {
                 mICrosswordFragment.choiceCrossword();
             }
         });
+    }
+
+    public void setVisibleMonth(boolean visible)
+    {
+        this.pMonthBackground.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public CrosswordSetType getCrosswordSetType()

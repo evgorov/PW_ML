@@ -70,26 +70,31 @@ public class CrosswordSetMonth extends LinearLayout{
         this.addView(mLinearLayoutFree);
     }
 
-    public void addCrosswordSet(@Nonnull PuzzleSetModel.PuzzleSetType type, @Nonnull View view){
+    public void addCrosswordSet(@Nonnull PuzzleSetModel.PuzzleSetType type, @Nonnull CrosswordSet view){
         if(type == PuzzleSetModel.PuzzleSetType.BRILLIANT){
-            mLinearLayoutBrilliant.addView(view);
+            mLinearLayoutBrilliant.addView(view.getView());
             mLinearLayoutBrilliant.setVisibility(View.VISIBLE);
+            view.setVisibleMonth(true);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.GOLD){
-            mLinearLayoutGold.addView(view);
+            mLinearLayoutGold.addView(view.getView());
             mLinearLayoutGold.setVisibility(View.VISIBLE);
+            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.SILVER){
-            mLinearLayoutSilver.addView(view);
+            mLinearLayoutSilver.addView(view.getView());
             mLinearLayoutSilver.setVisibility(View.VISIBLE);
+            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.SILVER2){
-            mLinearLayoutSilver2.addView(view);
+            mLinearLayoutSilver2.addView(view.getView());
             mLinearLayoutSilver2.setVisibility(View.VISIBLE);
+            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.FREE){
-            mLinearLayoutFree.addView(view);
+            mLinearLayoutFree.addView(view.getView());
             mLinearLayoutFree.setVisibility(View.VISIBLE);
+            view.setVisibleMonth(false);
         }
     }
 

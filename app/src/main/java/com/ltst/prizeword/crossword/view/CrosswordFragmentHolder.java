@@ -121,7 +121,7 @@ public class CrosswordFragmentHolder {
         if(!mListCrosswordSet.containsKey(data.mId))
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
-            crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet.getView());
+            crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet);
         }
         if(!mListCrosswordSetMonth.containsKey(data.mMonth))
         {
