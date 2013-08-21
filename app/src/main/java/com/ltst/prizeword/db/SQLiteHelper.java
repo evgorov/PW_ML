@@ -24,6 +24,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final @Nonnull String TNAME_PROVIDERS         = "providers";
     public static final @Nonnull String TNAME_USERS             = "users";
     public static final @Nonnull String TNAME_COEFFICIENTS      = "coefficients";
+    public static final @Nonnull String TNAME_POST_SCORE_QUEUE  = "score_queue";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
@@ -109,6 +110,12 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsCoefficients.BRILLIANT_BASE_SCORE + " integer not null default 0, "
             + ColsCoefficients.SILVER1_BASE_SCORE   + " integer not null default 0, "
             + ColsCoefficients.SILVER2_BASE_SCORE   + " integer not null default 0)";
+
+    public static final @Nonnull String CREATE_SCORE_QUEUE_QUERY = "create table "
+            + TNAME_POST_SCORE_QUEUE + "("
+            + ColsScoreQueue.ID                     + " integer not null primary key autoincrement, "
+            + ColsScoreQueue.SCORE                  + " integer not null default 0, "
+            + ColsScoreQueue.PUZZLE_ID              + " text not null)";
 
     public static final class ColsPuzzleSets
     {
@@ -204,6 +211,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String BRILLIANT_BASE_SCORE    = "brilliant_base_score";
         public static final @Nonnull String SILVER1_BASE_SCORE      = "silverone_base_score";
         public static final @Nonnull String SILVER2_BASE_SCORE      = "silvertwo_base_score";
+    }
+
+    public static final class ColsScoreQueue
+    {
+        public static final @Nonnull String ID              = "_id";
+        public static final @Nonnull String SCORE           = "score";
+        public static final @Nonnull String PUZZLE_ID       = "puzzleId";
     }
 
     // ===============================================
@@ -302,6 +316,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         db.execSQL(CREATE_PUZZLES_QUERY);
         db.execSQL(CREATE_PUZZLE_QUESTIONS_QUERY);
         db.execSQL(CREATE_COEFFICIENTS_QUERY);
+        db.execSQL(CREATE_SCORE_QUEUE_QUERY);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.ltst.prizeword.coefficients;
+package com.ltst.prizeword.score;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.ltst.prizeword.coefficients;
+package com.ltst.prizeword.score;
 
 import android.os.Parcel;
 import android.os.Parcelable;

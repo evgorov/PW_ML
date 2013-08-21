@@ -1,12 +1,13 @@
 package com.ltst.prizeword.db;
 
-import com.ltst.prizeword.coefficients.Coefficients;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.score.ScoreQueue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,4 +36,5 @@ public interface IDbReader
     int getUserHintsCount();
 
     @Nullable Coefficients getCoefficients();
+    @Nullable ScoreQueue getScoreQueue();
 }

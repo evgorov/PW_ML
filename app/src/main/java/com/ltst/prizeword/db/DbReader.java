@@ -3,13 +3,14 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.prizeword.coefficients.Coefficients;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.score.ScoreQueue;
 
 import org.omich.velo.db.DbHelper;
 
@@ -97,7 +98,7 @@ public class DbReader implements IDbReader
     {
             ColsImages.ID,
             ColsImages.KEY,
-            ColsImages.IMAGE,
+            ColsImages.IMAGE
     };
 
     public static final @Nonnull String[] FIELDS_P_COEFFICIENTS =
@@ -109,7 +110,14 @@ public class DbReader implements IDbReader
             ColsCoefficients.GOLD_BASE_SCORE,
             ColsCoefficients.BRILLIANT_BASE_SCORE,
             ColsCoefficients.SILVER1_BASE_SCORE,
-            ColsCoefficients.SILVER2_BASE_SCORE,
+            ColsCoefficients.SILVER2_BASE_SCORE
+    };
+
+    public static final @Nonnull String[] FIELDS_P_SCORE_QUEUE =
+    {
+            ColsScoreQueue.ID,
+            ColsScoreQueue.SCORE,
+            ColsScoreQueue.PUZZLE_ID
     };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -322,6 +330,19 @@ public class DbReader implements IDbReader
         return createObjectByCursor(cursor, mCoefficientsCreator);
     }
 
+    @Nullable
+    @Override
+    public ScoreQueue getScoreQueue()
+    {
+        final Cursor cursor = mDb.query(TNAME_POST_SCORE_QUEUE, FIELDS_P_SCORE_QUEUE, null, null, null, null, null);
+        @Nullable List<ScoreQueue.Score> queue = createTypedListByCursor(cursor, mScoreQueueCreator);
+        if (queue != null)
+        {
+            return new ScoreQueue(queue);
+        }
+        return null;
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
@@ -421,6 +442,15 @@ public class DbReader implements IDbReader
         }
     };
 
+    private ObjectCreatorByCursor<ScoreQueue.Score> mScoreQueueCreator = new ObjectCreatorByCursor<ScoreQueue.Score>()
+    {
+        @Override
+        public ScoreQueue.Score createObject(Cursor c)
+        {
+            return new ScoreQueue.Score(c.getLong(0), c.getInt(1), c.getString(2));
+        }
+    };
+
     //===========================================
 
     private static @Nonnull List<String> parsePuzzleServerIds(@Nonnull String idsSeparated)
@@ -484,9 +514,9 @@ public class DbReader implements IDbReader
         }
         return object;
     }
-
     public interface ObjectCreatorByCursor<T>
     {
         public T createObject(Cursor c);
+
     }
 }

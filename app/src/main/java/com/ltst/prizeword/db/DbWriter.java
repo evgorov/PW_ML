@@ -3,7 +3,7 @@ package com.ltst.prizeword.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.prizeword.coefficients.Coefficients;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -11,6 +11,7 @@ import com.ltst.prizeword.crossword.model.PuzzleTotalSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.score.ScoreQueue;
 
 import org.omich.velo.db.DbHelper;
 import org.omich.velo.handlers.IListenerVoid;
@@ -338,6 +339,20 @@ public class DbWriter extends  DbReader implements IDbWriter
         });
     }
 
+    @Override
+    public void putScoreToQuery(@Nonnull ScoreQueue.Score score)
+    {
+        final ContentValues values = mScoreContentValuesCreator.createObjectContentValues(score);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.insert(TNAME_POST_SCORE_QUEUE, null, values);
+            }
+        });
+    }
+
     //===== ContentValues creators =======================
 
     private ContentValuesCreator<UserData> mUserDataContentValuesCreator = new ContentValuesCreator<UserData>()
@@ -475,6 +490,18 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
     };
 
+    private ContentValuesCreator<ScoreQueue.Score> mScoreContentValuesCreator  = new ContentValuesCreator<ScoreQueue.Score>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable ScoreQueue.Score object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsScoreQueue.SCORE, object.score);
+            cv.put(ColsScoreQueue.PUZZLE_ID, object.puzzleId);
+            return cv;
+        }
+    };
+
     // ========================================================
 
     private <T> List<ContentValues> createContentValuesList(@Nullable List<T> objectList, @Nonnull ContentValuesCreator<T> creator)
@@ -491,10 +518,9 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
         return cvList;
     }
-
     public interface ContentValuesCreator<T>
     {
         public ContentValues createObjectContentValues(@Nullable T object);
-    }
 
+    }
 }

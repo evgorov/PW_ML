@@ -1,4 +1,4 @@
-package com.ltst.prizeword.coefficients;
+package com.ltst.prizeword.score;
 
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import javax.annotation.Nullable;
