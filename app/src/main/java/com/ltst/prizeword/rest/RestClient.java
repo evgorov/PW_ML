@@ -592,4 +592,38 @@ public class RestClient implements IRestClient
                 restTemplate.exchange(RestParams.URL_GET_COEFFICIENTS, HttpMethod.GET, requestEntity, RestCoefficients.class, urlVariables);
         return holder.getBody();
     }
+
+    @Override
+    public HttpStatus postPuzzleScore(@Nonnull String sessionKey, @Nonnull String puzzleId, int score)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.SOURCE, puzzleId);
+        urlVariables.put(RestParams.SCORE, score);
+        urlVariables.put(RestParams.SOLVED, 1);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        ResponseEntity<RestPuzzleUserData.RestPuzzleUserDataHolder> entity = null;
+
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_POST_PUZZLE_SCORE, HttpMethod.POST, requestEntity, RestPuzzleUserData.RestPuzzleUserDataHolder.class, urlVariables);
+        }
+        catch (Exception e){
+            Log.e(e.getMessage());
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
+                return status;
+            }
+        }
+        return entity.getStatusCode();
+    }
 }
