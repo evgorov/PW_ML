@@ -86,12 +86,16 @@ module Middleware
 
     get '/user_puzzles' do
       env['token_auth'].authorize!
-      ids = params['ids'].split(',')
-      (current_user['sets'] || [])
+      user_sets = (current_user['sets'] || [])
         .map { |o| o['puzzles'] }
         .flatten
-        .select { |o| ids.include?(o['id']) }
-        .to_json
+
+      if params['ids']
+        ids = params['ids'].split(',')
+        user_sets.select{ |o| ids.include?(o['id']) }.to_json
+      else
+        user_sets.to_json
+      end
     end
 
     get '/published_sets' do
