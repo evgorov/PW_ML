@@ -28,5 +28,6 @@ public interface IDbWriter extends IDbReader
     void setQuestionAnswered(long questionId, boolean answered);
 
     void putCoefficients(@Nonnull Coefficients coefficients);
-    void putScoreToQuery(@Nonnull ScoreQueue.Score score);
+    void putScoreToQueue(@Nonnull ScoreQueue.Score score);
+    void clearScoreQueue();
 }

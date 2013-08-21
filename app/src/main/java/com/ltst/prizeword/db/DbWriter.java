@@ -340,7 +340,7 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
-    public void putScoreToQuery(@Nonnull ScoreQueue.Score score)
+    public void putScoreToQueue(@Nonnull ScoreQueue.Score score)
     {
         final ContentValues values = mScoreContentValuesCreator.createObjectContentValues(score);
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
@@ -349,6 +349,19 @@ public class DbWriter extends  DbReader implements IDbWriter
             public void handle()
             {
                 mDb.insert(TNAME_POST_SCORE_QUEUE, null, values);
+            }
+        });
+    }
+
+    @Override
+    public void clearScoreQueue()
+    {
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
             }
         });
     }

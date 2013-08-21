@@ -7,6 +7,8 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
+import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.score.ScoreQueue;
 
 
 import org.omich.velo.bcops.BcTaskHelper;
@@ -37,26 +39,37 @@ public class PostPuzzleScoreTask implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
+        Bundle extras = env.extras;
+        if (extras == null)
+        {
+            return null;
+        }
+        @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
+        @Nullable String puzzleId = extras.getString(BF_PUZZLE_ID);
+        int scoreValue = extras.getInt(BF_SCORE);
+
         if (!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             env.context.getString(R.string.msg_no_internet)));
+            if (puzzleId != null && scoreValue >= 0)
+            {
+                ScoreQueue.Score score = new ScoreQueue.Score(0, scoreValue, puzzleId);
+                env.dbw.putScoreToQueue(score);
+            }
         }
         else
         {
-            Bundle extras = env.extras;
-            if (extras == null)
+            if (sessionKey != null && puzzleId != null && scoreValue >= 0)
             {
-                return null;
-            }
-            @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
-            @Nullable String puzzleId = extras.getString(BF_PUZZLE_ID);
-            int score = extras.getInt(BF_SCORE);
-            if (sessionKey != null && puzzleId != null && score >= 0)
-            {
-                HttpStatus postScore = postScore(sessionKey, puzzleId, score);
-                return packToBundle(postScore);
+                HttpStatus status = postScore(sessionKey, puzzleId, scoreValue);
+                if (status != null && status.value() == RestParams.SC_ERROR)
+                {
+                    ScoreQueue.Score score = new ScoreQueue.Score(0, scoreValue, puzzleId);
+                    env.dbw.putScoreToQueue(score);
+                }
+                return packToBundle(status);
             }
         }
         return null;
