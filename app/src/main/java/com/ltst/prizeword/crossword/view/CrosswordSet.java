@@ -51,10 +51,10 @@ public class CrosswordSet {
     private @Nonnull BadgeGridView pBadgeContainer;
 
 
-    public CrosswordSet(@Nonnull Context context, @Nonnull LayoutInflater inflater, @Nonnull ICrosswordFragment iCrosswordFragment) {
+    public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
 
         this.mContext = context;
-        this.mInflater = inflater;
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mICrosswordFragment = iCrosswordFragment;
 
         this.mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);

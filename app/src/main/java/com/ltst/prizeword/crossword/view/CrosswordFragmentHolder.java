@@ -33,6 +33,7 @@ public class CrosswordFragmentHolder {
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
     private @Nonnull HashMap<Long, CrosswordSet> mListCrosswordSet;
+    private @Nonnull HashMap<Integer, CrosswordSetMonth> mListCrosswordSetMonth;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
@@ -43,6 +44,7 @@ public class CrosswordFragmentHolder {
         this.mContext = context;
 
         mListCrosswordSet = new HashMap<Long, CrosswordSet>();
+        mListCrosswordSetMonth = new HashMap<Integer, CrosswordSetMonth>();
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
 
@@ -92,7 +94,12 @@ public class CrosswordFragmentHolder {
 
     private CrosswordSet getCrosswordSet(long id)
     {
-        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext,mInflater,mICrosswordFragment);
+        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext,mICrosswordFragment);
+    }
+
+    private CrosswordSetMonth getCrosswordSetMonth(int month)
+    {
+        return (month >= 0 && mListCrosswordSetMonth.containsKey(month)) ? mListCrosswordSetMonth.get(month) : new CrosswordSetMonth(mContext);
     }
 
     // ================== CROSSWORD PANELS ITEM ======================
@@ -108,16 +115,22 @@ public class CrosswordFragmentHolder {
         data.mMonth = set.month;
         data.mYear = set.year;
 
+        @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
         @Nonnull CrosswordSet crosswordSet = getCrosswordSet(data.mId);
         crosswordSet.fillPanel(data);
         if(!mListCrosswordSet.containsKey(data.mId))
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
+            crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet.getView());
+        }
+        if(!mListCrosswordSetMonth.containsKey(data.mMonth))
+        {
+            mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT){
-                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.getView());
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
             }
             else{
-                mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSet.getView());
+                mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth);
             }
         }
     }
