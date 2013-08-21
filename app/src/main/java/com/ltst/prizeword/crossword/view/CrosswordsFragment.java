@@ -90,6 +90,7 @@ public class CrosswordsFragment extends SherlockFragment
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
         mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
+//        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
         super.onResume();
     }
 
