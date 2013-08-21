@@ -28,27 +28,27 @@ public class CrosswordSet {
 
     private @Nonnull CrosswordSetType mCrosswordSetType;
 
-    @Nonnull View mRootView;
-    @Nonnull LinearLayout pMonthBackground;
-    @Nonnull TextView pMonthText;
-    @Nonnull LinearLayout pTitleImage;
-    @Nonnull TextView pTitleText;
-    @Nonnull ToggleButton pSwitcher;
+    private @Nonnull View mRootView;
+    private @Nonnull LinearLayout pMonthBackground;
+    private @Nonnull TextView pMonthText;
+    private @Nonnull LinearLayout pTitleImage;
+    private @Nonnull TextView pTitleText;
+    private @Nonnull ToggleButton pSwitcher;
 
-    @Nonnull LinearLayout pCurrentCrosswordContaiter;
-    @Nonnull TextView pRatioText;
-    @Nonnull TextView pProgressText;
-    @Nonnull LinearLayout pProgressBackground;
-    @Nonnull LinearLayout pProgressForeround;
-    @Nonnull TextView pScoreText;
+    private @Nonnull LinearLayout pCurrentCrosswordContaiter;
+    private @Nonnull TextView pRatioText;
+    private @Nonnull TextView pProgressText;
+    private @Nonnull LinearLayout pProgressBackground;
+    private @Nonnull LinearLayout pProgressForeround;
+    private @Nonnull TextView pScoreText;
 
-    @Nonnull LinearLayout pBuyCrosswordContaiter;
-    @Nonnull TextView pBuyCountText;
-    @Nonnull TextView pBuyScore;
-    @Nonnull LinearLayout pBuyButton;
-    @Nonnull TextView pBuyPrice;
+    private @Nonnull LinearLayout pBuyCrosswordContaiter;
+    private @Nonnull TextView pBuyCountText;
+    private @Nonnull TextView pBuyScore;
+    private @Nonnull LinearLayout pBuyButton;
+    private @Nonnull TextView pBuyPrice;
 
-    @Nonnull BadgeGridView pBadgeContainer;
+    private @Nonnull BadgeGridView pBadgeContainer;
 
 
     public CrosswordSet(@Nonnull Context context, @Nonnull LayoutInflater inflater, @Nonnull ICrosswordFragment iCrosswordFragment) {
@@ -78,10 +78,23 @@ public class CrosswordSet {
         this.pBuyPrice = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_price);
 
         this.pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.crossword_panel_badges_container);
+
+//        this.mRootView.setVisibility(View.GONE);
+    }
+
+    public @Nonnull View getView()
+    {
+        return this.mRootView;
+    }
+
+    public @Nonnull BadgeAdapter getAdapter(){
+        return (BadgeAdapter) this.pBadgeContainer.getAdapter();
     }
 
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
+//        this.mRootView.setVisibility(View.VISIBLE);
+
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
             this.pBuyPrice.setText(R.string.buy_three_dollar);
@@ -180,7 +193,7 @@ public class CrosswordSet {
         this.pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                CrosswordSet.this.pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
+                pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
             }
         });
 

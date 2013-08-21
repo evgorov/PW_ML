@@ -114,10 +114,10 @@ public class CrosswordFragmentHolder {
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT){
-                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSet.getView());
             }
             else{
-                mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSet.mRootView);
+                mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSet.getView());
             }
         }
     }
@@ -132,7 +132,7 @@ public class CrosswordFragmentHolder {
         data.mProgress = puzzle.solvedPercent;
         data.mSetId = puzzle.setId;
         CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
-        BadgeAdapter adapter = (BadgeAdapter) crosswordSet.pBadgeContainer.getAdapter();
+        BadgeAdapter adapter = crosswordSet.getAdapter();
         adapter.addBadgeData(data);
         adapter.notifyDataSetChanged();
     }
