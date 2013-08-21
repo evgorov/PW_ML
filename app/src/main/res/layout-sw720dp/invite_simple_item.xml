@@ -44,13 +44,17 @@
                 style="@style/InviteItemNameText"
                 />
     </LinearLayout>
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"/>
 
     <Button
             android:id="@+id/invite_add_btn"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="25dp"
+            android:layout_marginRight="40dp"
             android:background="@drawable/invite_invite_but"/>
 
 </LinearLayout>

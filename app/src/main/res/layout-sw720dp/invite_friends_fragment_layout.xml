@@ -39,23 +39,17 @@
     </FrameLayout>
 
     <LinearLayout
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:orientation="vertical"
+            android:background="@drawable/login_bg_tile"
             >
 
         <ListView
                 android:id="@+id/vk_friends_listview"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:layout_weight="1"
-                />
-
-        <ListView
-                android:id="@+id/fb_friends_listview"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:layout_weight="1"
+                android:background="@drawable/invite_bg_tile"
                 />
     </LinearLayout>
 </LinearLayout>
