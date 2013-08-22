@@ -1,4 +1,4 @@
-package com.ltst.prizeword.InviteFiends.model;
+package com.ltst.prizeword.invitefriends.model;
 
 
 import android.content.Context;
@@ -12,9 +12,7 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.dowloading.BgImageDownloader;
 import com.ltst.prizeword.dowloading.LoadImageTask;
-import com.ltst.prizeword.login.model.LoadFriendsImageTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
-import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;

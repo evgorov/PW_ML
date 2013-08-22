@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ltst.prizeword.R;
@@ -22,8 +23,7 @@ public class BadgeHolder {
     @Nonnull LinearLayout mNumber;
     @Nonnull TextView mScore;
     @Nonnull TextView mPercent;
-    @Nonnull LinearLayout mProgressBackgroud;
-    @Nonnull LinearLayout mProgressForegroud;
+    @Nonnull SeekBar mProgressSeekBar;
 
     @Nonnull LinearLayout mUnresolverContainer;
     @Nonnull LinearLayout mResolverContainer;
@@ -36,8 +36,8 @@ public class BadgeHolder {
         mBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_bg);
         mForegroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_fg);
         mNumber = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_number);
-        mProgressBackgroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_progress_bg);
-        mProgressForegroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_progress_fg);
+        mProgressSeekBar = (SeekBar) mRootView.findViewById(R.id.crossword_badge_progressbar);
+        mProgressSeekBar.setEnabled(false);
         mScore = (TextView) mRootView.findViewById(R.id.crossword_badge_score);
         mPercent = (TextView) mRootView.findViewById(R.id.crossword_badge_rercent);
 
