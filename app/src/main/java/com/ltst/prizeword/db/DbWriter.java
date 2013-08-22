@@ -182,7 +182,8 @@ public class DbWriter extends  DbReader implements IDbWriter
                         for (ContentValues questionValues : questionCv)
                         {
                             questionValues.put(ColsPuzzleQuestions.PUZZLE_ID, id);
-                            mDb.insert(TNAME_PUZZLE_QUESTIONS, null, questionValues);
+                            long row2 = mDb.insert(TNAME_PUZZLE_QUESTIONS, null, questionValues);
+                            int k = 1;
                         }
                 }
             });

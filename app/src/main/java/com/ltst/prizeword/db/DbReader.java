@@ -242,6 +242,14 @@ public class DbReader implements IDbReader
     {
         final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID+"="+String.valueOf(setId), null, null, null, ColsPuzzles.SERVER_ID, null);
         @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
+        for(@Nullable Puzzle puzzle : set)
+        {
+            if(puzzle!=null)
+            {
+                puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+                puzzle.countSolvedPercent();
+            }
+        }
         return set;
     }
 
@@ -254,6 +262,7 @@ public class DbReader implements IDbReader
         if (puzzle != null)
         {
             puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+            puzzle.countSolvedPercent();
         }
         return puzzle;
     }
@@ -283,6 +292,7 @@ public class DbReader implements IDbReader
             if (puzzle != null)
             {
                 puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+                puzzle.countSolvedPercent();
             }
         }
         return puzzles;
