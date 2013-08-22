@@ -187,6 +187,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton.setOnClickListener(this);
         mFinalNextButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
+
+        fillFlipNumbers(0);
         super.onStart();
     }
 
@@ -421,7 +423,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             int sumScore = baseScore + bonusScore;
 
             mPostPuzzleScoreModel.post(mCurrentPuzzleServerId, sumScore);
-            // @TODO поставить на крутилку
+
+            fillFlipNumbers(sumScore);
         }
     };
 
@@ -429,11 +432,33 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if(mFinalFlipNumbersViewGroup.getChildCount() != 5)
             return;
-        TextView decThousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(0);
-        TextView thousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(1);
-        TextView hundredsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(2);
-        TextView tensTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(3);
-        TextView lowerThanTenTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(4);
+        @Nullable TextView decThousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(0);
+        @Nullable TextView thousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(1);
+        @Nullable TextView hundredsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(2);
+        @Nullable TextView tensTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(3);
+        @Nullable TextView lowerThanTenTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(4);
+
+        assert  decThousandsTv != null &&
+                thousandsTv != null &&
+                hundredsTv != null &&
+                tensTv != null &&
+                lowerThanTenTv != null;
+
+        int decThousands = score/10000;
+        score -= decThousands * 10000;
+        int thousands = score/1000;
+        score -= thousands * 1000;
+        int hundreds = score/100;
+        score -= hundreds * 100;
+        int tens = score/10;
+        score -= tens * 10;
+        int lowerTen = score;
+
+        decThousandsTv.setText(String.valueOf(decThousands));
+        thousandsTv.setText(String.valueOf(thousands));
+        hundredsTv.setText(String.valueOf(hundreds));
+        tensTv.setText(String.valueOf(tens));
+        lowerThanTenTv.setText(String.valueOf(lowerTen));
     }
 
 }
