@@ -13,12 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.score.UploadScoreQueueModel;
+
+import org.omich.velo.bcops.client.IBcConnector;
 
 import javax.annotation.Nonnull;
 
@@ -39,7 +43,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull IAutorization mAuthorization;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
-
+    private @Nonnull IBcConnector mBcConnector;
 
     @Override
     public void onAttach(Activity activity) {
@@ -49,6 +53,8 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mAuthorization = (IAutorization) activity;
         mDrawerHolder = (INavigationDrawerHolder) activity;
         mDrawerHolder.lockDrawerClosed();
+
+        mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
     }
 
     @SuppressWarnings("unchecked")
@@ -106,6 +112,9 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
             SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
             spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
             spref.commit();
+
+            UploadScoreQueueModel uploadScore = new UploadScoreQueueModel(mBcConnector, sessionKey);
+            uploadScore.upload();
 
             switch (requestCode){
                 case  REQUEST_LOGIN_FB: {

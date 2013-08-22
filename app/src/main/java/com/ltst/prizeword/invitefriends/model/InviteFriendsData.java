@@ -1,4 +1,4 @@
-package com.ltst.prizeword.InviteFiends.model;
+package com.ltst.prizeword.invitefriends.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

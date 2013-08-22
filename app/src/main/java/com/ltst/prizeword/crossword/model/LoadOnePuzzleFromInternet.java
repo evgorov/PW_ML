@@ -101,7 +101,7 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         }
     }
 
-    private @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder loadPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    static public @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder loadPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
     {
         try
         {

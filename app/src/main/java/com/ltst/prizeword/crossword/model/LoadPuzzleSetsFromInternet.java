@@ -93,7 +93,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey);
                 if (data != null)
                 {
-                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(data);
+                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
                     env.dbw.putPuzzleTotalSetList(sets);
                     return getFromDatabase(env);
                 }
@@ -145,34 +145,26 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return sets;
     }
 
-    private @Nonnull ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
+    private @Nonnull ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull String sessionKey, @Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
     {
-        ArrayList<PuzzleTotalSet> sets = new ArrayList<PuzzleTotalSet>(data.getPuzzleSets().size());
-        List<Puzzle> puzzles = new ArrayList<Puzzle>();
-        for (RestPuzzleTotalSet restPuzzleSet : data.getPuzzleSets())
+        @Nonnull ArrayList<PuzzleTotalSet> sets = new ArrayList<PuzzleTotalSet>(data.getPuzzleSets().size());
+        @Nonnull List<RestPuzzleTotalSet> listRestPuzzleTotalSets = data.getPuzzleSets();
+        for (RestPuzzleTotalSet restPuzzleSet : listRestPuzzleTotalSets)
         {
-            @Nullable HashSet<String> solvedQuestionsIdSet = null;
-            for(RestPuzzle restPuzzle : restPuzzleSet.getPuzzles())
+            @Nonnull List<Puzzle> puzzles = new ArrayList<Puzzle>();
+            @Nonnull List<RestPuzzle> listRestPuzzles = restPuzzleSet.getPuzzles();
+            for(RestPuzzle restPuzzle : listRestPuzzles)
             {
-                int score = 0;
-                @Nullable List<RestPuzzleQuestion> questionList = restPuzzle.getQuestions();
-                List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
-                for (RestPuzzleQuestion restQ : questionList)
-                {
-                    PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
-                            restQ.getAnswer(), restQ.getAnswerPosition(), false);
-                    RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
-                    questions.add(q);
-                }
-                puzzles.add(new Puzzle(0, 0, restPuzzle.getPuzzleId(), restPuzzle.getName(), restPuzzle.getIssuedAt(),
-                    restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
-                    restPuzzle.getTimeGiven(), score,
-                    false, questions));
+                @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
+                @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(sessionKey,puzzleServerId);
+                @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);
+                puzzles.add(puzzle);
             }
 
-            PuzzleTotalSet set = new PuzzleTotalSet(0,restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
+            @Nonnull PuzzleTotalSet set = new PuzzleTotalSet(0,restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
                     restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
                     restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), puzzles);
+
             sets.add(set);
         }
         return sets;
@@ -200,5 +192,48 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             mapPuzzles.put(puzzleSet.serverId,puzzles);
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
+
+    static public @Nullable Puzzle parsePuzzle(@Nonnull RestPuzzle restPuzzle, @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder)
+    {
+        if (restPuzzle != null)
+        {
+            @Nullable RestPuzzleUserData restPuzzleUserData = null;
+            if(restPuzzleUserDataHolder != null)
+            {
+                restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
+            }
+            @Nullable List<RestPuzzleQuestion> questionList = restPuzzle.getQuestions();
+            @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+            @Nullable HashSet<String> solvedQuestionsIdSet = null;
+            if (restPuzzleUserData != null)
+            {
+                solvedQuestions = restPuzzleUserData.getSolvedQuestions();
+                if (solvedQuestions != null)
+                {
+                    solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+                }
+            }
+            List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
+            for (RestPuzzleQuestion restQ : questionList)
+            {
+                PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
+                        restQ.getAnswer(), restQ.getAnswerPosition(), false);
+                RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
+                questions.add(q);
+            }
+            int timeLeft = restPuzzle.getTimeGiven();
+            int score = 0;
+            if (restPuzzleUserData != null)
+            {
+                timeLeft = restPuzzleUserData.getTimeLeft();
+                score = restPuzzleUserData.getScore();
+            }
+            return new Puzzle(0, 0, restPuzzle.getPuzzleId(), restPuzzle.getName(), restPuzzle.getIssuedAt(),
+                    restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
+                    timeLeft, score,
+                    false, questions);
+        }
+        return null;
     }
 }

@@ -109,6 +109,7 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         }
 
         viewHolder.mCellLayoutView.setBackgroundResource(user.me ? R.drawable.rating_cell_me_bg : R.drawable.rating_cell_bg);
+        viewHolder.mUserPic.setImageDrawable(mContext.getResources().getDrawable(R.drawable.rating_userpic_none));
     }
 
     @Override

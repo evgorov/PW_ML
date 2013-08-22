@@ -1,4 +1,4 @@
-package com.ltst.prizeword.login.model;
+package com.ltst.prizeword.invitefriends.model;
 
 import android.content.Intent;
 

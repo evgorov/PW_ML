@@ -45,6 +45,9 @@ public class RestParams
     public static final @Nonnull String MODE_LONG = "long";
     public static final @Nonnull String PUZZLE_DATA = "puzzle_data";
     public static final @Nonnull String HINTS_CHANGE = "hints_change";
+    public static final @Nonnull String SCORE = "score";
+    public static final @Nonnull String SOURCE = "source";
+    public static final @Nonnull String SOLVED = "solved";
 
     // == API URLS ==
 
@@ -106,6 +109,9 @@ public class RestParams
 
     public static final @Nonnull String URL_ADD_REMOVE_HINTS = URL_API + "/hints" + addParam(SESSION_KEY, true) + addParam(HINTS_CHANGE, false);
     public static final @Nonnull String URL_GET_USERS = URL_API + "/users" + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_COEFFICIENTS = URL_API + "/coefficients" + addParam(SESSION_KEY, true);
+
+    public static final @Nonnull String URL_POST_PUZZLE_SCORE = URL_API + "/score" + addParam(SESSION_KEY, true) + addParam(SOURCE, false) + addParam(SCORE, false) + addParam(SOLVED, false);
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)

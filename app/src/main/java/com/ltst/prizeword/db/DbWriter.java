@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -10,6 +11,7 @@ import com.ltst.prizeword.crossword.model.PuzzleTotalSet;
 import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.score.ScoreQueue;
 
 import org.omich.velo.db.DbHelper;
 import org.omich.velo.handlers.IListenerVoid;
@@ -157,10 +159,16 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPuzzle(@Nonnull Puzzle puzzle)
     {
-        final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
+        @Nonnull List<PuzzleQuestion> puzzleQuestions = new ArrayList<PuzzleQuestion>(puzzle.questions.size());
+        for(PuzzleQuestion pq : puzzle.questions)
+        {
+            pq.puzzleId = puzzle.id;
+            puzzleQuestions.add(pq);
+        }
 
+        final @Nullable Puzzle existingPuzzle = getPuzzleByServerId(puzzle.serverId);
         final ContentValues values = mPuzzleContentValuesCreator.createObjectContentValues(puzzle);
-        final List<ContentValues> questionCv = createContentValuesList(puzzle.questions, mPuzzleQuestionContentValuesCreator);
+        final List<ContentValues> questionCv = createContentValuesList(puzzleQuestions, mPuzzleQuestionContentValuesCreator);
 
         if (existingPuzzle == null) // новый кроссворд
         {
@@ -187,7 +195,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                 @Override
                 public void handle()
                 {
-                    mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
+                    int rows = mDb.update(TNAME_PUZZLES, values, ColsPuzzles.ID + "=" + existingPuzzle.id, null);
                     if (existingQuestions == null)
                     {
                         return;
@@ -200,7 +208,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                         if (existingQuestion == null)
                             continue;
 
-                        mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
+                        int rows2 = mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
                                 ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
                                 ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
                                 + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
@@ -244,9 +252,15 @@ public class DbWriter extends  DbReader implements IDbWriter
 
         for(PuzzleTotalSet puzzleTotalSet : list)
         {
-            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleTotalSet.serverId);
+            final @Nonnull PuzzleTotalSet fPuzzleTotalSet = puzzleTotalSet;
+            final @Nullable PuzzleSet existingSet = getPuzzleSetByServerId(puzzleTotalSet.serverId);
 
             @Nonnull List<String> puzzlesIds = new ArrayList<String>();
+            for(Puzzle puzzle : puzzleTotalSet.puzzles)
+            {
+                puzzlesIds.add(puzzle.serverId);
+//                putPuzzle(puzzle);
+            }
             final @Nonnull PuzzleSet puzzleSet = new PuzzleSet(puzzleTotalSet.id,puzzleTotalSet.serverId, puzzleTotalSet.name,
                     puzzleTotalSet.isBought, puzzleTotalSet.type, puzzleTotalSet.month, puzzleTotalSet.year,
                     puzzleTotalSet.createdAt, puzzleTotalSet.isPublished, puzzlesIds);
@@ -259,7 +273,15 @@ public class DbWriter extends  DbReader implements IDbWriter
                     public void handle()
                     {
                         ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                        mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                        long id = mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                        if(id != -1)
+                        {
+                            for(Puzzle puzzle : fPuzzleTotalSet.puzzles)
+                            {
+                                puzzle.setId = id;
+                                putPuzzle(puzzle);
+                            }
+                        }
                     }
                 });
             }
@@ -271,7 +293,15 @@ public class DbWriter extends  DbReader implements IDbWriter
                     public void handle()
                     {
                         ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                        mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.ID + "=" + puzzleSet.id, null);
+                        int rows = mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.SERVER_ID + "='" + puzzleSet.serverId+"'", null);
+                        if(existingSet.id != -1)
+                        {
+                            for(Puzzle puzzle : fPuzzleTotalSet.puzzles)
+                            {
+                                puzzle.setId = existingSet.id;
+                                putPuzzle(puzzle);
+                            }
+                        }
                     }
                 });
             }
@@ -290,6 +320,48 @@ public class DbWriter extends  DbReader implements IDbWriter
             public void handle()
             {
                 mDb.update(TNAME_PUZZLE_QUESTIONS, values, ColsPuzzleQuestions.ID + "=" + questionId, null);
+            }
+        });
+    }
+
+    @Override
+    public void putCoefficients(@Nonnull Coefficients coefficients)
+    {
+        final ContentValues values = mCoefficientsContentValuesCreator.createObjectContentValues(coefficients);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_COEFFICIENTS, null, null);
+                mDb.insert(TNAME_COEFFICIENTS, null, values);
+            }
+        });
+    }
+
+    @Override
+    public void putScoreToQueue(@Nonnull ScoreQueue.Score score)
+    {
+        final ContentValues values = mScoreContentValuesCreator.createObjectContentValues(score);
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.insert(TNAME_POST_SCORE_QUEUE, null, values);
+            }
+        });
+    }
+
+    @Override
+    public void clearScoreQueue()
+    {
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
             }
         });
     }
@@ -412,6 +484,37 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
     };
 
+    private ContentValuesCreator<Coefficients> mCoefficientsContentValuesCreator = new ContentValuesCreator<Coefficients>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable Coefficients object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsCoefficients.ID, object.id);
+            cv.put(ColsCoefficients.TIME_BONUS, object.timeBonus);
+            cv.put(ColsCoefficients.FRIEND_BONUS, object.friendBonus);
+            cv.put(ColsCoefficients.FREE_BASE_SCORE, object.freeBaseScore);
+            cv.put(ColsCoefficients.GOLD_BASE_SCORE, object.goldBaseScore);
+            cv.put(ColsCoefficients.BRILLIANT_BASE_SCORE, object.brilliantBaseScore);
+            cv.put(ColsCoefficients.SILVER1_BASE_SCORE, object.silver1BaseScore);
+            cv.put(ColsCoefficients.SILVER2_BASE_SCORE, object.silver2BaseScore);
+
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<ScoreQueue.Score> mScoreContentValuesCreator  = new ContentValuesCreator<ScoreQueue.Score>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable ScoreQueue.Score object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsScoreQueue.SCORE, object.score);
+            cv.put(ColsScoreQueue.PUZZLE_ID, object.puzzleId);
+            return cv;
+        }
+    };
+
     // ========================================================
 
     private <T> List<ContentValues> createContentValuesList(@Nullable List<T> objectList, @Nonnull ContentValuesCreator<T> creator)
@@ -428,10 +531,9 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
         return cvList;
     }
-
     public interface ContentValuesCreator<T>
     {
         public ContentValues createObjectContentValues(@Nullable T object);
-    }
 
+    }
 }

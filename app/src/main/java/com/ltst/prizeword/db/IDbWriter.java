@@ -1,12 +1,12 @@
 package com.ltst.prizeword.db;
 
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
-import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleTotalSet;
 import com.ltst.prizeword.login.model.UserData;
-import com.ltst.prizeword.login.model.UserImage;
 import com.ltst.prizeword.login.model.UserProvider;
+import com.ltst.prizeword.score.ScoreQueue;
 
 import java.util.List;
 
@@ -26,4 +26,8 @@ public interface IDbWriter extends IDbReader
 
     void putFriendsImage(@Nonnull String url, @Nonnull byte[] bytes);
     void setQuestionAnswered(long questionId, boolean answered);
+
+    void putCoefficients(@Nonnull Coefficients coefficients);
+    void putScoreToQueue(@Nonnull ScoreQueue.Score score);
+    void clearScoreQueue();
 }

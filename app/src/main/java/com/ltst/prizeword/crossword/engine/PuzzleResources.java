@@ -401,7 +401,7 @@ public class PuzzleResources implements Parcelable
     {
         if (mSetType == PuzzleSetModel.PuzzleSetType.FREE)
             return R.drawable.gamefield_tile_question_correct_free;
-        if (mSetType == PuzzleSetModel.PuzzleSetType.SILVER)
+        if (mSetType == PuzzleSetModel.PuzzleSetType.SILVER || mSetType == PuzzleSetModel.PuzzleSetType.SILVER2)
             return R.drawable.gamefield_tile_question_correct_silver;
         if (mSetType == PuzzleSetModel.PuzzleSetType.GOLD)
             return R.drawable.gamefield_tile_question_correct_gold;
@@ -424,7 +424,7 @@ public class PuzzleResources implements Parcelable
     {
         if (mSetType == PuzzleSetModel.PuzzleSetType.FREE)
             return R.drawable.gamefield_tile_letters_correct_free;
-        if (mSetType == PuzzleSetModel.PuzzleSetType.SILVER)
+        if (mSetType == PuzzleSetModel.PuzzleSetType.SILVER || mSetType == PuzzleSetModel.PuzzleSetType.SILVER2)
             return R.drawable.gamefield_tile_letters_correct_silver;
         if (mSetType == PuzzleSetModel.PuzzleSetType.GOLD)
             return R.drawable.gamefield_tile_letters_correct_gold;
