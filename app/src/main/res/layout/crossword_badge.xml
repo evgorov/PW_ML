@@ -78,7 +78,7 @@
                     />
 
             <SeekBar
-                    android:id="@+id/crossword_set_progressbar"
+                    android:id="@+id/crossword_badge_progressbar"
                     android:layout_height="wrap_content"
                     android:layout_width="60dp"
                     android:max="100"

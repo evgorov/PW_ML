@@ -126,7 +126,7 @@
                     android:layout_width="60dp"
                     android:max="100"
                     android:progress="75"
-                    />git
+                    />
 
             <TextView
                     android:id="@+id/crossword_panel_percent"
