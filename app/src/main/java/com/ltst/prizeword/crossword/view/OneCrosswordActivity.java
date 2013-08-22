@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -91,7 +92,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mFinalShareFbButton;
     private @Nonnull TextView mFinalScore;
     private @Nonnull TextView mFinalBonus;
-    private @Nonnull View mFinalFlipNumbersViewGroup;
+    private @Nonnull ViewGroup mFinalFlipNumbersViewGroup;
     private @Nonnull Button mFinalMenuButton;
     private @Nonnull Button mFinalNextButton;
 
@@ -157,7 +158,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalShareFbButton = (Button)findViewById(R.id.final_share_fb_btn);
         mFinalScore = (TextView) findViewById(R.id.final_score);
         mFinalBonus = (TextView) findViewById(R.id.final_bonus);
-        mFinalFlipNumbersViewGroup = findViewById(R.id.final_flip_number);
+        mFinalFlipNumbersViewGroup = (ViewGroup) findViewById(R.id.final_flip_number);
         mFinalMenuButton = (Button)findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button)findViewById(R.id.final_next_btn);
 
@@ -423,5 +424,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             // @TODO поставить на крутилку
         }
     };
+
+    private void fillFlipNumbers(int score)
+    {
+        if(mFinalFlipNumbersViewGroup.getChildCount() != 5)
+            return;
+        TextView decThousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(0);
+        TextView thousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(1);
+        TextView hundredsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(2);
+        TextView tensTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(3);
+        TextView lowerThanTenTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(4);
+    }
 
 }
