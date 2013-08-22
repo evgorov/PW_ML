@@ -30,6 +30,7 @@ public class BadgeAdapter extends BaseAdapter {
     private @Nonnull Context mContext;
     private @Nonnull List<BadgeData> mData;
     private @Nonnull PuzzleSetModel.PuzzleSetType mType;
+    private boolean mClickable = false;
 
     public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type) {
         this.mContext = context;
@@ -269,16 +270,14 @@ public class BadgeAdapter extends BaseAdapter {
             // Решенные;
             badge.mUnresolverContainer.setVisibility(View.GONE);
             badge.mResolverContainer.setVisibility(View.VISIBLE);
-            badge.mRootView.setClickable(true);
-            badge.mRootView.setFocusable(true);
+            mClickable = true;
         }
         else
         {
             // Нерешенные;
             badge.mResolverContainer.setVisibility(View.GONE);
             badge.mUnresolverContainer.setVisibility(View.VISIBLE);
-            badge.mRootView.setClickable(false);
-            badge.mRootView.setFocusable(false);
+            mClickable = false;
         }
 
         return badge.mRootView;
@@ -301,4 +300,8 @@ public class BadgeAdapter extends BaseAdapter {
         return mData.get(position).mId;
     }
 
+    @Override
+    public boolean isEnabled(int position) {
+        return mClickable;
+    }
 }
