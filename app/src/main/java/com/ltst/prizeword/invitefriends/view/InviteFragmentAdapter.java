@@ -61,11 +61,12 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         TextView surnameView = (TextView) view.findViewById(R.id.invite_item_surname_textview);
         ImageView imageView = (ImageView) view.findViewById(R.id.invite_item_ava);
         Button inviteBtn = (Button) view.findViewById(R.id.invite_add_btn);
-        if (nameView == null || surnameView == null || imageView == null || inviteBtn == null)
+        View layout = view.findViewById(R.id.invite_item_layout);
+        if (nameView == null || surnameView == null || imageView == null || inviteBtn == null || layout == null)
         {
             throw new NullPointerException("Elements nameView, surnameView or imageView was null, but they must not be"); //$NON-NLS-1$
         }
-        return new ViewHolder(nameView, surnameView, imageView, inviteBtn);
+        return new ViewHolder(nameView, surnameView, imageView, inviteBtn, layout);
     }
 
 
@@ -74,6 +75,22 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     {
         final String id = quick.id;
         final String provider = quick.providerName;
+        if(provider.equals(InviteFriendsData.NO_PROVIDER))
+        {
+            viewHolder.layout.setBackgroundResource(R.drawable.invite_fb_header);
+            viewHolder.imageView.setVisibility(View.GONE);
+            viewHolder.inviteBtn.setVisibility(View.GONE);
+            viewHolder.nameView.setVisibility(View.GONE);
+            viewHolder.surnameView.setVisibility(View.GONE);
+        }
+        else
+        {
+            viewHolder.layout.setBackgroundResource(R.drawable.invite_item_bg);
+            viewHolder.imageView.setVisibility(View.VISIBLE);
+            viewHolder.inviteBtn.setVisibility(View.VISIBLE);
+            viewHolder.nameView.setVisibility(View.VISIBLE);
+            viewHolder.surnameView.setVisibility(View.VISIBLE);
+        }
 
         viewHolder.nameView.setText(quick.firstName);
         viewHolder.surnameView.setText(quick.lastName);
@@ -120,14 +137,16 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         final @Nonnull TextView surnameView;
         final @Nonnull ImageView imageView;
         final @Nonnull Button inviteBtn;
+        final @Nonnull View layout;
 
         private ViewHolder(@Nonnull TextView nameView, @Nonnull TextView surnameView,
-                           @Nonnull ImageView imageView, @Nonnull Button inviteBtn)
+                           @Nonnull ImageView imageView, @Nonnull Button inviteBtn, @Nonnull View layout)
         {
             this.nameView = nameView;
             this.surnameView = surnameView;
             this.imageView = imageView;
             this.inviteBtn = inviteBtn;
+            this.layout = layout;
         }
     }
 

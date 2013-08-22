@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@drawable/login_bg_tile">
 
     <FrameLayout
             android:layout_width="match_parent"
@@ -21,34 +22,29 @@
                 />
 
         <TextView
+                android:id="@+id/position_in_rating"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 style="@style/GamefieldTimerText"
                 android:layout_gravity="center_vertical|center"
-                android:text="@string/invite_fragment_title"
-                />
-
-        <Button
-                android:id="@+id/header_invite_all_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:background="@drawable/header_invite_all_but"
                 />
     </FrameLayout>
 
     <LinearLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/login_bg_tile"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/login_bg_tile">
+
 
         <ListView
-                android:id="@+id/vk_friends_listview"
+                android:id="@+id/rating_listview"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
+                android:clickable="false"
                 android:background="@drawable/invite_bg_tile"
                 />
     </LinearLayout>
+
+
 </LinearLayout>

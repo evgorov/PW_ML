@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 
 public class InviteFriendsData implements Parcelable
 {
+    public static final @Nonnull String NO_PROVIDER = "no_provider";
+
     public final @Nonnull String firstName;
     public final @Nonnull String lastName;
     public final @Nullable String deactivated;

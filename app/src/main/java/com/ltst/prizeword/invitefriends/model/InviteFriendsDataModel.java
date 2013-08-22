@@ -126,7 +126,7 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
 
 
 
-    public void sendInviteFriends( final String ids, final String providerName, @Nonnull IListenerVoid handler) {
+    public void sendInviteFriends(final String ids, final String providerName, @Nonnull IListenerVoid handler) {
 
         final String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
         Inviter session = new Inviter() {

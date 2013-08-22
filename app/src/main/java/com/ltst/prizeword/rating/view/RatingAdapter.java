@@ -30,6 +30,7 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         mModel = model;
     }
 
+
     public void update()
     {
         mModel.updateDataByInternet(new IListenerVoid()
@@ -38,7 +39,7 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
             public void handle()
             {
                 setSlowSource(mModel.getSource());
-                if(mRefreshHandler != null)
+                if (mRefreshHandler != null)
                     mRefreshHandler.handle();
             }
         });
@@ -53,6 +54,14 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
     @Override
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull UsersList.User user, @Deprecated @Nonnull View view, @Deprecated int position)
     {
+        if (position == 0)
+        {
+            viewHolder.mCellBorderLayoutView.setBackgroundResource(R.drawable.rating_cell_border_first);
+        } else if (position == getCount() - 1)
+        {
+            viewHolder.mCellBorderLayoutView.setBackgroundResource(R.drawable.rating_cell_border_last);
+        } else
+            viewHolder.mCellBorderLayoutView.setBackgroundResource(R.drawable.rating_cell_border);
         int positionBgRes = 0;
         switch (user.position)
         {
@@ -74,28 +83,27 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         viewHolder.mSurnameView.setText(user.surname);
         viewHolder.mSolvedTextView.setText(String.valueOf(user.solved));
         viewHolder.mScoreTextView.setText(String.valueOf(user.monthScore));
-        if(user.position > 3)
+        if (user.position > 3)
         {
             viewHolder.mPositionBgView.setBackgroundResource(positionBgRes);
             viewHolder.mPositionTextView.setText(String.valueOf(user.position));
             viewHolder.mPositionTextView.setVisibility(View.VISIBLE);
-        }
-        else if(user.position > 0)
+            viewHolder.mDynamicsPic.setVisibility(View.VISIBLE);
+
+        } else if (user.position > 0)
         {
             viewHolder.mDynamicsPic.setVisibility(View.GONE);
             viewHolder.mPositionBgView.setBackgroundResource(positionBgRes);
             viewHolder.mPositionTextView.setVisibility(View.GONE);
         }
 
-        if(user.dynamics > 0)
+        if (user.dynamics > 0)
         {
             viewHolder.mDynamicsPic.setImageDrawable(mContext.getResources().getDrawable(R.drawable.rating_cell_move_up));
-        }
-        else if(user.dynamics < 0)
+        } else if (user.dynamics < 0)
         {
             viewHolder.mDynamicsPic.setImageDrawable(mContext.getResources().getDrawable(R.drawable.rating_cell_move_down));
-        }
-        else if(user.dynamics == 0)
+        } else if (user.dynamics == 0)
         {
             viewHolder.mDynamicsPic.setImageDrawable(mContext.getResources().getDrawable(R.drawable.rating_cell_move_none));
         }
@@ -105,7 +113,8 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
     }
 
     @Override
-    protected void appendSlowDataToView(@Nonnull ViewHolder viewHolder, @Nonnull Bitmap bitmap, @Deprecated @Nonnull View view, @Deprecated int position)
+    protected void appendSlowDataToView(@Nonnull ViewHolder viewHolder, @Nonnull Bitmap
+            bitmap, @Deprecated @Nonnull View view, @Deprecated int position)
     {
         viewHolder.mUserPic.setImageBitmap(bitmap);
     }
@@ -123,15 +132,16 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         ImageView dynamicsPic = (ImageView) view.findViewById(R.id.rating_item_dynamics);
         View positionBgView = view.findViewById(R.id.rating_position_background_layout);
         View cellView = view.findViewById(R.id.rating_cell_layout);
-        if(positionBgView == null || nameView == null || surnameView == null || solvedView == null ||
+        View cellBorderView = view.findViewById(R.id.rating_cell_border);
+        if (positionBgView == null || nameView == null || surnameView == null || solvedView == null ||
                 scoreView == null || positionView == null || userPic == null || dynamicsPic == null
-                || cellView == null)
+                || cellView == null || cellBorderView == null)
         {
             Log.w("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$
             throw new NullPointerException("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$
         }
 
-        return new ViewHolder(nameView, surnameView, solvedView, scoreView, positionView, userPic, dynamicsPic, positionBgView, cellView);
+        return new ViewHolder(nameView, surnameView, solvedView, scoreView, positionView, userPic, dynamicsPic, positionBgView, cellView, cellBorderView);
     }
 
     @Override
@@ -151,10 +161,11 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
         final @Nonnull ImageView mDynamicsPic;
         final @Nonnull View mPositionBgView;
         final @Nonnull View mCellLayoutView;
+        final @Nonnull View mCellBorderLayoutView;
 
         public ViewHolder(@Nonnull TextView nameView, @Nonnull TextView surnameView, @Nonnull TextView solvedTextView,
                           @Nonnull TextView scoreTextView, @Nonnull TextView positionTextView, @Nonnull ImageView userPic,
-                          @Nonnull ImageView dynamicsPic, @Nonnull View positionBgView, @Nonnull View cellLayoutView)
+                          @Nonnull ImageView dynamicsPic, @Nonnull View positionBgView, @Nonnull View cellLayoutView, @Nonnull View cellBorderLayoutView)
         {
             mNameView = nameView;
             mSurnameView = surnameView;
@@ -165,6 +176,7 @@ public class RatingAdapter extends SlowSourceAdapter<RatingAdapter.ViewHolder, U
             mDynamicsPic = dynamicsPic;
             mPositionBgView = positionBgView;
             mCellLayoutView = cellLayoutView;
+            mCellBorderLayoutView = cellBorderLayoutView;
         }
     }
 

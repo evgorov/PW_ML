@@ -14,6 +14,7 @@ import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.lists.ISlowSource;
 import org.omich.velo.log.Log;
 
@@ -65,7 +66,15 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
                 }
             }
         }
+
         if(FbFriendsItems != null){
+            if(!FbFriendsItems.isEmpty())
+            {
+                InviteFriendsData midData = new InviteFriendsData(Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, 0, 0, new int[1],
+                        Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, InviteFriendsData.NO_PROVIDER);
+                resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(midData, null));
+            }
+
             for (InviteFriendsData item : FbFriendsItems)
             {
                 if (item != null)
