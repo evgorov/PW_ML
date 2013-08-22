@@ -139,6 +139,7 @@ public class CrosswordSet {
         sbProgress.append(data.mProgress);
         sbProgress.append("%");
         this.pProgressText.setText(sbProgress.toString());
+        this.pProgressSeekBar.setProgress(data.mProgress);
 
         this.pScoreText.setText(String.valueOf(data.mScore));
 

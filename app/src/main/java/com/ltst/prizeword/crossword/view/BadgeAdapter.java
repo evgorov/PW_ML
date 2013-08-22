@@ -257,6 +257,7 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
+        badge.mProgressSeekBar.setProgress(data.mProgress);
         badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
         badge.mScore.setText(String.valueOf(data.mScore));
         badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
