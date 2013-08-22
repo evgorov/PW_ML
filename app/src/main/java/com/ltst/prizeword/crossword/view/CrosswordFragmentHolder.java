@@ -18,6 +18,7 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -104,7 +105,7 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ITEM ======================
 
-    public void addPanel(@Nonnull PuzzleSet set)
+    public CrosswordPanelData extractCrosswordPanelData(@Nonnull PuzzleSet set)
     {
         CrosswordPanelData data = new CrosswordPanelData();
         data.mId = set.id;
@@ -114,7 +115,42 @@ public class CrosswordFragmentHolder {
         data.mBought = set.isBought;
         data.mMonth = set.month;
         data.mYear = set.year;
+        data.mScore = 0;
+        data.mProgress = 0;
+        data.mTotalCount = 0;
+        data.mTotalCount = 0;
+        return  data;
+    }
 
+    public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
+    {
+        for (PuzzleSet set : sets)
+        {
+            CrosswordPanelData data = extractCrosswordPanelData(set);
+            addPanel(data);
+            @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
+            int solved = 0;
+            int scores = 0;
+            int percents = 0;
+            for(@Nonnull Puzzle puzzle : puzzles)
+            {
+                addBadge(puzzle);
+                percents+=puzzle.solvedPercent;
+                scores+=puzzle.score;
+                if(puzzle.isSolved)
+                    solved++;
+            }
+            percents = percents/puzzles.size();
+            data.mScore = scores;
+            data.mProgress = percents;
+            data.mResolveCount = solved;
+            data.mTotalCount = puzzles.size();
+            addPanel(data);
+        }
+    }
+
+    private void addPanel(@Nonnull CrosswordPanelData data)
+    {
         @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
         @Nonnull CrosswordSet crosswordSet = getCrosswordSet(data.mId);
         crosswordSet.fillPanel(data);
@@ -135,7 +171,7 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    public void addBadge(@Nonnull Puzzle puzzle){
+    private void addBadge(@Nonnull Puzzle puzzle){
         if(puzzle == null) return;
         BadgeData data = new BadgeData();
         data.mId = puzzle.id;

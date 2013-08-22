@@ -145,20 +145,7 @@ public class CrosswordsFragment extends SherlockFragment
     private void createCrosswordPanel(){
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
-        for (PuzzleSet set : sets)
-        {
-            mCrosswordFragmentHolder.addPanel(set);
-            @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
-            int scores = 0;
-            int percents = 0;
-            for(@Nonnull Puzzle puzzle : puzzles)
-            {
-                mCrosswordFragmentHolder.addBadge(puzzle);
-                percents+=puzzle.solvedPercent;
-                scores+=puzzle.score;
-            }
-            percents = percents/puzzles.size();
-        }
+        mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
     }
 
     private IListenerVoid
