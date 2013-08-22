@@ -92,7 +92,7 @@
                             android:background="@drawable/gamefild_pause_progressbar_bg">
 
                         <TextView
-                                android:id="@+id/gamefild_progressbar_percent"
+                                android:id="@+id/gamefield_progressbar_percent"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical"
