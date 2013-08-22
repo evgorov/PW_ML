@@ -36,7 +36,10 @@ public class PuzzleResourcesAdapter
     private @Nonnull PuzzleSet mPuzzleSet;
     private @Nullable Puzzle mPuzzle;
     private @Nullable IListenerVoid mPuzzleUpdater;
+    private @Nullable IListenerVoid mPuzzleSolvedHandler;
+    private @Nullable IListenerVoid mPuzzleStateHandler;
     private @Nonnull List<IListener<PuzzleResources>> mResourcesUpdaterList;
+
     private @Nullable PuzzleResources mResources;
 
     private @Nonnull IBitmapResourceModel mIBitmapResourceModel;
@@ -150,6 +153,68 @@ public class PuzzleResourcesAdapter
         }
         return mPuzzle.isSolved;
     }
+
+    public void setPuzzleStateHandler(@Nullable IListenerVoid puzzleStateHandler)
+    {
+        mPuzzleStateHandler = puzzleStateHandler;
+    }
+
+    public void setPuzzleSolvedHandler(@Nonnull IListenerVoid puzzleSolvedHandler)
+    {
+        mPuzzleSolvedHandler = puzzleSolvedHandler;
+    }
+
+    @Nonnull
+    public IBitmapResourceModel getBitmapResourceModel()
+    {
+        return mIBitmapResourceModel;
+    }
+
+    @Nullable
+    public PuzzleResources getResources()
+    {
+        return mResources;
+    }
+
+    public void updateResources()
+    {
+        if (mPuzzle == null || mResourcesUpdaterList == null)
+        {
+            return;
+        }
+
+        PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
+        mResources = new PuzzleResources(type, mPuzzle.questions);
+        for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
+        {
+            puzzleResourcesHandler.handle(mResources);
+        }
+    }
+
+    public void addResourcesUpdater(@Nullable IListener<PuzzleResources> resourcesUpdater)
+    {
+        mResourcesUpdaterList.add(resourcesUpdater);
+    }
+
+    public void setPuzzleUpdater(@Nullable IListenerVoid puzzleUpdater)
+    {
+        mPuzzleUpdater = puzzleUpdater;
+    }
+
+    private IListenerVoid updateHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mPuzzle = mPuzzleModel.getPuzzle();
+            if (mPuzzleUpdater != null)
+            {
+                mPuzzleUpdater.handle();
+            }
+            if(mPuzzle != null && !mPuzzle.isSolved)
+                updateResources();
+        }
+    };
 
     public void updatePuzzleUserData()
     {
@@ -518,10 +583,15 @@ public class PuzzleResourcesAdapter
                     q.isAnswered = true;
                     mPuzzleModel.setQuestionAnswered(q, true);
                     mPuzzle.countSolvedPercent();
-                    if (mPuzzleUpdater != null)
+                    if (mPuzzleStateHandler != null)
                     {
-                        mPuzzleUpdater.handle();
+                        mPuzzleStateHandler.handle();
                     }
+                    if(isPuzzleSolved() && mPuzzleSolvedHandler != null)
+                    {
+                        mPuzzleSolvedHandler.handle();
+                    }
+
                     updatePuzzleUserData();
                 }
             }
@@ -583,56 +653,4 @@ public class PuzzleResourcesAdapter
             handler.handle(state);
         }
     }
-
-    @Nonnull
-    public IBitmapResourceModel getBitmapResourceModel()
-    {
-        return mIBitmapResourceModel;
-    }
-
-    @Nullable
-    public PuzzleResources getResources()
-    {
-        return mResources;
-    }
-
-    public void updateResources()
-    {
-        if (mPuzzle == null || mResourcesUpdaterList == null)
-        {
-            return;
-        }
-
-        PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
-        mResources = new PuzzleResources(type, mPuzzle.questions);
-        for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
-        {
-            puzzleResourcesHandler.handle(mResources);
-        }
-    }
-
-    public void addResourcesUpdater(@Nullable IListener<PuzzleResources> resourcesUpdater)
-    {
-        mResourcesUpdaterList.add(resourcesUpdater);
-    }
-
-    public void setPuzzleUpdater(@Nullable IListenerVoid puzzleUpdater)
-    {
-        mPuzzleUpdater = puzzleUpdater;
-    }
-
-    private IListenerVoid updateHandler = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            mPuzzle = mPuzzleModel.getPuzzle();
-            if (mPuzzleUpdater != null)
-            {
-                mPuzzleUpdater.handle();
-            }
-            if(mPuzzle != null && !mPuzzle.isSolved)
-                updateResources();
-        }
-    };
 }
