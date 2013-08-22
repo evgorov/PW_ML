@@ -77,24 +77,13 @@
                     android:text="43%"
                     />
 
-            <LinearLayout
-                    android:id="@+id/crossword_badge_progress_bg"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+            <SeekBar
+                    android:id="@+id/crossword_set_progressbar"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/puzzles_badge_progress_bg">
-
-                <LinearLayout
-                        android:id="@+id/crossword_badge_progress_fg"
-                        android:orientation="horizontal"
-                        android:layout_width="21dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="1dp"
-                        android:background="@drawable/puzzles_badge_progress">
-                </LinearLayout>
-            </LinearLayout>
+                    android:layout_width="60dp"
+                    android:max="100"
+                    android:progress="75"
+                    />
         </LinearLayout>
 
         <LinearLayout
