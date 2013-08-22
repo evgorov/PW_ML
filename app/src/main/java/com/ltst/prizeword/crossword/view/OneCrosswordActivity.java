@@ -430,7 +430,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void fillFlipNumbers(int score)
     {
-        if(mFinalFlipNumbersViewGroup.getChildCount() != 5)
+        if(mFinalFlipNumbersViewGroup.getChildCount() != 5 || score < 0)
             return;
         @Nullable TextView decThousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(0);
         @Nullable TextView thousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(1);
