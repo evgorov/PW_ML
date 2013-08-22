@@ -269,12 +269,16 @@ public class BadgeAdapter extends BaseAdapter {
             // Решенные;
             badge.mUnresolverContainer.setVisibility(View.GONE);
             badge.mResolverContainer.setVisibility(View.VISIBLE);
+            badge.mRootView.setClickable(true);
+            badge.mRootView.setFocusable(true);
         }
         else
         {
             // Нерешенные;
             badge.mResolverContainer.setVisibility(View.GONE);
             badge.mUnresolverContainer.setVisibility(View.VISIBLE);
+            badge.mRootView.setClickable(false);
+            badge.mRootView.setFocusable(false);
         }
 
         return badge.mRootView;

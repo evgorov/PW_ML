@@ -123,25 +123,6 @@ public class CrosswordsFragment extends SherlockFragment
 
     // =============================================
 
-    private void launchCrosswordActivity()
-    {
-        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-        @Nullable PuzzleSet freeSet = null;
-        for (PuzzleSet set : sets)
-        {
-            if(set.type.equals(PuzzleSetModel.FREE))
-            {
-                freeSet = set;
-                break;
-            }
-        }
-        if (freeSet != null)
-        {
-            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
-            mContext.startActivity(intent);
-        }
-    }
-
     private void createCrosswordPanel(){
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
@@ -186,8 +167,46 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void choiceCrossword() {
-        launchCrosswordActivity();
+    public void choicePuzzle(@Nonnull String setServerId, long puzzleId) {
+
+        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
+        @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
+        for(Puzzle puzzle : puzzles)
+        {
+            if(puzzle.id == puzzleId)
+            {
+                if(!puzzle.isSolved)
+                {
+                    for(PuzzleSet puzzleSet : sets)
+                    {
+                        if(puzzleSet.serverId == setServerId)
+                        {
+                            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mPuzzleSetModel.getHintsCount());
+                            mContext.startActivity(intent);
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+//        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+//        @Nullable PuzzleSet freeSet = null;
+//        for (PuzzleSet set : sets)
+//        {
+//            if(set.type.equals(PuzzleSetModel.FREE))
+//            {
+//                freeSet = set;
+//                break;
+//            }
+//        }
+//        if (freeSet != null)
+//        {
+//            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
+//            mContext.startActivity(intent);
+//        }
     }
 
 

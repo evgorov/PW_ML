@@ -99,8 +99,8 @@ public class CrosswordSet {
 
         pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                mICrosswordFragment.choiceCrossword();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
+                mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
             }
         });
 
