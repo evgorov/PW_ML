@@ -1,4 +1,4 @@
-package com.ltst.prizeword.InviteFiends.view;
+package com.ltst.prizeword.invitefriends.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
-import com.ltst.prizeword.InviteFiends.model.InviteFriendsDataModel;
+import com.ltst.prizeword.invitefriends.model.InviteFriendsDataModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
