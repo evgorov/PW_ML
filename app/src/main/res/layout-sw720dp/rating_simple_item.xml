@@ -3,17 +3,19 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/rating_cell_border"
              android:orientation="horizontal"
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:layout_marginTop="10dp"
              android:layout_gravity="center_horizontal"
+             android:clickable="false"
              android:background="@drawable/rating_cell_border">
 
     <LinearLayout
             android:id="@+id/rating_cell_layout"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center_horizontal|center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:background="@drawable/rating_cell_bg">
 
         <FrameLayout
@@ -22,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:background="@drawable/rating_cell_other_place_bg"
                 android:layout_gravity="center_vertical|left"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="10dp"
                 >
 
             <ImageView
@@ -54,7 +56,7 @@
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_vertical|left"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="6dp"
                 android:background="@drawable/rating_cell_photo_mask"
                 />
 
@@ -70,7 +72,7 @@
                     android:layout_width="100dp"
                     android:maxLines="1"
                     android:maxWidth="100dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
                     style="@style/InviteItemNameText"
                     android:text="Пупкин"
                     />
@@ -81,7 +83,7 @@
                     android:layout_width="100dp"
                     android:maxLines="1"
                     android:maxWidth="100dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
                     style="@style/InviteItemNameText"
                     android:text="dwdaw"/>
 
@@ -90,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginBottom="7dp">
+                    android:layout_marginBottom="8dp">
 
                 <TextView
                         android:id="@+id/rating_item_solved"
@@ -98,7 +100,7 @@
                         android:layout_width="25dp"
                         android:maxLines="1"
                         android:maxWidth="30dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="28dp"
                         android:text="021"
 
                         />
@@ -106,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:maxLines="1"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:text="отгадано"
 
                         />
@@ -116,7 +118,7 @@
                         android:layout_width="30dp"
                         android:maxLines="1"
                         android:maxWidth="30dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="45dp"
                         android:text="0"
                         />
             </LinearLayout>
