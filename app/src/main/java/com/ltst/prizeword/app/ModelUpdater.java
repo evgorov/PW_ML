@@ -12,6 +12,7 @@ import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
     private @Nullable String mTaskId;
     private @Nonnull List<IListenerVoid> mListeners = new ArrayList<IListenerVoid>();
 
+    @Override
     public void close()
     {
         String taskId = this.mTaskId;
@@ -57,6 +59,7 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
                 intent, this);
     }
 
+    @Override
     public void handle (@Nullable Bundle result)
     {
         mTaskId = null;
