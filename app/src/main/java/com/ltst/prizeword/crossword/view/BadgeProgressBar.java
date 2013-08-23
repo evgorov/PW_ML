@@ -6,6 +6,7 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.tools.SizeTools;
 
 import javax.annotation.Nonnull;
 
@@ -31,11 +32,12 @@ public class BadgeProgressBar {
 
                     @Override
                     public void onGlobalLayout() {
+                        float density = mContext.getResources().getDisplayMetrics().density;
                         int minimum = 16;
                         int margin = 1;
                         mWidth = mBackground.getWidth();
 
-                        int width = (mWidth == 0) ? 0 : mProgress * 100 / (mWidth - 2 * margin);
+                        int width = (mWidth == 0) ? 0 : mProgress * (mWidth - 2 * margin) / 100;
                         width = (width > 0 && width < minimum) ? minimum : width;
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
