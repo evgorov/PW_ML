@@ -166,7 +166,9 @@ public class CrosswordFragmentHolder {
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
             }
             else{
-                mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth);
+                if(data.mBought){
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth);
+                }
             }
         }
     }
