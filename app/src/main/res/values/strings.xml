@@ -115,6 +115,12 @@
     // ==== Menu_group text ====
     <string name="menu_group_result_in_month">Ваш результат в</string>
     <string name="menu_group_social">Социальные сети</string>
+    // ==== News_group text ====
+    <string name="news1">Возможности поведать рассказом собеседника в бега равна нулю</string>
+    <string name="news2">Совокупность методов разбора слов на слоги равна нулю</string>
+    <string name="news3">Результаты попадания в цель при заходе на посадку несогласованны</string>
+    <string name="news4">Жизненная позиция человечества в целом убога</string>
+    <string name="news5">Жители нашей планеты не могут следовать простым правилам поведения в обществе</string>
 
     <string-array name="menu_group_months">
         <item>январе</item>
