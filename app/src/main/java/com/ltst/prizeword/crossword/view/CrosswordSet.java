@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -39,7 +38,7 @@ public class CrosswordSet {
     private @Nonnull LinearLayout pCurrentCrosswordContaiter;
     private @Nonnull TextView pRatioText;
     private @Nonnull TextView pProgressText;
-    private @Nonnull SeekBar pProgressSeekBar;
+    private @Nonnull BadgeProgressBar pProgress;
     private @Nonnull TextView pScoreText;
 
     private @Nonnull LinearLayout pBuyCrosswordContaiter;
@@ -69,8 +68,7 @@ public class CrosswordSet {
         pCurrentCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_current_crossword_container);
         pRatioText = (TextView) mRootView.findViewById(R.id.crossword_panel_ratio);
         pProgressText = (TextView) mRootView.findViewById(R.id.crossword_panel_percent);
-        pProgressSeekBar = (SeekBar) mRootView.findViewById(R.id.crossword_set_progressbar);
-        pProgressSeekBar.setEnabled(false);
+        pProgress = new BadgeProgressBar(context, mRootView, R.id.crossword_panel_progress_bg, R.id.crossword_panel_progress_fg);
         pScoreText = (TextView) mRootView.findViewById(R.id.crossword_panel_score);
 
         pBuyCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_crossword_container);
@@ -160,7 +158,7 @@ public class CrosswordSet {
         sbProgress.append(data.mProgress);
         sbProgress.append("%");
         pProgressText.setText(sbProgress.toString());
-        pProgressSeekBar.setProgress(data.mProgress);
+        pProgress.setProgress(data.mProgress);
 
         pScoreText.setText(String.valueOf(data.mScore));
 

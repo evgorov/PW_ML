@@ -1,15 +1,9 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -17,7 +11,6 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -258,7 +251,7 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
-        badge.mProgressSeekBar.setProgress(data.mProgress);
+        badge.mProgress.setProgress(data.mProgress);
         badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
         badge.mScore.setText(String.valueOf(data.mScore));
         badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
