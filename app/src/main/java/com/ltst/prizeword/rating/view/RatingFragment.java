@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rating.model.UsersListModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -31,6 +32,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     private @Nullable Context mContext;
     private @Nullable IBcConnector mBcConnector;
     private @Nullable String mSessionKey;
+    private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
 
     private @Nonnull ListView mRatingListView;
     private @Nonnull Button mMenuBtn;
@@ -47,6 +49,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         super.onAttach(activity);
     }
 
@@ -66,6 +69,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mRatingListView.setDivider(null);
         mRatingListView.addHeaderView(mHeaderImage);
         mRatingListView.addFooterView(mFooterImage);
+
+        mMenuBtn.setOnClickListener(this);
 
         return v;
     }
@@ -147,6 +152,11 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
 
     @Override public void onClick(View view)
     {
-
+        switch (view.getId())
+        {
+            case R.id.header_menu_btn:
+                mINavigationDrawerHolder.toogle();
+                break;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.ltst.prizeword.navigation;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -12,14 +11,10 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,6 +24,7 @@ import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -48,8 +44,6 @@ import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
-import com.ltst.prizeword.swipe.ITouchInterface;
-import com.ltst.prizeword.swipe.TouchDetector;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
@@ -60,14 +54,13 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
-import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NavigationActivity extends SherlockFragmentActivity
-        implements INavigationDrawerActivity<NavigationDrawerItem>,
+        implements
         IFragmentsHolderActivity,
         IBcConnectorOwner,
         INavigationDrawerHolder,
@@ -75,8 +68,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         View.OnClickListener,
         CompoundButton.OnCheckedChangeListener,
         IReloadUserData,
-        IBitmapAsyncTask,
-        ITouchInterface
+        IBitmapAsyncTask
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
@@ -86,16 +78,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
-    private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
-    private @Nonnull NavigationDrawerLayout mDrawerLayout;
-    private @Nonnull ListView mDrawerList;
+    private @Nonnull SlidingMenu mSlidingMenu;
     private @Nonnull MainMenuHolder mDrawerMenu;
-    private @Nonnull NavigationDrawerListAdapter mDrawerAdapter;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
-    private @Nonnull List<NavigationDrawerItem> mDrawerItemsVisible;
     private @Nonnull FragmentManager mFragmentManager;
     private @Nonnull SparseArrayCompat<Fragment> mFragments;
 
@@ -103,7 +91,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
-    private @Nonnull GestureDetector mGestureDetector;
 
 
     @Override
@@ -120,15 +107,17 @@ public class NavigationActivity extends SherlockFragmentActivity
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
-        mContext = this.getContext();
         mBcConnector = new BcConnector(this);
+        mSlidingMenu = new SlidingMenu(this);
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        mSlidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.setBehindWidthRes(R.dimen.slidingmenu_width);
+
         LayoutInflater inflater = LayoutInflater.from(this);
-        mDrawerLayout = (NavigationDrawerLayout) findViewById(R.id.navigation_drawer_layout);
         View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
-        mDrawerList = (ListView) findViewById(R.id.nagivation_drawer_list);
-        mDrawerList.addFooterView(vfooter);
-        mDrawerAdapter = new NavigationDrawerListAdapter(this);
-        mDrawerList.setAdapter(mDrawerAdapter);
+
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
         mUserDataModel = new UserDataModel(this, mBcConnector);
@@ -138,6 +127,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
         checkLauchingAppByLink();
+
+        mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        mSlidingMenu.setMenu(vfooter);
 
         mDrawerMenu = new MainMenuHolder(this, vfooter);
         mDrawerMenu.mImage.setOnClickListener(this);
@@ -150,17 +142,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
 
-        // Вешаем swipe;
-        mGestureDetector = new GestureDetector(this, new TouchDetector(this));
-        mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                return mGestureDetector.onTouchEvent(event);
-            }
-        });
-
-        // show login fragment and try load user data by session_key;
-//        selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
-        selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+        initNavigationDrawerItems();
         reloadUserData();
     }
 
@@ -231,63 +213,22 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onDestroy();
     }
 
-    // ==== INavigationDrawerActivity =================================
-
-    @Nonnull
-    @Override
-    public Context getContext()
+    public void initNavigationDrawerItems()
     {
-        return this;
-    }
-
-    @Override
-    public int getDrawerItemResourceId()
-    {
-        return R.layout.navigation_drawer_item;
-    }
-
-    @Override
-    public int getDrawerItemTextViewResourceId()
-    {
-        return R.id.navigation_drawer_textview;
-    }
-
-    @Nonnull
-    @Override
-    public IListenerInt getDrawerItemClickHandler()
-    {
-        return new IListenerInt()
-        {
-            @Override
-            public void handle(int i)
-            {
-                selectNavigationFragmentByPosition(i);
-            }
-        };
-    }
-
-    @Nonnull
-    @Override
-    public List<NavigationDrawerItem> getNavigationDrawerItems()
-    {
-        if(mDrawerItemsVisible == null){
-            mDrawerItemsVisible = new ArrayList<NavigationDrawerItem>();
-        }
         if (mDrawerItems == null)
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             // login, auth fragments
-            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME, true);
-            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME,true);
-            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME,true);
+            initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME);
             // crossword
-            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME, true);
+            initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME);
         }
-        return mDrawerItemsVisible;
     }
 
     // ==== IFragmentsHolderActivity =================================
@@ -308,11 +249,9 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mFragmentManager.beginTransaction()
                 .replace(R.id.navigation_content_frame, fr)
-//                .addToBackStack(null)
                 .commit();
 
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mSlidingMenu.showContent();
         setTitle(mDrawerItems.get(position).getTitle());
     }
 
@@ -334,7 +273,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     // ==================================================
 
-    private void initFragmentToList(@Nonnull String id, @Nonnull String classname, boolean hidden)
+    private void initFragmentToList(@Nonnull String id, @Nonnull String classname)
     {
         String title = Strings.EMPTY;
         Resources res = getResources();
@@ -357,11 +296,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         if (!title.equals(Strings.EMPTY))
         {
-            NavigationDrawerItem item = new NavigationDrawerItem(title, classname, hidden);
+            NavigationDrawerItem item = new NavigationDrawerItem(title, classname);
             mDrawerItems.add(item);
-            if(!hidden){
-                mDrawerItemsVisible.add(item);
-            }
         }
     }
 
@@ -430,27 +366,30 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void lockDrawerClosed()
     {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mSlidingMenu.showContent();
+        mSlidingMenu.setSlidingEnabled(false);
     }
 
     @Override
     public void lockDrawerOpened()
     {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-    }
-
-    @Override
-    public boolean isLockDrawerOpen() {
-        return mDrawerLayout.isDrawerOpen(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        mSlidingMenu.showMenu();
+        mSlidingMenu.setSlidingEnabled(false);
     }
 
     @Override
     public void unlockDrawer()
     {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        mSlidingMenu.setSlidingEnabled(true);
     }
 
-    //==== IAutorization ==============================================
+    @Override
+    public void toogle()
+    {
+        mSlidingMenu.toggle();
+    }
+
+//==== IAutorization ==============================================
 
     @Override
     public void onAuthotized() {
@@ -468,11 +407,11 @@ public class NavigationActivity extends SherlockFragmentActivity
                 selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                 break;
             case R.id.menu_show_rules_btn:
-                @Nonnull Intent intent = RulesFragment.createIntent(getContext());
-                getContext().startActivity(intent);
+                @Nonnull Intent intent = RulesFragment.createIntent(this);
+                this.startActivity(intent);
                 break;
             case R.id.header_listview_logout_btn:
-                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(getContext());
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
                 spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                 spref.commit();
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
@@ -628,7 +567,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             int statusCode = mUserDataModel.getStatusCodeAnswer();
             @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
-            msg = mContext.getResources().getString(R.string.error_merge_accounts);
+            msg = getResources().getString(R.string.error_merge_accounts);
             @Nonnull String provider = mUserDataModel.getProvider();
             if(statusCode == RestParams.SC_SUCCESS)
             {
@@ -647,7 +586,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 if(provider == RestParams.FB_PROVIDER){
                     mDrawerMenu.mFacebookSwitcher.setChecked(false);
                 }
-                ErrorAlertDialog.showDialog(mContext, R.string.error_merge_accounts);
+                ErrorAlertDialog.showDialog(NavigationActivity.this, R.string.error_merge_accounts);
             }
         }
     };
@@ -656,21 +595,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void bitmapConvertToByte(@Nullable byte[] buffer) {
         // Отправляем новую аватарку насервер;
         resetUserImage(buffer);
-    }
-
-    @Override
-    public void notifySwipe(SwipeMethod swipe) {
-        switch (swipe)
-        {
-            case SWIPE_LEFT:
-                    mDrawerLayout.closeDrawer(mDrawerList);
-                break;
-            case SWIPE_RIGHT:
-                    mDrawerLayout.openDrawer(mDrawerList);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

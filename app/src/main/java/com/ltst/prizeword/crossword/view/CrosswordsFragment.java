@@ -110,10 +110,7 @@ public class CrosswordsFragment extends SherlockFragment
         switch (view.getId())
         {
             case R.id.crossword_fragment_header_menu_btn:
-                if(mINavigationDrawerHolder.isLockDrawerOpen())
-                    mINavigationDrawerHolder.lockDrawerClosed();
-                else
-                    mINavigationDrawerHolder.lockDrawerOpened();
+                mINavigationDrawerHolder.toogle();
                 break;
 
             default:

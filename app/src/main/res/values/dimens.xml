@@ -3,8 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="shutter_words_margin">4dp</dimen>
+    <!-- sliding menu -->
+    <dimen name="slidingmenu_shadow_width">15dp</dimen>
+    <dimen name="slidingmenu_width">240dp</dimen>
 
+    <dimen name="shutter_words_margin">4dp</dimen>
     <dimen name="navigation_drawer_item_height">48dp</dimen>
 
     <dimen name="choise_photo_dialog_width">200dp</dimen>
@@ -23,5 +26,7 @@
     <dimen name="puzzles_badge_text_size">14sp</dimen>
     <dimen name="puzzles_badge_score_text_size">14sp</dimen>
     <dimen name="puzzles_badge_range_between_text_size">4sp</dimen>
+
+
 
 </resources>
