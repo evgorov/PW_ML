@@ -404,7 +404,8 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/frame_border">
+                        android:background="@drawable/frame_border"
+                        >
 
                     <TextView
                             android:paddingStart="8dp"
@@ -415,6 +416,15 @@
                     <!--@TODO input brillian current crossword-->
 
                 </LinearLayout>
+                <ProgressBar
+                        android:id="@+id/archive_progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:visibility="visible"
+                        style="?android:attr/progressBarStyleLarge"
+                        />
             </FrameLayout>
 
         </LinearLayout>
