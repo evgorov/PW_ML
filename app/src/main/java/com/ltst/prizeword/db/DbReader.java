@@ -16,6 +16,8 @@ import org.omich.velo.db.DbHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -277,6 +279,22 @@ public class DbReader implements IDbReader
         {
             puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
             puzzle.countSolvedPercent();
+            Collections.sort(puzzle.questions, new Comparator<PuzzleQuestion>()
+            {
+                @Override
+                public int compare(PuzzleQuestion lhs, PuzzleQuestion rhs)
+                {
+                    int col = lhs.column - rhs.column;
+                    int row = lhs.row - rhs.row;
+                    if(row == 0)
+                        return col;
+                    if(col == 0)
+                        return row;
+                    if(row < 0 && col < 0)
+                        return -1;
+                    else return 1;
+                }
+            });
         }
         return puzzle;
     }
@@ -303,7 +321,24 @@ public class DbReader implements IDbReader
     public List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId)
     {
         final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_QUESTIONS, FIELDS_P_PUZZLE_QUESTIONS, ColsPuzzleQuestions.PUZZLE_ID, puzzleId);
-        return createTypedListByCursor(cursor, mPuzzleQuestionsCreator);
+        List<PuzzleQuestion> questions = createTypedListByCursor(cursor, mPuzzleQuestionsCreator);
+        Collections.sort(questions, new Comparator<PuzzleQuestion>()
+        {
+            @Override
+            public int compare(PuzzleQuestion lhs, PuzzleQuestion rhs)
+            {
+                int col = lhs.column - rhs.column;
+                int row = lhs.row - rhs.row;
+                if(row == 0)
+                    return col;
+                if(col == 0)
+                    return row;
+                if(row < 0 && col < 0)
+                    return -1;
+                else return 1;
+            }
+        });
+        return questions;
     }
 
     @Override

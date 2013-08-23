@@ -63,6 +63,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private int mCurrentPuzzleIndex = 0;
     private int mPuzzlesCount;
 
+    private boolean mHasFirstPuzzle = false;
+
     private @Nonnull HintsModel mHintsModel;
     private int mHintsCount;
     private @Nonnull ICoefficientsModel mCoefficientsModel;
@@ -123,6 +125,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
                 mHintsCount = extras.getInt(BF_HINTS_COUNT);
                 mCurrentPuzzleServerId = extras.getString(BF_CURRENT_PUZZLE_SERVER_ID);
+                if (mCurrentPuzzleServerId != null)
+                {
+                    mHasFirstPuzzle = true;
+                }
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
         }
@@ -344,13 +350,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        if (mCurrentPuzzleServerId == null)
+        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
         {
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         }
-        else
+        else if(mHasFirstPuzzle)
         {
             mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
+            mHasFirstPuzzle = false;
         }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         showPauseDialog(false);
