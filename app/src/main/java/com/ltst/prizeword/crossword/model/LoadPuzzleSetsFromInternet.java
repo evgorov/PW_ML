@@ -33,12 +33,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_PUZZLES_AT_SET = "LoadPuzzleSetsFromInternet.puzzles";
     public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
-    public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull
+    String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
     private static final @Nonnull String VOLUME_SHORT = "short";
     private static final @Nonnull String VOLUME_LONG = "long";
 
-    public static final @Nonnull Intent createShortIntent(@Nonnull String sessionKey)
+    public static final
+    @Nonnull
+    Intent createShortIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -46,7 +49,9 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return intent;
     }
 
-    public static final @Nonnull Intent createLongIntent(@Nonnull String sessionKey)
+    public static final
+    @Nonnull
+    Intent createLongIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -54,7 +59,9 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return intent;
     }
 
-    public static final @Nullable List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
+    public static final
+    @Nullable
+    List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
     {
         if (bundle == null)
         {
@@ -67,18 +74,21 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
-        @Nonnull String sessionKey = env.extras.getString(BF_SESSION_KEY);
-        @Nonnull String volumePuzzle = env.extras.getString(BF_VOLUME_PUZZLE);
-
-        if(!BcTaskHelper.isNetworkAvailable(env.context))
+        @Nullable String sessionKey = env.extras.getString(BF_SESSION_KEY);
+        @Nullable String volumePuzzle = env.extras.getString(BF_VOLUME_PUZZLE);
+        if (!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             env.context.getString(R.string.msg_no_internet)));
-        }
-        else
+        } else
         {
-            if(volumePuzzle.equals(VOLUME_SHORT))
+            if (volumePuzzle == null || sessionKey == null)
+            {
+                return null;
+            }
+
+            if (volumePuzzle.equals(VOLUME_SHORT))
             {
                 @Nullable RestPuzzleSet.RestPuzzleSetsHolder data = loadPuzzleSets(sessionKey);
                 if (data != null)
@@ -87,8 +97,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     env.dbw.putPuzzleSetList(sets);
                     return getFromDatabase(env);
                 }
-            }
-            else if(volumePuzzle.equals(VOLUME_LONG))
+            } else if (volumePuzzle.equals(VOLUME_LONG))
             {
                 @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey);
                 if (data != null)
@@ -102,14 +111,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return getFromDatabase(env);
     }
 
-    private @Nullable RestPuzzleSet.RestPuzzleSetsHolder loadPuzzleSets(@Nonnull String sessionKey)
+    private
+    @Nullable
+    RestPuzzleSet.RestPuzzleSetsHolder loadPuzzleSets(@Nonnull String sessionKey)
     {
         try
         {
             IRestClient client = RestClient.create();
             return client.getPublishedSets(sessionKey);
-        }
-        catch (Throwable e)
+        } catch (Throwable e)
         {
             Log.e(e.getMessage());
             Log.i("Can't load data from internet"); //$NON-NLS-1$
@@ -117,14 +127,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
     }
 
-    private @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey)
+    private
+    @Nullable
+    RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey)
     {
         try
         {
             IRestClient client = RestClient.create();
             return client.getTotalPublishedSets(sessionKey);
-        }
-        catch (Throwable e)
+        } catch (Throwable e)
         {
             Log.e(e.getMessage());
             Log.i("Can't load data from internet"); //$NON-NLS-1$
@@ -132,12 +143,14 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
     }
 
-    private @Nonnull ArrayList<PuzzleSet> extractFromRest(@Nonnull RestPuzzleSet.RestPuzzleSetsHolder data)
+    private
+    @Nonnull
+    ArrayList<PuzzleSet> extractFromRest(@Nonnull RestPuzzleSet.RestPuzzleSetsHolder data)
     {
         ArrayList<PuzzleSet> sets = new ArrayList<PuzzleSet>(data.getPuzzleSets().size());
         for (RestPuzzleSet restPuzzleSet : data.getPuzzleSets())
         {
-            PuzzleSet set = new PuzzleSet(0,restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
+            PuzzleSet set = new PuzzleSet(0, restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
                     restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
                     restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), restPuzzleSet.getPuzzles());
             sets.add(set);
@@ -145,7 +158,9 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return sets;
     }
 
-    private @Nonnull ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull String sessionKey, @Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
+    private
+    @Nonnull
+    ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull String sessionKey, @Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
     {
         @Nonnull ArrayList<PuzzleTotalSet> sets = new ArrayList<PuzzleTotalSet>(data.getPuzzleSets().size());
         @Nonnull List<RestPuzzleTotalSet> listRestPuzzleTotalSets = data.getPuzzleSets();
@@ -153,15 +168,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         {
             @Nonnull List<Puzzle> puzzles = new ArrayList<Puzzle>();
             @Nonnull List<RestPuzzle> listRestPuzzles = restPuzzleSet.getPuzzles();
-            for(RestPuzzle restPuzzle : listRestPuzzles)
+            for (RestPuzzle restPuzzle : listRestPuzzles)
             {
                 @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
-                @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(sessionKey,puzzleServerId);
+                @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(sessionKey, puzzleServerId);
                 @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);
                 puzzles.add(puzzle);
             }
 
-            @Nonnull PuzzleTotalSet set = new PuzzleTotalSet(0,restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
+            @Nonnull PuzzleTotalSet set = new PuzzleTotalSet(0, restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
                     restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
                     restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), puzzles);
 
@@ -170,70 +185,72 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         return sets;
     }
 
-    private static @Nonnull Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, @Nonnull HashMap<String,List<Puzzle> > mapPuzzles, int status)
+    private static
+    @Nonnull
+    Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles, int status)
     {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PUZZLE_SETS, sets);
         bundle.putInt(BF_STATUS_CODE, status);
         bundle.putInt(BF_HINTS_COUNT, hintsCount);
         bundle.putSerializable(BF_PUZZLES_AT_SET, mapPuzzles);
-        return  bundle;
+        return bundle;
     }
 
-    public static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
+    public static
+    @Nullable
+    Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
         int hintsCount = env.dbw.getUserHintsCount();
         List<Puzzle> puzzles = null;
-        @Nonnull HashMap<String,List<Puzzle> > mapPuzzles = new HashMap<String, List<Puzzle>>();
-        for(PuzzleSet puzzleSet : sets)
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
+        for (PuzzleSet puzzleSet : sets)
         {
             puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
-            mapPuzzles.put(puzzleSet.serverId,puzzles);
+            mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
     }
 
-    static public @Nullable Puzzle parsePuzzle(@Nonnull RestPuzzle restPuzzle, @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder)
+    static public
+    @Nonnull
+    Puzzle parsePuzzle(@Nonnull RestPuzzle restPuzzle, @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder)
     {
-        if (restPuzzle != null)
+        @Nullable RestPuzzleUserData restPuzzleUserData = null;
+        if (restPuzzleUserDataHolder != null)
         {
-            @Nullable RestPuzzleUserData restPuzzleUserData = null;
-            if(restPuzzleUserDataHolder != null)
-            {
-                restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
-            }
-            @Nullable List<RestPuzzleQuestion> questionList = restPuzzle.getQuestions();
-            @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
-            @Nullable HashSet<String> solvedQuestionsIdSet = null;
-            if (restPuzzleUserData != null)
-            {
-                solvedQuestions = restPuzzleUserData.getSolvedQuestions();
-                if (solvedQuestions != null)
-                {
-                    solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
-                }
-            }
-            List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
-            for (RestPuzzleQuestion restQ : questionList)
-            {
-                PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
-                        restQ.getAnswer(), restQ.getAnswerPosition(), false);
-                RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
-                questions.add(q);
-            }
-            int timeLeft = restPuzzle.getTimeGiven();
-            int score = 0;
-            if (restPuzzleUserData != null)
-            {
-                timeLeft = restPuzzleUserData.getTimeLeft();
-                score = restPuzzleUserData.getScore();
-            }
-            return new Puzzle(0, 0, restPuzzle.getPuzzleId(), restPuzzle.getName(), restPuzzle.getIssuedAt(),
-                    restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
-                    timeLeft, score,
-                    false, questions);
+            restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
         }
-        return null;
+        @Nullable List<RestPuzzleQuestion> questionList = restPuzzle.getQuestions();
+        @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+        @Nullable HashSet<String> solvedQuestionsIdSet = null;
+        if (restPuzzleUserData != null)
+        {
+            solvedQuestions = restPuzzleUserData.getSolvedQuestions();
+            if (solvedQuestions != null)
+            {
+                solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+            }
+        }
+        List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
+        for (RestPuzzleQuestion restQ : questionList)
+        {
+            PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
+                    restQ.getAnswer(), restQ.getAnswerPosition(), false);
+            RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
+            questions.add(q);
+        }
+        int timeLeft = restPuzzle.getTimeGiven();
+        int score = 0;
+        if (restPuzzleUserData != null)
+        {
+            timeLeft = restPuzzleUserData.getTimeLeft();
+            score = restPuzzleUserData.getScore();
+        }
+        return new Puzzle(0, 0, restPuzzle.getPuzzleId(), restPuzzle.getName(), restPuzzle.getIssuedAt(),
+                restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
+                timeLeft, score,
+                false, questions);
     }
 }

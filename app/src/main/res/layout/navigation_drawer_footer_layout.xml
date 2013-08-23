@@ -1,307 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_horizontal">
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
 
     <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/menu_header_bg">
-
-        <FrameLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_margin="12dp">
-
-            <ImageView
-                    android:id="@+id/header_listview_photo_img"
-                    android:layout_width="@dimen/size_avatar"
-                    android:layout_height="@dimen/size_avatar"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/login_register_ava_but"/>
-
-            <ImageView
-                    android:layout_width="@dimen/size_avatar_frame"
-                    android:layout_height="@dimen/size_avatar_frame"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/login_register_ava_frame"/>
-        </FrameLayout>
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="240dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="start"
+            android:background="@drawable/menu_bg_title"
+            >
 
         <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_gravity="center">
+                android:orientation="horizontal"
+                android:background="@drawable/menu_header_bg">
 
-            <TextView
-                    android:id="@+id/header_listview_nickname_tview"
-                    android:layout_marginRight="8dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    android:text="@string/user"
-                    style="@style/MenuMainTextTitleStyle"/>
+            <FrameLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="12dp">
 
-            <TextView
-                    style="@style/MenuMainTextItemStyle"
-                    android:textSize="10sp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/personal_record"/>
+                <ImageView
+                        android:id="@+id/header_listview_photo_img"
+                        android:layout_width="@dimen/size_avatar"
+                        android:layout_height="@dimen/size_avatar"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/login_register_ava_but"/>
+
+                <ImageView
+                        android:layout_width="@dimen/size_avatar_frame"
+                        android:layout_height="@dimen/size_avatar_frame"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/login_register_ava_frame"/>
+            </FrameLayout>
 
             <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_gravity="center">
+
                 <TextView
-                        android:id="@+id/header_listview_points_tview"
-                        android:textSize="16sp"
-                        android:clickable="false"
-                        android:text="0"
-                        style="@style/MenuMainTextTitleStyle" />
+                        android:id="@+id/header_listview_nickname_tview"
+                        android:layout_marginRight="8dp"
+                        android:singleLine="true"
+                        android:textSize="14sp"
+                        android:text="@string/user"
+                        style="@style/MenuMainTextTitleStyle"/>
+
                 <TextView
-                        android:layout_marginStart="@dimen/shutter_words_margin"
-                        android:textSize="16sp"
-                        android:clickable="false"
-                        android:text="@string/points"
-                        style="@style/MenuMainTextTitleStyle" />
+                        style="@style/MenuMainTextItemStyle"
+                        android:textSize="10sp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/personal_record"/>
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/header_listview_points_tview"
+                            android:textSize="16sp"
+                            android:clickable="false"
+                            android:text="0"
+                            style="@style/MenuMainTextTitleStyle"/>
+
+                    <TextView
+                            android:layout_marginStart="@dimen/shutter_words_margin"
+                            android:textSize="16sp"
+                            android:clickable="false"
+                            android:text="@string/points"
+                            style="@style/MenuMainTextTitleStyle"/>
+                </LinearLayout>
             </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/header_listview_logout_btn"
+                style="@style/MenuMenuButtonStyle"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/menu_main_left_big_margin"
+                android:background="@drawable/menu_switch_user_but">
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:text="@string/menu_main_logout"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/menu_mypuzzle_btn"
+                style="@style/MenuMenuButtonStyle"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/menu_main_vertical_margin"
+                android:background="@drawable/menu_mypuzzle_but">
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:text="@string/menu_main_my_crosswords"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/menu_main_vertical_margin"
+                android:layout_marginBottom="@dimen/menu_main_vertical_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/menu_group_result_in_month"
+                    style="@style/MenuMainTextTitleStyle"/>
+
+            <TextView
+                    android:id="@+id/menu_current_month_txt"
+                    android:layout_marginStart="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextTitleStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/menu_pride_score_btn"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:background="@drawable/menu_score_but">
+
+            <TextView
+                    android:id="@+id/menu_pride_score_txt"
+                    android:layout_marginLeft="@dimen/menu_main_left_big_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:textColor="@color/menu_score_color"
+                    android:text="1200"/>
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/points"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/menu_pride_rating_btn"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:background="@drawable/menu_rating_btn">
+
+            <TextView
+                    android:id="@+id/menu_pride_position_txt"
+                    android:layout_marginLeft="@dimen/menu_main_left_big_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:textColor="@color/menu_rating_color"
+                    android:text="342"/>
+
+            <TextView
+                    style="@style/MenuMainTextItemStyle"
+                    android:textColor="@color/menu_rating_color"
+                    android:text="@string/ending"/>
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/in_rating"/>
+        </LinearLayout>
+
+        <TextView
+                android:layout_marginTop="@dimen/menu_main_vertical_margin"
+                android:layout_marginBottom="@dimen/menu_main_vertical_margin"
+                android:text="@string/menu_group_social"
+                style="@style/MenuMainTextTitleStyle"/>
+
+        <LinearLayout
+                android:id="@+id/menu_invite_friends_btn"
+                style="@style/MenuMenuButtonStyle"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/menu_main_left_big_margin"
+                android:background="@drawable/menu_invate_friends_but">
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:text="@string/menu_main_invite_friends"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingLeft="@dimen/menu_main_left_big_margin"
+                android:paddingRight="2dp"
+                android:background="@drawable/menu_vk_btn">
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/menu_main_vkontakte"/>
+
+            <ToggleButton
+                    android:id="@+id/menu_vk_switcher"
+                    android:layout_width="85dp"
+                    android:layout_height="43dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/menu_switcher"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingLeft="@dimen/menu_main_left_big_margin"
+                android:paddingRight="2dp"
+                android:background="@drawable/menu_fb_but">
+
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/menu_main_facebook"/>
+
+            <ToggleButton
+                    android:id="@+id/menu_fb_switcher"
+                    android:layout_width="85dp"
+                    android:layout_height="43dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/menu_switcher"/>
+
         </LinearLayout>
 
 
-    </LinearLayout>
+        <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="@dimen/menu_main_vertical_margin"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingLeft="@dimen/menu_main_left_margin"
+                android:paddingRight="2dp"
+                android:background="@drawable/menu_notify_btn">
 
-    <LinearLayout
-            android:id="@+id/header_listview_logout_btn"
-            style="@style/MenuMenuButtonStyle"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/menu_main_left_big_margin"
-            android:background="@drawable/menu_switch_user_but" >
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/menu_main_nootifyers"/>
 
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:text="@string/menu_main_logout"/>
+            <ToggleButton
+                    android:id="@+id/menu_notification_switcher"
+                    android:layout_width="85dp"
+                    android:layout_height="43dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/menu_switcher"/>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-            android:id="@+id/menu_mypuzzle_btn"
-            style="@style/MenuMenuButtonStyle"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/menu_main_vertical_margin"
-            android:background="@drawable/menu_mypuzzle_but" >
+        <LinearLayout
+                android:id="@+id/menu_show_rules_btn"
+                style="@style/MenuMenuButtonStyle"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/menu_main_vertical_margin"
+                android:background="@drawable/menu_rules_but">
 
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:text="@string/menu_main_my_crosswords"/>
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:text="@string/menu_main_rules"/>
+        </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+                android:id="@+id/restore_buy"
+                style="@style/MenuMenuButtonStyle"
+                android:orientation="horizontal"
+                android:background="@drawable/menu_restore_but">
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/menu_main_vertical_margin"
-            android:layout_marginBottom="@dimen/menu_main_vertical_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <TextView
-                android:text="@string/menu_group_result_in_month"
-                style="@style/MenuMainTextTitleStyle" />
-        <TextView
-                android:id="@+id/menu_current_month_txt"
-                android:layout_marginStart="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextTitleStyle" />
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/menu_pride_score_btn"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical"
-            android:background="@drawable/menu_score_but">
-
-        <TextView
-                android:id="@+id/menu_pride_score_txt"
-                android:layout_marginLeft="@dimen/menu_main_left_big_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:textColor="@color/menu_score_color"
-                android:text="1200"/>
-
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/points"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/menu_pride_rating_btn"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical"
-            android:background="@drawable/menu_rating_btn">
-
-        <TextView
-                android:id="@+id/menu_pride_position_txt"
-                android:layout_marginLeft="@dimen/menu_main_left_big_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:textColor="@color/menu_rating_color"
-                android:text="342"/>
-
-        <TextView
-                style="@style/MenuMainTextItemStyle"
-                android:textColor="@color/menu_rating_color"
-                android:text="@string/ending"/>
-
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/in_rating" />
-    </LinearLayout>
-
-    <TextView
-            android:layout_marginTop="@dimen/menu_main_vertical_margin"
-            android:layout_marginBottom="@dimen/menu_main_vertical_margin"
-            android:text="@string/menu_group_social"
-            style="@style/MenuMainTextTitleStyle" />
-
-    <LinearLayout
-            android:id="@+id/menu_invite_friends_btn"
-            style="@style/MenuMenuButtonStyle"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/menu_main_left_big_margin"
-            android:background="@drawable/menu_invate_friends_but" >
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:text="@string/menu_main_invite_friends"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical|right"
-            android:paddingLeft="@dimen/menu_main_left_big_margin"
-            android:paddingRight="2dp"
-            android:background="@drawable/menu_vk_btn">
-
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/menu_main_vkontakte"/>
-
-        <ToggleButton
-                android:id="@+id/menu_vk_switcher"
-                android:layout_width="85dp"
-                android:layout_height="43dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/menu_switcher"/>
+            <TextView
+                    android:layout_marginLeft="@dimen/shutter_words_margin"
+                    style="@style/MenuMainTextItemStyle"
+                    android:text="@string/menu_main_restore_shoping"/>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical|right"
-            android:paddingLeft="@dimen/menu_main_left_big_margin"
-            android:paddingRight="2dp"
-            android:background="@drawable/menu_fb_but">
-
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/menu_main_facebook"/>
-
-        <ToggleButton
-                android:id="@+id/menu_fb_switcher"
-                android:layout_width="85dp"
-                android:layout_height="43dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/menu_switcher"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginTop="@dimen/menu_main_vertical_margin"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical|right"
-            android:paddingLeft="@dimen/menu_main_left_margin"
-            android:paddingRight="2dp"
-            android:background="@drawable/menu_notify_btn">
-
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/menu_main_nootifyers"/>
-
-        <ToggleButton
-                android:id="@+id/menu_notification_switcher"
-                android:layout_width="85dp"
-                android:layout_height="43dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/menu_switcher"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/menu_show_rules_btn"
-            style="@style/MenuMenuButtonStyle"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/menu_main_vertical_margin"
-            android:background="@drawable/menu_rules_but" >
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:text="@string/menu_main_rules"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/restore_buy"
-            style="@style/MenuMenuButtonStyle"
-            android:orientation="horizontal"
-            android:background="@drawable/menu_restore_but" >
-        <TextView
-                android:layout_marginLeft="@dimen/shutter_words_margin"
-                style="@style/MenuMainTextItemStyle"
-                android:text="@string/menu_main_restore_shoping"/>
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

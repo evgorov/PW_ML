@@ -10,7 +10,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -342,8 +344,20 @@ public class RegisterFragment extends SherlockFragment
     }
 
     private void hideKeyboard(){
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        @Nullable FragmentActivity fragment = getActivity();
+        if(fragment == null) return;
+        InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+        @Nullable View focus = fragment.getCurrentFocus();
+        if (focus == null)
+        {
+            return;
+        }
+        @Nullable IBinder binder = focus.getWindowToken();
+        if (binder == null)
+        {
+            return;
+        }
+        imm.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private abstract class SignUpExecutor extends ModelUpdater<IBcTask.BcTaskEnv>

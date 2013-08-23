@@ -23,7 +23,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
-    private @Nonnull HashMap<String,List<Puzzle> > mPuzzlesSet;
+    private @Nonnull HashMap<String,List<Puzzle>> mPuzzlesSet;
     private int hintsCount;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)

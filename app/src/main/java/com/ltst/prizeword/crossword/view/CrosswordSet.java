@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -17,6 +16,7 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 21.08.13.
@@ -39,7 +39,7 @@ public class CrosswordSet {
     private @Nonnull LinearLayout pCurrentCrosswordContaiter;
     private @Nonnull TextView pRatioText;
     private @Nonnull TextView pProgressText;
-    private @Nonnull SeekBar pProgressSeekBar;
+    private @Nonnull BadgeProgressBar pProgress;
     private @Nonnull TextView pScoreText;
 
     private @Nonnull LinearLayout pBuyCrosswordContaiter;
@@ -50,168 +50,182 @@ public class CrosswordSet {
 
     private @Nonnull BadgeGridView pBadgeContainer;
 
+    private @Nullable String mSetServerId = null;
+
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
 
-        this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mICrosswordFragment = iCrosswordFragment;
+        mContext = context;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mICrosswordFragment = iCrosswordFragment;
 
-        this.mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
-        this.pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
-        this.pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
-        this.pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
-        this.pTitleText = (TextView) mRootView.findViewById(R.id.crossword_panel_title_text);
-        this.pSwitcher = (ToggleButton) mRootView.findViewById(R.id.crossword_panel_switcher);
+        mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
+        pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
+        pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
+        pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
+        pTitleText = (TextView) mRootView.findViewById(R.id.crossword_panel_title_text);
+        pSwitcher = (ToggleButton) mRootView.findViewById(R.id.crossword_panel_switcher);
 
-        this.pCurrentCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_current_crossword_container);
-        this.pRatioText = (TextView) mRootView.findViewById(R.id.crossword_panel_ratio);
-        this.pProgressText = (TextView) mRootView.findViewById(R.id.crossword_panel_percent);
-        this.pProgressSeekBar = (SeekBar) mRootView.findViewById(R.id.crossword_set_progressbar);
-        pProgressSeekBar.setEnabled(false);
-        this.pScoreText = (TextView) mRootView.findViewById(R.id.crossword_panel_score);
+        pCurrentCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_current_crossword_container);
+        pRatioText = (TextView) mRootView.findViewById(R.id.crossword_panel_ratio);
+        pProgressText = (TextView) mRootView.findViewById(R.id.crossword_panel_percent);
+        pProgress = new BadgeProgressBar(context, mRootView, R.id.crossword_panel_progress_bg, R.id.crossword_panel_progress_fg);
+        pScoreText = (TextView) mRootView.findViewById(R.id.crossword_panel_score);
 
-        this.pBuyCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_crossword_container);
-        this.pBuyCountText = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_count);
-        this.pBuyScore = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_score);
-        this.pBuyButton = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_button);
-        this.pBuyPrice = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_price);
+        pBuyCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_crossword_container);
+        pBuyCountText = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_count);
+        pBuyScore = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_score);
+        pBuyButton = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_button);
+        pBuyPrice = (TextView) mRootView.findViewById(R.id.crossword_panel_buy_price);
 
-        this.pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.crossword_panel_badges_container);
+        pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.crossword_panel_badges_container);
 
-        this.pMonthBackground.setVisibility(View.GONE);
+        pMonthBackground.setVisibility(View.GONE);
 
-//        this.mRootView.setVisibility(View.GONE);
-
-    }
-
-    public @Nonnull View getView()
-    {
-        return this.mRootView;
-    }
-
-    public @Nonnull BadgeAdapter getAdapter(){
-        return (BadgeAdapter) this.pBadgeContainer.getAdapter();
-    }
-
-    public void fillPanel(@Nonnull CrosswordPanelData data)
-    {
-//        this.mRootView.setVisibility(View.VISIBLE);
-
-        if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
-        {
-            this.pBuyPrice.setText(R.string.buy_three_dollar);
-            this.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_br));
-            this.pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
-        }
-        else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
-        {
-            this.pBuyPrice.setText(R.string.buy_two_dollar);
-            this.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_au));
-            this.pTitleText.setText(R.string.puzzless_hint_gold_crossword);
-        }
-        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
-        {
-            this.pBuyPrice.setText(R.string.buy_two_dollar);
-            this.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
-            this.pTitleText.setText(R.string.puzzless_hint_silver_crossword);
-        }
-        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER2)
-        {
-            this.pBuyPrice.setText(R.string.buy_two_dollar);
-            this.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag2));
-            this.pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
-        }
-        else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
-        {
-            this.pBuyPrice.setText(R.string.buy_free);
-            this.pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_fr));
-            this.pTitleText.setText(R.string.puzzless_hint_free_crossword);
-        }
-
-        StringBuilder sbRatio = new StringBuilder();
-        sbRatio.append(data.mResolveCount);
-        sbRatio.append("/");
-        sbRatio.append(data.mTotalCount);
-        this.pRatioText.setText(sbRatio.toString());
-
-        StringBuilder sbProgress = new StringBuilder();
-        sbProgress.append(data.mProgress);
-        sbProgress.append("%");
-        this.pProgressText.setText(sbProgress.toString());
-
-        this.pScoreText.setText(String.valueOf(data.mScore));
-
-        this.pBuyCountText.setText(String.valueOf(data.mBuyCount));
-
-        this.pBuyScore.setText(String.valueOf(data.mBuyScore));
-
-        this.pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
-
-        if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
-        {
-            // Текущие наборы сетов сканвордов;
-            mCrosswordSetType = CrosswordSetType.CURRENT;
-            this.pTitleImage.setVisibility(View.VISIBLE);
-            this.pBadgeContainer.setVisibility(View.VISIBLE);
-            if(data.mBought)
-            {
-                // Куплены;
-                this.pSwitcher.setVisibility(View.GONE);
-                this.pBuyCrosswordContaiter.setVisibility(View.GONE);
-            }
-            else
-            {
-                // Некуплены;
-                this.pSwitcher.setVisibility(View.GONE);
-                this.pCurrentCrosswordContaiter.setVisibility(View.GONE);
-                this.pBadgeContainer.setVisibility(View.GONE);
-            }
-        }
-        else
-        {
-            // Архивные наборы сетов сканвордов;
-            mCrosswordSetType = CrosswordSetType.ARCHIVE;
-            this.pTitleImage.setVisibility(View.VISIBLE);
-            this.pBuyCrosswordContaiter.setVisibility(View.GONE);
-            this.pBadgeContainer.setVisibility(View.GONE);
-            if(data.mMonth == 0)
-            {
-            }
-            else
-            {
-                DateFormatSymbols symbols = new DateFormatSymbols();
-                this.pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
-            }
-
-        }
-
-        final @Nonnull CrosswordPanelData dataFinal = data;
-        this.pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
             }
         });
 
-        this.pBuyButton.setOnClickListener(new View.OnClickListener() {
+        pBuyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mICrosswordFragment.buyCrosswordSet(dataFinal.mServerId);
+                if (mSetServerId != null)
+                {
+                    mICrosswordFragment.buyCrosswordSet(mSetServerId);
+                }
             }
         });
 
-        this.pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                mICrosswordFragment.choiceCrossword();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
+                if (mSetServerId != null)
+                {
+                    mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
+                }
             }
         });
+
+    }
+
+    public @Nonnull View getView()
+    {
+        return mRootView;
+    }
+
+    public @Nonnull BadgeAdapter getAdapter(){
+        return (BadgeAdapter) pBadgeContainer.getAdapter();
+    }
+
+    public void fillPanel(@Nonnull CrosswordPanelData data)
+    {
+//        mRootView.setVisibility(View.VISIBLE);
+
+        if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
+        {
+            pBuyPrice.setText(R.string.buy_three_dollar);
+            pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_br));
+            pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
+        {
+            pBuyPrice.setText(R.string.buy_two_dollar);
+            pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_au));
+            pTitleText.setText(R.string.puzzless_hint_gold_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
+        {
+            pBuyPrice.setText(R.string.buy_two_dollar);
+            pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
+            pTitleText.setText(R.string.puzzless_hint_silver_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER2)
+        {
+            pBuyPrice.setText(R.string.buy_two_dollar);
+            pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag2));
+            pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
+        }
+        else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
+        {
+            pBuyPrice.setText(R.string.buy_free);
+            pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_fr));
+            pTitleText.setText(R.string.puzzless_hint_free_crossword);
+        }
+
+        StringBuilder sbRatio = new StringBuilder();
+        sbRatio.append(data.mResolveCount);
+        sbRatio.append("/");
+        sbRatio.append(data.mTotalCount);
+        pRatioText.setText(sbRatio.toString());
+
+        StringBuilder sbProgress = new StringBuilder();
+        sbProgress.append(data.mProgress);
+        sbProgress.append("%");
+        pProgressText.setText(sbProgress.toString());
+        pProgress.setProgress(data.mProgress);
+
+        pScoreText.setText(String.valueOf(data.mScore));
+
+        pBuyCountText.setText(String.valueOf(data.mBuyCount));
+
+        pBuyScore.setText(String.valueOf(data.mBuyScore));
+
+        if(pBadgeContainer.getAdapter() == null)
+            pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
+
+        if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
+        {
+            // Текущие наборы сетов сканвордов;
+            mCrosswordSetType = CrosswordSetType.CURRENT;
+            pTitleImage.setVisibility(View.VISIBLE);
+            pSwitcher.setVisibility(View.GONE);
+
+            if(mSetServerId == null)
+            {
+                pBadgeContainer.setVisibility(View.VISIBLE);
+            }
+
+            if(data.mBought)
+            {
+                // Куплены;
+                pBuyCrosswordContaiter.setVisibility(View.GONE);
+            }
+            else
+            {
+                // Некуплены;
+                pCurrentCrosswordContaiter.setVisibility(View.GONE);
+                pBadgeContainer.setVisibility(View.GONE);
+            }
+        }
+        else
+        {
+            // Архивные наборы сетов сканвордов;
+            mCrosswordSetType = CrosswordSetType.ARCHIVE;
+            pTitleImage.setVisibility(View.VISIBLE);
+            pBuyCrosswordContaiter.setVisibility(View.GONE);
+
+            if(mSetServerId == null)
+            {
+                pBadgeContainer.setVisibility(View.GONE);
+            }
+            if(data.mMonth == 0)
+            {
+            }
+            else
+            {
+                DateFormatSymbols symbols = new DateFormatSymbols();
+                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+            }
+        }
+        mSetServerId = data.mServerId;
     }
 
     public void setVisibleMonth(boolean visible)
     {
-        this.pMonthBackground.setVisibility(visible ? View.VISIBLE : View.GONE);
+        pMonthBackground.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public CrosswordSetType getCrosswordSetType()

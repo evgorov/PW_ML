@@ -1,15 +1,9 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -17,7 +11,6 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -30,6 +23,7 @@ public class BadgeAdapter extends BaseAdapter {
     private @Nonnull Context mContext;
     private @Nonnull List<BadgeData> mData;
     private @Nonnull PuzzleSetModel.PuzzleSetType mType;
+    private boolean mClickable = false;
 
     public BadgeAdapter(@Nonnull Context context, @Nonnull PuzzleSetModel.PuzzleSetType type) {
         this.mContext = context;
@@ -257,6 +251,7 @@ public class BadgeAdapter extends BaseAdapter {
             }
         }
 
+        badge.mProgress.setProgress(data.mProgress);
         badge.mPercent.setText(String.valueOf(data.mProgress)+"%");
         badge.mScore.setText(String.valueOf(data.mScore));
         badge.mBackground.setBackgroundDrawable(mContext.getResources().getDrawable(idBackground));
@@ -268,18 +263,18 @@ public class BadgeAdapter extends BaseAdapter {
             // Решенные;
             badge.mUnresolverContainer.setVisibility(View.GONE);
             badge.mResolverContainer.setVisibility(View.VISIBLE);
+            mClickable = true;
         }
         else
         {
             // Нерешенные;
             badge.mResolverContainer.setVisibility(View.GONE);
             badge.mUnresolverContainer.setVisibility(View.VISIBLE);
+            mClickable = false;
         }
 
         return badge.mRootView;
     }
-
-
 
     @Override
     public int getCount() {
@@ -296,4 +291,8 @@ public class BadgeAdapter extends BaseAdapter {
         return mData.get(position).mId;
     }
 
+    @Override
+    public boolean isEnabled(int position) {
+        return !mData.get(position).mStatus;
+    }
 }

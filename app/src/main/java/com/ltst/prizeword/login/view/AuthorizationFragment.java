@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -189,10 +190,20 @@ public class AuthorizationFragment extends SherlockFragment
     }
 
     private void hideKeyboard(){
-        @Nonnull FragmentActivity fragment = getActivity();
+        @Nullable FragmentActivity fragment = getActivity();
         if(fragment == null) return;
         InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        @Nullable View focus = fragment.getCurrentFocus();
+        if (focus == null)
+        {
+            return;
+        }
+        @Nullable IBinder binder = focus.getWindowToken();
+        if (binder == null)
+        {
+            return;
+        }
+        imm.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override

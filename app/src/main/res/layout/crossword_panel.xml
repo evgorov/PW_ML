@@ -120,13 +120,26 @@
                     style="@style/PuzzlesHintCommonTextStyle"
                     android:text="4/12"/>
 
-            <SeekBar
-                    android:id="@+id/crossword_set_progressbar"
+            <LinearLayout
+                    android:id="@+id/crossword_panel_progress_bg"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="60dp"
-                    android:max="100"
-                    android:progress="75"
-                    />
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/puzzles_set_progressbar_bg">
+
+                <LinearLayout
+                        android:id="@+id/crossword_panel_progress_fg"
+                        android:layout_width="17dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/puzzles_set_progressbar_progress"/>
+
+            </LinearLayout>
+
 
             <TextView
                     android:id="@+id/crossword_panel_percent"
