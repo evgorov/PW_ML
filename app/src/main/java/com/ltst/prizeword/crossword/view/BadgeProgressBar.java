@@ -5,9 +5,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
-import com.ltst.prizeword.R;
-import com.ltst.prizeword.tools.SizeTools;
-
 import javax.annotation.Nonnull;
 
 /**
