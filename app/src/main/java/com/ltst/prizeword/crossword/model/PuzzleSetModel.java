@@ -10,6 +10,7 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
-    private @Nonnull HashMap<String,List<Puzzle> > mPuzzlesSet;
+    private @Nonnull HashMap<String,List<Puzzle>> mPuzzlesSet;
     private int hintsCount;
+    private boolean mIsDestroyed;
 
     public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
@@ -43,6 +45,23 @@ public class PuzzleSetModel implements IPuzzleSetModel
     public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
     {
         mPuzzleSetsDbUpdater.update(handler);
+    }
+
+    @Override
+    public void close()
+    {
+        Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$
+        if(mIsDestroyed)
+        {
+            Log.w("PuzzleSetModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mPuzzleSetsDbUpdater.close();
+        mPuzzleSetsInternetUpdater.close();
+
+        mIsDestroyed = true;
+        Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
+
     }
 
     @Override
@@ -117,6 +136,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
     private Updater mPuzzleSetsDbUpdater = new Updater()
     {
+
         @Nonnull
         @Override
         protected Intent createIntent()
@@ -134,6 +154,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
+        protected Updater(){}
+
         @Nonnull
         @Override
         protected IBcConnector getBcConnector()

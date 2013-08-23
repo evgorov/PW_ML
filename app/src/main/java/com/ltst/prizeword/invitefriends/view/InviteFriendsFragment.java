@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -42,6 +43,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nonnull ImageView mHeaderImage;
     private @Nonnull ImageView mFooterImage;
     private @Nullable InviteFriendsDataModel mModel;
+    private @Nullable ProgressBar mProgressBar;
+
     private boolean mDataRequested = false;
     // ==== Livecycle =================================
 
@@ -69,6 +72,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mFooterImage = new ImageView(mContext);
         mHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
         mFooterImage.setBackgroundResource(R.drawable.invite_footer);
+        mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
         mMenuBtn.setOnClickListener(this);
         return v;
 
@@ -186,6 +190,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         @Override
         public void handle()
         {
+            ProgressBar bar = mProgressBar;
+            assert bar !=null;
+            bar.setVisibility(View.GONE);
+            mFriendsListView.setVisibility(View.VISIBLE);
             mDataRequested = false;
         }
     };

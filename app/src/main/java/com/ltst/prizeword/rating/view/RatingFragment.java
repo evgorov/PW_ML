@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -18,6 +19,7 @@ import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rating.model.UsersListModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
@@ -41,6 +43,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
 
     private @Nullable UsersListModel mModel;
     private @Nullable RatingAdapter mRatingAdapter;
+    private @Nullable ProgressBar mProgressBar;
 
     @Override
     public void onAttach(Activity activity)
@@ -69,6 +72,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mRatingListView.setDivider(null);
         mRatingListView.addHeaderView(mHeaderImage);
         mRatingListView.addFooterView(mFooterImage);
+
+        mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
 
         mMenuBtn.setOnClickListener(this);
 
@@ -102,6 +107,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         {
             adapter = new RatingAdapter(mContext, mModel);
             mRatingAdapter = adapter;
+            adapter.setRefreshHandler(mRefreshHandler);
             mRatingListView.setAdapter(mRatingAdapter);
         }
     }
@@ -159,4 +165,14 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
                 break;
         }
     }
+    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
+    {
+        @Override public void handle()
+        {
+            ProgressBar bar = mProgressBar;
+            assert bar !=null;
+            bar.setVisibility(View.GONE);
+            mRatingListView.setVisibility(View.VISIBLE);
+        }
+    };
 }

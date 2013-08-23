@@ -36,13 +36,22 @@
             android:layout_height="match_parent"
             android:background="@drawable/login_bg_tile">
 
-
+        <ProgressBar
+                android:id="@+id/list_progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:visibility="visible"
+                style="?android:attr/progressBarStyleLarge"
+                />
         <ListView
                 android:id="@+id/rating_listview"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:clickable="false"
                 android:background="@drawable/invite_bg_tile"
+                android:visibility="gone"
                 />
     </LinearLayout>
 

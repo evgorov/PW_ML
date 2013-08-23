@@ -36,7 +36,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
-    public static final @Nonnull String TIMER_TEXT_FORMAT = "%d:%2d";
+    public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
 
     public static @Nonnull Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId, int hintsCount)
     {
@@ -59,9 +59,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private @Nonnull PuzzleView mPuzzleView;
     private @Nonnull PuzzleResourcesAdapter mPuzzleAdapter;
-    private @Nonnull String mCurrentPuzzleServerId;
+    private @Nullable String mCurrentPuzzleServerId;
     private int mCurrentPuzzleIndex = 0;
     private int mPuzzlesCount;
+
+    private boolean mHasFirstPuzzle = false;
 
     private @Nonnull HintsModel mHintsModel;
     private int mHintsCount;
@@ -114,6 +116,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mCurrentPuzzleIndex = bundle.getInt(BF_CURRENT_PUZZLE_INDEX);
             mTimeGiven = bundle.getInt(BF_TIME_GIVEN);
             mTimeLeft = bundle.getInt(BF_TIME_LEFT);
+            mHasFirstPuzzle = true;
         }
         else
         {
@@ -123,6 +126,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 mPuzzleSet = extras.getParcelable(BF_PUZZLE_SET);
                 mHintsCount = extras.getInt(BF_HINTS_COUNT);
                 mCurrentPuzzleServerId = extras.getString(BF_CURRENT_PUZZLE_SERVER_ID);
+                if (mCurrentPuzzleServerId != null)
+                {
+                    mHasFirstPuzzle = true;
+                }
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
         }
@@ -344,7 +351,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
+        {
+            mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        }
+        else if(mHasFirstPuzzle)
+        {
+            mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
+            mHasFirstPuzzle = false;
+        }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         showPauseDialog(false);
         showFinalDialog(false);
