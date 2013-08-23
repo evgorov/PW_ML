@@ -16,6 +16,7 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 21.08.13.
@@ -49,7 +50,7 @@ public class CrosswordSet {
 
     private @Nonnull BadgeGridView pBadgeContainer;
 
-    private @Nonnull String mSetServerId = null;
+    private @Nullable String mSetServerId = null;
 
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
@@ -91,14 +92,20 @@ public class CrosswordSet {
         pBuyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mICrosswordFragment.buyCrosswordSet(mSetServerId);
+                if (mSetServerId != null)
+                {
+                    mICrosswordFragment.buyCrosswordSet(mSetServerId);
+                }
             }
         });
 
         pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
-                mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
+                if (mSetServerId != null)
+                {
+                    mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
+                }
             }
         });
 

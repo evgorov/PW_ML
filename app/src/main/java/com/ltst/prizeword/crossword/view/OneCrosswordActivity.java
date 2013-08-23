@@ -59,7 +59,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private @Nonnull PuzzleView mPuzzleView;
     private @Nonnull PuzzleResourcesAdapter mPuzzleAdapter;
-    private @Nonnull String mCurrentPuzzleServerId;
+    private @Nullable String mCurrentPuzzleServerId;
     private int mCurrentPuzzleIndex = 0;
     private int mPuzzlesCount;
 
@@ -344,7 +344,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        if (mCurrentPuzzleServerId == null)
+        {
+            mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        }
+        else
+        {
+            mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
+        }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         showPauseDialog(false);
         showFinalDialog(false);

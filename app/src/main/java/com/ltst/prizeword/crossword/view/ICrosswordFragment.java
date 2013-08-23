@@ -7,6 +7,6 @@ import javax.annotation.Nonnull;
  */
 public interface ICrosswordFragment {
 
-    public void buyCrosswordSet(String crosswordSetServerId);
+    public void buyCrosswordSet(@Nonnull String crosswordSetServerId);
     public void choicePuzzle(@Nonnull String setServerId, long puzzleId);
 }

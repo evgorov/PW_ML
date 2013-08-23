@@ -159,7 +159,7 @@ public class CrosswordsFragment extends SherlockFragment
     };
 
     @Override
-    public void buyCrosswordSet(String crosswordSetServerId) {
+    public void buyCrosswordSet(@Nonnull String crosswordSetServerId) {
 
     }
 
@@ -177,7 +177,7 @@ public class CrosswordsFragment extends SherlockFragment
                 {
                     for(PuzzleSet puzzleSet : sets)
                     {
-                        if(puzzleSet.serverId == setServerId)
+                        if(puzzleSet.serverId.equals(setServerId))
                         {
                             @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mPuzzleSetModel.getHintsCount());
                             mContext.startActivity(intent);
