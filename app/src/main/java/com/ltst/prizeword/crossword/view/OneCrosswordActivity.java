@@ -36,7 +36,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
-    public static final @Nonnull String TIMER_TEXT_FORMAT = "%d:%2d";
+    public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
 
     public static @Nonnull Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId, int hintsCount)
     {
@@ -116,6 +116,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mCurrentPuzzleIndex = bundle.getInt(BF_CURRENT_PUZZLE_INDEX);
             mTimeGiven = bundle.getInt(BF_TIME_GIVEN);
             mTimeLeft = bundle.getInt(BF_TIME_LEFT);
+            mHasFirstPuzzle = true;
         }
         else
         {
@@ -350,7 +351,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
+        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
         {
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         }
