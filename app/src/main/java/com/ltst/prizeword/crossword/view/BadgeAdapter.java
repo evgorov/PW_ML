@@ -276,8 +276,6 @@ public class BadgeAdapter extends BaseAdapter {
         return badge.mRootView;
     }
 
-
-
     @Override
     public int getCount() {
         return mData.size();
@@ -295,6 +293,6 @@ public class BadgeAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return mClickable;
+        return !mData.get(position).mStatus;
     }
 }
