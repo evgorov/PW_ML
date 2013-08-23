@@ -1,7 +1,5 @@
 package com.ltst.prizeword.crossword.view;
 
-import com.ltst.prizeword.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
@@ -36,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
@@ -137,6 +135,13 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void onPause()
+    {
+        mPuzzleSetModel.close();
+        super.onStop();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
 //        mCrossWordButton.setOnClickListener(this);
@@ -186,6 +191,9 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
+            
+            if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
+                return;
             mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
         }
     };

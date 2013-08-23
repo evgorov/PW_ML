@@ -16,4 +16,5 @@ public interface IPuzzleSetModel
     @Nonnull List<PuzzleSet> getPuzzleSets();
     @Nonnull HashMap<String, List<Puzzle>> getPuzzlesSet();
     int getHintsCount();
+    void close();
 }
