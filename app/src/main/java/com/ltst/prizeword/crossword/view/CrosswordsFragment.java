@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +63,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull ImageView mSimpleImage;
     private @Nonnull TextView mNewsSimpleText;
     private @Nonnull ImageView mNewsCloseBtn;
+    private @Nonnull ProgressBar mProgressBar;
 
     private int mIndicatorPosition;
 
@@ -97,6 +99,7 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsIndicatorLayout = (LinearLayout) v.findViewById(R.id.news_indicator_layout);
         mNewsSimpleText = (TextView) v.findViewById(R.id.news_simple_text);
         mNewsCloseBtn = (ImageView) v.findViewById(R.id.news_close_btn);
+        mProgressBar = (ProgressBar) v.findViewById(R.id.archive_progressBar);
         mRoot = v;
         return v;
     }
@@ -113,6 +116,8 @@ public class CrosswordsFragment extends SherlockFragment
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
 
+
+        mNewsIndicatorLayout.removeAllViewsInLayout();
         LinearLayout.LayoutParams params;
         for (int i = 0; i < mStringsMassive.length; i++)
         {
@@ -139,6 +144,13 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mPuzzleSetModel.close();
         super.onStop();
+    }
+
+    public void skipProgressBar()
+    {
+        ProgressBar bar = mProgressBar;
+        assert bar != null;
+        bar.setVisibility(View.GONE);
     }
 
     @Override
@@ -177,7 +189,8 @@ public class CrosswordsFragment extends SherlockFragment
     // =============================================
 
 
-    private void createCrosswordPanel(){
+    private void createCrosswordPanel()
+    {
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
@@ -191,10 +204,14 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
-            
+
             if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
+            {
+                skipProgressBar();
                 return;
+            }
             mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
+
         }
     };
 
@@ -206,6 +223,7 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
+            skipProgressBar();
         }
     };
 
@@ -221,25 +239,27 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
 
 
-    public void buyCrosswordSet(@Nonnull String crosswordSetServerId) {
+    public void buyCrosswordSet(@Nonnull String crosswordSetServerId)
+    {
 
     }
 
     @Override
-    public void choicePuzzle(@Nonnull String setServerId, long puzzleId) {
+    public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
+    {
 
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
-        for(Puzzle puzzle : puzzles)
+        for (Puzzle puzzle : puzzles)
         {
-            if(puzzle.id == puzzleId)
+            if (puzzle.id == puzzleId)
             {
-                if(!puzzle.isSolved)
+                if (!puzzle.isSolved)
                 {
-                    for(PuzzleSet puzzleSet : sets)
+                    for (PuzzleSet puzzleSet : sets)
                     {
-                        if(puzzleSet.serverId.equals(setServerId))
+                        if (puzzleSet.serverId.equals(setServerId))
                         {
                             @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mPuzzleSetModel.getHintsCount());
                             mContext.startActivity(intent);
@@ -279,7 +299,7 @@ public class CrosswordsFragment extends SherlockFragment
                 mIndicatorPosition--;
         } else if (swipe.equals(SwipeMethod.SWIPE_LEFT))
         {
-            if (mIndicatorPosition < mStringsMassive.length-1)
+            if (mIndicatorPosition < mStringsMassive.length - 1)
                 mIndicatorPosition++;
         }
         mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
