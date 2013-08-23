@@ -52,8 +52,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
         mAuthorization = (IAutorization) activity;
         mDrawerHolder = (INavigationDrawerHolder) activity;
-        mDrawerHolder.lockDrawerClosed();
-
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
     }
 
@@ -73,6 +71,13 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         mAuthorizationFbButton.setOnClickListener(this);
         mRegistrationButton.setOnClickListener(this);
         return v;
+    }
+
+    @Override
+    public void onResume()
+    {
+        mDrawerHolder.lockDrawerClosed();
+        super.onResume();
     }
 
     @Override

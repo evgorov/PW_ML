@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.invitefriends.model.InviteFriendsDataModel;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -36,6 +37,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nonnull Button mInviteAllBtn;
     private @Nonnull ListView mFriendsListView;
     private @Nonnull InviteFragmentAdapter mAdapter;
+    private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
 
     private @Nonnull ImageView mHeaderImage;
     private @Nonnull ImageView mFooterImage;
@@ -50,6 +52,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         super.onAttach(activity);
     }
 
@@ -66,6 +69,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mFooterImage = new ImageView(mContext);
         mHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
         mFooterImage.setBackgroundResource(R.drawable.invite_footer);
+        mMenuBtn.setOnClickListener(this);
         return v;
 
     }
@@ -170,6 +174,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     {
         switch (view.getId()){
             case R.id.header_menu_btn:
+                mINavigationDrawerHolder.toogle();
                 break;
             case R.id.header_invite_all_btn:
                 break;
