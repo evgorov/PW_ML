@@ -19,6 +19,29 @@ module Middleware
         env['token_auth'].authorize!
         env['token_auth'].unauthorized! unless current_user['role'] == 'admin'
       end
+
+      def set_puzzle_set_data(o, params)
+        o['year'] = params['year'].to_i
+        o['month'] = params['month'].to_i
+        o['name'] = params['name']
+        o['published'] = (params['published'] == 'true')
+        o['type'] = params['type']
+        if params['puzzle_ids']
+          o['puzzle_ids'] =  JSON.parse(params['puzzle_ids'])
+        end
+      end
+
+      def set_puzzle_data(o, params)
+        o['base_score'] = params['base_score'].to_i
+        o['height'] = params['height'].to_i
+        o['width'] = params['width'].to_i
+        o['issuedAt'] = params['issuedAt']
+        o['name'] = params['name']
+        if params['questions']
+          o['questions'] =  JSON.parse(params['questions'])
+        end
+        o['time_given'] = params['time_given'].to_i
+      end
     end
 
     error(BasicModel::NotFound) { halt(403, { message: 'Invalid username or password' }.to_json) }
@@ -56,6 +79,25 @@ module Middleware
       Device.new.storage(env['redis']).all(params['page'].to_i).to_json
     end
 
+    post '/questions' do
+      authorize_admin!
+      Puzzle.new.storage(env['redis']).tap { |o|
+        set_puzzle_data(o, params)
+      }.save.to_json
+    end
+
+    put '/questions/:id' do
+      authorize_admin!
+      Puzzle.storage(env['redis']).load(params['id']).tap { |o|
+        set_puzzle_data(o, params)
+      }.save.to_json
+    end
+
+    get '/questions' do
+      authorize_admin!
+      { 'puzzles' => Puzzle.storage(env['redis']).all }.to_json
+    end
+
     get '/sets' do
       authorize_admin!
       args = []
@@ -69,24 +111,14 @@ module Middleware
     post '/sets' do
       authorize_admin!
       PuzzleSet.new.storage(env['redis']).tap { |o|
-        o['year'] = params['year'].to_i
-        o['month'] = params['month'].to_i
-        o['name'] = params['name']
-        o['published'] = (params['published'] == 'true')
-        o['type'] = params['type']
-        o['puzzles'] = JSON.parse(params['puzzles'])
+        set_puzzle_set_data(o, params)
       }.save.to_json
     end
 
     put '/sets/:id' do
       authorize_admin!
       PuzzleSet.storage(env['redis']).load(params['id']).tap { |o|
-        o['year'] = params['year'].to_i
-        o['month'] = params['month'].to_i
-        o['name'] = params['name']
-        o['published'] = (params['published'] == 'true')
-        o['type'] = params['type']
-        o['puzzles'] = JSON.parse(params['puzzles'])
+        set_puzzle_set_data(o, params)
       }.save.to_json
     end
 

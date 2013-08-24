@@ -167,7 +167,7 @@ shared_context 'fixtures' do
       'month' => 10,
       'name' => 'Cool set',
       'id' => '1487',
-      'puzzles' => [],
+      'puzzle_ids' => [],
       'published' => false,
       'type' => 'golden',
       'created_at' => '2012-12-29 10:42:21 +0400'

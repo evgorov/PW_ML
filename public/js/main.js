@@ -44,17 +44,6 @@ Backbone.ajax = function(options){
   return $.ajax.call($, options);
 };
 
-// Oh yeah thats dirty, dirty, dirty.
-function generateUUID(){
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x7|0x8)).toString(16);
-    });
-    return uuid;
-}
-
 /* Puzzle editor */
 
 var Field = Backbone.Model.extend({
@@ -180,9 +169,16 @@ var Field = Backbone.Model.extend({
 
 var Puzzle = Backbone.Model.extend({
 
+  url: function(){
+    if(this.id){
+        return '/questions/' + this.id;
+    } else {
+        return '/questions';
+    }
+  },
+
   defaults: function(){
     return {
-      "id": generateUUID(),
       "questions": [],
       "name": _.uniqueId('Сканворд'),
       "issuedAt": (new Date).toISOString().split('T')[0],
@@ -446,7 +442,7 @@ var PuzzleView = Backbone.View.extend({
     $question.find('.position.x').val(e.destination.x);
     $question.find('.position.y').val(e.destination.y);
     $question.find('.position.x').keyup();
- },
+  },
 
   updatePuzzleAtribute: function(){
     var size = this.$el.find('[role="puzzle-size"]').val(),
@@ -489,7 +485,10 @@ var PuzzleView = Backbone.View.extend({
   },
 
   savePuzzle: function(){
-    if(this.model.field.get('errors').length == 0) this.hide();
+    if(this.model.field.get('errors').length == 0){
+        this.model.save();
+        this.hide();
+    }
   },
 
   render: function() {
@@ -531,6 +530,82 @@ var PuzzleView = Backbone.View.extend({
                     window.open(canvas.toDataURL("image/png"));
                   }
                 });
+  }
+});
+
+var Puzzles = Backbone.Collection.extend({
+  model: Puzzle,
+  url: '/questions',
+  comparator: false,
+  parse: function(response) {
+      return response.puzzles;
+  }
+});
+
+var PuzzlesView = Backbone.View.extend({
+  tagName: 'div',
+  rowTemplate: (function(){
+      var t = '<tr>' +
+              '<td><%= id %></td>' +
+              '<td><%= name %></td>' +
+              '<td><button class="btn btn-small" role="edit-puzzle" data-id="<%= id %>">Редактировать</button></td>' +
+              '</tr>';
+      return _.template(t);
+  })(),
+  events: {
+    'click [role="add-puzzle"]': 'addNewPuzzle',
+    'click [role="edit-puzzle"]': 'editPuzzle',
+    'click [role="pagination"] a': 'selectPage'
+  },
+
+  initialize: function(){
+    this.collection.on('reset', this.render, this);
+    this.collection.fetch();
+  },
+
+  render: function(){
+    var rows = this.collection.map(function(o){
+      return this.rowTemplate(o.toJSON());
+    }, this).join('');
+
+    this.$el.find('[role="rows"]').html(rows);
+    this.renderPaginator();
+    return this;
+  },
+
+  addNewPuzzle: function(){
+      var puzzle = new Puzzle();
+      puzzle.on('sync', function(){ this.model.fetch(); });
+      var puzzleView = new PuzzleView({ model: puzzle });
+      puzzleView.show();
+  },
+
+  editPuzzle: function(e){
+      var id = $(e.target).attr('data-id'),
+          puzzle = this.collection.get(id);
+      puzzle.on('sync', function(){ this.model.fetch(); });
+      var puzzleView = new PuzzleView({ model: puzzle });
+      puzzleView.show();
+  },
+
+  renderPaginator: function(){
+    var currentPage = this.collection.currentPage,
+        totalPages = this.collection.totalPages,
+        $result = $('<ul>');
+    if(totalPages < 2) return;
+    for(var i = 1; i <= totalPages; i++){
+      var $li = $('<li>');
+      $li.append($('<a>').attr('href', '#').text(i));
+      if(i == currentPage) $li.addClass('active');
+      $result.append($li);
+    }
+    this.$el.find('[role="pagination"]').empty().append($result);
+  },
+
+  selectPage: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var page = $(e.target).text();
+    this.collection.fetch({ data: { page: page }});
   }
 });
 
@@ -681,49 +756,12 @@ var PuzzleSet = Backbone.Model.extend({
   defaults: function(){
     return {
       published: false,
-      puzzles: [],
+      puzzle_ids: [],
       type: '',
       month: ((new Date).getMonth() + 1),
       year: (new Date).getFullYear(),
       name: _.uniqueId('Сет ')
     };
-  },
-
-  pushState: function(){
-    this.stateHistory = this.stateHistory || [];
-    this.stateHistory.push(this.toJSON());
-  },
-
-  popState: function(){
-    var state = this.stateHistory.pop();
-    this.set(state);
-  },
-
-  clearState: function(){
-    this.stateHistory = [];
-  },
-
-  addNewPuzzle: function(){
-    var puzzle = (new Puzzle()).toJSON();
-    this.set('puzzles', this.get('puzzles').concat([puzzle]));
-  },
-  deletePuzzle: function(id){
-    var newPuzzles = _(this.get('puzzles')).reject(function(o){return o.id == id;});
-    this.set('puzzles', newPuzzles);
-  },
-  getPuzzle: function(id){
-    var puzzle = new Puzzle(_(this.get('puzzles')).find(function(o){return o.id == id;}));
-    puzzle.on('change', function(){
-      var newPuzzles = _(this.get('puzzles')).map(function(o){
-        if(o.id == id){
-          return puzzle.toJSON();
-        } else {
-          return o;
-        }
-      });
-      this.set('puzzles', newPuzzles);
-    }, this);
-    return puzzle;
   }
 });
 
@@ -740,14 +778,18 @@ var PuzzleSetView = Backbone.View.extend({
   className: 'row m-bottom-20px',
   showTemplate: _.template($('#set-view-template').html()),
   editTemplate: _.template($('#set-view-editor-template').html()),
+  editPuzzleTemplate: _.template(
+      '<input type="text" role="puzzle-id">' +
+      '<input class="btn" type="button" role="delete-puzzle" value="delete">'
+  ),
   events: {
     'click [role="edit-set"]': 'startEditing',
     'click [role="add-puzzle"]': 'addPuzzle',
     'change [role="set-name"]': 'changeName',
     'change [role="set-type"]': 'changeType',
     'click [role="delete-puzzle"]': 'deletePuzzle',
+    'change [role="puzzle-id"]': 'updatePuzzles',
     'click [role="delete-set"]': 'deletePuzzleSet',
-    'click [role="edit-puzzle"]': 'editPuzzle',
     'click [role="save-set"]': 'saveSet',
     'click [role="publish-set"]': 'publishSet',
     'click [role="cancel-set"]': 'cancelSet'
@@ -765,43 +807,52 @@ var PuzzleSetView = Backbone.View.extend({
     } else {
       template = this.showTemplate;
     }
-
-    this.$el.empty().append(template(this.model.toJSON()));
+    this.$el.empty().append(template( this.model.toJSON() ));
     this.$el.find('[role="set-type"]').val(this.model.get('type'));
     return this;
   },
 
   startEditing: function(){
     this.editing = true;
-    if(!this.model.get('published')) this._intervalId = setInterval(_.bind(this.model.save, this.model), 30000);
-    this.model.pushState();
     this.render();
   },
 
   stopEditing: function(){
-    if(typeof(this._intervalId) !== 'undefined') clearInterval(this._intervalId);
     this.editing = false;
   },
 
   addPuzzle: function(e){
     if(e && e.preventDefault) e.preventDefault();
-    this.model.addNewPuzzle();
+    var $div = $('<div>').html(this.editPuzzleTemplate());
+    this.$el.find('[role="puzzle-ids"]').append($div);
   },
 
   changeName: function(e){
+    if(e && e.preventDefault) e.preventDefault();
     this.model.set('name', $(e.target).val());
     return true;
   },
 
   changeType: function(e){
+    if(e && e.preventDefault) e.preventDefault();
     this.model.set('type', $(e.target).val());
     return true;
   },
 
   deletePuzzle: function(e){
     if(e && e.preventDefault) e.preventDefault();
-    var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id');
-    this.model.deletePuzzle(id);
+    $(e.target).parent().remove();
+    updatePuzzles();
+  },
+
+  updatePuzzles: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var puzzleIds = this.$el.find('[role="puzzle-id"]')
+          .map(function(){ return $(this).val(); }).toArray();
+    puzzleIds = _(puzzleIds).reject(function(o){
+        return o === "";
+    });
+    this.model.set('puzzle_ids', puzzleIds);
   },
 
   deletePuzzleSet: function(e){
@@ -810,23 +861,9 @@ var PuzzleSetView = Backbone.View.extend({
     this.remove();
   },
 
-  editPuzzle: function(e){
-    if(e && e.preventDefault) e.preventDefault();
-    this.model.pushState();
-    var id = $(e.target).closest('[role="puzzle-list-item"]').attr('data-puzzle-id'),
-        puzzle = this.model.getPuzzle(id);
-    puzzleView = new PuzzleView({ model: puzzle });
-    puzzleView.on('cancel', function(){
-                    this.model.popState();
-                    this.render();
-                  }, this);
-    puzzleView.show();
-  },
-
   cancelSet: function(e){
     if(e && e.preventDefault) e.preventDefault();
     this.stopEditing();
-    this.model.popState();
     this.render();
   },
 
@@ -835,7 +872,6 @@ var PuzzleSetView = Backbone.View.extend({
     this.model.save();
     this.stopEditing();
     this.render();
-    this.model.clearState();
   },
 
   publishSet: function(e){
@@ -844,7 +880,6 @@ var PuzzleSetView = Backbone.View.extend({
     this.model.save();
     this.stopEditing();
     this.render();
-    this.model.clearState();
   }
 });
 
@@ -944,7 +979,7 @@ var UsersView = Backbone.View.extend({
     var rows = this.collection.map(function(o){
       return this.rowTemplate(o.toJSON());
     }, this).join('');
-    this.$el.find('[role="rows"]').empty().append(rows);
+    this.$el.find('[role="rows"]').html(rows);
     this.renderPaginator();
     return this;
   },
@@ -1132,7 +1167,7 @@ var NotificationsView = Backbone.View.extend({
 
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView, notificationsView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzles, puzzlesView, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView, notificationsView;
 
 $(function(){
   currentUser = new CurrentUser();
@@ -1143,6 +1178,9 @@ $(function(){
 
   users = new Users;
   usersView = new UsersView({ el: $('[role="users"]')[0], collection: users });
+
+  puzzles = new Puzzles();
+  puzzlesView = new PuzzlesView({ el: $('[role="puzzles"]')[0], collection: puzzles });
 
   puzzleSets = new PuzzleSets();
   puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]')[0], collection: puzzleSets});

@@ -113,17 +113,16 @@ module Middleware
         args << params['month'].to_i
       end
 
-      puzzles = PuzzleSet.storage(env['redis']).published_for(*args)
-      puzzles = puzzles
+      sets = PuzzleSet.storage(env['redis']).published_for(*args)
         .map(&:to_hash)
         .map{ |o| user_sets[o['id']] || o}
         .map{ |o| o['bought'] = !!user_sets[o['id']]; o }
 
-      puzzles.each do |puzzle|
-       puzzle['puzzles'] = puzzle['puzzles'].map{ |o| o['id'] }
+      sets.each do |set|
+       set['puzzles'] = set['puzzles'].map{ |o| o['id'] }
       end if mode == 'short'
 
-      puzzles.to_json
+      sets.to_json
     end
 
     get '/users' do

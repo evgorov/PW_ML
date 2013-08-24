@@ -277,13 +277,44 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
 
+    post('/puzzles',
+         {
+           base_score: 50,
+           height: 20,
+           width: 20,
+           issuedAt: Time.now.to_s,
+           name: 'puzzle 1 FTW',
+           questions: [{a: 1}].to_json,
+           time_given:  400,
+           session_key: session_key
+         })
+
+    response_data = JSON.parse(last_response.body)
+    puzzle1_id = response_data['id']
+
+
+    post('/puzzles',
+         {
+           base_score: 50,
+           height: 20,
+           width: 20,
+           issuedAt: Time.now.to_s,
+           name: 'puzzle 2 FTW',
+           questions: [{a: 1}].to_json,
+           time_given:  400,
+           session_key: session_key
+         })
+
+    response_data = JSON.parse(last_response.body)
+    puzzle2_id = response_data['id']
+
     post('/sets',
          {
            year: Time.now.year,
            month: Time.now.month,
            name: 'Cool set',
            published: 'true',
-           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
+           puzzle_ids: [puzzle1_id, puzzle2_id].to_json,
            type: 'golden',
            session_key: session_key
          })
@@ -292,7 +323,6 @@ describe 'Integration spec' do
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
     admin_set_id = response_data['id']
-
     get('/published_sets', mode: 'short', session_key: session_key)
     last_response.status.should == 200
     last_response_should_be_json
@@ -325,7 +355,7 @@ describe 'Integration spec' do
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
-    response_data[0]['name'].should == 'puzzle1'
+    response_data[0]['name'].should == 'puzzle 1 FTW'
   end
 
   it 'reset password cannot use same token twice' do

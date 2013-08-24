@@ -1,7 +1,9 @@
 require 'json'
+require 'time'
+require 'securerandom'
 require 'ext/hash'
 require 'model/basic_model'
-require 'securerandom'
+require 'model/puzzle'
 
 class PuzzleSet < BasicModel
 
@@ -24,14 +26,20 @@ class PuzzleSet < BasicModel
     super.tap { @storage.srem("PuzzleSets:#{self['year']}##{self['month']}", self['id']) }
   end
 
+  def after_load
+    super
+    self['puzzle_ids'] ||= []
+    load_puzzles
+  end
+
   def before_save
     super
-    return unless self.to_hash.has_key?('puzzles')
-    self['puzzles'].each { |o| o['id'] = SecureRandom.uuid unless o.has_key?('id') }
+    check_puzzle_ids
+    @hash.delete('puzzles')
   end
 
   def set_defaults!
-    self['puzzles'] = []
+    self['puzzle_ids'] ||= []
     self['month'] = Time.now.month
     self['year'] = Time.now.year
     self['published'] = false
@@ -46,5 +54,24 @@ class PuzzleSet < BasicModel
   def all_for(year = Time.now.year, month = Time.now.month)
     keys = @storage.smembers("PuzzleSets:#{year}##{month}")
     keys.map{ |id| self.storage(@storage).load(id) }
+  end
+
+  private
+
+  def load_puzzles
+    self['puzzles'] = self['puzzle_ids'].map do |o|
+      Puzzle.storage(@storage).load(o)
+    end
+  end
+
+  def check_puzzle_ids
+    self['puzzle_ids'] = self['puzzle_ids'].reject do |o|
+      begin
+        Puzzle.storage(@storage).load(o)
+        false
+      rescue BasicModel::NotFound
+        true
+      end
+    end
   end
 end

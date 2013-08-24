@@ -16,16 +16,17 @@
     </div>
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Главная</a></li>
-        <li><a href="#tab2" data-toggle="tab">Пользователи</a></li>
-        <li><a href="#tab3" data-toggle="tab">Сеты</a></li>
-        <li><a href="#tab4" data-toggle="tab">Объявления</a></li>
-        <li><a href="#tab5" data-toggle="tab">Коэффициенты</a></li>
-        <li><a href="#tab6" data-toggle="tab">Нотификации</a></li>
+        <li class="active"><a href="#tab_main" data-toggle="tab">Главная</a></li>
+        <li><a href="#tab_users" data-toggle="tab">Пользователи</a></li>
+        <li><a href="#tab_sets" data-toggle="tab">Сеты</a></li>
+        <li><a href="#tab_puzzles" data-toggle="tab">Сканворды</a></li>
+        <li><a href="#tab_service_messages" data-toggle="tab">Объявления</a></li>
+        <li><a href="#tab_coefficients" data-toggle="tab">Коэффициенты</a></li>
+        <li><a href="#tab_notifications" data-toggle="tab">Нотификации</a></li>
         <li class="pull-right logout" role="logout"><span class="muted">Пользователь: </span><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="tab_main">
           <div role="dashboard">
             <div class="row m-bottom-20px">
               <div class="span12 ta-center"><h3>Основные показатели приложения</h3></div>
@@ -34,7 +35,7 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tab_users">
           <div role="users">
             <table class="table">
               <thead>
@@ -51,11 +52,10 @@
               <tbody role="rows">
               </tbody>
             </table>
-            <div class="pagination pagination-centered" role="pagination">
-            </div>
+            <div class="pagination pagination-centered" role="pagination"></div>
           </div>
         </div>
-       <div class="tab-pane" id="tab3" class="sets">
+       <div class="tab-pane" id="tab_sets" class="sets">
           <div role="sets">
             <div class="row m-bottom-20px">
               <div class="span12 va-middle">
@@ -70,7 +70,29 @@
             </div>
           </div>
        </div>
-       <div class="tab-pane" id="tab4" class="messages" role="service-message">
+       <div class="tab-pane" id="tab_puzzles" class="puzzles">
+          <div role="puzzles">
+            <div class="row m-bottom-20px">
+              <div class="span12 va-middle">
+                <span class="pull-right h3-height va-middle">
+                  <a href="#" class="btn btn-small" role="add-puzzle"><i class="icon-plus-sign"></i> Добавить скарворд</a>
+                </span>
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Название</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody role="rows"></tbody>
+            </table>
+            <div class="pagination pagination-centered" role="pagination"></div>
+          </div>
+       </div>
+       <div class="tab-pane" id="tab_service_messages" class="messages" role="service-message">
          <div class="row">
            <div class="span12">
              <h3>Сообщение1</h3>
@@ -89,7 +111,7 @@
            </div>
          </div>
        </div>
-       <div class="tab-pane" id="tab5" class="coefficients" role="coefficients">
+       <div class="tab-pane" id="tab_coefficients" class="coefficients" role="coefficients">
          <div class="row">
            <div class="span12">
              <div>
@@ -112,7 +134,7 @@
            </div>
          </div>
        </div>
-       <div class="tab-pane" id="tab6" class="notifications" role="notifications">
+       <div class="tab-pane" id="tab_notifications" class="notifications" role="notifications">
          <div class="row">
            <div class="span12">
              <div>
@@ -264,8 +286,8 @@
           <% if(puzzles.length === 0) { %>
             <li>Нет сканвордов</li>
           <% } else { %>
-            <% _.each(puzzles, function(o){ %>
-              <li><%- o.name %></li>
+            <% _.each(puzzle_ids, function(o){ %>
+              <li><%- o %></li>
             <% }); %>
           <% }; %>
         </ul>
@@ -295,17 +317,14 @@
             </div>
             <div class="m-bottom-10px">
               <p>Сканворды:</p>
-              <ul>
-                <% _.each(puzzles, function(puzzle){ %>
-                  <li data-puzzle-id="<%- puzzle.id %>" role="puzzle-list-item">
-                    <%- puzzle.name %>
-                    <div class="btn-group">
-                      <button class="btn btn-mini btn-danger" role="delete-puzzle">Удалить</button>
-                      <button class="btn btn-mini" role="edit-puzzle">Редактировать</button>
-                    </div>
-                  </li>
+              <div role="puzzle-ids">
+                <% _.each(puzzle_ids, function(o){ %>
+                  <div>
+                    <input type="text" role="puzzle-id" value="<%= o %>">
+                    <input class="btn" type="button" role="delete-puzzle" value="delete">
+                  </div>
                 <% }); %>
-              </ul>
+              </div>
             </div>
             <button class="btn btn-small" role="add-puzzle">
               <i class="icon-plus-sign"></i> Добавить сканворд

@@ -4,11 +4,6 @@ require 'fixtures'
 describe PuzzleSet do
   include_context 'fixtures'
 
-  it 'has setters and getters for keys' do
-    subject['name'] = 'G.'
-    subject['name'].should == 'G.'
-  end
-
   it 'should call namespace("PuzzleSet") on #storage' do
     storage = mock(:storage).as_null_object
     storage.should_receive(:namespace).with('PuzzleSet')
@@ -19,17 +14,29 @@ describe PuzzleSet do
     storage = mock(:storage).as_null_object
     storage.stub(namespace: storage)
     subject.merge!(set_in_storage)
-    storage.should_receive(:set).with("1487", {}.merge(subject).to_json)
+    subject['puzzle_ids'] << '3'
+    subject['puzzles'] = [{data: 'data'}]
+    stored_data = {}.merge(subject).tap{ |o| o.delete('puzzles') }.to_json
+    storage.should_receive(:set).with("1487", stored_data)
     storage.should_receive(:sadd).with("PuzzleSets:2012#10", "1487")
     subject.storage(storage).save
   end
 
-  it '#loads set' do
+  it '#load set' do
     storage = mock(:storage).as_null_object
     storage.stub(namespace: storage)
     storage.should_receive(:get).with("1487").and_return(set_in_storage.to_json)
     set = subject.storage(storage).load("1487")
     set['name'] == set_in_storage['name']
+  end
+
+  it 'loads puzzles with set' do
+    storage = mock(:storage).as_null_object
+    storage.stub(namespace: storage)
+    data = set_in_storage.tap{ |o| o['puzzle_ids'] << '1' }.to_json
+    storage.should_receive(:get).with("1487").and_return(data)
+    storage.should_receive(:get).with('1').and_return('{"data":"data"}')
+    set = subject.storage(storage).load("1487")
   end
 
   it 'it is possible to #delete set' do
@@ -56,5 +63,4 @@ describe PuzzleSet do
     storage.should_receive(:get).with("3").and_return({ "published" => false }.to_json)
     subject.storage(storage).all_for(2012, 10).size.should == 3
   end
-
 end
