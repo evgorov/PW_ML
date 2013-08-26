@@ -3,6 +3,8 @@ package com.ltst.prizeword.crossword.engine;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -10,6 +12,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.NinePatchDrawable;
+import android.util.Pair;
+import android.view.View;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -45,6 +49,10 @@ public class PuzzleFieldDrawer
     private int mTextHeight;
     private @Nonnull Paint mPaint;
     private IListener<Rect> mInvalidateHandler;
+    private @Nullable List<Pair<PuzzleTileState, Rect>> mInputRectList;
+    private @Nonnull Matrix mInputRectMatrix;
+    private @Nullable IListenerVoid mPostInvalidateHandler;
+    private boolean mIsAnimating = false;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
@@ -56,6 +64,7 @@ public class PuzzleFieldDrawer
         mLetterBitmapManager = new LetterBitmapManager(mContext, mAdapter.getBitmapResourceModel());
 
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
+        mInputRectMatrix = new Matrix();
 
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
         {
@@ -228,6 +237,7 @@ public class PuzzleFieldDrawer
     {
         return mTileHeight;
     }
+    // ==== tools =================================================
 
     public boolean checkFocusPoint(@Nonnull Point p, @Nonnull Rect viewRect)
     {
@@ -293,6 +303,40 @@ public class PuzzleFieldDrawer
         float x = p.x + (mDrawingOffsetX + 4 * framePadding + 2 * padding);
         float y = p.y + (mDrawingOffsetY + 4 * framePadding + 2 * padding);
         p.set(x, y);
+    }
+
+    public void createInputRectList(@Nullable List<PuzzleTileState> stateList, @Nonnull IListenerVoid postInvalidate)
+    {
+        if(stateList == null || stateList.isEmpty())
+            return;
+        mInputRectList = new ArrayList<Pair<PuzzleTileState, Rect>>();
+        mPostInvalidateHandler = postInvalidate;
+        for (PuzzleTileState state : stateList)
+        {
+            @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
+            if (rect == null)
+                continue;
+            mInputRectList.add(new Pair<PuzzleTileState, Rect>(state, rect));
+        }
+    }
+
+    public @Nullable Rect getPuzzleTileRect(int row, int column)
+    {
+        if (mResources == null)
+        {
+            return null;
+        }
+        int framePadding = mResources.getFramePadding(mContext.getResources());
+        int padding = mResources.getPadding();
+        int tileGap = mResources.getTileGap();
+        int x = mDrawingOffsetX + 2 * framePadding + padding;
+        int y = mDrawingOffsetY + 2 * framePadding + padding;
+        int left = x + mTileWidth * (column - 1) + tileGap * (column - 1);
+        int right = x + mTileWidth * column + tileGap * (column - 1);
+        int top = y + mTileHeight * (row - 1)+ tileGap * (row - 1);
+        int bottom = y + mTileHeight * row + tileGap * (row - 1);
+
+        return new Rect(left, top, right, bottom);
     }
 
     // ====== drawing =====================================
@@ -509,6 +553,31 @@ public class PuzzleFieldDrawer
         }
     }
 
+    public void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas)
+    {
+        if(mInputRectList != null)
+        {
+            final int saveCount = canvas.save();
+            IListenerVoid finishAnimHandler = new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    canvas.restoreToCount(saveCount);
+                    mInputRectList.clear();
+                    mInputRectList = null;
+                    mIsAnimating = false;
+                }
+            };
+
+            if(!mIsAnimating)
+            {
+                ScaleCorrectInputAnimationThread anim = new ScaleCorrectInputAnimationThread(finishAnimHandler);
+                anim.start();
+            }
+        }
+    }
+
     private void fillRectWithBitmap(@Nonnull Canvas canvas, @Nonnull RectF rect, int res)
     {
         int tileWidth = mBitmapManager.getWidth(res);
@@ -669,5 +738,34 @@ public class PuzzleFieldDrawer
             });
         }
     };
+
+    private class ScaleCorrectInputAnimationThread extends Thread
+    {
+        final @Nonnull IListenerVoid finishHandler;
+
+        private ScaleCorrectInputAnimationThread(@Nonnull IListenerVoid finishHandler)
+        {
+            this.finishHandler = finishHandler;
+        }
+
+        @Override
+        public void run()
+        {
+            if (mPostInvalidateHandler == null || mInputRectList == null)
+            {
+                return;
+            }
+            synchronized (this)
+            {
+                mIsAnimating = true;
+                while(true)
+                {
+                    mPostInvalidateHandler.handle();
+                    break;
+                }
+                finishHandler.handle();
+            }
+        }
+    }
 }
 

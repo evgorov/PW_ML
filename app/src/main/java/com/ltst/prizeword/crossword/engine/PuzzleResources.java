@@ -75,6 +75,8 @@ public class PuzzleResources implements Parcelable
             for (int j = 0; j < mPuzzleRowsCount; j++)
             {
                 mStateMatrix[i][j] = new PuzzleTileState();
+                mStateMatrix[i][j].column = i + 1;
+                mStateMatrix[i][j].row = j + 1;
                 mStateMatrix[i][j].setLetterState(LetterState.LETTER_EMPTY);
             }
         }

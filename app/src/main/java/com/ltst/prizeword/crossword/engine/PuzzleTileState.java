@@ -12,6 +12,8 @@ public class PuzzleTileState
     public boolean hasLetter;
     public boolean hasArrows;
     public boolean hasInputLetter;
+    public int column;
+    public int row;
 
     private int questionState;
     private int questionIndex;

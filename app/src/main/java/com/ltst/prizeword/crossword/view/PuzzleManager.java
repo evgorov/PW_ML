@@ -172,7 +172,7 @@ public class PuzzleManager
         return true;
     }
 
-    public void onKeyEvent(@Nonnull View view, @Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
+    public void onKeyEvent(final @Nonnull View view, @Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
     {
         switch (keyEvent.getKeyCode())
         {
@@ -230,11 +230,20 @@ public class PuzzleManager
                     @Override
                     public void handle()
                     {
-                        cancelLastQuestion();
                         if (keyboardOpenHandler != null)
                         {
                             keyboardOpenHandler.handle(false);
                         }
+                        mInvalidateHandler.handle(mPuzzleViewRect);
+                        mFieldDrawer.createInputRectList(mResourcesAdapter.getCurrentInputPuzzleStates(), new IListenerVoid()
+                        {
+                            @Override
+                            public void handle()
+                            {
+                                view.postInvalidate();
+                            }
+                        });
+                        cancelLastQuestion();
                     }
                 });
                 mFieldDrawer.checkFocusPoint(mLastQuestionInputPuzzlePoint, mPuzzleViewRect);
@@ -350,6 +359,7 @@ public class PuzzleManager
 
         mFieldDrawer.drawBackground(screenCanvas);
         mFieldDrawer.drawPuzzles(screenCanvas);
+        mFieldDrawer.drawCurrentInputWithAnimation(screenCanvas);
 
         screenCanvas.restoreToCount(saveCount);
     }

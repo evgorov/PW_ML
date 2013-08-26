@@ -11,10 +11,8 @@ import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.crossword.wordcheck.WordCompletenessChecker;
-import com.ltst.prizeword.crossword.wordcheck.WordsGraph;
 
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.events.PairListeners;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
@@ -50,6 +48,7 @@ public class PuzzleResourcesAdapter
     private @Nullable StringBuffer mCurrentInputBuffer;
     private int mCurrentInputQuestionIndex = -1;
     private boolean isInputMode;
+    private @Nullable List<PuzzleTileState> mCurrentInputPuzzleStates;
 
     public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
                                   @Nonnull String sessionKey,
@@ -108,6 +107,11 @@ public class PuzzleResourcesAdapter
         mCurrentInputBuffer = null;
         mCurrentQuestionPoint = null;
         mCurrentInputQuestionIndex = -1;
+        if (mCurrentInputPuzzleStates != null)
+        {
+            mCurrentInputPuzzleStates.clear();
+            mCurrentInputPuzzleStates = null;
+        }
     }
 
     public int getTimeLeft()
@@ -152,6 +156,12 @@ public class PuzzleResourcesAdapter
             return false;
         }
         return mPuzzle.isSolved;
+    }
+
+    @Nullable
+    public List<PuzzleTileState> getCurrentInputPuzzleStates()
+    {
+        return mCurrentInputPuzzleStates;
     }
 
     public void setPuzzleStateHandler(@Nullable IListenerVoid puzzleStateHandler)
@@ -236,6 +246,7 @@ public class PuzzleResourcesAdapter
 
         if(state.hasQuestion)
         {
+            resetInputMode();
             if(updateQuestionState(state, column, row, true))
             {
                 if (confirmedHandler != null)
@@ -294,6 +305,11 @@ public class PuzzleResourcesAdapter
                     PuzzleTileState.AnswerDirection.getDirectionByArrow(arrowType), question.answer);
             if(isInput)
             {
+                if (mCurrentInputPuzzleStates == null)
+                {
+                    mCurrentInputPuzzleStates = new ArrayList<PuzzleTileState>();
+                }
+
                 mCurrentAnswer = question.answer;
                 mCurrentInputQuestionIndex = questionIndex;
                 final StringBuffer answerWithSkippedBuffer = new StringBuffer();
@@ -377,8 +393,9 @@ public class PuzzleResourcesAdapter
 
     public void updateLetterCharacterState(@Nonnull String character, @Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect, @Nonnull IListenerVoid correctAnswerHandler)
     {
-        if (mCurrentAnswerIterator == null || mResources == null)
+        if (mCurrentAnswerIterator == null || mResources == null || mCurrentInputPuzzleStates == null)
             return;
+
         if(isInputMode)
         {
             Point next = mCurrentAnswerIterator.next();
@@ -394,7 +411,9 @@ public class PuzzleResourcesAdapter
                     if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                     {
                         if(!mCurrentAnswerIterator.isLast())
+                        {
                             mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
+                        }
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(AnswerLetterPointIterator.SKIP_LETTER_CHARACTER);
@@ -404,12 +423,15 @@ public class PuzzleResourcesAdapter
                     else
                     {
                         state.setInputLetter(character);
+                        mCurrentInputPuzzleStates.add(state);
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(character);
                             boolean correct = checkAnswer(correctAnswerHandler);
                             if(!correct)
+                            {
                                 mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
+                            }
                             break;
                         }
                     }
@@ -455,8 +477,8 @@ public class PuzzleResourcesAdapter
             });
             checkCurrectCrossingQuestions();
             setCurrentQuestionCorrect(true);
-            resetInputMode();
             correctAnswerHandler.handle();
+            resetInputMode();
             return true;
         }
         else
@@ -600,7 +622,8 @@ public class PuzzleResourcesAdapter
 
     public void deleteLetterByBackspace(@Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect)
     {
-        if(mCurrentAnswerIterator == null || !isInputMode || mResources == null || mCurrentInputBuffer == null)
+        if(mCurrentAnswerIterator == null || !isInputMode || mResources == null ||
+                mCurrentInputBuffer == null || mCurrentInputPuzzleStates == null)
             return;
         @Nullable Point last = mCurrentAnswerIterator.last();
         while(true)
@@ -631,6 +654,10 @@ public class PuzzleResourcesAdapter
                     {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
                         mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
+                    }
+                    if(mCurrentInputPuzzleStates.size() >= 1)
+                    {
+                        mCurrentInputPuzzleStates.remove(mCurrentInputPuzzleStates.size() - 1);
                     }
                     break;
                 }
