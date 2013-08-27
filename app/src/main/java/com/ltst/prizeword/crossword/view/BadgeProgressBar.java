@@ -1,9 +1,12 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+
+import com.ltst.prizeword.tools.DimenTools;
 
 import javax.annotation.Nonnull;
 
@@ -29,9 +32,9 @@ public class BadgeProgressBar {
 
                     @Override
                     public void onGlobalLayout() {
-                        float density = mContext.getResources().getDisplayMetrics().density;
-                        int minimum = 16;
-                        int margin = 1;
+
+                        int minimum = (int) DimenTools.pxByDensity(mContext,8);
+                        int margin = (int) DimenTools.pxByDensity(mContext,1);
                         mWidth = mBackground.getWidth();
 
                         int width = (mWidth == 0) ? 0 : mProgress * (mWidth - 2 * margin) / 100;
@@ -49,4 +52,6 @@ public class BadgeProgressBar {
     {
         mProgress = progress;
     }
+
+
 }
