@@ -16,4 +16,5 @@ public interface IUserDataModel {
     void resetUserName(final String userName, @Nonnull IListenerVoid handler);
     void loadProvidersFromDB(long user_id, @Nonnull IListenerVoid handler);
     void mergeAccounts(final @Nonnull String sessionKey1, final @Nonnull String sessionKey2, @Nonnull IListenerVoid handler);
+    void clearDataBase(@Nonnull IListenerVoid handler);
 }
