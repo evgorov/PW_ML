@@ -207,9 +207,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-//        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-//        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-//        spref.commit();
         super.onDestroy();
     }
 
