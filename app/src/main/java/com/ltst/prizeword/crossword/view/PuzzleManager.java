@@ -2,7 +2,9 @@ package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -52,7 +54,7 @@ public class PuzzleManager
 
     private boolean isRestored;
 
-    private final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    public final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
@@ -362,6 +364,7 @@ public class PuzzleManager
         mFieldDrawer.drawCurrentInputWithAnimation(screenCanvas);
 
         screenCanvas.restoreToCount(saveCount);
+
     }
 
 
