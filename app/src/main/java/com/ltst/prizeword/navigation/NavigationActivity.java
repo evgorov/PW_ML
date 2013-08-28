@@ -26,6 +26,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.ScoreDetailFragment.ScoreDetailFragment;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -141,6 +142,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
+        mDrawerMenu.mScoreBtn.setOnClickListener(this);
 
         initNavigationDrawerItems();
         reloadUserData();
@@ -226,6 +228,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(ScoreDetailFragment.FRAGMENT_ID,ScoreDetailFragment.FRAGMENT_CLASSNAME);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME);
         }
@@ -292,6 +295,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
             title = res.getString(R.string.invite_fragment_title);
         else if (id.equals(RatingFragment.FRAGMENT_ID))
+            title = res.getString(R.string.rating_fragment_title);
+        else if (id.equals(ScoreDetailFragment.FRAGMENT_ID))
             title = res.getString(R.string.rating_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
@@ -437,6 +442,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case  R.id.menu_pride_rating_btn:
                 selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
+                break;
+            case  R.id.menu_pride_score_btn:
+                selectNavigationFragmentByClassname(ScoreDetailFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;

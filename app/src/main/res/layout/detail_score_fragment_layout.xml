@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <!-- =================================================================================== -->
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@drawable/navigationbar_bg">
+
+        <Button
+                android:id="@+id/crossword_fragment_header_menu_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/header_menu_but"
+                android:visibility="visible"
+                />
+
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="18sp"
+                style="@style/NavigationBarText"
+                android:layout_gravity="center_vertical|center"
+                android:text="@string/score_fragment_title1"
+                />
+
+    </FrameLayout>
+    <!-- =================================================================================== -->
+
+
+    <ListView
+            android:id="@+id/score_crossword_fragment_current_container"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:background="@drawable/crossword_panel_bg_title"
+            android:visibility="gone">
+
+        <!--@TODO input brillian current crossword-->
+        <!--<include layout="@layout/crossword_panel_current"/>-->
+
+
+    </ListView>
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/invite_bg_tile">
+
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/score_header"/>
+
+        <include layout="@layout/score_crossword_panel"/>
+
+        <include layout="@layout/score_footer_header_beetwen"/>
+        <include layout="@layout/score_friends_item"/>
+
+
+        <include layout="@layout/score_footer"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

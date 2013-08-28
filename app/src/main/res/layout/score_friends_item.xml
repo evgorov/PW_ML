@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/score_friend_item_layout"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/score_item_bg">
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:background="@drawable/score_friends_item_bg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+        <ImageView
+                android:id="@+id/score_item_image"
+                android:layout_height="@dimen/size_avatar"
+                android:layout_width="@dimen/size_avatar"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/invite_empty_ava"
+                />
+
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                >
+
+            <TextView
+                    android:id="@+id/score_item_name_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="250dp"
+                    android:maxLines="1"
+                    android:maxWidth="250dp"
+                    style="@style/InviteItemNameText"
+                    android:text="Павел Петрович"
+                    />
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/score_right_top_score_bg">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/score_right_top_score_icon"/>
+
+                <TextView
+                        android:id="@+id/score_score_item"
+                        android:layout_marginLeft="5dp"
+                        style="@style/ScoreTopPanelText"
+                        android:text="21212"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/score_footer_header_and_first_item_friends">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="70dp">
+
+
+        <TextView
+                android:id="@+id/score_crossword_panel_title_text"
+                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                android:textSize="@dimen/puzzles_badge_title_text_size"
+                style="@style/PuzzlesHintParagraphTextStyle"
+                android:text="@string/score_friends_list"/>
+
+
+        <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/score_right_top_score_bg">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/score_right_top_score_icon"/>
+
+            <TextView
+                    android:layout_marginLeft="5dp"
+                    style="@style/ScoreTopPanelText"
+                    android:text="21212"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp">
+
+        <TextView
+                android:id="@+id/score_crossword_panel_ratio"
+                android:textSize="@dimen/puzzles_badge_text_size"
+                android:textStyle="bold"
+                style="@style/PuzzlesHintCommonTextStyle"
+                android:text="4"/>
+
+        <TextView
+                android:textSize="@dimen/puzzles_badge_text_size"
+                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                style="@style/PuzzlesHintCommonTextStyle"
+                android:text="@string/score_friends_count"/>
+
+    </LinearLayout>
+
+</LinearLayout>
