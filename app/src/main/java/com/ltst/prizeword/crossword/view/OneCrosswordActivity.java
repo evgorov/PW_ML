@@ -172,7 +172,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton = (Button)findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button)findViewById(R.id.final_next_btn);
 
-        mFlipNumberAnimator = new FlipNumberAnimator(mFinalFlipNumbersViewGroup);
+        mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
@@ -200,13 +200,13 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalNextButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
 
-        fillFlipNumbers(25930);
         super.onStart();
     }
 
     @Override
     protected void onResume()
     {
+        fillFlipNumbers(54526);
         mStopPlayFlag = true;
         super.onResume();
     }
@@ -305,9 +305,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if(show)
         {
+            fillFlipNumbers(25930);
             mStopPlayFlag = false;
             mFinalScreen.setVisibility(View.VISIBLE);
-
         }
         else
         {
@@ -373,7 +373,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
         showPauseDialog(false);
-        showFinalDialog(true);
+        showFinalDialog(false);
         mCurrentPuzzleIndex++;
         if(mCurrentPuzzleIndex >= mPuzzlesCount)
         {
