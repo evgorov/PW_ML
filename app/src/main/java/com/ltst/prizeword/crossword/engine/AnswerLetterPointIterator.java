@@ -53,6 +53,19 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             return null;
     }
 
+    @Nullable
+    public Point nextWithOffset()
+    {
+        if(hasNext())
+        {
+            offsetPointByDirection(mPoint);
+            currentLetterIndex ++;
+            return mPoint;
+        }
+        else
+            return null;
+    }
+
     public @Nullable Point last()
     {
         boolean needToDecreaseLetterIndex = true;

@@ -332,6 +332,23 @@ public class PuzzleFieldDrawer
         return new Rect(left, top, right, bottom);
     }
 
+    public @Nullable Point getInputFocusViewPoint(@Nullable Point currentTileFocusPoint)
+    {
+        if (currentTileFocusPoint == null)
+        {
+            return null;
+        }
+
+        @Nullable Rect puzzleTileRect = getPuzzleTileRect(currentTileFocusPoint.y, currentTileFocusPoint.x);
+        if (puzzleTileRect == null)
+        {
+            return null;
+        }
+        int x = puzzleTileRect.left + puzzleTileRect.width()/2;
+        int y = puzzleTileRect.top + puzzleTileRect.height()/2;
+        return new Point(x, y);
+    }
+
     // ====== drawing =====================================
 
     public void drawBackground(@Nonnull Canvas canvas)

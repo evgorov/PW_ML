@@ -1,7 +1,6 @@
 package com.ltst.prizeword.crossword.engine;
 
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
@@ -49,6 +48,7 @@ public class PuzzleResourcesAdapter
     private int mCurrentInputQuestionIndex = -1;
     private boolean isInputMode;
     private @Nullable List<PuzzleTileState> mCurrentInputPuzzleStates;
+    private @Nullable Point mCurrentTileFocusPoint;
 
     public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
                                   @Nonnull String sessionKey,
@@ -106,6 +106,7 @@ public class PuzzleResourcesAdapter
         mCurrentAnswer = null;
         mCurrentInputBuffer = null;
         mCurrentQuestionPoint = null;
+        mCurrentTileFocusPoint = null;
         mCurrentInputQuestionIndex = -1;
         if (mCurrentInputPuzzleStates != null)
         {
@@ -162,6 +163,12 @@ public class PuzzleResourcesAdapter
     public List<PuzzleTileState> getCurrentInputPuzzleStates()
     {
         return mCurrentInputPuzzleStates;
+    }
+
+    @Nullable
+    public Point getCurrentTileFocusPoint()
+    {
+        return mCurrentTileFocusPoint;
     }
 
     public void setPuzzleStateHandler(@Nullable IListenerVoid puzzleStateHandler)
@@ -286,15 +293,19 @@ public class PuzzleResourcesAdapter
             resetInputMode();
             if(updateQuestionState(state, column, row, true))
             {
+                setInputMode();
+
+                mCurrentQuestionPoint = new Point(column, row);
+                if (mCurrentAnswerIterator == null)
+                {
+                    return;
+                }
+                mCurrentAnswerIterator.reset();
+                mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
+
                 if (confirmedHandler != null)
                 {
                     confirmedHandler.handle();
-                }
-                setInputMode();
-                mCurrentQuestionPoint = new Point(column, row);
-                if (mCurrentAnswerIterator != null)
-                {
-                    mCurrentAnswerIterator.reset();
                 }
             }
 
@@ -421,21 +432,21 @@ public class PuzzleResourcesAdapter
 
         if(state.hasQuestion)
         {
-
             updateQuestionState(state, column, row, false);
             resetInputMode();
             return;
         }
     }
 
-    public void updateLetterCharacterState(@Nonnull String character, @Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect, @Nonnull IListenerVoid correctAnswerHandler)
+    public void updateLetterCharacterState(@Nonnull String character,  @Nonnull IListenerVoid correctAnswerHandler)
     {
-        if (mCurrentAnswerIterator == null || mResources == null || mCurrentInputPuzzleStates == null)
+        if (mCurrentAnswerIterator == null || mResources == null || mCurrentInputPuzzleStates == null
+        || mCurrentTileFocusPoint == null)
             return;
 
         if(isInputMode)
         {
-            Point next = mCurrentAnswerIterator.next();
+            Point next = mCurrentAnswerIterator.current();
             while(true)
             {
                 if(next == null)
@@ -447,14 +458,14 @@ public class PuzzleResourcesAdapter
                     int letterState = state.getLetterState();
                     if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                     {
-                        if(!mCurrentAnswerIterator.isLast())
-                        {
-                            mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
-                        }
                         if (mCurrentInputBuffer != null)
                         {
                             mCurrentInputBuffer.append(AnswerLetterPointIterator.SKIP_LETTER_CHARACTER);
-                            next = mCurrentAnswerIterator.next();
+                            next = mCurrentAnswerIterator.nextWithOffset();
+                        }
+                        if(!mCurrentAnswerIterator.isLast())
+                        {
+                            mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                         }
                     }
                     else
@@ -465,13 +476,21 @@ public class PuzzleResourcesAdapter
                         {
                             mCurrentInputBuffer.append(character);
                             boolean correct = checkAnswer(correctAnswerHandler);
-                            if(!correct)
+                            if(!mCurrentAnswerIterator.isLast())
                             {
-                                mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, tileRect.width(), tileRect.height());
+                                mCurrentAnswerIterator.nextWithOffset();
+                            }
+                            if(!correct && !mCurrentAnswerIterator.isLast())
+                            {
+                                mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                             }
                             break;
                         }
                     }
+                }
+                else
+                {
+                    next = null;
                 }
             }
 
@@ -647,12 +666,12 @@ public class PuzzleResourcesAdapter
         }
     }
 
-    public void deleteLetterByBackspace(@Nonnull Point inputTranslatePoint, @Nonnull Rect tileRect)
+    public void deleteLetterByBackspace()
     {
         if(mCurrentAnswerIterator == null || !isInputMode || mResources == null ||
-                mCurrentInputBuffer == null || mCurrentInputPuzzleStates == null)
+                mCurrentInputBuffer == null || mCurrentInputPuzzleStates == null || mCurrentTileFocusPoint == null)
             return;
-        @Nullable Point last = mCurrentAnswerIterator.last();
+        @Nullable Point last = mCurrentAnswerIterator.current();
         while(true)
         {
             if(last == null)
@@ -670,7 +689,7 @@ public class PuzzleResourcesAdapter
                     if(mCurrentInputBuffer.length() > 1 || !mCurrentAnswerIterator.isFirst())
                     {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
-                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
+                        mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                     }
                     else break;
                 }
@@ -680,12 +699,13 @@ public class PuzzleResourcesAdapter
                     if(mCurrentInputBuffer.length() >= 1)
                     {
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
-                        mCurrentAnswerIterator.offsetPointByDirection(inputTranslatePoint, -tileRect.width(), -tileRect.height());
+                        mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                     }
                     if(mCurrentInputPuzzleStates.size() >= 1)
                     {
                         mCurrentInputPuzzleStates.remove(mCurrentInputPuzzleStates.size() - 1);
                     }
+                    mCurrentAnswerIterator.last();
                     break;
                 }
             }
