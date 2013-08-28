@@ -332,7 +332,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                            public void handle()
                            {
                                mHintBtn.setText(String.valueOf(mHintsCount));
-                               mPuzzleAdapter.setCurrentQuestionCorrect();
+                               mPuzzleAdapter.setCurrentQuestionCorrect(new IListenerVoid()
+                               {
+                                   @Override
+                                   public void handle()
+                                   {
+                                       mPuzzleView.triggerAnimation();
+                                   }
+                               });
                                mPuzzleView.invalidate();
                            }
                        });

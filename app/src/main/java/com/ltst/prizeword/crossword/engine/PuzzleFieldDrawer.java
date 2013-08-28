@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -12,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.NinePatchDrawable;
-import android.util.Pair;
 import android.view.animation.DecelerateInterpolator;
 
 import com.ltst.prizeword.R;
@@ -52,12 +50,11 @@ public class PuzzleFieldDrawer
     private @Nonnull Paint mPaint;
     private IListener<Rect> mInvalidateHandler;
     private @Nullable List<PuzzleTileState> mInputTileList;
-    private @Nonnull Matrix mInputRectMatrix;
-    private volatile float mInputScale = 0;
-    private volatile float mInputFocusX = 0;
     private volatile int mInputAlpha = 0;
     private @Nullable IListenerVoid mPostInvalidateHandler;
     private boolean mIsAnimating = false;
+    private boolean mAnimateBlink = true;
+    private boolean mAnimateInput = false;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
@@ -69,7 +66,6 @@ public class PuzzleFieldDrawer
         mLetterBitmapManager = new LetterBitmapManager(mContext, mAdapter.getBitmapResourceModel());
 
         mFrameBorder = (NinePatchDrawable) mContext.getResources().getDrawable(PuzzleResources.getBackgroundFrame());
-        mInputRectMatrix = new Matrix();
         mAdapter.addResourcesUpdater(new IListener<PuzzleResources>()
         {
             @Override
@@ -315,20 +311,6 @@ public class PuzzleFieldDrawer
             return;
         mInputTileList = new ArrayList<PuzzleTileState>(stateList);
         mPostInvalidateHandler = postInvalidate;
-        @Nullable Rect rect = getPuzzleTileRect(stateList.get(0).row, stateList.get(0).column);
-        if (rect == null)
-        {
-            return;
-        }
-
-        mInputFocusX = rect.left + rect.width()/2;
-//        for (PuzzleTileState state : stateList)
-//        {
-//            @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
-//            if (rect == null)
-//                continue;
-//            mInputTileList.add(new Pair<PuzzleTileState, Rect>(state, rect));
-//        }
     }
 
     public @Nullable Rect getPuzzleTileRect(int row, int column)
@@ -580,19 +562,15 @@ public class PuzzleFieldDrawer
                     mInputTileList = null;
                     mPostInvalidateHandler = null;
                     mIsAnimating = false;
+                    mAnimateBlink = true;
+                    mAnimateInput = false;
                 }
             };
-            mInputRectMatrix.reset();
-            float translateX = (mInputFocusX - mTileWidth/2/mInputScale);
-//            mInputRectMatrix.postTranslate(-translateX, 0);
-//            mInputRectMatrix.postScale(mInputScale, mInputScale);
-            canvas.concat(mInputRectMatrix);
 
             for (PuzzleTileState state : mInputTileList)
             {
                 Paint p1 = new Paint();
                 p1.setAntiAlias(true);
-                p1.setAlpha(mInputAlpha);
                 @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
                 if (rect == null)
                 {
@@ -601,7 +579,30 @@ public class PuzzleFieldDrawer
                 int letterRes = PuzzleResources.getLetterTilesInput();
                 char letter = state.getInputLetter().charAt(0);
                 RectF rectf = new RectF(rect);
-                mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                if(mAnimateBlink)
+                {
+                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
+                    p1.setColor(Color.WHITE);
+                    p1.setAlpha(mInputAlpha);
+                    canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
+                }
+                else
+                if(mAnimateInput)
+                {
+                    p1.setColor(Color.WHITE);
+                    p1.setAlpha(255);
+                    canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
+
+                    p1.setAlpha(mInputAlpha);
+                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
+                    mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                }
+                else
+                {
+                    p1.setAlpha(mInputAlpha);
+                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
+                    mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                }
             }
 
             if(!mIsAnimating)
@@ -775,15 +776,15 @@ public class PuzzleFieldDrawer
 
     private class ScaleCorrectInputAnimationThread extends Thread
     {
-        private static final int DURATION = 500;
+        private static final int SEC = 1000;
+        private static final int DURATION = 1000;
         private static final int FPS = 30;
-        private static final int DURATION_INTERVAL = DURATION / FPS;
-        private static final long FPS_INTERVAL = 1000 / FPS;
+        private static final int ANIMATION_STEPS = 3;
+        private static final int DURATION_INTERVAL = (int)((float)DURATION/ANIMATION_STEPS/(float)SEC * FPS);
+        private static final long FPS_INTERVAL = SEC / FPS;
         final @Nonnull IListenerVoid finishHandler;
-        final float MAX_SCALE = 2.2f;
-        final float MIN_SCALE = 1.0f;
-        final float SCALE_DIF = MAX_SCALE - MIN_SCALE;
         final float interpolatorStep = 1.0f/(float)DURATION_INTERVAL;
+        private int MAX_ALPHA = 255;
 
         private ScaleCorrectInputAnimationThread(@Nonnull IListenerVoid finishHandler)
         {
@@ -800,20 +801,18 @@ public class PuzzleFieldDrawer
             float interpolator = 0;
             DecelerateInterpolator easeout = new DecelerateInterpolator(2.0f);
 
-            final int maxAlpha = 255;
+            MAX_ALPHA = 200;
             synchronized (this)
             {
                 mIsAnimating = true;
+                mAnimateBlink = true;
                 while(true)
                 {
                     interpolator += interpolatorStep;
                     float interpolationValue = easeout.getInterpolation(interpolator);
-//                    float currentScale = SCALE_DIF * interpolationValue;
-//                    if(currentScale >= MAX_SCALE || interpolator >= 1)
-//                        break;
-//                    mInputScale = currentScale;
-                    int currentAlpha = maxAlpha - (int)(interpolationValue * maxAlpha);
-                    if(currentAlpha <= 0 || interpolator >= 1)
+
+                    int currentAlpha = (int)(interpolationValue * MAX_ALPHA);
+                    if(currentAlpha >= MAX_ALPHA || interpolator >= 1)
                         break;
                     mInputAlpha = currentAlpha;
 
@@ -827,6 +826,54 @@ public class PuzzleFieldDrawer
                         Log.e(e.getMessage());
                     }
                 }
+                mAnimateBlink = false;
+                mAnimateInput = true;
+                MAX_ALPHA = 255;
+                interpolator = 0;
+                while(true)
+                {
+                    interpolator += interpolatorStep;
+                    float interpolationValue = easeout.getInterpolation(interpolator);
+
+                    int currentAlpha = (int)(interpolationValue * MAX_ALPHA);
+                    if(currentAlpha >= MAX_ALPHA || interpolator >= 1)
+                        break;
+                    mInputAlpha = currentAlpha;
+
+                    mPostInvalidateHandler.handle();
+                    try
+                    {
+                        ScaleCorrectInputAnimationThread.sleep(FPS_INTERVAL);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                }
+                mAnimateInput = false;
+                interpolator = 0;
+                while(true)
+                {
+                    interpolator += interpolatorStep;
+                    float interpolationValue = easeout.getInterpolation(interpolator);
+                    int currentAlpha = MAX_ALPHA - (int)(interpolationValue * MAX_ALPHA);
+                    if(currentAlpha <= 0 || interpolator >= 1)
+                    {
+                        break;
+                    }
+                    mInputAlpha = currentAlpha;
+
+                    mPostInvalidateHandler.handle();
+                    try
+                    {
+                        ScaleCorrectInputAnimationThread.sleep(FPS_INTERVAL);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                }
+
                 finishHandler.handle();
             }
         }

@@ -237,14 +237,7 @@ public class PuzzleManager
                             keyboardOpenHandler.handle(false);
                         }
                         mInvalidateHandler.handle(mPuzzleViewRect);
-                        mFieldDrawer.createInputRectList(mResourcesAdapter.getCurrentInputPuzzleStates(), new IListenerVoid()
-                        {
-                            @Override
-                            public void handle()
-                            {
-                                view.postInvalidate();
-                            }
-                        });
+                        triggerLetterAnimation(view);
                         cancelLastQuestion();
                     }
                 });
@@ -274,6 +267,7 @@ public class PuzzleManager
             mLastQuestionTapPoint = null;
         }
     }
+
 
     // ==== configuring view ==================================
 
@@ -367,11 +361,25 @@ public class PuzzleManager
 
     }
 
-
     public void recycle()
     {
         clearInput();
         mFieldDrawer.unloadResources();
+    }
+
+
+    // ==== animation ===========================
+
+    public void triggerLetterAnimation(final @Nonnull View view)
+    {
+        mFieldDrawer.createInputRectList(mResourcesAdapter.getCurrentInputPuzzleStates(), new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                view.postInvalidate();
+            }
+        });
     }
 
     // ==== animation threads ===========================
