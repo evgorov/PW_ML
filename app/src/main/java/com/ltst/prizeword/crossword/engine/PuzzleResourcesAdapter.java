@@ -174,6 +174,43 @@ public class PuzzleResourcesAdapter
         mPuzzleSolvedHandler = puzzleSolvedHandler;
     }
 
+    public @Nullable IListenerVoid getOnInputAnimationEndHandler()
+    {
+        if (mCurrentAnswerIterator == null)
+        {
+            return null;
+        }
+
+        return new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mCurrentAnswerIterator.reset();
+                setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
+                {
+                    @Override
+                    public void handle(@Nullable PuzzleTileState puzzleTileState)
+                    {
+                        if (puzzleTileState == null)
+                        {
+                            return;
+                        }
+
+                        if(puzzleTileState.getLetterState() != PuzzleTileState.LetterState.LETTER_CORRECT)
+                        {
+                            String letter = String.valueOf(mCurrentAnswerIterator.getCurrentLetter()).toUpperCase();
+                            puzzleTileState.setInputLetter(letter);
+                            puzzleTileState.setLetterCorrect(true);
+                        }
+                    }
+                });
+                setCurrentQuestionCorrect(true);
+                resetInputMode();
+            }
+        };
+    }
+
     @Nonnull
     public IBitmapResourceModel getBitmapResourceModel()
     {
@@ -462,23 +499,8 @@ public class PuzzleResourcesAdapter
                     state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
                 }
             }
-            mCurrentAnswerIterator.reset();
-            setLetterStateByPointIterator(mResources, mCurrentAnswerIterator, new IListener<PuzzleTileState>()
-            {
-                @Override
-                public void handle(@Nullable PuzzleTileState puzzleTileState)
-                {
-                    if (puzzleTileState == null)
-                    {
-                        return;
-                    }
-                    puzzleTileState.setLetterCorrect(true);
-                }
-            });
             checkCurrectCrossingQuestions();
-            setCurrentQuestionCorrect(true);
             correctAnswerHandler.handle();
-            resetInputMode();
             return true;
         }
         else
@@ -536,22 +558,21 @@ public class PuzzleResourcesAdapter
                     return;
                 }
 
-                if(puzzleTileState.getLetterState() != PuzzleTileState.LetterState.LETTER_CORRECT)
+                if (puzzleTileState.getLetterState() != PuzzleTileState.LetterState.LETTER_CORRECT)
                 {
                     mCurrentInputPuzzleStates.add(puzzleTileState);
                     String letter = String.valueOf(mCurrentAnswerIterator.getCurrentLetter()).toUpperCase();
                     puzzleTileState.setInputLetter(letter);
-                    puzzleTileState.setLetterCorrect(true);
+                    puzzleTileState.hasInputLetter = false;
+                    puzzleTileState.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY);
                 }
             }
         });
         checkCurrectCrossingQuestions();
-        setCurrentQuestionCorrect(true);
         if (handler != null)
         {
             handler.handle();
         }
-        resetInputMode();
     }
 
     public void setCurrentQuestionWrong()

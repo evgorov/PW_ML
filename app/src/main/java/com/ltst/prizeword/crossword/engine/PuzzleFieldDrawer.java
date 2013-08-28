@@ -546,7 +546,7 @@ public class PuzzleFieldDrawer
         }
     }
 
-    public void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas)
+    public void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas, final @Nullable IListenerVoid animationEndHandler)
     {
 
         if(mInputTileList != null)
@@ -578,10 +578,10 @@ public class PuzzleFieldDrawer
                 }
                 int letterRes = PuzzleResources.getLetterTilesInput();
                 char letter = state.getInputLetter().charAt(0);
+
                 RectF rectf = new RectF(rect);
                 if(mAnimateBlink)
                 {
-                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
                     p1.setColor(Color.WHITE);
                     p1.setAlpha(mInputAlpha);
                     canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
@@ -591,10 +591,11 @@ public class PuzzleFieldDrawer
                 {
                     p1.setColor(Color.WHITE);
                     p1.setAlpha(255);
-                    canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
+                    canvas.drawRoundRect(rectf, 10.0f, 10.0f, p1);
 
                     p1.setAlpha(mInputAlpha);
                     p1.setShadowLayer(10, 5, 5, Color.BLACK);
+
                     mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
                 }
                 else
@@ -607,7 +608,8 @@ public class PuzzleFieldDrawer
 
             if(!mIsAnimating)
             {
-                ScaleCorrectInputAnimationThread anim = new ScaleCorrectInputAnimationThread(finishAnimHandler);
+                ScaleCorrectInputAnimationThread anim =
+                        new ScaleCorrectInputAnimationThread(finishAnimHandler, animationEndHandler);
                 PuzzleManager.mExecutor.execute(anim);
             }
         }
@@ -783,12 +785,14 @@ public class PuzzleFieldDrawer
         private static final int DURATION_INTERVAL = (int)((float)DURATION/ANIMATION_STEPS/(float)SEC * FPS);
         private static final long FPS_INTERVAL = SEC / FPS;
         final @Nonnull IListenerVoid finishHandler;
+        final @Nullable IListenerVoid blinkFinishHandler;
         final float interpolatorStep = 1.0f/(float)DURATION_INTERVAL;
         private int MAX_ALPHA = 255;
 
-        private ScaleCorrectInputAnimationThread(@Nonnull IListenerVoid finishHandler)
+        private ScaleCorrectInputAnimationThread(@Nonnull IListenerVoid finishHandler, @Nullable IListenerVoid blinkFinishHandler)
         {
             this.finishHandler = finishHandler;
+            this.blinkFinishHandler = blinkFinishHandler;
         }
 
         @Override
@@ -830,6 +834,11 @@ public class PuzzleFieldDrawer
                 mAnimateInput = true;
                 MAX_ALPHA = 255;
                 interpolator = 0;
+                if (blinkFinishHandler != null)
+                {
+                    blinkFinishHandler.handle();
+                    mPostInvalidateHandler.handle();
+                }
                 while(true)
                 {
                     interpolator += interpolatorStep;
@@ -837,7 +846,9 @@ public class PuzzleFieldDrawer
 
                     int currentAlpha = (int)(interpolationValue * MAX_ALPHA);
                     if(currentAlpha >= MAX_ALPHA || interpolator >= 1)
+                    {
                         break;
+                    }
                     mInputAlpha = currentAlpha;
 
                     mPostInvalidateHandler.handle();

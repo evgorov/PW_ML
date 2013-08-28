@@ -66,6 +66,7 @@ public class PuzzleManager
         mInvalidateHandler = invalidateHandler;
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
         isRestored = false;
+
     }
 
     public void saveState(@Nonnull Bundle dest)
@@ -355,7 +356,7 @@ public class PuzzleManager
 
         mFieldDrawer.drawBackground(screenCanvas);
         mFieldDrawer.drawPuzzles(screenCanvas);
-        mFieldDrawer.drawCurrentInputWithAnimation(screenCanvas);
+        mFieldDrawer.drawCurrentInputWithAnimation(screenCanvas, mResourcesAdapter.getOnInputAnimationEndHandler());
 
         screenCanvas.restoreToCount(saveCount);
 
