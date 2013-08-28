@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.billing.IabHelper;
+import com.android.billing.IabResult;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -25,6 +28,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 
@@ -46,6 +50,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     private @Nonnull Context mContext;
 
+    private @Nonnull IabHelper mIabHelper;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
     private @Nonnull String mSessionKey;
@@ -67,8 +72,6 @@ public class CrosswordsFragment extends SherlockFragment
 
     private int mIndicatorPosition;
 
-//    private @Nonnull IOnePuzzleModel mPuzzleModel;
-
     // ==== Livecycle =================================
 
     @Override
@@ -77,6 +80,23 @@ public class CrosswordsFragment extends SherlockFragment
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
+
+        mIabHelper = new IabHelper(mContext,"4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb");
+        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    // Oh noes, there was a problem.
+                    Log.d(NavigationActivity.LOG_TAG, "Problem setting up In-app Billing: " + result);
+                }
+                else
+                {
+                    Log.d(NavigationActivity.LOG_TAG, "Response from In-app Billing is OK! " + result);
+                    // Получаем цены с сервера;
+                    mHintsManager.reloadPrices();
+                }
+                // Hooray, IAB is fully set up!
+            }
+        });
 
         super.onAttach(activity);
     }
@@ -105,10 +125,18 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int k = requestCode;
+
+    }
+
+    @Override
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+        mHintsManager = new HintsManager(mContext, mIabHelper, mBcConnector, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
@@ -137,6 +165,16 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsSimpleText.setText(mStringsMassive[mIndicatorPosition]);
 
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mIabHelper != null)
+        {
+            mIabHelper.dispose();
+        }
+        mIabHelper = null;
     }
 
     @Override

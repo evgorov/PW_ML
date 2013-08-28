@@ -1,5 +1,6 @@
 package com.ltst.prizeword.navigation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -74,6 +75,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private final int RESULT_LOAD_IMAGE = 1;
     private final int REQUEST_MAKE_PHOTO = 2;
+
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
 
@@ -89,6 +91,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
+    private @Nonnull Context mContext;
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
 
@@ -100,12 +103,15 @@ public class NavigationActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
 
+        // Устанавливаем соединение с Google Play для внутренних покупок;
+        mContext = this.getBaseContext();
+
         // Устанавливаем русскую локаль для всего приложения;
         Locale locale = new Locale("ru");
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
 
         mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
@@ -641,6 +647,6 @@ public class NavigationActivity extends SherlockFragmentActivity
                     break;
             }
         }
-
     }
+
 }

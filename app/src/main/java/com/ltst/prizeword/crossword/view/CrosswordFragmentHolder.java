@@ -62,7 +62,7 @@ public class CrosswordFragmentHolder {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
-        int restDays = monthMaxDays - day;
+        int restDays = monthMaxDays - day+1;
 
         DateFormatSymbols symbols = new DateFormatSymbols();
         mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
