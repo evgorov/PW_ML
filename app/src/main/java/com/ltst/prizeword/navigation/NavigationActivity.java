@@ -207,9 +207,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-//        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-//        spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-//        spref.commit();
         super.onDestroy();
     }
 
@@ -411,10 +408,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 this.startActivity(intent);
                 break;
             case R.id.header_listview_logout_btn:
-                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-                spref.commit();
-                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                mUserDataModel.clearDataBase(mTaskHandlerClearDataBase);
                 break;
             case R.id.header_listview_photo_img:
                 // Вызываем окно выбора источника получения фото;
@@ -588,6 +582,18 @@ public class NavigationActivity extends SherlockFragmentActivity
                 }
                 ErrorAlertDialog.showDialog(NavigationActivity.this, R.string.error_merge_accounts);
             }
+        }
+    };
+
+    private IListenerVoid mTaskHandlerClearDataBase = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
+            spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+            spref.commit();
+            selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
         }
     };
 
