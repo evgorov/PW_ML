@@ -26,7 +26,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.ScoreDetailFragment.ScoreDetailFragment;
+import com.ltst.prizeword.ScoreDetailFragment.view.ScoreDetailFragment;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;

@@ -36,13 +36,13 @@
 
 
     <ListView
-            android:id="@+id/score_crossword_fragment_current_container"
+            android:id="@+id/score_listview"
             android:orientation="vertical"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:background="@drawable/crossword_panel_bg_title"
-            android:visibility="gone">
+            android:visibility="visible">
 
         <!--@TODO input brillian current crossword-->
         <!--<include layout="@layout/crossword_panel_current"/>-->
@@ -54,7 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/invite_bg_tile">
+            android:background="@drawable/invite_bg_tile"
+            android:visibility="gone">
 
         <LinearLayout
                 android:layout_height="wrap_content"
