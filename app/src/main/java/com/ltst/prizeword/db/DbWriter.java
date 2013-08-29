@@ -369,6 +369,12 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
+    public void putPurchases(@Nonnull List<Purchase> purchases) {
+        for(Purchase purchase : purchases){
+            putPurchase(purchase);
+        }
+    }
+        @Override
     public void putPurchase(@Nonnull Purchase purchase) {
 
         final @Nonnull ContentValues values = mPurchaseValuesCreator.createObjectContentValues(purchase);

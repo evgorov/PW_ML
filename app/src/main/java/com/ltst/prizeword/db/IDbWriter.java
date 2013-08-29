@@ -33,6 +33,7 @@ public interface IDbWriter extends IDbReader
     void clearScoreQueue();
 
     void putPurchase(@Nonnull Purchase purchase);
+    void putPurchases(@Nonnull List<Purchase> purchases);
 
     void clearDb();
 }

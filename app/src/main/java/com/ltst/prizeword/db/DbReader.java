@@ -310,6 +310,8 @@ public class DbReader implements IDbReader
         return puzzle;
     }
 
+
+
     @Nullable
     @Override
     public List<Puzzle> getPuzzleListBySetId(long setId)
@@ -397,6 +399,16 @@ public class DbReader implements IDbReader
             return new ScoreQueue(queue);
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public List<Purchase> getPurchases()
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                null, null);
+        @Nullable List<Purchase> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
+        return purchases;
     }
 
     @Nullable
