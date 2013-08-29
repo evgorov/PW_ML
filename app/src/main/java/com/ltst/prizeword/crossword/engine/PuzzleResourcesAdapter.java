@@ -533,11 +533,10 @@ public class PuzzleResourcesAdapter
                     }
                 }
                 else
+                if(letterState == PuzzleTileState.LetterState.LETTER_INPUT)
                 {
                     if(letterDeleted)
-                    {
                         break;
-                    }
                     if(mCurrentInputBuffer.length() >= 1)
                     {
                         state.setLetterState(PuzzleTileState.LetterState.LETTER_EMPTY_INPUT);
@@ -555,6 +554,16 @@ public class PuzzleResourcesAdapter
                         scrollIteratorToFirstInput();
                         last = null;
                     }
+                }
+                else
+                if(letterState == PuzzleTileState.LetterState.LETTER_EMPTY_INPUT)
+                {
+                    if(letterDeleted)
+                        break;
+                    last = mCurrentAnswerIterator.last();
+                    mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
+                    if(mCurrentAnswerIterator.isFirst())
+                        break;
                 }
             }
             else

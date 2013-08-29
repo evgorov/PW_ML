@@ -67,9 +67,9 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             {
                 currentLetterIndex --;
             }
-            if(currentLetterIndex <= 0)
+            if(currentLetterIndex <= 1)
             {
-                currentLetterIndex = 0;
+                currentLetterIndex = 1;
                 mPoint.set(mStartPoint.x, mStartPoint.y);
                 return mStartPoint;
             }
