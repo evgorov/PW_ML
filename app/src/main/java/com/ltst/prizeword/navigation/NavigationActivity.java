@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -675,13 +674,18 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void buyProduct(ManadgeHolder.ManadgeProduct product) {
         // Покупка;
-        mManadgeHolder.buy(product);
+        mManadgeHolder.buyProduct(product);
     }
 
     @Override
-    public void reloadPrice() {
+    public void reloadPriceProducts(@Nonnull IListenerVoid handler) {
         // Обновляем прайс лист продуктов;
-        mManadgeHolder.reloadPrice();
+        mManadgeHolder.reloadPrice(handler);
     }
 
+    @Override
+    public String getPriceProduct(ManadgeHolder.ManadgeProduct product) {
+        // Возвращаем цену продукта;
+        return mManadgeHolder.getPriceProduct(product);
+    }
 }

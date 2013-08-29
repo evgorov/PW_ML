@@ -11,6 +11,8 @@ import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.ltst.prizeword.navigation.NavigationActivity;
 
+import org.omich.velo.handlers.IListenerVoid;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +67,7 @@ public class ManadgeHolder {
     private final int REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED = 19;
     private final int REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE = 20;
 
+    private @Nonnull IListenerVoid mHandlerReloadPrice;
     private @Nonnull IabHelper mIabHelper;
     private @Nonnull Activity mActivity;
     private @Nonnull Context mContext;
@@ -96,16 +99,18 @@ public class ManadgeHolder {
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
         mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
         {
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
-////                    Oh noes, there was a problem.
-//                    Log.d(NavigationActivity.LOG_TAG, "Problem setting up In-app Billing: " + result);
-                }
-                else
+            public void onIabSetupFinished(IabResult result)
+            {
+                if (result.isSuccess())
                 {
-//                    Log.d(NavigationActivity.LOG_TAG, "Response from In-app Billing is OK! " + result);
-//                    // Получаем цены с сервера;
-                    reloadPrice();
+                    // Получаем цены с сервера;
+                    reloadPrice(new IListenerVoid()
+                    {
+                        @Override
+                        public void handle() {
+
+                        }
+                    });
                 }
             }
         });
@@ -161,7 +166,7 @@ public class ManadgeHolder {
         return 0;
     }
 
-    public void buy(ManadgeHolder.ManadgeProduct product)
+    public void buyProduct(ManadgeHolder.ManadgeProduct product)
     {
         // Start popup window. Покупка;
         @Nonnull String product_id = extractProductId(product);
@@ -171,8 +176,9 @@ public class ManadgeHolder {
         }
     }
 
-    public void reloadPrice()
+    public void reloadPrice(@Nonnull IListenerVoid handler)
     {
+        mHandlerReloadPrice = handler;
         Log.d(NavigationActivity.LOG_TAG, "RELOAD PRICES");
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
         List<String> additionalSkuList = new ArrayList<String>();
@@ -180,6 +186,13 @@ public class ManadgeHolder {
             additionalSkuList.add(extractProductId(product));
         }
         mIabHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
+    }
+
+    public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
+    {
+        if(!mPrices.containsKey(product))
+            return null;
+        return mPrices.get(product);
     }
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener()
@@ -240,6 +253,7 @@ public class ManadgeHolder {
                 if(inventory.hasDetails(prodict_id))
                     mPrices.put(product,inventory.getSkuDetails(prodict_id).getPrice());
             }
+            mHandlerReloadPrice.handle();
 
             // Восстанавливаем для продукта возможность покупки;
 //            prodict_id = extractProductId(ManadgeProduct.test_ok);
@@ -248,6 +262,7 @@ public class ManadgeHolder {
         }
     };
 
+    // Ответ с результатом выполненой покупки;
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener()
     {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase)
@@ -258,6 +273,7 @@ public class ManadgeHolder {
                 return;
             }
 
+            // Восстанавливаем возмодность сделать повторную покупку продукта;
             mIabHelper.consumeAsync(purchase,mConsumeFinishedListener);
 
             @Nonnull String prodict_id = null;
