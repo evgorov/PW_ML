@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -365,6 +366,11 @@ public class DbWriter extends  DbReader implements IDbWriter
                 mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
             }
         });
+    }
+
+    @Override
+    public void putPurchase(@Nonnull Purchase purchase) {
+
     }
 
     @Override
