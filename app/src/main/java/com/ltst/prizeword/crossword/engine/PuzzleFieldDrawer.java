@@ -339,7 +339,7 @@ public class PuzzleFieldDrawer
             return null;
         }
 
-        @Nullable Rect puzzleTileRect = getPuzzleTileRect(currentTileFocusPoint.y, currentTileFocusPoint.x);
+        @Nullable Rect puzzleTileRect = getPuzzleTileRect(currentTileFocusPoint.y + 1, currentTileFocusPoint.x + 1);
         if (puzzleTileRect == null)
         {
             return null;
