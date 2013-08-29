@@ -1,5 +1,6 @@
 package com.ltst.prizeword.db;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -31,6 +32,8 @@ public interface IDbReader
     @Nullable List<Puzzle> getPuzzleListBySetId(long setId);
     @Nullable List<Puzzle> getPuzzles(List<String> serverIds);
     @Nullable List<Puzzle> getPuzzlesBySetId(long setId);
+
+    @Nullable Purchase getPurchaseByGoogleId(@Nonnull String googleId);
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
     int getUserHintsCount();

@@ -371,6 +371,31 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPurchase(@Nonnull Purchase purchase) {
 
+        final @Nonnull ContentValues values = mPurchaseValuesCreator.createObjectContentValues(purchase);
+        final @Nullable Purchase existsPurchase = getPurchaseByGoogleId(purchase.googleId);
+
+        if(purchase == null)
+        {
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mDb.insert(TNAME_PURCHASES, null, values);
+                }
+            });
+        }
+        else
+        {
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mDb.update(TNAME_PURCHASES, values, ColsPurchases.ID + "=" + existsPurchase.id, null);
+                }
+            });
+        }
     }
 
     @Override
@@ -537,6 +562,22 @@ public class DbWriter extends  DbReader implements IDbWriter
             ContentValues cv  = new ContentValues();
             cv.put(ColsScoreQueue.SCORE, object.score);
             cv.put(ColsScoreQueue.PUZZLE_ID, object.puzzleId);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<Purchase> mPurchaseValuesCreator  = new ContentValuesCreator<Purchase>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable Purchase object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(ColsPurchases.ID, object.id);
+            cv.put(ColsPurchases.CLIENT_ID, object.clientId);
+            cv.put(ColsPurchases.GOOGLE_ID, object.googleId);
+            cv.put(ColsPurchases.GOOGLE_PURCHASE, object.googlePurchase);
+            cv.put(ColsPurchases.GOOGLE_RESET_PURCHASE, object.googleResetPurchase);
+            cv.put(ColsPurchases.SERVER_PURCHASE, object.serverPurchase);
             return cv;
         }
     };

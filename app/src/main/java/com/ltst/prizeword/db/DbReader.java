@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -121,6 +122,16 @@ public class DbReader implements IDbReader
             ColsScoreQueue.SCORE,
             ColsScoreQueue.PUZZLE_ID
     };
+
+    private static final @Nonnull String[] FIELDS_P_PURCHASES =
+            {
+                    ColsPurchases.ID,
+                    ColsPurchases.CLIENT_ID,
+                    ColsPurchases.GOOGLE_ID,
+                    ColsPurchases.GOOGLE_PURCHASE,
+                    ColsPurchases.GOOGLE_RESET_PURCHASE,
+                    ColsPurchases.SERVER_PURCHASE
+            };
 
     public final @Nonnull SQLiteDatabase mDb;
 
@@ -388,6 +399,16 @@ public class DbReader implements IDbReader
         return null;
     }
 
+    @Nullable
+    @Override
+    public Purchase getPurchaseByGoogleId(@Nonnull String googleId)
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                ColsPurchases.GOOGLE_ID, googleId);
+        @Nullable Purchase purchase = createObjectByCursor(cursor, mPurchaseCreator);
+        return purchase;
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
@@ -493,6 +514,21 @@ public class DbReader implements IDbReader
         public ScoreQueue.Score createObject(Cursor c)
         {
             return new ScoreQueue.Score(c.getLong(0), c.getInt(1), c.getString(2));
+        }
+    };
+
+    private ObjectCreatorByCursor<Purchase> mPurchaseCreator = new ObjectCreatorByCursor<Purchase>()
+    {
+        @Override
+        public Purchase createObject(Cursor c)
+        {
+            long id = c.getLong(0);
+            String clientId = c.getString(1);
+            String googleId = c.getString(2);
+            boolean googlePurchase = c.getInt(3) == 1;
+            boolean googleResetPurchase = c.getInt(4) == 1;
+            boolean serverPurchase = c.getInt(5) == 1;
+            return new Purchase(id, clientId, googleId, googlePurchase, googleResetPurchase, serverPurchase);
         }
     };
 
