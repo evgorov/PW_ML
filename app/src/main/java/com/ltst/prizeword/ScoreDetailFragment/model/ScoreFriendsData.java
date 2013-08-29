@@ -1,4 +1,4 @@
-package com.ltst.prizeword.ScoreDetailFragment.model;
+package com.ltst.prizeword.scoredetailfragment.model;
 
 import android.os.Parcel;
 

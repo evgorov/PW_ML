@@ -212,6 +212,21 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
     }
+    public static
+    @Nullable
+    Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)
+    {
+        List<PuzzleSet> sets = env.dbw.getPuzzleSets();
+        int hintsCount = env.dbw.getUserHintsCount();
+        List<Puzzle> puzzles = null;
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
+        for (PuzzleSet puzzleSet : sets)
+        {
+            puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
+            mapPuzzles.put(puzzleSet.serverId, puzzles);
+        }
+        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
 
     static public
     @Nonnull

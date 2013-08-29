@@ -1,4 +1,4 @@
-package com.ltst.prizeword.ScoreDetailFragment.model;
+package com.ltst.prizeword.scoredetailfragment.model;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.invitefriends.model.InviteFriendsData;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestInviteFriend;
@@ -15,6 +14,7 @@ import com.ltst.prizeword.rest.RestParams;
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.lists.ISlowSource;
 import org.omich.velo.log.Log;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LoadInvitedFriendsFromInternetTask implements IBcTask
+public class LoadScoreDataFromInternetTask implements IBcTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadUsersFromInternetTask.sessionKey";
     public static final @Nonnull String BF_FRIEND_VK_DATA = "LoadFriendsDataFromInternetTask.VkFriendData";
@@ -101,7 +101,7 @@ public class LoadInvitedFriendsFromInternetTask implements IBcTask
         } else
         {
             Bundle bundle = new Bundle();
-            RestInviteFriend.RestInviteFriendHolder holder = loadFriends(sessionKey, RestParams.VK_PROVIDER);
+            RestInviteFriend.RestInviteFriendHolder holder = loadScoreData(sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.VK_PROVIDER);
@@ -110,28 +110,42 @@ public class LoadInvitedFriendsFromInternetTask implements IBcTask
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
                 }
             }
-            holder = loadFriends(sessionKey, RestParams.FB_PROVIDER);
+            holder = loadScoreData(sessionKey, RestParams.FB_PROVIDER);
             if (holder != null)
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.FB_PROVIDER);
+
                 if (friends != null)
                 {
                     bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
                     return bundle;
                 }
             } else
+            {
+                ArrayList<ScoreFriendsData> friends = new ArrayList<ScoreFriendsData>();
+                ScoreFriendsData midData = new ScoreFriendsData("Павел", "Сон", Strings.EMPTY, 0, 0, new int[1],
+                        Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, RestParams.FB_PROVIDER, RestParams.FRIEND_TYPE_DATA);
+                friends.add(midData);
+                midData = new ScoreFriendsData("Pavel", "Son", Strings.EMPTY, 0, 0, new int[1],
+                        Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, RestParams.FB_PROVIDER, RestParams.FRIEND_TYPE_DATA);
+                friends.add(midData);
+                bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
                 return bundle;
+            }
         }
+
+
         return null;
     }
 
     private @Nullable
-    RestInviteFriend.RestInviteFriendHolder loadFriends(@Nonnull String sessionKey, @Nonnull String provider)
+    RestInviteFriend.RestInviteFriendHolder loadScoreData(@Nonnull String sessionKey, @Nonnull String provider)
     {
         try
         {
             IRestClient client = RestClient.create();
             return client.getFriendsScoreData(sessionKey, provider);
+
         } catch (Throwable e)
         {
             Log.i("Can't load data from internet"); //$NON-NLS-1$

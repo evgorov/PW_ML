@@ -1,12 +1,11 @@
-package com.ltst.prizeword.ScoreDetailFragment.model;
+package com.ltst.prizeword.scoredetailfragment.model;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.ltst.prizeword.app.ModelUpdater;
-import com.ltst.prizeword.crossword.model.Puzzle;
-import com.ltst.prizeword.crossword.model.PuzzleSet;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.dowloading.BgImageDownloader;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 
@@ -22,13 +21,12 @@ import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ScoreDataModel implements IScoreDatalModel
+public class ScoreDataModel implements IScoreDataModel
 {
     private boolean mIsDestroyed;
     private @Nonnull String mSessionKey;
@@ -36,6 +34,7 @@ public class ScoreDataModel implements IScoreDatalModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull BgImageDownloader mDownloader;
     private @Nonnull Updater mInvitedFriendsUpdater;
+    private @Nonnull PuzzleSetModel mPuzzleSetModel;
 
     public ScoreDataModel(@Nonnull String mSessionKey, @Nonnull IBcConnector mBcConnector)
     {
@@ -74,25 +73,12 @@ public class ScoreDataModel implements IScoreDatalModel
         mSource.resumeResource();
     }
 
-    @Override public void updateDataByDb(@Nonnull IListenerVoid handler)
-    {
-
-    }
 
     @Override public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
         mInvitedFriendsUpdater.update(handler);
     }
 
-    @Nonnull @Override public List<PuzzleSet> getPuzzleSets()
-    {
-        return null;
-    }
-
-    @Nonnull @Override public HashMap<String, List<Puzzle>> getPuzzlesSet()
-    {
-        return null;
-    }
 
     @Nonnull @Override public ISlowSource<ScoreFriendsData, Bitmap> getSource()
     {
@@ -106,14 +92,14 @@ public class ScoreDataModel implements IScoreDatalModel
         @Override
         protected Intent createIntent()
         {
-            return LoadInvitedFriendsFromInternetTask.createIntent(mSessionKey);
+            return LoadScoreDataFromInternetTask.createIntent(mSessionKey);
         }
 
         @Nonnull
         @Override
         protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
         {
-            return LoadInvitedFriendsFromInternetTask.class;
+            return LoadScoreDataFromInternetTask.class;
         }
 
         @Override
@@ -136,7 +122,7 @@ public class ScoreDataModel implements IScoreDatalModel
             if (mIsDestroyed)
                 return;
 
-            List<ISlowSource.Item<ScoreFriendsData, Bitmap>> list = LoadInvitedFriendsFromInternetTask.extractFriendsList(result);
+            List<ISlowSource.Item<ScoreFriendsData, Bitmap>> list = LoadScoreDataFromInternetTask.extractFriendsList(result);
 
             if (list != null)
             {
