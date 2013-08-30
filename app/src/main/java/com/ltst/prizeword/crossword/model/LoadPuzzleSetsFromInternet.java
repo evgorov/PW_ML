@@ -73,8 +73,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env)
     {
-        @Nullable String sessionKey = env.extras.getString(BF_SESSION_KEY);
-        @Nullable String volumePuzzle = env.extras.getString(BF_VOLUME_PUZZLE);
         if (!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
@@ -82,6 +80,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                             env.context.getString(R.string.msg_no_internet)));
         } else
         {
+            @Nullable String sessionKey = env.extras.getString(BF_SESSION_KEY);
+            @Nullable String volumePuzzle = env.extras.getString(BF_VOLUME_PUZZLE);
             if (volumePuzzle == null || sessionKey == null)
             {
                 return null;

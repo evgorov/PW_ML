@@ -11,6 +11,9 @@ import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -20,6 +23,7 @@ import javax.annotation.Nullable;
 public class PurchaseSetModel implements IPurchaseSetModel {
 
     private @Nonnull IBcConnector mBcConnector;
+    private List<Purchase> mPurchases;
 
     public PurchaseSetModel(@Nonnull IBcConnector mBcConnector) {
         this.mBcConnector = mBcConnector;
@@ -27,25 +31,27 @@ public class PurchaseSetModel implements IPurchaseSetModel {
 
     @Override
     public void reloadPurchases(@Nonnull IListenerVoid handler) {
-
+        mPurchaseReloadSession.update(handler);
     }
 
     @Override
-    public void updatePurchase(ManadgeHolder.ManadgeProduct product, @Nonnull IListenerVoid handler) {
-        mPurchaseDbUpdater.update(handler);
+    public void updatePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler) {
+        mPurchaseUpdateSession.update(handler);
     }
 
-    private Updater mPurchaseDbUpdater = new Updater() {
+    private Updater mPurchaseReloadSession = new Updater() {
         @Nullable
         @Override
         protected Intent createIntent() {
-            return LoadPurchaseTask.createIntent();
+            return LoadPurchaseTask.createReloadIntent();
         }
+    };
 
-        @Nonnull
+    private Updater mPurchaseUpdateSession = new Updater() {
+        @Nullable
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
-            return LoadPurchaseTask.class;
+        protected Intent createIntent() {
+            return LoadPurchaseTask.createReloadIntent();
         }
     };
 
@@ -70,12 +76,18 @@ public class PurchaseSetModel implements IPurchaseSetModel {
             return DbService.class;
         }
 
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadPurchaseTask.class;
+        }
+
         @Override
         protected void handleData(@Nullable Bundle result)
         {
             if (result == null)
             {
-                return;
+                mPurchases = LoadPurchaseTask.extractFromBundle(result);
             }
         }
     }

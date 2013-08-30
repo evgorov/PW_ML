@@ -10,6 +10,7 @@ import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -73,7 +74,7 @@ public class ManadgeHolder {
     private @Nonnull Context mContext;
     private @Nonnull IManadges mIManadges;
     private @Nonnull IBcConnector mBcConnector;
-    private @Nonnull PurchaseSetModel mPurchaseSetModel;
+    private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
 
     private @Nonnull HashMap<ManadgeProduct,String> mPrices;
 
@@ -84,7 +85,7 @@ public class ManadgeHolder {
         mContext = (Context) activity;
         mIManadges = (IManadges) activity;
         mBcConnector = bcConnector;
-        mPurchaseSetModel = new PurchaseSetModel(mBcConnector);
+        mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mPrices = new HashMap<ManadgeProduct, String>();
 
 //        // Ответ о покупке;
@@ -117,6 +118,7 @@ public class ManadgeHolder {
                 }
             }
         });
+        mIPurchaseSetModel.reloadPurchases(mReloadPurchaseFromDataBase);
     }
 
     public void dispose()
@@ -174,8 +176,10 @@ public class ManadgeHolder {
         // Start popup window. Покупка;
         @Nonnull String product_id = extractProductId(product);
         int  product_request = extractProductRequest(product);
+        @Nonnull String token = UUIDTools.generateStringUUID();
         if(product_id!=null && product_request!=0){
-            mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, "bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ");
+            Log.d(NavigationActivity.LOG_TAG, "Generate token: "+token);
+            mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
         }
     }
 
@@ -226,12 +230,16 @@ public class ManadgeHolder {
         }
     };
 
+    // Получаем информацию о возобновлении покупаемости товара;
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener()
     {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (result.isSuccess()) {
                 // provision the in-app purchase to the user
                 // (for example, credit 50 gold coins to player's character)
+                int responseState = purchase.getPurchaseState();
+                String responseGoogleId = purchase.getSku();
+                String responseClientId = purchase.getDeveloperPayload();
             }
             else {
                 // handle error
@@ -279,15 +287,25 @@ public class ManadgeHolder {
             // Восстанавливаем возмодность сделать повторную покупку продукта;
             mIabHelper.consumeAsync(purchase,mConsumeFinishedListener);
 
-            @Nonnull String prodict_id = null;
-            for(ManadgeProduct product : ManadgeProduct.values())
-            {
-                prodict_id = extractProductId(product);
-                if (purchase.getSku().equals(prodict_id))
-                {
-                    // consume the gas and update the UI
-                }       return;
-            }
+//            @Nonnull String prodict_id = null;
+//            for(ManadgeProduct product : ManadgeProduct.values())
+//            {
+//                prodict_id = extractProductId(product);
+//                if (purchase.getSku().equals(prodict_id))
+//                {
+//                    // consume the gas and update the UI
+//                }       return;
+//            }
+
+            int responseState = purchase.getPurchaseState();
+            String responseGoogleId = purchase.getSku();
+            String responseClientId = purchase.getDeveloperPayload();
+        }
+    };
+
+    @Nonnull IListenerVoid mReloadPurchaseFromDataBase = new IListenerVoid() {
+        @Override
+        public void handle() {
 
         }
     };

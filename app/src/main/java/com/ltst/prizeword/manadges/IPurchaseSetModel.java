@@ -10,5 +10,5 @@ import javax.annotation.Nonnull;
 public interface IPurchaseSetModel {
 
     void reloadPurchases(@Nonnull IListenerVoid handler);
-    void updatePurchase(ManadgeHolder.ManadgeProduct product, @Nonnull IListenerVoid handler);
+    void updatePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler);
 }

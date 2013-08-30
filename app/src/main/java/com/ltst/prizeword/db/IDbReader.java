@@ -34,7 +34,7 @@ public interface IDbReader
     @Nullable List<Puzzle> getPuzzlesBySetId(long setId);
 
     @Nullable Purchase getPurchaseByGoogleId(@Nonnull String googleId);
-    @Nullable List<Purchase> getPurchases();
+    @Nullable ArrayList<Purchase> getPurchases();
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
     int getUserHintsCount();
