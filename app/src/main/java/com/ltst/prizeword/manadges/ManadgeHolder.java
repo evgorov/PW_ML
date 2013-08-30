@@ -145,6 +145,33 @@ public class ManadgeHolder {
         return null;
     }
 
+//    static @Nonnull ManadgeHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
+//    {
+//        if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+//            return ManadgeProduct.hints10;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+//            return ManadgeProduct.hints20;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+//            return ManadgeProduct.hints30;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT))
+//            return ManadgeProduct.set_brilliant;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_GOLD))
+//            return ManadgeProduct.set_gold;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER))
+//            return ManadgeProduct.set_silver;
+//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2))
+//            return ManadgeProduct.set_silver2;
+//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            return ManadgeProduct.test_success;
+//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+//            return ManadgeProduct.test_cancel;
+//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+//            return ManadgeProduct.test_refunded;
+//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+//            return ManadgeProduct.test_unavailable;
+//        return null;
+//    }
+
     static int extractProductRequest(ManadgeHolder.ManadgeProduct product)
     {
         switch (product)
@@ -199,6 +226,10 @@ public class ManadgeHolder {
         if(!mPrices.containsKey(product))
             return null;
         return mPrices.get(product);
+
+//        @Nonnull String googleId = extractProductId(product);
+//        @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
+//        return purchase.price;
     }
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener()
@@ -223,7 +254,7 @@ public class ManadgeHolder {
                         mIabHelper.consumeAsync(inventory.getPurchase(prodict_id),mConsumeFinishedListener);
 
                         @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
-                        purchase.googleResetPurchase = true;
+                        purchase.googlePurchase = false;
                         mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
                             @Override
                             public void handle() {
@@ -271,9 +302,25 @@ public class ManadgeHolder {
             {
                 prodict_id = extractProductId(product);
                 if(inventory.hasDetails(prodict_id))
+                {
                     mPrices.put(product,inventory.getSkuDetails(prodict_id).getPrice());
+                    @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
+                    purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
+                    mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
+                        @Override
+                        public void handle() {
+
+                        }
+                    });
+                }
             }
-            mReloadPricesHandler.handle();
+
+            mIPurchaseSetModel.reloadPurchases(new IListenerVoid() {
+                @Override
+                public void handle() {
+                    mReloadPricesHandler.handle();
+                }
+            });
         }
     };
 

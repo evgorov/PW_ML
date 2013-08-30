@@ -581,8 +581,8 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsPurchases.ID, object.id);
             cv.put(ColsPurchases.CLIENT_ID, object.clientId);
             cv.put(ColsPurchases.GOOGLE_ID, object.googleId);
+            cv.put(ColsPurchases.PRICE, object.price);
             cv.put(ColsPurchases.GOOGLE_PURCHASE, object.googlePurchase);
-            cv.put(ColsPurchases.GOOGLE_RESET_PURCHASE, object.googleResetPurchase);
             cv.put(ColsPurchases.SERVER_PURCHASE, object.serverPurchase);
             return cv;
         }

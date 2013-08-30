@@ -121,10 +121,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PURCHASES = "create table "
             + TNAME_PURCHASES + "("
             + ColsPurchases.ID                          + " integer not null primary key autoincrement, "
-            + ColsPurchases.CLIENT_ID                   + " text not null unique,  "
-            + ColsPurchases.GOOGLE_ID                   + " text not null,  "
+            + ColsPurchases.CLIENT_ID                   + " text not null unique, "
+            + ColsPurchases.GOOGLE_ID                   + " text not null, "
+            + ColsPurchases.PRICE                       + " text not null, "
             + ColsPurchases.GOOGLE_PURCHASE             + " boolean not null default false, "
-            + ColsPurchases.GOOGLE_RESET_PURCHASE       + " boolean not null default false, "
             + ColsPurchases.SERVER_PURCHASE             + " boolean not null default false "
             + ")";
 
@@ -236,8 +236,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String ID                      = "_id";
         public static final @Nonnull String CLIENT_ID               = "clientId";
         public static final @Nonnull String GOOGLE_ID               = "googleId";
+        public static final @Nonnull String PRICE                   = "price";
         public static final @Nonnull String GOOGLE_PURCHASE         = "google_purchase";
-        public static final @Nonnull String GOOGLE_RESET_PURCHASE   = "google_reset_purchase";
         public static final @Nonnull String SERVER_PURCHASE         = "server_purchase";
     }
 

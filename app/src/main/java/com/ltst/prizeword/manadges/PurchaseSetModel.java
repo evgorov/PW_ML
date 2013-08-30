@@ -27,6 +27,7 @@ public class PurchaseSetModel implements IPurchaseSetModel {
 
     public PurchaseSetModel(@Nonnull IBcConnector mBcConnector) {
         this.mBcConnector = mBcConnector;
+        mPurchases = new ArrayList<Purchase>();
     }
 
     public @Nonnull Purchase getPurchase(@Nonnull String googleId)

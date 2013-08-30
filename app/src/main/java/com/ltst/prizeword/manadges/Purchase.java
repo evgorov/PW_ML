@@ -17,8 +17,8 @@ public class Purchase implements Parcelable {
     public long id;
     public @Nonnull String clientId;
     public @Nonnull String googleId;
+    public @Nonnull String price;
     public boolean googlePurchase;
-    public boolean googleResetPurchase;
     public boolean serverPurchase;
 
     public Purchase()
@@ -27,13 +27,13 @@ public class Purchase implements Parcelable {
     }
 
     public Purchase(long id, @Nonnull String clientId, @Nonnull String googleId,
-                    boolean googlePurchase, boolean googleResetPurchase, boolean serverPurchase)
+                    @Nonnull String price, boolean googlePurchase, boolean serverPurchase)
     {
         this.id = id;
         this.clientId = clientId;
         this.googleId = googleId;
+        this.price = price;
         this.googlePurchase = googlePurchase;
-        this.googleResetPurchase = googleResetPurchase;
         this.serverPurchase = serverPurchase;
     }
 
@@ -44,11 +44,11 @@ public class Purchase implements Parcelable {
             long id = source.readLong();
             @Nonnull String clientId = ParcelableTools.getNonnullString(source.readString());
             @Nonnull String googleId = ParcelableTools.getNonnullString(source.readString());;
+            @Nonnull String price = ParcelableTools.getNonnullString(source.readString());;
             boolean googlePurchase = ParcelableTools.getBooleanFromInt(source.readInt());
-            boolean googleResetPurchase = ParcelableTools.getBooleanFromInt(source.readInt());
             boolean serverPurchase = ParcelableTools.getBooleanFromInt(source.readInt());
 
-            return new Purchase(id,clientId,googleId,googlePurchase,googleResetPurchase,serverPurchase);
+            return new Purchase(id,clientId,googleId,price, googlePurchase,serverPurchase);
         }
 
         @Override
@@ -67,8 +67,8 @@ public class Purchase implements Parcelable {
         dest.writeLong(id);
         dest.writeString(clientId);
         dest.writeString(googleId);
+        dest.writeString(price);
         dest.writeInt(googlePurchase ? 1 : 0);
-        dest.writeInt(googleResetPurchase ? 1 : 0);
         dest.writeInt(serverPurchase ? 1 : 0);
     }
 }

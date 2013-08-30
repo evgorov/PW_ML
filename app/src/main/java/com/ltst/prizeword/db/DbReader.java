@@ -128,8 +128,8 @@ public class DbReader implements IDbReader
                     ColsPurchases.ID,
                     ColsPurchases.CLIENT_ID,
                     ColsPurchases.GOOGLE_ID,
+                    ColsPurchases.PRICE,
                     ColsPurchases.GOOGLE_PURCHASE,
-                    ColsPurchases.GOOGLE_RESET_PURCHASE,
                     ColsPurchases.SERVER_PURCHASE
             };
 
@@ -537,10 +537,10 @@ public class DbReader implements IDbReader
             long id = c.getLong(0);
             String clientId = c.getString(1);
             String googleId = c.getString(2);
-            boolean googlePurchase = c.getInt(3) == 1;
-            boolean googleResetPurchase = c.getInt(4) == 1;
+            String price = c.getString(3);
+            boolean googlePurchase = c.getInt(4) == 1;
             boolean serverPurchase = c.getInt(5) == 1;
-            return new Purchase(id, clientId, googleId, googlePurchase, googleResetPurchase, serverPurchase);
+            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase);
         }
     };
 
