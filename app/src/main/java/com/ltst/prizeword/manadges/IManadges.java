@@ -10,7 +10,8 @@ import javax.annotation.Nonnull;
 public interface IManadges {
 
     void buyProduct(ManadgeHolder.ManadgeProduct product);
-    void reloadPriceProducts(@Nonnull IListenerVoid handler);
+    void reloadPriceProducts();
+    void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
     String getPriceProduct(ManadgeHolder.ManadgeProduct product);
 
 }

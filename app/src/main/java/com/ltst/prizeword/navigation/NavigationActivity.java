@@ -107,6 +107,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
 
+        mBcConnector = new BcConnector(this);
+        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
+        mManadgeHolder.instance();
+
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
 
@@ -117,7 +121,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         config.locale = locale;
         mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
 
-        mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
         mSlidingMenu.setMode(SlidingMenu.LEFT);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -154,8 +157,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         initNavigationDrawerItems();
         reloadUserData();
-        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
-        mManadgeHolder.instance();
     }
 
     @Override
@@ -677,9 +678,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void reloadPriceProducts(@Nonnull IListenerVoid handler) {
+    public void reloadPriceProducts() {
         // Обновляем прайс лист продуктов;
-        mManadgeHolder.reloadPrice(handler);
+        mManadgeHolder.reloadPrice();
+    }
+
+    @Override
+    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler) {
+        mManadgeHolder.registerHandlerPriceProductsChange(handler);
     }
 
     @Override

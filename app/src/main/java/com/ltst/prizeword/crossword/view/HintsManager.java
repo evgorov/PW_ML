@@ -2,6 +2,7 @@ package com.ltst.prizeword.crossword.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.ManadgeHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
@@ -39,15 +41,12 @@ public class HintsManager implements View.OnClickListener
         mActivity = (Activity) context;
 
         mIManadges = iManadges;
+        mIManadges.registerHandlerPriceProductsChange(mReloadPriceProductHandler);
         mHintsModel = new HintsModel(bcConnector, sessionKey);
 
         mPriceHints_10 = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_buy_10_price);
         mPriceHints_20 = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_buy_20_price);
         mPriceHints_30 = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_buy_30_price);
-
-        mPriceHints_10.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints10));
-        mPriceHints_20.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints20));
-        mPriceHints_30.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints30));
 
         mBuyHints_10 = parentView.findViewById(R.id.crossword_fragment_current_rest_buy_10_btn);
         mBuyHints_20 = parentView.findViewById(R.id.crossword_fragment_current_rest_buy_20_btn);
@@ -56,7 +55,7 @@ public class HintsManager implements View.OnClickListener
         mBuyHints_10.setOnClickListener(this);
         mBuyHints_20.setOnClickListener(this);
         mBuyHints_30.setOnClickListener(this);
-
+        setPrice();
     }
 
     public void setHintChangeListener(@Nullable IListenerInt hintChangeListener)
@@ -103,5 +102,21 @@ public class HintsManager implements View.OnClickListener
             }
         });
     }
+
+    private void setPrice()
+    {
+        Log.d(NavigationActivity.LOG_TAG, "SET PRICE!");
+        mPriceHints_10.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints10));
+        mPriceHints_20.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints20));
+        mPriceHints_30.setText(mIManadges.getPriceProduct(ManadgeHolder.ManadgeProduct.hints30));
+    }
+
+    @Nonnull IListenerVoid mReloadPriceProductHandler = new IListenerVoid() {
+        @Override
+        public void handle() {
+            Log.d(NavigationActivity.LOG_TAG, "GET RELOAD PRICE!");
+            setPrice();
+        }
+    };
 
 }
