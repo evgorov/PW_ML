@@ -36,6 +36,10 @@ public class CrosswordFragmentHolder {
     private @Nonnull HashMap<Long, CrosswordSet> mListCrosswordSet;
     private @Nonnull HashMap<Integer, CrosswordSetMonth> mListCrosswordSetMonth;
 
+    @Nonnull HashMap<String, List<PuzzleSet>> mMapSets;
+    @Nonnull HashMap<String, List<Puzzle>> mMapPuzzles;
+
+
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
     {
@@ -44,8 +48,12 @@ public class CrosswordFragmentHolder {
         this.mViewCrossword = view;
         this.mContext = context;
 
+        mMapSets = new HashMap<String, List<PuzzleSet>>();
+        mMapPuzzles = new HashMap<String, List<Puzzle>>();
+
         mListCrosswordSet = new HashMap<Long, CrosswordSet>();
         mListCrosswordSetMonth = new HashMap<Integer, CrosswordSetMonth>();
+        
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
 
@@ -65,6 +73,16 @@ public class CrosswordFragmentHolder {
                 ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
                 : R.drawable.puzzles_current_puzzles_head_rest_panel_clitical));
 
+    }
+
+    @Nonnull
+    public HashMap<String, List<PuzzleSet>> getMapSets() {
+        return mMapSets;
+    }
+
+    @Nonnull
+    public HashMap<String, List<Puzzle>> getMapPuzzles() {
+        return mMapPuzzles;
     }
 
     // ================== CROSSWORD PANELS ======================
@@ -124,6 +142,22 @@ public class CrosswordFragmentHolder {
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
+        if(!sets.isEmpty())
+        {
+            PuzzleSet set = sets.get(0);
+            String key = String.format("%d-%d",set.year,set.month);
+            if(mMapSets.containsKey(key))
+                mMapSets.remove(key);
+            mMapSets.put(key, sets);
+        }
+
+        for (String key : mapPuzzles.keySet())
+        {
+            if(mMapPuzzles.containsKey(key))
+                mMapPuzzles.remove(key);
+            mMapPuzzles.put(key, mapPuzzles.get(key));
+        }
+
         for (PuzzleSet set : sets)
         {
             CrosswordPanelData data = extractCrosswordPanelData(set);

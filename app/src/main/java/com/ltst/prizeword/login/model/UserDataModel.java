@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.ClearDataBase;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.dowloading.LoadImageTask;
 import com.ltst.prizeword.navigation.NavigationActivity;
@@ -285,6 +286,32 @@ public class UserDataModel implements IUserDataModel {
         };
         session.update(handler);
     }
+
+    @Override
+    public void clearDataBase(@Nonnull IListenerVoid handler) {
+
+        Updater session = new Updater() {
+            @Nonnull
+            @Override
+            protected Intent createIntent() {
+                return ClearDataBase.createIntent();
+            }
+
+            @Nonnull
+            @Override
+            protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+                return ClearDataBase.class;
+            }
+
+            @Override
+            protected void handleData(@Nullable Bundle result)
+            {
+                    return;
+            }
+        };
+        session.update(handler);
+    }
+
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {

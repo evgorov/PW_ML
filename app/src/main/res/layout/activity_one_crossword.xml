@@ -331,93 +331,42 @@
                             />
                 </LinearLayout>
 
-
-                <FrameLayout
+                <LinearLayout
+                        android:id="@+id/final_flip_number"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content">
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="34dp"
+                        android:layout_marginLeft="39dp"
+                        >
 
-                    <LinearLayout
-                            android:id="@+id/final_flip_clock"
-                            android:layout_height="wrap_content"
+                    <TextView
                             android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="37dp"
-                            android:layout_marginLeft="40dp"
-                            >
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/final_flip_clock_bg"
-                                />
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/final_flip_clock_bg"
-                                />
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/final_flip_clock_bg"
-                                />
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/final_flip_clock_bg"
-                                />
-
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/final_flip_clock_bg"
-                                />
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                            android:id="@+id/final_flip_number"
                             android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                            />
+                    <TextView
                             android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="37dp"
-                            android:layout_marginLeft="50dp"
-                            >
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                    />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                    />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                    />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Final_number_text"
+                    />
 
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Final_number_text"
-                                />
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Final_number_text"
-                                android:layout_marginLeft="13dp"
-                                />
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Final_number_text"
-                                android:layout_marginLeft="13dp"
-                                />
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Final_number_text"
-                                android:layout_marginLeft="14dp"
-                                />
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Final_number_text"
-                                android:layout_marginLeft="14dp"
-                                />
-
-                    </LinearLayout>
-                </FrameLayout>
+                </LinearLayout>
 
                 <LinearLayout
                         android:layout_height="wrap_content"

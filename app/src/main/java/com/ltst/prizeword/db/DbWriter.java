@@ -367,6 +367,25 @@ public class DbWriter extends  DbReader implements IDbWriter
         });
     }
 
+    @Override
+    public void clearDb() {
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                mDb.delete(TNAME_PUZZLE_SETS, null, null);
+                mDb.delete(TNAME_PUZZLES, null, null);
+                mDb.delete(TNAME_PUZZLE_QUESTIONS, null, null);
+                mDb.delete(TNAME_IMAGES, null, null);
+                mDb.delete(TNAME_PROVIDERS, null, null);
+                mDb.delete(TNAME_USERS, null, null);
+                mDb.delete(TNAME_COEFFICIENTS, null, null);
+                mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
+            }
+        });
+    }
+
     //===== ContentValues creators =======================
 
     private ContentValuesCreator<UserData> mUserDataContentValuesCreator = new ContentValuesCreator<UserData>()

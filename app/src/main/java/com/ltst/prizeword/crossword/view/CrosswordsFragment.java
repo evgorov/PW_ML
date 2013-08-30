@@ -247,17 +247,17 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
     {
+        @Nonnull HashMap<String, List<PuzzleSet>> mapSets = mCrosswordFragmentHolder.getMapSets();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mCrosswordFragmentHolder.getMapPuzzles();
 
-        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
         for (Puzzle puzzle : puzzles)
         {
-            if (puzzle.id == puzzleId)
+            if (!puzzle.isSolved && puzzle.id == puzzleId)
             {
-                if (!puzzle.isSolved)
+                for (List<PuzzleSet> listPuzzleSet : mapSets.values())
                 {
-                    for (PuzzleSet puzzleSet : sets)
+                    for (PuzzleSet puzzleSet : listPuzzleSet)
                     {
                         if (puzzleSet.serverId.equals(setServerId))
                         {
@@ -270,22 +270,6 @@ public class CrosswordsFragment extends SherlockFragment
                 break;
             }
         }
-
-//        List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-//        @Nullable PuzzleSet freeSet = null;
-//        for (PuzzleSet set : sets)
-//        {
-//            if(set.type.equals(PuzzleSetModel.FREE))
-//            {
-//                freeSet = set;
-//                break;
-//            }
-//        }
-//        if (freeSet != null)
-//        {
-//            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, freeSet, mPuzzleSetModel.getHintsCount());
-//            mContext.startActivity(intent);
-//        }
     }
 
 
