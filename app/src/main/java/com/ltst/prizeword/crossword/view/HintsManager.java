@@ -68,7 +68,7 @@ public class HintsManager implements View.OnClickListener
     public void onClick(View v)
     {
         // Покупка;
-        mIManadges.buyProduct(ManadgeHolder.ManadgeProduct.test_ok);
+        mIManadges.buyProduct(ManadgeHolder.ManadgeProduct.test_success);
 
         int count = 0;
         switch (v.getId())

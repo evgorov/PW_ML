@@ -107,8 +107,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
 
-        mManadgeHolder = new ManadgeHolder(this);
-
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
 
@@ -156,6 +154,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         initNavigationDrawerItems();
         reloadUserData();
+        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
         mManadgeHolder.instance();
     }
 
