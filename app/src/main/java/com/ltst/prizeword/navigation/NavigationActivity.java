@@ -44,6 +44,7 @@ import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
@@ -144,6 +145,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         initNavigationDrawerItems();
         reloadUserData();
+
     }
 
     @Override
@@ -397,6 +399,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override
     public void onClick(View view) {
+        SoundsWork sw = new SoundsWork(this);
+
 
         switch (view.getId())
         {
@@ -427,10 +431,13 @@ public class NavigationActivity extends SherlockFragmentActivity
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;
             case  R.id.menu_invite_friends_btn:
-                selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
+                //selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
+                sw.LoadMusic(R.raw.background_music);
                 break;
             case  R.id.menu_pride_rating_btn:
-                selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
+                //selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
+                if(sw.isLoaded())
+                    sw.playMusic();
                 break;
             default:
                 break;
