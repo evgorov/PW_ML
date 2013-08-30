@@ -10,5 +10,6 @@ import javax.annotation.Nonnull;
 public interface IPurchaseSetModel {
 
     void reloadPurchases(@Nonnull IListenerVoid handler);
-    void updatePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler);
+    void putPurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler);
+    @Nonnull Purchase getPurchase(@Nonnull String googleId);
 }

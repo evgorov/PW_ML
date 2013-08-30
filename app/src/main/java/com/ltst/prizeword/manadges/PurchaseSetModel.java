@@ -29,13 +29,25 @@ public class PurchaseSetModel implements IPurchaseSetModel {
         this.mBcConnector = mBcConnector;
     }
 
+    public @Nonnull Purchase getPurchase(@Nonnull String googleId)
+    {
+        for(Purchase purchase : mPurchases)
+        {
+            if(purchase.googleId.equals(googleId))
+            {
+                return purchase;
+            }
+        }
+        return new Purchase();
+    }
+
     @Override
     public void reloadPurchases(@Nonnull IListenerVoid handler) {
         mPurchaseReloadSession.update(handler);
     }
 
     @Override
-    public void updatePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler) {
+    public void putPurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler) {
         mPurchaseUpdateSession.update(handler);
     }
 

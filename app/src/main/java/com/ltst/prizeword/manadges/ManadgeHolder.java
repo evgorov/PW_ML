@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.actionbarsherlock.internal.widget.IcsLinearLayout;
 import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
@@ -44,30 +43,30 @@ public class ManadgeHolder {
 
     private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
 
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints20";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT      = "buy_set_brilliant";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER         = "buy_set_silver";
-    private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2        = "buy_set_silver2";
-    private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
-    private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
-    private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
-    private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints20";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT      = "buy_set_brilliant";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER         = "buy_set_silver";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2        = "buy_set_silver2";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
 
 
-    private final int REQUEST_GOOGLE_PLAY_HINTS_10              = 100;
-    private final int REQUEST_GOOGLE_PLAY_HINTS_20              = 101;
-    private final int REQUEST_GOOGLE_PLAY_HINTS_30              = 102;
-    private final int REQUEST_GOOGLE_PLAY_SET_BRILLIANT         = 103;
-    private final int REQUEST_GOOGLE_PLAY_SET_GOLD              = 104;
-    private final int REQUEST_GOOGLE_PLAY_SET_SILVER            = 105;
-    private final int REQUEST_GOOGLE_PLAY_SET_SILVER2           = 106;
-    private final int REQUEST_GOOGLE_TEST_PRODUCT_SUCCESS       = 107;
-    private final int REQUEST_GOOGLE_TEST_PRODUCT_CANCEL        = 108;
-    private final int REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED      = 109;
-    private final int REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE   = 200;
+    static private final int REQUEST_GOOGLE_PLAY_HINTS_10              = 100;
+    static private final int REQUEST_GOOGLE_PLAY_HINTS_20              = 101;
+    static private final int REQUEST_GOOGLE_PLAY_HINTS_30              = 102;
+    static private final int REQUEST_GOOGLE_PLAY_SET_BRILLIANT         = 103;
+    static private final int REQUEST_GOOGLE_PLAY_SET_GOLD              = 104;
+    static private final int REQUEST_GOOGLE_PLAY_SET_SILVER            = 105;
+    static private final int REQUEST_GOOGLE_PLAY_SET_SILVER2           = 106;
+    static private final int REQUEST_GOOGLE_TEST_PRODUCT_SUCCESS       = 107;
+    static private final int REQUEST_GOOGLE_TEST_PRODUCT_CANCEL        = 108;
+    static private final int REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED      = 109;
+    static private final int REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE   = 200;
 
     private @Nonnull IabHelper mIabHelper;
     private @Nonnull Activity mActivity;
@@ -126,7 +125,7 @@ public class ManadgeHolder {
         mIabHelper = null;
     }
 
-    @Nonnull String extractProductId(ManadgeHolder.ManadgeProduct product)
+    static @Nonnull String extractProductId(ManadgeHolder.ManadgeProduct product)
     {
         switch (product)
         {
@@ -146,7 +145,7 @@ public class ManadgeHolder {
         return null;
     }
 
-    int extractProductRequest(ManadgeHolder.ManadgeProduct product)
+    static int extractProductRequest(ManadgeHolder.ManadgeProduct product)
     {
         switch (product)
         {
@@ -222,6 +221,16 @@ public class ManadgeHolder {
                     {
                         // Восстанавливаем для продукта возможность покупки;
                         mIabHelper.consumeAsync(inventory.getPurchase(prodict_id),mConsumeFinishedListener);
+
+                        @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
+                        purchase.googleResetPurchase = true;
+                        mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+
                     }
                 }
 
@@ -285,6 +294,15 @@ public class ManadgeHolder {
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
+            @Nonnull com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+            product.googlePurchase = true;
+            product.clientId = responseClientId;
+            mIPurchaseSetModel.putPurchase(product, new IListenerVoid() {
+                @Override
+                public void handle() {
+
+                }
+            });
         }
     };
 

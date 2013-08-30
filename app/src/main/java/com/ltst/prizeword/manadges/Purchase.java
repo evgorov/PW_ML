@@ -21,6 +21,11 @@ public class Purchase implements Parcelable {
     public boolean googleResetPurchase;
     public boolean serverPurchase;
 
+    public Purchase()
+    {
+
+    }
+
     public Purchase(long id, @Nonnull String clientId, @Nonnull String googleId,
                     boolean googlePurchase, boolean googleResetPurchase, boolean serverPurchase)
     {
