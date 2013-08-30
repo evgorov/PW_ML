@@ -6,19 +6,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.crossword.view.ICrosswordFragment;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.scoredetailfragment.model.ScoreDataModel;
+import com.ltst.prizeword.scoredetailfragment.model.SolvedPuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
+
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,13 +42,19 @@ public class ScoreDetailFragment extends SherlockFragment
     private @Nullable IBcConnector mBcConnector;
     private @Nullable String mSessionKey;
     private @Nullable ScoreDataModel mFriendDataModel;
+    private @Nullable SolvedPuzzleSetModel mPuzzleSetModel;
     private @Nullable ScoreDetailAdapter mScoreDetailAdapter;
     private @Nullable CoefficientsModel mCoefModel;
-    private @Nullable View mFooterView;
+    private @Nonnull View mFooterView;
+    private @Nonnull View mCrosswordView;
+
+    private @Nonnull ScoreCrosswordFragmentHolder mScoreHolder;
+
     @Override public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         super.onAttach(activity);
     }
 
@@ -48,10 +62,15 @@ public class ScoreDetailFragment extends SherlockFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.detail_score_fragment_layout, container, false);
+
+
         mScoreListVeiw = (ListView) v.findViewById(R.id.score_listview);
         mFooterView = inflater.inflate(R.layout.score_footer,null);
+        mCrosswordView = inflater.inflate(R.layout.score_crossword_panel_container,null);
+        mScoreHolder = new ScoreCrosswordFragmentHolder(mContext, this, inflater,mCrosswordView);
         mScoreListVeiw.setDivider(null);
         mScoreListVeiw.addFooterView(mFooterView);
+        mScoreListVeiw.addHeaderView(mCrosswordView);
         return v;
     }
 
@@ -91,6 +110,8 @@ public class ScoreDetailFragment extends SherlockFragment
     {
         Log.i("RatingFragment.onResume()"); //$NON-NLS-1$
         super.onResume();
+        mPuzzleSetModel = new SolvedPuzzleSetModel(mBcConnector, mSessionKey);
+        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
         ScoreDataModel friendm = mFriendDataModel;
         if (friendm != null)
         {
@@ -107,6 +128,7 @@ public class ScoreDetailFragment extends SherlockFragment
     public void onPause()
     {
         Log.i("RatingFragment.onPause()"); //$NON-NLS-1$
+        mPuzzleSetModel.close();
         ScoreDataModel friendsm = mFriendDataModel;
         if (friendsm != null)
         {
@@ -124,12 +146,57 @@ public class ScoreDetailFragment extends SherlockFragment
         {
             friendsmodel.close();
             mFriendDataModel = null;
+            mPuzzleSetModel=null;
             mScoreDetailAdapter = null;
         }
         super.onDestroy();
 
     }
 
+    private void createCrosswordPanel()
+    {
+        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
+        mScoreHolder.fillSet(sets, mapPuzzles);
+    }
+
+    private IListenerVoid
+            updateSetsFromDBHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            createCrosswordPanel();
+
+            if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
+            {
+                //skipProgressBar();
+                return;
+            }
+            mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
+
+        }
+    };
+
+    private IListenerVoid
+            updateSetsFromServerHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            createCrosswordPanel();
+            //skipProgressBar();
+        }
+    };
+
+    private IListenerInt hintsChangeHandler = new IListenerInt()
+    {
+        @Override
+        public void handle(int i)
+        {
+//            mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
+        }
+    };
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
     {
         @Override
@@ -141,4 +208,5 @@ public class ScoreDetailFragment extends SherlockFragment
             //mScoreListVeiw.setVisibility(View.VISIBLE);
         }
     };
+
 }

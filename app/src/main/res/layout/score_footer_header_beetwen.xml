@@ -61,7 +61,7 @@
             android:layout_marginLeft="20dp">
 
         <TextView
-                android:id="@+id/score_crossword_panel_ratio"
+                android:id="@+id/score_invited_panel_ratio"
                 android:textSize="@dimen/puzzles_badge_text_size"
                 android:textStyle="bold"
                 style="@style/PuzzlesHintCommonTextStyle"
