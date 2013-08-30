@@ -48,11 +48,11 @@ public class PuzzleManager
     private boolean mIsAnimating;
 
     private @Nullable Point mLastQuestionTapPoint;
-    private @Nullable Point mLastQuestionInputPuzzlePoint;
+    private @Nullable Point mInputFocusViewPoint;
 
     private boolean isRestored;
 
-    private final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    public final static ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
     public PuzzleManager(@Nonnull Context context,
                          @Nonnull PuzzleResourcesAdapter adapter,
@@ -64,6 +64,7 @@ public class PuzzleManager
         mInvalidateHandler = invalidateHandler;
         mFieldDrawer = new PuzzleFieldDrawer(context, adapter, invalidateHandler);
         isRestored = false;
+
     }
 
     public void saveState(@Nonnull Bundle dest)
@@ -147,7 +148,7 @@ public class PuzzleManager
         final int col = (int)point.x/tileWidth;
         final int row = (int)point.y/tileHeight;
         cancelLastQuestion();
-        mLastQuestionInputPuzzlePoint = null;
+        mInputFocusViewPoint = null;
         mResourcesAdapter.updatePuzzleStateByTap(col, row, new IListenerVoid()
         {
             @Override
@@ -157,14 +158,20 @@ public class PuzzleManager
                 {
                     successHandler.handle();
                 }
-                cancelLastQuestion();
+//                cancelLastQuestion();
                 mLastQuestionTapPoint = new Point(col, row);
 
-                Point translatePoint = new Point((int)puzzleX, (int) puzzleY);
-                mFieldDrawer.checkFocusPoint(translatePoint, mPuzzleViewRect);
+                mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());
+
+                if (mInputFocusViewPoint == null)
+                {
+                    return;
+                }
+
+                mFieldDrawer.checkFocusPoint(mInputFocusViewPoint, mPuzzleViewRect);
 
                 TranslateAnimationThread thread = new TranslateAnimationThread(view,
-                        mFocusViewPoint, translatePoint);
+                        mFocusViewPoint, mInputFocusViewPoint);
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 mExecutor.execute(thread);
             }
@@ -172,7 +179,7 @@ public class PuzzleManager
         return true;
     }
 
-    public void onKeyEvent(@Nonnull View view, @Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
+    public void onKeyEvent(final @Nonnull View view, @Nonnull KeyEvent keyEvent, final @Nullable IListenerBoolean keyboardOpenHandler)
     {
         switch (keyEvent.getKeyCode())
         {
@@ -184,19 +191,18 @@ public class PuzzleManager
             // backspace key
             case KeyEvent.KEYCODE_DEL:
             {
-                if (mLastQuestionInputPuzzlePoint == null)
+
+                mResourcesAdapter.deleteLetterByBackspace();
+                mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());
+
+                if (mInputFocusViewPoint == null || mPuzzleViewRect == null || mFocusViewPoint == null)
                 {
                     break;
                 }
-                int tileWidth = mFieldDrawer.getTileWidth();
-                int tileHeight = mFieldDrawer.getTileHeight();
-                Rect tileRect = new Rect(0, 0, tileWidth, tileHeight);
 
-                mResourcesAdapter.deleteLetterByBackspace(mLastQuestionInputPuzzlePoint, tileRect);
-
-                mFieldDrawer.checkFocusPoint(mLastQuestionInputPuzzlePoint, mPuzzleViewRect);
+                mFieldDrawer.checkFocusPoint(mInputFocusViewPoint, mPuzzleViewRect);
                 TranslateAnimationThread thread = new TranslateAnimationThread(view,
-                        mFocusViewPoint, mLastQuestionInputPuzzlePoint);
+                        mFocusViewPoint, mInputFocusViewPoint);
                 mExecutor.execute(thread);
                 mInvalidateHandler.handle(mPuzzleViewRect);
                 break;
@@ -207,15 +213,6 @@ public class PuzzleManager
             {
                 String letter = keyEvent.getCharacters();
 
-                int tileWidth = mFieldDrawer.getTileWidth();
-                int tileHeight = mFieldDrawer.getTileHeight();
-                Rect tileRect = new Rect(0, 0, tileWidth, tileHeight);
-
-                if(mLastQuestionInputPuzzlePoint == null)
-                {
-                    mLastQuestionInputPuzzlePoint = new Point(mFocusViewPoint);
-                }
-
                 if (letter == null || letter.length() > 1)
                 {
                     letter = String.valueOf(PuzzleResources.LETTER_UNKNOWN);
@@ -223,23 +220,30 @@ public class PuzzleManager
                 letter = letter.toUpperCase();
 
                 mResourcesAdapter.updateLetterCharacterState(letter,
-                        mLastQuestionInputPuzzlePoint,
-                        tileRect,
                         new IListenerVoid()
                 {
                     @Override
                     public void handle()
                     {
-                        cancelLastQuestion();
                         if (keyboardOpenHandler != null)
                         {
                             keyboardOpenHandler.handle(false);
                         }
+                        mInvalidateHandler.handle(mPuzzleViewRect);
+                        triggerLetterAnimation(view);
+                        cancelLastQuestion();
                     }
                 });
-                mFieldDrawer.checkFocusPoint(mLastQuestionInputPuzzlePoint, mPuzzleViewRect);
+                mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());
+
+                if (mInputFocusViewPoint == null || mPuzzleViewRect == null || mFocusViewPoint == null)
+                {
+                    break;
+                }
+
+                mFieldDrawer.checkFocusPoint(mInputFocusViewPoint, mPuzzleViewRect);
                 TranslateAnimationThread thread = new TranslateAnimationThread(view,
-                        mFocusViewPoint, mLastQuestionInputPuzzlePoint);
+                        mFocusViewPoint, mInputFocusViewPoint);
                 mExecutor.execute(thread);
 
                 mInvalidateHandler.handle(mPuzzleViewRect);
@@ -264,20 +268,11 @@ public class PuzzleManager
         }
     }
 
+
     // ==== configuring view ==================================
 
     public void setPuzzleViewRect(@Nonnull Rect puzzleViewRect)
     {
-        PointF puzzleFocusPoint = new PointF();
-        if (mFocusViewPoint != null)
-        {
-            float puzzleX = mFocusViewPoint.x;
-            float puzzleY = mFocusViewPoint.y;
-
-            puzzleFocusPoint.set(puzzleX, puzzleY);
-
-            mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(puzzleFocusPoint);
-        }
 
         mPuzzleViewRect = puzzleViewRect;
         mFieldDrawer.disableScaling();
@@ -301,13 +296,17 @@ public class PuzzleManager
         }
         else
         {
-            if (puzzleFocusPoint != null)
+            mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());
+
+            if (mInputFocusViewPoint == null)
             {
-                mFieldDrawer.convertPointFromTilesAreaCoordsToScreenCoords(puzzleFocusPoint);
-                mFocusViewPoint = new Point((int)puzzleFocusPoint.x, (int)puzzleFocusPoint.y);
+                mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
             }
             else
-                mFocusViewPoint = new Point(mFieldDrawer.getCenterX(), mFieldDrawer.getCenterY());
+            {
+                mFieldDrawer.checkFocusPoint(mInputFocusViewPoint, mPuzzleViewRect);
+                mFocusViewPoint = new Point(mInputFocusViewPoint);
+            }
         }
 
         checkFocusViewPoint();
@@ -350,15 +349,31 @@ public class PuzzleManager
 
         mFieldDrawer.drawBackground(screenCanvas);
         mFieldDrawer.drawPuzzles(screenCanvas);
+        mFieldDrawer.drawCurrentInputWithAnimation(screenCanvas, mResourcesAdapter.getOnInputAnimationEndHandler());
 
         screenCanvas.restoreToCount(saveCount);
-    }
 
+    }
 
     public void recycle()
     {
         clearInput();
         mFieldDrawer.unloadResources();
+    }
+
+
+    // ==== animation ===========================
+
+    public void triggerLetterAnimation(final @Nonnull View view)
+    {
+        mFieldDrawer.createInputRectList(mResourcesAdapter.getCurrentInputPuzzleStates(), new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                view.postInvalidate();
+            }
+        });
     }
 
     // ==== animation threads ===========================

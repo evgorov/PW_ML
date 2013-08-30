@@ -74,12 +74,17 @@ public class LetterBitmapManager
 
     public boolean drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect)
     {
+        return drawLetter(resource, letter, canvas, rect, mPaint);
+    }
+
+    public boolean drawLetter(int resource, char letter, @Nonnull Canvas canvas, @Nonnull RectF rect, @Nonnull Paint paint)
+    {
         @Nullable BitmapEntity bm = mLetters.get(getLetterResourceKey(resource, letter));
         if (bm == null)
         {
             return false;
         }
-        bm.draw(canvas, rect, mPaint);
+        bm.draw(canvas, rect, paint);
         return true;
     }
 

@@ -26,6 +26,7 @@ public class MainMenuHolder {
     public @Nonnull View mLogoutBtn;
     public @Nonnull View mInviteFriendsBtn;
     public @Nonnull View mRatingBtn;
+    public @Nonnull View mScoreBtn;
 
     public @Nonnull ToggleButton mVkontakteSwitcher;
     public @Nonnull ToggleButton mFacebookSwitcher;
@@ -45,6 +46,7 @@ public class MainMenuHolder {
         this.mLogoutBtn = (View) view.findViewById(R.id.header_listview_logout_btn);
         this.mInviteFriendsBtn = (View) view.findViewById(R.id.menu_invite_friends_btn);
         this.mRatingBtn = (View) view.findViewById(R.id.menu_pride_rating_btn);
+        this.mScoreBtn = (View) view.findViewById(R.id.menu_pride_score_btn);
 
         this.mMonth = (TextView) view.findViewById(R.id.menu_current_month_txt);
         this.mMyCrossword = (View) view.findViewById(R.id.menu_mypuzzle_btn);

@@ -431,9 +431,6 @@ public class RestClient implements IRestClient
         holder.setFriends(friends);
         holder.setStatus(entity.getStatusCode());
         return holder;
-
-
-
     }
 
     @Override
@@ -625,5 +622,29 @@ public class RestClient implements IRestClient
             }
         }
         return entity.getStatusCode();
+    }
+
+    @Nullable @Override
+    public RestInviteFriend.RestInviteFriendHolder getFriendsScoreData(@Nonnull String sessionKey, @Nonnull String providerName)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        @Nonnull String url = Strings.EMPTY;
+        if (providerName.equals(RestParams.VK_PROVIDER))
+        {
+            url = RestParams.URL_GET_VK_INVITED_FRIEND_DATA;
+        } else if (providerName.equals(RestParams.FB_PROVIDER))
+        {
+            url = RestParams.URL_GET_FB_INVITED_FRIEND_DATA;
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<RestInviteFriend[]> entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RestInviteFriend[].class, urlVariables);
+        RestInviteFriend.RestInviteFriendHolder holder = new RestInviteFriend.RestInviteFriendHolder();
+        List<RestInviteFriend> friends = Arrays.asList(entity.getBody());
+        holder.setFriends(friends);
+        holder.setStatus(entity.getStatusCode());
+        return holder;
     }
 }

@@ -224,6 +224,14 @@ public class PuzzleView extends View
         }
     }
 
+    public void triggerAnimation()
+    {
+        if (mPuzzleManager != null)
+        {
+            mPuzzleManager.triggerLetterAnimation(this);
+        }
+    }
+
     public class GestureListener extends GestureDetector.SimpleOnGestureListener
     {
         @Override

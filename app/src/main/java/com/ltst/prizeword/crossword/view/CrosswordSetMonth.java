@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.scoredetailfragment.model.ScoreCrosswordSet;
 
 import javax.annotation.Nonnull;
 

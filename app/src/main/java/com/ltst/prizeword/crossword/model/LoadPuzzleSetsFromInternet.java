@@ -37,6 +37,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private static final @Nonnull String VOLUME_SHORT = "short";
     private static final @Nonnull String VOLUME_LONG = "long";
+    private static final @Nonnull String VOLUME_SORT = "sort";
 
     public static final
     @Nonnull
@@ -55,6 +56,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_LONG);
+        return intent;
+    }
+    public static final
+    @Nonnull
+    Intent createSortIntent(@Nonnull String sessionKey)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_SORT);
         return intent;
     }
 
@@ -105,6 +115,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     env.dbw.putPuzzleTotalSetList(sets);
                     return getFromDatabase(env);
                 }
+            }
+             else if (volumePuzzle.equals(VOLUME_SORT))
+            {
+                return getSolvedFromDatabase(env);
             }
         }
         return getFromDatabase(env);
@@ -211,6 +225,22 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
     }
+    public static
+    @Nullable
+    Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)
+    {
+        List<PuzzleSet> sets = env.dbw.getPuzzleSets();
+        int hintsCount = env.dbw.getUserHintsCount();
+        List<Puzzle> puzzles = null;
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
+        for (PuzzleSet puzzleSet : sets)
+        {
+            puzzles = env.dbw.getSolvedPuzzlesBySetId(puzzleSet.id);
+            mapPuzzles.put(puzzleSet.serverId, puzzles);
+        }
+        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
+
 
     static public
     @Nonnull

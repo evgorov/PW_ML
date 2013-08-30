@@ -18,8 +18,11 @@ public class RestParams
     public static final @Nonnull String SYM_BRACET_LEFT = "{";
     public static final @Nonnull String SYM_BRACET_RIGHT = "}";
     public static final @Nonnull String SYM_PARAM_SETTER = "=";
-    public static final @Nonnull String SYM_SHARP= "#";
+    public static final @Nonnull String SYM_SHARP = "#";
 
+    // == ADAPTER PARAMS ==
+    public static final @Nonnull String CROSSWORD_TYPE_DATA = "crossword_type";
+    public static final @Nonnull String FRIEND_TYPE_DATA = "friends_type";
     // == API PARAMS ==
 
     public static final @Nonnull String FB_PROVIDER = "facebook";
@@ -57,18 +60,18 @@ public class RestParams
     public static final @Nonnull String URL_PROVIDER_LOGIN = URL_API + "/%s/login";
     public static final @Nonnull String URL_PROVIDER_AUTORITHE = URL_API + "/%s/authorize";
     public static final @Nonnull String URL_SIGN_UP = URL_API + "/signup"
-                                                            + addParam(EMAIL, true)
-                                                            + addParam(NAME, false)
-                                                            + addParam(SURNAME, false)
-                                                            + addParam(PASSWORD, false);
+            + addParam(EMAIL, true)
+            + addParam(NAME, false)
+            + addParam(SURNAME, false)
+            + addParam(PASSWORD, false);
 
     public static final @Nonnull String URL_LOGIN = URL_API + "/login"
-                                                            + addParam(EMAIL, true)
-                                                            + addParam(PASSWORD, false);
+            + addParam(EMAIL, true)
+            + addParam(PASSWORD, false);
     public static final @Nonnull String URL_POST_LINK_ACCOUNTS = URL_API + "/link_accounts" + addParam(SESSION_KEY1, true) + addParam(SESSION_KEY2, false);
 
     public static final @Nonnull String URL_GET_USER_DATA = URL_API + "/me" + addParam(SESSION_KEY, true);
-    public static final @Nonnull String URL_RESET_USER_PIC = URL_API + "/me"+SYM_PARAM+SESSION_KEY+SYM_PARAM_SETTER;
+    public static final @Nonnull String URL_RESET_USER_PIC = URL_API + "/me" + SYM_PARAM + SESSION_KEY + SYM_PARAM_SETTER;
     public static final @Nonnull String URL_RESET_USER_NAME = URL_GET_USER_DATA + addParam(NAME, false);
 
     public static final @Nonnull String URL_FORGOT_PASSWORD = URL_API + "/forgot_password" + addParam(EMAIL, true);
@@ -80,14 +83,17 @@ public class RestParams
     public static final @Nonnull String URL_VK_LOGIN = String.format(URL_PROVIDER_LOGIN, VK_PROVIDER);
     public static final @Nonnull String URL_VK_TOKEN = "https://oauth.vk.com/blank.html";
     public static final @Nonnull String URL_FB_TOKEN = "http://api.prize-word.com/facebook/authorize#";
-    public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
-    public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE,FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
-    public static final @Nonnull String URL_GET_FRIEND_DATA= URL_API + "/%s/friends" ;
-    public static final @Nonnull String URL_POST_FRIEND_INVITE= URL_API + "/%s/invite" ;
-    public static final @Nonnull String URL_GET_FB_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, FB_PROVIDER)+ addParam(SESSION_KEY, true);
-    public static final @Nonnull String URL_GET_VK_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, VK_PROVIDER)+ addParam(SESSION_KEY, true);
-    public static final @Nonnull String URL_POST_VK_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, VK_PROVIDER)+ addParam(SESSION_KEY, true)+addParam(USER_PUZZLE_IDS, false);
-    public static final @Nonnull String URL_POST_FB_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, FB_PROVIDER)+ addParam(SESSION_KEY, true)+addParam(USER_PUZZLE_IDS, false);
+    public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE, VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
+    public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE, FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
+    public static final @Nonnull String URL_GET_FRIEND_DATA = URL_API + "/%s/friends";
+    public static final @Nonnull String URL_GET_INVITED_FRIEND_DATA = URL_API + "/%s/invited_friends_this_month";
+    public static final @Nonnull String URL_POST_FRIEND_INVITE = URL_API + "/%s/invite";
+    public static final @Nonnull String URL_GET_FB_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, FB_PROVIDER) + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_VK_FRIEND_DATA = String.format(URL_GET_FRIEND_DATA, VK_PROVIDER) + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_FB_INVITED_FRIEND_DATA = String.format(URL_GET_INVITED_FRIEND_DATA, FB_PROVIDER) + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_GET_VK_INVITED_FRIEND_DATA = String.format(URL_GET_INVITED_FRIEND_DATA, VK_PROVIDER) + addParam(SESSION_KEY, true);
+    public static final @Nonnull String URL_POST_VK_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, VK_PROVIDER) + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
+    public static final @Nonnull String URL_POST_FB_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, FB_PROVIDER) + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
 
     // === URL parsing for launching app via http link (forgot password case)

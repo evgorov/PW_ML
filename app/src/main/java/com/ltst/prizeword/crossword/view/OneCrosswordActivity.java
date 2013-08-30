@@ -99,6 +99,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mFinalMenuButton;
     private @Nonnull Button mFinalNextButton;
 
+    private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -139,6 +140,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPostPuzzleScoreModel = new PostPuzzleScoreModel(mSessionKey, mBcConnector);
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
+
     }
 
     @Override
@@ -162,7 +164,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
 
         mFinalScreen = findViewById(R.id.final_screen);
-
         mFinalShareVkButton = (Button)findViewById(R.id.final_share_vk_btn);
         mFinalShareFbButton = (Button)findViewById(R.id.final_share_fb_btn);
         mFinalScore = (TextView) findViewById(R.id.final_score);
@@ -170,6 +171,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalFlipNumbersViewGroup = (ViewGroup) findViewById(R.id.final_flip_number);
         mFinalMenuButton = (Button)findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button)findViewById(R.id.final_next_btn);
+
+        mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
@@ -197,13 +200,13 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalNextButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
 
-        fillFlipNumbers(0);
         super.onStart();
     }
 
     @Override
     protected void onResume()
     {
+        fillFlipNumbers(54526);
         mStopPlayFlag = true;
         super.onResume();
     }
@@ -302,6 +305,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if(show)
         {
+            fillFlipNumbers(25930);
             mStopPlayFlag = false;
             mFinalScreen.setVisibility(View.VISIBLE);
         }
@@ -332,7 +336,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                            public void handle()
                            {
                                mHintBtn.setText(String.valueOf(mHintsCount));
-                               mPuzzleAdapter.setCurrentQuestionCorrect();
+                               mPuzzleAdapter.setCurrentQuestionCorrect(new IListenerVoid()
+                               {
+                                   @Override
+                                   public void handle()
+                                   {
+                                       mPuzzleView.triggerAnimation();
+                                   }
+                               });
                                mPuzzleView.invalidate();
                            }
                        });
@@ -447,35 +458,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void fillFlipNumbers(int score)
     {
-        if(mFinalFlipNumbersViewGroup.getChildCount() != 5 || score < 0)
-            return;
-        @Nullable TextView decThousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(0);
-        @Nullable TextView thousandsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(1);
-        @Nullable TextView hundredsTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(2);
-        @Nullable TextView tensTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(3);
-        @Nullable TextView lowerThanTenTv = (TextView) mFinalFlipNumbersViewGroup.getChildAt(4);
-
-        assert  decThousandsTv != null &&
-                thousandsTv != null &&
-                hundredsTv != null &&
-                tensTv != null &&
-                lowerThanTenTv != null;
-
-        int decThousands = score/10000;
-        score -= decThousands * 10000;
-        int thousands = score/1000;
-        score -= thousands * 1000;
-        int hundreds = score/100;
-        score -= hundreds * 100;
-        int tens = score/10;
-        score -= tens * 10;
-        int lowerTen = score;
-
-        decThousandsTv.setText(String.valueOf(decThousands));
-        thousandsTv.setText(String.valueOf(thousands));
-        hundredsTv.setText(String.valueOf(hundreds));
-        tensTv.setText(String.valueOf(tens));
-        lowerThanTenTv.setText(String.valueOf(lowerTen));
+        mFlipNumberAnimator.startAnimation(score);
     }
 
 }

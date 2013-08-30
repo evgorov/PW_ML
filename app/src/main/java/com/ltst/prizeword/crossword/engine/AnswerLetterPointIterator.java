@@ -67,14 +67,14 @@ public class AnswerLetterPointIterator implements Iterator<Point>
             {
                 currentLetterIndex --;
             }
-            if(currentLetterIndex <= 0)
+            if(currentLetterIndex <= 1)
             {
-                currentLetterIndex = 0;
-                return mPoint;
+                currentLetterIndex = 1;
+                mPoint.set(mStartPoint.x, mStartPoint.y);
+                return mStartPoint;
             }
-            Point ret = new Point(mPoint);
             negateOffsetPointByDirection(mPoint);
-            return ret;
+            return mPoint;
         }
         else
             return null;
