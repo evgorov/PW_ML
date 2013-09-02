@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.tools.AnimationTools;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -51,10 +52,12 @@ public class CrosswordSet {
     private @Nonnull BadgeGridView pBadgeContainer;
 
     private @Nullable String mSetServerId = null;
+    private boolean mExpanding;
 
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
 
+        mExpanding = false;
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mICrosswordFragment = iCrosswordFragment;
@@ -85,7 +88,8 @@ public class CrosswordSet {
         pSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
+//                pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
+                expandingBadgeContainer(b);
             }
         });
 
@@ -185,7 +189,8 @@ public class CrosswordSet {
 
             if(mSetServerId == null)
             {
-                pBadgeContainer.setVisibility(View.VISIBLE);
+                expandingBadgeContainer(true);
+//                pBadgeContainer.setVisibility(View.VISIBLE);
             }
 
             if(data.mBought)
@@ -197,7 +202,8 @@ public class CrosswordSet {
             {
                 // Некуплены;
                 pCurrentCrosswordContaiter.setVisibility(View.GONE);
-                pBadgeContainer.setVisibility(View.GONE);
+//                pBadgeContainer.setVisibility(View.GONE);
+                expandingBadgeContainer(false);
             }
         }
         else
@@ -209,7 +215,8 @@ public class CrosswordSet {
 
             if(mSetServerId == null)
             {
-                pBadgeContainer.setVisibility(View.GONE);
+//                pBadgeContainer.setVisibility(View.GONE);
+                expandingBadgeContainer(false);
             }
             if(data.mMonth == 0)
             {
@@ -231,6 +238,19 @@ public class CrosswordSet {
     public CrosswordSetType getCrosswordSetType()
     {
         return mCrosswordSetType;
+    }
+
+    private void expandingBadgeContainer(boolean expand)
+    {
+        mExpanding = expand;
+        if(mExpanding)
+        {
+            AnimationTools.expand(pBadgeContainer);
+        }
+        else
+        {
+            AnimationTools.collapse(pBadgeContainer);
+        }
     }
 
     public enum CrosswordSetType{
