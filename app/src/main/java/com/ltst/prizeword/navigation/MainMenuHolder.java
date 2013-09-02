@@ -61,7 +61,7 @@ public class MainMenuHolder {
 
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH);
-        mMonth.setText(mContext.getResources().getStringArray(R.array.menu_group_months)[month]);
+        mMonth.setText(mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
     }
 
     public void setImage(@Nullable Bitmap bitmap){

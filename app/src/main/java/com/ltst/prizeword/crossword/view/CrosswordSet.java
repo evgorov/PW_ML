@@ -216,8 +216,10 @@ public class CrosswordSet {
             }
             else
             {
-                DateFormatSymbols symbols = new DateFormatSymbols();
-                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+//                DateFormatSymbols symbols = new DateFormatSymbols();
+//                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+                pMonthText.setText(mContext.getResources().getStringArray(
+                        R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
             }
         }
         mSetServerId = data.mServerId;
