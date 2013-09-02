@@ -2,73 +2,90 @@ package com.ltst.prizeword.sounds;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Message;
+
+import com.ltst.prizeword.R;
 
 import org.omich.velo.log.Log;
 
+import java.util.logging.Handler;
+
 public final class SoundsWork
 {
-    private static SoundPool mSoundPool;
-    public static final int MAX_STREAMS = 10;
-    public static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
-    public static final int SRC_QUALITY = 0;
-    public static boolean mLoaded = false;
-    public static float mVolume = 0;
-    public static int mSoundId = 0;
+    private static MediaPlayer mMediaPlayerBack;
+    private static MediaPlayer mMediaPlayerAll;
     public Context mContext;
 
-    public SoundsWork(Context context)
+    public static void startBackgroundMusic(Context context)
     {
-        //Create SoundPool
-        mSoundPool = new SoundPool(MAX_STREAMS, STREAM_TYPE, SRC_QUALITY);
-        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener()
+        if (mMediaPlayerBack == null)
         {
-            @Override public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
+            mMediaPlayerBack = MediaPlayer.create(context, R.raw.background_music);
+            mMediaPlayerBack.setLooping(true);
+            mMediaPlayerBack.start();
+        } else
+            mMediaPlayerBack.start();
+    }
+
+    public static void pauseBackgroundMusic()
+    {
+        mMediaPlayerBack.pause();
+    }
+
+    public static void resumeBackgroundMusic()
+    {
+        mMediaPlayerBack.start();
+    }
+
+    public static void stopBackgroundMusic()
+    {
+        mMediaPlayerBack.stop();
+    }
+
+    public static void sidebarMusic(Context context)
+    {
+        if (mMediaPlayerAll == null)
+        {
+            mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
+            mMediaPlayerAll.start();
+        } else
+        {
+            while (true)
             {
-                mLoaded = true;
+                if (!mMediaPlayerAll.isPlaying())
+                {
+                    releaseMPALL();
+                    mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
+                    mMediaPlayerAll.start();
+                    break;
+                }
             }
-        });
+        }
 
-        getUserSetting(context);
-        mContext = context;
     }
 
-    public void LoadMusic( int resource)
+    public static void menuBtnMusic(Context context)
     {
-        mSoundId = mSoundPool.load(mContext,resource, 1);
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
+        mMediaPlayerAll.start();
     }
 
-    public  boolean isLoaded()
+    private static void releaseMPALL()
     {
-        return mLoaded;
-    }
-
-    public  int getmSoundId()
-    {
-        return mSoundId;
-    }
-
-    public  float getmVolume()
-    {
-        return mVolume;
-    }
-
-    private void getUserSetting(Context context)
-    {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        float actualVolume = (float) audioManager
-                .getStreamVolume(AudioManager.STREAM_MUSIC);
-        float maxVolume = (float) audioManager
-                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        mVolume = actualVolume / maxVolume;
-    }
-
-    public  void playMusic()
-    {
-        if (isLoaded())
+        if (mMediaPlayerAll != null)
         {
-            mSoundPool.play(getmSoundId(), getmVolume(), getmVolume(), 1, 0, 1f);
-            Log.e("Test", "Played sound");
+            try
+            {
+                mMediaPlayerAll.release();
+                mMediaPlayerAll = null;
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
+
 }
