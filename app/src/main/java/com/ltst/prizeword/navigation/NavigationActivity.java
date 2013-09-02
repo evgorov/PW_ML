@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -163,6 +164,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         initNavigationDrawerItems();
         reloadUserData();
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         SoundsWork.startBackgroundMusic(this);
 
     }
@@ -401,6 +403,10 @@ public class NavigationActivity extends SherlockFragmentActivity
             {
                 return super.onKeyDown(keyCode, event);
             }
+        }
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) || (keyCode == KeyEvent.KEYCODE_VOLUME_MUTE))
+        {
+            return super.onKeyUp(keyCode, event);
         }
         return true;
     }
