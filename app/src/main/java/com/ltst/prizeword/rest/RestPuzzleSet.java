@@ -114,6 +114,7 @@ public class RestPuzzleSet
 
     public static class RestPuzzleSetsHolder
     {
+        private @JsonProperty("score") int score;
         private @JsonProperty() List<RestPuzzleSet> mPuzzleSets;
         private @JsonIgnore HttpStatus mHttpStatus;
 
