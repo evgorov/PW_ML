@@ -174,7 +174,10 @@ public class CrosswordFragmentHolder {
                 if(puzzle.isSolved)
                     solved++;
             }
-            percents = percents/puzzles.size();
+            if(puzzles.size() != 0)
+            {
+                percents = percents/puzzles.size();
+            }
             data.mScore = scores;
             data.mProgress = percents;
             data.mResolveCount = solved;
