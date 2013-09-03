@@ -66,10 +66,24 @@ public final class SoundsWork
 
     }
 
-    public static void menuBtnMusic(Context context)
+    public static void interfaceBtnMusic(Context context)
     {
         releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.interface_button);
+        mMediaPlayerAll.start();
+    }
+
+    public static void questionAnswered(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.question_answered);
+        mMediaPlayerAll.start();
+    }
+
+    public static void puzzleSolved(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.puzzle_solved);
         mMediaPlayerAll.start();
     }
 

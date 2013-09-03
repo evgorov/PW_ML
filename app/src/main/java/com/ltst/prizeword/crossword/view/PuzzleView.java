@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
+import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
 import com.ltst.prizeword.tools.FixedInputConnection;
 
 import org.omich.velo.handlers.IListener;
@@ -68,16 +69,18 @@ public class PuzzleView extends View
     }
 
     @Override
-    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo)
+    {
         editorInfo.actionLabel = null;
-        editorInfo.inputType   = InputType.TYPE_NULL;
-        editorInfo.imeOptions  = EditorInfo.IME_ACTION_NONE;
+        editorInfo.inputType = InputType.TYPE_NULL;
+        editorInfo.imeOptions = EditorInfo.IME_ACTION_NONE;
 
         return new FixedInputConnection(this, false);
     }
 
     @Override
-    public boolean onCheckIsTextEditor() {
+    public boolean onCheckIsTextEditor()
+    {
         return true;
     }
 
@@ -132,11 +135,11 @@ public class PuzzleView extends View
         }
     }
 
-    public void  restoreState(@Nonnull Bundle bundle)
+    public void restoreState(@Nonnull Bundle bundle)
     {
         mScaled = bundle.getBoolean(BF_SCALED);
         mKeyboardOpened = bundle.getBoolean(BF_KEYBOARD_STATUS);
-        if(mKeyboardOpened)
+        if (mKeyboardOpened)
             hideKeyboard();
         if (mPuzzleManager != null)
         {
@@ -193,7 +196,7 @@ public class PuzzleView extends View
         {
             return;
         }
-        if(mAdapter.isInputMode() && mKeyboardOpened)
+        if (mAdapter.isInputMode() && mKeyboardOpened)
         {
             mPuzzleManager.cancelLastQuestion();
             hideKeyboard();
@@ -202,7 +205,7 @@ public class PuzzleView extends View
 
     public void openKeyboard()
     {
-        if(mKeyboardOpened)
+        if (mKeyboardOpened)
             return;
         if (this.requestFocus())
         {
@@ -215,7 +218,7 @@ public class PuzzleView extends View
 
     public void hideKeyboard()
     {
-        if(mKeyboardOpened)
+        if (mKeyboardOpened)
         {
             this.clearFocus();
             InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -263,7 +266,8 @@ public class PuzzleView extends View
             PointF p = new PointF(e.getX(), e.getY());
             if (mPuzzleManager != null && mViewScreenRect != null)
             {
-                boolean handled = mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid(){
+                boolean handled = mPuzzleManager.onTapEvent(PuzzleView.this, p, new IListenerVoid()
+                {
                     @Override
                     public void handle()
                     {
@@ -271,7 +275,7 @@ public class PuzzleView extends View
                     }
                 });
 
-                if(!handled && !mScaled)
+                if (!handled && !mScaled)
                 {
                     mPuzzleManager.onScaleEvent(PuzzleView.this, p);
                     mScaled = true;
@@ -287,10 +291,10 @@ public class PuzzleView extends View
         @Override
         public boolean onScale(ScaleGestureDetector detector)
         {
-            if(mKeyboardOpened)
+            if (mKeyboardOpened)
                 return false;
             float scaleFactor = detector.getScaleFactor();
-            if(scaleFactor >= 1 + MIN_SCALE_FACTOR_DETECTABLE && !mScaled)
+            if (scaleFactor >= 1 + MIN_SCALE_FACTOR_DETECTABLE && !mScaled)
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
@@ -299,7 +303,7 @@ public class PuzzleView extends View
                 }
                 return true;
             }
-            if(scaleFactor <= 1 - MIN_SCALE_FACTOR_DETECTABLE && mScaled)
+            if (scaleFactor <= 1 - MIN_SCALE_FACTOR_DETECTABLE && mScaled)
             {
                 if (mPuzzleManager != null && mViewScreenRect != null)
                 {
@@ -310,6 +314,13 @@ public class PuzzleView extends View
             }
             return false;
         }
+    }
+
+    IListenerQuestionAnswered listenerQuestionAnswered = null;
+
+    public void setListenerQuestionAnswered(IListenerQuestionAnswered listener)
+    {
+        listenerQuestionAnswered = listener;
     }
 
     private class KeyboardListener implements OnKeyListener
@@ -327,27 +338,31 @@ public class PuzzleView extends View
                 switch (keyCode)
                 {
                     case KeyEvent.KEYCODE_BACK:
-                        if(!mKeyboardOpened)
+                        if (!mKeyboardOpened)
                             return false;
                     case KeyEvent.KEYCODE_ENTER:
                         mPuzzleManager.onKeyEvent(PuzzleView.this, event, null);
                         hideKeyboard();
                         return true;
                     default:
-                        mPuzzleManager.onKeyEvent(PuzzleView.this, event, new IListenerBoolean(){
+                        mPuzzleManager.onKeyEvent(PuzzleView.this, event, new IListenerBoolean()
+                        {
                             @Override
                             public void handle(boolean b)
                             {
-                                if(b)
+                                if (b)
                                     openKeyboard();
                                 else
+                                {
                                     hideKeyboard();
+                                    if (listenerQuestionAnswered != null)
+                                        listenerQuestionAnswered.onQuestionAnswered();
+                                }
                             }
                         });
                         return true;
                 }
-            }
-            else return false;
+            } else return false;
         }
     }
 

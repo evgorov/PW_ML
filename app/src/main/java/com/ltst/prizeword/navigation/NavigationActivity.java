@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -452,7 +451,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View view)
     {
-        SoundsWork.menuBtnMusic(this);
+        SoundsWork.interfaceBtnMusic(this);
         switch (view.getId())
         {
             case R.id.menu_mypuzzle_btn:
