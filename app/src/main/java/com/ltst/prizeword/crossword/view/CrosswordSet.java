@@ -50,6 +50,7 @@ public class CrosswordSet {
     private @Nonnull TextView pBuyPrice;
 
     private @Nonnull BadgeGridView pBadgeContainer;
+    private @Nonnull LinearLayout mLayout;
 
     private @Nullable String mSetServerId = null;
     private boolean mExpanding;
@@ -63,6 +64,7 @@ public class CrosswordSet {
         mICrosswordFragment = iCrosswordFragment;
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
+        mLayout = (LinearLayout) mRootView.findViewById(R.id.crossword_123);
         pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
         pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
         pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
@@ -89,7 +91,7 @@ public class CrosswordSet {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 //                pBadgeContainer.setVisibility(b ? View.GONE : View.VISIBLE);
-                expandingBadgeContainer(b);
+                expandingBadgeContainer(!b);
             }
         });
 
@@ -243,13 +245,14 @@ public class CrosswordSet {
     private void expandingBadgeContainer(boolean expand)
     {
         mExpanding = expand;
+
         if(mExpanding)
         {
-            AnimationTools.expand(pBadgeContainer);
+            AnimationTools.expand(mLayout);
         }
         else
         {
-            AnimationTools.collapse(pBadgeContainer);
+            AnimationTools.collapse(mLayout);
         }
     }
 
