@@ -161,7 +161,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         switch (view.getId())
         {
             case R.id.header_menu_btn:
-                mINavigationDrawerHolder.toogle();
+            mINavigationDrawerHolder.toogle();
                 break;
         }
     }

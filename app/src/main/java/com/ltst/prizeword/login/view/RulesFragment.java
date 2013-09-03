@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +138,7 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
 
     @Override public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(this);
         switch(v.getId()){
             case R.id.rules_close:
                 onBackPressed();

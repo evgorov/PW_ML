@@ -8,9 +8,10 @@ import android.widget.TextView;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.ManadgeHolder;
-import com.ltst.prizeword.navigation.NavigationActivity;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
@@ -31,6 +32,7 @@ public class HintsManager implements View.OnClickListener
 
     private HintsModel mHintsModel;
     private @Nullable IListenerInt mHintChangeListener;
+
     private @Nonnull IManadges mIManadges;
     private @Nonnull Context mContext;
     private @Nonnull Activity mActivity;
@@ -66,6 +68,7 @@ public class HintsManager implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         // Покупка;
         mIManadges.buyProduct(ManadgeHolder.ManadgeProduct.test_success);
 
