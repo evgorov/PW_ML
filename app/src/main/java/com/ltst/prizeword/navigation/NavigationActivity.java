@@ -86,7 +86,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
-    private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull SlidingMenu mSlidingMenu;
@@ -252,7 +251,6 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
         }
     }
-
 
     @Override
     protected void onDestroy()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="puzzles_badge_set_title_text_size">16sp</dimen>
-    <dimen name="puzzles_badge_title_text_size">24sp</dimen>
-    <dimen name="puzzles_badge_title_long_text_size">22sp</dimen>
+    <dimen name="puzzles_badge_title_text_size">20sp</dimen>
+    <dimen name="puzzles_badge_title_long_text_size">18sp</dimen>
 </resources>
