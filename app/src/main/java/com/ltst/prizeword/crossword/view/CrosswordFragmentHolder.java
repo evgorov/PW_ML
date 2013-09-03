@@ -64,8 +64,11 @@ public class CrosswordFragmentHolder {
         int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
         int restDays = monthMaxDays - day+1;
 
-        DateFormatSymbols symbols = new DateFormatSymbols();
-        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+//        DateFormatSymbols symbols = new DateFormatSymbols();
+//        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+
+        mCrosswordPanelCurrent.mMonthTV.setText(
+                mContext.getResources().getStringArray(R.array.menu_group_months_at_imenit_padezh)[month]);
 
         mCrosswordPanelCurrent.mRestDaysTV.setText(String.valueOf(restDays));
         mCrosswordPanelCurrent.mRestPanelLL.setBackgroundDrawable(

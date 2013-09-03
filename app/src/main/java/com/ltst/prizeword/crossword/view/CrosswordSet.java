@@ -137,30 +137,35 @@ public class CrosswordSet {
             pBuyPrice.setText(R.string.buy_three_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_br));
             pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
+            pTitleText.setTextSize(mContext.getResources().getDimension(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
         {
             pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_au));
             pTitleText.setText(R.string.puzzless_hint_gold_crossword);
+            pTitleText.setTextSize(mContext.getResources().getDimension(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
         {
             pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
             pTitleText.setText(R.string.puzzless_hint_silver_crossword);
+            pTitleText.setTextSize(mContext.getResources().getDimension(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER2)
         {
             pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag2));
             pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
+            pTitleText.setTextSize(mContext.getResources().getDimension(R.dimen.puzzles_badge_title_long_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.FREE)
         {
             pBuyPrice.setText(R.string.buy_free);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_fr));
             pTitleText.setText(R.string.puzzless_hint_free_crossword);
+            pTitleText.setTextSize(mContext.getResources().getDimension(R.dimen.puzzles_badge_title_text_size));
         }
 
         StringBuilder sbRatio = new StringBuilder();
@@ -227,8 +232,10 @@ public class CrosswordSet {
             }
             else
             {
-                DateFormatSymbols symbols = new DateFormatSymbols();
-                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+//                DateFormatSymbols symbols = new DateFormatSymbols();
+//                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
+                pMonthText.setText(mContext.getResources().getStringArray(
+                        R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
             }
         }
         mSetServerId = data.mServerId;
