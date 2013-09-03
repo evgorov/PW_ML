@@ -1,9 +1,12 @@
 package com.ltst.prizeword.tools;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout.LayoutParams;
+
+import com.ltst.prizeword.navigation.NavigationActivity;
 
 /**
  * Created by cosic on 02.09.13.
@@ -23,6 +26,7 @@ public class AnimationTools {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? LayoutParams.WRAP_CONTENT
                         : (int)(targtetHeight * interpolatedTime);
+//                Log.d(NavigationActivity.LOG_TAG, "height: "+v.getLayoutParams().height+", targtetHeight: "+targtetHeight+", interpolatedTime: "+interpolatedTime);
                 v.requestLayout();
             }
 
