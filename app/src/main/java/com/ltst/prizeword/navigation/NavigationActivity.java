@@ -265,7 +265,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onStop()
     {
-        SoundsWork.pauseBackgroundMusic();
+        //SoundsWork.pauseBackgroundMusic();
         super.onStop();
     }
 

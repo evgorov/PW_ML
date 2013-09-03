@@ -28,6 +28,9 @@ public final class SoundsWork
         } else
             mMediaPlayerBack.start();
     }
+    public static void startAllSounds(Context context)
+    {
+    }
 
     public static void pauseBackgroundMusic()
     {
@@ -91,6 +94,27 @@ public final class SoundsWork
     {
         releaseMPALL();
         mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.buy_set);
+        mMediaPlayerAll.start();
+    }
+
+    public static void openSet(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.open_set);
+        mMediaPlayerAll.start();
+    }
+
+    public static void closeSet(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.close_set);
+        mMediaPlayerAll.start();
+    }
+
+    public static void keyboardBtn(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
         mMediaPlayerAll.start();
     }
 

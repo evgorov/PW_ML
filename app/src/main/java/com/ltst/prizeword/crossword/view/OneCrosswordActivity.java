@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
@@ -33,7 +35,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener
+public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
@@ -101,6 +103,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull ViewGroup mFinalFlipNumbersViewGroup;
     private @Nonnull Button mFinalMenuButton;
     private @Nonnull Button mFinalNextButton;
+    private @Nonnull android.widget.ToggleButton mPauseMusic;
+    private @Nonnull android.widget.ToggleButton mPauseSound;
+
+
 
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
     private @Nonnull View mRootView;
@@ -179,6 +185,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton = (Button) findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button) findViewById(R.id.final_next_btn);
 
+        mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
+        mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
+
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
         mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
@@ -212,6 +221,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton.setOnClickListener(this);
         mFinalNextButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
+
+        mPauseMusic.setOnCheckedChangeListener(this);
+        mPauseSound.setOnCheckedChangeListener(this);
 
         super.onStart();
     }
@@ -357,6 +369,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                                     public void handle()
                                     {
                                         mPuzzleView.triggerAnimation();
+                                        SoundsWork.questionAnswered(OneCrosswordActivity.this);
                                     }
                                 });
                                 mPuzzleView.invalidate();
@@ -453,6 +466,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         @Override
         public void handle()
         {
+            SoundsWork.puzzleSolved(OneCrosswordActivity.this);
             showFinalDialog(true);
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
@@ -472,5 +486,36 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private void fillFlipNumbers(int score)
     {
         mFlipNumberAnimator.startAnimation(score);
+    }
+
+    @Override public void onCheckedChanged(CompoundButton compoundButton, boolean state)
+    {
+        if (state)
+        {
+            switch (compoundButton.getId())
+            {
+                case R.id.pause_music_switcher:
+                    SoundsWork.startBackgroundMusic(this);
+                    break;
+                case R.id.pause_sounds_switcher:
+                    SoundsWork.startAllSounds(this);
+                    break;
+                default:
+                    break;
+            }
+        } else
+        {
+            switch (compoundButton.getId())
+            {
+                case R.id.pause_music_switcher:
+                    SoundsWork.pauseBackgroundMusic();
+                    break;
+                case R.id.pause_sounds_switcher:
+
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

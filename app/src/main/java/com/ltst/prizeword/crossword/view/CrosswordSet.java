@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.AnimationTools;
 import com.ltst.prizeword.tools.CustomProgressBar;
 
@@ -100,6 +101,7 @@ public class CrosswordSet {
         pBuyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
                     mICrosswordFragment.buyCrosswordSet(mSetServerId);
@@ -110,6 +112,7 @@ public class CrosswordSet {
         pBadgeContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
+                SoundsWork.interfaceBtnMusic(mContext);
                 if (mSetServerId != null)
                 {
                     mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
@@ -258,10 +261,12 @@ public class CrosswordSet {
         if(mExpanding)
         {
             AnimationTools.expand(mLayout);
+            SoundsWork.openSet(mContext);
         }
         else
         {
             AnimationTools.collapse(mLayout);
+            SoundsWork.closeSet(mContext);
         }
     }
 

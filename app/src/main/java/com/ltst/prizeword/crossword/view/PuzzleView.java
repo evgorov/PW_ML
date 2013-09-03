@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.ltst.prizeword.crossword.engine.PuzzleResources;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.FixedInputConnection;
 
 import org.omich.velo.handlers.IListener;
@@ -328,6 +329,7 @@ public class PuzzleView extends View
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event)
         {
+            SoundsWork.keyboardBtn(mContext);
             if (mPuzzleManager == null)
             {
                 return false;
