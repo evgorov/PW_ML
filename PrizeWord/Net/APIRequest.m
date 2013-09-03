@@ -9,6 +9,7 @@
 #import "APIRequest.h"
 #import "NSData+Base64.h"
 #import "SBJsonParser.h"
+#import "EventManager.h"
 
 @interface APIRequest (private)
 -(id)initWithMethod:(NSString *)httpMethod command:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
@@ -230,6 +231,15 @@ static NSMutableDictionary * apiCache = nil;
     
     if (!silentMode)
     {
+        if (httpResponse.statusCode == 401)
+        {
+            NSString * message = NSLocalizedString(@"Session has ended. Please log in again.", @"Not-authorized HTTP status code");
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SESSION_ENDED]];
+            [alert show];
+            return;
+        }
         if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 500)
         {
             NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];

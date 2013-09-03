@@ -79,7 +79,11 @@ int HEADER_HEIGHT = 24;
         }];
         
         [ratingView reloadData];
-        [ratingView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[GlobalData globalData].loggedInUser.position inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        NSLog(@"users count: %d, position: %d", users.count, [GlobalData globalData].loggedInUser.position);
+        if ([GlobalData globalData].loggedInUser.position < users.count)
+        {
+            [ratingView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[GlobalData globalData].loggedInUser.position inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
         [self hideActivityIndicator];
     } failCallback:^(NSError *error)
     {

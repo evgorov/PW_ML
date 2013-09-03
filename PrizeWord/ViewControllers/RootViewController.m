@@ -138,6 +138,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     self.view.gestureRecognizers = [NSArray arrayWithObjects:swipeLeftGestureRecognizer, swipeRightGestureRecognizer, nil];
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_SESSION_ENDED];
 }
 
 - (void)viewDidUnload
@@ -157,6 +158,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     mainMenuYourResult = nil;
     
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_SESSION_ENDED];
     
     rulesCaption = nil;
 
@@ -222,6 +224,10 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     if (event.type == EVENT_ME_UPDATED)
     {
         [self updateUserInfo];
+    }
+    else if (event.type == EVENT_SESSION_ENDED)
+    {
+        [self handleSwitchUserClick:self];
     }
 }
 
