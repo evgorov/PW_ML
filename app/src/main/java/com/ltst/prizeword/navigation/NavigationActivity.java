@@ -100,6 +100,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
+    private @Nonnull Context mContext;
 
 
     @Override
@@ -122,8 +123,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         Configuration config = new Configuration();
         config.locale = locale;
         mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
-
-        mContext = (Context) getBaseContext();
 
         mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
