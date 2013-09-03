@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -31,104 +32,114 @@ public class DbReader implements IDbReader
     protected static final String REGEXP_SHIELD = "\\";
 
     private static final @Nonnull String[] FIELDS_P_USER =
-    {
-            ColsUsers.ID,
-            ColsUsers.NAME,
-            ColsUsers.SURNAME,
-            ColsUsers.EMAIL,
-            ColsUsers.BIRTHDATE,
-            ColsUsers.CITY,
-            ColsUsers.SOLVED,
-            ColsUsers.POSITION,
-            ColsUsers.MONTH_SCORE,
-            ColsUsers.HIGH_SCORE,
-            ColsUsers.DYNAMICS,
-            ColsUsers.HINTS,
-            ColsUsers.PREVIEW_URL
-    };
+            {
+                    ColsUsers.ID,
+                    ColsUsers.NAME,
+                    ColsUsers.SURNAME,
+                    ColsUsers.EMAIL,
+                    ColsUsers.BIRTHDATE,
+                    ColsUsers.CITY,
+                    ColsUsers.SOLVED,
+                    ColsUsers.POSITION,
+                    ColsUsers.MONTH_SCORE,
+                    ColsUsers.HIGH_SCORE,
+                    ColsUsers.DYNAMICS,
+                    ColsUsers.HINTS,
+                    ColsUsers.PREVIEW_URL
+            };
 
     private static final @Nonnull String[] FIELDS_P_USER_PROVIDERS =
-    {
-            ColsProviders.ID,
-            ColsProviders.NAME,
-            ColsProviders.PROVIDER_ID,
-            ColsProviders.TOKEN,
-            ColsProviders.USER_ID
-    };
+            {
+                    ColsProviders.ID,
+                    ColsProviders.NAME,
+                    ColsProviders.PROVIDER_ID,
+                    ColsProviders.TOKEN,
+                    ColsProviders.USER_ID
+            };
 
     private static final @Nonnull String[] FIELDS_P_PUZZLE_SETS =
-    {
-            ColsPuzzleSets.ID,
-            ColsPuzzleSets.SERVER_ID,
-            ColsPuzzleSets.NAME,
-            ColsPuzzleSets.IS_BOUGHT,
-            ColsPuzzleSets.TYPE,
-            ColsPuzzleSets.MONTH,
-            ColsPuzzleSets.YEAR,
-            ColsPuzzleSets.CREATED_AT,
-            ColsPuzzleSets.IS_PUBLISHED,
-            ColsPuzzleSets.PUZZLES_SERVER_IDS
-    };
+            {
+                    ColsPuzzleSets.ID,
+                    ColsPuzzleSets.SERVER_ID,
+                    ColsPuzzleSets.NAME,
+                    ColsPuzzleSets.IS_BOUGHT,
+                    ColsPuzzleSets.TYPE,
+                    ColsPuzzleSets.MONTH,
+                    ColsPuzzleSets.YEAR,
+                    ColsPuzzleSets.CREATED_AT,
+                    ColsPuzzleSets.IS_PUBLISHED,
+                    ColsPuzzleSets.PUZZLES_SERVER_IDS
+            };
 
     public static final @Nonnull String[] FIELDS_P_PUZZLES =
-    {
-            ColsPuzzles.ID,
-            ColsPuzzles.SET_ID,
-            ColsPuzzles.SERVER_ID,
-            ColsPuzzles.NAME,
-            ColsPuzzles.ISSUED_AT,
-            ColsPuzzles.BASE_SCORE,
-            ColsPuzzles.TIME_GIVEN,
-            ColsPuzzles.TIME_LEFT,
-            ColsPuzzles.SCORE,
-            ColsPuzzles.IS_SOLVED
-    };
+            {
+                    ColsPuzzles.ID,
+                    ColsPuzzles.SET_ID,
+                    ColsPuzzles.SERVER_ID,
+                    ColsPuzzles.NAME,
+                    ColsPuzzles.ISSUED_AT,
+                    ColsPuzzles.BASE_SCORE,
+                    ColsPuzzles.TIME_GIVEN,
+                    ColsPuzzles.TIME_LEFT,
+                    ColsPuzzles.SCORE,
+                    ColsPuzzles.IS_SOLVED
+            };
 
     public static final @Nonnull String[] FIELDS_P_PUZZLE_QUESTIONS =
-    {
-            ColsPuzzleQuestions.ID,
-            ColsPuzzleQuestions.PUZZLE_ID,
-            ColsPuzzleQuestions.COLUMN,
-            ColsPuzzleQuestions.ROW,
-            ColsPuzzleQuestions.QUESTION_TEXT,
-            ColsPuzzleQuestions.ANSWER,
-            ColsPuzzleQuestions.ANSWER_POSITION,
-            ColsPuzzleQuestions.IS_ANSWERED
-    };
+            {
+                    ColsPuzzleQuestions.ID,
+                    ColsPuzzleQuestions.PUZZLE_ID,
+                    ColsPuzzleQuestions.COLUMN,
+                    ColsPuzzleQuestions.ROW,
+                    ColsPuzzleQuestions.QUESTION_TEXT,
+                    ColsPuzzleQuestions.ANSWER,
+                    ColsPuzzleQuestions.ANSWER_POSITION,
+                    ColsPuzzleQuestions.IS_ANSWERED
+            };
 
     public static final @Nonnull String[] FIELDS_P_IMAGES =
-    {
-            ColsImages.ID,
-            ColsImages.KEY,
-            ColsImages.IMAGE
-    };
+            {
+                    ColsImages.ID,
+                    ColsImages.KEY,
+                    ColsImages.IMAGE
+            };
 
     public static final @Nonnull String[] FIELDS_P_COEFFICIENTS =
-    {
-            ColsCoefficients.ID,
-            ColsCoefficients.TIME_BONUS,
-            ColsCoefficients.FRIEND_BONUS,
-            ColsCoefficients.FREE_BASE_SCORE,
-            ColsCoefficients.GOLD_BASE_SCORE,
-            ColsCoefficients.BRILLIANT_BASE_SCORE,
-            ColsCoefficients.SILVER1_BASE_SCORE,
-            ColsCoefficients.SILVER2_BASE_SCORE
-    };
+            {
+                    ColsCoefficients.ID,
+                    ColsCoefficients.TIME_BONUS,
+                    ColsCoefficients.FRIEND_BONUS,
+                    ColsCoefficients.FREE_BASE_SCORE,
+                    ColsCoefficients.GOLD_BASE_SCORE,
+                    ColsCoefficients.BRILLIANT_BASE_SCORE,
+                    ColsCoefficients.SILVER1_BASE_SCORE,
+                    ColsCoefficients.SILVER2_BASE_SCORE
+            };
 
     public static final @Nonnull String[] FIELDS_P_SCORE_QUEUE =
-    {
-            ColsScoreQueue.ID,
-            ColsScoreQueue.SCORE,
-            ColsScoreQueue.PUZZLE_ID
-    };
+            {
+                    ColsScoreQueue.ID,
+                    ColsScoreQueue.SCORE,
+                    ColsScoreQueue.PUZZLE_ID
+            };
+
+    private static final @Nonnull String[] FIELDS_P_PURCHASES =
+            {
+                    ColsPurchases.ID,
+                    ColsPurchases.CLIENT_ID,
+                    ColsPurchases.GOOGLE_ID,
+                    ColsPurchases.PRICE,
+                    ColsPurchases.GOOGLE_PURCHASE,
+                    ColsPurchases.SERVER_PURCHASE
+            };
 
     public final @Nonnull SQLiteDatabase mDb;
 
     public DbReader(@Nonnull SQLiteHelper helper, boolean mustBeSQLiteDatabaseWriteable) throws DbException
     {
         mDb = mustBeSQLiteDatabaseWriteable
-            ? helper.createWritableSQLiteDatabase()
-            : helper.createReadableSQLiteDatabase();
+                ? helper.createWritableSQLiteDatabase()
+                : helper.createReadableSQLiteDatabase();
         SQLiteHelper.configureSQLiteDatabase(mDb);
     }
 
@@ -176,7 +187,7 @@ public class DbReader implements IDbReader
 
     public @Nullable ArrayList<UserProvider> getUserProvidersByUserId(long userId)
     {
-        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PROVIDERS, FIELDS_P_USER_PROVIDERS,
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PROVIDERS, FIELDS_P_USER_PROVIDERS,
                 ColsProviders.USER_ID, userId);
         ArrayList<UserProvider> providerList = createTypedListByCursor(cursor, new ObjectCreatorByCursor<UserProvider>()
         {
@@ -197,7 +208,7 @@ public class DbReader implements IDbReader
     @Override
     public PuzzleSet getPuzzleSetById(long id)
     {
-        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS,
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS,
                 ColsPuzzleSets.ID, id);
         @Nullable PuzzleSet set = createObjectByCursor(cursor, mPuzzleSetCreator);
         return set;
@@ -207,7 +218,7 @@ public class DbReader implements IDbReader
     @Override
     public PuzzleSet getPuzzleSetByServerId(@Nonnull String serverId)
     {
-        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS,
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS,
                 ColsPuzzleSets.SERVER_ID, serverId);
         @Nullable PuzzleSet set = createObjectByCursor(cursor, mPuzzleSetCreator);
         return set;
@@ -228,9 +239,9 @@ public class DbReader implements IDbReader
     {
         int size = serverIds.size();
         StringBuilder selection = new StringBuilder(size);
-        for(int i=0; i<size; i++)
+        for (int i = 0; i < size; i++)
         {
-            selection.append(ColsPuzzles.SERVER_ID +"=? "+((i == size-1) ? "" : "OR "));
+            selection.append(ColsPuzzles.SERVER_ID + "=? " + ((i == size - 1) ? "" : "OR "));
         }
         String[] selectArgs = serverIds.toArray(new String[size]);
         final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, selection.toString(), selectArgs, null, null, null, null);
@@ -242,17 +253,43 @@ public class DbReader implements IDbReader
     @Override
     public List<Puzzle> getPuzzlesBySetId(long setId)
     {
-        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID+"="+String.valueOf(setId), null, null, null, ColsPuzzles.SERVER_ID, null);
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID + "=" + String.valueOf(setId), null, null, null, ColsPuzzles.SERVER_ID, null);
         @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
-        for(@Nullable Puzzle puzzle : set)
+        for (@Nullable Puzzle puzzle : set)
         {
-            if(puzzle!=null)
+            if (puzzle != null)
             {
                 puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
                 puzzle.countSolvedPercent();
             }
         }
         return set;
+    }
+
+    @Nullable
+    @Override
+    public List<Puzzle> getSolvedPuzzlesBySetId(long setId)
+    {
+        final Cursor cursor = mDb.query(TNAME_PUZZLES, FIELDS_P_PUZZLES, ColsPuzzles.SET_ID + "=" + String.valueOf(setId), null, null, null, ColsPuzzles.SERVER_ID, null);
+        @Nullable List<Puzzle> set = createTypedListByCursor(cursor, mPuzzleCreator);
+        if (set == null)
+        {
+            return null;
+        }
+        List<Puzzle> sort = new ArrayList<Puzzle>();
+        for (@Nullable Puzzle puzzle : set)
+        {
+            if (puzzle != null)
+            {
+                puzzle.questions = getQuestionsByPuzzleId(puzzle.id);
+                puzzle.countSolvedPercent();
+                if(puzzle.isSolved){
+                    sort.add(puzzle);
+                }
+            }
+        }
+
+        return sort;
     }
 
     @Nullable
@@ -286,11 +323,11 @@ public class DbReader implements IDbReader
                 {
                     int col = lhs.column - rhs.column;
                     int row = lhs.row - rhs.row;
-                    if(row == 0)
+                    if (row == 0)
                         return col;
-                    if(col == 0)
+                    if (col == 0)
                         return row;
-                    if(row < 0 && col < 0)
+                    if (row < 0 && col < 0)
                         return -1;
                     else return 1;
                 }
@@ -298,6 +335,8 @@ public class DbReader implements IDbReader
         }
         return puzzle;
     }
+
+
 
     @Nullable
     @Override
@@ -329,11 +368,11 @@ public class DbReader implements IDbReader
             {
                 int col = lhs.column - rhs.column;
                 int row = lhs.row - rhs.row;
-                if(row == 0)
+                if (row == 0)
                     return col;
-                if(col == 0)
+                if (col == 0)
                     return row;
-                if(row < 0 && col < 0)
+                if (row < 0 && col < 0)
                     return -1;
                 else return 1;
             }
@@ -355,12 +394,11 @@ public class DbReader implements IDbReader
         {
             cursor.moveToFirst();
 
-            if(!cursor.isAfterLast())
+            if (!cursor.isAfterLast())
             {
                 count = cursor.getInt(0);
             }
-        }
-        finally
+        } finally
         {
             cursor.close();
         }
@@ -386,6 +424,26 @@ public class DbReader implements IDbReader
             return new ScoreQueue(queue);
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public ArrayList<Purchase> getPurchases()
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                null, null);
+        @Nullable ArrayList<Purchase> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
+        return purchases;
+    }
+
+    @Nullable
+    @Override
+    public Purchase getPurchaseByGoogleId(@Nonnull String googleId)
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                ColsPurchases.GOOGLE_ID, googleId);
+        @Nullable Purchase purchase = createObjectByCursor(cursor, mPurchaseCreator);
+        return purchase;
     }
 
     // ==== object creators =====================
@@ -448,16 +506,16 @@ public class DbReader implements IDbReader
         public Puzzle createObject(Cursor c)
         {
             return new Puzzle(c.getLong(0),
-                              c.getLong(1),
-                              c.getString(2),
-                              c.getString(3),
-                              c.getString(4),
-                              c.getInt(5),
-                              c.getInt(6),
-                              c.getInt(7),
-                              c.getInt(8),
-                              c.getInt(9) == 1,
-                              null);
+                    c.getLong(1),
+                    c.getString(2),
+                    c.getString(3),
+                    c.getString(4),
+                    c.getInt(5),
+                    c.getInt(6),
+                    c.getInt(7),
+                    c.getInt(8),
+                    c.getInt(9) == 1,
+                    null);
         }
     };
 
@@ -467,13 +525,13 @@ public class DbReader implements IDbReader
         public PuzzleQuestion createObject(Cursor c)
         {
             return new PuzzleQuestion(c.getLong(0),
-                            c.getLong(1),
-                            c.getInt(2),
-                            c.getInt(3),
-                            c.getString(4),
-                            c.getString(5),
-                            c.getString(6),
-                            c.getInt(7) == 1);
+                    c.getLong(1),
+                    c.getInt(2),
+                    c.getInt(3),
+                    c.getString(4),
+                    c.getString(5),
+                    c.getString(6),
+                    c.getInt(7) == 1);
         }
     };
 
@@ -493,6 +551,21 @@ public class DbReader implements IDbReader
         public ScoreQueue.Score createObject(Cursor c)
         {
             return new ScoreQueue.Score(c.getLong(0), c.getInt(1), c.getString(2));
+        }
+    };
+
+    private ObjectCreatorByCursor<Purchase> mPurchaseCreator = new ObjectCreatorByCursor<Purchase>()
+    {
+        @Override
+        public Purchase createObject(Cursor c)
+        {
+            long id = c.getLong(0);
+            String clientId = c.getString(1);
+            String googleId = c.getString(2);
+            String price = c.getString(3);
+            boolean googlePurchase = c.getInt(4) == 1;
+            boolean serverPurchase = c.getInt(5) == 1;
+            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase);
         }
     };
 
@@ -527,8 +600,7 @@ public class DbReader implements IDbReader
                     list.add(object);
                 }
             });
-        }
-        finally
+        } finally
         {
             cursor.close();
         }
@@ -548,17 +620,17 @@ public class DbReader implements IDbReader
         {
             cursor.moveToFirst();
 
-            if(!cursor.isAfterLast())
+            if (!cursor.isAfterLast())
             {
                 object = creator.createObject(cursor);
             }
-        }
-        finally
+        } finally
         {
             cursor.close();
         }
         return object;
     }
+
     public interface ObjectCreatorByCursor<T>
     {
         public T createObject(Cursor c);

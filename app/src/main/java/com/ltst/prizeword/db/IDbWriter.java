@@ -1,5 +1,6 @@
 package com.ltst.prizeword.db;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -30,6 +31,9 @@ public interface IDbWriter extends IDbReader
     void putCoefficients(@Nonnull Coefficients coefficients);
     void putScoreToQueue(@Nonnull ScoreQueue.Score score);
     void clearScoreQueue();
+
+    void putPurchase(@Nonnull Purchase purchase);
+    void putPurchases(@Nonnull List<Purchase> purchases);
 
     void clearDb();
 }

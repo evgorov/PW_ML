@@ -24,6 +24,7 @@ import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
@@ -52,6 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
     private @Nonnull HintsManager mHintsManager;
+    private @Nonnull IManadges mIManadges;
 
     private @Nonnull View mRoot;
     private @Nonnull TextView mHintsCountView;
@@ -68,14 +70,13 @@ public class CrosswordsFragment extends SherlockFragment
 
     private int mIndicatorPosition;
 
-//    private @Nonnull IOnePuzzleModel mPuzzleModel;
-
     // ==== Livecycle =================================
 
     @Override
     public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
+        mIManadges = (IManadges) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
@@ -106,10 +107,17 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mHintsManager = new HintsManager(mBcConnector,mContext, mSessionKey, mRoot);
+
+        mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
+
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
@@ -138,6 +146,11 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsSimpleText.setText(mStringsMassive[mIndicatorPosition]);
 
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

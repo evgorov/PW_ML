@@ -26,7 +26,7 @@ public class InviteFriendsData implements Parcelable
 
     public InviteFriendsData(@Nonnull String firstName, @Nonnull String lastName,
                              @Nullable String deactivated, int online, long userId, @Nonnull int[] lists,
-                             @Nonnull String id, @Nonnull String userpic, @Nonnull String status,@Nullable byte[] pngImage,
+                             @Nonnull String id, @Nonnull String userpic, @Nonnull String status, @Nullable byte[] pngImage,
                              @Nonnull String providerName)
     {
         this.firstName = ParcelableTools.getNonnullString(firstName);
@@ -57,7 +57,7 @@ public class InviteFriendsData implements Parcelable
         }
     };
 
-    InviteFriendsData(Parcel source)
+    public InviteFriendsData(Parcel source)
     {
         firstName = ParcelableTools.getNonnullString(source.readString());
         lastName = ParcelableTools.getNonnullString(source.readString());

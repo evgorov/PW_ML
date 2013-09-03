@@ -62,10 +62,13 @@ public class CrosswordFragmentHolder {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
-        int restDays = monthMaxDays - day;
+        int restDays = monthMaxDays - day+1;
 
-        DateFormatSymbols symbols = new DateFormatSymbols();
-        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+//        DateFormatSymbols symbols = new DateFormatSymbols();
+//        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
+
+        mCrosswordPanelCurrent.mMonthTV.setText(
+                mContext.getResources().getStringArray(R.array.menu_group_months_at_imenit_padezh)[month]);
 
         mCrosswordPanelCurrent.mRestDaysTV.setText(String.valueOf(restDays));
         mCrosswordPanelCurrent.mRestPanelLL.setBackgroundDrawable(
@@ -174,7 +177,10 @@ public class CrosswordFragmentHolder {
                 if(puzzle.isSolved)
                     solved++;
             }
-            percents = percents/puzzles.size();
+            if(puzzles.size() != 0)
+            {
+                percents = percents/puzzles.size();
+            }
             data.mScore = scores;
             data.mProgress = percents;
             data.mResolveCount = solved;

@@ -1,11 +1,13 @@
 package com.ltst.prizeword.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@JsonIgnoreProperties("puzzle_ids")
 public class RestPuzzleTotalSet
 {
     private @JsonProperty("id") String id;

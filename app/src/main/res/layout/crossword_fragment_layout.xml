@@ -307,9 +307,9 @@
 
                                 <TextView
                                         android:id="@+id/crossword_fragment_current_rest_buy_10_price"
-                                        android:textSize="14sp"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="@string/buy_one_dollar"/>
+                                        android:text=""/>
 
                             </LinearLayout>
 
@@ -336,9 +336,9 @@
 
                                 <TextView
                                         android:id="@+id/crossword_fragment_current_rest_buy_20_price"
-                                        android:textSize="14sp"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="@string/buy_two_dollar"/>
+                                        android:text=""/>
 
                             </LinearLayout>
 
@@ -365,9 +365,9 @@
 
                                 <TextView
                                         android:id="@+id/crossword_fragment_current_rest_buy_30_price"
-                                        android:textSize="14sp"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="@string/buy_three_dollar"/>
+                                        android:text=""/>
 
                             </LinearLayout>
 

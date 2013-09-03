@@ -37,4 +37,7 @@ public interface IRestClient
     @Nullable RestCoefficients getCoefficients(@Nonnull String sessionKey);
 
     HttpStatus postPuzzleScore(@Nonnull String sessionKey, @Nonnull String puzzleId, int score);
+
+    @Nullable RestInviteFriend.RestInviteFriendHolder getFriendsScoreData(@Nonnull String sessionToken,@Nonnull String providerName);
+    @Nullable RestPuzzleSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData);
 }

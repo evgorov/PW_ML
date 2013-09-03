@@ -16,6 +16,7 @@
     <string name="rules_fragment_title">Правила</string>
     <string name="invite_fragment_title">Пригласить друзей</string>
     <string name="rating_fragment_title">Рейтинг</string>
+    <string name="score_fragment_title">Детализация очков</string>
 
     <string name="ending">-й</string>
     <string name="points">очков</string>
@@ -122,7 +123,7 @@
     <string name="news4">Жизненная позиция человечества в целом убога</string>
     <string name="news5">Жители нашей планеты не могут следовать простым правилам поведения в обществе</string>
 
-    <string-array name="menu_group_months">
+    <string-array name="menu_group_months_at_predlog_padezh">
         <item>январе</item>
         <item>феврале</item>
         <item>марте</item>
@@ -137,6 +138,21 @@
         <item>декабре</item>
     </string-array>
 
+    <string-array name="menu_group_months_at_imenit_padezh">
+        <item>январь</item>
+        <item>февраль</item>
+        <item>март</item>
+        <item>апрель</item>
+        <item>май</item>
+        <item>июль</item>
+        <item>июнь</item>
+        <item>август</item>
+        <item>сентябрь</item>
+        <item>октябрь</item>
+        <item>ноябрь</item>
+        <item>декабрь</item>
+    </string-array>
+
     // ==== GameField text ====
     <string name="gamefield_percent">% решено</string>
     <string name="gamefield_sound">Звуки</string>
@@ -146,5 +162,11 @@
     <string name="gamefield_hint_dialog_message">Вы действительно хотите воспользоваться подсказкой?</string>
     <string name="gamefield_hint_dialog_ok">Да</string>
     <string name="gamefield_hint_dialog_cancel">Нет</string>
+
+    // ==== ScoreFragment text ====
+    <string name="score_resolved">разгадано</string>
+    <string name="score_fragment_title1">3213 в месяце</string>
+    <string name="score_friends_list">Приглашено</string>
+    <string name="score_friends_count">друга</string>
 
 </resources>

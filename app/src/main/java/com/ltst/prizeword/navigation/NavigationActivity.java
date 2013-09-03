@@ -28,6 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.scoredetailfragment.view.ScoreDetailFragment;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -44,6 +45,8 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
+import com.ltst.prizeword.manadges.IManadges;
+import com.ltst.prizeword.manadges.ManadgeHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.sounds.SoundsWork;
@@ -71,12 +74,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         View.OnClickListener,
         CompoundButton.OnCheckedChangeListener,
         IReloadUserData,
-        IBitmapAsyncTask
+        IBitmapAsyncTask,
+        IManadges
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private final int RESULT_LOAD_IMAGE = 1;
     private final int REQUEST_MAKE_PHOTO = 2;
+
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
 
@@ -93,8 +98,10 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
+    private @Nonnull Context mContext;
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
+    private @Nonnull ManadgeHolder mManadgeHolder;
 
 
     @Override
@@ -104,12 +111,19 @@ public class NavigationActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
 
+        mBcConnector = new BcConnector(this);
+        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
+        mManadgeHolder.instance();
+
+        // Устанавливаем соединение с Google Play для внутренних покупок;
+        mContext = this.getBaseContext();
+
         // Устанавливаем русскую локаль для всего приложения;
         Locale locale = new Locale("ru");
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
 
         mContext = (Context) getBaseContext();
 
@@ -160,6 +174,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
+        mDrawerMenu.mScoreBtn.setOnClickListener(this);
 
         initNavigationDrawerItems();
         reloadUserData();
@@ -173,48 +188,51 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK)
-        {
-            switch (requestCode)
+        if(resultCode == RESULT_OK){
+
+            if (!mManadgeHolder.onActivityResult(requestCode, resultCode, data)) {
+                // not handled, so handle it ourselves (here's where you'd
+                // perform any handling of activity results not related to in-app
+                // billing...
+            }
+            else
             {
-                case RESULT_LOAD_IMAGE:
-                {
-                    // Получаем картинку из галереи;
-                    Uri chosenImageUri = data.getData();
-                    Bitmap photo = null;
-                    try
-                    {
-                        photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
+                switch (requestCode){
+                    case RESULT_LOAD_IMAGE: {
+                        // Получаем картинку из галереи;
+                        Uri chosenImageUri = data.getData();
+                        Bitmap photo = null;
+                        try {
+                            photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        // Меняем аватарку на панеле;
+                        mDrawerMenu.setImage(photo);
+                        // Отправляем новую аватарку насервер;
+                        mBitmapAsyncTask = new BitmapAsyncTask(this);
+                        mBitmapAsyncTask.execute(photo);
                     }
-                    // Меняем аватарку на панеле;
-                    mDrawerMenu.setImage(photo);
-                    // Отправляем новую аватарку насервер;
-                    mBitmapAsyncTask = new BitmapAsyncTask(this);
-                    mBitmapAsyncTask.execute(photo);
-                }
-                break;
-                case REQUEST_MAKE_PHOTO:
-                {
-                    // получаем фото с камеры;
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-                    // Меняем аватарку на панеле;
-                    mDrawerMenu.setImage(photo);
-                    // Отправляем новую аватарку насервер;
-                    mBitmapAsyncTask = new BitmapAsyncTask(this);
-                    mBitmapAsyncTask.execute(photo);
-                }
-                break;
-                case REQUEST_LOGIN_VK:
-                case REQUEST_LOGIN_FB:
-                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER);
-                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
                     break;
+                    case REQUEST_MAKE_PHOTO:{
+                        // получаем фото с камеры;
+                        Bitmap photo = (Bitmap) data.getExtras().get("data");
+                        // Меняем аватарку на панеле;
+                        mDrawerMenu.setImage(photo);
+                        // Отправляем новую аватарку насервер;
+                        mBitmapAsyncTask = new BitmapAsyncTask(this);
+                        mBitmapAsyncTask.execute(photo);
+                    }
+                    break;
+                    case REQUEST_LOGIN_VK:
+                    case REQUEST_LOGIN_FB:
+                        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+                        String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                        String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                        mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
+                        mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
+                        break;
+                }
             }
         } else
         {
@@ -237,10 +255,16 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy()
     {
         SoundsWork.pauseBackgroundMusic();
         super.onDestroy();
+        mManadgeHolder.dispose();
     }
 
     @Override
@@ -269,8 +293,9 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID, InviteFriendsFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(RatingFragment.FRAGMENT_ID, RatingFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(ScoreDetailFragment.FRAGMENT_ID,ScoreDetailFragment.FRAGMENT_CLASSNAME);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME);
         }
@@ -337,6 +362,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
             title = res.getString(R.string.invite_fragment_title);
         else if (id.equals(RatingFragment.FRAGMENT_ID))
+            title = res.getString(R.string.rating_fragment_title);
+        else if (id.equals(ScoreDetailFragment.FRAGMENT_ID))
             title = res.getString(R.string.rating_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
@@ -485,6 +512,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 break;
             case R.id.menu_pride_rating_btn:
                 selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
+                break;
+            case  R.id.menu_pride_score_btn:
+                selectNavigationFragmentByClassname(ScoreDetailFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
                 break;
@@ -717,6 +747,28 @@ public class NavigationActivity extends SherlockFragmentActivity
                     break;
             }
         }
+    }
 
+    @Override
+    public void buyProduct(ManadgeHolder.ManadgeProduct product) {
+        // Покупка;
+        mManadgeHolder.buyProduct(product);
+    }
+
+    @Override
+    public void reloadPriceProducts() {
+        // Обновляем прайс лист продуктов;
+        mManadgeHolder.reloadPrice();
+    }
+
+    @Override
+    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler) {
+        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+    }
+
+    @Override
+    public String getPriceProduct(ManadgeHolder.ManadgeProduct product) {
+        // Возвращаем цену продукта;
+        return mManadgeHolder.getPriceProduct(product);
     }
 }
