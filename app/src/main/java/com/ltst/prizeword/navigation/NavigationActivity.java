@@ -98,7 +98,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
-    private @Nonnull Context mContext;
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
@@ -254,10 +253,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
     protected void onDestroy()
