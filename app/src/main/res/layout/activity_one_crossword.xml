@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/gamefield_root_view"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
         >
@@ -107,13 +108,27 @@
                                 android:text="@string/gamefield_percent"
                                 />
 
-                        <SeekBar
-                                android:id="@+id/gamefield_progressbar"
+                        <LinearLayout
+                                android:id="@+id/gamefield_progress_bg"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_width="0dip"
-                                android:layout_weight="1"
-                                android:max="100"
-                                />
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="3dp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/gamefild_pause_progressbar_bg2">
+
+                            <LinearLayout
+                                    android:id="@+id/gamefield_progress_fg"
+                                    android:layout_width="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="1dp"
+                                    android:layout_marginRight="1dp"
+                                    android:background="@drawable/pause_progressbar"/>
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <TextView

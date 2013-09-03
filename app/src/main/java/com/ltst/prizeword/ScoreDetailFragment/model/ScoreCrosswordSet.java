@@ -3,19 +3,15 @@ package com.ltst.prizeword.scoredetailfragment.model;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.crossword.view.BadgeAdapter;
 import com.ltst.prizeword.crossword.view.BadgeGridView;
-import com.ltst.prizeword.crossword.view.BadgeProgressBar;
+import com.ltst.prizeword.tools.CustomProgressBar;
 import com.ltst.prizeword.crossword.view.CrosswordPanelData;
-import com.ltst.prizeword.crossword.view.ICrosswordFragment;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -37,7 +33,8 @@ public class ScoreCrosswordSet
     private @Nonnull LinearLayout pCurrentCrosswordContaiter;
     private @Nonnull TextView pRatioText;
     private @Nonnull TextView pProgressText;
-    private @Nonnull BadgeProgressBar pProgress;
+    private @Nonnull
+    CustomProgressBar pProgress;
     private @Nonnull TextView pScoreText;
 
     private @Nonnull BadgeGridView pBadgeContainer;
@@ -58,7 +55,7 @@ public class ScoreCrosswordSet
         pCurrentCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.score_crossword_fragment_current_container);
         pRatioText = (TextView) mRootView.findViewById(R.id.score_crossword_panel_ratio);
         pProgressText = (TextView) mRootView.findViewById(R.id.score_crossword_panel_percent);
-        pProgress = new BadgeProgressBar(context, mRootView, R.id.score_crossword_panel_progress_bg, R.id.score_crossword_panel_progress_fg);
+        pProgress = new CustomProgressBar(context, mRootView, R.id.score_crossword_panel_progress_bg, R.id.score_crossword_panel_progress_fg);
         pScoreText = (TextView) mRootView.findViewById(R.id.score_crossword_panel);
 
         pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.score_crossword_panel_badges_container);

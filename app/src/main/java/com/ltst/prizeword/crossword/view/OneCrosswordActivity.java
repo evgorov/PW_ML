@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -23,6 +22,7 @@ import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.tools.CustomProgressBar;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -81,7 +81,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull View mAlertPause;
     private @Nonnull View mAlertPauseBg;
     private @Nonnull TextView mProgressTextView;
-    private @Nonnull SeekBar mProgressSeekBar;
+    private @Nonnull CustomProgressBar mProgressSeekBar;
     private @Nonnull TextView mTimerTextView;
 
     private boolean mStopPlayFlag;
@@ -100,12 +100,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mFinalNextButton;
 
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
+    private @Nonnull View mRootView;
 
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
+        mRootView = (View) findViewById(R.id.gamefield_root_view);
 
         if (bundle != null)
         {
@@ -157,8 +159,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mAlertPause = findViewById(R.id.gamefild_pause_alert);
         mAlertPauseBg = findViewById(R.id.gamefild_pause_bg);
         mProgressTextView = (TextView) findViewById(R.id.gamefield_progressbar_percent);
-        mProgressSeekBar = (SeekBar)findViewById(R.id.gamefield_progressbar);
-        mProgressSeekBar.setEnabled(false);
+        mProgressSeekBar = new CustomProgressBar(getBaseContext(), mRootView, R.id.gamefield_progress_bg, R.id.gamefield_progress_fg);
+        mProgressSeekBar.setMinimumWidth(20);
+        mProgressSeekBar.setMardginTop(2);
+        mProgressSeekBar.setMardginBottom(2);
         mTimerTextView = (TextView) findViewById(R.id.header_timer_textview);
         mAnimationSlideInTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_in_succes_view);
         mAnimationSlideOutTop = AnimationUtils.loadAnimation(this,R.anim.forget_slide_out_succes_view);
@@ -287,6 +291,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mAlertPause.clearAnimation();
             mAlertPause.startAnimation(mAnimationSlideInTop);
             mStopPlayBtn.setBackgroundResource(R.drawable.header_play_but);
+            mProgressSeekBar.repaint();
         }
         else
         {

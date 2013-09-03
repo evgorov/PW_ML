@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.tools.AnimationTools;
+import com.ltst.prizeword.tools.CustomProgressBar;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -40,7 +41,8 @@ public class CrosswordSet {
     private @Nonnull LinearLayout pCurrentCrosswordContaiter;
     private @Nonnull TextView pRatioText;
     private @Nonnull TextView pProgressText;
-    private @Nonnull BadgeProgressBar pProgress;
+    private @Nonnull
+    CustomProgressBar pProgress;
     private @Nonnull TextView pScoreText;
 
     private @Nonnull LinearLayout pBuyCrosswordContaiter;
@@ -74,7 +76,7 @@ public class CrosswordSet {
         pCurrentCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_current_crossword_container);
         pRatioText = (TextView) mRootView.findViewById(R.id.crossword_panel_ratio);
         pProgressText = (TextView) mRootView.findViewById(R.id.crossword_panel_percent);
-        pProgress = new BadgeProgressBar(context, mRootView, R.id.crossword_panel_progress_bg, R.id.crossword_panel_progress_fg);
+        pProgress = new CustomProgressBar(context, mRootView, R.id.crossword_panel_progress_bg, R.id.crossword_panel_progress_fg);
         pScoreText = (TextView) mRootView.findViewById(R.id.crossword_panel_score);
 
         pBuyCrosswordContaiter = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_buy_crossword_container);
