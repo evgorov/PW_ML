@@ -87,6 +87,13 @@ public final class SoundsWork
         mMediaPlayerAll.start();
     }
 
+    public static void buySet(Context context)
+    {
+        releaseMPALL();
+        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.buy_set);
+        mMediaPlayerAll.start();
+    }
+
     private static void releaseMPALL()
     {
         if (mMediaPlayerAll != null)

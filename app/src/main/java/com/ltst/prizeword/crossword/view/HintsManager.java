@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
@@ -20,9 +22,11 @@ public class HintsManager implements View.OnClickListener
 
     private HintsModel mHintsModel;
     private @Nullable IListenerInt mHintChangeListener;
+    private @Nonnull android.content.Context mContext;
 
-    public HintsManager(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey, View parentView)
+    public HintsManager(@Nonnull IBcConnector bcConnector, @Nonnull android.content.Context context,@Nonnull String sessionKey, View parentView)
     {
+        mContext = context;
         mHintsModel = new HintsModel(bcConnector, sessionKey);
         mBuyHints_10 = parentView.findViewById(R.id.crossword_fragment_current_rest_buy_10_btn);
         mBuyHints_20 = parentView.findViewById(R.id.crossword_fragment_current_rest_buy_20_btn);
@@ -40,6 +44,7 @@ public class HintsManager implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         int count = 0;
         switch (v.getId())
         {

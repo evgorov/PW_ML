@@ -25,6 +25,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 
@@ -108,7 +109,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+        mHintsManager = new HintsManager(mBcConnector,mContext, mSessionKey, mRoot);
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
@@ -174,6 +175,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.crossword_fragment_header_menu_btn:
