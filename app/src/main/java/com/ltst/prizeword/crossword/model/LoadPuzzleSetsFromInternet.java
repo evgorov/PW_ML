@@ -20,6 +20,7 @@ import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,14 +30,14 @@ import javax.annotation.Nullable;
 
 public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY = "LoadPuzzleSetsFromInternet.sessionKey";
-    public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
-    public static final @Nonnull String BF_PUZZLES_AT_SET = "LoadPuzzleSetsFromInternet.puzzles";
-    public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
-    public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
-    public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
-    public static final @Nonnull String BF_APP_RELEASE_MONTH = "LoadPuzzleSetsFromInternet.appReleaseMonth";
-    public static final @Nonnull String BF_APP_RELEASE_YEAR = "LoadPuzzleSetsFromInternet.appReleaseYear";
+    public static final @Nonnull String BF_SESSION_KEY          = "LoadPuzzleSetsFromInternet.sessionKey";
+    public static final @Nonnull String BF_PUZZLE_SETS          = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_PUZZLES_AT_SET       = "LoadPuzzleSetsFromInternet.puzzles";
+    public static final @Nonnull String BF_HINTS_COUNT          = "LoadPuzzleSetsFromInternet.hintsCount";
+    public static final @Nonnull String BF_STATUS_CODE          = "LoadPuzzleSetsFromInternet.statusCode";
+    public static final @Nonnull String BF_VOLUME_PUZZLE        = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull String BF_APP_RELEASE_MONTH    = "LoadPuzzleSetsFromInternet.appReleaseMonth";
+    public static final @Nonnull String BF_APP_RELEASE_YEAR     = "LoadPuzzleSetsFromInternet.appReleaseYear";
 
     private static final @Nonnull String VOLUME_SHORT = "short";
     private static final @Nonnull String VOLUME_LONG  = "long";
@@ -114,17 +115,33 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     env.dbw.putPuzzleSetList(sets);
                     return getFromDatabase(env);
                 }
-            } else if (volumePuzzle.equals(VOLUME_LONG))
+            }
+            else if (volumePuzzle.equals(VOLUME_LONG))
             {
                 int year = env.extras.getInt(BF_APP_RELEASE_YEAR);
                 int month = env.extras.getInt(BF_APP_RELEASE_MONTH);
-                @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey,year,month);
-                if (data != null)
+
+                Calendar calnow = Calendar.getInstance();
+                calnow.add(Calendar.MONTH,1);
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.YEAR, year);
+
+                while(cal.before(calnow))
                 {
-                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
-                    env.dbw.putPuzzleTotalSetList(sets);
-                    return getFromDatabase(env);
+                    Log.d("YEAR: " + cal.get(Calendar.YEAR) + " MONTH: " + cal.get(Calendar.MONTH));
+                    @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data =
+                            loadPuzzleTotalSets(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
+                    if (data != null)
+                    {
+                        @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
+                        env.dbw.putPuzzleTotalSetList(sets);
+                    }
+                    cal.add(Calendar.MONTH,1);
                 }
+                return getFromDatabase(env);
             }
              else if (volumePuzzle.equals(VOLUME_SORT))
             {
