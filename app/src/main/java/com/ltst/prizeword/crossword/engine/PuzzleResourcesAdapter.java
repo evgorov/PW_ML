@@ -106,7 +106,7 @@ public class PuzzleResourcesAdapter
         mCurrentAnswer = null;
         mCurrentInputBuffer = null;
         mCurrentQuestionPoint = null;
-        mCurrentTileFocusPoint = null;
+//        mCurrentTileFocusPoint = null;
         mCurrentInputQuestionIndex = -1;
         if (mCurrentInputPuzzleStates != null)
         {
@@ -488,6 +488,7 @@ public class PuzzleResourcesAdapter
                             {
                                 mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                             }
+                            else next = null;
                         }
                         else next = null;
                     }
@@ -592,6 +593,7 @@ public class PuzzleResourcesAdapter
                     state.removeArrowByQuestionIndex(mCurrentInputQuestionIndex);
                 }
             }
+            setCurrentQuestionCorrect(true);
             checkCurrectCrossingQuestions();
             correctAnswerHandler.handle();
             return true;
