@@ -39,6 +39,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     private static final @Nonnull String VOLUME_SHORT = "short";
     private static final @Nonnull String VOLUME_LONG  = "long";
     private static final @Nonnull String VOLUME_SORT  = "sort";
+    private static final @Nonnull String VOLUME_CURR  = "current";
 
     public static final
     @Nonnull
@@ -66,6 +67,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_SORT);
+        return intent;
+    }
+
+    public static final
+    @Nonnull
+    Intent createCurrentSetsIntent(@Nonnull String sessionKey)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_CURR);
         return intent;
     }
 
@@ -125,6 +136,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH), env);
                     cal.add(Calendar.MONTH,1);
                 }
+                return getFromDatabase(env);
+            }
+            else if (volumePuzzle.equals(VOLUME_CURR))
+            {
+                Calendar cal = Calendar.getInstance();
+                getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1, env);
                 return getFromDatabase(env);
             }
             else if (volumePuzzle.equals(VOLUME_SORT))

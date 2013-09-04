@@ -54,6 +54,11 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
+    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+
+    }
+
+    @Override
     public void close()
     {
         Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$

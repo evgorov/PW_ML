@@ -50,6 +50,11 @@ public class PuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
+    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+        mPuzzleCurrentSets.update(handler);
+    }
+
+    @Override
     public void close()
     {
         Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$
@@ -135,6 +140,24 @@ public class PuzzleSetModel implements IPuzzleSetModel
             return LoadPuzzleSetsFromInternet.class;
         }
     };
+
+    private Updater mPuzzleCurrentSets = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return LoadPuzzleSetsFromInternet.createCurrentSetsIntent(mSessionKey);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
+
 
     private Updater mPuzzleSetsDbUpdater = new Updater()
     {
