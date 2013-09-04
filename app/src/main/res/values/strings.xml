@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">PrizeWord</string>
+    <string name="app_release_month">7</string>
+    <string name="app_release_year">2013</string>
     <string name="action_settings">Settings</string>
+
 
     // ==== fragment titles ====
     <string name="login_fragment_title">Login</string>

@@ -20,7 +20,7 @@ public interface IRestClient
     HttpStatus resetPassword(@Nonnull String token,  @Nonnull String newPassword);
 
     @Nullable RestPuzzleSet.RestPuzzleSetsHolder getPublishedSets(@Nonnull String sessionKey);
-    @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey);
+    @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey, int year, int month);
     @Nullable RestPuzzle.RestPuzzleHolder getPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleServerId);
     @Nullable
     RestUserData.RestAnswerMessageHolder mergeAccounts(@Nonnull String sessionKey1, @Nonnull String sessionKey2);

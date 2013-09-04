@@ -1,8 +1,10 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.db.DbService;
 
@@ -21,6 +23,7 @@ import javax.annotation.Nullable;
 
 public class PuzzleSetModel implements IPuzzleSetModel
 {
+    private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
@@ -28,8 +31,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private int hintsCount;
     private boolean mIsDestroyed;
 
-    public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
+    public PuzzleSetModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
+        mContext = context;
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
         hintsCount = 0;
@@ -123,7 +127,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         @Override
         protected Intent createIntent()
         {
-            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey);
+            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey, mContext);
         }
 
         @Nonnull

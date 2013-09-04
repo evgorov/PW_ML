@@ -361,14 +361,14 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey)
+    public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey, int year, int month)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         urlVariables.put(RestParams.MODE, RestParams.MODE_LONG
         );
-        urlVariables.put(RestParams.YEAR, 2013);
-        urlVariables.put(RestParams.MONTH, 7);
+        urlVariables.put(RestParams.YEAR, year);
+        urlVariables.put(RestParams.MONTH, month);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);

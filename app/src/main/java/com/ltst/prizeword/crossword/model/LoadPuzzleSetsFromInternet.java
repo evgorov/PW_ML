@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -34,10 +35,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
     public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull String BF_APP_RELEASE_MONTH = "LoadPuzzleSetsFromInternet.appReleaseMonth";
+    public static final @Nonnull String BF_APP_RELEASE_YEAR = "LoadPuzzleSetsFromInternet.appReleaseYear";
 
     private static final @Nonnull String VOLUME_SHORT = "short";
-    private static final @Nonnull String VOLUME_LONG = "long";
-    private static final @Nonnull String VOLUME_SORT = "sort";
+    private static final @Nonnull String VOLUME_LONG  = "long";
+    private static final @Nonnull String VOLUME_SORT  = "sort";
 
     public static final
     @Nonnull
@@ -51,10 +54,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     public static final
     @Nonnull
-    Intent createLongIntent(@Nonnull String sessionKey)
+    Intent createLongIntent(@Nonnull String sessionKey, @Nonnull Context context)
     {
+        int year = Integer.valueOf(context.getResources().getString(R.string.app_release_year));
+        int month = Integer.valueOf(context.getResources().getString(R.string.app_release_month));
+
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_APP_RELEASE_MONTH, month);
+        intent.putExtra(BF_APP_RELEASE_YEAR, year);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_LONG);
         return intent;
     }
@@ -108,7 +116,9 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 }
             } else if (volumePuzzle.equals(VOLUME_LONG))
             {
-                @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey);
+                int year = env.extras.getInt(BF_APP_RELEASE_YEAR);
+                int month = env.extras.getInt(BF_APP_RELEASE_MONTH);
+                @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey,year,month);
                 if (data != null)
                 {
                     @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
@@ -142,12 +152,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private
     @Nullable
-    RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey)
+    RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey, int year, int month)
     {
         try
         {
             IRestClient client = RestClient.create();
-            return client.getTotalPublishedSets(sessionKey);
+            return client.getTotalPublishedSets(sessionKey, year, month);
         } catch (Throwable e)
         {
             Log.e(e.getMessage());
