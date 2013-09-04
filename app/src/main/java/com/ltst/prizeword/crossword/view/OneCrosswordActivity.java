@@ -368,6 +368,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                                     @Override
                                     public void handle()
                                     {
+
                                         mPuzzleView.triggerAnimation();
                                         SoundsWork.questionAnswered(OneCrosswordActivity.this);
                                     }
