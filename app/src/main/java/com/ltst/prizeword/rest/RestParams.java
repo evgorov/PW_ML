@@ -78,6 +78,8 @@ public class RestParams
     public static final @Nonnull String URL_FORGOT_PASSWORD = URL_API + "/forgot_password" + addParam(EMAIL, true);
     public static final @Nonnull String URL_RESET_PASSWORD = URL_API + "/password_reset" + addParam(PASSWORD_TOKEN, true) + addParam(PASSWORD, false);
 
+    public static final @Nonnull String URL_NEWS = URL_API + "/service_messages";
+
     // == SOCIAL URLS ==
 
     public static final @Nonnull String URL_FB_LOGIN = String.format(URL_PROVIDER_LOGIN, FB_PROVIDER);
@@ -96,6 +98,8 @@ public class RestParams
     public static final @Nonnull String URL_POST_VK_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, VK_PROVIDER) + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
     public static final @Nonnull String URL_POST_FB_FRIEND_INVITE = String.format(URL_POST_FRIEND_INVITE, FB_PROVIDER) + addParam(SESSION_KEY, true) + addParam(USER_PUZZLE_IDS, false);
 
+    // == NEWS URLS ==
+    public static final @Nonnull String URL_GET_NEWS = URL_NEWS + addParam(SESSION_KEY, true);
 
     // === URL parsing for launching app via http link (forgot password case)
 

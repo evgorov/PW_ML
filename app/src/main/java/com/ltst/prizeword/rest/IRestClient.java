@@ -40,4 +40,6 @@ public interface IRestClient
 
     @Nullable RestInviteFriend.RestInviteFriendHolder getFriendsScoreData(@Nonnull String sessionToken,@Nonnull String providerName);
     @Nullable RestPuzzleSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData);
+
+    @Nullable RestNews getNews(@Nonnull String sessionKey);
 }
