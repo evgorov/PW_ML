@@ -1,6 +1,5 @@
 package com.ltst.prizeword.crossword.model;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -36,8 +35,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_HINTS_COUNT          = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE          = "LoadPuzzleSetsFromInternet.statusCode";
     public static final @Nonnull String BF_VOLUME_PUZZLE        = "LoadPuzzleSetsFromInternet.volumePuzzle";
-    public static final @Nonnull String BF_APP_RELEASE_MONTH    = "LoadPuzzleSetsFromInternet.appReleaseMonth";
-    public static final @Nonnull String BF_APP_RELEASE_YEAR     = "LoadPuzzleSetsFromInternet.appReleaseYear";
 
     private static final @Nonnull String VOLUME_SHORT = "short";
     private static final @Nonnull String VOLUME_LONG  = "long";
@@ -55,15 +52,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     public static final
     @Nonnull
-    Intent createLongIntent(@Nonnull String sessionKey, @Nonnull Context context)
+    Intent createLongIntent(@Nonnull String sessionKey)
     {
-        int year = Integer.valueOf(context.getResources().getString(R.string.app_release_year));
-        int month = Integer.valueOf(context.getResources().getString(R.string.app_release_month));
-
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
-        intent.putExtra(BF_APP_RELEASE_MONTH, month);
-        intent.putExtra(BF_APP_RELEASE_YEAR, year);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_LONG);
         return intent;
     }
@@ -118,32 +110,24 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             }
             else if (volumePuzzle.equals(VOLUME_LONG))
             {
-                int year = env.extras.getInt(BF_APP_RELEASE_YEAR);
-                int month = env.extras.getInt(BF_APP_RELEASE_MONTH);
+                int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
+                int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
 
                 Calendar calnow = Calendar.getInstance();
-                calnow.add(Calendar.MONTH,1);
 
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_MONTH, 1);
-                cal.set(Calendar.MONTH, month);
-                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, app_release_month);
+                cal.set(Calendar.YEAR, app_release_year);
 
                 while(cal.before(calnow))
                 {
-                    Log.d("YEAR: " + cal.get(Calendar.YEAR) + " MONTH: " + cal.get(Calendar.MONTH));
-                    @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data =
-                            loadPuzzleTotalSets(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
-                    if (data != null)
-                    {
-                        @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
-                        env.dbw.putPuzzleTotalSetList(sets);
-                    }
+                    getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH), env);
                     cal.add(Calendar.MONTH,1);
                 }
                 return getFromDatabase(env);
             }
-             else if (volumePuzzle.equals(VOLUME_SORT))
+            else if (volumePuzzle.equals(VOLUME_SORT))
             {
                 return getSolvedFromDatabase(env);
             }
@@ -266,6 +250,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
+
+    private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
+    {
+        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey,year,month);
+        if (data != null)
+        {
+            @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
+            env.dbw.putPuzzleTotalSetList(sets);
+        }
     }
 
 

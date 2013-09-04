@@ -110,7 +110,7 @@ public class ScoreDetailFragment extends SherlockFragment
     {
         Log.i("RatingFragment.onResume()"); //$NON-NLS-1$
         super.onResume();
-        mPuzzleSetModel = new SolvedPuzzleSetModel(mContext, mBcConnector, mSessionKey);
+        mPuzzleSetModel = new SolvedPuzzleSetModel(mBcConnector, mSessionKey);
         mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
         ScoreDataModel friendm = mFriendDataModel;
         if (friendm != null)

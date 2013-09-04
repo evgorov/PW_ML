@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 
 public class SolvedPuzzleSetModel implements IPuzzleSetModel
 {
-    private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
@@ -35,9 +34,8 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     private int hintsCount;
     private boolean mIsDestroyed;
 
-    public SolvedPuzzleSetModel(@Nonnull Context context, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
+    public SolvedPuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
-        mContext = context;
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
         hintsCount = 0;
@@ -131,7 +129,7 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
         @Override
         protected Intent createIntent()
         {
-            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey, mContext);
+            return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey);
         }
 
         @Nonnull
