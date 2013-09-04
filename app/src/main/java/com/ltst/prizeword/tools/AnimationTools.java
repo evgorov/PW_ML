@@ -13,21 +13,21 @@ import com.ltst.prizeword.navigation.NavigationActivity;
  */
 public class AnimationTools {
 
-    public static void expand(final View v) {
-        v.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        final int targtetHeight = v.getMeasuredHeight();
+    public static void expand(final View viewContainer, final View viewContained) {
+        viewContainer.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//        final int targtetHeight = v.getMeasuredHeight();
+        final int targtetHeight = viewContained.getHeight();
 
-        v.getLayoutParams().height = 0;
-        v.setVisibility(View.VISIBLE);
+        viewContainer.getLayoutParams().height = 0;
+        viewContainer.setVisibility(View.VISIBLE);
         Animation a = new Animation()
         {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1
+                viewContainer.getLayoutParams().height = interpolatedTime == 1
                         ? LayoutParams.WRAP_CONTENT
                         : (int)(targtetHeight * interpolatedTime);
-//                Log.d(NavigationActivity.LOG_TAG, "height: "+v.getLayoutParams().height+", targtetHeight: "+targtetHeight+", interpolatedTime: "+interpolatedTime);
-                v.requestLayout();
+                viewContainer.requestLayout();
             }
 
             @Override
@@ -37,23 +37,23 @@ public class AnimationTools {
         };
 
         // 1dp/ms
-        a.setDuration((int)(targtetHeight / v.getContext().getResources().getDisplayMetrics().density));
-        v.startAnimation(a);
+        a.setDuration((int)(targtetHeight / viewContainer.getContext().getResources().getDisplayMetrics().density));
+        viewContainer.startAnimation(a);
     }
 
-    public static void collapse(final View v) {
+    public static void collapse(final View viewContainer, final View viewContained) {
 
-        final int initialHeight = v.getMeasuredHeight();
+        final int initialHeight = viewContainer.getMeasuredHeight();
 
         Animation a = new Animation()
         {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 if(interpolatedTime == 1){
-                    v.setVisibility(View.GONE);
+                    viewContainer.setVisibility(View.GONE);
                 }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
-                    v.requestLayout();
+                    viewContainer.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    viewContainer.requestLayout();
                 }
             }
 
@@ -64,8 +64,8 @@ public class AnimationTools {
         };
 
         // 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
-        v.startAnimation(a);
+        a.setDuration((int)(initialHeight / viewContainer.getContext().getResources().getDisplayMetrics().density));
+        viewContainer.startAnimation(a);
     }
 
 }

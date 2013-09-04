@@ -261,12 +261,12 @@ public class CrosswordSet {
 
         if(mExpanding)
         {
-            AnimationTools.expand(mLayout);
+            AnimationTools.expand(mLayout, pBadgeContainer);
             SoundsWork.openSet(mContext);
         }
         else
         {
-            AnimationTools.collapse(mLayout);
+            AnimationTools.collapse(mLayout, pBadgeContainer);
             SoundsWork.closeSet(mContext);
         }
     }
