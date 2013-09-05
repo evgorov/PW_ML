@@ -52,14 +52,6 @@ public class ScoreCrosswordFragmentHolder {
         mListCrosswordSetMonth = new HashMap<Integer, ScoreCrosswordSetMonth>();
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
 
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
-        int restDays = monthMaxDays - day;
-
-        DateFormatSymbols symbols = new DateFormatSymbols();
     }
 
     // ================== CROSSWORD PANELS ======================
