@@ -23,15 +23,10 @@ public class BadgeHolder {
     @Nonnull LinearLayout mNumber;
     @Nonnull TextView mScore;
     @Nonnull TextView mPercent;
-    @Nonnull
-    CustomProgressBar mProgress;
+    @Nonnull CustomProgressBar mProgress;
 
     @Nonnull LinearLayout mUnresolverContainer;
     @Nonnull LinearLayout mResolverContainer;
-
-    private int mHeight;
-    private int mWidth;
-
 
     public BadgeHolder( @Nonnull Context context, @Nullable View view ) {
 

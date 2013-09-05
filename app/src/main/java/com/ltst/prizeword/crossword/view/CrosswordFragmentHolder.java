@@ -208,7 +208,7 @@ public class CrosswordFragmentHolder {
             int percents = 0;
             for(@Nonnull Puzzle puzzle : puzzles)
             {
-//                addBadge(puzzle);
+                addBadge(puzzle);
                 percents+=puzzle.solvedPercent;
                 scores+=puzzle.score;
                 if(puzzle.isSolved)
