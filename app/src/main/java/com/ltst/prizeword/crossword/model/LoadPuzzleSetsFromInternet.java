@@ -146,7 +146,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             }
             else if (volumePuzzle.equals(VOLUME_SORT))
             {
-                return getSolvedFromDatabase(env);
+                return getFromDatabase(env);
             }
         }
         return getFromDatabase(env);

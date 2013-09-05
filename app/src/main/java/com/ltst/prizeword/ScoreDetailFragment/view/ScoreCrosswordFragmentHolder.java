@@ -30,7 +30,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class ScoreCrosswordFragmentHolder {
+public class ScoreCrosswordFragmentHolder
+{
 
     private static @Nonnull LayoutInflater mInflater;
     private @Nonnull ScoreDetailFragment mScoreDetailFragment;
@@ -41,7 +42,7 @@ public class ScoreCrosswordFragmentHolder {
     private @Nonnull HashMap<Integer, ScoreCrosswordSetMonth> mListCrosswordSetMonth;
 
     public ScoreCrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
-                                   @Nonnull LayoutInflater inflater, @Nonnull View view)
+                                        @Nonnull LayoutInflater inflater, @Nonnull View view)
     {
         this.mInflater = inflater;
         this.mScoreDetailFragment = (ScoreDetailFragment) fragment;
@@ -56,15 +57,16 @@ public class ScoreCrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ======================
 
-    static private class CrosswordPanelCurrentHolder {
+    static private class CrosswordPanelCurrentHolder
+    {
 
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
-        public CrosswordPanelCurrentHolder(@Nonnull View view){
+        public CrosswordPanelCurrentHolder(@Nonnull View view)
+        {
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.score_crossword_fragment_current_container);
         }
     }
-
 
 
     private ScoreCrosswordSet getCrosswordSet(long id)
@@ -93,30 +95,37 @@ public class ScoreCrosswordFragmentHolder {
         data.mProgress = 0;
         data.mTotalCount = 0;
         data.mTotalCount = 0;
-        return  data;
+        return data;
     }
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
+        int solvedCount;
         for (PuzzleSet set : sets)
         {
+            solvedCount = 0;
             CrosswordPanelData data = extractCrosswordPanelData(set);
-            addPanel(data);
+            //addPanel(data);
             @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
             int solved = 0;
             int scores = 0;
             int percents = 0;
-            for(@Nonnull Puzzle puzzle : puzzles)
+            for (@Nonnull Puzzle puzzle : puzzles)
             {
-                addBadge(puzzle);
-                percents+=puzzle.solvedPercent;
-                scores+=puzzle.score;
-                if(puzzle.isSolved)
-                    solved++;
+
+                if (puzzle.isSolved)
+                {
+                    addBadge(puzzle);
+                    percents += puzzle.solvedPercent;
+                    scores += puzzle.score;
+                    if (puzzle.isSolved)
+                        solved++;
+                    solvedCount++;
+                }
             }
-            if(puzzles.size()==0)
+            if (puzzles.size() == 0 || solvedCount==0)
                 continue;
-            percents = percents/puzzles.size();
+            percents = percents / puzzles.size();
             data.mScore = scores;
             data.mProgress = percents;
             data.mResolveCount = solved;
@@ -130,27 +139,30 @@ public class ScoreCrosswordFragmentHolder {
         @Nonnull ScoreCrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
         @Nonnull ScoreCrosswordSet crosswordSet = getCrosswordSet(data.mId);
         crosswordSet.fillPanel(data);
-        if(!mListCrosswordSet.containsKey(data.mId))
+        if (!mListCrosswordSet.containsKey(data.mId))
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
             crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet);
         }
-        if(!mListCrosswordSetMonth.containsKey(data.mMonth))
+        if (!mListCrosswordSetMonth.containsKey(data.mMonth))
         {
             mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
-            if(crosswordSet.getCrosswordSetType() == ScoreCrosswordSet.CrosswordSetType.CURRENT){
+            if (crosswordSet.getCrosswordSetType() == ScoreCrosswordSet.CrosswordSetType.CURRENT)
+            {
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
-            }
-            else{
-                if(data.mBought){
+            } else
+            {
+                if (data.mBought)
+                {
                     mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
                 }
             }
         }
     }
 
-    private void addBadge(@Nonnull Puzzle puzzle){
-        if(puzzle == null) return;
+    private void addBadge(@Nonnull Puzzle puzzle)
+    {
+        if (puzzle == null) return;
         BadgeData data = new BadgeData();
         data.mId = puzzle.id;
         data.mServerId = puzzle.serverId;
