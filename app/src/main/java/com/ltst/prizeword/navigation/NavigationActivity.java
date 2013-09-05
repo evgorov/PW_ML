@@ -101,7 +101,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
-    private @Nonnull Context mContext;
 
 
     @Override
