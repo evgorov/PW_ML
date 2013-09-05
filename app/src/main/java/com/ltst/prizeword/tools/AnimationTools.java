@@ -1,19 +1,18 @@
 package com.ltst.prizeword.tools;
 
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.ltst.prizeword.navigation.NavigationActivity;
+import javax.annotation.Nonnull;
 
 /**
  * Created by cosic on 02.09.13.
  */
 public class AnimationTools {
 
-    public static void expand(final View viewContainer, final View viewContained) {
+    public static void expand(final @Nonnull View viewContainer, final @Nonnull View viewContained) {
         viewContainer.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 //        final int targtetHeight = v.getMeasuredHeight();
         final int targtetHeight = viewContained.getHeight();
@@ -41,7 +40,7 @@ public class AnimationTools {
         viewContainer.startAnimation(a);
     }
 
-    public static void collapse(final View viewContainer, final View viewContained) {
+    public static void collapse(final @Nonnull View viewContainer, final @Nonnull View viewContained) {
 
         final int initialHeight = viewContainer.getMeasuredHeight();
 

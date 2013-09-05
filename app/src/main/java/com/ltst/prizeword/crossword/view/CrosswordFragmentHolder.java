@@ -113,7 +113,9 @@ public class CrosswordFragmentHolder {
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_container);
             mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained1);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container1);
-            mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
+            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
+                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
+            }
         }
     }
 
@@ -121,8 +123,9 @@ public class CrosswordFragmentHolder {
         public CrosswordPanelBuyHolder(@Nonnull View view){
             mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained2);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container2);
-            mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
-
+            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
+                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
+            }
         }
     }
 
@@ -133,7 +136,9 @@ public class CrosswordFragmentHolder {
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
             mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained3);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container3);
-            mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
+            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
+                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
+            }
         }
     }
 

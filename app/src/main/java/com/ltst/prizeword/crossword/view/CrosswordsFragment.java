@@ -210,17 +210,19 @@ public class CrosswordsFragment extends SherlockFragment
     {
         @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
-        mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
+        if(sets != null && mapPuzzles != null)
+        {
+            mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
+        }
     }
 
-    private IListenerVoid
-            updateSetsFromDBHandler = new IListenerVoid()
+    private IListenerVoid updateSetsFromDBHandler = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
-            createCrosswordPanel();
+//            createCrosswordPanel();
             @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
 
             if (!puzzleSets.isEmpty())
@@ -245,14 +247,13 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid
-            updateSetsFromServerHandler = new IListenerVoid()
+    private IListenerVoid updateSetsFromServerHandler = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
-            createCrosswordPanel();
+//            createCrosswordPanel();
             skipProgressBar();
         }
     };
