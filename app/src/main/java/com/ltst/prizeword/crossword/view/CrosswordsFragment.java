@@ -34,6 +34,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -220,11 +221,24 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
+            @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
 
-            if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
+            if (!puzzleSets.isEmpty())
             {
-                skipProgressBar();
-                return;
+                Calendar cal = Calendar.getInstance();
+                boolean flg = false;
+                for(PuzzleSet puzzleSet : puzzleSets)
+                {
+                    if(puzzleSet.month == cal.get(Calendar.MONTH)+1 && puzzleSet.year == cal.get(Calendar.YEAR))
+                    {
+                        flg = true;
+                    }
+                }
+                if(!flg)
+                {
+                    skipProgressBar();
+                    return;
+                }
             }
             mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
 
@@ -251,7 +265,6 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
-            skipProgressBar();
             mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         }
     };
