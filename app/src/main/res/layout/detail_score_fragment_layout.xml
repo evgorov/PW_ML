@@ -33,22 +33,33 @@
 
     </FrameLayout>
     <!-- =================================================================================== -->
+    <FrameLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
 
 
-    <ListView
-            android:id="@+id/score_listview"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:background="@drawable/crossword_panel_bg_title"
-            android:visibility="visible">
-
-        <!--@TODO input brillian current crossword-->
-        <!--<include layout="@layout/crossword_panel_current"/>-->
+        <ImageView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/crossword_panel_bg_title"
+                android:scaleType="fitXY"
+                />
 
 
-    </ListView>
+        <ListView
+                android:id="@+id/score_listview"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:visibility="visible">
+
+            <!--@TODO input brillian current crossword-->
+            <!--<include layout="@layout/crossword_panel_current"/>-->
+
+
+        </ListView>
+    </FrameLayout>
 
     <LinearLayout
             android:layout_height="wrap_content"
@@ -65,6 +76,7 @@
         <include layout="@layout/score_crossword_panel"/>
 
         <include layout="@layout/score_footer_header_beetwen"/>
+
         <include layout="@layout/score_friends_item"/>
 
 

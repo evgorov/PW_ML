@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/puzzles_set_delimeter">
+                android:background="@drawable/puzzles_set_delimeter"
+                android:visibility="gone">
 
         </LinearLayout>
 

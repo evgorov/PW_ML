@@ -130,7 +130,8 @@ public class CrosswordsFragment extends SherlockFragment
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
 
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
-        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+//        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
@@ -231,6 +232,19 @@ public class CrosswordsFragment extends SherlockFragment
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
             skipProgressBar();
+        }
+    };
+
+    private IListenerVoid
+            updateCurrentSetsHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            createCrosswordPanel();
+            skipProgressBar();
+            mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         }
     };
 

@@ -19,6 +19,7 @@ import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,16 +29,17 @@ import javax.annotation.Nullable;
 
 public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY = "LoadPuzzleSetsFromInternet.sessionKey";
-    public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
-    public static final @Nonnull String BF_PUZZLES_AT_SET = "LoadPuzzleSetsFromInternet.puzzles";
-    public static final @Nonnull String BF_HINTS_COUNT = "LoadPuzzleSetsFromInternet.hintsCount";
-    public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
-    public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull String BF_SESSION_KEY          = "LoadPuzzleSetsFromInternet.sessionKey";
+    public static final @Nonnull String BF_PUZZLE_SETS          = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_PUZZLES_AT_SET       = "LoadPuzzleSetsFromInternet.puzzles";
+    public static final @Nonnull String BF_HINTS_COUNT          = "LoadPuzzleSetsFromInternet.hintsCount";
+    public static final @Nonnull String BF_STATUS_CODE          = "LoadPuzzleSetsFromInternet.statusCode";
+    public static final @Nonnull String BF_VOLUME_PUZZLE        = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
     private static final @Nonnull String VOLUME_SHORT = "short";
-    private static final @Nonnull String VOLUME_LONG = "long";
-    private static final @Nonnull String VOLUME_SORT = "sort";
+    private static final @Nonnull String VOLUME_LONG  = "long";
+    private static final @Nonnull String VOLUME_SORT  = "sort";
+    private static final @Nonnull String VOLUME_CURR  = "current";
 
     public static final
     @Nonnull
@@ -65,6 +67,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_SORT);
+        return intent;
+    }
+
+    public static final
+    @Nonnull
+    Intent createCurrentSetsIntent(@Nonnull String sessionKey)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_CURR);
         return intent;
     }
 
@@ -106,17 +118,33 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     env.dbw.putPuzzleSetList(sets);
                     return getFromDatabase(env);
                 }
-            } else if (volumePuzzle.equals(VOLUME_LONG))
-            {
-                @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey);
-                if (data != null)
-                {
-                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
-                    env.dbw.putPuzzleTotalSetList(sets);
-                    return getFromDatabase(env);
-                }
             }
-             else if (volumePuzzle.equals(VOLUME_SORT))
+            else if (volumePuzzle.equals(VOLUME_LONG))
+            {
+                int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
+                int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
+
+                Calendar calnow = Calendar.getInstance();
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                cal.set(Calendar.MONTH, app_release_month);
+                cal.set(Calendar.YEAR, app_release_year);
+
+                while(cal.before(calnow))
+                {
+                    getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH), env);
+                    cal.add(Calendar.MONTH,1);
+                }
+                return getFromDatabase(env);
+            }
+            else if (volumePuzzle.equals(VOLUME_CURR))
+            {
+                Calendar cal = Calendar.getInstance();
+                getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1, env);
+                return getFromDatabase(env);
+            }
+            else if (volumePuzzle.equals(VOLUME_SORT))
             {
                 return getSolvedFromDatabase(env);
             }
@@ -142,12 +170,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private
     @Nullable
-    RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey)
+    RestPuzzleTotalSet.RestPuzzleSetsHolder loadPuzzleTotalSets(@Nonnull String sessionKey, int year, int month)
     {
         try
         {
             IRestClient client = RestClient.create();
-            return client.getTotalPublishedSets(sessionKey);
+            return client.getTotalPublishedSets(sessionKey, year, month);
         } catch (Throwable e)
         {
             Log.e(e.getMessage());
@@ -239,6 +267,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
+
+    private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
+    {
+        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(sessionKey,year,month);
+        if (data != null)
+        {
+            @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(sessionKey, data);
+            env.dbw.putPuzzleTotalSetList(sets);
+        }
     }
 
 

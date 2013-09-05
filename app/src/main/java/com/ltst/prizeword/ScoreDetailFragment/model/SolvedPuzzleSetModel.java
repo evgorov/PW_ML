@@ -1,5 +1,6 @@
 package com.ltst.prizeword.scoredetailfragment.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -50,6 +51,11 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
     {
         mPuzzleSetsDbUpdater.update(handler);
+    }
+
+    @Override
+    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+
     }
 
     @Override

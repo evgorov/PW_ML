@@ -1,8 +1,10 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.db.DbService;
 
@@ -45,6 +47,11 @@ public class PuzzleSetModel implements IPuzzleSetModel
     public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
     {
         mPuzzleSetsDbUpdater.update(handler);
+    }
+
+    @Override
+    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+        mPuzzleCurrentSets.update(handler);
     }
 
     @Override
@@ -133,6 +140,24 @@ public class PuzzleSetModel implements IPuzzleSetModel
             return LoadPuzzleSetsFromInternet.class;
         }
     };
+
+    private Updater mPuzzleCurrentSets = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return LoadPuzzleSetsFromInternet.createCurrentSetsIntent(mSessionKey);
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
+
 
     private Updater mPuzzleSetsDbUpdater = new Updater()
     {
