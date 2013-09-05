@@ -3,6 +3,7 @@ package com.ltst.prizeword.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ltst.prizeword.manadges.Purchase;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
@@ -120,6 +121,16 @@ public class DbReader implements IDbReader
                     ColsScoreQueue.ID,
                     ColsScoreQueue.SCORE,
                     ColsScoreQueue.PUZZLE_ID
+            };
+
+    private static final @Nonnull String[] FIELDS_P_PURCHASES =
+            {
+                    ColsPurchases.ID,
+                    ColsPurchases.CLIENT_ID,
+                    ColsPurchases.GOOGLE_ID,
+                    ColsPurchases.PRICE,
+                    ColsPurchases.GOOGLE_PURCHASE,
+                    ColsPurchases.SERVER_PURCHASE
             };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -325,6 +336,8 @@ public class DbReader implements IDbReader
         return puzzle;
     }
 
+
+
     @Nullable
     @Override
     public List<Puzzle> getPuzzleListBySetId(long setId)
@@ -411,6 +424,26 @@ public class DbReader implements IDbReader
             return new ScoreQueue(queue);
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public ArrayList<Purchase> getPurchases()
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                null, null);
+        @Nullable ArrayList<Purchase> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
+        return purchases;
+    }
+
+    @Nullable
+    @Override
+    public Purchase getPurchaseByGoogleId(@Nonnull String googleId)
+    {
+        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
+                ColsPurchases.GOOGLE_ID, googleId);
+        @Nullable Purchase purchase = createObjectByCursor(cursor, mPurchaseCreator);
+        return purchase;
     }
 
     // ==== object creators =====================
@@ -518,6 +551,21 @@ public class DbReader implements IDbReader
         public ScoreQueue.Score createObject(Cursor c)
         {
             return new ScoreQueue.Score(c.getLong(0), c.getInt(1), c.getString(2));
+        }
+    };
+
+    private ObjectCreatorByCursor<Purchase> mPurchaseCreator = new ObjectCreatorByCursor<Purchase>()
+    {
+        @Override
+        public Purchase createObject(Cursor c)
+        {
+            long id = c.getLong(0);
+            String clientId = c.getString(1);
+            String googleId = c.getString(2);
+            String price = c.getString(3);
+            boolean googlePurchase = c.getInt(4) == 1;
+            boolean serverPurchase = c.getInt(5) == 1;
+            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase);
         }
     };
 

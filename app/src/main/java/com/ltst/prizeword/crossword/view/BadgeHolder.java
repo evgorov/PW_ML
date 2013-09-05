@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.tools.CustomProgressBar;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,7 +23,8 @@ public class BadgeHolder {
     @Nonnull LinearLayout mNumber;
     @Nonnull TextView mScore;
     @Nonnull TextView mPercent;
-    @Nonnull BadgeProgressBar mProgress;
+    @Nonnull
+    CustomProgressBar mProgress;
 
     @Nonnull LinearLayout mUnresolverContainer;
     @Nonnull LinearLayout mResolverContainer;
@@ -38,7 +40,7 @@ public class BadgeHolder {
         mBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_bg);
         mForegroud = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_fg);
         mNumber = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_number);
-        mProgress = new BadgeProgressBar(context, mRootView, R.id.crossword_badge_progress_bg, R.id.crossword_badge_progress_fg);
+        mProgress = new CustomProgressBar(context, mRootView, R.id.crossword_badge_progress_bg, R.id.crossword_badge_progress_fg);
         mScore = (TextView) mRootView.findViewById(R.id.crossword_badge_score);
         mPercent = (TextView) mRootView.findViewById(R.id.crossword_badge_rercent);
 

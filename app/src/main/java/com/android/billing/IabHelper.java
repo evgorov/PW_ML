@@ -366,19 +366,19 @@ public class IabHelper {
         }
 
         try {
-            logDebug("Constructing buy intent for " + sku + ", item type: " + itemType);
+            logDebug("Constructing buyProduct intent for " + sku + ", item type: " + itemType);
             Bundle buyIntentBundle = mService.getBuyIntent(3, mContext.getPackageName(), sku, itemType, extraData);
             int response = getResponseCodeFromBundle(buyIntentBundle);
             if (response != BILLING_RESPONSE_RESULT_OK) {
-                logError("Unable to buy item, Error response: " + getResponseDesc(response));
+                logError("Unable to buyProduct item, Error response: " + getResponseDesc(response));
 
-                result = new IabResult(response, "Unable to buy item");
+                result = new IabResult(response, "Unable to buyProduct item");
                 if (listener != null) listener.onIabPurchaseFinished(result, null);
                 return;
             }
 
             PendingIntent pendingIntent = buyIntentBundle.getParcelable(RESPONSE_BUY_INTENT);
-            logDebug("Launching buy intent for " + sku + ". Request code: " + requestCode);
+            logDebug("Launching buyProduct intent for " + sku + ". Request code: " + requestCode);
             mRequestCode = requestCode;
             mPurchaseListener = listener;
             mPurchasingItemType = itemType;

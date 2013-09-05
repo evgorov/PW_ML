@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">PrizeWord</string>
+    <string name="app_release_month">7</string>
+    <string name="app_release_year">2013</string>
     <string name="action_settings">Settings</string>
+
 
     // ==== fragment titles ====
     <string name="login_fragment_title">Login</string>
@@ -123,7 +126,7 @@
     <string name="news4">Жизненная позиция человечества в целом убога</string>
     <string name="news5">Жители нашей планеты не могут следовать простым правилам поведения в обществе</string>
 
-    <string-array name="menu_group_months">
+    <string-array name="menu_group_months_at_predlog_padezh">
         <item>январе</item>
         <item>феврале</item>
         <item>марте</item>
@@ -136,6 +139,21 @@
         <item>октябре</item>
         <item>ноябре</item>
         <item>декабре</item>
+    </string-array>
+
+    <string-array name="menu_group_months_at_imenit_padezh">
+        <item>январь</item>
+        <item>февраль</item>
+        <item>март</item>
+        <item>апрель</item>
+        <item>май</item>
+        <item>июль</item>
+        <item>июнь</item>
+        <item>август</item>
+        <item>сентябрь</item>
+        <item>октябрь</item>
+        <item>ноябрь</item>
+        <item>декабрь</item>
     </string-array>
 
     // ==== GameField text ====

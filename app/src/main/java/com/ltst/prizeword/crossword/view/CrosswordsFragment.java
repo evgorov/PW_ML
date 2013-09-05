@@ -24,7 +24,9 @@ import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 
@@ -51,6 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
     private @Nonnull HintsManager mHintsManager;
+    private @Nonnull IManadges mIManadges;
 
     private @Nonnull View mRoot;
     private @Nonnull TextView mHintsCountView;
@@ -67,14 +70,13 @@ public class CrosswordsFragment extends SherlockFragment
 
     private int mIndicatorPosition;
 
-//    private @Nonnull IOnePuzzleModel mPuzzleModel;
-
     // ==== Livecycle =================================
 
     @Override
     public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
+        mIManadges = (IManadges) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
@@ -105,14 +107,22 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mHintsManager = new HintsManager(mBcConnector, mSessionKey, mRoot);
+
+        mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
+
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
-        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+//        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
 
@@ -137,6 +147,11 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsSimpleText.setText(mStringsMassive[mIndicatorPosition]);
 
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -174,6 +189,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.crossword_fragment_header_menu_btn:
@@ -224,6 +240,19 @@ public class CrosswordsFragment extends SherlockFragment
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
             createCrosswordPanel();
             skipProgressBar();
+        }
+    };
+
+    private IListenerVoid
+            updateCurrentSetsHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            createCrosswordPanel();
+            skipProgressBar();
+            mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         }
     };
 

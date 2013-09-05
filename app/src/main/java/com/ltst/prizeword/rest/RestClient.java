@@ -324,14 +324,51 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey)
+    public RestPuzzleSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData)
+    {
+        String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
+
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.RECEIPT_DATA, receiptData);
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        messageConverters.add(new FormHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        @Nullable ResponseEntity<RestPuzzleSet.RestPuzzleSetsHolder> entity = null;
+        @Nullable RestPuzzleSet.RestPuzzleSetsHolder holder = null;
+        try
+        {
+            entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleSet.RestPuzzleSetsHolder.class, urlVariables);
+            holder = entity.getBody();
+        } catch (HttpClientErrorException e)
+        {
+        }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
+                holder.setHttpStatus(status);
+            }
+        }
+        return holder;
+    }
+
+    @Nullable
+    @Override
+    public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey, int year, int month)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         urlVariables.put(RestParams.MODE, RestParams.MODE_LONG
         );
-        urlVariables.put(RestParams.YEAR, 2013);
-        urlVariables.put(RestParams.MONTH, 7);
+        urlVariables.put(RestParams.YEAR, year);
+        urlVariables.put(RestParams.MONTH, month);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);

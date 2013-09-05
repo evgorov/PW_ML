@@ -25,6 +25,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final @Nonnull String TNAME_USERS             = "users";
     public static final @Nonnull String TNAME_COEFFICIENTS      = "coefficients";
     public static final @Nonnull String TNAME_POST_SCORE_QUEUE  = "score_queue";
+    public static final @Nonnull String TNAME_PURCHASES  = "purchases";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
@@ -57,13 +58,13 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PUZZLE_QUESTIONS_QUERY = "create table "
             + TNAME_PUZZLE_QUESTIONS + "("
             + ColsPuzzleQuestions.ID                + " integer not null primary key autoincrement, "
-            + ColsPuzzleQuestions.PUZZLE_ID + " integer not null, "
+            + ColsPuzzleQuestions.PUZZLE_ID         + " integer not null, "
             + ColsPuzzleQuestions.COLUMN            + " integer not null, "
             + ColsPuzzleQuestions.ROW               + " integer not null, "
             + ColsPuzzleQuestions.QUESTION_TEXT     + " text not null, "
             + ColsPuzzleQuestions.ANSWER            + " text not null, "
             + ColsPuzzleQuestions.ANSWER_POSITION   + " text not null, "
-            + ColsPuzzleQuestions.IS_ANSWERED + " boolean default false, "
+            + ColsPuzzleQuestions.IS_ANSWERED       + " boolean default false, "
             + " foreign key (" + ColsPuzzleQuestions.PUZZLE_ID + ") references "
             + TNAME_PUZZLES + " (" + ColsPuzzles.ID + ") on delete cascade)";
 
@@ -117,17 +118,27 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsScoreQueue.SCORE                  + " integer not null default 0, "
             + ColsScoreQueue.PUZZLE_ID              + " text not null)";
 
+    private static final String CREATE_PURCHASES = "create table "
+            + TNAME_PURCHASES + "("
+            + ColsPurchases.ID                          + " integer not null primary key autoincrement, "
+            + ColsPurchases.CLIENT_ID                   + " text not null unique, "
+            + ColsPurchases.GOOGLE_ID                   + " text not null, "
+            + ColsPurchases.PRICE                       + " text not null, "
+            + ColsPurchases.GOOGLE_PURCHASE             + " boolean not null default false, "
+            + ColsPurchases.SERVER_PURCHASE             + " boolean not null default false "
+            + ")";
+
     public static final class ColsPuzzleSets
     {
-        public static final @Nonnull String ID              = "_id";
-        public static final @Nonnull String SERVER_ID       = "serverId";
-        public static final @Nonnull String NAME            = "name";
-        public static final @Nonnull String IS_BOUGHT       = "bought";
-        public static final @Nonnull String TYPE            = "type";
-        public static final @Nonnull String MONTH           = "month";
-        public static final @Nonnull String YEAR            = "year";
-        public static final @Nonnull String CREATED_AT      = "createdAt";
-        public static final @Nonnull String IS_PUBLISHED       = "published";
+        public static final @Nonnull String ID                  = "_id";
+        public static final @Nonnull String SERVER_ID           = "serverId";
+        public static final @Nonnull String NAME                = "name";
+        public static final @Nonnull String IS_BOUGHT           = "bought";
+        public static final @Nonnull String TYPE                = "type";
+        public static final @Nonnull String MONTH               = "month";
+        public static final @Nonnull String YEAR                = "year";
+        public static final @Nonnull String CREATED_AT          = "createdAt";
+        public static final @Nonnull String IS_PUBLISHED        = "published";
         public static final @Nonnull String PUZZLES_SERVER_IDS  = "puzzlesServerIds";
     }
 
@@ -218,6 +229,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String ID              = "_id";
         public static final @Nonnull String SCORE           = "score";
         public static final @Nonnull String PUZZLE_ID       = "puzzleId";
+    }
+
+    public static final class ColsPurchases
+    {
+        public static final @Nonnull String ID                      = "_id";
+        public static final @Nonnull String CLIENT_ID               = "clientId";
+        public static final @Nonnull String GOOGLE_ID               = "googleId";
+        public static final @Nonnull String PRICE                   = "price";
+        public static final @Nonnull String GOOGLE_PURCHASE         = "google_purchase";
+        public static final @Nonnull String SERVER_PURCHASE         = "server_purchase";
     }
 
     // ===============================================
@@ -317,6 +338,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         db.execSQL(CREATE_PUZZLE_QUESTIONS_QUERY);
         db.execSQL(CREATE_COEFFICIENTS_QUERY);
         db.execSQL(CREATE_SCORE_QUEUE_QUERY);
+        db.execSQL(CREATE_PURCHASES);
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.score.UploadScoreQueueModel;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
 
@@ -46,7 +47,8 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull IBcConnector mBcConnector;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Activity activity)
+    {
         super.onAttach(activity);
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
@@ -110,8 +112,10 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == SherlockFragmentActivity.RESULT_OK) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == SherlockFragmentActivity.RESULT_OK)
+        {
 
             String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
             SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
@@ -121,21 +125,24 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
             UploadScoreQueueModel uploadScore = new UploadScoreQueueModel(mBcConnector, sessionKey);
             uploadScore.upload();
 
-            switch (requestCode){
-                case  REQUEST_LOGIN_FB: {
+            switch (requestCode)
+            {
+                case REQUEST_LOGIN_FB:
+                {
                     //успешно авторизовались в facebook
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     mAuthorization.onAuthotized();
                 }
                 break;
-                case REQUEST_LOGIN_VK: {
+                case REQUEST_LOGIN_VK:
+                {
                     //успешно авторизовались в vkontakte
                     mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     mAuthorization.onAuthotized();
                 }
                 break;
                 default:
-                break;
+                    break;
             }
         }
     }
