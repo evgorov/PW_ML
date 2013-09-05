@@ -8,7 +8,7 @@
 
     <!-- =================================================================================== -->
 
-    <FrameLayout
+    <com.ltst.prizeword.crossword.view.BackFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -32,7 +32,7 @@
                 android:text="@string/puzzless_hint_actionbar_title"
                 />
 
-    </FrameLayout>
+    </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
     <!-- =================================================================================== -->
 
@@ -96,17 +96,20 @@
 
             </RelativeLayout>
 
-            <FrameLayout
+            <com.ltst.prizeword.crossword.view.BackFrameLayout
+                android:id="@+id/crossword_fragment_layout_container1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/crossword_fragment_layout_back_contained1"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp">
 
                     <ImageView
+                        android:id="@+id/crossword_fragment_layout_back_image1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/crossword_panel_bg_title"/>
@@ -208,15 +211,17 @@
                 </LinearLayout>
 
 
-            </FrameLayout>
+            </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
             <!-- =================================================================================== -->
 
-            <FrameLayout
+            <com.ltst.prizeword.crossword.view.BackFrameLayout
+                android:id="@+id/crossword_fragment_layout_container2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/crossword_fragment_layout_back_contained2"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -377,17 +382,19 @@
 
                 </LinearLayout>
 
-            </FrameLayout>
+            </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
             <!-- =================================================================================== -->
 
-            <FrameLayout
+            <com.ltst.prizeword.crossword.view.BackFrameLayout
+                android:id="@+id/crossword_fragment_layout_container3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     >
 
                 <LinearLayout
+                    android:id="@+id/crossword_fragment_layout_back_contained3"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -426,7 +433,7 @@
                         android:visibility="visible"
                         style="?android:attr/progressBarStyleLarge"
                         />
-            </FrameLayout>
+            </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -257,8 +257,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid
-            updateCurrentSetsHandler = new IListenerVoid()
+    private IListenerVoid updateCurrentSetsHandler = new IListenerVoid()
     {
         @Override
         public void handle()

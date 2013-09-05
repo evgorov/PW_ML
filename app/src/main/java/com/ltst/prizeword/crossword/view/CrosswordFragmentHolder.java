@@ -3,8 +3,11 @@ package com.ltst.prizeword.crossword.view;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -14,6 +17,8 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+
+import org.omich.velo.handlers.IListenerVoid;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -97,12 +102,32 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mRestPanelLL;
         @Nonnull public LinearLayout mCrosswordsContainerLL;
 
+        @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
+        @Nonnull public LinearLayout mCrosswordsBackgroud;
+        @Nonnull public ImageView mCrosswordsBackgroudImage;
+
         public CrosswordPanelCurrentHolder(@Nonnull View view){
 
             mMonthTV = (TextView) view.findViewById(R.id.crossword_fragment_current_month);
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
             mRestPanelLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_remain_panel);
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_container);
+            mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container1);
+            mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained1);
+            mCrosswordsBackgroudImage = (ImageView) view.findViewById(R.id.crossword_fragment_layout_back_image1);
+
+            mCrosswordsContainerBackgroud.setOnResizeListener(new IListenerVoid() {
+                @Override
+                public void handle() {
+                    int height = mCrosswordsContainerBackgroud.getHeight();
+                    mCrosswordsBackgroud.getLayoutParams().height = height;
+                    mCrosswordsBackgroud.requestLayout();
+
+                    mCrosswordsBackgroudImage.getLayoutParams().height = height;
+                    mCrosswordsBackgroudImage.requestLayout();
+                }
+            });
+
         }
     }
 
