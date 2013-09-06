@@ -18,6 +18,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.tools.DeclensionTools;
 
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -79,6 +80,9 @@ public class CrosswordFragmentHolder {
                 mContext.getResources().getStringArray(R.array.menu_group_months_at_imenit_padezh)[month]);
 
         mCrosswordPanelCurrent.mRestDaysTV.setText(String.valueOf(restDays));
+        String[] days = mContext.getResources().getStringArray(R.array.puzzless_hint_rest_days);
+        mCrosswordPanelCurrent.mRestTextDaysTV.setText(DeclensionTools.units(restDays,days));
+        mCrosswordPanelCurrent.mRestPanelLL.setVisibility(restDays > 5 ? View.GONE : View.VISIBLE); // скрываем панель, если осталось >5 дней
         mCrosswordPanelCurrent.mRestPanelLL.setBackgroundDrawable(
                 mContext.getResources().getDrawable(restDays > scopeDays
                 ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
@@ -102,6 +106,7 @@ public class CrosswordFragmentHolder {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
+        @Nonnull public TextView mRestTextDaysTV;
         @Nonnull public LinearLayout mRestPanelLL;
         @Nonnull public LinearLayout mCrosswordsContainerLL;
         @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
@@ -110,6 +115,7 @@ public class CrosswordFragmentHolder {
 
             mMonthTV = (TextView) view.findViewById(R.id.crossword_fragment_current_month);
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
+            mRestTextDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_textdays);
             mRestPanelLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_remain_panel);
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_container);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container1);

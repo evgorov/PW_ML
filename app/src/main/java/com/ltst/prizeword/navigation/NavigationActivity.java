@@ -189,7 +189,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             // billing...
             return;
         }
-        
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK)

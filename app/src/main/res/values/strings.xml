@@ -29,7 +29,6 @@
     <string name="puzzless_rest_scope_days">7</string>
     <string name="puzzless_hint_hints">Подсказки</string>
     <string name="puzzless_hint_rest_abr">Ост.</string>
-    <string name="puzzless_hint_rest_days">дня</string>
     <string name="puzzless_hint_crosswords_on">Сканворды за</string>
     <string name="puzzless_hint_archives">Архив</string>
     <string name="puzzless_hint_hints_rest">Осталось:</string>
@@ -155,6 +154,13 @@
         <item>ноябрь</item>
         <item>декабрь</item>
     </string-array>
+
+    <string-array name="puzzless_hint_rest_days">
+        <item>день</item>
+        <item>дня</item>
+        <item>дней</item>
+    </string-array>
+
 
     // ==== GameField text ====
     <string name="gamefield_percent">% решено</string>

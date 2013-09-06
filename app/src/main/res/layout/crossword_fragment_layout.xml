@@ -185,10 +185,11 @@
                                             />
 
                                         <TextView
+                                            android:id="@+id/crossword_fragment_current_remain_count_textdays"
                                             android:layout_marginLeft="2dp"
                                             android:textSize="10sp"
                                             style="@style/PuzzlesHintWhiteTextStyle"
-                                            android:text="@string/puzzless_hint_rest_days"
+                                            android:text="дня"
                                             />
                                     </LinearLayout>
                                 </LinearLayout>
