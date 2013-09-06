@@ -99,11 +99,14 @@
 
             <!-- ========================== CURRENT SET ========================================================= -->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container1"
-                android:measureAllChildren="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/crossword_fragment_layout_back_contained1"
@@ -206,13 +209,17 @@
                 </LinearLayout>
 
             </com.ltst.prizeword.crossword.view.BackFrameLayout>
+        </LinearLayout>
 
             <!-- =========================== HINTS ======================================================== -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
             <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/crossword_fragment_layout_back_contained2"
@@ -378,13 +385,19 @@
 
             </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
+        </LinearLayout>
+
             <!-- ========================= ARCHIVe SETS ========================================================== -->
 
-            <com.ltst.prizeword.crossword.view.BackFrameLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container3"
                 android:measureAllChildren="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 >
 
@@ -420,6 +433,8 @@
 
                 </LinearLayout>
             </com.ltst.prizeword.crossword.view.BackFrameLayout>
+
+        </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
