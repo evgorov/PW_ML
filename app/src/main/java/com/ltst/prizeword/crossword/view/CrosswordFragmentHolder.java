@@ -148,10 +148,9 @@ public class CrosswordFragmentHolder {
         @Nonnull protected IListenerVoid mResizeListenerHandler =  new IListenerVoid() {
             @Override
             public void handle() {
-                int height = mCrosswordsContainerBackgroud.getHeight()-mCrosswordsBackgroud.getPaddingBottom();
-                mCrosswordsBackgroud.getLayoutParams().height = height;
-                mCrosswordsBackgroud.requestLayout();
-
+//                int height = mCrosswordsContainerBackgroud.getHeight()-mCrosswordsBackgroud.getPaddingBottom();
+//                mCrosswordsBackgroud.getLayoutParams().height = height;
+//                mCrosswordsBackgroud.requestLayout();
             }
         };
     }

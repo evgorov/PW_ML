@@ -241,9 +241,12 @@ public class CrosswordsFragment extends SherlockFragment
                     skipProgressBar();
                     return;
                 }
+                skipProgressBar();
+            }
+            else
+            {
             }
             mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
-
         }
     };
 
