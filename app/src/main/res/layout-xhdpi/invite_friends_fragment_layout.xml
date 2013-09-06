@@ -43,23 +43,44 @@
             android:orientation="vertical"
             android:background="@drawable/login_bg_tile"
             >
-        <ProgressBar
-                android:id="@+id/list_progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:visibility="visible"
-                style="?android:attr/progressBarStyleLarge"
-                />
 
-        <ListView
-                android:id="@+id/vk_friends_listview"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:background="@drawable/invite_bg_tile"
-                android:listSelector="@android:color/transparent"
-                android:visibility="gone"
-                />
+        <ProgressBar
+            android:id="@+id/list_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            style="?android:attr/progressBarStyleLarge"
+            />
+
+        <LinearLayout
+            android:id="@+id/vk_friends_container"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <FrameLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/crossword_panel_bg_title"/>
+
+                <ListView
+                    android:id="@+id/vk_friends_listview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:listSelector="@android:color/transparent"
+                    />
+            </FrameLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

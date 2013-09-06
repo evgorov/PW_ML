@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -37,6 +38,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nonnull Button mMenuBtn;
     private @Nonnull Button mInviteAllBtn;
     private @Nonnull ListView mFriendsListView;
+    private @Nonnull LinearLayout mFriendsContainer;
     private @Nonnull InviteFragmentAdapter mAdapter;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
 
@@ -68,6 +70,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
         mInviteAllBtn = (Button) v.findViewById(R.id.header_invite_all_btn);
         mFriendsListView = (ListView)v.findViewById(R.id.vk_friends_listview);
+        mFriendsContainer = (LinearLayout)v.findViewById(R.id.vk_friends_container);
         mHeaderImage = new ImageView(mContext);
         mFooterImage = new ImageView(mContext);
         mHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
@@ -193,7 +196,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             ProgressBar bar = mProgressBar;
             assert bar !=null;
             bar.setVisibility(View.GONE);
-            mFriendsListView.setVisibility(View.VISIBLE);
+//            mFriendsListView.setVisibility(View.VISIBLE);
+            mFriendsContainer.setVisibility(View.VISIBLE);
             mDataRequested = false;
         }
     };

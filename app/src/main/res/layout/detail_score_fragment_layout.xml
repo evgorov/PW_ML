@@ -33,27 +33,37 @@
 
     </FrameLayout>
     <!-- =================================================================================== -->
-    <FrameLayout
-            android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <FrameLayout
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/crossword_panel_bg_title"/>
 
-        <ListView
+            <ListView
                 android:id="@+id/score_listview"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:background="@drawable/crossword_panel_bg_title"
                 android:listSelector="@android:color/transparent"
                 android:visibility="visible">
 
-            <!--@TODO input brillian current crossword-->
-            <!--<include layout="@layout/crossword_panel_current"/>-->
+                <!--@TODO input brillian current crossword-->
+                <!--<include layout="@layout/crossword_panel_current"/>-->
 
 
-        </ListView>
-    </FrameLayout>
+            </ListView>
+        </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
             android:layout_height="wrap_content"
