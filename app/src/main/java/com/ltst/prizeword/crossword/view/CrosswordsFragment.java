@@ -222,7 +222,7 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
-//            createCrosswordPanel();
+            createCrosswordPanel();
             @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
 
             if (!puzzleSets.isEmpty())
@@ -253,7 +253,7 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
-//            createCrosswordPanel();
+            createCrosswordPanel();
             skipProgressBar();
         }
     };

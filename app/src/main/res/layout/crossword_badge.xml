@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:background="@drawable/puzzles_badge_done_bg">
 
-    <LinearLayout
-        android:id="@+id/crossword_badge_bg"
+    <RelativeLayout
+        android:id="@+id/crossword_badge_sfhgfdh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="@drawable/puzzles_badges_bg_brilliant">
+        android:layout_centerHorizontal="true"
+        >
+        <LinearLayout
+            android:id="@+id/crossword_badge_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/puzzles_badges_bg_brilliant">
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/crossword_badge_fg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="4dp"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:background="@drawable/puzzles_badges_bg_unresolved">
-
-            <LinearLayout
-                android:id="@+id/crossword_badge_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/crossword_number_brilliant_1">
-            </LinearLayout>
-
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/crossword_badge_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:background="@drawable/crossword_number_brilliant_1">
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/crossword_badge_unresolved_container"
         android:orientation="vertical"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:layout_below="@+id/crossword_badge_sfhgfdh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -78,9 +87,11 @@
 
     <LinearLayout
         android:id="@+id/crossword_badge_resolved_container"
+        android:layout_below="@+id/crossword_badge_unresolved_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_margin="4dp"
         android:gravity="center">
 
@@ -101,4 +112,4 @@
             />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
