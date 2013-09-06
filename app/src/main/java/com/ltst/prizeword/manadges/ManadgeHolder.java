@@ -99,7 +99,6 @@ public class ManadgeHolder {
 
     public void instance()
     {
-        Log.d(NavigationActivity.LOG_TAG, "INSTANCE");
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
         mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
         {
@@ -119,7 +118,6 @@ public class ManadgeHolder {
     {
         if (mIabHelper != null)
         {
-            Log.d(NavigationActivity.LOG_TAG, "DESPOSE");
             mIabHelper.dispose();
         }
         mIabHelper = null;
@@ -136,7 +134,7 @@ public class ManadgeHolder {
             case set_gold:          return GOOGLE_PLAY_PRODUCT_ID_SET_GOLD;
             case set_silver:        return GOOGLE_PLAY_PRODUCT_ID_SET_SILVER;
             case set_silver2:       return GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2;
-            case test_success:  return GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
+            case test_success:      return GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
             case test_cancel:       return GOOGLE_PLAY_TEST_PRODUCT_CANCEL;
             case test_refunded:     return GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
             case test_unavailable:  return GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
@@ -206,13 +204,11 @@ public class ManadgeHolder {
 
     public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
     {
-        Log.d(NavigationActivity.LOG_TAG, "ADD HANDLER");
         mHandlerReloadPriceList.add(handler);
     }
 
     public void reloadPrice()
     {
-        Log.d(NavigationActivity.LOG_TAG, "RELOAD PRICES");
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
         List<String> additionalSkuList = new ArrayList<String>();
         for(ManadgeProduct product : ManadgeProduct.values()) {
@@ -315,6 +311,7 @@ public class ManadgeHolder {
                 }
             }
 
+
             mIPurchaseSetModel.reloadPurchases(new IListenerVoid() {
                 @Override
                 public void handle() {
@@ -363,9 +360,6 @@ public class ManadgeHolder {
     @Nonnull IListenerVoid mReloadPricesHandler = new IListenerVoid() {
         @Override
         public void handle() {
-            Log.d(NavigationActivity.LOG_TAG, "SEND RELOAD PRICE!");
-            Log.d(NavigationActivity.LOG_TAG, "COUNT HANDLER: "+mHandlerReloadPriceList.size());
-
             for(IListenerVoid handle : mHandlerReloadPriceList)
             {
                 handle.handle();
