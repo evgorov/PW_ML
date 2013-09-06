@@ -34,7 +34,7 @@
 
     </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
-    <!-- =================================================================================== -->
+    <!-- ================================= NEWS ================================================== -->
 
     <ScrollView
             android:layout_width="match_parent"
@@ -95,6 +95,8 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <!-- ========================== CURRENT SET ========================================================= -->
 
             <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container1"
@@ -191,7 +193,6 @@
                                             />
                                 </LinearLayout>
                             </LinearLayout>
-
                         </LinearLayout>
                     </LinearLayout>
 
@@ -203,17 +204,14 @@
                             android:layout_width="match_parent">
 
                         <!--@TODO input brillian current crossword-->
-                        <!--<include layout="@layout/crossword_panel_current"/>-->
 
                     </LinearLayout>
 
-
                 </LinearLayout>
-
 
             </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
-            <!-- =================================================================================== -->
+            <!-- =========================== HINTS ======================================================== -->
 
             <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container2"
@@ -384,7 +382,7 @@
 
             </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
-            <!-- =================================================================================== -->
+            <!-- ========================= ARCHIVe SETS ========================================================== -->
 
             <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container3"
