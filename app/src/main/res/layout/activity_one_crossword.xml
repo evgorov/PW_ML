@@ -97,7 +97,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:paddingLeft="20dp"
                                 style="@style/GamefieldPercentText"
-                                android:text="20"
+                                android:text="0"
                                 />
 
                         <TextView
@@ -183,7 +183,7 @@
                                 >
 
                             <ToggleButton
-                                    android:id="@+id/pause_music_switcher"
+                                    android:id="@+id/pause_sounds_switcher"
                                     android:layout_width="85dp"
                                     android:layout_height="43dp"
                                     android:textOn=""
@@ -192,7 +192,7 @@
                                     android:layout_marginTop="2dp"/>
 
                             <ToggleButton
-                                    android:id="@+id/pause_sounds_switcher"
+                                    android:id="@+id/pause_music_switcher"
                                     android:layout_width="85dp"
                                     android:layout_height="43dp"
                                     android:textOn=""

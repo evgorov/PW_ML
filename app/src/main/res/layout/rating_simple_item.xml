@@ -92,38 +92,44 @@
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginBottom="7dp">
+                    android:layout_marginBottom="5dp">
 
                 <TextView
                         android:id="@+id/rating_item_solved"
                         android:layout_height="wrap_content"
-                        android:layout_width="25dp"
+                        android:layout_width="wrap_content"
                         android:maxLines="1"
-                        android:maxWidth="30dp"
+                        android:maxWidth="25dp"
                         android:layout_marginLeft="20dp"
                         android:text="021"
-
+                        style="@style/Rating_bold_number_text"
                         />
+
                 <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:maxLines="1"
                         android:textSize="12sp"
                         android:text="отгадано"
+                        style="@style/Rating_text_number_text"
+                        />
 
-                        />
-                <TextView
-                        android:id="@+id/rating_item_score"
-                        android:layout_height="wrap_content"
-                        android:layout_width="30dp"
-                        android:maxLines="1"
-                        android:maxWidth="30dp"
-                        android:layout_marginLeft="20dp"
-                        android:text="0"
-                        />
+
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+                android:id="@+id/rating_item_score"
+                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:maxLines="1"
+                android:maxWidth="30dp"
+                android:layout_marginLeft="15dp"
+                android:text="0"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="2dp"
+                style="@style/Rating_bold_number_text"
+                />
     </LinearLayout>
 
 </FrameLayout>

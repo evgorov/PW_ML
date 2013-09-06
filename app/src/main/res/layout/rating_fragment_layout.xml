@@ -52,6 +52,7 @@
                 android:layout_width="fill_parent"
                 android:clickable="false"
                 android:background="@drawable/invite_bg_tile"
+                android:listSelector="@android:color/transparent"
                 android:visibility="gone"
                 />
     </LinearLayout>

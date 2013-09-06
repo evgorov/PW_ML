@@ -10,6 +10,7 @@ import com.ltst.prizeword.db.DbService;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,9 +34,9 @@ public class CoefficientsModel implements ICoefficientsModel
     }
 
     @Override
-    public void updateFromInternet()
+    public void updateFromInternet(@Nullable IListenerVoid handler)
     {
-        mInternetUpdater.update(null);
+        mInternetUpdater.update(handler);
     }
 
     @Nullable

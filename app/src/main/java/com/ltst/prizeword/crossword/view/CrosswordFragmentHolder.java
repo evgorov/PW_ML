@@ -32,7 +32,8 @@ import javax.annotation.Nonnull;
 /**
  * Created by cosic on 12.08.13.
  */
-public class CrosswordFragmentHolder {
+public class CrosswordFragmentHolder
+{
 
     private static @Nonnull LayoutInflater mInflater;
     private @Nonnull ICrosswordFragment mICrosswordFragment;
@@ -61,7 +62,7 @@ public class CrosswordFragmentHolder {
 
         mListCrosswordSet = new HashMap<Long, CrosswordSet>();
         mListCrosswordSetMonth = new HashMap<Integer, CrosswordSetMonth>();
-        
+
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
         mCrosswordPanelBuy = new CrosswordPanelBuyHolder(view);
@@ -71,7 +72,7 @@ public class CrosswordFragmentHolder {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
-        int restDays = monthMaxDays - day+1;
+        int restDays = monthMaxDays - day + 1;
 
 //        DateFormatSymbols symbols = new DateFormatSymbols();
 //        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
@@ -85,24 +86,27 @@ public class CrosswordFragmentHolder {
         mCrosswordPanelCurrent.mRestPanelLL.setVisibility(restDays > 5 ? View.GONE : View.VISIBLE); // скрываем панель, если осталось >5 дней
         mCrosswordPanelCurrent.mRestPanelLL.setBackgroundDrawable(
                 mContext.getResources().getDrawable(restDays > scopeDays
-                ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
-                : R.drawable.puzzles_current_puzzles_head_rest_panel_clitical));
+                        ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
+                        : R.drawable.puzzles_current_puzzles_head_rest_panel_clitical));
 
     }
 
     @Nonnull
-    public HashMap<String, List<PuzzleSet>> getMapSets() {
+    public HashMap<String, List<PuzzleSet>> getMapSets()
+    {
         return mMapSets;
     }
 
     @Nonnull
-    public HashMap<String, List<Puzzle>> getMapPuzzles() {
+    public HashMap<String, List<Puzzle>> getMapPuzzles()
+    {
         return mMapPuzzles;
     }
 
     // ================== CROSSWORD PANELS ======================
 
-    static private class CrosswordPanelCurrentHolder {
+    static private class CrosswordPanelCurrentHolder
+    {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
@@ -111,7 +115,8 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
         @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
 
-        public CrosswordPanelCurrentHolder(@Nonnull View view){
+        public CrosswordPanelCurrentHolder(@Nonnull View view)
+        {
 
             mMonthTV = (TextView) view.findViewById(R.id.crossword_fragment_current_month);
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
@@ -133,7 +138,8 @@ public class CrosswordFragmentHolder {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
             @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
 
-        public CrosswordPanelArchiveHolder(@Nonnull View view){
+        public CrosswordPanelArchiveHolder(@Nonnull View view)
+        {
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container3);
         }
@@ -141,7 +147,7 @@ public class CrosswordFragmentHolder {
 
     private CrosswordSet getCrosswordSet(long id)
     {
-        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext,mICrosswordFragment);
+        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext, mICrosswordFragment);
     }
 
     private CrosswordSetMonth getCrosswordSetMonth(int month)
@@ -165,23 +171,23 @@ public class CrosswordFragmentHolder {
         data.mProgress = 0;
         data.mTotalCount = 0;
         data.mTotalCount = 0;
-        return  data;
+        return data;
     }
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
-        if(!sets.isEmpty())
+        if (!sets.isEmpty())
         {
             PuzzleSet set = sets.get(0);
-            String key = String.format("%d-%d",set.year,set.month);
-            if(mMapSets.containsKey(key))
+            String key = String.format("%d-%d", set.year, set.month);
+            if (mMapSets.containsKey(key))
                 mMapSets.remove(key);
             mMapSets.put(key, sets);
         }
 
         for (String key : mapPuzzles.keySet())
         {
-            if(mMapPuzzles.containsKey(key))
+            if (mMapPuzzles.containsKey(key))
                 mMapPuzzles.remove(key);
             mMapPuzzles.put(key, mapPuzzles.get(key));
         }
@@ -191,20 +197,21 @@ public class CrosswordFragmentHolder {
             CrosswordPanelData data = extractCrosswordPanelData(set);
             addPanel(data);
             @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
+
             int solved = 0;
             int scores = 0;
             int percents = 0;
-            for(@Nonnull Puzzle puzzle : puzzles)
+            for (@Nonnull Puzzle puzzle : puzzles)
             {
                 addBadge(puzzle);
-                percents+=puzzle.solvedPercent;
-                scores+=puzzle.score;
-                if(puzzle.isSolved)
+                percents += puzzle.solvedPercent;
+                scores += puzzle.score;
+                if (puzzle.isSolved)
                     solved++;
             }
-            if(puzzles.size() != 0)
+            if (puzzles.size() != 0)
             {
-                percents = percents/puzzles.size();
+                percents = percents / puzzles.size();
             }
             data.mScore = scores;
             data.mProgress = percents;
@@ -219,12 +226,12 @@ public class CrosswordFragmentHolder {
         @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
         @Nonnull CrosswordSet crosswordSet = getCrosswordSet(data.mId);
         crosswordSet.fillPanel(data);
-        if(!mListCrosswordSet.containsKey(data.mId))
+        if (!mListCrosswordSet.containsKey(data.mId))
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
             crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet);
         }
-        if(!mListCrosswordSetMonth.containsKey(data.mMonth))
+        if (!mListCrosswordSetMonth.containsKey(data.mMonth))
         {
             mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
@@ -248,8 +255,9 @@ public class CrosswordFragmentHolder {
         }
     }
 
-    private void addBadge(@Nonnull Puzzle puzzle){
-        if(puzzle == null) return;
+    private void addBadge(@Nonnull Puzzle puzzle)
+    {
+        if (puzzle == null) return;
         BadgeData data = new BadgeData();
         data.mId = puzzle.id;
         data.mServerId = puzzle.serverId;

@@ -361,6 +361,21 @@ public class RestClient implements IRestClient
         return holder;
     }
 
+    @Nullable @Override public RestNews getNews(@Nonnull String sessionKey)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        ResponseEntity<RestNews> holder =
+                restTemplate.exchange(RestParams.URL_GET_NEWS, HttpMethod.GET, requestEntity, RestNews.class, urlVariables);
+        return holder.getBody();
+    }
+
     @Nullable
     @Override
     public RestPuzzleTotalSet.RestPuzzleSetsHolder getTotalPublishedSets(@Nonnull String sessionKey, int year, int month)

@@ -15,17 +15,6 @@
             android:layout_marginRight="20dp">
 
         <LinearLayout
-                android:id="@+id/score_crossword_panel_splitter"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/puzzles_set_delimeter">
-
-        </LinearLayout>
-
-        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,15 +58,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="1dp"
-                            android:background="@drawable/score_right_top_score_icon"/>
+                            android:background="@drawable/score_right_top_score_icon"
+                            android:layout_marginLeft="5dp"/>
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"/>
 
                     <TextView
                             android:id="@+id/score_crossword_panel"
                             android:layout_marginLeft="5dp"
                             style="@style/ScoreTopPanelText"
-                            android:text="21212"
+                            android:text="322"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"/>
 
                 </LinearLayout>
 
@@ -97,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
                     android:gravity="center_vertical">
 
                 <TextView
@@ -163,5 +160,17 @@
             <!--@TODO add crosswords panels-->
 
         </com.ltst.prizeword.crossword.view.BadgeGridView>
+
+        <LinearLayout
+                android:id="@+id/score_crossword_panel_splitter"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/puzzles_set_delimeter"
+                android:visibility="visible">
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

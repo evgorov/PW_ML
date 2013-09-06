@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -14,24 +16,27 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
-import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.crossword.view.ICrosswordFragment;
+import com.ltst.prizeword.invitefriends.view.InviteFriendsFragment;
+import com.ltst.prizeword.login.model.UserData;
+import com.ltst.prizeword.login.model.UserDataModel;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.scoredetailfragment.model.ScoreDataModel;
 import com.ltst.prizeword.scoredetailfragment.model.SolvedPuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ScoreDetailFragment extends SherlockFragment
+public class ScoreDetailFragment extends SherlockFragment implements View.OnClickListener
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.scoreDetailFragment.scoredetailfragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = ScoreDetailFragment.class.getName();
@@ -47,6 +52,15 @@ public class ScoreDetailFragment extends SherlockFragment
     private @Nullable CoefficientsModel mCoefModel;
     private @Nonnull View mFooterView;
     private @Nonnull View mCrosswordView;
+    private @Nonnull TextView mScoreInvitedCount;
+    private @Nonnull TextView mScoreTV;
+    private @Nonnull TextView mFriendTV;
+    private @Nonnull TextView mScoreInMonth;
+    private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull Button mInviteBtn;
+    private @Nonnull Button mMenuBtn;
+    private @Nonnull IFragmentsHolderActivity mINavigationActivity;
+    private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
 
     private @Nonnull ScoreCrosswordFragmentHolder mScoreHolder;
 
@@ -55,6 +69,12 @@ public class ScoreDetailFragment extends SherlockFragment
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mCoefModel = new CoefficientsModel(mSessionKey, mBcConnector);
+        mCoefModel.updateFromInternet(mRefreshCoef);
+        mUserDataModel = new UserDataModel(mContext, mBcConnector);
+        mUserDataModel.loadUserDataFromInternet(mRefreshUserData);
+        mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
+        mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
     }
 
@@ -65,9 +85,15 @@ public class ScoreDetailFragment extends SherlockFragment
 
 
         mScoreListVeiw = (ListView) v.findViewById(R.id.score_listview);
-        mFooterView = inflater.inflate(R.layout.score_footer,null);
-        mCrosswordView = inflater.inflate(R.layout.score_crossword_panel_container,null);
-        mScoreHolder = new ScoreCrosswordFragmentHolder(mContext, this, inflater,mCrosswordView);
+        mFooterView = inflater.inflate(R.layout.score_footer, null);
+        mInviteBtn = (Button) mFooterView.findViewById(R.id.score_invite_btn);
+        mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
+        mCrosswordView = inflater.inflate(R.layout.score_crossword_panel_container, null);
+        mScoreInvitedCount = (TextView) mCrosswordView.findViewById(R.id.score_invited_panel_ratio);
+        mScoreTV = (TextView) mCrosswordView.findViewById(R.id.score_invited_score);
+        mFriendTV = (TextView) mCrosswordView.findViewById(R.id.score_friends_name_from_count);
+        mScoreInMonth = (TextView) v.findViewById(R.id.score_in_month_header);
+        mScoreHolder = new ScoreCrosswordFragmentHolder(mContext, this, inflater, mCrosswordView);
         mScoreListVeiw.setDivider(null);
         mScoreListVeiw.addFooterView(mFooterView);
         mScoreListVeiw.addHeaderView(mCrosswordView);
@@ -98,7 +124,8 @@ public class ScoreDetailFragment extends SherlockFragment
         ScoreDetailAdapter adapter = mScoreDetailAdapter;
         if (adapter == null)
         {
-            adapter = new ScoreDetailAdapter(mContext, mFriendDataModel);
+
+            adapter = new ScoreDetailAdapter(mContext, mFriendDataModel, mCoefModel);
             mScoreDetailAdapter = adapter;
             adapter.setRefreshHandler(mRefreshHandler);
             mScoreListVeiw.setAdapter(mScoreDetailAdapter);
@@ -121,7 +148,11 @@ public class ScoreDetailFragment extends SherlockFragment
         if (adapter != null)
         {
             adapter.updateByInternet();
+            adapter.updateCoefBynternet();
         }
+        mInviteBtn.setOnClickListener(this);
+        mMenuBtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -146,7 +177,8 @@ public class ScoreDetailFragment extends SherlockFragment
         {
             friendsmodel.close();
             mFriendDataModel = null;
-            mPuzzleSetModel=null;
+            mPuzzleSetModel = null;
+            mCoefModel = null;
             mScoreDetailAdapter = null;
         }
         super.onDestroy();
@@ -167,7 +199,6 @@ public class ScoreDetailFragment extends SherlockFragment
         public void handle()
         {
             createCrosswordPanel();
-
             if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
             {
                 //skipProgressBar();
@@ -189,14 +220,6 @@ public class ScoreDetailFragment extends SherlockFragment
         }
     };
 
-    private IListenerInt hintsChangeHandler = new IListenerInt()
-    {
-        @Override
-        public void handle(int i)
-        {
-//            mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
-        }
-    };
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
     {
         @Override
@@ -206,7 +229,55 @@ public class ScoreDetailFragment extends SherlockFragment
             //assert bar !=null;
             //bar.setVisibility(View.GONE);
             //mScoreListVeiw.setVisibility(View.VISIBLE);
+
         }
     };
 
+    private final @Nonnull IListenerVoid mRefreshCoef = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            assert mScoreDetailAdapter != null;
+            int count = mScoreDetailAdapter.getCountFriends();
+            String[] str = mContext.getResources().getStringArray(R.array.friends_name_from_count);
+            if (Integer.toString(count).endsWith("2") || Integer.toString(count).endsWith("3") || Integer.toString(count).endsWith("4"))
+                mFriendTV.setText(str[1]);
+            else if (Integer.toString(count).endsWith("1"))
+                mFriendTV.setText(str[0]);
+            else
+                mFriendTV.setText(str[2]);
+            mScoreInvitedCount.setText(Integer.toString(count));
+            assert mCoefModel != null;
+            mScoreTV.setText(Integer.toString(mCoefModel.getCoefficients().friendBonus * count));
+
+        }
+    };
+
+    private final @Nonnull IListenerVoid mRefreshUserData = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            Calendar cal = Calendar.getInstance();
+            int month = cal.get(Calendar.MONTH);
+            UserData data = mUserDataModel.getUserData();
+            int score = data.monthScore;
+            mScoreInMonth.setText(Integer.toString(data.monthScore));
+            mScoreInMonth.append(" в " + mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
+        }
+    };
+
+    @Override public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.score_invite_btn:
+                mINavigationActivity.selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
+                break;
+            case R.id.header_menu_btn:
+                mINavigationDrawerHolder.toogle();
+                break;
+        }
+    }
 }

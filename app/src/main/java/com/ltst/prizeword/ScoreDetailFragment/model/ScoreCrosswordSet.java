@@ -41,6 +41,8 @@ public class ScoreCrosswordSet
 
     private @Nullable String mSetServerId = null;
 
+    private @Nonnull LinearLayout mPanelItem;
+    private @Nonnull LinearLayout mSplitter;
 
     public ScoreCrosswordSet(@Nonnull Context context)
     {
@@ -60,6 +62,8 @@ public class ScoreCrosswordSet
 
         pBadgeContainer = (BadgeGridView) mRootView.findViewById(R.id.score_crossword_panel_badges_container);
 
+        mPanelItem = (LinearLayout) mRootView.findViewById(R.id.score_crossword_panel_item);
+        mSplitter = (LinearLayout) mRootView.findViewById(R.id.score_crossword_panel_splitter);
     }
 
     public @Nonnull View getView()
@@ -75,6 +79,15 @@ public class ScoreCrosswordSet
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
+
+        if (data.mFirst)
+            mPanelItem.setBackgroundResource(R.drawable.score_item_scan_bg);
+        else
+            mPanelItem.setBackgroundResource(R.drawable.score_item_bg);
+        if (data.mLAst)
+            mSplitter.setVisibility(View.GONE);
+        else
+            mSplitter.setVisibility(View.VISIBLE);
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
