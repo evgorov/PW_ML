@@ -244,12 +244,22 @@ public class CrosswordFragmentHolder {
         if(!mListCrosswordSetMonth.containsKey(data.mMonth))
         {
             mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
-            if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT){
-                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
+            if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
+            {
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutGold);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver2);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutFree);
             }
             else{
-                if(data.mBought){
-                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth);
+                if(data.mBought)
+                {
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutGold);
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver);
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver2);
+                    mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutFree);
                 }
             }
         }
