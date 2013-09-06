@@ -34,8 +34,8 @@
     <string name="puzzless_hint_hints_rest">Осталось:</string>
     <string name="puzzless_hint_crosswords">сканвордов</string>
     <string name="puzzless_hint_minimal">минимум</string>
-    <string name="puzzless_hint_resolved">Разгаданно</string>
-    <string name="puzzless_hint_get_score">Набранно</string>
+    <string name="puzzless_hint_resolved">Разгадано</string>
+    <string name="puzzless_hint_get_score">Набрано</string>
     <string name="puzzless_hint_brilliant_crossword">Бриллиантовый</string>
     <string name="puzzless_hint_gold_crossword">Золотой</string>
     <string name="puzzless_hint_silver_crossword">Серебрянный</string>
