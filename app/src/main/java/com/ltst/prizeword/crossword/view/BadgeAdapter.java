@@ -261,7 +261,8 @@ public class BadgeAdapter extends BaseAdapter {
         if(data.mStatus)
         {
             // Решенные;
-            badge.mUnresolverContainer.setVisibility(View.GONE);
+            badge.mPercent.setVisibility(View.GONE);
+            badge.mProgress.getView().setVisibility(View.GONE);
             badge.mResolverContainer.setVisibility(View.VISIBLE);
             mClickable = true;
         }
@@ -269,7 +270,8 @@ public class BadgeAdapter extends BaseAdapter {
         {
             // Нерешенные;
             badge.mResolverContainer.setVisibility(View.GONE);
-            badge.mUnresolverContainer.setVisibility(View.VISIBLE);
+            badge.mPercent.setVisibility(View.VISIBLE);
+            badge.mProgress.getView().setVisibility(View.VISIBLE);
             mClickable = false;
         }
 

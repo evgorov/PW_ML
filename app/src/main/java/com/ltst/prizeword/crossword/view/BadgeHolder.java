@@ -25,7 +25,6 @@ public class BadgeHolder {
     @Nonnull TextView mPercent;
     @Nonnull CustomProgressBar mProgress;
 
-    @Nonnull LinearLayout mUnresolverContainer;
     @Nonnull LinearLayout mResolverContainer;
 
     public BadgeHolder( @Nonnull Context context, @Nullable View view ) {
@@ -39,7 +38,6 @@ public class BadgeHolder {
         mScore = (TextView) mRootView.findViewById(R.id.crossword_badge_score);
         mPercent = (TextView) mRootView.findViewById(R.id.crossword_badge_rercent);
 
-        mUnresolverContainer = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_unresolved_container);
         mResolverContainer = (LinearLayout) mRootView.findViewById(R.id.crossword_badge_resolved_container);
     }
 }

@@ -99,14 +99,14 @@
 
             <!-- ========================== CURRENT SET ========================================================= -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.ltst.prizeword.crossword.view.BackFrameLayout
-                android:id="@+id/crossword_fragment_layout_container1"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
+
+                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                    android:id="@+id/crossword_fragment_layout_container1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:padding="10dp"
@@ -116,302 +116,302 @@
                         android:scaleType="fitXY"/>
                     />
 
-                <LinearLayout
-                    android:id="@+id/crossword_fragment_current_container"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/frame_border">
-
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
+                        android:id="@+id/crossword_fragment_current_container"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                            android:textSize="@dimen/puzzles_badge_set_title_text_size"
-                            style="@style/PuzzlesHintTitleTextStyle"
-                            android:text="@string/puzzless_hint_crosswords_on"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"/>
-
-                        <TextView
-                            android:id="@+id/crossword_fragment_current_month"
-                            android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                            android:textSize="@dimen/puzzles_badge_set_title_text_size"
-                            style="@style/PuzzlesHintTitleTextStyle"
-                            android:text="апрель"/>
+                        android:layout_height="match_parent"
+                        android:background="@drawable/frame_border">
 
                         <LinearLayout
                             android:orientation="horizontal"
-                            android:gravity="right"
+                            android:gravity="center_vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <LinearLayout
-                                android:id="@+id/crossword_fragment_current_remain_panel"
-                                android:orientation="horizontal"
-                                android:gravity="center"
+                            <TextView
+                                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                                android:textSize="@dimen/puzzles_badge_set_title_text_size"
+                                style="@style/PuzzlesHintTitleTextStyle"
+                                android:text="@string/puzzless_hint_crosswords_on"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/puzzles_current_puzzles_head_rest_panel_nocritical">
+                                android:layout_height="match_parent"/>
 
-                                <ImageView
+                            <TextView
+                                android:id="@+id/crossword_fragment_current_month"
+                                android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
+                                android:textSize="@dimen/puzzles_badge_set_title_text_size"
+                                style="@style/PuzzlesHintTitleTextStyle"
+                                android:text="апрель"/>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:gravity="right"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_remain_panel"
+                                    android:orientation="horizontal"
+                                    android:gravity="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="1dp"
-                                    android:background="@drawable/puzzles_current_puzzles_head_rest_time_icon"/>
+                                    android:background="@drawable/puzzles_current_puzzles_head_rest_panel_nocritical">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="1dp"
+                                        android:background="@drawable/puzzles_current_puzzles_head_rest_time_icon"/>
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <TextView
+                                            android:layout_marginLeft="1dp"
+                                            android:textSize="10sp"
+                                            style="@style/PuzzlesHintWhiteTextStyle"
+                                            android:text="@string/puzzless_hint_rest_abr"
+                                            />
+
+                                        <TextView
+                                            android:id="@+id/crossword_fragment_current_remain_count_days"
+                                            android:layout_marginLeft="2dp"
+                                            android:textSize="10sp"
+                                            style="@style/PuzzlesHintWhiteTextStyle"
+                                            android:text="2"
+                                            />
+
+                                        <TextView
+                                            android:layout_marginLeft="2dp"
+                                            android:textSize="10sp"
+                                            style="@style/PuzzlesHintWhiteTextStyle"
+                                            android:text="@string/puzzless_hint_rest_days"
+                                            />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!--@TODO input brillian current crossword-->
+
+                    </LinearLayout>
+
+                </com.ltst.prizeword.crossword.view.BackFrameLayout>
+            </LinearLayout>
+
+            <!-- =========================== HINTS ======================================================== -->
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                    android:id="@+id/crossword_fragment_layout_container2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/crossword_panel_bg_title"
+                        android:scaleType="fitXY"/>
+                    />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/frame_border">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:paddingStart="4dp"
+                                android:textSize="18sp"
+                                style="@style/PuzzlesHintTitleTextStyle"
+                                android:text="@string/puzzless_hint_hints"/>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="right">
 
                                 <LinearLayout
                                     android:orientation="horizontal"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:background="@drawable/puzzles_hints_rest">
 
                                     <TextView
-                                        android:layout_marginLeft="1dp"
-                                        android:textSize="10sp"
+                                        android:layout_marginBottom="1dp"
+                                        android:textSize="12sp"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="@string/puzzless_hint_rest_abr"
-                                        />
+                                        android:text="@string/puzzless_hint_hints_rest"/>
 
                                     <TextView
-                                        android:id="@+id/crossword_fragment_current_remain_count_days"
-                                        android:layout_marginLeft="2dp"
-                                        android:textSize="10sp"
+                                        android:layout_marginBottom="1dp"
+                                        android:id="@+id/crossword_fragment_current_rest_count"
+                                        android:textSize="12sp"
+                                        android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="2"
                                         />
 
-                                    <TextView
-                                        android:layout_marginLeft="2dp"
-                                        android:textSize="10sp"
-                                        style="@style/PuzzlesHintWhiteTextStyle"
-                                        android:text="@string/puzzless_hint_rest_days"
-                                        />
                                 </LinearLayout>
                             </LinearLayout>
+
                         </LinearLayout>
-                    </LinearLayout>
-
-                    <!--@TODO input brillian current crossword-->
-
-                </LinearLayout>
-
-            </com.ltst.prizeword.crossword.view.BackFrameLayout>
-        </LinearLayout>
-
-            <!-- =========================== HINTS ======================================================== -->
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <com.ltst.prizeword.crossword.view.BackFrameLayout
-                android:id="@+id/crossword_fragment_layout_container2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/crossword_panel_bg_title"
-                    android:scaleType="fitXY"/>
-                />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/frame_border">
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:paddingStart="4dp"
-                            android:textSize="18sp"
-                            style="@style/PuzzlesHintTitleTextStyle"
-                            android:text="@string/puzzless_hint_hints"/>
 
                         <LinearLayout
                             android:orientation="horizontal"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:gravity="right">
+                            android:gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
                             <LinearLayout
-                                android:orientation="horizontal"
+                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:background="@drawable/puzzles_hints_rest">
+                                android:layout_margin="4dp"
+                                android:gravity="bottom"
+                                android:background="@drawable/puzzles_hints_panel10">
 
-                                <TextView
-                                    android:layout_marginBottom="1dp"
-                                    android:textSize="12sp"
-                                    style="@style/PuzzlesHintWhiteTextStyle"
-                                    android:text="@string/puzzless_hint_hints_rest"/>
+                                <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_10_btn"
+                                    android:orientation="horizontal"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:layout_margin="4dp"
+                                    android:background="@drawable/puzzles_buy_hints_but">
 
-                                <TextView
-                                    android:layout_marginBottom="1dp"
-                                    android:id="@+id/crossword_fragment_current_rest_count"
-                                    android:textSize="12sp"
-                                    android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
-                                    style="@style/PuzzlesHintWhiteTextStyle"
-                                    />
+                                    <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_10_price"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
+                                        style="@style/PuzzlesHintWhiteTextStyle"
+                                        android:text=""/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:gravity="bottom"
+                                android:background="@drawable/puzzles_hints_panel20">
+
+                                <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_20_btn"
+                                    android:orientation="horizontal"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:layout_margin="4dp"
+                                    android:background="@drawable/puzzles_buy_hints_but">
+
+                                    <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_20_price"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
+                                        style="@style/PuzzlesHintWhiteTextStyle"
+                                        android:text=""/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:gravity="bottom"
+                                android:background="@drawable/puzzles_hints_panel30">
+
+                                <LinearLayout
+                                    android:id="@+id/crossword_fragment_current_rest_buy_30_btn"
+                                    android:orientation="horizontal"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:layout_margin="4dp"
+                                    android:background="@drawable/puzzles_buy_hints_but">
+
+                                    <TextView
+                                        android:id="@+id/crossword_fragment_current_rest_buy_30_price"
+                                        android:textSize="@dimen/hint_buy_button_text_size"
+                                        style="@style/PuzzlesHintWhiteTextStyle"
+                                        android:text=""/>
+
+                                </LinearLayout>
 
                             </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:gravity="center_horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:gravity="bottom"
-                            android:background="@drawable/puzzles_hints_panel10">
-
-                            <LinearLayout
-                                android:id="@+id/crossword_fragment_current_rest_buy_10_btn"
-                                android:orientation="horizontal"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_margin="4dp"
-                                android:background="@drawable/puzzles_buy_hints_but">
-
-                                <TextView
-                                    android:id="@+id/crossword_fragment_current_rest_buy_10_price"
-                                    android:textSize="@dimen/hint_buy_button_text_size"
-                                    style="@style/PuzzlesHintWhiteTextStyle"
-                                    android:text=""/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:gravity="bottom"
-                            android:background="@drawable/puzzles_hints_panel20">
-
-                            <LinearLayout
-                                android:id="@+id/crossword_fragment_current_rest_buy_20_btn"
-                                android:orientation="horizontal"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_margin="4dp"
-                                android:background="@drawable/puzzles_buy_hints_but">
-
-                                <TextView
-                                    android:id="@+id/crossword_fragment_current_rest_buy_20_price"
-                                    android:textSize="@dimen/hint_buy_button_text_size"
-                                    style="@style/PuzzlesHintWhiteTextStyle"
-                                    android:text=""/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:gravity="bottom"
-                            android:background="@drawable/puzzles_hints_panel30">
-
-                            <LinearLayout
-                                android:id="@+id/crossword_fragment_current_rest_buy_30_btn"
-                                android:orientation="horizontal"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_margin="4dp"
-                                android:background="@drawable/puzzles_buy_hints_but">
-
-                                <TextView
-                                    android:id="@+id/crossword_fragment_current_rest_buy_30_price"
-                                    android:textSize="@dimen/hint_buy_button_text_size"
-                                    style="@style/PuzzlesHintWhiteTextStyle"
-                                    android:text=""/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </com.ltst.prizeword.crossword.view.BackFrameLayout>
-
-        </LinearLayout>
+            </LinearLayout>
 
             <!-- ========================= ARCHIVe SETS ========================================================== -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <com.ltst.prizeword.crossword.view.BackFrameLayout
-                android:id="@+id/crossword_fragment_layout_container3"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                >
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/crossword_panel_bg_title"
-                android:scaleType="fitXY"/>
-
-                <LinearLayout
-                    android:id="@+id/crossword_fragment_archive_container"
-                    android:orientation="vertical"
+                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                    android:id="@+id/crossword_fragment_layout_container3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/frame_border"
+                    android:layout_marginBottom="8dp"
                     >
 
-                    <TextView
-                        android:paddingStart="8dp"
-                        android:textSize="18sp"
-                        style="@style/PuzzlesHintTitleTextStyle"
-                        android:text="@string/puzzless_hint_archives"/>
+                    <ImageView
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/crossword_panel_bg_title"
+                        android:scaleType="fitXY"/>
 
-                    <!--@TODO input brillian current crossword-->
+                    <LinearLayout
+                        android:id="@+id/crossword_fragment_archive_container"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/frame_border"
+                        >
 
-                </LinearLayout>
-            </com.ltst.prizeword.crossword.view.BackFrameLayout>
+                        <TextView
+                            android:paddingStart="8dp"
+                            android:textSize="18sp"
+                            style="@style/PuzzlesHintTitleTextStyle"
+                            android:text="@string/puzzless_hint_archives"/>
 
-        </LinearLayout>
+                        <!--@TODO input brillian current crossword-->
+
+                    </LinearLayout>
+                </com.ltst.prizeword.crossword.view.BackFrameLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

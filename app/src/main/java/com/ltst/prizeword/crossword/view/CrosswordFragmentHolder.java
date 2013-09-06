@@ -98,12 +98,13 @@ public class CrosswordFragmentHolder {
 
     // ================== CROSSWORD PANELS ======================
 
-    static private class CrosswordPanelCurrentHolder extends CrosswordPanelHolder {
+    static private class CrosswordPanelCurrentHolder {
 
         @Nonnull public TextView mMonthTV;
         @Nonnull public TextView mRestDaysTV;
         @Nonnull public LinearLayout mRestPanelLL;
         @Nonnull public LinearLayout mCrosswordsContainerLL;
+        @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
 
         public CrosswordPanelCurrentHolder(@Nonnull View view){
 
@@ -111,48 +112,25 @@ public class CrosswordFragmentHolder {
             mRestDaysTV = (TextView) view.findViewById(R.id.crossword_fragment_current_remain_count_days);
             mRestPanelLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_remain_panel);
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_current_container);
-            mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained1);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container1);
-            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
-                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
-            }
         }
     }
 
-    static private class CrosswordPanelBuyHolder extends CrosswordPanelHolder {
+    static private class CrosswordPanelBuyHolder {
+        @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
         public CrosswordPanelBuyHolder(@Nonnull View view){
-            mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained2);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container2);
-            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
-                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
-            }
         }
     }
 
-        static private class CrosswordPanelArchiveHolder extends CrosswordPanelHolder {
+        static private class CrosswordPanelArchiveHolder {
         @Nonnull public LinearLayout mCrosswordsContainerLL;
+            @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
 
         public CrosswordPanelArchiveHolder(@Nonnull View view){
             mCrosswordsContainerLL = (LinearLayout) view.findViewById(R.id.crossword_fragment_archive_container);
-            mCrosswordsBackgroud = (LinearLayout) view.findViewById(R.id.crossword_fragment_layout_back_contained3);
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container3);
-            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD){
-                mCrosswordsContainerBackgroud.setOnResizeListener(mResizeListenerHandler);
-            }
         }
-    }
-
-    static private class CrosswordPanelHolder {
-        @Nonnull public BackFrameLayout mCrosswordsContainerBackgroud;
-        @Nonnull public LinearLayout mCrosswordsBackgroud;
-        @Nonnull protected IListenerVoid mResizeListenerHandler =  new IListenerVoid() {
-            @Override
-            public void handle() {
-//                int height = mCrosswordsContainerBackgroud.getHeight()-mCrosswordsBackgroud.getPaddingBottom();
-//                mCrosswordsBackgroud.getLayoutParams().height = height;
-//                mCrosswordsBackgroud.requestLayout();
-            }
-        };
     }
 
     private CrosswordSet getCrosswordSet(long id)

@@ -35,6 +35,11 @@ public class CustomProgressBar {
         mBackground.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
 
+    public @Nonnull View getView()
+    {
+        return mBackground;
+    }
+
     public void setProgress(int progress)
     {
         mProgress = progress;
