@@ -31,7 +31,9 @@ public final class SoundsWork
     public static void startAllSounds(Context context)
     {
     }
-
+    public static void stopAllSounds()
+    {
+    }
     public static void pauseBackgroundMusic()
     {
         mMediaPlayerBack.pause();

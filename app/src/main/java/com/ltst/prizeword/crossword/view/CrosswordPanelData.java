@@ -29,6 +29,9 @@ public class CrosswordPanelData {
     public int mYear = 1900;
     public @Nullable BadgeData[] mBadgeData = null;
 
+    public boolean mFirst = false;
+    public boolean mLAst = false;
+
     public CrosswordPanelData() {
     }
 }

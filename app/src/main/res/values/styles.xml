@@ -168,7 +168,7 @@
 
     <style name="InviteItemNameText">
         <item name="android:textColor">#504f4a</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#ffffff</item>
         <item name="android:shadowDy">1</item>
@@ -203,9 +203,24 @@
     </style>
     <style name="Rating_number_text">
         <item name="android:textColor">#d1ccc0</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    <style name="Rating_bold_number_text">
+        <item name="android:textColor">#696861</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#ffffff</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+    <style name="Rating_text_number_text">
+        <item name="android:textColor">#696861</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#ffffff</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
     </style>

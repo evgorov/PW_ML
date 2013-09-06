@@ -35,7 +35,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener
+public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
@@ -57,6 +57,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String BF_CURRENT_PUZZLE_INDEX = "OneCrosswordActivity.currentPuzzleIndex";
     public static final @Nonnull String BF_TIME_LEFT = "OneCrosswordActivity.timeLeft";
     public static final @Nonnull String BF_TIME_GIVEN = "OneCrosswordActivity.timeGiven";
+
+    public static final @Nonnull String BF_MUSIC_STOP = "OneCrosswordActivity.musicStop";
+    public static final @Nonnull String BF_SOUND_STOP = "OneCrosswordActivity.soundStop";
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull PuzzleSet mPuzzleSet;
@@ -107,7 +110,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull android.widget.ToggleButton mPauseSound;
 
 
-
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
     private @Nonnull View mRootView;
 
@@ -117,7 +119,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
         mRootView = (View) findViewById(R.id.gamefield_root_view);
-
+        mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
+        mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
         if (bundle != null)
         {
             restoredBundle = bundle;
@@ -129,6 +132,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mTimeGiven = bundle.getInt(BF_TIME_GIVEN);
             mTimeLeft = bundle.getInt(BF_TIME_LEFT);
             mHasFirstPuzzle = true;
+            mPauseSound.setChecked(bundle.getBoolean(BF_SOUND_STOP));
+            mPauseMusic.setChecked(bundle.getBoolean(BF_MUSIC_STOP));
         } else
         {
             Bundle extras = getIntent().getExtras();
@@ -143,6 +148,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
+            mPauseSound.setChecked(true);
+            mPauseMusic.setChecked(true);
         }
 
         mBcConnector = new BcConnector(this);
@@ -157,7 +164,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onStart()
     {
         mCoefficientsModel.updateFromDatabase();
-        mCoefficientsModel.updateFromInternet();
+        mCoefficientsModel.updateFromInternet(null);
 
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         mNextBtn = (Button) findViewById(R.id.gamefild_next_btn);
@@ -185,8 +192,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton = (Button) findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button) findViewById(R.id.final_next_btn);
 
-        mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
-        mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
 
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
@@ -224,13 +229,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mPauseMusic.setOnCheckedChangeListener(this);
         mPauseSound.setOnCheckedChangeListener(this);
-
         super.onStart();
     }
 
     @Override
     protected void onResume()
     {
+        if (mPauseSound.isChecked())
+            SoundsWork.startBackgroundMusic(this);
         fillFlipNumbers(54526);
         mStopPlayFlag = true;
         super.onResume();
@@ -247,6 +253,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onStop()
     {
+        SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         super.onStop();
     }
@@ -262,6 +269,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         outState.putInt(BF_CURRENT_PUZZLE_INDEX, mCurrentPuzzleIndex);
         outState.putInt(BF_TIME_GIVEN, mTimeGiven);
         outState.putInt(BF_TIME_LEFT, mTimeLeft);
+        outState.putBoolean(BF_MUSIC_STOP, mPauseMusic.isChecked());
+        outState.putBoolean(BF_SOUND_STOP, mPauseSound.isChecked());
         mPuzzleAdapter.saveState(outState);
         mPuzzleView.saveState(outState);
     }
@@ -269,9 +278,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onDestroy()
     {
+        SoundsWork.stopBackgroundMusic();
         super.onDestroy();
     }
-
 
 
     private void fillTimer()
@@ -285,6 +294,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     @Override public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(this);
         switch (v.getId())
         {
             case R.id.final_menu_btn:
@@ -315,8 +325,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mAlertPause.startAnimation(mAnimationSlideInTop);
             mStopPlayBtn.setBackgroundResource(R.drawable.header_play_but);
             mProgressSeekBar.repaint();
-        }
-        else
+        } else
         {
             mAnimationSlideOutTop.reset();
             mAlertPause.clearAnimation();
@@ -512,7 +521,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                     SoundsWork.pauseBackgroundMusic();
                     break;
                 case R.id.pause_sounds_switcher:
-
+                    SoundsWork.stopAllSounds();
                     break;
                 default:
                     break;

@@ -117,7 +117,7 @@
     <string name="rules_text_12">PrizeWord - увлекательно, полезно и выгодно!</string>
 
     // ==== Menu_group text ====
-    <string name="menu_group_result_in_month">Ваш результат в</string>
+    <string name="menu_group_result_in_month">Ваш результат в </string>
     <string name="menu_group_social">Социальные сети</string>
     // ==== News_group text ====
     <string name="news1">Возможности поведать рассказом собеседника в бега равна нулю</string>
@@ -168,8 +168,13 @@
 
     // ==== ScoreFragment text ====
     <string name="score_resolved">разгадано</string>
-    <string name="score_fragment_title1">3213 в месяце</string>
+    <string name="score_fragment_title1"> в </string>
     <string name="score_friends_list">Приглашено</string>
     <string name="score_friends_count">друга</string>
+    <string-array name="friends_name_from_count">
+        <item>друг</item>
+        <item>друга</item>
+        <item>друзей</item>
+    </string-array>
 
 </resources>

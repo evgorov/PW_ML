@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.score.Coefficients;
+import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.scoredetailfragment.model.IScoreDataModel;
 import com.ltst.prizeword.scoredetailfragment.model.ScoreFriendsData;
 
@@ -23,12 +25,22 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
     private final @Nonnull IScoreDataModel mFriendsModel;
     private @Nullable IListenerVoid mRefreshHandler;
     private @Nonnull Context mContext;
+    private @Nonnull ICoefficientsModel mCoefModel;
+    private @Nullable Coefficients mCoef;
+    private int mCountFriends;
 
-    public ScoreDetailAdapter(@Nonnull Context context, @Nonnull IScoreDataModel friendsModel)
+    public int getCountFriends()
+    {
+        return mCountFriends;
+    }
+
+    public ScoreDetailAdapter(@Nonnull Context context, @Nonnull IScoreDataModel friendsModel, @Nonnull ICoefficientsModel coefModel)
     {
         super(context, friendsModel.getSource());
         mContext = context;
         mFriendsModel = friendsModel;
+        mCoefModel = coefModel;
+        mCoef = mCoefModel.getCoefficients();
         updateByInternet();
     }
 
@@ -45,6 +57,18 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
         });
     }
 
+    public void updateCoefBynternet()
+    {
+        mCoefModel.updateFromInternet(new IListenerVoid()
+        {
+            @Override public void handle()
+            {
+                mCoef = mCoefModel.getCoefficients();
+                setSlowSource(mFriendsModel.getSource());
+            }
+        });
+    }
+
     public void setRefreshHandler(@Nonnull IListenerVoid handler)
     {
         this.mRefreshHandler = handler;
@@ -53,8 +77,9 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
     @Override
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull ScoreFriendsData data, @Deprecated @Nonnull View view, @Deprecated int position)
     {
-        viewHolder.mNameView.setText(data.firstName+" "+data.lastName);
-        viewHolder.mScoreTextView.setText("400");
+        viewHolder.mNameView.setText(data.firstName + " " + data.lastName);
+        if (mCoef != null)
+            viewHolder.mScoreTextView.setText(Integer.toString(mCoef.friendBonus));
     }
 
     @Override
@@ -68,7 +93,7 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
         TextView nameView = (TextView) view.findViewById(R.id.score_item_name_textview);
         TextView scoreView = (TextView) view.findViewById(R.id.score_score_item);
         ImageView userPic = (ImageView) view.findViewById(R.id.score_item_image);
-        if (nameView == null  ||scoreView == null || userPic == null )
+        if (nameView == null || scoreView == null || userPic == null)
         {
             Log.w("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$
             throw new NullPointerException("Elements of ListItem was null, but they must not be"); //$NON-NLS-1$

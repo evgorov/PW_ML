@@ -26,6 +26,9 @@ import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.news.INewsModel;
+import com.ltst.prizeword.news.News;
+import com.ltst.prizeword.news.NewsModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -35,10 +38,12 @@ import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
@@ -60,7 +65,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
-    private @Nonnull int[] mStringsMassive;
+    private @Nonnull List<String> mNewsList;
     private @Nonnull RelativeLayout mNewsLayout;
     private @Nonnull GestureDetector mGestureDetector;
     private @Nonnull LinearLayout mNewsIndicatorLayout;
@@ -68,6 +73,8 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mNewsSimpleText;
     private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull ProgressBar mProgressBar;
+
+    private @Nullable INewsModel mNewsModel;
 
     private int mIndicatorPosition;
 
@@ -96,7 +103,7 @@ public class CrosswordsFragment extends SherlockFragment
 
         mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
 
-        mStringsMassive = new int[]{R.string.news1, R.string.news2, R.string.news3, R.string.news4, R.string.news5};
+        mNewsList = new ArrayList<String>();
         mNewsLayout = (RelativeLayout) v.findViewById(R.id.news_layout);
         mGestureDetector = new GestureDetector(mContext, new TouchDetector(this));
         mNewsIndicatorLayout = (LinearLayout) v.findViewById(R.id.news_indicator_layout);
@@ -108,7 +115,8 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -121,37 +129,21 @@ public class CrosswordsFragment extends SherlockFragment
 
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
+
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
-
-
-        mNewsIndicatorLayout.removeAllViewsInLayout();
-        LinearLayout.LayoutParams params;
-        for (int i = 0; i < mStringsMassive.length; i++)
-        {
-            mSimpleImage = new ImageView(mContext);
-            mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
-            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            if (i != 0)
-                params.setMargins(4, 0, 0, 0);
-            mSimpleImage.setLayoutParams(params);
-            mSimpleImage.setId(i);
-
-            mNewsIndicatorLayout.addView(mSimpleImage);
-        }
-        mIndicatorPosition = 0;
-        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-        mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
-        mNewsSimpleText.setText(mStringsMassive[mIndicatorPosition]);
+        mNewsModel = new NewsModel(mSessionKey, mBcConnector);
+        mNewsModel.updateFromInternet(mRefreshHandler);
 
         super.onResume();
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
     }
 
@@ -181,7 +173,27 @@ public class CrosswordsFragment extends SherlockFragment
             }
         });
         mNewsCloseBtn.setOnClickListener(this);
-
+        mNewsLayout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                switch (view.getId())
+                {
+                    case R.id.news_layout:
+                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
+                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
+                        if (mIndicatorPosition < mNewsList.size() - 1)
+                            mIndicatorPosition++;
+                        else if (mIndicatorPosition == mNewsList.size() - 1)
+                            mIndicatorPosition = 0;
+                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
+                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
+                        mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
+                        break;
+                }
+                return false;
+            }
+        });
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -325,12 +337,55 @@ public class CrosswordsFragment extends SherlockFragment
                 mIndicatorPosition--;
         } else if (swipe.equals(SwipeMethod.SWIPE_LEFT))
         {
-            if (mIndicatorPosition < mStringsMassive.length - 1)
+            if (mIndicatorPosition < mNewsList.size() - 1)
                 mIndicatorPosition++;
+            else if (mIndicatorPosition == mNewsList.size() - 1)
+                mIndicatorPosition = 0;
         }
         mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
         mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
-        mNewsSimpleText.setText(mStringsMassive[mIndicatorPosition]);
+        mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
 
     }
+
+    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
+    {
+        @Override public void handle()
+        {
+            News news = mNewsModel.getNews();
+            if (news != null)
+            {
+                if (news.message1 == null && news.message2 == null && news.message3 == null)
+                {
+                    mNewsLayout.setVisibility(View.GONE);
+                } else
+                {
+                    mNewsList.clear();
+                    mNewsList.add(news.message1);
+                    mNewsList.add(news.message2);
+                    mNewsList.add(news.message3);
+
+                    mNewsIndicatorLayout.removeAllViewsInLayout();
+                    LinearLayout.LayoutParams params;
+                    for (int i = 0; i < mNewsList.size(); i++)
+                    {
+                        mSimpleImage = new ImageView(mContext);
+                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
+                        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        if (i != 0)
+                            params.setMargins(4, 0, 0, 0);
+                        mSimpleImage.setLayoutParams(params);
+                        mSimpleImage.setId(i);
+
+                        mNewsIndicatorLayout.addView(mSimpleImage);
+                    }
+                    mIndicatorPosition = 0;
+                    mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
+                    mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
+                    mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
+                }
+            }
+        }
+    };
+
 }

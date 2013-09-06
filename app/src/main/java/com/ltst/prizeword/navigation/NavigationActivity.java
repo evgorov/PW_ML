@@ -86,6 +86,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_FB = 4;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull SlidingMenu mSlidingMenu;
@@ -100,8 +101,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
-    private @Nonnull Context mContext;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -176,8 +175,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         initNavigationDrawerItems();
         reloadUserData();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        SoundsWork.startBackgroundMusic(this);
-
     }
 
     @Override
@@ -254,7 +251,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-        SoundsWork.pauseBackgroundMusic();
         super.onDestroy();
         mManadgeHolder.dispose();
     }
@@ -262,14 +258,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onStop()
     {
-        //SoundsWork.pauseBackgroundMusic();
         super.onStop();
     }
 
     @Override
     protected void onResume()
     {
-        SoundsWork.startBackgroundMusic(this);
         super.onResume();
     }
 
