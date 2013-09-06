@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -54,7 +55,7 @@ public class CrosswordSet {
     private @Nonnull TextView pBuyPrice;
 
     private @Nonnull BadgeGridView pBadgeContainer;
-    private @Nonnull LinearLayout mLayout;
+    private @Nonnull RelativeLayout mLayout;
 
     private @Nullable String mSetServerId = null;
     private boolean mExpanding;
@@ -68,7 +69,7 @@ public class CrosswordSet {
         mICrosswordFragment = iCrosswordFragment;
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
-        mLayout = (LinearLayout) mRootView.findViewById(R.id.crossword_123);
+        mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
         pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
         pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
         pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
