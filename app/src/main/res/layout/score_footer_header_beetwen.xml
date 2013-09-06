@@ -21,6 +21,7 @@
                 android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                 android:textSize="@dimen/puzzles_badge_title_text_size"
                 style="@style/PuzzlesHintParagraphTextStyle"
+
                 android:text="@string/score_friends_list"/>
 
 
@@ -43,9 +44,10 @@
                     android:background="@drawable/score_right_top_score_icon"/>
 
             <TextView
+                    android:id="@+id/score_invited_score"
                     android:layout_marginLeft="5dp"
                     style="@style/ScoreTopPanelText"
-                    android:text="21212"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -65,9 +67,10 @@
                 android:textSize="@dimen/puzzles_badge_text_size"
                 android:textStyle="bold"
                 style="@style/PuzzlesHintCommonTextStyle"
-                android:text="4"/>
+                android:text="0"/>
 
         <TextView
+                android:id="@+id/score_friends_name_from_count"
                 android:textSize="@dimen/puzzles_badge_text_size"
                 android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                 style="@style/PuzzlesHintCommonTextStyle"

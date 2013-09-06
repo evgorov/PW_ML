@@ -102,7 +102,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

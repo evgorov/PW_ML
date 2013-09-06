@@ -7,6 +7,7 @@
               android:background="@drawable/score_footer">
 
     <Button
+            android:id="@+id/score_invite_btn"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"

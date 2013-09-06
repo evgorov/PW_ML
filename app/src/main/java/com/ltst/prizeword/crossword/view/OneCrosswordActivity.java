@@ -157,7 +157,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onStart()
     {
         mCoefficientsModel.updateFromDatabase();
-        mCoefficientsModel.updateFromInternet();
+        mCoefficientsModel.updateFromInternet(null);
 
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         mNextBtn = (Button) findViewById(R.id.gamefild_next_btn);

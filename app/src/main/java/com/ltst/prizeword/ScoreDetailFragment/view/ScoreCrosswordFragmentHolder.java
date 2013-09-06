@@ -104,33 +104,37 @@ public class ScoreCrosswordFragmentHolder
         for (PuzzleSet set : sets)
         {
             solvedCount = 0;
-            CrosswordPanelData data = extractCrosswordPanelData(set);
-            //addPanel(data);
-            @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
-            int solved = 0;
-            int scores = 0;
-            int percents = 0;
-            for (@Nonnull Puzzle puzzle : puzzles)
+            if (set.isBought)
             {
-
-                if (puzzle.isSolved)
+                CrosswordPanelData data = extractCrosswordPanelData(set);
+                addPanel(data);
+                @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
+                int solved = 0;
+                int scores = 0;
+                int percents = 0;
+                for (@Nonnull Puzzle puzzle : puzzles)
                 {
-                    addBadge(puzzle);
-                    percents += puzzle.solvedPercent;
-                    scores += puzzle.score;
+
                     if (puzzle.isSolved)
-                        solved++;
-                    solvedCount++;
+                    {
+                        addBadge(puzzle);
+                        percents += puzzle.solvedPercent;
+                        scores += puzzle.score;
+                        if (puzzle.isSolved)
+                            solved++;
+
+                    }
+                }
+                if (puzzles.size() != 0)
+                {
+                    percents = percents / puzzles.size();
+                    data.mScore = scores;
+                    data.mProgress = percents;
+                    data.mResolveCount = solved;
+                    data.mTotalCount = puzzles.size();
+                    addPanel(data);
                 }
             }
-            if (puzzles.size() == 0 || solvedCount==0)
-                continue;
-            percents = percents / puzzles.size();
-            data.mScore = scores;
-            data.mProgress = percents;
-            data.mResolveCount = solved;
-            data.mTotalCount = puzzles.size();
-            addPanel(data);
         }
     }
 
