@@ -35,16 +35,8 @@
     <!-- =================================================================================== -->
     <FrameLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-
-        <ImageView
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:padding="10dp"
-                android:src="@drawable/crossword_panel_bg_title"
-                android:scaleType="fitXY"
-                />
+            android:layout_width="match_parent"
+            android:orientation="vertical">
 
 
         <ListView
@@ -52,6 +44,8 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:background="@drawable/crossword_panel_bg_title"
+                android:listSelector="@android:color/transparent"
                 android:visibility="visible">
 
             <!--@TODO input brillian current crossword-->

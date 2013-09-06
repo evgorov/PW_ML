@@ -264,7 +264,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
             UserData data = mUserDataModel.getUserData();
             int score = data.monthScore;
             mScoreInMonth.setText(Integer.toString(data.monthScore));
-            mScoreInMonth.append(" в "+ mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
+            mScoreInMonth.append(" в " + mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
         }
     };
 

@@ -172,7 +172,27 @@ public class CrosswordsFragment extends SherlockFragment
             }
         });
         mNewsCloseBtn.setOnClickListener(this);
-
+        mNewsLayout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                switch (view.getId())
+                {
+                    case R.id.news_layout:
+                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
+                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
+                        if (mIndicatorPosition < mNewsList.size() - 1)
+                            mIndicatorPosition++;
+                        else if (mIndicatorPosition == mNewsList.size() - 1)
+                            mIndicatorPosition = 0;
+                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
+                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
+                        mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
+                        break;
+                }
+                return false;
+            }
+        });
         super.onActivityCreated(savedInstanceState);
     }
 

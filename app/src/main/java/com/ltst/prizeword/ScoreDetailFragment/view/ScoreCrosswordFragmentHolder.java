@@ -100,14 +100,25 @@ public class ScoreCrosswordFragmentHolder
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
-        int solvedCount;
+        boolean flag = false;
+        int count = 0;
         for (PuzzleSet set : sets)
         {
-            solvedCount = 0;
+            count++;
+            CrosswordPanelData data = extractCrosswordPanelData(set);
+
+            if (count == sets.size())
+            {
+                data.mLAst = true;
+            }
             if (set.isBought)
             {
-                CrosswordPanelData data = extractCrosswordPanelData(set);
                 addPanel(data);
+                if (!flag)
+                {
+                    data.mFirst = true;
+                    flag = true;
+                }
                 @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
                 int solved = 0;
                 int scores = 0;

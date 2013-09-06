@@ -175,8 +175,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         initNavigationDrawerItems();
         reloadUserData();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        SoundsWork.startBackgroundMusic(this);
-
     }
 
     @Override
@@ -253,7 +251,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onDestroy()
     {
-        SoundsWork.pauseBackgroundMusic();
         super.onDestroy();
         mManadgeHolder.dispose();
     }
@@ -261,14 +258,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onStop()
     {
-        //SoundsWork.pauseBackgroundMusic();
         super.onStop();
     }
 
     @Override
     protected void onResume()
     {
-        SoundsWork.startBackgroundMusic(this);
         super.onResume();
     }
 
