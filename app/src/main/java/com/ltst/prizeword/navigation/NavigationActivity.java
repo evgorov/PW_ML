@@ -183,55 +183,55 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data)) {
+            // not handled, so handle it ourselves (here's where you'd
+            // perform any handling of activity results not related to in-app
+            // billing...
+            return;
+        }
+        
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-
-            if (!mManadgeHolder.onActivityResult(requestCode, resultCode, data)) {
-                // not handled, so handle it ourselves (here's where you'd
-                // perform any handling of activity results not related to in-app
-                // billing...
-            }
-            else
-            {
-                switch (requestCode){
-                    case RESULT_LOAD_IMAGE: {
-                        // Получаем картинку из галереи;
-                        Uri chosenImageUri = data.getData();
-                        Bitmap photo = null;
-                        try {
-                            photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        // Меняем аватарку на панеле;
-                        mDrawerMenu.setImage(photo);
-                        // Отправляем новую аватарку насервер;
-                        mBitmapAsyncTask = new BitmapAsyncTask(this);
-                        mBitmapAsyncTask.execute(photo);
+        if(resultCode == RESULT_OK)
+        {
+            switch (requestCode){
+                case RESULT_LOAD_IMAGE: {
+                    // Получаем картинку из галереи;
+                    Uri chosenImageUri = data.getData();
+                    Bitmap photo = null;
+                    try {
+                        photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    break;
-                    case REQUEST_MAKE_PHOTO:{
-                        // получаем фото с камеры;
-                        Bitmap photo = (Bitmap) data.getExtras().get("data");
-                        // Меняем аватарку на панеле;
-                        mDrawerMenu.setImage(photo);
-                        // Отправляем новую аватарку насервер;
-                        mBitmapAsyncTask = new BitmapAsyncTask(this);
-                        mBitmapAsyncTask.execute(photo);
-                    }
-                    break;
-                    case REQUEST_LOGIN_VK:
-                    case REQUEST_LOGIN_FB:
-                        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-                        String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-                        String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-                        mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
-                        mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
-                        break;
+                    // Меняем аватарку на панеле;
+                    mDrawerMenu.setImage(photo);
+                    // Отправляем новую аватарку насервер;
+                    mBitmapAsyncTask = new BitmapAsyncTask(this);
+                    mBitmapAsyncTask.execute(photo);
                 }
+                break;
+                case REQUEST_MAKE_PHOTO:{
+                    // получаем фото с камеры;
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // Меняем аватарку на панеле;
+                    mDrawerMenu.setImage(photo);
+                    // Отправляем новую аватарку насервер;
+                    mBitmapAsyncTask = new BitmapAsyncTask(this);
+                    mBitmapAsyncTask.execute(photo);
+                }
+                break;
+                case REQUEST_LOGIN_VK:
+                case REQUEST_LOGIN_FB:
+                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
+                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
+                    break;
             }
-        } else
+        }
+        else
         {
             switch (requestCode)
             {

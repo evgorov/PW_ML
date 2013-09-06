@@ -3,17 +3,16 @@ package com.ltst.prizeword.manadges;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,8 +196,13 @@ public class ManadgeHolder {
         int  product_request = extractProductRequest(product);
         @Nonnull String token = UUIDTools.generateStringUUID();
         if(product_id!=null && product_request!=0){
-            Log.d(NavigationActivity.LOG_TAG, "Generate token: "+token);
-            mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
+            try {
+//                mIabHelper.flagEndAsync();
+                mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
+            } catch (Exception e)
+            {
+                Log.e(e.getMessage());
+            }
         }
     }
 
@@ -328,7 +332,7 @@ public class ManadgeHolder {
         {
             if (result.isFailure())
             {
-                Log.d(NavigationActivity.LOG_TAG, "Error purchasing: " + result);
+                Log.e("Error purchasing: " + result);
                 return;
             }
 

@@ -96,10 +96,10 @@ public class RestClient implements IRestClient
 
         } catch (UnsupportedEncodingException e)
         {
-            e.printStackTrace();
+            Log.e(e.getMessage());
         } catch (IOException e)
         {
-            e.printStackTrace();
+            Log.e(e.getMessage());
         }
 
         return getUserData(sessionKey);
@@ -252,7 +252,7 @@ public class RestClient implements IRestClient
             entity = restTemplate.exchange(RestParams.URL_FORGOT_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
         } catch (HttpClientErrorException e)
         {
-
+            Log.e(e.getMessage());
         } finally
         {
             if (entity == null)
@@ -288,6 +288,7 @@ public class RestClient implements IRestClient
             entity = restTemplate.exchange(RestParams.URL_RESET_PASSWORD, HttpMethod.POST, requestEntity, String.class, urlVariables);
         } catch (HttpClientErrorException e)
         {
+            Log.e(e.getMessage());
         } finally
         {
             if (entity == null)
@@ -347,6 +348,7 @@ public class RestClient implements IRestClient
             holder = entity.getBody();
         } catch (HttpClientErrorException e)
         {
+            Log.e(e.getMessage());
         }
         finally
         {
