@@ -35,7 +35,7 @@ public class CrosswordSet {
     private @Nonnull CrosswordSetType mCrosswordSetType;
 
     private @Nonnull View mRootView;
-    private @Nonnull LinearLayout pMonthBackground;
+    private @Nonnull RelativeLayout pMonthBackground;
     private @Nonnull TextView pMonthText;
     private @Nonnull LinearLayout pTitleImage;
     private @Nonnull TextView pTitleText;
@@ -70,7 +70,7 @@ public class CrosswordSet {
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
         mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
-        pMonthBackground = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
+        pMonthBackground = (RelativeLayout) mRootView.findViewById(R.id.crossword_panel_splitter_month_bg);
         pMonthText = (TextView) mRootView.findViewById(R.id.crossword_panel_splitter_month_text);
         pTitleImage = (LinearLayout) mRootView.findViewById(R.id.crossword_panel_logo_image);
         pTitleText = (TextView) mRootView.findViewById(R.id.crossword_panel_title_text);

@@ -11,7 +11,7 @@
         android:gravity="center"
         android:layout_marginTop="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/crossword_panel_splitter_month_bg"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -19,13 +19,15 @@
             android:background="@drawable/puzzles_set_month_bg">
 
             <ImageView
+                android:id="@+id/crossword_panel_splitter_month_clock"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:background="@drawable/puzzles_set_month_clock"/>
 
             <TextView
                 android:id="@+id/crossword_panel_splitter_month_text"
+                android:layout_toRightOf="@+id/crossword_panel_splitter_month_clock"
                 android:layout_marginLeft="1dp"
                 android:layout_marginBottom="1dp"
                 android:textSize="10sp"
@@ -33,7 +35,7 @@
                 android:text="Октябрь"
                 />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <ImageView
             android:layout_toRightOf="@+id/crossword_panel_splitter_month_bg"
@@ -241,6 +243,7 @@
 
     <RelativeLayout
         android:id="@+id/crossword_123"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >

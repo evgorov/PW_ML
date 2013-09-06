@@ -264,6 +264,7 @@
                                         android:layout_marginBottom="1dp"
                                         android:id="@+id/crossword_fragment_current_rest_count"
                                         android:textSize="12sp"
+                                        android:text="0"
                                         android:layout_marginLeft="@dimen/puzzles_badge_range_between_text_size"
                                         style="@style/PuzzlesHintWhiteTextStyle"
                                         />
