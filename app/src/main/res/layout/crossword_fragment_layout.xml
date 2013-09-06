@@ -108,22 +108,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/crossword_fragment_layout_back_contained1"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
-
                     <ImageView
-                        android:id="@+id/crossword_fragment_layout_back_image1"
+                        android:padding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/crossword_panel_bg_title"/>
+                        android:src="@drawable/crossword_panel_bg_title"
+                        android:scaleType="fitXY"/>
                     />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/crossword_fragment_current_container"
@@ -221,19 +212,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/crossword_fragment_layout_back_contained2"
-                    android:orientation="vertical"
+                <ImageView
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp">
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/crossword_panel_bg_title"/>
-                </LinearLayout>
+                    android:src="@drawable/crossword_panel_bg_title"
+                    android:scaleType="fitXY"/>
+                />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -395,25 +380,17 @@
 
         <com.ltst.prizeword.crossword.view.BackFrameLayout
                 android:id="@+id/crossword_fragment_layout_container3"
-                android:measureAllChildren="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 >
 
-                <LinearLayout
-                    android:id="@+id/crossword_fragment_layout_back_contained3"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/crossword_panel_bg_title"/>
-                </LinearLayout>
+            <ImageView
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/crossword_panel_bg_title"
+                android:scaleType="fitXY"/>
 
                 <LinearLayout
                     android:id="@+id/crossword_fragment_archive_container"
