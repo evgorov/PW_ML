@@ -109,8 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:maxLines="1"
-                        android:textSize="12sp"
-                        android:text="отгадано"
+                        android:text=" отгадано"
                         style="@style/Rating_text_number_text"
                         />
 
@@ -124,10 +123,10 @@
                 android:layout_width="30dp"
                 android:maxLines="1"
                 android:maxWidth="30dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="8dp"
                 android:text="0"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="4dp"
                 style="@style/Rating_bold_number_text"
                 />
     </LinearLayout>

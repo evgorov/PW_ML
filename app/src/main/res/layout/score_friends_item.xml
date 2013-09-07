@@ -56,7 +56,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:background="@drawable/score_right_top_score_icon"/>
+                        android:background="@drawable/score_right_top_score_icon"
+                        android:layout_marginLeft="5dp"/>
 
                 <TextView
                         android:id="@+id/score_score_item"
@@ -64,7 +65,8 @@
                         style="@style/ScoreTopPanelText"
                         android:text="21212"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"/>
 
             </LinearLayout>
         </LinearLayout>

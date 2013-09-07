@@ -169,7 +169,7 @@ public class ScoreCrosswordFragmentHolder
             {
                 if (data.mBought)
                 {
-                    mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
+                    //mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
                 }
             }
         }
