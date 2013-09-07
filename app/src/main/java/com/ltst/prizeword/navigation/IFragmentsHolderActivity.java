@@ -8,4 +8,6 @@ public interface IFragmentsHolderActivity
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentId);
     public String getPositionText();
     public String getScoreText();
+    public boolean getFbSwitch();
+    public boolean getVkSwitch();
 }

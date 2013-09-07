@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.invitefriends.model.IInviteFriendsDataModel;
 import com.ltst.prizeword.invitefriends.model.InviteFriendsData;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.SlowSourceAdapter;
@@ -23,12 +24,16 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     private final @Nonnull IInviteFriendsDataModel mModel;
     private @Nullable IListenerVoid mRefreshHandler;
     private @Nonnull Context mContext;
+    private boolean mFbSwitch;
+    private boolean mVkSwitch;
 
-    public InviteFragmentAdapter(@Nonnull Context context, @Nonnull IInviteFriendsDataModel model)
+    public InviteFragmentAdapter(@Nonnull Context context, @Nonnull IInviteFriendsDataModel model, boolean fbSwitch, boolean vkSwitch)
     {
         super(context, model.getSource());
         mContext = context;
         mModel = model;
+        this.mFbSwitch = fbSwitch;
+        this.mVkSwitch = vkSwitch;
         updateByInternet();
     }
 
@@ -54,8 +59,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
 
     @Override
     protected
-    @Nonnull
-    ViewHolder createViewHolderOfView(@Nonnull View view)
+    @Nonnull ViewHolder createViewHolderOfView(@Nonnull View view)
     {
         TextView nameView = (TextView) view.findViewById(R.id.invite_item_name_textview);
         TextView surnameView = (TextView) view.findViewById(R.id.invite_item_surname_textview);
@@ -75,15 +79,19 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     {
         final String id = quick.id;
         final String provider = quick.providerName;
-        if(provider.equals(InviteFriendsData.NO_PROVIDER))
+        if (provider.equals(InviteFriendsData.NO_PROVIDER))
         {
-            viewHolder.layout.setBackgroundResource(R.drawable.invite_fb_header);
+            if (mVkSwitch)
+                viewHolder.layout.setBackgroundResource(R.drawable.invite_fb_header);
+            else if (!mVkSwitch)
+                viewHolder.layout.setBackgroundResource(R.drawable.invite_fb_header_only);
+            else if(!mFbSwitch)
+                viewHolder.layout.setVisibility(View.GONE);
             viewHolder.imageView.setVisibility(View.GONE);
             viewHolder.inviteBtn.setVisibility(View.GONE);
             viewHolder.nameView.setVisibility(View.GONE);
             viewHolder.surnameView.setVisibility(View.GONE);
-        }
-        else
+        } else
         {
             viewHolder.layout.setBackgroundResource(R.drawable.invite_item_bg);
             viewHolder.imageView.setVisibility(View.VISIBLE);

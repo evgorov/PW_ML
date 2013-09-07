@@ -103,6 +103,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull ManadgeHolder mManadgeHolder;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
+    private boolean mVkSwitch;
+    private boolean mFbSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -337,6 +339,16 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override public String getScoreText()
     {
         return mScoreText;
+    }
+
+    @Override public boolean getFbSwitch()
+    {
+        return mFbSwitch;
+    }
+
+    @Override public boolean getVkSwitch()
+    {
+        return mVkSwitch;
     }
 
     // ==================================================
@@ -630,6 +642,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 }
                 if (names.contains(RestParams.VK_PROVIDER))
                 {
+                    mVkSwitch = true;
                     mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
                     mDrawerMenu.mVkontakteSwitcher.setChecked(true);
                 } else
@@ -639,6 +652,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 }
                 if (names.contains(RestParams.FB_PROVIDER))
                 {
+                    mFbSwitch = true;
                     mDrawerMenu.mFacebookSwitcher.setEnabled(false);
                     mDrawerMenu.mFacebookSwitcher.setChecked(true);
                 } else

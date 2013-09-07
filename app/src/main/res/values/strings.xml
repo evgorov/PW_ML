@@ -184,4 +184,6 @@
         <item>друзей</item>
     </string-array>
 
+    // ==== InviteFragment text ====
+    <string name="invite_message_text">Чтобы приглашать друзей и получать за это дополнительные очки, добавьте социальные сети в меню приложения</string>
 </resources>
