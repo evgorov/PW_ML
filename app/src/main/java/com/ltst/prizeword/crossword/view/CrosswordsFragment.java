@@ -85,7 +85,6 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mIManadges = (IManadges) activity;
-        mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
         super.onAttach(activity);
@@ -124,6 +123,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
         mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
 

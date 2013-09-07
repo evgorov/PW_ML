@@ -151,18 +151,17 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mPauseSound.setChecked(true);
             mPauseMusic.setChecked(true);
         }
-
-        mBcConnector = new BcConnector(this);
-        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
-        mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
-        mPostPuzzleScoreModel = new PostPuzzleScoreModel(mSessionKey, mBcConnector);
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
-
     }
 
     @Override
     protected void onStart()
     {
+        mBcConnector = new BcConnector(this);
+        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
+        mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
+        mPostPuzzleScoreModel = new PostPuzzleScoreModel(mSessionKey, mBcConnector);
+
         mCoefficientsModel.updateFromDatabase();
         mCoefficientsModel.updateFromInternet(null);
 
@@ -235,10 +234,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onResume()
     {
+
         if (mPauseSound.isChecked())
             SoundsWork.startBackgroundMusic(this);
         fillFlipNumbers(54526);
         mStopPlayFlag = true;
+
         super.onResume();
     }
 
@@ -253,6 +254,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onStop()
     {
+        mHintsModel.close();
+        mCoefficientsModel.close();
+        mPostPuzzleScoreModel.close();
+
         SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         super.onStop();

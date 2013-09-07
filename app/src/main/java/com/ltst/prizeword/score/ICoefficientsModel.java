@@ -13,4 +13,5 @@ public interface ICoefficientsModel
     @Nullable Coefficients getCoefficients();
     int getBaseScore(PuzzleSetModel.PuzzleSetType setType);
     int getBonusScore(int timeSpent, int timeGiven);
+    void close();
 }
