@@ -69,11 +69,14 @@ public class PuzzleManager
 
     public void saveState(@Nonnull Bundle dest)
     {
-        dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
+        if (mFocusViewPoint != null)
+        {
+            dest.putParcelable(BF_FOCUS_POINT, mFocusViewPoint);
+            PointF focusPuzzlePoint = new PointF((int)mFocusViewPoint.x, (int)mFocusViewPoint.y);
+            mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(focusPuzzlePoint);
+            dest.putParcelable(BF_FOCUS_PUZZLE_POINT, focusPuzzlePoint);
+        }
         dest.putParcelable(BF_VIEW_RECT, mPuzzleViewRect);
-        PointF focusPuzzlePoint = new PointF((int)mFocusViewPoint.x, (int)mFocusViewPoint.y);
-        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(focusPuzzlePoint);
-        dest.putParcelable(BF_FOCUS_PUZZLE_POINT, focusPuzzlePoint);
     }
 
     public void restoreState(@Nonnull Bundle source)

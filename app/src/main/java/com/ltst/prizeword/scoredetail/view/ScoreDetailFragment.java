@@ -1,4 +1,4 @@
-package com.ltst.prizeword.scoredetailfragment.view;
+package com.ltst.prizeword.scoredetail.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,8 +22,8 @@ import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.score.CoefficientsModel;
-import com.ltst.prizeword.scoredetailfragment.model.ScoreDataModel;
-import com.ltst.prizeword.scoredetailfragment.model.SolvedPuzzleSetModel;
+import com.ltst.prizeword.scoredetail.model.ScoreDataModel;
+import com.ltst.prizeword.scoredetail.model.SolvedPuzzleSetModel;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;

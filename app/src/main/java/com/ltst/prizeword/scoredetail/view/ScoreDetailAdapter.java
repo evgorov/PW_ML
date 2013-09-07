@@ -1,4 +1,4 @@
-package com.ltst.prizeword.scoredetailfragment.view;
+package com.ltst.prizeword.scoredetail.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.score.ICoefficientsModel;
-import com.ltst.prizeword.scoredetailfragment.model.IScoreDataModel;
-import com.ltst.prizeword.scoredetailfragment.model.ScoreFriendsData;
+import com.ltst.prizeword.scoredetail.model.IScoreDataModel;
+import com.ltst.prizeword.scoredetail.model.ScoreFriendsData;
 
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.SlowSourceAdapter;

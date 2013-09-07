@@ -1,4 +1,4 @@
-package com.ltst.prizeword.scoredetailfragment.model;
+package com.ltst.prizeword.scoredetail.model;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

@@ -1,10 +1,8 @@
 package com.ltst.prizeword.crossword.model;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.db.DbService;
 
@@ -40,17 +38,24 @@ public class PuzzleSetModel implements IPuzzleSetModel
     @Override
     public void updateDataByDb(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleSetsDbUpdater.update(handler);
     }
 
     @Override
     public void updateTotalDataByDb(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleSetsDbUpdater.update(handler);
     }
 
     @Override
-    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+    public void updateCurrentSets(@Nonnull IListenerVoid handler)
+    {
+        if(mIsDestroyed)
+            return;
         mPuzzleCurrentSets.update(handler);
     }
 
@@ -65,6 +70,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
         mPuzzleSetsDbUpdater.close();
         mPuzzleSetsInternetUpdater.close();
+        mPuzzleTotalSetsInternetUpdater.close();
+        mPuzzleCurrentSets.close();
 
         mIsDestroyed = true;
         Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
@@ -102,6 +109,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
     @Override
     public void updateTotalDataByInternet(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleTotalSetsInternetUpdater.update(handler);
     }
 

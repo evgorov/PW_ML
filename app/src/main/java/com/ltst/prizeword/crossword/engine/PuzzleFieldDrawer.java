@@ -22,6 +22,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -309,7 +310,7 @@ public class PuzzleFieldDrawer
     {
         if(stateList == null || stateList.isEmpty())
             return;
-        mInputTileList = new ArrayList<PuzzleTileState>(stateList);
+        mInputTileList = Collections.synchronizedList(stateList);
         mPostInvalidateHandler = postInvalidate;
     }
 

@@ -28,7 +28,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.scoredetailfragment.view.ScoreDetailFragment;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -49,6 +48,7 @@ import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.ManadgeHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
@@ -149,7 +149,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
-        mUserDataModel = new UserDataModel(this, mBcConnector);
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
@@ -173,7 +172,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
 
         initNavigationDrawerItems();
-        reloadUserData();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
@@ -264,9 +262,17 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
+        mUserDataModel = new UserDataModel(this, mBcConnector);
+        reloadUserData();
         super.onResume();
     }
 
+    @Override
+    protected void onPause()
+    {
+        mUserDataModel.close();
+        super.onPause();
+    }
 
     public void initNavigationDrawerItems()
     {
