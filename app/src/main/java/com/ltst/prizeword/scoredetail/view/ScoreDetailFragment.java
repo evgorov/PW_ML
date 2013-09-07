@@ -21,6 +21,7 @@ import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.scoredetail.model.ScoreDataModel;
 import com.ltst.prizeword.scoredetail.model.SolvedPuzzleSetModel;
@@ -67,12 +68,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     @Override public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
-        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mCoefModel = new CoefficientsModel(mSessionKey, mBcConnector);
-        mCoefModel.updateFromInternet(mRefreshCoef);
-        mUserDataModel = new UserDataModel(mContext, mBcConnector);
-        mUserDataModel.loadUserDataFromInternet(mRefreshUserData);
+
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
@@ -104,6 +100,10 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     public void onStart()
     {
         Log.i("DetailScore.onStart()"); //$NON-NLS-1$
+        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mCoefModel = new CoefficientsModel(mSessionKey, mBcConnector);
+        mCoefModel.updateFromInternet(mRefreshCoef);
         initListView();
         super.onStart();
     }
@@ -111,7 +111,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     private void initListView()
     {
         Log.i("RatingFragment.initListView()"); //$NON-NLS-1$
-        assert mContext != null && mBcConnector != null && mSessionKey != null
+        assert mContext != null && mBcConnector != null && mSessionKey != null && mCoefModel != null
                 : "Fragment must be attached to activity. Context, BcConnector, SessionKey must be initialized";
 
         ScoreDataModel friendmodel = mFriendDataModel;
@@ -137,6 +137,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     {
         Log.i("RatingFragment.onResume()"); //$NON-NLS-1$
         super.onResume();
+
         mPuzzleSetModel = new SolvedPuzzleSetModel(mBcConnector, mSessionKey);
         mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
         ScoreDataModel friendm = mFriendDataModel;
@@ -239,6 +240,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         public void handle()
         {
             assert mScoreDetailAdapter != null;
+
             int count = mScoreDetailAdapter.getCountFriends();
             String[] str = mContext.getResources().getStringArray(R.array.friends_name_from_count);
             if (Integer.toString(count).endsWith("2") || Integer.toString(count).endsWith("3") || Integer.toString(count).endsWith("4"))
@@ -249,7 +251,10 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
                 mFriendTV.setText(str[2]);
             mScoreInvitedCount.setText(Integer.toString(count));
             assert mCoefModel != null;
-            mScoreTV.setText(Integer.toString(mCoefModel.getCoefficients().friendBonus * count));
+            Coefficients coefficients = mCoefModel.getCoefficients();
+            assert coefficients != null;
+
+            mScoreTV.setText(Integer.toString(coefficients.friendBonus * count));
 
         }
     };
