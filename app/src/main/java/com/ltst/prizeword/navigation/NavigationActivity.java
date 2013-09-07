@@ -101,6 +101,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull ManadgeHolder mManadgeHolder;
+    private @Nonnull String mPositionText;
+    private @Nonnull String mScoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -327,6 +329,16 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
+    @Override public String getPositionText()
+    {
+        return mPositionText;
+    }
+
+    @Override public String getScoreText()
+    {
+        return mScoreText;
+    }
+
     // ==================================================
 
     private void initFragmentToList(@Nonnull String id, @Nonnull String classname)
@@ -550,7 +562,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name + " " + data.surname : data.surname);
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
+                mScoreText=String.valueOf(data.monthScore);
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
+                mPositionText=String.valueOf(data.position);
                 reloadProviders(data.id);
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);

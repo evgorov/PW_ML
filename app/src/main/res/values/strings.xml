@@ -175,6 +175,7 @@
     // ==== ScoreFragment text ====
     <string name="score_resolved">разгадано</string>
     <string name="score_fragment_title1"> в </string>
+    <string name="score_fragment_header_text">Очки</string>
     <string name="score_friends_list">Приглашено</string>
     <string name="score_friends_count">друга</string>
     <string-array name="friends_name_from_count">

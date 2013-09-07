@@ -10,11 +10,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rating.model.UsersListModel;
 
@@ -35,6 +37,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     private @Nullable IBcConnector mBcConnector;
     private @Nullable String mSessionKey;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
+    private @Nonnull IFragmentsHolderActivity mIFragmentActivity;
 
     private @Nonnull ListView mRatingListView;
     private @Nonnull Button mMenuBtn;
@@ -44,6 +47,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     private @Nullable UsersListModel mModel;
     private @Nullable RatingAdapter mRatingAdapter;
     private @Nullable ProgressBar mProgressBar;
+    private @Nonnull TextView mPositionTV;
 
     @Override
     public void onAttach(Activity activity)
@@ -53,6 +57,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
+        mIFragmentActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
     }
 
@@ -63,12 +68,18 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         View v = inflater.inflate(R.layout.rating_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
 
-        mHeaderImage =  new ImageView(mContext);
+        mHeaderImage = new ImageView(mContext);
         mFooterImage = new ImageView(mContext);
         mHeaderImage.setBackgroundResource(R.drawable.rating_header);
         mFooterImage.setBackgroundResource(R.drawable.rating_footer);
-
-        mRatingListView = (ListView)v.findViewById(R.id.rating_listview);
+        mPositionTV = (TextView) v.findViewById(R.id.position_in_rating);
+        StringBuffer sb = new StringBuffer();
+        sb.append(mIFragmentActivity.getPositionText());
+        sb.append(mContext.getResources().getString(R.string.ending));
+        sb.append(" ");
+        sb.append(mContext.getResources().getString(R.string.in_rating));
+        mPositionTV.setText(sb.toString());
+        mRatingListView = (ListView) v.findViewById(R.id.rating_listview);
         mRatingListView.setDivider(null);
         mRatingListView.addHeaderView(mHeaderImage);
         mRatingListView.addFooterView(mFooterImage);
@@ -118,15 +129,16 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         Log.i("RatingFragment.onResume()"); //$NON-NLS-1$
         super.onResume();
         UsersListModel m = mModel;
-        if(m != null)
+        if (m != null)
         {
             m.resumeLoading();
         }
         RatingAdapter adapter = mRatingAdapter;
-        if(adapter != null)
+        if (adapter != null)
         {
             adapter.update();
         }
+
     }
 
     @Override
@@ -134,7 +146,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     {
         Log.i("RatingFragment.onPause()"); //$NON-NLS-1$
         UsersListModel m = mModel;
-        if(m != null)
+        if (m != null)
         {
             m.pauseLoading();
         }
@@ -146,7 +158,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     {
         Log.i("RatingFragment.onDestroy()"); //$NON-NLS-1$
         UsersListModel model = mModel;
-        if(model != null)
+        if (model != null)
         {
             model.close();
             mModel = null;
@@ -161,16 +173,17 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         switch (view.getId())
         {
             case R.id.header_menu_btn:
-            mINavigationDrawerHolder.toogle();
+                mINavigationDrawerHolder.toogle();
                 break;
         }
     }
+
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
     {
         @Override public void handle()
         {
             ProgressBar bar = mProgressBar;
-            assert bar !=null;
+            assert bar != null;
             bar.setVisibility(View.GONE);
             mRatingListView.setVisibility(View.VISIBLE);
         }

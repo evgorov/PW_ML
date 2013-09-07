@@ -71,8 +71,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mCoefModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mCoefModel.updateFromInternet(mRefreshCoef);
-        mUserDataModel = new UserDataModel(mContext, mBcConnector);
-        mUserDataModel.loadUserDataFromInternet(mRefreshUserData);
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
@@ -113,6 +111,11 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         Log.i("RatingFragment.initListView()"); //$NON-NLS-1$
         assert mContext != null && mBcConnector != null && mSessionKey != null
                 : "Fragment must be attached to activity. Context, BcConnector, SessionKey must be initialized";
+
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH);
+        mScoreInMonth.setText(mINavigationActivity.getScoreText());
+        mScoreInMonth.append(" в " + mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
 
         ScoreDataModel friendmodel = mFriendDataModel;
         if (friendmodel == null)
@@ -254,19 +257,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         }
     };
 
-    private final @Nonnull IListenerVoid mRefreshUserData = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            Calendar cal = Calendar.getInstance();
-            int month = cal.get(Calendar.MONTH);
-            UserData data = mUserDataModel.getUserData();
-            int score = data.monthScore;
-            mScoreInMonth.setText(Integer.toString(data.monthScore));
-            mScoreInMonth.append(" в " + mContext.getResources().getStringArray(R.array.menu_group_months_at_predlog_padezh)[month]);
-        }
-    };
 
     @Override public void onClick(View view)
     {

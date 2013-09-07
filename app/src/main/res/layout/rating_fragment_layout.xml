@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 style="@style/GamefieldTimerText"
                 android:layout_gravity="center_vertical|center"
+                android:text="@string/rating_fragment_title"
                 />
     </FrameLayout>
 
