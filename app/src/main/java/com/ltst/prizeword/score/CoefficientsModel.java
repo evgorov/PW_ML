@@ -11,6 +11,7 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,6 +21,7 @@ public class CoefficientsModel implements ICoefficientsModel
     private @Nonnull String mSessionKey;
     private @Nonnull IBcConnector mBcConnector;
     private @Nullable Coefficients mCoefficients;
+    private boolean mIsDestroyed;
 
     public CoefficientsModel(@Nonnull String sessionKey, @Nonnull IBcConnector bcConnector)
     {
@@ -30,13 +32,33 @@ public class CoefficientsModel implements ICoefficientsModel
     @Override
     public void updateFromDatabase()
     {
+        if(mIsDestroyed)
+            return;
         mDbUpdater.update(null);
     }
 
     @Override
     public void updateFromInternet(@Nullable IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mInternetUpdater.update(handler);
+    }
+
+    @Override
+    public void close()
+    {
+        Log.i("CoefficientsModel.destroy() begin"); //$NON-NLS-1$
+        if(mIsDestroyed)
+        {
+            Log.w("CoefficientsModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mDbUpdater.close();
+        mInternetUpdater.close();
+
+        mIsDestroyed = true;
+        Log.i("CoefficientsModel.destroy() end"); //$NON-NLS-1$
     }
 
     @Nullable

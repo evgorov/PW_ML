@@ -1,14 +1,12 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.scoredetailfragment.model.ScoreCrosswordSet;
 
 import javax.annotation.Nonnull;
 

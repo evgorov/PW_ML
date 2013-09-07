@@ -1,13 +1,9 @@
-package com.ltst.prizeword.scoredetailfragment.view;
+package com.ltst.prizeword.scoredetail.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -17,14 +13,9 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.crossword.view.BadgeAdapter;
 import com.ltst.prizeword.crossword.view.BadgeData;
 import com.ltst.prizeword.crossword.view.CrosswordPanelData;
-import com.ltst.prizeword.crossword.view.CrosswordSet;
-import com.ltst.prizeword.crossword.view.CrosswordSetMonth;
-import com.ltst.prizeword.crossword.view.ICrosswordFragment;
-import com.ltst.prizeword.scoredetailfragment.model.ScoreCrosswordSet;
-import com.ltst.prizeword.scoredetailfragment.model.ScoreCrosswordSetMonth;
+import com.ltst.prizeword.scoredetail.model.ScoreCrosswordSet;
+import com.ltst.prizeword.scoredetail.model.ScoreCrosswordSetMonth;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 

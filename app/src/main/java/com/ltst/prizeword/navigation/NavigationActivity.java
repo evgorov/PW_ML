@@ -28,7 +28,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.scoredetailfragment.view.ScoreDetailFragment;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.UserProvider;
@@ -49,6 +48,7 @@ import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.ManadgeHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
@@ -105,6 +105,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nonnull String mScoreText;
     private boolean mVkSwitch;
     private boolean mFbSwitch;
+    private boolean mIsDestroyed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -153,7 +154,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
-        mUserDataModel = new UserDataModel(this, mBcConnector);
 
         mDrawerChoiceDialog = new ChoiceImageSourceHolder(this);
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
@@ -177,7 +177,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
 
         initNavigationDrawerItems();
-        reloadUserData();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
@@ -256,6 +255,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onDestroy()
     {
         super.onDestroy();
+        mIsDestroyed = true;
         mManadgeHolder.dispose();
     }
 
@@ -268,9 +268,17 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
+        mUserDataModel = new UserDataModel(this, mBcConnector);
+        reloadUserData();
         super.onResume();
     }
 
+    @Override
+    protected void onPause()
+    {
+        mUserDataModel.close();
+        super.onPause();
+    }
 
     public void initNavigationDrawerItems()
     {
@@ -499,7 +507,11 @@ public class NavigationActivity extends SherlockFragmentActivity
                 this.startActivity(intent);
                 break;
             case R.id.header_listview_logout_btn:
-                mUserDataModel.clearDataBase(mTaskHandlerClearDataBase);
+                SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
+                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                spref.commit();
+                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                mUserDataModel.clearDataBase(null);
                 break;
             case R.id.header_listview_photo_img:
                 // Вызываем окно выбора источника получения фото;
@@ -568,6 +580,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+            if(mIsDestroyed)
+                return;
             UserData data = mUserDataModel.getUserData();
             if (data != null)
             {
@@ -594,6 +608,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+            if(mIsDestroyed)
+                return;
+
             byte[] buffer = mUserDataModel.getUserPic();
             Bitmap bitmap = null;
             if (!byte.class.isEnum() && buffer != null)
@@ -615,6 +632,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+            if(mIsDestroyed)
+                return;
             UserData data = mUserDataModel.getUserData();
             if (data == null || data.previewUrl == null || data.previewUrl == Strings.EMPTY)
             {
@@ -631,6 +650,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+            if(mIsDestroyed)
+                return;
             // Получили список провайдеров, выставляем значение свитчеров;
             @Nullable ArrayList<UserProvider> providers = mUserDataModel.getProviders();
             @Nonnull List<String> names = new ArrayList<String>();
@@ -669,6 +690,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
+            if(mIsDestroyed)
+                return;
             int statusCode = mUserDataModel.getStatusCodeAnswer();
             @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
             msg = getResources().getString(R.string.error_merge_accounts);
@@ -695,18 +718,6 @@ public class NavigationActivity extends SherlockFragmentActivity
                 }
                 ErrorAlertDialog.showDialog(NavigationActivity.this, R.string.error_merge_accounts);
             }
-        }
-    };
-
-    private IListenerVoid mTaskHandlerClearDataBase = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
-            spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-            spref.commit();
-            selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
         }
     };
 

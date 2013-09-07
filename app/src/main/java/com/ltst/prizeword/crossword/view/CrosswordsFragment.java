@@ -74,7 +74,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull ProgressBar mProgressBar;
 
-    private @Nullable INewsModel mNewsModel;
+    private @Nonnull INewsModel mNewsModel;
 
     private int mIndicatorPosition;
 
@@ -85,7 +85,6 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mContext = (Context) activity;
         mIManadges = (IManadges) activity;
-        mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
         super.onAttach(activity);
@@ -124,6 +123,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onResume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
         mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
 
@@ -151,6 +151,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onPause()
     {
         mPuzzleSetModel.close();
+        mNewsModel.close();
         super.onStop();
     }
 
@@ -220,8 +221,8 @@ public class CrosswordsFragment extends SherlockFragment
 
     private void createCrosswordPanel()
     {
-        @Nonnull List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
+        @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+        @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         if(sets != null && mapPuzzles != null)
         {
             mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);

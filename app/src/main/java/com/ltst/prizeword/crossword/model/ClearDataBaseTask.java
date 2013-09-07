@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 27.08.13.
  */
-public class ClearDataBase implements DbService.IDbTask {
+public class ClearDataBaseTask implements DbService.IDbTask {
 
     static final public @Nonnull Intent createIntent()
     {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.app.ModelUpdater;
+
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.bcops.simple.BcService;
@@ -18,7 +19,8 @@ public class NewsModel implements INewsModel
 {
     private @Nonnull String mSessionKey;
     private @Nonnull IBcConnector mBcConnector;
-    private @Nonnull News mNews;
+    private @Nullable News mNews;
+    private boolean mIsDestroyed;
 
     public NewsModel(@Nonnull String mSessionKey, @Nonnull IBcConnector mBcConnector)
     {
@@ -26,14 +28,33 @@ public class NewsModel implements INewsModel
         this.mBcConnector = mBcConnector;
     }
 
-    @Override public void updateFromInternet(@Nonnull IListenerVoid handler)
+    @Override
+    public void updateFromInternet(@Nonnull IListenerVoid handler)
     {
         mInternetUpdater.update(handler);
     }
 
-    @Nullable @Override public News getNews()
+    @Nullable
+    @Override
+    public News getNews()
     {
         return mNews;
+    }
+
+    @Override
+    public void close()
+    {
+        Log.i("NewsModel.destroy() begin"); //$NON-NLS-1$
+        if (mIsDestroyed)
+        {
+            Log.w("NewsModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mInternetUpdater.close();
+
+        mIsDestroyed = true;
+        Log.i("NewsModel.destroy() end"); //$NON-NLS-1$
+
     }
 
 
@@ -64,7 +85,9 @@ public class NewsModel implements INewsModel
         }
 
         @Override
-        protected @Nonnull Class<BcService> getServiceClass()
+        protected
+        @Nonnull
+        Class<BcService> getServiceClass()
         {
             return BcService.class;
         }
