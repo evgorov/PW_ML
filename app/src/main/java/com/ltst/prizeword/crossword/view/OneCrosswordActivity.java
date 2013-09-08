@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +19,17 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
-import com.ltst.prizeword.score.CoefficientsModel;
-import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.score.CoefficientsModel;
+import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.CustomProgressBar;
+import com.ltst.prizeword.tools.DimenTools;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -72,6 +74,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private int mCurrentPuzzleIndex = 0;
     private int mPuzzlesCount;
 
+    private boolean mPuzzleLoaded = false;
     private boolean mHasFirstPuzzle = false;
 
     private @Nonnull HintsModel mHintsModel;
@@ -119,6 +122,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
+        if(!DimenTools.isTablet(this))
+        {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        
         mRootView = (View) findViewById(R.id.gamefield_root_view);
         mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
         mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
@@ -214,7 +222,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             mPuzzleAdapter.restoreState(restoredBundle);
             mPuzzleView.restoreState(restoredBundle);
-            if (!mTickerLaunched)
+            mPuzzleLoaded = true;
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         } else
         {
@@ -345,7 +354,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mAlertPause.startAnimation(mAnimationSlideOutTop);
             mAlertPauseBg.setVisibility(View.GONE);
             mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
-            if (!mTickerLaunched)
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         }
         mStopPlayFlag = !show;
@@ -414,7 +423,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
+        mPuzzleLoaded = false;
+        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
         {
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         } else if (mHasFirstPuzzle)
@@ -450,7 +460,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         @Override
         public void run()
         {
-            if (mStopPlayFlag)
+            if (mStopPlayFlag && mPuzzleLoaded)
             {
                 makeTick();
                 tick();
@@ -465,9 +475,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         public void handle()
         {
             if (mPuzzleAdapter.isPuzzleSolved())
+            {
                 selectNextUnsolvedPuzzle();
+            }
+            mPuzzleLoaded = true;
             mStateUpdater.handle();
-            if (!mTickerLaunched)
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         }
     };

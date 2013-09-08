@@ -56,7 +56,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     {
         if(mIsDestroyed)
             return;
-        mPuzzleCurrentSets.update(handler);
+        mPuzzleCurrentSetsUpdater.update(handler);
     }
 
     @Override
@@ -70,8 +70,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
         mPuzzleSetsDbUpdater.close();
         mPuzzleSetsInternetUpdater.close();
+        Log.i("Closing total set updater");
         mPuzzleTotalSetsInternetUpdater.close();
-        mPuzzleCurrentSets.close();
+        mPuzzleCurrentSetsUpdater.close();
 
         mIsDestroyed = true;
         Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
@@ -103,6 +104,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleSetsInternetUpdater.update(handler);
     }
 
@@ -150,7 +153,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     };
 
-    private Updater mPuzzleCurrentSets = new Updater()
+    private Updater mPuzzleCurrentSetsUpdater = new Updater()
     {
         @Nonnull
         @Override

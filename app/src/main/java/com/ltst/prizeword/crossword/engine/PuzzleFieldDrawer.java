@@ -416,7 +416,8 @@ public class PuzzleFieldDrawer
                     drawLetterByState(canvas, rect, state);
                     int letterState = state.getLetterState();
                     if(state.hasArrows && (letterState == PuzzleTileState.LetterState.LETTER_CORRECT ||
-                                letterState == PuzzleTileState.LetterState.LETTER_EMPTY))
+                                letterState == PuzzleTileState.LetterState.LETTER_EMPTY ||
+                                letterState == PuzzleTileState.LetterState.LETTER_WRONG))
                     {
                         drawArrow(state.getFirstArrow(), canvas, rect);
                         drawArrow(state.getSecondArrow(), canvas, rect);
