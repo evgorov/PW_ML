@@ -42,6 +42,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     private @Nonnull IFragmentsHolderActivity mIFragmentActivity;
 
     private @Nonnull ListView mRatingListView;
+    private @Nonnull LinearLayout mRatingContainer;
     private @Nonnull Button mMenuBtn;
     private @Nonnull LinearLayout mHeaderImage;
     private @Nonnull LinearLayout mFooterImage;
@@ -83,6 +84,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mRatingListView.setDivider(null);
         mRatingListView.addHeaderView(mHeaderImage);
         mRatingListView.addFooterView(mFooterImage);
+
+        mRatingContainer = (LinearLayout) v.findViewById(R.id.raiting_fragment_container);
 
         mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
 
@@ -186,7 +189,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
             ProgressBar bar = mProgressBar;
             assert bar != null;
             bar.setVisibility(View.GONE);
-            mRatingListView.setVisibility(View.VISIBLE);
+            mRatingContainer.setVisibility(View.VISIBLE);
         }
     };
 }
