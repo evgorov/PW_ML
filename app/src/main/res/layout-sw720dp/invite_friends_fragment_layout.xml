@@ -67,6 +67,7 @@
                 android:id="@+id/vk_friends_listview"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
+                android:cacheColorHint="#00000000"
                 android:listSelector="@android:color/transparent"
                 android:visibility="gone"
                 />
