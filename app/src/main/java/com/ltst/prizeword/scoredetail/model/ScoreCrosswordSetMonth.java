@@ -14,28 +14,18 @@ import javax.annotation.Nonnull;
 /**
  * Created by Kostrof on 29.08.13.
  */
-public class ScoreCrosswordSetMonth extends LinearLayout
+public class ScoreCrosswordSetMonth
 {
     private @Nonnull Context mContext;
     private @Nonnull LayoutInflater mInflater;
 
-    private @Nonnull LinearLayout mLinearLayoutBrilliant;
-    private @Nonnull LinearLayout mLinearLayoutGold;
-    private @Nonnull LinearLayout mLinearLayoutSilver;
-    private @Nonnull LinearLayout mLinearLayoutSilver2;
-    private @Nonnull LinearLayout mLinearLayoutFree;
+    public @Nonnull LinearLayout mLinearLayoutBrilliant;
+    public @Nonnull LinearLayout mLinearLayoutGold;
+    public @Nonnull LinearLayout mLinearLayoutSilver;
+    public @Nonnull LinearLayout mLinearLayoutSilver2;
+    public @Nonnull LinearLayout mLinearLayoutFree;
 
-    public ScoreCrosswordSetMonth(Context context) {
-        super(context);
-        instance(context);
-    }
-
-    public ScoreCrosswordSetMonth(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        instance(context);
-    }
-
-    private void instance(@Nonnull Context context) {
+    public ScoreCrosswordSetMonth(@Nonnull Context context) {
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -60,14 +50,6 @@ public class ScoreCrosswordSetMonth extends LinearLayout
         mLinearLayoutFree.setLayoutParams(lp);
         mLinearLayoutFree.setVisibility(View.GONE);
         mLinearLayoutFree.setOrientation(LinearLayout.VERTICAL);
-
-        this.setLayoutParams(lp);
-        this.setOrientation(LinearLayout.VERTICAL);
-        this.addView(mLinearLayoutBrilliant);
-        this.addView(mLinearLayoutGold);
-        this.addView(mLinearLayoutSilver);
-        this.addView(mLinearLayoutSilver2);
-        this.addView(mLinearLayoutFree);
     }
 
     public void addCrosswordSet(@Nonnull PuzzleSetModel.PuzzleSetType type, @Nonnull ScoreCrosswordSet view){
