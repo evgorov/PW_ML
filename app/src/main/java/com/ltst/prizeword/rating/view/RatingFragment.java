@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,8 +43,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
 
     private @Nonnull ListView mRatingListView;
     private @Nonnull Button mMenuBtn;
-    private @Nonnull ImageView mHeaderImage;
-    private @Nonnull ImageView mFooterImage;
+    private @Nonnull LinearLayout mHeaderImage;
+    private @Nonnull LinearLayout mFooterImage;
 
     private @Nullable UsersListModel mModel;
     private @Nullable RatingAdapter mRatingAdapter;
@@ -69,10 +70,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         View v = inflater.inflate(R.layout.rating_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
 
-        mHeaderImage = new ImageView(mContext);
-        mFooterImage = new ImageView(mContext);
-        mHeaderImage.setBackgroundResource(R.drawable.rating_header);
-        mFooterImage.setBackgroundResource(R.drawable.rating_footer);
+        mHeaderImage = (LinearLayout) inflater.inflate(R.layout.rating_header, null, false);
+        mFooterImage = (LinearLayout) inflater.inflate(R.layout.rating_footer, null, false);
         mPositionTV = (TextView) v.findViewById(R.id.position_in_rating);
         StringBuffer sb = new StringBuffer();
         sb.append(mIFragmentActivity.getPositionText());

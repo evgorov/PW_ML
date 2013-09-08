@@ -33,12 +33,33 @@
 
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/login_bg_tile">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
-        <ProgressBar
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <ImageView
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/crossword_panel_bg_title"
+                android:scaleType="fitXY"/>
+
+            <ListView
+                android:id="@+id/rating_listview"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:clickable="false"
+                android:cacheColorHint="#00000000"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone"
+                />
+
+            <ProgressBar
                 android:id="@+id/list_progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,16 +68,9 @@
                 android:visibility="visible"
                 style="?android:attr/progressBarStyleLarge"
                 />
-        <ListView
-                android:id="@+id/rating_listview"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:clickable="false"
-                android:cacheColorHint="#00000000"
-                android:background="@drawable/invite_bg_tile"
-                android:listSelector="@android:color/transparent"
-                android:visibility="gone"
-                />
+
+        </FrameLayout>
+
     </LinearLayout>
 
 
