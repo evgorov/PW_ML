@@ -29,7 +29,7 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
-    private @Nonnull HashMap<String,List<Puzzle>> mPuzzlesSet;
+    private @Nonnull HashMap<String, List<Puzzle>> mPuzzlesSet;
     private int hintsCount;
     private boolean mIsDestroyed;
 
@@ -53,7 +53,8 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
-    public void updateCurrentSets(@Nonnull IListenerVoid handler) {
+    public void updateCurrentSets(@Nonnull IListenerVoid handler)
+    {
 
     }
 
@@ -61,13 +62,14 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     public void close()
     {
         Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$
-        if(mIsDestroyed)
+        if (mIsDestroyed)
         {
             Log.w("PuzzleSetModel.destroy() called more than once"); //$NON-NLS-1$
         }
 
         mPuzzleSetsDbUpdater.close();
         mPuzzleSetsInternetUpdater.close();
+        mPuzzleTotalSetsInternetUpdater.close();
 
         mIsDestroyed = true;
         Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
@@ -75,7 +77,9 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
-    public @Nonnull List<PuzzleSet> getPuzzleSets()
+    public
+    @Nonnull
+    List<PuzzleSet> getPuzzleSets()
     {
         if (mPuzzleSetList != null)
         {
@@ -92,19 +96,24 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
 
     @Nonnull
     @Override
-    public HashMap<String, List<Puzzle>> getPuzzlesSet() {
+    public HashMap<String, List<Puzzle>> getPuzzlesSet()
+    {
         return mPuzzlesSet;
     }
 
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
+        if (mIsDestroyed)
+            return;
         mPuzzleSetsInternetUpdater.update(handler);
     }
 
     @Override
     public void updateTotalDataByInternet(@Nonnull IListenerVoid handler)
     {
+        if (mIsDestroyed)
+            return;
         mPuzzleTotalSetsInternetUpdater.update(handler);
     }
 
@@ -164,7 +173,9 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
-        protected Updater(){}
+        protected Updater()
+        {
+        }
 
         @Nonnull
         @Override
@@ -189,7 +200,7 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
             }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
             hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
-            mPuzzlesSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
+            mPuzzlesSet = (HashMap<String, List<Puzzle>>) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
         }
     }
 
@@ -209,7 +220,9 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     public static final @Nonnull String SILVER2 = "silver2";
     public static final @Nonnull String FREE = "free";
 
-    public static @Nullable PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
+    public static
+    @Nullable
+    PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
     {
         if (type.equals(FREE))
             return PuzzleSetType.FREE;

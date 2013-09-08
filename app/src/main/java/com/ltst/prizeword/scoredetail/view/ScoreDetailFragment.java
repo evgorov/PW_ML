@@ -70,8 +70,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mCoefModel = new CoefficientsModel(mSessionKey, mBcConnector);
-        mCoefModel.updateFromInternet(mRefreshCoef);
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
@@ -208,24 +206,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         public void handle()
         {
             createCrosswordPanel();
-            if (!mPuzzleSetModel.getPuzzleSets().isEmpty())
-            {
-                //skipProgressBar();
-                return;
-            }
-            mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
-
-        }
-    };
-
-    private IListenerVoid
-            updateSetsFromServerHandler = new IListenerVoid()
-    {
-        @Override
-        public void handle()
-        {
-            createCrosswordPanel();
-            //skipProgressBar();
         }
     };
 

@@ -35,6 +35,7 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
         {
             connector.cancelTask(taskId);
             connector.unsubscribeTask(taskId);
+            Log.i("task closed: " + taskId);
             this.mTaskId = null;
         }
     }
