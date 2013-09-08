@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
 import com.ltst.prizeword.score.CoefficientsModel;
@@ -148,8 +149,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
-            mPauseSound.setChecked(true);
-            mPauseMusic.setChecked(true);
+            mPauseSound.setChecked(SharedPreferencesValues.getSoundSwitch(this));
+            mPauseMusic.setChecked(SharedPreferencesValues.getMusicSwitch(this));
         }
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
     }
@@ -235,11 +236,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onResume()
     {
 
-        if (mPauseSound.isChecked())
-            SoundsWork.startBackgroundMusic(this);
         fillFlipNumbers(54526);
         mStopPlayFlag = true;
-
+        if (mPauseMusic.isChecked())
+            SoundsWork.startBackgroundMusic(this);
         super.onResume();
     }
 
@@ -257,8 +257,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
-
-        SoundsWork.pauseBackgroundMusic();
+        if (mPauseMusic.isChecked())
+            SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         super.onStop();
     }
@@ -283,7 +283,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onDestroy()
     {
-        SoundsWork.stopBackgroundMusic();
+        if (mPauseMusic.isChecked())
+            SoundsWork.pauseBackgroundMusic();
+        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+        spref.putBoolean(SharedPreferencesValues.SP_MUSIC_SWITCH, mPauseMusic.isChecked());
+        spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
+        spref.commit();
         super.onDestroy();
     }
 
