@@ -19,6 +19,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.invitefriends.model.InviteFriendsDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -192,6 +193,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     @Override public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.header_menu_btn:

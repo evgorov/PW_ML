@@ -25,6 +25,7 @@ import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.scoredetail.model.ScoreDataModel;
 import com.ltst.prizeword.scoredetail.model.SolvedPuzzleSetModel;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -250,6 +251,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
 
     @Override public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.score_invite_btn:

@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
@@ -156,8 +157,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
-            mPauseSound.setChecked(true);
-            mPauseMusic.setChecked(true);
+            mPauseSound.setChecked(SharedPreferencesValues.getSoundSwitch(this));
+            SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
+            mPauseMusic.setChecked(SharedPreferencesValues.getMusicSwitch(this));
         }
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
     }
@@ -211,7 +213,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             @Override public void onQuestionAnswered()
             {
-                SoundsWork.questionAnswered(OneCrosswordActivity.this);
+                if (SoundsWork.ALL_SOUNDS_FLAG)
+                    SoundsWork.questionAnswered(OneCrosswordActivity.this);
             }
         });
 
@@ -244,11 +247,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onResume()
     {
 
-        if (mPauseSound.isChecked())
-            SoundsWork.startBackgroundMusic(this);
         fillFlipNumbers(54526);
         mStopPlayFlag = true;
-
+        if (mPauseMusic.isChecked())
+            SoundsWork.startBackgroundMusic(this);
         super.onResume();
     }
 
@@ -266,8 +268,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
-
-        SoundsWork.pauseBackgroundMusic();
+        if (mPauseMusic.isChecked())
+            SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         super.onStop();
     }
@@ -292,7 +294,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onDestroy()
     {
-        SoundsWork.stopBackgroundMusic();
+        if (mPauseMusic.isChecked())
+            SoundsWork.pauseBackgroundMusic();
+        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+        spref.putBoolean(SharedPreferencesValues.SP_MUSIC_SWITCH, mPauseMusic.isChecked());
+        spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
+        spref.commit();
         super.onDestroy();
     }
 
@@ -308,7 +315,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     @Override public void onClick(View v)
     {
-        SoundsWork.interfaceBtnMusic(this);
+        if (SoundsWork.ALL_SOUNDS_FLAG)
+            SoundsWork.interfaceBtnMusic(this);
         switch (v.getId())
         {
             case R.id.final_menu_btn:
@@ -393,7 +401,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                                     {
 
                                         mPuzzleView.triggerAnimation();
-                                        SoundsWork.questionAnswered(OneCrosswordActivity.this);
+                                        if (SoundsWork.ALL_SOUNDS_FLAG)
+                                            SoundsWork.questionAnswered(OneCrosswordActivity.this);
                                     }
                                 });
                                 mPuzzleView.invalidate();
@@ -494,7 +503,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         @Override
         public void handle()
         {
-            SoundsWork.puzzleSolved(OneCrosswordActivity.this);
+            if (SoundsWork.ALL_SOUNDS_FLAG)
+                SoundsWork.puzzleSolved(OneCrosswordActivity.this);
             showFinalDialog(true);
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
@@ -526,7 +536,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                     SoundsWork.startBackgroundMusic(this);
                     break;
                 case R.id.pause_sounds_switcher:
-                    SoundsWork.startAllSounds(this);
+                    SoundsWork.ALL_SOUNDS_FLAG = true;
                     break;
                 default:
                     break;
@@ -539,7 +549,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                     SoundsWork.pauseBackgroundMusic();
                     break;
                 case R.id.pause_sounds_switcher:
-                    SoundsWork.stopAllSounds();
+                    SoundsWork.ALL_SOUNDS_FLAG = false;
                     break;
                 default:
                     break;

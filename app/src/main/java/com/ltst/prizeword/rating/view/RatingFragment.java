@@ -19,6 +19,7 @@ import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rating.model.UsersListModel;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -170,6 +171,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
 
     @Override public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.header_menu_btn:

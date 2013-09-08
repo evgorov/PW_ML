@@ -23,6 +23,7 @@ import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -48,6 +49,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     private static @Nullable String mNewPassword;
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull Context mContext;
 
     private @Nonnull EditText mNewPasswordInput;
     private @Nonnull EditText mNewPasswordConfirmInput;
@@ -60,6 +62,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner)activity).getBcConnector();
         mFragmentHolder = (IFragmentsHolderActivity) getActivity();
         mDrawerHolder = (INavigationDrawerHolder)activity;
@@ -89,6 +92,7 @@ public class ResetPassFragment extends SherlockFragment implements INavigationBa
             @Override
             public void onClick(View v)
             {
+                SoundsWork.interfaceBtnMusic(mContext);
                 hideKeyboard();
 
                 mNewPassword = mNewPasswordInput.getText().toString();

@@ -31,6 +31,7 @@ import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
@@ -171,6 +172,7 @@ public class AuthorizationFragment extends SherlockFragment
     @Override
     public void onClick(View view)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (view.getId())
         {
             case R.id.login_enter_enter_btn:

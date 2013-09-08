@@ -11,6 +11,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.invitefriends.model.IInviteFriendsDataModel;
 import com.ltst.prizeword.invitefriends.model.InviteFriendsData;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
+import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.SlowSourceAdapter;
@@ -110,6 +111,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
                 @Override
                 public void onClick(View v)
                 {
+                    SoundsWork.interfaceBtnMusic(mContext);
                     switch (v.getId())
                     {
                         case R.id.invite_add_btn:

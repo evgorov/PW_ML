@@ -14,6 +14,7 @@ import java.util.logging.Handler;
 
 public final class SoundsWork
 {
+    public static boolean ALL_SOUNDS_FLAG = true;
     private static MediaPlayer mMediaPlayerBack;
     private static MediaPlayer mMediaPlayerAll;
     public Context mContext;
@@ -28,12 +29,15 @@ public final class SoundsWork
         } else
             mMediaPlayerBack.start();
     }
+
     public static void startAllSounds(Context context)
     {
     }
+
     public static void stopAllSounds()
     {
     }
+
     public static void pauseBackgroundMusic()
     {
         mMediaPlayerBack.pause();
@@ -51,73 +55,96 @@ public final class SoundsWork
 
     public static void sidebarMusic(Context context)
     {
-        if (mMediaPlayerAll == null)
+        if (ALL_SOUNDS_FLAG)
         {
-            mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
-            mMediaPlayerAll.start();
-        } else
-        {
-            while (true)
+            if (mMediaPlayerAll == null)
             {
-                if (!mMediaPlayerAll.isPlaying())
+                mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
+                mMediaPlayerAll.start();
+            } else
+            {
+                while (true)
                 {
-                    releaseMPALL();
-                    mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
-                    mMediaPlayerAll.start();
-                    break;
+                    if (!mMediaPlayerAll.isPlaying())
+                    {
+                        releaseMPALL();
+                        mMediaPlayerAll = MediaPlayer.create(context, R.raw.sidebar);
+                        mMediaPlayerAll.start();
+                        break;
+                    }
                 }
             }
         }
-
     }
 
     public static void interfaceBtnMusic(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.interface_button);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.interface_button);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void questionAnswered(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.question_answered);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.question_answered);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void puzzleSolved(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.puzzle_solved);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.puzzle_solved);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void buySet(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.buy_set);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.buy_set);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void openSet(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.open_set);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.open_set);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void closeSet(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.close_set);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.close_set);
+            mMediaPlayerAll.start();
+        }
     }
 
     public static void keyboardBtn(Context context)
     {
-        releaseMPALL();
-        mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
-        mMediaPlayerAll.start();
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
+            mMediaPlayerAll.start();
+        }
     }
 
     private static void releaseMPALL()
