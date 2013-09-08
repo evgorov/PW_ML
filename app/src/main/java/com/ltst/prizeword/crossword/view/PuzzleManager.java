@@ -67,6 +67,11 @@ public class PuzzleManager
 
     }
 
+    public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
+    {
+        mFieldDrawer.setResourcesDecodedHandler(resourcesDecodedHandler);
+    }
+
     public void saveState(@Nonnull Bundle dest)
     {
         if (mFocusViewPoint != null)

@@ -57,6 +57,8 @@ public class PuzzleFieldDrawer
     private boolean mAnimateBlink = true;
     private boolean mAnimateInput = false;
 
+    private @Nullable IListenerVoid mResourcesDecodedHandler;
+
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
     {
@@ -174,6 +176,12 @@ public class PuzzleFieldDrawer
     }
 
     // ====== public accessable data =====================================
+
+
+    public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
+    {
+        mResourcesDecodedHandler = resourcesDecodedHandler;
+    }
 
     public int getWidth()
     {
@@ -794,6 +802,10 @@ public class PuzzleFieldDrawer
                 @Override
                 public void handle()
                 {
+                    if (mResourcesDecodedHandler != null)
+                    {
+                        mResourcesDecodedHandler.handle();
+                    }
                     mInvalidateHandler.handle(mPuzzleRect);
                     loadingFinishedHandler.handle();
                 }
