@@ -22,7 +22,7 @@
     <string name="score_fragment_title">Детализация очков</string>
 
     <string name="ending">-й</string>
-    <string name="points">очков</string>
+    <string name="points">" очков"</string>
     <string name="user">Пользователь</string>
     <string name="error">Ошибка</string>
     <string name="error_merge_accounts">Ошибка! Этот аккаунт уже привязан к другой учетной записи</string>
@@ -116,7 +116,7 @@
     <string name="rules_text_12">PrizeWord - увлекательно, полезно и выгодно!</string>
 
     // ==== Menu_group text ====
-    <string name="menu_group_result_in_month">Ваш результат в </string>
+    <string name="menu_group_result_in_month">"Ваш результат в "</string>
     <string name="menu_group_social">Социальные сети</string>
     // ==== News_group text ====
     <string name="news1">Возможности поведать рассказом собеседника в бега равна нулю</string>
