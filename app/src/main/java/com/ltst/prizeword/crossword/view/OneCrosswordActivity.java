@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +18,17 @@ import android.widget.ToggleButton;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
-import com.ltst.prizeword.score.CoefficientsModel;
-import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.crossword.engine.PuzzleResourcesAdapter;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.score.CoefficientsModel;
+import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.CustomProgressBar;
+import com.ltst.prizeword.tools.DimenTools;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -119,6 +121,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
+        if(!DimenTools.isTablet(this))
+        {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        
         mRootView = (View) findViewById(R.id.gamefield_root_view);
         mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
         mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
