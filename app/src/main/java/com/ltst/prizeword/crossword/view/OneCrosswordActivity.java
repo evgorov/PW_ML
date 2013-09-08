@@ -71,6 +71,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private int mCurrentPuzzleIndex = 0;
     private int mPuzzlesCount;
 
+    private boolean mPuzzleLoaded = false;
     private boolean mHasFirstPuzzle = false;
 
     private @Nonnull HintsModel mHintsModel;
@@ -211,7 +212,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             mPuzzleAdapter.restoreState(restoredBundle);
             mPuzzleView.restoreState(restoredBundle);
-            if (!mTickerLaunched)
+            mPuzzleLoaded = true;
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         } else
         {
@@ -337,7 +339,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mAlertPause.startAnimation(mAnimationSlideOutTop);
             mAlertPauseBg.setVisibility(View.GONE);
             mStopPlayBtn.setBackgroundResource(R.drawable.header_stop_but);
-            if (!mTickerLaunched)
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         }
         mStopPlayFlag = !show;
@@ -405,7 +407,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void selectNextUnsolvedPuzzle()
     {
-        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
+        mPuzzleLoaded = false;
+        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
         {
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         } else if (mHasFirstPuzzle)
@@ -441,7 +444,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         @Override
         public void run()
         {
-            if (mStopPlayFlag)
+            if (mStopPlayFlag && mPuzzleLoaded)
             {
                 makeTick();
                 tick();
@@ -456,9 +459,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         public void handle()
         {
             if (mPuzzleAdapter.isPuzzleSolved())
+            {
                 selectNextUnsolvedPuzzle();
+            }
+            mPuzzleLoaded = true;
             mStateUpdater.handle();
-            if (!mTickerLaunched)
+            if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
         }
     };
