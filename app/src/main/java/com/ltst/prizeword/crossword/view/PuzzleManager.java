@@ -235,7 +235,6 @@ public class PuzzleManager
                         }
                         mInvalidateHandler.handle(mPuzzleViewRect);
                         triggerLetterAnimation(view);
-                        cancelLastQuestion();
                     }
                 });
                 mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());

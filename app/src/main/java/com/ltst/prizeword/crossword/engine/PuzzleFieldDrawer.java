@@ -50,7 +50,7 @@ public class PuzzleFieldDrawer
     private int mTextHeight;
     private @Nonnull Paint mPaint;
     private IListener<Rect> mInvalidateHandler;
-    private @Nullable List<PuzzleTileState> mInputTileList;
+    private volatile @Nullable List<PuzzleTileState> mInputTileList;
     private volatile int mInputAlpha = 0;
     private @Nullable IListenerVoid mPostInvalidateHandler;
     private boolean mIsAnimating = false;
@@ -577,8 +577,11 @@ public class PuzzleFieldDrawer
                 public void handle()
                 {
                     canvas.restoreToCount(saveCount);
-                    mInputTileList.clear();
-                    mInputTileList = null;
+                    synchronized (mInputTileList)
+                    {
+                        mInputTileList.clear();
+                        mInputTileList = null;
+                    }
                     mPostInvalidateHandler = null;
                     mIsAnimating = false;
                     mAnimateBlink = true;
@@ -586,42 +589,45 @@ public class PuzzleFieldDrawer
                 }
             };
 
-            for (PuzzleTileState state : mInputTileList)
+            synchronized (mInputTileList)
             {
-                Paint p1 = new Paint();
-                p1.setAntiAlias(true);
-                @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
-                if (rect == null)
+                for (PuzzleTileState state : mInputTileList)
                 {
-                    break;
-                }
-                int letterRes = PuzzleResources.getLetterTilesInput();
-                char letter = state.getInputLetter().charAt(0);
+                    Paint p1 = new Paint();
+                    p1.setAntiAlias(true);
+                    @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
+                    if (rect == null)
+                    {
+                        break;
+                    }
+                    int letterRes = PuzzleResources.getLetterTilesInput();
+                    char letter = state.getInputLetter().charAt(0);
 
-                RectF rectf = new RectF(rect);
-                if(mAnimateBlink)
-                {
-                    p1.setColor(Color.WHITE);
-                    p1.setAlpha(mInputAlpha);
-                    canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
-                }
-                else
-                if(mAnimateInput)
-                {
-                    p1.setColor(Color.WHITE);
-                    p1.setAlpha(255);
-                    canvas.drawRoundRect(rectf, 10.0f, 10.0f, p1);
+                    RectF rectf = new RectF(rect);
+                    if(mAnimateBlink)
+                    {
+                        p1.setColor(Color.WHITE);
+                        p1.setAlpha(mInputAlpha);
+                        canvas.drawRoundRect(rectf, 5.0f, 5.0f, p1);
+                    }
+                    else
+                    if(mAnimateInput)
+                    {
+                        p1.setColor(Color.WHITE);
+                        p1.setAlpha(255);
+                        canvas.drawRoundRect(rectf, 10.0f, 10.0f, p1);
 
-                    p1.setAlpha(mInputAlpha);
-                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
+                        p1.setAlpha(mInputAlpha);
+                        p1.setShadowLayer(10, 5, 5, Color.BLACK);
 
-                    mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
-                }
-                else
-                {
-                    p1.setAlpha(mInputAlpha);
-                    p1.setShadowLayer(10, 5, 5, Color.BLACK);
-                    mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                        mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                    }
+                    else
+                    {
+                        p1.setAlpha(mInputAlpha);
+                        p1.setShadowLayer(10, 5, 5, Color.BLACK);
+                        mLetterBitmapManager.drawLetter(letterRes, letter, canvas, rectf, p1);
+                    }
                 }
             }
 

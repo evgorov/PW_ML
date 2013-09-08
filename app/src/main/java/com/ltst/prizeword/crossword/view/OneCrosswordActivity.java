@@ -125,7 +125,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        
+
         mRootView = (View) findViewById(R.id.gamefield_root_view);
         mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
         mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
