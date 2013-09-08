@@ -39,6 +39,7 @@ import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.navigation.IReloadUserData;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 import com.ltst.prizeword.tools.IBitmapAsyncTask;
@@ -303,6 +304,7 @@ public class RegisterFragment extends SherlockFragment
     @Override
     public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         switch (v.getId())
         {
             case R.id.registration_nav_back_button:

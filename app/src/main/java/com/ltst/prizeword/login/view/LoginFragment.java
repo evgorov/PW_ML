@@ -85,6 +85,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     @Override
     public void onClick(View v)
     {
+        SoundsWork.interfaceBtnMusic(mContext);
         @Nonnull Intent intent;
         switch (v.getId())
         {

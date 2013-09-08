@@ -25,6 +25,7 @@ import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationBackPress;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.BcBaseService;
@@ -60,16 +61,18 @@ public class ForgetPassFragment extends SherlockFragment
     private @Nonnull Animation mAnimationSlideOutTop;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Activity activity)
+    {
         super.onAttach(activity);
         mContext = (Context) activity;
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
-        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder = (INavigationDrawerHolder) activity;
         mDrawerHolder.lockDrawerClosed();
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
         mSendEmailButton.setOnClickListener(this);
         mBackPressButton.setOnClickListener(this);
         mSuccessButton.setOnClickListener(this);
@@ -88,25 +91,30 @@ public class ForgetPassFragment extends SherlockFragment
         mSendEmailButton = (Button) v.findViewById(R.id.forgetpass_send_btn);
         mSuccessAlert = (View) v.findViewById(R.id.forgetpass_success_send_alert);
         mSuccessButton = (View) v.findViewById(R.id.forgetpass_success_send_ok_btn);
-        mAnimationSlideInTop = AnimationUtils.loadAnimation(mContext,R.anim.forget_slide_in_succes_view);
-        mAnimationSlideOutTop = AnimationUtils.loadAnimation(mContext,R.anim.forget_slide_out_succes_view);
+        mAnimationSlideInTop = AnimationUtils.loadAnimation(mContext, R.anim.forget_slide_in_succes_view);
+        mAnimationSlideOutTop = AnimationUtils.loadAnimation(mContext, R.anim.forget_slide_out_succes_view);
         mSuccessAlertBg = (View) v.findViewById(R.id.forget_succes_alert);
         return v;
     }
 
-    void sendEmail(){
+    void sendEmail()
+    {
         final @Nonnull String email = mEmailEditText.getText().toString();
-        SessionForgotPassword session = new SessionForgotPassword() {
+        SessionForgotPassword session = new SessionForgotPassword()
+        {
             @Nonnull
             @Override
-            protected Intent createIntent() {
+            protected Intent createIntent()
+            {
                 return ForgetPassCycleTask.createForgotPasswordIntent(email);
             }
         };
 
-        session.update(new IListenerVoid(){
+        session.update(new IListenerVoid()
+        {
             @Override
-            public void handle() {
+            public void handle()
+            {
             }
         });
     }
@@ -116,7 +124,9 @@ public class ForgetPassFragment extends SherlockFragment
     @Override
     public void onClick(View view)
     {
-        switch (view.getId()){
+        SoundsWork.interfaceBtnMusic(mContext);
+        switch (view.getId())
+        {
             case R.id.forgetpass_back_btn:
                 hideKeyboard();
                 onBackKeyPress();
@@ -139,19 +149,23 @@ public class ForgetPassFragment extends SherlockFragment
         }
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard()
+    {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
-    public void onBackKeyPress() {
+    public void onBackKeyPress()
+    {
         mFragmentHolder.selectNavigationFragmentByClassname(AuthorizationFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
-    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent)
+    {
+        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+        {
             sendEmail();
             return true;
         }
@@ -164,29 +178,33 @@ public class ForgetPassFragment extends SherlockFragment
     {
         @Nonnull
         @Override
-        protected IBcConnector getBcConnector() {
+        protected IBcConnector getBcConnector()
+        {
             return mBcConnector;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
             return ForgetPassCycleTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass() {
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
+        {
             return DbService.class;
         }
 
         @Override
-        protected void handleData(@Nullable Bundle result) {
+        protected void handleData(@Nullable Bundle result)
+        {
             if (result == null)
                 return;
 
             @Nonnull Integer statusCode = result.getInt(ForgetPassCycleTask.BF_HTTP_STATUS);
-            Log.d(LOG_TAG, "STATUS_CODE = "+statusCode);
+            Log.d(LOG_TAG, "STATUS_CODE = " + statusCode);
             if (statusCode == RestParams.SC_SUCCESS)
             {
                 // Показываем окно успешной отправки email;
@@ -199,8 +217,7 @@ public class ForgetPassFragment extends SherlockFragment
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 // Очищаем поле email;
                 mEmailEditText.setText(Strings.EMPTY);
-            }
-            else
+            } else
             {
                 ErrorAlertDialog.showDialog(mContext, R.string.msg_forget_password_error_email);
             }

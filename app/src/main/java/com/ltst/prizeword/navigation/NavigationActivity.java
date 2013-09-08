@@ -117,7 +117,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         mBcConnector = new BcConnector(this);
         mManadgeHolder = new ManadgeHolder(this, mBcConnector);
         mManadgeHolder.instance();
-
+        SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
 
@@ -139,14 +139,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             @Override public void onClose()
             {
-                SoundsWork.sidebarMusic(mContext);
+                    SoundsWork.sidebarMusic(mContext);
             }
         });
         mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener()
         {
             @Override public void onOpen()
             {
-                SoundsWork.sidebarMusic(mContext);
+                    SoundsWork.sidebarMusic(mContext);
             }
         });
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -183,7 +183,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data)) {
+        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
+        {
             // not handled, so handle it ourselves (here's where you'd
             // perform any handling of activity results not related to in-app
             // billing...
@@ -192,16 +193,20 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK)
         {
-            switch (requestCode){
-                case RESULT_LOAD_IMAGE: {
+            switch (requestCode)
+            {
+                case RESULT_LOAD_IMAGE:
+                {
                     // Получаем картинку из галереи;
                     Uri chosenImageUri = data.getData();
                     Bitmap photo = null;
-                    try {
+                    try
+                    {
                         photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-                    } catch (IOException e) {
+                    } catch (IOException e)
+                    {
                         e.printStackTrace();
                     }
                     // Меняем аватарку на панеле;
@@ -211,7 +216,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
-                case REQUEST_MAKE_PHOTO:{
+                case REQUEST_MAKE_PHOTO:
+                {
                     // получаем фото с камеры;
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     // Меняем аватарку на панеле;
@@ -226,12 +232,11 @@ public class NavigationActivity extends SherlockFragmentActivity
                     SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
                     String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                     String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER );
+                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER);
                     mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
                     break;
             }
-        }
-        else
+        } else
         {
             switch (requestCode)
             {
@@ -291,9 +296,9 @@ public class NavigationActivity extends SherlockFragmentActivity
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(AuthorizationFragment.FRAGMENT_ID, AuthorizationFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(ForgetPassFragment.FRAGMENT_ID, ForgetPassFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID,InviteFriendsFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(RatingFragment.FRAGMENT_ID,RatingFragment.FRAGMENT_CLASSNAME);
-            initFragmentToList(ScoreDetailFragment.FRAGMENT_ID,ScoreDetailFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(InviteFriendsFragment.FRAGMENT_ID, InviteFriendsFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(RatingFragment.FRAGMENT_ID, RatingFragment.FRAGMENT_CLASSNAME);
+            initFragmentToList(ScoreDetailFragment.FRAGMENT_ID, ScoreDetailFragment.FRAGMENT_CLASSNAME);
             // crossword
             initFragmentToList(CrosswordsFragment.FRAGMENT_ID, CrosswordsFragment.FRAGMENT_CLASSNAME);
         }
@@ -496,7 +501,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View view)
     {
-        SoundsWork.interfaceBtnMusic(this);
+            SoundsWork.interfaceBtnMusic(this);
         switch (view.getId())
         {
             case R.id.menu_mypuzzle_btn:
@@ -535,7 +540,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             case R.id.menu_pride_rating_btn:
                 selectNavigationFragmentByClassname(RatingFragment.FRAGMENT_CLASSNAME);
                 break;
-            case  R.id.menu_pride_score_btn:
+            case R.id.menu_pride_score_btn:
                 selectNavigationFragmentByClassname(ScoreDetailFragment.FRAGMENT_CLASSNAME);
                 break;
             default:
@@ -580,7 +585,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            if(mIsDestroyed)
+            if (mIsDestroyed)
                 return;
             UserData data = mUserDataModel.getUserData();
             if (data != null)
@@ -588,9 +593,9 @@ public class NavigationActivity extends SherlockFragmentActivity
                 mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name + " " + data.surname : data.surname);
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
-                mScoreText=String.valueOf(data.monthScore);
+                mScoreText = String.valueOf(data.monthScore);
                 mDrawerMenu.mPosition.setText(String.valueOf(data.position));
-                mPositionText=String.valueOf(data.position);
+                mPositionText = String.valueOf(data.position);
                 reloadProviders(data.id);
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);
@@ -608,7 +613,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            if(mIsDestroyed)
+            if (mIsDestroyed)
                 return;
 
             byte[] buffer = mUserDataModel.getUserPic();
@@ -632,7 +637,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            if(mIsDestroyed)
+            if (mIsDestroyed)
                 return;
             UserData data = mUserDataModel.getUserData();
             if (data == null || data.previewUrl == null || data.previewUrl == Strings.EMPTY)
@@ -650,7 +655,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            if(mIsDestroyed)
+            if (mIsDestroyed)
                 return;
             // Получили список провайдеров, выставляем значение свитчеров;
             @Nullable ArrayList<UserProvider> providers = mUserDataModel.getProviders();
@@ -690,7 +695,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         @Override
         public void handle()
         {
-            if(mIsDestroyed)
+            if (mIsDestroyed)
                 return;
             int statusCode = mUserDataModel.getStatusCodeAnswer();
             @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
@@ -775,24 +780,28 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void buyProduct(ManadgeHolder.ManadgeProduct product) {
+    public void buyProduct(ManadgeHolder.ManadgeProduct product)
+    {
         // Покупка;
         mManadgeHolder.buyProduct(product);
     }
 
     @Override
-    public void reloadPriceProducts() {
+    public void reloadPriceProducts()
+    {
         // Обновляем прайс лист продуктов;
         mManadgeHolder.reloadPrice();
     }
 
     @Override
-    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler) {
+    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
+    {
         mManadgeHolder.registerHandlerPriceProductsChange(handler);
     }
 
     @Override
-    public String getPriceProduct(ManadgeHolder.ManadgeProduct product) {
+    public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
+    {
         // Возвращаем цену продукта;
         return mManadgeHolder.getPriceProduct(product);
     }
