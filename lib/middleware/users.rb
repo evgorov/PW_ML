@@ -146,7 +146,7 @@ module Middleware
       if puzzle_set['type'] != 'free' && self.class.settings.environment != :test
         receipt_data = params['receipt_data'] || params['receipt-data']
         ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id,
-                                      "ru.aipmedia.ios.prizeword.#{params['id']}")
+                                      "ru.aipmedia.prizeword.#{params['id']}")
       end
 
       user = current_user
