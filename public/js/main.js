@@ -448,9 +448,11 @@ var PuzzleView = Backbone.View.extend({
     var size = this.$el.find('[role="puzzle-size"]').val(),
         name = this.$el.find('[role="puzzle-name"]').val(),
         baseScore = this.$el.find('[role="puzzle-base-score"]').val(),
-        timeGiven = this.$el.find('[role="puzzle-time-given"]').val();
+        timeGiven = this.$el.find('[role="puzzle-time-given"]').val(),
+        setId = this.$el.find('[role="puzzle-set"]').val();
 
     this.model.set('name', name);
+    this.model.set('set_id', setId);
     this.model.set('base_score', baseScore);
     this.model.set('time_given', timeGiven);
     this.model.set('height', parseInt(size.split('x')[0]));
@@ -459,6 +461,9 @@ var PuzzleView = Backbone.View.extend({
 
   initialize: function(){
     this.$el.html(this.template());
+    this.puzzleSets = new PuzzleSets();
+    puzzleSets.on('reset', _.bind(this.render, this));
+    puzzleSets.fetch();
     $('[role="puzzle-editor"]').empty().append(this.$el);
     this.fieldView = new FieldView({ model: this.model.field, el: this.$el.find('[role="field"]')[0] });
     this.fieldView.on('tokenClick', function(e){
@@ -493,12 +498,20 @@ var PuzzleView = Backbone.View.extend({
 
   render: function() {
     var $questions = this.$el.find('.questions'),
+        $set = this.$el.find('[role="puzzle-set"]'),
         fieldSize = this.model.get('height') + 'x' + this.model.get('width');
 
     this.$el.find('[role="puzzle-size"]').val(fieldSize);
     this.$el.find('[role="puzzle-name"]').val(this.model.get('name'));
     this.$el.find('[role="puzzle-base-score"]').val(this.model.get('base_score'));
     this.$el.find('[role="puzzle-time-given"]').val(this.model.get('time_given'));
+
+    $set.empty().append($('<option>'));
+    puzzleSets.each(function(o){
+        $option = $('<option>').val(o.get('id')).text(o.get('name'))
+        $set.append($option);
+    });
+    $set.val(this.model.get('set_id'));
 
     $questions.empty();
     _(this.model.get('questions')).each(function(question){
@@ -575,7 +588,7 @@ var PuzzlesView = Backbone.View.extend({
 
   addNewPuzzle: function(){
       var puzzle = new Puzzle();
-      puzzle.on('sync', function(){ this.model.fetch(); });
+      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
       var puzzleView = new PuzzleView({ model: puzzle });
       puzzleView.show();
   },
@@ -583,7 +596,7 @@ var PuzzlesView = Backbone.View.extend({
   editPuzzle: function(e){
       var id = $(e.target).attr('data-id'),
           puzzle = this.collection.get(id);
-      puzzle.on('sync', function(){ this.model.fetch(); });
+      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
       var puzzleView = new PuzzleView({ model: puzzle });
       puzzleView.show();
   },

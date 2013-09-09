@@ -193,6 +193,8 @@
               <input type="text" class="input-small" placeholder="1000" role="puzzle-base-score">
               <label class="">Время:</label>
               <input type="text" class="input-small" placeholder="100" role="puzzle-time-given">
+              <label class="">Сет:</label>
+              <select role="puzzle-set"></select>
             </div>
             <div role="field" class="field">
               <div></div>
@@ -315,20 +317,6 @@
                 <option value="free">Бесплатный</option>
               </select>
             </div>
-            <div class="m-bottom-10px">
-              <p>Сканворды:</p>
-              <div role="puzzle-ids">
-                <% _.each(puzzle_ids, function(o){ %>
-                  <div>
-                    <input type="text" role="puzzle-id" value="<%= o %>">
-                    <input class="btn" type="button" role="delete-puzzle" value="delete">
-                  </div>
-                <% }); %>
-              </div>
-            </div>
-            <button class="btn btn-small" role="add-puzzle">
-              <i class="icon-plus-sign"></i> Добавить сканворд
-            </button>
           </form>
           <div class="pull-right">
             <a href="#" role="cancel-set">Отменить</a>&nbsp;

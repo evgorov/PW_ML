@@ -35,9 +35,6 @@ module Middleware
         o['name'] = params['name']
         o['published'] = (params['published'] == 'true')
         o['type'] = params['type']
-        if params['puzzle_ids']
-          o['puzzle_ids'] =  JSON.parse(params['puzzle_ids'])
-        end
       end
 
       def set_puzzle_data(o, params)
@@ -46,6 +43,7 @@ module Middleware
         o['width'] = params['width'].to_i
         o['issuedAt'] = params['issuedAt']
         o['name'] = params['name']
+        o['set_id'] = params['set_id']
         if params['questions']
           o['questions'] =  JSON.parse(params['questions'])
         end
@@ -102,15 +100,41 @@ module Middleware
 
     post '/questions' do
       authorize_editor!
-      Puzzle.new.storage(env['redis']).tap { |o|
+      Puzzle.storage(env['redis']).tap { |o|
+        prev_id, current_id = o['set_id'], params['set_id']
         set_puzzle_data(o, params)
+        begin
+          prev_set = PuzzleSet.storage(env['redis']).load(prev_id)
+          prev_set['puzzle_ids'].reject!{ |id| id == o.id }
+          prev_set.save!
+        rescue BasicModel::NotFound
+        end
+        begin
+          set = PuzzleSet.storage(env['redis']).load(current_id)
+          set['puzzle_ids'] |= [o.id]
+          set.save!
+        rescue BasicModel::NotFound
+        end
       }.save.to_json
     end
 
     put '/questions/:id' do
       authorize_editor!
       Puzzle.storage(env['redis']).load(params['id']).tap { |o|
+        prev_id, current_id = o['set_id'], params['set_id']
         set_puzzle_data(o, params)
+        begin
+          prev_set = PuzzleSet.storage(env['redis']).load(prev_id)
+          prev_set['puzzle_ids'].reject!{ |id| id == o.id }
+          prev_set.save
+        rescue BasicModel::NotFound
+        end
+        begin
+          set = PuzzleSet.storage(env['redis']).load(current_id)
+          set['puzzle_ids'] |= [o.id]
+          set.save
+        rescue BasicModel::NotFound
+        end
       }.save.to_json
     end
 
