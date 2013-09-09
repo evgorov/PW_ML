@@ -56,6 +56,9 @@ public class PuzzleFieldDrawer
     private boolean mIsAnimating = false;
     private boolean mAnimateBlink = true;
     private boolean mAnimateInput = false;
+    private boolean mInputListCreated = false;
+
+    private @Nullable IListenerVoid mResourcesDecodedHandler;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
                              @Nonnull IListener<Rect> invalidateHandler)
@@ -174,6 +177,12 @@ public class PuzzleFieldDrawer
     }
 
     // ====== public accessable data =====================================
+
+
+    public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
+    {
+        mResourcesDecodedHandler = resourcesDecodedHandler;
+    }
 
     public int getWidth()
     {
@@ -308,10 +317,11 @@ public class PuzzleFieldDrawer
 
     public void createInputRectList(@Nullable List<PuzzleTileState> stateList, @Nonnull IListenerVoid postInvalidate)
     {
-        if(stateList == null || stateList.isEmpty())
+        if(stateList == null || stateList.isEmpty() || mInputListCreated)
             return;
         mInputTileList = Collections.synchronizedList(stateList);
         mPostInvalidateHandler = postInvalidate;
+        mInputListCreated = true;
     }
 
     public @Nullable Rect getPuzzleTileRect(int row, int column)
@@ -565,11 +575,12 @@ public class PuzzleFieldDrawer
         }
     }
 
-    public void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas, final @Nullable IListenerVoid animationEndHandler)
+    public synchronized void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas, final @Nullable IListenerVoid animationEndHandler)
     {
-
-        if(mInputTileList != null)
+        if(mInputListCreated)
         {
+            PuzzleTileState[] stateArray = new PuzzleTileState[mInputTileList.size()];
+            stateArray = mInputTileList.toArray(stateArray);
             final int saveCount = canvas.save();
             IListenerVoid finishAnimHandler = new IListenerVoid()
             {
@@ -577,8 +588,12 @@ public class PuzzleFieldDrawer
                 public void handle()
                 {
                     canvas.restoreToCount(saveCount);
-                    mInputTileList.clear();
-                    mInputTileList = null;
+                    synchronized (mInputTileList)
+                    {
+                        mInputTileList.clear();
+                        mInputTileList = null;
+                        mInputListCreated = false;
+                    }
                     mPostInvalidateHandler = null;
                     mIsAnimating = false;
                     mAnimateBlink = true;
@@ -586,8 +601,9 @@ public class PuzzleFieldDrawer
                 }
             };
 
-            for (PuzzleTileState state : mInputTileList)
+            for (int i = 0; i < stateArray.length; i++)
             {
+                PuzzleTileState state = stateArray[i];
                 Paint p1 = new Paint();
                 p1.setAntiAlias(true);
                 @Nullable Rect rect = getPuzzleTileRect(state.row, state.column);
@@ -788,6 +804,10 @@ public class PuzzleFieldDrawer
                 @Override
                 public void handle()
                 {
+                    if (mResourcesDecodedHandler != null)
+                    {
+                        mResourcesDecodedHandler.handle();
+                    }
                     mInvalidateHandler.handle(mPuzzleRect);
                     loadingFinishedHandler.handle();
                 }
@@ -817,7 +837,7 @@ public class PuzzleFieldDrawer
         @Override
         public void run()
         {
-            if (mPostInvalidateHandler == null || mInputTileList == null)
+            if (mPostInvalidateHandler == null)
             {
                 return;
             }

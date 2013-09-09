@@ -67,6 +67,11 @@ public class PuzzleManager
 
     }
 
+    public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
+    {
+        mFieldDrawer.setResourcesDecodedHandler(resourcesDecodedHandler);
+    }
+
     public void saveState(@Nonnull Bundle dest)
     {
         if (mFocusViewPoint != null)
@@ -235,7 +240,6 @@ public class PuzzleManager
                         }
                         mInvalidateHandler.handle(mPuzzleViewRect);
                         triggerLetterAnimation(view);
-                        cancelLastQuestion();
                     }
                 });
                 mInputFocusViewPoint = mFieldDrawer.getInputFocusViewPoint(mResourcesAdapter.getCurrentTileFocusPoint());

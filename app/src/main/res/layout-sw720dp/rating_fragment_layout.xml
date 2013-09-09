@@ -1,60 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/login_bg_tile">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg_tile">
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@drawable/navigationbar_bg">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/navigationbar_bg">
 
 
         <Button
-                android:id="@+id/header_menu_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:background="@drawable/header_menu_but"
-                />
+            android:id="@+id/header_menu_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:background="@drawable/header_menu_but"
+            />
 
         <TextView
-                android:id="@+id/position_in_rating"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                style="@style/GamefieldTimerText"
-                android:layout_gravity="center_vertical|center"
-                android:text="@string/rating_fragment_title"
-                />
+            android:id="@+id/position_in_rating"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            style="@style/GamefieldTimerText"
+            android:layout_gravity="center_vertical|center"
+            android:text="@string/rating_fragment_title"
+            />
     </FrameLayout>
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/login_bg_tile">
+    <ProgressBar
+        android:id="@+id/list_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyleLarge"
+        />
 
-        <ProgressBar
-                android:id="@+id/list_progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:visibility="visible"
-                style="?android:attr/progressBarStyleLarge"
-                />
-        <ListView
+    <LinearLayout
+        android:id="@+id/raiting_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <ImageView
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/crossword_panel_bg_title"
+                android:scaleType="fitXY"/>
+
+            <ListView
                 android:id="@+id/rating_listview"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 android:clickable="false"
+                android:cacheColorHint="#00000000"
                 android:background="@drawable/invite_bg_tile"
                 android:listSelector="@android:color/transparent"
-                android:visibility="gone"
                 />
+
+        </FrameLayout>
     </LinearLayout>
 
 

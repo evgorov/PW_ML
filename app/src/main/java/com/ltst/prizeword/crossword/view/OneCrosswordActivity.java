@@ -117,19 +117,31 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
     private @Nonnull View mRootView;
 
+    private @Nonnull View mProgressBar;
+    private boolean mResourcesDecoded = false;
+
     @Override
     protected void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
         setContentView(R.layout.activity_one_crossword);
+
+        // Что бы телефон не засыпал при разгадывании сканворда;
+//        WindowManager.LayoutParams params = this.getWindow().getAttributes();
+//        params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+//        params.screenBrightness = 0;
+//        getWindow().setAttributes(params);
+
         if(!DimenTools.isTablet(this))
         {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        
-        mRootView = (View) findViewById(R.id.gamefield_root_view);
+
+        mRootView = findViewById(R.id.gamefield_root_view);
         mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
         mPauseMusic = (ToggleButton) findViewById(R.id.pause_music_switcher);
+        mProgressBar = findViewById(R.id.crossword_progressBar);
+
         if (bundle != null)
         {
             restoredBundle = bundle;
@@ -218,17 +230,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             }
         });
 
-        if (restoredBundle != null)
-        {
-            mPuzzleAdapter.restoreState(restoredBundle);
-            mPuzzleView.restoreState(restoredBundle);
-            mPuzzleLoaded = true;
-            if (!mTickerLaunched && mPuzzleLoaded)
-                tick();
-        } else
-        {
-            selectNextUnsolvedPuzzle();
-        }
+        mPuzzleView.setResourcesDecodedHandler(mResourcesDecodingHandler);
+
 
         mNextBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
@@ -246,8 +249,21 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onResume()
     {
+        if (restoredBundle != null)
+        {
+            mPuzzleAdapter.restoreState(restoredBundle);
+            mPuzzleView.restoreState(restoredBundle);
+            mPuzzleLoaded = true;
+            hideProgressBar();
+            if (!mTickerLaunched && mPuzzleLoaded)
+                tick();
+        } else
+        {
+            loadPuzzle();
+        }
 
         fillFlipNumbers(54526);
+        mResourcesDecoded = false;
         mStopPlayFlag = true;
         if (mPauseMusic.isChecked())
             SoundsWork.startBackgroundMusic(this);
@@ -265,12 +281,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onStop()
     {
+        mPuzzleAdapter.updatePuzzleUserData();
+        mPuzzleAdapter.close();
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
         if (mPauseMusic.isChecked())
             SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
+        mHasFirstPuzzle = false;
         super.onStop();
     }
 
@@ -301,6 +320,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
         spref.commit();
         super.onDestroy();
+    }
+
+    private void showProgressBar()
+    {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar()
+    {
+        mProgressBar.setVisibility(View.GONE);
     }
 
 
@@ -424,22 +453,36 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private void selectNextUnsolvedPuzzle()
     {
         mPuzzleLoaded = false;
-        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
+        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
         {
+            mCurrentPuzzleIndex++;
+            if (mCurrentPuzzleIndex >= mPuzzlesCount)
+                mCurrentPuzzleIndex = 0;
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         } else if (mHasFirstPuzzle)
         {
             mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
             mHasFirstPuzzle = false;
         }
+        loadPuzzle();
+    }
+
+    private void loadPuzzle()
+    {
+        if (mCurrentPuzzleServerId == null)
+        {
+            mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        }
+        if (mHasFirstPuzzle)
+        {
+            mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
+            mHasFirstPuzzle = false;
+        }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
+        mCurrentPuzzleServerId = null;
+        showProgressBar();
         showPauseDialog(false);
         showFinalDialog(false);
-        mCurrentPuzzleIndex++;
-        if (mCurrentPuzzleIndex >= mPuzzlesCount)
-        {
-            mCurrentPuzzleIndex = 0;
-        }
     }
 
     private void tick()
@@ -478,10 +521,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             {
                 selectNextUnsolvedPuzzle();
             }
-            mPuzzleLoaded = true;
-            mStateUpdater.handle();
-            if (!mTickerLaunched && mPuzzleLoaded)
-                tick();
+            if(mResourcesDecoded)
+            {
+                hideProgressBar();
+                mPuzzleLoaded = true;
+                mStateUpdater.handle();
+                if (!mTickerLaunched && mPuzzleLoaded)
+                    tick();
+            }
         }
     };
 
@@ -518,6 +565,20 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mPostPuzzleScoreModel.post(mCurrentPuzzleServerId, sumScore);
 
             fillFlipNumbers(sumScore);
+        }
+    };
+
+    private final @Nonnull IListenerVoid mResourcesDecodingHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mResourcesDecoded = true;
+            hideProgressBar();
+            mPuzzleLoaded = true;
+            mStateUpdater.handle();
+            if (!mTickerLaunched && mPuzzleLoaded)
+                tick();
         }
     };
 

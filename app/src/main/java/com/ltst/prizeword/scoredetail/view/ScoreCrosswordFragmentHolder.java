@@ -155,13 +155,11 @@ public class ScoreCrosswordFragmentHolder
             mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
             if (crosswordSet.getCrosswordSetType() == ScoreCrosswordSet.CrosswordSetType.CURRENT)
             {
-                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
-            } else
-            {
-                if (data.mBought)
-                {
-                    //mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth);
-                }
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutGold);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver2);
+                mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutFree);
             }
         }
     }

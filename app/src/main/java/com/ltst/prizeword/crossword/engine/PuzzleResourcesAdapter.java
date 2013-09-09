@@ -62,6 +62,11 @@ public class PuzzleResourcesAdapter
         isInputMode = false;
     }
 
+    public void close()
+    {
+        mPuzzleModel.close();
+    }
+
     public void updatePuzzle(@Nonnull String puzzleServerId)
     {
         mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
@@ -272,7 +277,10 @@ public class PuzzleResourcesAdapter
 
     public void updatePuzzleUserData()
     {
-        mPuzzleModel.updatePuzzleUserData();
+        if (mPuzzleModel != null)
+        {
+            mPuzzleModel.updatePuzzleUserData();
+        }
     }
 
     public void updatePuzzleStateByTap(int column, int row, @Nullable IListenerVoid confirmedHandler)

@@ -114,6 +114,11 @@ public class PuzzleView extends View
         });
     }
 
+    public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
+    {
+        mPuzzleManager.setResourcesDecodedHandler(resourcesDecodedHandler);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {

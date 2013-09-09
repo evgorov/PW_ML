@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,9 +42,10 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
     private @Nonnull IFragmentsHolderActivity mIFragmentActivity;
 
     private @Nonnull ListView mRatingListView;
+    private @Nonnull LinearLayout mRatingContainer;
     private @Nonnull Button mMenuBtn;
-    private @Nonnull ImageView mHeaderImage;
-    private @Nonnull ImageView mFooterImage;
+    private @Nonnull LinearLayout mHeaderImage;
+    private @Nonnull LinearLayout mFooterImage;
 
     private @Nullable UsersListModel mModel;
     private @Nullable RatingAdapter mRatingAdapter;
@@ -69,10 +71,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         View v = inflater.inflate(R.layout.rating_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
 
-        mHeaderImage = new ImageView(mContext);
-        mFooterImage = new ImageView(mContext);
-        mHeaderImage.setBackgroundResource(R.drawable.rating_header);
-        mFooterImage.setBackgroundResource(R.drawable.rating_footer);
+        mHeaderImage = (LinearLayout) inflater.inflate(R.layout.rating_header, null, false);
+        mFooterImage = (LinearLayout) inflater.inflate(R.layout.rating_footer, null, false);
         mPositionTV = (TextView) v.findViewById(R.id.position_in_rating);
         StringBuffer sb = new StringBuffer();
         sb.append(mIFragmentActivity.getPositionText());
@@ -84,6 +84,8 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
         mRatingListView.setDivider(null);
         mRatingListView.addHeaderView(mHeaderImage);
         mRatingListView.addFooterView(mFooterImage);
+
+        mRatingContainer = (LinearLayout) v.findViewById(R.id.raiting_fragment_container);
 
         mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
 
@@ -187,7 +189,7 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
             ProgressBar bar = mProgressBar;
             assert bar != null;
             bar.setVisibility(View.GONE);
-            mRatingListView.setVisibility(View.VISIBLE);
+            mRatingContainer.setVisibility(View.VISIBLE);
         }
     };
 }

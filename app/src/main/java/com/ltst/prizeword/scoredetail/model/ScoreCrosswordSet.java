@@ -79,6 +79,10 @@ public class ScoreCrosswordSet
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
+        if(!data.mBought)
+        {
+            mRootView.setVisibility(View.GONE);
+        }
 
         if (data.mFirst)
             mPanelItem.setBackgroundResource(R.drawable.score_item_scan_bg);

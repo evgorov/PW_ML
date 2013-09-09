@@ -54,6 +54,7 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:cacheColorHint="#00000000"
                 android:listSelector="@android:color/transparent"
                 android:visibility="visible">
 
@@ -66,25 +67,34 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/invite_bg_tile"
-            android:visibility="gone">
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="gone">
 
-        <LinearLayout
-                android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <ImageView
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_width="match_parent"
-                android:background="@drawable/score_header"/>
+                android:layout_height="match_parent"
+                android:src="@drawable/crossword_panel_bg_title"
+                android:scaleType="fitXY"/>
 
-        <include layout="@layout/score_crossword_panel"/>
-
-        <include layout="@layout/score_footer_header_beetwen"/>
-
-        <include layout="@layout/score_friends_item"/>
-
-
-        <include layout="@layout/score_footer"/>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                >
+                <include layout="@layout/score_header"/>
+                <include layout="@layout/score_crossword_panel"/>
+                <include layout="@layout/score_footer_header_beetwen"/>
+                <include layout="@layout/score_friends_item"/>
+                <include layout="@layout/score_footer"/>
+            </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

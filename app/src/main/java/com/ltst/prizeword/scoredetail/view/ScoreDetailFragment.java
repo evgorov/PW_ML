@@ -26,6 +26,7 @@ import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.scoredetail.model.ScoreDataModel;
 import com.ltst.prizeword.scoredetail.model.SolvedPuzzleSetModel;
 import com.ltst.prizeword.sounds.SoundsWork;
+import com.ltst.prizeword.tools.DeclensionTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
@@ -68,9 +69,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
 
     @Override public void onAttach(Activity activity)
     {
-        mContext = (Context) activity;
-        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mContext = activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);
@@ -167,7 +166,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     public void onPause()
     {
         Log.i("RatingFragment.onPause()"); //$NON-NLS-1$
-        mPuzzleSetModel.close();
         ScoreDataModel friendsm = mFriendDataModel;
         if (friendsm != null)
         {
@@ -183,7 +181,9 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         ScoreDataModel friendsmodel = mFriendDataModel;
         if (friendsmodel != null)
         {
-            friendsmodel.close();
+            mFriendDataModel.close();
+            mPuzzleSetModel.close();
+            mCoefModel.close();
             mFriendDataModel = null;
             mPuzzleSetModel = null;
             mCoefModel = null;
@@ -231,19 +231,16 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
             assert mScoreDetailAdapter != null;
 
             int count = mScoreDetailAdapter.getCountFriends();
-            String[] str = mContext.getResources().getStringArray(R.array.friends_name_from_count);
-            if (Integer.toString(count).endsWith("2") || Integer.toString(count).endsWith("3") || Integer.toString(count).endsWith("4"))
-                mFriendTV.setText(str[1]);
-            else if (Integer.toString(count).endsWith("1"))
-                mFriendTV.setText(str[0]);
-            else
-                mFriendTV.setText(str[2]);
+            @Nonnull String[] friends_text = mContext.getResources().getStringArray(R.array.friends_name_from_count);
+            @Nonnull String friends = DeclensionTools.units(count,friends_text);
+            mFriendTV.setText(friends);
             mScoreInvitedCount.setText(Integer.toString(count));
             assert mCoefModel != null;
             Coefficients coefficients = mCoefModel.getCoefficients();
-            assert coefficients != null;
-
-            mScoreTV.setText(Integer.toString(coefficients.friendBonus * count));
+            if (coefficients != null)
+            {
+                mScoreTV.setText(Integer.toString(coefficients.friendBonus * count));
+            }
 
         }
     };
