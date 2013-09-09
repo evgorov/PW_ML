@@ -229,17 +229,17 @@ static NSMutableDictionary * apiCache = nil;
     NSLog(@"connectionDidFinishLoading");
     [apiRequests removeObject:self];
     
+    if (httpResponse.statusCode == 401)
+    {
+        NSString * message = NSLocalizedString(@"Session has ended. Please log in again.", @"Not-authorized HTTP status code");
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SESSION_ENDED]];
+        [alert show];
+        return;
+    }
     if (!silentMode)
     {
-        if (httpResponse.statusCode == 401)
-        {
-            NSString * message = NSLocalizedString(@"Session has ended. Please log in again.", @"Not-authorized HTTP status code");
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SESSION_ENDED]];
-            [alert show];
-            return;
-        }
         if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 500)
         {
             NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];

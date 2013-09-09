@@ -27,10 +27,10 @@
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
-NSString * PRODUCTID_PREFIX = @"ru.aipmedia.ios.prizeword.";
-NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.ios.prizeword.hints10";
-NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.ios.prizeword.hints20";
-NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.ios.prizeword.hints30";
+NSString * PRODUCTID_PREFIX = @"ru.aipmedia.prizeword.";
+NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
+NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.prizeword.hints20";
+NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
 
 // default in IB
 const int TAG_STATIC_VIEWS = 0;
@@ -104,8 +104,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     archiveLoading = NO;
     archiveNeedLoading = YES;
     
-    scrollView.delegate = self;
-    
     [self updateNews];
 }
 
@@ -157,6 +155,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     NSLog(@"puzzles view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
     
     [self updateNews];
+    scrollView.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -178,6 +177,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         [productsRequest cancel];
         productsRequest = nil;
     }
+    scrollView.delegate = nil;
 }
 
 -(void)viewDidDisappear:(BOOL)animated

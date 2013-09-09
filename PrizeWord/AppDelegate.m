@@ -204,7 +204,7 @@ static PrizewordStoreObserver * storeObserver = nil;
 {
     if (note != nil)
     {
-        deviceOrientation = [[note object] orientation];
+        deviceOrientation = [(UIDevice *)[note object] orientation];
     }
     
     UIDeviceOrientation targetOrientation = deviceOrientation;
