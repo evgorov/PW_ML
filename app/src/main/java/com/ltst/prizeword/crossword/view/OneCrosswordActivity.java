@@ -128,10 +128,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         setContentView(R.layout.activity_one_crossword);
 
         // Что бы телефон не засыпал при разгадывании сканворда;
-        WindowManager.LayoutParams params = this.getWindow().getAttributes();
-        params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-        params.screenBrightness = 0;
-        getWindow().setAttributes(params);
+//        WindowManager.LayoutParams params = this.getWindow().getAttributes();
+//        params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+//        params.screenBrightness = 0;
+//        getWindow().setAttributes(params);
 
         if(!DimenTools.isTablet(this))
         {
