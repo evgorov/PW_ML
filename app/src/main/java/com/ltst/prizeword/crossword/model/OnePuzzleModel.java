@@ -51,10 +51,10 @@ public class OnePuzzleModel implements IOnePuzzleModel
     @Override
     public void close()
     {
-        Log.i("CoefficientsModel.destroy() begin"); //$NON-NLS-1$
+        Log.i("OnePuzzleModel.destroy() begin"); //$NON-NLS-1$
         if(mIsDestroyed)
         {
-            Log.w("CoefficientsModel.destroy() called more than once"); //$NON-NLS-1$
+            Log.w("OnePuzzleModel.destroy() called more than once"); //$NON-NLS-1$
         }
 
         mPuzzleDbUpdater.close();
@@ -63,7 +63,7 @@ public class OnePuzzleModel implements IOnePuzzleModel
         mSetQuestionAnsweredUpdater.close();
 
         mIsDestroyed = true;
-        Log.i("CoefficientsModel.destroy() end"); //$NON-NLS-1$
+        Log.i("OnePuzzleModel.destroy() end"); //$NON-NLS-1$
     }
 
     @Override

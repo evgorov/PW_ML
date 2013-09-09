@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 28.08.13.
@@ -120,6 +121,7 @@ public class ManadgeHolder {
             mIabHelper.dispose();
         }
         mIabHelper = null;
+        mIPurchaseSetModel.close();
     }
 
     static @Nonnull String extractProductId(ManadgeHolder.ManadgeProduct product)
@@ -304,7 +306,12 @@ public class ManadgeHolder {
                 if(inventory.hasDetails(prodict_id))
                 {
                     mPrices.put(product,inventory.getSkuDetails(prodict_id).getPrice());
-                    @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
+                    @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
+                    if (purchase == null)
+                    {
+                        return;
+                    }
+
                     purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
                     mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
                         @Override
@@ -342,7 +349,12 @@ public class ManadgeHolder {
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
-            @Nonnull com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+            @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+            if (product == null)
+            {
+                return;
+            }
+
             product.googlePurchase = true;
             product.clientId = responseClientId;
             mIPurchaseSetModel.putPurchase(product, new IListenerVoid() {

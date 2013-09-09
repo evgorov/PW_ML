@@ -166,7 +166,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
     public void onPause()
     {
         Log.i("RatingFragment.onPause()"); //$NON-NLS-1$
-        mPuzzleSetModel.close();
         ScoreDataModel friendsm = mFriendDataModel;
         if (friendsm != null)
         {
@@ -238,9 +237,11 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
             mScoreInvitedCount.setText(Integer.toString(count));
             assert mCoefModel != null;
             Coefficients coefficients = mCoefModel.getCoefficients();
-            assert coefficients != null;
+            if (coefficients != null)
+            {
+                mScoreTV.setText(Integer.toString(coefficients.friendBonus * count));
+            }
 
-            mScoreTV.setText(Integer.toString(coefficients.friendBonus * count));
         }
     };
 

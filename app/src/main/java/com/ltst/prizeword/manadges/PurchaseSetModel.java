@@ -10,6 +10,7 @@ import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +21,30 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 29.08.13.
  */
-public class PurchaseSetModel implements IPurchaseSetModel {
+public class PurchaseSetModel implements IPurchaseSetModel
+{
 
     private @Nonnull IBcConnector mBcConnector;
-    private List<Purchase> mPurchases;
+    private @Nullable List<Purchase> mPurchases;
 
-    public PurchaseSetModel(@Nonnull IBcConnector mBcConnector) {
+    private boolean mIsDestroyed;
+
+    public PurchaseSetModel(@Nonnull IBcConnector mBcConnector)
+    {
         this.mBcConnector = mBcConnector;
-        mPurchases = new ArrayList<Purchase>();
     }
 
-    public @Nonnull Purchase getPurchase(@Nonnull String googleId)
+    public
+    @Nullable
+    Purchase getPurchase(@Nullable String googleId)
     {
-        for(Purchase purchase : mPurchases)
+        if (googleId == null || mPurchases == null)
         {
-            if(purchase.googleId.equals(googleId))
+            return null;
+        }
+        for (Purchase purchase : mPurchases)
+        {
+            if (purchase.googleId.equals(googleId))
             {
                 return purchase;
             }
@@ -43,27 +53,53 @@ public class PurchaseSetModel implements IPurchaseSetModel {
     }
 
     @Override
-    public void reloadPurchases(@Nonnull IListenerVoid handler) {
+    public void close()
+    {
+        Log.i("OnePuzzleModel.destroy() begin"); //$NON-NLS-1$
+        if (mIsDestroyed)
+        {
+            Log.w("OnePuzzleModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mPurchaseReloadSession.close();
+        mPurchaseUpdateSession.close();
+
+        mIsDestroyed = true;
+        Log.i("OnePuzzleModel.destroy() end"); //$NON-NLS-1$
+    }
+
+    @Override
+    public void reloadPurchases(@Nonnull IListenerVoid handler)
+    {
+        if (mIsDestroyed)
+            return;
         mPurchaseReloadSession.update(handler);
     }
 
     @Override
-    public void putPurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler) {
+    public void putPurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler)
+    {
+        if (mIsDestroyed)
+            return;
         mPurchaseUpdateSession.update(handler);
     }
 
-    private Updater mPurchaseReloadSession = new Updater() {
+    private Updater mPurchaseReloadSession = new Updater()
+    {
         @Nullable
         @Override
-        protected Intent createIntent() {
+        protected Intent createIntent()
+        {
             return LoadPurchaseTask.createReloadIntent();
         }
     };
 
-    private Updater mPurchaseUpdateSession = new Updater() {
+    private Updater mPurchaseUpdateSession = new Updater()
+    {
         @Nullable
         @Override
-        protected Intent createIntent() {
+        protected Intent createIntent()
+        {
             return LoadPurchaseTask.createReloadIntent();
         }
     };
@@ -71,7 +107,8 @@ public class PurchaseSetModel implements IPurchaseSetModel {
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
-        protected Updater(){
+        protected Updater()
+        {
 
         }
 
@@ -91,14 +128,15 @@ public class PurchaseSetModel implements IPurchaseSetModel {
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
             return LoadPurchaseTask.class;
         }
 
         @Override
         protected void handleData(@Nullable Bundle result)
         {
-            if (result == null)
+            if (result != null)
             {
                 mPurchases = LoadPurchaseTask.extractFromBundle(result);
             }
