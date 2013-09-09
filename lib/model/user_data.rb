@@ -11,7 +11,7 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-                        %w[id position month_score high_score dynamics hints created_at providers]
+                        %w[role id position month_score high_score dynamics hints created_at providers]
 
   def before_save
     super

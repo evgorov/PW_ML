@@ -15,9 +15,18 @@ module Middleware
         @current_user ||= env['token_auth'].user.user_data
       end
 
+      def authorize_editor!
+        env['token_auth'].authorize!
+        unless %w[admin editor].include?(current_user['role'])
+          env['token_auth'].unauthorized!
+        end
+      end
+
       def authorize_admin!
         env['token_auth'].authorize!
-        env['token_auth'].unauthorized! unless current_user['role'] == 'admin'
+        unless %w[admin].include?(current_user['role'])
+          env['token_auth'].unauthorized!
+        end
       end
 
       def set_puzzle_set_data(o, params)
@@ -63,7 +72,7 @@ module Middleware
     end
 
     get '/users/paginate' do
-      authorize_admin!
+      authorize_editor!
       users = UserData.storage(env['redis'])
       page = params[:page].to_i
       page = 1 if page == 0
@@ -74,32 +83,44 @@ module Middleware
       }.to_json
     end
 
+    post '/users/:id/change_role' do
+      authorize_admin!
+      role = params['role']
+      user_data = UserData.storage(env['redis']).load(params['id'])
+      user_data['role'] = role
+      user_data.save
+
+      {
+        message: 'ok'
+      }.to_json
+    end
+
     get '/devices' do
       authorize_admin!
       Device.new.storage(env['redis']).all(params['page'].to_i).to_json
     end
 
     post '/questions' do
-      authorize_admin!
+      authorize_editor!
       Puzzle.new.storage(env['redis']).tap { |o|
         set_puzzle_data(o, params)
       }.save.to_json
     end
 
     put '/questions/:id' do
-      authorize_admin!
+      authorize_editor!
       Puzzle.storage(env['redis']).load(params['id']).tap { |o|
         set_puzzle_data(o, params)
       }.save.to_json
     end
 
     get '/questions' do
-      authorize_admin!
+      authorize_editor!
       { 'puzzles' => Puzzle.storage(env['redis']).all }.to_json
     end
 
     get '/sets' do
-      authorize_admin!
+      authorize_editor!
       args = []
       if params['year'] && params['month']
         args << params['year'].to_i
@@ -129,7 +150,7 @@ module Middleware
     end
 
     get '/counters' do
-      authorize_admin!
+      authorize_editor!
       days = (0..30).map{|i| Time.now - i * 60 * 60 * 24 }.reverse.map{ |o| o.strftime("%Y-%m-%d") }
       result = %w[logins sets_bought hints_bought scored].inject({'days' => days}) do  |acc, counter|
         acc[counter] = env['counter'].get(*days.map { |o| o + ':' + counter })

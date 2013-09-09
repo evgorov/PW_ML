@@ -943,7 +943,16 @@ var PuzzleSetsView = Backbone.View.extend({
 
 /* Users tab */
 
-var User = Backbone.Model.extend({});
+var User = Backbone.Model.extend({
+  updateRole: function(role){
+      this.set('role', role);
+      Backbone.ajax({
+          url: '/users/' + this.id + '/change_role',
+          type: 'POST',
+          data: { role: role }
+      });
+  }
+});
 
 var Users = Backbone.Collection.extend({
   model: User,
@@ -958,15 +967,13 @@ var Users = Backbone.Collection.extend({
 
 var UsersView = Backbone.View.extend({
   tagName: 'div',
-  rowTemplate: (function(){
-              var items = _([
-                   '=name', '=surname', 'print(created_at.split(" ")[0])',
-                   '=solved', '=month_score', '=high_score', '=hints'
-                 ]).map(function(o){return '<td><%' + o + '%></td>';});
-               return _.template('<tr>' + items.join('') + '</tr>');
-             })(),
+  rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td><td>' +
+                          '<select role="user-role" data-user-id="<%= id %>"><option value="user">Пользователь</option>' +
+                          '<option value="editor">Редактор</option><option value="admin">Администратор</option></select>' +
+                          '</td><td><%= solved %></td><td><%= month_score %></td><td><%= high_score %></td><td><%= hints %></td></tr>'),
   events: {
-    'click [role="pagination"] a': 'selectPage'
+    'click [role="pagination"] a': 'selectPage',
+    'change [role="user-role"]': 'changeUserRole'
   },
 
   initialize: function(){
@@ -976,10 +983,19 @@ var UsersView = Backbone.View.extend({
   },
 
   render: function(){
+    var $el = this.$el;
+    // Rendering row templates to view
     var rows = this.collection.map(function(o){
       return this.rowTemplate(o.toJSON());
     }, this).join('');
-    this.$el.find('[role="rows"]').html(rows);
+    $el.find('[role="rows"]').html(rows);
+    // Setting correct role for users
+    this.collection.map(function(o){
+        var $select = $el.find('[role="user-role"][data-user-id="'+
+                               o.id
+                               +'"]');
+        $select.val(o.get('role'));
+    });
     this.renderPaginator();
     return this;
   },
@@ -1002,6 +1018,15 @@ var UsersView = Backbone.View.extend({
     if(e && e.preventDefault) e.preventDefault();
     var page = $(e.target).text();
     this.collection.fetch({ data: { page: page }});
+  },
+
+  changeUserRole: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var $el = $(e.target),
+        id = $el.attr('data-user-id'),
+        user = this.collection.get(id),
+        value = $el.val();
+      user.updateRole(value);
   }
 });
 

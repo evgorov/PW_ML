@@ -27,7 +27,19 @@ days = (0..30).map{|i| Time.now - i * 60 * 60 * 24 }.reverse.map{ |o| o.strftime
 end
 puts "Counters populated"
 
-# Creating user
+# Creating users
+100.times do |i|
+  params = {
+    'email' => "user#{i}@example.com",
+    'password' => 'useruser',
+    'provider' => 'registered',
+    'name' => "User#{i}",
+    'surname' => 'User'
+  }
+  UserFactory.create_user(redis, params).user_data
+end
+
+# Creating admin
 params = {
   'email' => 'admin@example.com',
   'password' => 'admin',
@@ -35,7 +47,6 @@ params = {
   'name' => 'Admin',
   'surname' => 'Admin'
 }
-
 u = UserFactory.create_user(redis, params).user_data
 u['role'] = 'admin'
 u.save
