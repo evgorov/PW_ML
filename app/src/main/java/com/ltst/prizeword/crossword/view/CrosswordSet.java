@@ -137,6 +137,11 @@ public class CrosswordSet {
     {
 //        mRootView.setVisibility(View.VISIBLE);
 
+        if(!data.mBought)
+        {
+            mRootView.setVisibility(View.GONE);
+        }
+
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
             pBuyPrice.setText(R.string.buy_three_dollar);
