@@ -184,7 +184,9 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         ScoreDataModel friendsmodel = mFriendDataModel;
         if (friendsmodel != null)
         {
-            friendsmodel.close();
+            mFriendDataModel.close();
+            mPuzzleSetModel.close();
+            mCoefModel.close();
             mFriendDataModel = null;
             mPuzzleSetModel = null;
             mCoefModel = null;
