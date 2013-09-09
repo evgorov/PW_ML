@@ -44,7 +44,7 @@ public class ManadgeHolder {
     private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
 
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
-    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints20";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT      = "buy_set_brilliant";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
@@ -76,6 +76,7 @@ public class ManadgeHolder {
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
     private @Nonnull HashMap<ManadgeProduct,String> mPrices;
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
+    private @Nonnull List<IListenerVoid> mHandlerBuyProductEventList;
 
 
     public ManadgeHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
@@ -87,6 +88,7 @@ public class ManadgeHolder {
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mPrices = new HashMap<ManadgeProduct, String>();
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
+        mHandlerBuyProductEventList = new ArrayList<IListenerVoid>();
 
 //        // Ответ о покупке;
 //        mIabHelper.queryInventoryAsync(mGotInventoryListener);
@@ -99,6 +101,7 @@ public class ManadgeHolder {
 
     public void instance()
     {
+        Log.d("INSTANCE PRICE");
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
         mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
         {
@@ -213,9 +216,15 @@ public class ManadgeHolder {
         mHandlerReloadPriceList.add(handler);
     }
 
+    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+    {
+        mHandlerBuyProductEventList.add(handler);
+    }
+
     public void reloadPrice()
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+        Log.d("RELOAD PRICE");
         List<String> additionalSkuList = new ArrayList<String>();
         for(ManadgeProduct product : ManadgeProduct.values()) {
             additionalSkuList.add(extractProductId(product));
@@ -293,7 +302,10 @@ public class ManadgeHolder {
     IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
 
         public void onQueryInventoryFinished(IabResult result, Inventory inventory)
+
         {
+            Log.d("INFORMATION PRICE");
+
             if (result.isFailure()) {
                 // handle error
                 return;
@@ -305,7 +317,8 @@ public class ManadgeHolder {
                 prodict_id = extractProductId(product);
                 if(inventory.hasDetails(prodict_id))
                 {
-                    mPrices.put(product,inventory.getSkuDetails(prodict_id).getPrice());
+                    Log.d("GET PRICE: "+inventory.getSkuDetails(prodict_id).getPrice());
+                    mPrices.put(product, inventory.getSkuDetails(prodict_id).getPrice());
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
                     if (purchase == null)
                     {
@@ -313,6 +326,7 @@ public class ManadgeHolder {
                     }
 
                     purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
+                    Log.d("PRICE: "+purchase.price);
                     mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
                         @Override
                         public void handle() {
@@ -363,6 +377,8 @@ public class ManadgeHolder {
 
                 }
             });
+
+            mBuyProductEventHandler.handle();
         }
     };
 
@@ -377,6 +393,16 @@ public class ManadgeHolder {
         @Override
         public void handle() {
             for(IListenerVoid handle : mHandlerReloadPriceList)
+            {
+                handle.handle();
+            }
+        }
+    };
+
+    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
+        @Override
+        public void handle() {
+            for(IListenerVoid handle : mHandlerBuyProductEventList)
             {
                 handle.handle();
             }
