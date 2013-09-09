@@ -15,6 +15,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -459,7 +460,7 @@ public class PuzzleResourcesAdapter
             {
                 if(next == null)
                     break;
-
+                Log.i("Next: " + next.x + ":" + next.y + " " + mCurrentInputBuffer.toString());
                 @Nullable PuzzleTileState state = mResources.getPuzzleState(next.x, next.y);
                 if (state != null)
                 {
@@ -478,9 +479,20 @@ public class PuzzleResourcesAdapter
                             mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                         }
                     }
+                    else if(letterState == PuzzleTileState.LetterState.LETTER_INPUT)
+                    {
+                        if(!mCurrentAnswerIterator.isLast())
+                        {
+                            next = mCurrentAnswerIterator.next();
+                        }
+                        if(!mCurrentAnswerIterator.isLast())
+                        {
+                            mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
+                        }
+                        else next = null;
+                    }
                     else
                     {
-
                         if (mCurrentInputBuffer != null && mCurrentInputBuffer.length() < mCurrentAnswer.length())
                         {
                             state.setInputLetter(character);
@@ -523,6 +535,7 @@ public class PuzzleResourcesAdapter
             {
                 break;
             }
+            Log.i("Last: " + last.x + ":" + last.y + " " + mCurrentInputBuffer.toString());
             @Nullable PuzzleTileState state = mResources.getPuzzleState(last.x, last.y);
             if(state != null)
             {
@@ -569,10 +582,10 @@ public class PuzzleResourcesAdapter
                 {
                     if(letterDeleted)
                         break;
-                    last = mCurrentAnswerIterator.last();
-                    mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                     if(mCurrentAnswerIterator.isFirst())
                         break;
+                    last = mCurrentAnswerIterator.last();
+                    mCurrentTileFocusPoint = new Point(mCurrentAnswerIterator.current());
                 }
             }
             else
