@@ -555,11 +555,19 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             showFinalDialog(true);
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
-            int baseScore = mCoefficientsModel.getBaseScore(type);
-            int bonusScore = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+            final int baseScore = mCoefficientsModel.getBaseScore(type);
+            final int bonusScore = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
 
-            mFinalScore.setText(String.valueOf(baseScore));
-            mFinalBonus.setText(String.valueOf(bonusScore));
+            OneCrosswordActivity.this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mFinalScore.setText(String.valueOf(baseScore));
+                    mFinalBonus.setText(String.valueOf(bonusScore));
+                }
+            });
+
             int sumScore = baseScore + bonusScore;
 
             mPostPuzzleScoreModel.post(mCurrentPuzzleServerId, sumScore);
@@ -582,9 +590,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         }
     };
 
-    private void fillFlipNumbers(int score)
+    private void fillFlipNumbers(final int score)
     {
-        mFlipNumberAnimator.startAnimation(score);
+        this.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mFlipNumberAnimator.startAnimation(score);
+            }
+        });
     }
 
     @Override public void onCheckedChanged(CompoundButton compoundButton, boolean state)
