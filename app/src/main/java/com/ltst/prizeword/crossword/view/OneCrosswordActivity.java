@@ -225,18 +225,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mPuzzleView.setResourcesDecodedHandler(mResourcesDecodingHandler);
 
-        if (restoredBundle != null)
-        {
-            mPuzzleAdapter.restoreState(restoredBundle);
-            mPuzzleView.restoreState(restoredBundle);
-            mPuzzleLoaded = true;
-            hideProgressBar();
-            if (!mTickerLaunched && mPuzzleLoaded)
-                tick();
-        } else
-        {
-            selectNextUnsolvedPuzzle();
-        }
 
         mNextBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
@@ -254,6 +242,19 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onResume()
     {
+        if (restoredBundle != null)
+        {
+            mPuzzleAdapter.restoreState(restoredBundle);
+            mPuzzleView.restoreState(restoredBundle);
+            mPuzzleLoaded = true;
+            hideProgressBar();
+            if (!mTickerLaunched && mPuzzleLoaded)
+                tick();
+        } else
+        {
+            loadPuzzle();
+        }
+
         fillFlipNumbers(54526);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -274,12 +275,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onStop()
     {
         mPuzzleAdapter.updatePuzzleUserData();
+        mPuzzleAdapter.close();
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
         if (mPauseMusic.isChecked())
             SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
+        mHasFirstPuzzle = false;
         super.onStop();
     }
 
@@ -443,23 +446,36 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private void selectNextUnsolvedPuzzle()
     {
         mPuzzleLoaded = false;
-        if (mCurrentPuzzleServerId == null || !mHasFirstPuzzle)
+        if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
         {
+            mCurrentPuzzleIndex++;
+            if (mCurrentPuzzleIndex >= mPuzzlesCount)
+                mCurrentPuzzleIndex = 0;
             mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
         } else if (mHasFirstPuzzle)
         {
             mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
             mHasFirstPuzzle = false;
         }
+        loadPuzzle();
+    }
+
+    private void loadPuzzle()
+    {
+        if (mCurrentPuzzleServerId == null)
+        {
+            mCurrentPuzzleServerId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+        }
+        if (mHasFirstPuzzle)
+        {
+            mCurrentPuzzleIndex = mPuzzleSet.puzzlesId.indexOf(mCurrentPuzzleServerId);
+            mHasFirstPuzzle = false;
+        }
         mPuzzleAdapter.updatePuzzle(mCurrentPuzzleServerId);
+        mCurrentPuzzleServerId = null;
         showProgressBar();
         showPauseDialog(false);
         showFinalDialog(false);
-        mCurrentPuzzleIndex++;
-        if (mCurrentPuzzleIndex >= mPuzzlesCount)
-        {
-            mCurrentPuzzleIndex = 0;
-        }
     }
 
     private void tick()

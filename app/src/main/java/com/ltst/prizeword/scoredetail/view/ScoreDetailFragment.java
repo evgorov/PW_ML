@@ -68,9 +68,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
 
     @Override public void onAttach(Activity activity)
     {
-        mContext = (Context) activity;
-        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mContext = activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mINavigationActivity = (IFragmentsHolderActivity) activity;
         super.onAttach(activity);

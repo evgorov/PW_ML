@@ -13,6 +13,7 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.bcops.simple.BcService;
 import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class OnePuzzleModel implements IOnePuzzleModel
     private @Nonnull String mSessionKey;
     private @Nonnull String mPuzzleServerId;
 
+    private boolean mIsDestroyed;
     private @Nullable Puzzle mPuzzle;
     private long mSetId;
 
@@ -47,42 +49,60 @@ public class OnePuzzleModel implements IOnePuzzleModel
     }
 
     @Override
+    public void close()
+    {
+        Log.i("CoefficientsModel.destroy() begin"); //$NON-NLS-1$
+        if(mIsDestroyed)
+        {
+            Log.w("CoefficientsModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mPuzzleDbUpdater.close();
+        mPuzzleInternetUpdater.close();
+        mPuzzleUserDataUpdater.close();
+        mSetQuestionAnsweredUpdater.close();
+
+        mIsDestroyed = true;
+        Log.i("CoefficientsModel.destroy() end"); //$NON-NLS-1$
+    }
+
+    @Override
     public void updateDataByDb(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleDbUpdater.update(handler);
     }
 
     @Override
     public void updateDataByInternet(@Nonnull IListenerVoid handler)
     {
+        if(mIsDestroyed)
+            return;
         mPuzzleInternetUpdater.update(handler);
     }
 
     @Override
     public void setQuestionAnswered(@Nonnull PuzzleQuestion q, boolean answered)
     {
-        final long id = q.id;
-        final boolean isAnswered = answered;
-        SetQuestionAnsweredUpdater updater = new SetQuestionAnsweredUpdater()
-        {
-            @Nonnull
-            @Override
-            protected Intent createIntent()
-            {
-                return SetQuestionAnsweredTask.createIntent(id, isAnswered);
-            }
-        };
-        updater.update(null);
+        if(mIsDestroyed)
+            return;
+        mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createIntent(q.id, answered));
+        mSetQuestionAnsweredUpdater.update(null);
     }
 
     @Override
     public void updatePuzzleUserData()
     {
-        PuzzleUserDataUpdater updater = new PuzzleUserDataUpdater();
-        updater.update(null);
+        if (mIsDestroyed)
+            return;
+        mPuzzleUserDataUpdater.update(null);
     }
 
     // ==== updaters ==================================================
+
+    private SetQuestionAnsweredUpdater mSetQuestionAnsweredUpdater = new SetQuestionAnsweredUpdater();
+    private PuzzleUserDataUpdater mPuzzleUserDataUpdater = new PuzzleUserDataUpdater();
 
     private Updater mPuzzleInternetUpdater = new Updater()
     {
@@ -118,8 +138,22 @@ public class OnePuzzleModel implements IOnePuzzleModel
         }
     };
 
-    private abstract class SetQuestionAnsweredUpdater extends ModelUpdater<DbService.DbTaskEnv>
+    private class SetQuestionAnsweredUpdater extends ModelUpdater<DbService.DbTaskEnv>
     {
+        private @Nullable Intent mIntent;
+
+        public void setIntent(@Nullable Intent intent)
+        {
+            mIntent = intent;
+        }
+
+        @Nullable
+        @Override
+        protected Intent createIntent()
+        {
+            return mIntent;
+        }
+
         @Nonnull
         @Override
         protected IBcConnector getBcConnector()

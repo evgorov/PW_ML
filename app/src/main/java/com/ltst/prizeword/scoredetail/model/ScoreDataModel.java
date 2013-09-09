@@ -48,10 +48,10 @@ public class ScoreDataModel implements IScoreDataModel
 
     public void close()
     {
-        Log.i("UsersListModel.destroy() begin"); //$NON-NLS-1$
+        Log.i("ScoreDataModel.destroy() begin"); //$NON-NLS-1$
         if (mIsDestroyed)
         {
-            Log.w("UsersListModel.destroy() called more than once"); //$NON-NLS-1$
+            Log.w("ScoreDataModel.destroy() called more than once"); //$NON-NLS-1$
         }
 
         mInvitedFriendsUpdater.close();
@@ -60,7 +60,7 @@ public class ScoreDataModel implements IScoreDataModel
         mDownloader.destroy();
 
         mIsDestroyed = true;
-        Log.i("UsersListModel.destroy() end"); //$NON-NLS-1$
+        Log.i("ScoreDataModel.destroy() end"); //$NON-NLS-1$
     }
 
     public void pauseLoading()
