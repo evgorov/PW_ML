@@ -150,6 +150,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onPause()
     {
+        mHintsManager.close();
         mPuzzleSetModel.close();
         mNewsModel.close();
         super.onStop();
