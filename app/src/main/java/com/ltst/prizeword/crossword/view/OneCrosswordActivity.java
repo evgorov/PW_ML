@@ -273,6 +273,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onStop()
     {
+        mPuzzleAdapter.updatePuzzleUserData();
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
