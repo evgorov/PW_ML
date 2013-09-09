@@ -50,6 +50,7 @@ import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
 import com.ltst.prizeword.sounds.SoundsWork;
+import com.ltst.prizeword.splashscreen.SplashScreenFragment;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
@@ -178,6 +179,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         initNavigationDrawerItems();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override
@@ -291,6 +293,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             mDrawerItems = new ArrayList<NavigationDrawerItem>();
             // login, auth fragments
+            initFragmentToList(SplashScreenFragment.FRAGMENT_ID, SplashScreenFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(LoginFragment.FRAGMENT_ID, LoginFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(RegisterFragment.FRAGMENT_ID, RegisterFragment.FRAGMENT_CLASSNAME);
             initFragmentToList(ResetPassFragment.FRAGMENT_ID, ResetPassFragment.FRAGMENT_CLASSNAME);
@@ -388,6 +391,8 @@ public class NavigationActivity extends SherlockFragmentActivity
             title = res.getString(R.string.rating_fragment_title);
         else if (id.equals(ScoreDetailFragment.FRAGMENT_ID))
             title = res.getString(R.string.rating_fragment_title);
+        else if (id.equals(SplashScreenFragment.FRAGMENT_ID))
+            title = res.getString(R.string.splashscreen_fragment_title);
 
         if (!title.equals(Strings.EMPTY))
         {
