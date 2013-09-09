@@ -312,6 +312,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByPosition(int position)
     {
+        if(mIsDestroyed)
+            return;
         unlockDrawer();
         if (!isFragmentInitialized(position))
         {
@@ -334,6 +336,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
     {
+        if(mIsDestroyed)
+            return;
         int size = mDrawerItems.size();
         for (int i = 0; i < size; i++)
         {

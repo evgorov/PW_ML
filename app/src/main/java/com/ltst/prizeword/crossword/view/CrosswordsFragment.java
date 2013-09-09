@@ -72,7 +72,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull ImageView mSimpleImage;
     private @Nonnull TextView mNewsSimpleText;
     private @Nonnull ImageView mNewsCloseBtn;
-    private @Nonnull ProgressBar mProgressBar;
+    private @Nonnull View mProgressBar;
 
     private @Nonnull INewsModel mNewsModel;
 
@@ -108,7 +108,7 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsIndicatorLayout = (LinearLayout) v.findViewById(R.id.news_indicator_layout);
         mNewsSimpleText = (TextView) v.findViewById(R.id.news_simple_text);
         mNewsCloseBtn = (ImageView) v.findViewById(R.id.news_close_btn);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.archive_progressBar);
+        mProgressBar =  v.findViewById(R.id.archive_progressBar);
         mRoot = v;
         return v;
     }
@@ -150,6 +150,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onPause()
     {
+        mHintsManager.close();
         mPuzzleSetModel.close();
         mNewsModel.close();
         super.onStop();
@@ -157,7 +158,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     public void skipProgressBar()
     {
-        ProgressBar bar = mProgressBar;
+        View bar = mProgressBar;
         assert bar != null;
         bar.setVisibility(View.GONE);
     }

@@ -418,14 +418,22 @@
         </LinearLayout>
     </ScrollView>
 
-    <ProgressBar
-        android:id="@+id/archive_progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:visibility="visible"
-        style="?android:attr/progressBarStyleLarge"
-        />
-
+    <RelativeLayout
+            android:id="@+id/archive_progressBar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#aa000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:visibility="visible"
+                style="?android:attr/progressBarStyleLarge"
+                />
+    </RelativeLayout>
 </RelativeLayout>

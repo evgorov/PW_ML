@@ -106,6 +106,11 @@ public class HintsManager implements View.OnClickListener
         });
     }
 
+    public void close()
+    {
+        mHintsModel.close();
+    }
+
     private void setPrice()
     {
         Log.d(NavigationActivity.LOG_TAG, "SET PRICE!");
