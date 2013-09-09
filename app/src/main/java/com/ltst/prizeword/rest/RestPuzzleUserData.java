@@ -3,6 +3,7 @@ package com.ltst.prizeword.rest;
 import com.ltst.prizeword.crossword.model.PuzzleQuestion;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestPuzzleUserData
 {
     private @JsonProperty("score") int score;

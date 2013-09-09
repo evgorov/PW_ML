@@ -1,7 +1,9 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestNews
 {
     private @JsonProperty("message1") String message1;

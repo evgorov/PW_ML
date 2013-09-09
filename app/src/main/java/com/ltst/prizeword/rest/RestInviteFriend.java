@@ -1,6 +1,7 @@
 package com.ltst.prizeword.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestInviteFriend
 {
     private @JsonProperty("first_name") String firstName;

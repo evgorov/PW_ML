@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestUserData
 {
     private @JsonProperty("name") String mName;
