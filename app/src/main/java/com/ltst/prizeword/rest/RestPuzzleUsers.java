@@ -1,9 +1,11 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestPuzzleUsers
 {
     private @JsonProperty("me") RestUserData mUserData;

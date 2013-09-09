@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-@JsonIgnoreProperties("created_at")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestPuzzle
 {
     private @JsonProperty("id") String puzzleId;

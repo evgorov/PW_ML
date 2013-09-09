@@ -1,7 +1,9 @@
 package com.ltst.prizeword.rest;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestCoefficients
 {
     private @JsonProperty("time-bonus") int timeBonus;
