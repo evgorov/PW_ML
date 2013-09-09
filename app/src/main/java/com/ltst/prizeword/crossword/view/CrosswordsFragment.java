@@ -245,17 +245,17 @@ public class CrosswordsFragment extends SherlockFragment
                 boolean flg = false;
                 for(PuzzleSet puzzleSet : puzzleSets)
                 {
-                    if(puzzleSet.month == cal.get(Calendar.MONTH)+1 && puzzleSet.year == cal.get(Calendar.YEAR))
+                    if(puzzleSet.month != cal.get(Calendar.MONTH)+1 || puzzleSet.year != cal.get(Calendar.YEAR))
                     {
                         flg = true;
+                        break;
                     }
                 }
-                if(!flg)
+                if(flg)
                 {
                     skipProgressBar();
                     return;
                 }
-                skipProgressBar();
             }
             mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
         }
