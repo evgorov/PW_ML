@@ -20,6 +20,7 @@
     <string name="invite_fragment_title">Пригласить друзей</string>
     <string name="rating_fragment_title">Рейтинг</string>
     <string name="score_fragment_title">Детализация очков</string>
+    <string name="splashscreen_fragment_title">Заставка</string>
 
     <string name="ending">-й</string>
     <string name="points">" очков"</string>
