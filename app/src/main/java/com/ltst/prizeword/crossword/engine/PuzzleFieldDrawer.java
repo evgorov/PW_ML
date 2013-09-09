@@ -56,6 +56,7 @@ public class PuzzleFieldDrawer
     private boolean mIsAnimating = false;
     private boolean mAnimateBlink = true;
     private boolean mAnimateInput = false;
+    private boolean mInputListCreated = false;
 
     private @Nullable IListenerVoid mResourcesDecodedHandler;
 
@@ -320,6 +321,7 @@ public class PuzzleFieldDrawer
             return;
         mInputTileList = Collections.synchronizedList(stateList);
         mPostInvalidateHandler = postInvalidate;
+        mInputListCreated = true;
     }
 
     public @Nullable Rect getPuzzleTileRect(int row, int column)
@@ -576,7 +578,7 @@ public class PuzzleFieldDrawer
     public void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas, final @Nullable IListenerVoid animationEndHandler)
     {
 
-        if(mInputTileList != null)
+        if(mInputListCreated)
         {
             final int saveCount = canvas.save();
             IListenerVoid finishAnimHandler = new IListenerVoid()
@@ -589,6 +591,7 @@ public class PuzzleFieldDrawer
                     {
                         mInputTileList.clear();
                         mInputTileList = null;
+                        mInputListCreated = false;
                     }
                     mPostInvalidateHandler = null;
                     mIsAnimating = false;
@@ -835,7 +838,7 @@ public class PuzzleFieldDrawer
         @Override
         public void run()
         {
-            if (mPostInvalidateHandler == null || mInputTileList == null)
+            if (mPostInvalidateHandler == null)
             {
                 return;
             }
