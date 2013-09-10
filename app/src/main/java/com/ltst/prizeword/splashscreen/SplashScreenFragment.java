@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 
 import javax.annotation.Nonnull;
 
@@ -19,9 +20,12 @@ public class SplashScreenFragment extends SherlockFragment {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.splashscreen.SplashScreenFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = SplashScreenFragment.class.getName();
 
+    private @Nonnull INavigationDrawerHolder mDrawerHolder;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        mDrawerHolder = (INavigationDrawerHolder) activity;
     }
 
     @Override
@@ -29,5 +33,12 @@ public class SplashScreenFragment extends SherlockFragment {
 
         View v = inflater.inflate(R.layout.splashscreen_fragment_layout, container, false);
         return v;
+    }
+
+    @Override
+    public void onResume()
+    {
+        mDrawerHolder.lockDrawerClosed();
+        super.onResume();
     }
 }

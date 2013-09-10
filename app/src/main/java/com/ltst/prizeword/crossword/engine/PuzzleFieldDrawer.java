@@ -691,7 +691,7 @@ public class PuzzleFieldDrawer
         List<String> strings = new ArrayList<String>();
         int start = 0;
         int end = text.length() - 1;
-        while(start < end)
+        while(start <= end)
         {
             int measured = mPaint.breakText(text.substring(start, end), true, width, null);
             for (int i = measured; i >= start; i--)

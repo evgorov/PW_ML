@@ -16,6 +16,7 @@ import android.support.v4.util.SparseArrayCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import java.io.IOException;
@@ -54,6 +55,7 @@ import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.splashscreen.SplashScreenFragment;
 import com.ltst.prizeword.tools.BitmapAsyncTask;
 import com.ltst.prizeword.tools.ChoiceImageSourceHolder;
+import com.ltst.prizeword.tools.DimenTools;
 import com.ltst.prizeword.tools.ErrorAlertDialog;
 import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
@@ -87,12 +89,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
 
+    private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull Context mContext;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull SlidingMenu mSlidingMenu;
     private @Nonnull MainMenuHolder mDrawerMenu;
+    private @Nullable ViewGroup mTabletMenuViewGroup;
 
     private @Nonnull List<NavigationDrawerItem> mDrawerItems;
     private @Nonnull FragmentManager mFragmentManager;
@@ -108,6 +112,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private boolean mVkSwitch;
     private boolean mFbSwitch;
     private boolean mIsDestroyed = false;
+    private boolean mIsTablet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -116,6 +121,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_navigation);
         Crashlytics.start(this);
 
+        mIsTablet = DimenTools.isTablet(this);
         mBcConnector = new BcConnector(this);
         mManadgeHolder = new ManageHolder(this, mBcConnector);
         mManadgeHolder.instance();
@@ -132,27 +138,35 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
-        mSlidingMenu.setMode(SlidingMenu.LEFT);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        mSlidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
-        mSlidingMenu.setFadeDegree(0.35f);
-        mSlidingMenu.setBehindWidthRes(R.dimen.slidingmenu_width);
-        mSlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener()
+        if (!mIsTablet)
         {
-            @Override public void onClose()
+            mSlidingMenu.setMode(SlidingMenu.LEFT);
+            mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            mSlidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
+            mSlidingMenu.setFadeDegree(0.35f);
+            mSlidingMenu.setBehindWidthRes(R.dimen.slidingmenu_width);
+            mSlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener()
             {
+                @Override public void onClose()
+                {
                     SoundsWork.sidebarMusic(mContext);
-            }
-        });
-        mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener()
+                }
+            });
+            mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener()
+            {
+                @Override public void onOpen()
+                {
+                    SoundsWork.sidebarMusic(mContext);
+                }
+            });
+        } else
         {
-            @Override public void onOpen()
-            {
-                    SoundsWork.sidebarMusic(mContext);
-            }
-        });
+            mTabletMenuViewGroup = (ViewGroup) findViewById(R.id.navigation_slider);
+        }
+
         LayoutInflater inflater = LayoutInflater.from(this);
         View vfooter = inflater.inflate(R.layout.navigation_drawer_footer_layout, null);
+        assert vfooter != null;
 
         mFragmentManager = getSupportFragmentManager();
         mFragments = new SparseArrayCompat<Fragment>();
@@ -163,8 +177,14 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         checkLauchingAppByLink();
 
-        mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        mSlidingMenu.setMenu(vfooter);
+        if (!mIsTablet)
+        {
+            mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+            mSlidingMenu.setMenu(vfooter);
+        } else if (mTabletMenuViewGroup != null)
+        {
+            mTabletMenuViewGroup.addView(vfooter);
+        }
 
         mDrawerMenu = new MainMenuHolder(this, vfooter);
         mDrawerMenu.mImage.setOnClickListener(this);
@@ -181,6 +201,19 @@ public class NavigationActivity extends SherlockFragmentActivity
         initNavigationDrawerItems();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURENT_POSITION, mCurrentSelectedFragmentPosition);
+    }
+
+    @Override protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mCurrentSelectedFragmentPosition = savedInstanceState.getInt(CURENT_POSITION);
     }
 
     @Override
@@ -313,7 +346,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByPosition(int position)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         unlockDrawer();
         if (!isFragmentInitialized(position))
@@ -337,7 +370,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         int size = mDrawerItems.size();
         for (int i = 0; i < size; i++)
@@ -451,7 +484,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
             Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
@@ -475,27 +507,44 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void lockDrawerClosed()
     {
-        mSlidingMenu.showContent();
-        mSlidingMenu.setSlidingEnabled(false);
+        if (!mIsTablet)
+        {
+            mSlidingMenu.showContent();
+            mSlidingMenu.setSlidingEnabled(false);
+        } else if (mTabletMenuViewGroup != null)
+        {
+            mTabletMenuViewGroup.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void lockDrawerOpened()
     {
-        mSlidingMenu.showMenu();
-        mSlidingMenu.setSlidingEnabled(false);
+        if (!mIsTablet)
+        {
+            mSlidingMenu.showMenu();
+            mSlidingMenu.setSlidingEnabled(false);
+        }
+        if (mTabletMenuViewGroup != null)
+        {
+            mTabletMenuViewGroup.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void unlockDrawer()
     {
-        mSlidingMenu.setSlidingEnabled(true);
+        if (!mIsTablet)
+            mSlidingMenu.setSlidingEnabled(true);
     }
 
     @Override
     public void toogle()
     {
-        mSlidingMenu.toggle();
+        if (!mIsTablet)
+            mSlidingMenu.toggle();
+        else
+            lockDrawerOpened();
     }
 
 //==== IAutorization ==============================================
@@ -504,6 +553,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void onAuthotized()
     {
         reloadUserData();
+        if (mIsTablet)
+            lockDrawerOpened();
     }
 
     //==== IOnClickListeber ========
@@ -511,7 +562,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View view)
     {
-            SoundsWork.interfaceBtnMusic(this);
+        SoundsWork.interfaceBtnMusic(this);
         switch (view.getId())
         {
             case R.id.menu_mypuzzle_btn:
@@ -609,7 +660,13 @@ public class NavigationActivity extends SherlockFragmentActivity
                 reloadProviders(data.id);
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);
-                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                if (mIsTablet)
+                    lockDrawerOpened();
+                if (mCurrentSelectedFragmentPosition != 0)
+                    selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+                else
+
+                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else
             {
                 mDrawerMenu.clean();
