@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.db.SQLiteHelper;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
@@ -22,20 +23,23 @@ public class LoadPurchaseTask implements DbService.IDbTask {
 
     public static final @Nonnull String BF_PURCHASES = "LoadPurchaseTask.purchase";
     public static final @Nonnull String BF_ONE_PURCHASE = "LoadPurchaseTask.one.purchase";
-    private static final @Nonnull String BF_LOCAL_TASK = "LoadPurchaseTask.localtask";
+    public static final @Nonnull String BF_MANY_PURCHASES = "LoadPurchaseTask.many.purchases";
+    public static final @Nonnull String BF_LOCAL_TASK = "LoadPurchaseTask.localtask";
 
-    private static final @Nonnull String LT_RELOAD = "LoadPurchaseTask.Lt.reload";
-    private static final @Nonnull String LT_UPDATE = "LoadPurchaseTask.Lt.reload";
+    private static final @Nonnull String LT_LOAD_FROM_DATABASE = "LoadPurchaseTask.Lt.load.database";
+    public static final @Nonnull String LT_LOAD_FROM_GOOGLEPLAY = "LoadPurchaseTask.Lt.load.googleplay";
+    public static final @Nonnull String LT_SAVE_FROM_GOOGLEPLAY = "LoadPurchaseTask.Lt.save.googleplay";
 
-    final static public @Nonnull Intent createReloadIntent(){
+    final static public @Nonnull Intent createLoadFromDataBaseIntent(){
         @Nonnull Intent intent = new Intent();
-        intent.putExtra(BF_LOCAL_TASK, LT_RELOAD);
+        intent.putExtra(BF_LOCAL_TASK, LT_LOAD_FROM_DATABASE);
         return intent;
     }
 
-    final static public @Nonnull Intent createUpdateIntent(){
+    final static public @Nonnull Intent createLoadFromGooglePlayIntent(@Nonnull Purchase purchase){
         @Nonnull Intent intent = new Intent();
-        intent.putExtra(BF_LOCAL_TASK, LT_UPDATE);
+        intent.putExtra(BF_LOCAL_TASK, LT_LOAD_FROM_GOOGLEPLAY);
+        intent.putExtra(BF_ONE_PURCHASE, purchase);
         return intent;
     }
 
@@ -51,14 +55,20 @@ public class LoadPurchaseTask implements DbService.IDbTask {
         else
         {
             @Nullable String task = env.extras.getString(BF_LOCAL_TASK);
-            if(task.equals(LT_RELOAD))
+            if(task.equals(LT_LOAD_FROM_DATABASE))
             {
                 return getFromDatabase(env);
             }
-            else if(task.equals(LT_UPDATE))
+            else if(task.equals(LT_LOAD_FROM_GOOGLEPLAY))
             {
                 @Nullable Purchase purchase = env.extras.getParcelable(BF_ONE_PURCHASE);
                 env.dbw.putPurchase(purchase);
+                return getFromDatabase(env);
+            }
+            else if(task.equals(LT_SAVE_FROM_GOOGLEPLAY))
+            {
+                @Nullable List<Purchase> purchases = env.extras.getParcelableArrayList(BF_ONE_PURCHASE);
+                env.dbw.putPurchases(purchases);
                 return getFromDatabase(env);
             }
         }
@@ -67,11 +77,11 @@ public class LoadPurchaseTask implements DbService.IDbTask {
 
     static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
-        @Nonnull ArrayList<Purchase> purchase = env.dbw.getPurchases();
+        @Nullable ArrayList<Purchase> purchase = env.dbw.getPurchases();
         return packToBundle(purchase);
     }
 
-    static @Nonnull Bundle packToBundle(@Nonnull ArrayList<Purchase> purchases)
+    static @Nonnull Bundle packToBundle(@Nullable ArrayList<Purchase> purchases)
     {
         @Nonnull Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PURCHASES, purchases);

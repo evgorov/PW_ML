@@ -46,7 +46,8 @@ import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
 import com.ltst.prizeword.manadges.IManadges;
-import com.ltst.prizeword.manadges.ManadgeHolder;
+import com.ltst.prizeword.manadges.IManageHolder;
+import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
@@ -88,6 +89,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
 
+    private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull Context mContext;
 
@@ -104,7 +106,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
-    private @Nonnull ManadgeHolder mManadgeHolder;
+    private @Nonnull ManageHolder mManadgeHolder;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
     private boolean mVkSwitch;
@@ -121,7 +123,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mIsTablet = DimenTools.isTablet(this);
         mBcConnector = new BcConnector(this);
-        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
+        mManadgeHolder = new ManageHolder(this, mBcConnector);
         mManadgeHolder.instance();
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
@@ -136,7 +138,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
-        if(!mIsTablet)
+        if (!mIsTablet)
         {
             mSlidingMenu.setMode(SlidingMenu.LEFT);
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -147,18 +149,17 @@ public class NavigationActivity extends SherlockFragmentActivity
             {
                 @Override public void onClose()
                 {
-                        SoundsWork.sidebarMusic(mContext);
+                    SoundsWork.sidebarMusic(mContext);
                 }
             });
             mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener()
             {
                 @Override public void onOpen()
                 {
-                        SoundsWork.sidebarMusic(mContext);
+                    SoundsWork.sidebarMusic(mContext);
                 }
             });
-        }
-        else
+        } else
         {
             mTabletMenuViewGroup = (ViewGroup) findViewById(R.id.navigation_slider);
         }
@@ -176,12 +177,11 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         checkLauchingAppByLink();
 
-        if(!mIsTablet)
+        if (!mIsTablet)
         {
             mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
             mSlidingMenu.setMenu(vfooter);
-        }
-        else if (mTabletMenuViewGroup != null)
+        } else if (mTabletMenuViewGroup != null)
         {
             mTabletMenuViewGroup.addView(vfooter);
         }
@@ -201,6 +201,19 @@ public class NavigationActivity extends SherlockFragmentActivity
         initNavigationDrawerItems();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURENT_POSITION, mCurrentSelectedFragmentPosition);
+    }
+
+    @Override protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mCurrentSelectedFragmentPosition = savedInstanceState.getInt(CURENT_POSITION);
     }
 
     @Override
@@ -333,7 +346,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByPosition(int position)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         unlockDrawer();
         if (!isFragmentInitialized(position))
@@ -357,7 +370,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         int size = mDrawerItems.size();
         for (int i = 0; i < size; i++)
@@ -494,12 +507,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void lockDrawerClosed()
     {
-        if(!mIsTablet)
+        if (!mIsTablet)
         {
             mSlidingMenu.showContent();
             mSlidingMenu.setSlidingEnabled(false);
-        }
-        else if (mTabletMenuViewGroup != null)
+        } else if (mTabletMenuViewGroup != null)
         {
             mTabletMenuViewGroup.setVisibility(View.GONE);
         }
@@ -508,7 +520,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void lockDrawerOpened()
     {
-        if(!mIsTablet)
+        if (!mIsTablet)
         {
             mSlidingMenu.showMenu();
             mSlidingMenu.setSlidingEnabled(false);
@@ -522,14 +534,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void unlockDrawer()
     {
-        if(!mIsTablet)
+        if (!mIsTablet)
             mSlidingMenu.setSlidingEnabled(true);
     }
 
     @Override
     public void toogle()
     {
-        if(!mIsTablet)
+        if (!mIsTablet)
             mSlidingMenu.toggle();
         else
             lockDrawerOpened();
@@ -541,7 +553,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void onAuthotized()
     {
         reloadUserData();
-        if(mIsTablet)
+        if (mIsTablet)
             lockDrawerOpened();
     }
 
@@ -550,7 +562,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View view)
     {
-            SoundsWork.interfaceBtnMusic(this);
+        SoundsWork.interfaceBtnMusic(this);
         switch (view.getId())
         {
             case R.id.menu_mypuzzle_btn:
@@ -648,9 +660,13 @@ public class NavigationActivity extends SherlockFragmentActivity
                 reloadProviders(data.id);
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);
-                if(mIsTablet)
+                if (mIsTablet)
                     lockDrawerOpened();
-                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                if (mCurrentSelectedFragmentPosition != 0)
+                    selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+                else
+
+                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else
             {
                 mDrawerMenu.clean();
@@ -830,36 +846,43 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    @Override
-    public void buyProduct(ManadgeHolder.ManadgeProduct product)
-    {
-        // Покупка;
-        mManadgeHolder.buyProduct(product);
-    }
+//    @Override
+//    public void buyProduct(ManageHolder.ManadgeProduct product)
+//    {
+//        // Покупка;
+//        mManadgeHolder.buyProduct(product);
+//    }
+//
+//    @Override
+//    public void reloadPriceProducts()
+//    {
+//        // Обновляем прайс лист продуктов;
+//        mManadgeHolder.reloadPoductsFromGooglePlay();
+//    }
+//
+//    @Override
+//    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
+//    {
+//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+//    }
+//
+//    @Override
+//    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+//    {
+//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+//    }
+//
+//    @Override
+//    public String getPriceProduct(ManageHolder.ManadgeProduct product)
+//    {
+//        // Возвращаем цену продукта;
+//        return mManadgeHolder.getPriceProduct(product);
+//    }
 
+    @Nonnull
     @Override
-    public void reloadPriceProducts()
+    public IManageHolder getManadgeHolder()
     {
-        // Обновляем прайс лист продуктов;
-        mManadgeHolder.reloadPrice();
-    }
-
-    @Override
-    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
-    {
-        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-    }
-
-    @Override
-    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
-    {
-        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-    }
-
-    @Override
-    public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
-    {
-        // Возвращаем цену продукта;
-        return mManadgeHolder.getPriceProduct(product);
+        return  mManadgeHolder;
     }
 }

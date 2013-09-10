@@ -1,7 +1,5 @@
 package com.ltst.prizeword.manadges;
 
-import org.omich.velo.handlers.IListenerVoid;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -9,10 +7,6 @@ import javax.annotation.Nonnull;
  */
 public interface IManadges {
 
-    void buyProduct(ManadgeHolder.ManadgeProduct product);
-    void reloadPriceProducts();
-    void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
-    void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler);
-    String getPriceProduct(ManadgeHolder.ManadgeProduct product);
+    @Nonnull IManageHolder getManadgeHolder();
 
 }
