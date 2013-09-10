@@ -90,7 +90,8 @@ public class BitmapDecoder
                     @Nullable Bitmap bm = null;
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD_MR1)
                     {
-                        bm = mRegionDecoder.decodeRegion(tileRect, null);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        bm = mRegionDecoder.decodeRegion(tileRect, options);
                     }
                     else
                     {
