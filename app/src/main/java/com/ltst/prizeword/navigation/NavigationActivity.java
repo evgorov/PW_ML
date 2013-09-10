@@ -86,6 +86,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
 
+    private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull Context mContext;
 
@@ -140,14 +141,14 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             @Override public void onClose()
             {
-                    SoundsWork.sidebarMusic(mContext);
+                SoundsWork.sidebarMusic(mContext);
             }
         });
         mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener()
         {
             @Override public void onOpen()
             {
-                    SoundsWork.sidebarMusic(mContext);
+                SoundsWork.sidebarMusic(mContext);
             }
         });
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -180,6 +181,19 @@ public class NavigationActivity extends SherlockFragmentActivity
         initNavigationDrawerItems();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURENT_POSITION, mCurrentSelectedFragmentPosition);
+    }
+
+    @Override protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mCurrentSelectedFragmentPosition = savedInstanceState.getInt(CURENT_POSITION);
     }
 
     @Override
@@ -312,7 +326,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByPosition(int position)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         unlockDrawer();
         if (!isFragmentInitialized(position))
@@ -336,7 +350,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
     {
-        if(mIsDestroyed)
+        if (mIsDestroyed)
             return;
         int size = mDrawerItems.size();
         for (int i = 0; i < size; i++)
@@ -510,7 +524,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onClick(View view)
     {
-            SoundsWork.interfaceBtnMusic(this);
+        SoundsWork.interfaceBtnMusic(this);
         switch (view.getId())
         {
             case R.id.menu_mypuzzle_btn:
@@ -608,7 +622,10 @@ public class NavigationActivity extends SherlockFragmentActivity
                 reloadProviders(data.id);
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);
-                selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                if (mCurrentSelectedFragmentPosition != 0)
+                    selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+                else
+                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
             } else
             {
                 mDrawerMenu.clean();
