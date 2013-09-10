@@ -117,7 +117,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         mBcConnector = new BcConnector(this);
         mManadgeHolder = new ManadgeHolder(this, mBcConnector);
-        mManadgeHolder.instance();
+//        mManadgeHolder.instance();
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
@@ -275,6 +275,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
+        mManadgeHolder.instance();
         mUserDataModel = new UserDataModel(this, mBcConnector);
         reloadUserData();
         super.onResume();
@@ -799,7 +800,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     public void reloadPriceProducts()
     {
         // Обновляем прайс лист продуктов;
-        mManadgeHolder.reloadPrice();
+        mManadgeHolder.reloadPoductsFromGooglePlay();
     }
 
     @Override

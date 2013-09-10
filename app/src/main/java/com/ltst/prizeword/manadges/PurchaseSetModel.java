@@ -26,7 +26,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nullable List<Purchase> mPurchases;
-    private @Nonnull Purchase mPurchaseDone;
+//    private @Nonnull Purchase mPurchaseDone;
 
     private boolean mIsDestroyed;
 
@@ -39,18 +39,19 @@ public class PurchaseSetModel implements IPurchaseSetModel
     @Nullable
     Purchase getPurchase(@Nullable String googleId)
     {
-        if (googleId == null || mPurchases == null)
+        if (googleId != null && mPurchases != null)
         {
-            return null;
-        }
-        for (Purchase purchase : mPurchases)
-        {
-            if (purchase.googleId.equals(googleId))
+            for (Purchase purchase : mPurchases)
             {
-                return purchase;
+                if (purchase.googleId.equals(googleId))
+                {
+                    return purchase;
+                }
             }
         }
-        return new Purchase();
+        Purchase purchase = new Purchase();
+        purchase.googleId = googleId;
+        return purchase;
     }
 
     @Override
@@ -62,8 +63,8 @@ public class PurchaseSetModel implements IPurchaseSetModel
             Log.w("OnePuzzleModel.destroy() called more than once"); //$NON-NLS-1$
         }
 
-        mPurchaseReloadSession.close();
-        mPurchaseUpdateSession.close();
+        mReloadFromDataBaseSession.close();
+        mReloadFromGooglePlaySession.close();
 
         mIsDestroyed = true;
         Log.i("OnePuzzleModel.destroy() end"); //$NON-NLS-1$
@@ -74,7 +75,8 @@ public class PurchaseSetModel implements IPurchaseSetModel
     {
         if (mIsDestroyed)
             return;
-        mPurchaseReloadSession.update(handler);
+        mReloadFromDataBaseSession.update(handler);
+        mReloadFromGooglePlaySession.update(handler);
     }
 
     @Override
@@ -82,36 +84,62 @@ public class PurchaseSetModel implements IPurchaseSetModel
     {
         if (mIsDestroyed)
             return;
-        mPurchaseDone = purchase;
-        mPurchaseUpdateSession.update(handler);
+//        mPurchaseDone = purchase;
+        @Nonnull Intent intent = new Intent();
+        intent.putExtra(LoadPurchaseTask.BF_LOCAL_TASK, LoadPurchaseTask.LT_LOAD_FROM_GOOGLEPLAY);
+        intent.putExtra(LoadPurchaseTask.BF_ONE_PURCHASE, purchase);
+
+        mReloadFromGooglePlaySession.setIntent(intent);
+        mReloadFromGooglePlaySession.update(handler);
     }
 
-    private Updater mPurchaseReloadSession = new Updater()
+    @Override
+    public void putPurchases(@Nonnull ArrayList<Purchase> purchases, @Nonnull IListenerVoid handler)
+    {
+        if (mIsDestroyed)
+            return;
+
+        @Nonnull Intent intent = new Intent();
+        intent.putExtra(LoadPurchaseTask.BF_LOCAL_TASK, LoadPurchaseTask.LT_LOAD_FROM_GOOGLEPLAY);
+        intent.putParcelableArrayListExtra(LoadPurchaseTask.BF_MANY_PURCHASES, purchases);
+
+        mReloadFromGooglePlaySession.setIntent(intent);
+        mReloadFromGooglePlaySession.update(handler);
+    }
+
+    private Updater mReloadFromDataBaseSession = new Updater()
     {
         @Nullable
         @Override
         protected Intent createIntent()
         {
-            return LoadPurchaseTask.createReloadIntent();
+            return LoadPurchaseTask.createLoadFromDataBaseIntent();
         }
     };
 
-    private Updater mPurchaseUpdateSession = new Updater()
+    private Updater mReloadFromGooglePlaySession = new Updater()
     {
         @Nullable
         @Override
         protected Intent createIntent()
         {
-            return LoadPurchaseTask.createReloadIntent();
+            return mIntent;
         }
     };
 
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
+        protected  @Nonnull Intent mIntent;
+
         protected Updater()
         {
 
+        }
+
+        public void setIntent(@Nonnull Intent intent)
+        {
+            mIntent = intent;
         }
 
         @Nonnull
@@ -141,6 +169,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
             if (result != null)
             {
                 mPurchases = LoadPurchaseTask.extractFromBundle(result);
+                Log.d("PRICE LOAD FROM GOOGLE PLAY: "+ (mPurchases == null ? "null" : mPurchases.size()));
             }
         }
     }

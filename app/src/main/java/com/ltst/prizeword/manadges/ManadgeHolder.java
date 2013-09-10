@@ -103,18 +103,15 @@ public class ManadgeHolder {
     {
         Log.d("INSTANCE PRICE");
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
-        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
-        {
-            public void onIabSetupFinished(IabResult result)
-            {
-                if (result.isSuccess())
-                {
+        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (result.isSuccess()) {
                     // Получаем цены с сервера;
-                    reloadPrice();
+                    reloadPoductsFromGooglePlay();
                 }
             }
         });
-        mIPurchaseSetModel.reloadPurchases(mReloadPurchaseFromDataBase);
+        reloadProductsFromDataBase();
     }
 
     public void dispose()
@@ -196,6 +193,7 @@ public class ManadgeHolder {
 
     public void buyProduct(ManadgeHolder.ManadgeProduct product)
     {
+        reloadPoductsFromGooglePlay();
         // Start popup window. Покупка;
         @Nonnull String product_id = extractProductId(product);
         int  product_request = extractProductRequest(product);
@@ -221,12 +219,17 @@ public class ManadgeHolder {
         mHandlerBuyProductEventList.add(handler);
     }
 
-    public void reloadPrice()
+    public void reloadProductsFromDataBase()
+    {
+        mIPurchaseSetModel.reloadPurchases(mReloadPurchaseFromDataBase);
+    }
+
+    public void reloadPoductsFromGooglePlay()
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-        Log.d("RELOAD PRICE");
         List<String> additionalSkuList = new ArrayList<String>();
-        for(ManadgeProduct product : ManadgeProduct.values()) {
+        for(ManadgeProduct product : ManadgeProduct.values())
+        {
             additionalSkuList.add(extractProductId(product));
         }
         mIabHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
@@ -237,10 +240,6 @@ public class ManadgeHolder {
         if(!mPrices.containsKey(product))
             return null;
         return mPrices.get(product);
-
-//        @Nonnull String googleId = extractProductId(product);
-//        @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
-//        return purchase.price;
     }
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener()
@@ -302,47 +301,29 @@ public class ManadgeHolder {
     IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
 
         public void onQueryInventoryFinished(IabResult result, Inventory inventory)
-
         {
-            Log.d("INFORMATION PRICE");
-
             if (result.isFailure()) {
                 // handle error
                 return;
             }
 
+            @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             @Nonnull String prodict_id = null;
             for(ManadgeProduct product : ManadgeProduct.values())
             {
                 prodict_id = extractProductId(product);
                 if(inventory.hasDetails(prodict_id))
                 {
-                    Log.d("GET PRICE: "+inventory.getSkuDetails(prodict_id).getPrice());
-                    mPrices.put(product, inventory.getSkuDetails(prodict_id).getPrice());
+                    @Nonnull String price = inventory.getSkuDetails(prodict_id).getPrice();
+                    mPrices.put(product, price);
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
-                    if (purchase == null)
-                    {
-                        return;
-                    }
-
                     purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
-                    Log.d("PRICE: "+purchase.price);
-                    mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
-                        @Override
-                        public void handle() {
-
-                        }
-                    });
+                    purchases.add(purchase);
                 }
             }
 
-
-            mIPurchaseSetModel.reloadPurchases(new IListenerVoid() {
-                @Override
-                public void handle() {
-                    mReloadPricesHandler.handle();
-                }
-            });
+            // сохраняем цены в базу;
+            mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
         }
     };
 
@@ -371,12 +352,7 @@ public class ManadgeHolder {
 
             product.googlePurchase = true;
             product.clientId = responseClientId;
-            mIPurchaseSetModel.putPurchase(product, new IListenerVoid() {
-                @Override
-                public void handle() {
-
-                }
-            });
+            mIPurchaseSetModel.putPurchase(product, mSaveOnePurchaseToDataBase);
 
             mBuyProductEventHandler.handle();
         }
@@ -389,13 +365,17 @@ public class ManadgeHolder {
         }
     };
 
-    @Nonnull IListenerVoid mReloadPricesHandler = new IListenerVoid() {
+    @Nonnull IListenerVoid mSavePurchasesToDataBase = new IListenerVoid() {
         @Override
         public void handle() {
-            for(IListenerVoid handle : mHandlerReloadPriceList)
-            {
-                handle.handle();
-            }
+
+        }
+    };
+
+    @Nonnull IListenerVoid mSaveOnePurchaseToDataBase = new IListenerVoid() {
+        @Override
+        public void handle() {
+
         }
     };
 

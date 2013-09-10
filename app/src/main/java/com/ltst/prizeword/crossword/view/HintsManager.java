@@ -86,10 +86,10 @@ public class HintsManager implements View.OnClickListener
                 count = 30;
                 break;
         }
-//        if (count != 0)
-//        {
-//            changeHintsCount(count);
-//        }
+        if (count != 0)
+        {
+            changeHintsCount(count);
+        }
     }
 
     private void changeHintsCount(final int count)
