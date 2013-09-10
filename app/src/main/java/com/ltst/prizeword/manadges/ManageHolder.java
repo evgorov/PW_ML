@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 28.08.13.
  */
-public class ManadgeHolder {
+public class ManageHolder implements IManageHolder {
 
     public enum ManadgeProduct{
         hints10,
@@ -79,7 +79,7 @@ public class ManadgeHolder {
     private @Nonnull List<IListenerVoid> mHandlerBuyProductEventList;
 
 
-    public ManadgeHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
+    public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
 
         mActivity = activity;
         mContext = (Context) activity;
@@ -124,7 +124,7 @@ public class ManadgeHolder {
         mIPurchaseSetModel.close();
     }
 
-    static @Nonnull String extractProductId(ManadgeHolder.ManadgeProduct product)
+    static @Nonnull String extractProductId(ManageHolder.ManadgeProduct product)
     {
         switch (product)
         {
@@ -144,34 +144,7 @@ public class ManadgeHolder {
         return null;
     }
 
-//    static @Nonnull ManadgeHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
-//    {
-//        if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//            return ManadgeProduct.hints10;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//            return ManadgeProduct.hints20;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//            return ManadgeProduct.hints30;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT))
-//            return ManadgeProduct.set_brilliant;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_GOLD))
-//            return ManadgeProduct.set_gold;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER))
-//            return ManadgeProduct.set_silver;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2))
-//            return ManadgeProduct.set_silver2;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//            return ManadgeProduct.test_success;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//            return ManadgeProduct.test_cancel;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//            return ManadgeProduct.test_refunded;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//            return ManadgeProduct.test_unavailable;
-//        return null;
-//    }
-
-    static int extractProductRequest(ManadgeHolder.ManadgeProduct product)
+    static int extractProductRequest(ManageHolder.ManadgeProduct product)
     {
         switch (product)
         {
@@ -191,9 +164,8 @@ public class ManadgeHolder {
         return 0;
     }
 
-    public void buyProduct(ManadgeHolder.ManadgeProduct product)
+    public void buyProduct(ManageHolder.ManadgeProduct product)
     {
-        reloadPoductsFromGooglePlay();
         // Start popup window. Покупка;
         @Nonnull String product_id = extractProductId(product);
         int  product_request = extractProductRequest(product);
@@ -235,7 +207,7 @@ public class ManadgeHolder {
         mIabHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
     }
 
-    public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
+    public String getPriceProduct(ManageHolder.ManadgeProduct product)
     {
         if(!mPrices.containsKey(product))
             return null;

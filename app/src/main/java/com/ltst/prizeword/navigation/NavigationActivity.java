@@ -45,7 +45,8 @@ import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
 import com.ltst.prizeword.manadges.IManadges;
-import com.ltst.prizeword.manadges.ManadgeHolder;
+import com.ltst.prizeword.manadges.IManageHolder;
+import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
@@ -101,7 +102,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
-    private @Nonnull ManadgeHolder mManadgeHolder;
+    private @Nonnull ManageHolder mManadgeHolder;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
     private boolean mVkSwitch;
@@ -116,8 +117,8 @@ public class NavigationActivity extends SherlockFragmentActivity
         Crashlytics.start(this);
 
         mBcConnector = new BcConnector(this);
-        mManadgeHolder = new ManadgeHolder(this, mBcConnector);
-//        mManadgeHolder.instance();
+        mManadgeHolder = new ManageHolder(this, mBcConnector);
+        mManadgeHolder.instance();
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
@@ -275,7 +276,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
-        mManadgeHolder.instance();
         mUserDataModel = new UserDataModel(this, mBcConnector);
         reloadUserData();
         super.onResume();
@@ -789,36 +789,43 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    @Override
-    public void buyProduct(ManadgeHolder.ManadgeProduct product)
-    {
-        // Покупка;
-        mManadgeHolder.buyProduct(product);
-    }
+//    @Override
+//    public void buyProduct(ManageHolder.ManadgeProduct product)
+//    {
+//        // Покупка;
+//        mManadgeHolder.buyProduct(product);
+//    }
+//
+//    @Override
+//    public void reloadPriceProducts()
+//    {
+//        // Обновляем прайс лист продуктов;
+//        mManadgeHolder.reloadPoductsFromGooglePlay();
+//    }
+//
+//    @Override
+//    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
+//    {
+//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+//    }
+//
+//    @Override
+//    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+//    {
+//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+//    }
+//
+//    @Override
+//    public String getPriceProduct(ManageHolder.ManadgeProduct product)
+//    {
+//        // Возвращаем цену продукта;
+//        return mManadgeHolder.getPriceProduct(product);
+//    }
 
+    @Nonnull
     @Override
-    public void reloadPriceProducts()
+    public IManageHolder getManadgeHolder()
     {
-        // Обновляем прайс лист продуктов;
-        mManadgeHolder.reloadPoductsFromGooglePlay();
-    }
-
-    @Override
-    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
-    {
-        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-    }
-
-    @Override
-    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
-    {
-        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-    }
-
-    @Override
-    public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
-    {
-        // Возвращаем цену продукта;
-        return mManadgeHolder.getPriceProduct(product);
+        return  mManadgeHolder;
     }
 }
