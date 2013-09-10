@@ -26,6 +26,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nullable List<Purchase> mPurchases;
+    private @Nonnull Purchase mPurchaseDone;
 
     private boolean mIsDestroyed;
 
@@ -81,6 +82,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
     {
         if (mIsDestroyed)
             return;
+        mPurchaseDone = purchase;
         mPurchaseUpdateSession.update(handler);
     }
 

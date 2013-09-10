@@ -809,6 +809,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     }
 
     @Override
+    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+    {
+        mManadgeHolder.registerHandlerPriceProductsChange(handler);
+    }
+
+    @Override
     public String getPriceProduct(ManadgeHolder.ManadgeProduct product)
     {
         // Возвращаем цену продукта;

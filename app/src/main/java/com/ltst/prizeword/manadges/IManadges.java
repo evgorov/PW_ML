@@ -12,6 +12,7 @@ public interface IManadges {
     void buyProduct(ManadgeHolder.ManadgeProduct product);
     void reloadPriceProducts();
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
+    void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler);
     String getPriceProduct(ManadgeHolder.ManadgeProduct product);
 
 }
