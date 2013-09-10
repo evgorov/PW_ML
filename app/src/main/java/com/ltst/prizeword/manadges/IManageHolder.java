@@ -11,13 +11,8 @@ import javax.annotation.Nonnull;
  */
 public interface IManageHolder {
 
-//    void instance();
-//    void dispose();
-//    boolean onActivityResult(int requestCode, int resultCode, Intent data);
-
     void buyProduct(ManageHolder.ManadgeProduct product);
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
     void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler);
     String getPriceProduct(ManageHolder.ManadgeProduct product);
-
 }

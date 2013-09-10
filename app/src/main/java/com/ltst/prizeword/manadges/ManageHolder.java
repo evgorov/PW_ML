@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 28.08.13.
  */
-public class ManageHolder implements IManageHolder {
+public class ManageHolder implements IManageHolder, IIabHelper {
 
     public enum ManadgeProduct{
         hints10,
@@ -101,7 +101,6 @@ public class ManageHolder implements IManageHolder {
 
     public void instance()
     {
-        Log.d("INSTANCE PRICE");
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
         mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
@@ -237,7 +236,7 @@ public class ManageHolder implements IManageHolder {
 
                         @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
                         purchase.googlePurchase = false;
-                        mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
+                        mIPurchaseSetModel.putOnePurchase(purchase, new IListenerVoid() {
                             @Override
                             public void handle() {
 
@@ -290,6 +289,7 @@ public class ManageHolder implements IManageHolder {
                     mPrices.put(product, price);
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
                     purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
+                    purchase.clientId = UUIDTools.generateStringUUID();
                     purchases.add(purchase);
                 }
             }
@@ -324,9 +324,21 @@ public class ManageHolder implements IManageHolder {
 
             product.googlePurchase = true;
             product.clientId = responseClientId;
-            mIPurchaseSetModel.putPurchase(product, mSaveOnePurchaseToDataBase);
+            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
             mBuyProductEventHandler.handle();
+        }
+    };
+
+    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
+        @Override
+        public void handle() {
+            // Информируем слушателей, что произошла покупка;
+            for(IListenerVoid handle : mHandlerBuyProductEventList)
+            {
+                Log.d("PRICE SEND DONE!");
+                handle.handle();
+            }
         }
     };
 
@@ -351,13 +363,4 @@ public class ManageHolder implements IManageHolder {
         }
     };
 
-    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
-        @Override
-        public void handle() {
-            for(IListenerVoid handle : mHandlerBuyProductEventList)
-            {
-                handle.handle();
-            }
-        }
-    };
 }

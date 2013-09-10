@@ -128,7 +128,7 @@ public class HintsManager implements View.OnClickListener
     @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
         @Override
         public void handle() {
-            Log.d("PRICE WAS PURCHASED!");
+            Log.d("PRICE DONE!");
         }
     };
 

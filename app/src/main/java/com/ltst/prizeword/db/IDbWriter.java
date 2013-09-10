@@ -9,6 +9,7 @@ import com.ltst.prizeword.login.model.UserData;
 import com.ltst.prizeword.login.model.UserProvider;
 import com.ltst.prizeword.score.ScoreQueue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,8 +33,8 @@ public interface IDbWriter extends IDbReader
     void putScoreToQueue(@Nonnull ScoreQueue.Score score);
     void clearScoreQueue();
 
-    void putPurchase(@Nonnull Purchase purchase);
-    void putPurchases(@Nonnull List<Purchase> purchases);
+    void putPurchase(@Nullable Purchase purchase);
+    void putPurchases(@Nullable ArrayList<Purchase> purchases);
 
     void clearDb();
 }
