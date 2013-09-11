@@ -8,9 +8,12 @@ import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -20,6 +23,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints10;
 
 /**
  * Created by cosic on 28.08.13.
@@ -76,7 +81,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
     private @Nonnull HashMap<ManadgeProduct,String> mPrices;
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
-    private @Nonnull List<IListenerVoid> mHandlerBuyProductEventList;
+    private @Nonnull List<IListener<ManageHolder.ManadgeProduct>> mHandlerBuyProductEventList;
+    private @Nonnull String mSessionKey;
+    private @Nonnull HintsModel mHintsModel;
 
 
     public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
@@ -88,7 +95,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mPrices = new HashMap<ManadgeProduct, String>();
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
-        mHandlerBuyProductEventList = new ArrayList<IListenerVoid>();
+        mHandlerBuyProductEventList = new ArrayList<IListener<ManageHolder.ManadgeProduct>>();
+
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mHintsModel = new HintsModel(bcConnector, mSessionKey);
+
 
 //        // Ответ о покупке;
 //        mIabHelper.queryInventoryAsync(mGotInventoryListener);
@@ -111,6 +122,18 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
         });
         reloadProductsFromDataBase();
+    }
+
+    @Override
+    public void resume()
+    {
+//        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+    }
+
+    @Override
+    public void pause()
+    {
+//        mHintsModel.close();
     }
 
     public void dispose()
@@ -163,6 +186,34 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         return 0;
     }
 
+    static @Nonnull ManageHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
+    {
+        if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            return hints10;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+            return ManadgeProduct.hints20;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+            return ManadgeProduct.hints30;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT))
+            return ManadgeProduct.set_brilliant;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_GOLD))
+            return ManadgeProduct.set_gold;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER))
+            return ManadgeProduct.set_silver;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2))
+            return ManadgeProduct.set_silver2;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+            return ManadgeProduct.test_success;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+            return ManadgeProduct.test_cancel;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+            return ManadgeProduct.test_refunded;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+            return ManadgeProduct.test_unavailable;
+        return null;
+    }
+
+
     public void buyProduct(ManageHolder.ManadgeProduct product)
     {
         // Start popup window. Покупка;
@@ -185,7 +236,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mHandlerReloadPriceList.add(handler);
     }
 
-    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+    public void registerHandlerBuyProductEvent(@Nonnull IListener<ManadgeProduct> handler)
     {
         mHandlerBuyProductEventList.add(handler);
     }
@@ -316,28 +367,93 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
-            @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
-            if (product == null)
-            {
-                return;
-            }
+            String responseSignature = purchase.getSignature();
+            @Nonnull String responseJson = purchase.getOriginalJson();
 
+            @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
             product.googlePurchase = true;
             product.clientId = responseClientId;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
-            mBuyProductEventHandler.handle();
+            ManageHolder.ManadgeProduct prod = extractProduct(responseGoogleId);
+            if(prod !=null)
+            {
+                switch (prod)
+                {
+                    case test_success:
+                    case hints10:
+                    case hints20:
+                    case hints30:
+                        changeHintsCount(prod);
+                        break;
+                    case set_brilliant:
+                        break;
+                    case set_gold:
+                        break;
+                    case set_silver:
+                        break;
+                    case set_silver2:
+                        break;
+                    case set_free:
+                        break;
+//                    case test_success:
+//                        break;
+                    case test_cancel:
+                        break;
+                    case test_refunded:
+                        break;
+                    case test_unavailable:
+                        break;
+                    default:break;
+                }
+
+            }
         }
     };
 
-    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
+    private void changeHintsCount(final ManageHolder.ManadgeProduct prod)
+    {
+        int count = 0;
+        switch (prod)
+        {
+            case test_success:
+            case hints10:
+                count = 10;
+                break;
+            case hints20:
+                count = 20;
+                break;
+            case hints30:
+                count = 30;
+                break;
+            default:
+                return;
+        }
+
+        mHintsModel.changeHints(count, new IListenerVoid() {
+            @Override
+            public void handle() {
+
+                // Меняем состояние товара;
+                @Nonnull String responseGoogleId = extractProductId(prod);
+                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+                product.googlePurchase = false;
+                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+                // Рассылаем уведомления, что покупка прошла успешно;
+                mBuyProductEventHandler.handle(prod);
+            }
+        });
+    }
+
+    @Nonnull IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManadgeProduct>() {
         @Override
-        public void handle() {
-            // Информируем слушателей, что произошла покупка;
-            for(IListenerVoid handle : mHandlerBuyProductEventList)
+        public void handle(@Nullable ManadgeProduct manadgeProduct) {
+
+            for(IListener<ManageHolder.ManadgeProduct> handle : mHandlerBuyProductEventList)
             {
                 Log.d("PRICE SEND DONE!");
-                handle.handle();
+                handle.handle(manadgeProduct);
             }
         }
     };

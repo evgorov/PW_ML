@@ -8,5 +8,7 @@ import android.content.Intent;
 public interface IIabHelper {
     void instance();
     void dispose();
+    void resume();
+    void pause();
     boolean onActivityResult(int requestCode, int resultCode, Intent data);
 }

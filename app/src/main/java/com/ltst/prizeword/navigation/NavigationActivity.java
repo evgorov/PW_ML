@@ -312,6 +312,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         mUserDataModel = new UserDataModel(this, mBcConnector);
         reloadUserData();
+        mManadgeHolder.resume();
         super.onResume();
     }
 
@@ -319,6 +320,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onPause()
     {
         mUserDataModel.close();
+        mManadgeHolder.pause();
         super.onPause();
     }
 
@@ -668,6 +670,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                 else
 
                     selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+
+                mManadgeHolder.resume();
             } else
             {
                 mDrawerMenu.clean();

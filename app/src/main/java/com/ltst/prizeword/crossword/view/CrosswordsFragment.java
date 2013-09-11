@@ -61,7 +61,6 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
     private @Nonnull HintsManager mHintsManager;
-    private @Nonnull IManadges mIManadges;
 
     private @Nonnull View mRoot;
     private @Nonnull TextView mHintsCountView;
@@ -76,6 +75,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull View mProgressBar;
     private int mHintsCount;
+    private boolean mLoadFlag = false;
 
     private @Nonnull INewsModel mNewsModel;
 
@@ -87,7 +87,6 @@ public class CrosswordsFragment extends SherlockFragment
     public void onAttach(Activity activity)
     {
         mContext = (Context) activity;
-        mIManadges = (IManadges) activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
 
         super.onAttach(activity);
@@ -128,18 +127,22 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
-        mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
+        mHintsManager = new HintsManager(mContext, mBcConnector, mSessionKey, mRoot);
 
         mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
+        mNewsModel = new NewsModel(mSessionKey, mBcConnector);
 
+        if(!mLoadFlag)
+        {
+            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
-        mNewsModel = new NewsModel(mSessionKey, mBcConnector);
-        mNewsModel.updateFromInternet(mRefreshHandler);
+            mNewsModel.updateFromInternet(mRefreshHandler);
+        }
 
         super.onResume();
     }
@@ -250,7 +253,15 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
-    private IListenerVoid updateSetsFromDBHandler = new IListenerVoid()
+    private IListenerVoid updateHints = new IListenerVoid()
+    {
+        @Override
+        public void handle() {
+            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+        }
+    };
+
+        private IListenerVoid updateSetsFromDBHandler = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -310,7 +321,8 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle(int i)
         {
-//            mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
+            mHintsCount+=i;
+            mHintsCountView.setText(String.valueOf(mHintsCount));
         }
     };
 

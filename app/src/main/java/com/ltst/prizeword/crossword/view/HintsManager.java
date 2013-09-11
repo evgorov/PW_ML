@@ -6,16 +6,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ltst.prizeword.R;
-import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
-import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,7 +29,6 @@ public class HintsManager implements View.OnClickListener
     private @Nonnull TextView mPriceHints_20;
     private @Nonnull TextView mPriceHints_30;
 
-    private @Nonnull HintsModel mHintsModel;
     private @Nonnull IManageHolder mIManageHolder;
     private @Nullable IListenerInt mHintChangeListener;
 
@@ -38,16 +36,15 @@ public class HintsManager implements View.OnClickListener
     private @Nonnull Context mContext;
     private @Nonnull Activity mActivity;
 
-    public HintsManager(@Nonnull Context context, @Nonnull IManadges iManadges, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey, View parentView)
+    public HintsManager(@Nonnull Context context, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey, View parentView)
     {
         mContext = context;
         mActivity = (Activity) context;
 
-        mIManadges = iManadges;
+        mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
         mIManageHolder.registerHandlerPriceProductsChange(mReloadPriceProductHandler);
         mIManageHolder.registerHandlerBuyProductEvent(mBuyProductEventHandler);
-        mHintsModel = new HintsModel(bcConnector, sessionKey);
 
         mPriceHints_10 = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_buy_10_price);
         mPriceHints_20 = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_buy_20_price);
@@ -74,45 +71,25 @@ public class HintsManager implements View.OnClickListener
         SoundsWork.interfaceBtnMusic(mContext);
         // Покупка;
 
-        int count = 0;
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
-                count = 10;
+              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
+//              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
-//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
-                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
-                count = 20;
+                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
+//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
-//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints30);
-                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
-                count = 30;
+                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints30);
+//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 break;
         }
-        if (count != 0)
-        {
-//            changeHintsCount(count);
-        }
-    }
-
-    private void changeHintsCount(final int count)
-    {
-        mHintsModel.changeHints(count, new IListenerVoid() {
-            @Override
-            public void handle() {
-                if (mHintChangeListener != null) {
-                    mHintChangeListener.handle(count);
-                }
-            }
-        });
     }
 
     public void close()
     {
-        mHintsModel.close();
     }
 
     private void setPrice()
@@ -122,18 +99,40 @@ public class HintsManager implements View.OnClickListener
         mPriceHints_30.setText(mIManageHolder.getPriceProduct(ManageHolder.ManadgeProduct.hints30));
     }
 
-    @Nonnull IListenerVoid mReloadPriceProductHandler = new IListenerVoid() {
+    @Nonnull
+    IListenerVoid mReloadPriceProductHandler = new IListenerVoid() {
         @Override
         public void handle() {
             setPrice();
         }
     };
 
-    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
+    @Nonnull
+    IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManageHolder.ManadgeProduct>() {
         @Override
-        public void handle() {
+        public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
 
+            int count = 0;
+            switch (manadgeProduct)
+            {
+                case test_success:
+                case hints10:
+                    count = 10;
+                    break;
+                case hints20:
+                    count = 20;
+                    break;
+                case hints30:
+                    count = 30;
+                    break;
+                default:
+                    return;
+            }
+
+            if (mHintChangeListener != null)
+            {
+                mHintChangeListener.handle(count);
+            }
         }
     };
-
 }
