@@ -114,6 +114,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private boolean mIsDestroyed = false;
     private boolean mIsTablet = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -403,6 +404,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override public boolean getVkSwitch()
     {
         return mVkSwitch;
+    }
+
+    @Override public boolean getIsTablet()
+    {
+        return mIsTablet;
     }
 
     // ==================================================

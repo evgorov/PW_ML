@@ -10,4 +10,5 @@ public interface IFragmentsHolderActivity
     public String getScoreText();
     public boolean getFbSwitch();
     public boolean getVkSwitch();
+    public boolean getIsTablet();
 }

@@ -159,6 +159,8 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         }
         mInviteBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
+        if(mINavigationActivity.getIsTablet())
+            mMenuBtn.setVisibility(View.GONE);
 
     }
 

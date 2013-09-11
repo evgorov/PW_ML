@@ -170,6 +170,7 @@
     <string name="gamefield_pause">Пауза</string>
     <string name="gamefield_hint_dialog_title">Подсказка</string>
     <string name="gamefield_hint_dialog_message">Вы действительно хотите воспользоваться подсказкой?</string>
+    <string name="gamefield_hint_no_message">У вас закончились подсказки! Желаете ли приобрести 10 подсказок?</string>
     <string name="gamefield_hint_dialog_ok">Да</string>
     <string name="gamefield_hint_dialog_cancel">Нет</string>
 

@@ -132,7 +132,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 //        params.screenBrightness = 0;
 //        getWindow().setAttributes(params);
 
-        if(!DimenTools.isTablet(this))
+        if (!DimenTools.isTablet(this))
         {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -408,46 +408,70 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             return;
 
         mPuzzleView.hideKeyboard();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.gamefield_hint_dialog_message)
-                .setTitle(R.string.gamefield_hint_dialog_title)
-                .setPositiveButton(R.string.gamefield_hint_dialog_ok, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
+        if (mHintsCount == 0)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.gamefield_hint_no_message).setTitle(R.string.gamefield_hint_dialog_title)
+                    .setPositiveButton(R.string.gamefield_hint_dialog_ok, new DialogInterface.OnClickListener()
                     {
-                        mHintsCount--;
-                        mHintsModel.changeHints(-1, new IListenerVoid()
+                        @Override public void onClick(DialogInterface dialogInterface, int i)
                         {
-                            @Override
-                            public void handle()
-                            {
-                                mHintBtn.setText(String.valueOf(mHintsCount));
-                                mPuzzleAdapter.setCurrentQuestionCorrect(new IListenerVoid()
-                                {
-                                    @Override
-                                    public void handle()
-                                    {
-
-                                        mPuzzleView.triggerAnimation();
-                                        if (SoundsWork.ALL_SOUNDS_FLAG)
-                                            SoundsWork.questionAnswered(OneCrosswordActivity.this);
-                                    }
-                                });
-                                mPuzzleView.invalidate();
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton(R.string.gamefield_hint_dialog_cancel, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
+                            // сдесь должна быть покупка 10-и подсказок
+                        }
+                    })
+                    .setNegativeButton(R.string.gamefield_hint_dialog_cancel, new DialogInterface.OnClickListener()
                     {
-                        mPuzzleView.openKeyboard();
-                    }
-                });
-        builder.create().show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            mPuzzleView.openKeyboard();
+                        }
+                    });
+            builder.create().show();
+        } else
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.gamefield_hint_dialog_message)
+                    .setTitle(R.string.gamefield_hint_dialog_title)
+                    .setPositiveButton(R.string.gamefield_hint_dialog_ok, new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            mHintsCount--;
+
+                            mHintsModel.changeHints(-1, new IListenerVoid()
+                            {
+                                @Override
+                                public void handle()
+                                {
+                                    mHintBtn.setText(String.valueOf(mHintsCount));
+                                    mPuzzleAdapter.setCurrentQuestionCorrect(new IListenerVoid()
+                                    {
+                                        @Override
+                                        public void handle()
+                                        {
+
+                                            mPuzzleView.triggerAnimation();
+                                            if (SoundsWork.ALL_SOUNDS_FLAG)
+                                                SoundsWork.questionAnswered(OneCrosswordActivity.this);
+                                        }
+                                    });
+                                    mPuzzleView.invalidate();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton(R.string.gamefield_hint_dialog_cancel, new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            mPuzzleView.openKeyboard();
+                        }
+                    });
+            builder.create().show();
+        }
     }
 
     private void selectNextUnsolvedPuzzle()
@@ -521,7 +545,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             {
                 selectNextUnsolvedPuzzle();
             }
-            if(mResourcesDecoded)
+            if (mResourcesDecoded)
             {
                 hideProgressBar();
                 mPuzzleLoaded = true;

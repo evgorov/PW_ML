@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -504,7 +505,7 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         //HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         //ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity,String.class, urlVariables);
-        restTemplate.postForLocation(url, null, urlVariables);
+        URI uri = restTemplate.postForLocation(url, null, urlVariables);
 
         RestInviteFriend.RestInviteFriendHolder holder = new RestInviteFriend.RestInviteFriendHolder();
         //holder.setStatus(entity.getStatusCode());

@@ -2,6 +2,7 @@ package com.ltst.prizeword.invitefriends.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +17,17 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
+import com.ltst.prizeword.invitefriends.model.InviteFriendsData;
 import com.ltst.prizeword.invitefriends.model.InviteFriendsDataModel;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.lists.ISlowSource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -81,8 +86,9 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mHeaderImage.setBackgroundResource(R.drawable.invite_vk_header);
         mFooterImage.setBackgroundResource(R.drawable.invite_footer);
         mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
-        mMessageView = (ViewGroup)v.findViewById(R.id.invite_message_not_social);
+        mMessageView = (ViewGroup) v.findViewById(R.id.invite_message_not_social);
         mMenuBtn.setOnClickListener(this);
+        mInviteAllBtn.setOnClickListener(this);
         return v;
 
     }
@@ -200,7 +206,38 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                 mINavigationDrawerHolder.toogle();
                 break;
             case R.id.header_invite_all_btn:
+                inviteAll();
                 break;
+        }
+    }
+
+    private void inviteAll()
+    {
+
+        InviteFragmentAdapter adapter = mAdapter;
+        ISlowSource.Item<InviteFriendsData, Bitmap> data;
+        StringBuffer ids_vk = new StringBuffer();
+        StringBuffer ids_fb = new StringBuffer();
+        if (adapter != null)
+        {
+            for (int i = 0; i < adapter.getCount(); i++)
+            {
+
+                data = (ISlowSource.Item<InviteFriendsData, Bitmap>) adapter.getItem(i);
+                if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.VK_PROVIDER)
+                        && !data.quick.status.equals("already_registered"))
+                {
+                    ids_vk.append(data.quick.id);
+                    ids_vk.append(',');
+                } else if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.FB_PROVIDER)
+                        && !data.quick.status.equals("already_registered"))
+                {
+                    ids_fb.append(data.quick.id);
+                    ids_fb.append(',');
+                }
+            }
+            adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
+            adapter.invite(ids_fb.toString(), RestParams.FB_PROVIDER, null);
         }
     }
 
@@ -214,9 +251,14 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             bar.setVisibility(View.GONE);
 //            mFriendsListView.setVisibility(View.VISIBLE);
             if (mIFragmentActivity.getVkSwitch() || mIFragmentActivity.getFbSwitch())
+            {
                 mFriendsContainer.setVisibility(View.VISIBLE);
-            else
+                mInviteAllBtn.setEnabled(true);
+            } else
+            {
                 mMessageView.setVisibility(View.VISIBLE);
+                mInviteAllBtn.setEnabled(false);
+            }
             mDataRequested = false;
         }
     };

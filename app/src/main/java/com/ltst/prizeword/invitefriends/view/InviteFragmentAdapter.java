@@ -115,7 +115,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
                     switch (v.getId())
                     {
                         case R.id.invite_add_btn:
-                            mModel.sendInviteFriends(id, provider, null);
+                            invite(id,provider,null);
                             break;
                     }
                 }
@@ -137,6 +137,11 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     protected int getItemViewResId()
     {
         return R.layout.invite_simple_item;
+    }
+
+    public void invite(@Nonnull String id,@Nonnull String provider, @Nullable IListenerVoid handler)
+    {
+        mModel.sendInviteFriends(id, provider, handler);
     }
 
 

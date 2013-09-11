@@ -1,6 +1,7 @@
 <resources>
     <dimen name="frame_border_offset">15dp</dimen>
     <dimen name="size_avatar">65dp</dimen>
-    <dimen name="size_avatar_frame">70dp</dimen>
-    <dimen name="score_left_right_margin">30dp</dimen>
+    <dimen name="size_avatar_frame">75dp</dimen>
+    <dimen name="score_left_right_margin">35dp</dimen>
+    <dimen name="ava_frame_margin">10dp</dimen>
 </resources>

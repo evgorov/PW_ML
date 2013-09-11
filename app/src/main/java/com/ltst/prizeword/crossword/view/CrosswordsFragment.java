@@ -25,6 +25,7 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
+import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.News;
@@ -58,6 +59,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
+    private @Nonnull com.ltst.prizeword.navigation.IFragmentsHolderActivity mIFragmentActivity;
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
     private @Nonnull HintsManager mHintsManager;
@@ -89,6 +91,7 @@ public class CrosswordsFragment extends SherlockFragment
         mContext = (Context) activity;
         mIManadges = (IManadges) activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
+        mIFragmentActivity = (IFragmentsHolderActivity) activity;
 
         super.onAttach(activity);
     }
@@ -100,6 +103,8 @@ public class CrosswordsFragment extends SherlockFragment
 
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
         mMenuBackButton.setOnClickListener(this);
+        if(mIFragmentActivity.getIsTablet())
+            mMenuBackButton.setVisibility(View.GONE);
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
