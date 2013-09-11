@@ -82,7 +82,7 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
             String jsonPuzzleUserData = parseJsonUserData(questions, puzzleId, timeLeft, score);
             try
             {
-                IRestClient client = RestClient.create();
+                IRestClient client = RestClient.create(bcTaskEnv.context);
                 HttpStatus status = client.putPuzzleUserData(sessionKey, puzzleId, jsonPuzzleUserData);
                 Bundle bundle = new Bundle();
                 bundle.putInt(BF_STATUS, status.value());

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.scoredetail.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -101,7 +102,7 @@ public class LoadScoreDataFromInternetTask implements IBcTask
         } else
         {
             Bundle bundle = new Bundle();
-            RestInviteFriend.RestInviteFriendHolder holder = loadScoreData(sessionKey, RestParams.VK_PROVIDER);
+            RestInviteFriend.RestInviteFriendHolder holder = loadScoreData(env.context, sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.VK_PROVIDER);
@@ -110,7 +111,7 @@ public class LoadScoreDataFromInternetTask implements IBcTask
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
                 }
             }
-            holder = loadScoreData(sessionKey, RestParams.FB_PROVIDER);
+            holder = loadScoreData(env.context, sessionKey, RestParams.FB_PROVIDER);
             if (holder != null)
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.FB_PROVIDER);
@@ -139,11 +140,11 @@ public class LoadScoreDataFromInternetTask implements IBcTask
     }
 
     private @Nullable
-    RestInviteFriend.RestInviteFriendHolder loadScoreData(@Nonnull String sessionKey, @Nonnull String provider)
+    RestInviteFriend.RestInviteFriendHolder loadScoreData(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String provider)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getFriendsScoreData(sessionKey, provider);
 
         } catch (Throwable e)

@@ -1,5 +1,10 @@
 package com.ltst.prizeword.rest;
 
+import android.content.Context;
+
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -41,15 +46,17 @@ import javax.annotation.Nullable;
 
 public class RestClient implements IRestClient
 {
-    public static IRestClient create()
+    private @Nonnull Context mContext;
+    public static IRestClient create(@Nonnull Context context)
     {
-        return new RestClient();
+        return new RestClient(context);
     }
 
     private @Nonnull RestTemplate restTemplate;
 
-    private RestClient()
+    private RestClient(@Nonnull Context context)
     {
+        this.mContext = context;
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
     }
@@ -63,7 +70,13 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        RestUserData.RestUserDataHolder holder = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables).getBody();
+        ResponseEntity<RestUserData.RestUserDataHolder> responseEntity = restTemplate.exchange(RestParams.URL_GET_USER_DATA, HttpMethod.GET, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+
+        long currentDate = responseEntity.getHeaders().getDate();
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(mContext);
+        helper.putLong(SharedPreferencesValues.SP_CURRENT_DATE, currentDate).commit();
+
+        RestUserData.RestUserDataHolder holder = responseEntity.getBody();
         return holder.getUserData();
     }
 

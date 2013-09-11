@@ -1,5 +1,6 @@
 package com.ltst.prizeword.news;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -46,7 +47,7 @@ public class LoadNewsFromInternetTask implements IBcTask
             @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
             if (sessionKey != null)
             {
-                @Nullable RestNews restNews = loadNews(sessionKey);
+                @Nullable RestNews restNews = loadNews(env.context, sessionKey);
                 if (restNews != null)
                 {
                     @Nonnull News news = parseNews(restNews);
@@ -57,11 +58,11 @@ public class LoadNewsFromInternetTask implements IBcTask
         return null;
     }
 
-    private @Nullable RestNews loadNews(@Nonnull String sessionKey)
+    private @Nullable RestNews loadNews(@Nonnull Context context, @Nonnull String sessionKey)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getNews(sessionKey);
         }
         catch (Throwable e)

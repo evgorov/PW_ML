@@ -80,7 +80,7 @@ public class SharedPreferencesHelper
 		return this;
 	}
 	
-	public float getLong(@Nonnull String key, long defValue)
+	public long getLong(@Nonnull String key, long defValue)
 	{
 		return settings.getLong(key, defValue);
 	}
@@ -96,5 +96,11 @@ public class SharedPreferencesHelper
 		editor.commit();
 		return this;
 	}
+
+    public @Nonnull SharedPreferencesHelper erase(@Nonnull String key)
+    {
+        editor.remove(key);
+        return this;
+    }
 
 }

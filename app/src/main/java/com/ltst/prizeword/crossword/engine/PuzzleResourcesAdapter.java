@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -19,6 +21,8 @@ import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -126,7 +130,11 @@ public class PuzzleResourcesAdapter
 
     public boolean isPuzzleInCurrentMonth()
     {
-        return false;
+        long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        return currentMonth == mPuzzleSet.month;
     }
 
     public int getTimeLeft()

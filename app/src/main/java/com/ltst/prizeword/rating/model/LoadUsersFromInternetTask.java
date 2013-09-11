@@ -1,5 +1,6 @@
 package com.ltst.prizeword.rating.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -84,7 +85,7 @@ public class LoadUsersFromInternetTask implements IBcTask
 
             if (sessionKey != null)
             {
-                @Nullable RestPuzzleUsers restUsers = loadUsers(sessionKey);
+                @Nullable RestPuzzleUsers restUsers = loadUsers(env.context, sessionKey);
                 if (restUsers != null)
                 {
                     @Nonnull UsersList users = parseUsers(restUsers);
@@ -95,11 +96,11 @@ public class LoadUsersFromInternetTask implements IBcTask
         return null;
     }
 
-    private @Nullable RestPuzzleUsers loadUsers(@Nonnull String sessionKey)
+    private @Nullable RestPuzzleUsers loadUsers(@Nonnull Context context, @Nonnull String sessionKey)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getUsers(sessionKey);
         }
         catch(Throwable e)

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.login.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -52,7 +53,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         }
         else
         {
-            RestUserData response = loadRestUserDataFromInternet(sessionKey);
+            RestUserData response = loadRestUserDataFromInternet(env.context, sessionKey);
 
             if(response != null)
             {
@@ -72,11 +73,11 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
         return bundle;
     }
 
-    private @Nullable RestUserData loadRestUserDataFromInternet(@Nonnull String sessionKey)
+    private @Nullable RestUserData loadRestUserDataFromInternet(@Nonnull Context context, @Nonnull String sessionKey)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getUserData(sessionKey);
         }
         catch(Throwable e)

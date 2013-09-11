@@ -54,7 +54,7 @@ public class SendInviteToFriendsTask implements DbService.IDbTask
         } else
         {
 
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(env.context);
             RestInviteFriend.RestInviteFriendHolder response = null;
 
             if(!sessionKey.equals(Strings.EMPTY) && !ids.equals(Strings.EMPTY)&& !providerName.equals(Strings.EMPTY)){

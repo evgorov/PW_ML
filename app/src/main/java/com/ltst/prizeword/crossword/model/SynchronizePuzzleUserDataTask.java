@@ -69,7 +69,7 @@ public class SynchronizePuzzleUserDataTask implements IBcTask
         if (sessionKey!= null && puzzles!= null)
         {
             ArrayList<String> puzzlesNotSynced = new ArrayList<String>();
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(bcTaskEnv.context);
             for (Puzzle puzzle : puzzles)
             {
                 String jsonPuzzleUserData = UpdatePuzzleUserDataOnServerTask.parseJsonUserData(puzzle);

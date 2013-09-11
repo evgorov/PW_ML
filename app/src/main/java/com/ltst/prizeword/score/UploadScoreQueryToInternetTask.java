@@ -1,5 +1,6 @@
 package com.ltst.prizeword.score;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -59,7 +60,7 @@ public class UploadScoreQueryToInternetTask implements DbService.IDbTask
 
                 for (ScoreQueue.Score score : queue.scoreQueue)
                 {
-                    HttpStatus status = postScore(sessionKey, score.puzzleId, score.score);
+                    HttpStatus status = postScore(env.context, sessionKey, score.puzzleId, score.score);
                     statuses.add(status);
                 }
                 boolean success = true;
@@ -90,11 +91,11 @@ public class UploadScoreQueryToInternetTask implements DbService.IDbTask
 
 
     private @Nullable
-    HttpStatus postScore(@Nonnull String sessionKey, @Nonnull String puzzleId, int score)
+    HttpStatus postScore(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String puzzleId, int score)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.postPuzzleScore(sessionKey, puzzleId, score);
         }
         catch (Throwable e)

@@ -2,8 +2,6 @@ package com.ltst.prizeword.app;
 
 import android.content.Context;
 
-import org.omich.velo.constants.Strings;
-
 import javax.annotation.Nonnull;
 
 public class SharedPreferencesValues
@@ -14,6 +12,7 @@ public class SharedPreferencesValues
 
     public static final @Nonnull String SP_MUSIC_SWITCH = "musicSwitch";
     public static final @Nonnull String SP_SOUND_SWITCH = "soundSwitch";
+    public static final @Nonnull String SP_CURRENT_DATE = "date";
 
     public static String getSessionKey(@Nonnull Context context)
     {
