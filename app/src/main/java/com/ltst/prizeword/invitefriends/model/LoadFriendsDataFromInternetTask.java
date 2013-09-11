@@ -1,5 +1,6 @@
 package com.ltst.prizeword.invitefriends.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -111,7 +112,7 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
         } else
         {
             Bundle bundle = new Bundle();
-            RestInviteFriend.RestInviteFriendHolder holder = loadRestFriendDataFromInternet(sessionKey, RestParams.VK_PROVIDER);
+            RestInviteFriend.RestInviteFriendHolder holder = loadRestFriendDataFromInternet(env.context, sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<InviteFriendsData> friends = parseFriendData(holder, RestParams.VK_PROVIDER);
@@ -120,7 +121,7 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
                 }
             }
-            holder = loadRestFriendDataFromInternet(sessionKey, RestParams.FB_PROVIDER);
+            holder = loadRestFriendDataFromInternet(env.context, sessionKey, RestParams.FB_PROVIDER);
             if (holder != null)
             {
                 ArrayList<InviteFriendsData> friends = parseFriendData(holder, RestParams.FB_PROVIDER);
@@ -138,11 +139,11 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
 
 
     private @Nullable
-    RestInviteFriend.RestInviteFriendHolder loadRestFriendDataFromInternet(@Nonnull String sessionKey, @Nonnull String provider)
+    RestInviteFriend.RestInviteFriendHolder loadRestFriendDataFromInternet(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String provider)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getFriendsData(sessionKey, provider);
         } catch (Throwable e)
         {

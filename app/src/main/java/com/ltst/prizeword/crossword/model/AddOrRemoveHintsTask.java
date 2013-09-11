@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -56,7 +57,7 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
 
             if (sessionKey != null)
             {
-                RestUserData.RestUserDataHolder holder = changeHints(sessionKey, hintsToChange);
+                RestUserData.RestUserDataHolder holder = changeHints(env.context, sessionKey, hintsToChange);
                 if (holder != null)
                 {
                     @Nonnull UserData userData = LoadUserDataFromInternetTask.parseUserData(holder.getUserData());
@@ -68,11 +69,11 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
         return null;
     }
 
-    private RestUserData.RestUserDataHolder changeHints (@Nonnull String sessionKey, int hints)
+    private RestUserData.RestUserDataHolder changeHints (@Nonnull Context context, @Nonnull String sessionKey, int hints)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.addOrRemoveHints(sessionKey, hints);
         }
         catch(Throwable e)

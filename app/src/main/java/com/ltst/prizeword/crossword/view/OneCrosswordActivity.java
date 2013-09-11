@@ -216,7 +216,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
-        mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
+        mPuzzleAdapter = new PuzzleResourcesAdapter(this, mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
         mPuzzleAdapter.setPuzzleStateHandler(mStateUpdater);
         mPuzzleAdapter.setPuzzleSolvedHandler(mSolvedUpdater);
@@ -262,7 +262,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             loadPuzzle();
         }
 
-        fillFlipNumbers(54526);
+        fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
         if (mPauseMusic.isChecked())
@@ -393,7 +393,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if (show)
         {
-            fillFlipNumbers(25930);
             mStopPlayFlag = false;
             mFinalScreen.setVisibility(View.VISIBLE);
         } else
@@ -580,7 +579,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
             final int baseScore = mCoefficientsModel.getBaseScore(type);
-            final int bonusScore = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+            int bonus = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+            if(bonus < 0)
+                bonus = 0;
+            final int bonusScore = bonus;
 
             OneCrosswordActivity.this.runOnUiThread(new Runnable()
             {
@@ -592,11 +594,13 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             });
 
-            int sumScore = baseScore + bonusScore;
-
-            mPostPuzzleScoreModel.post(mCurrentPuzzleServerId, sumScore);
-
-            fillFlipNumbers(sumScore);
+            if(mPuzzleAdapter.isPuzzleInCurrentMonth())
+            {
+                int sumScore = baseScore + bonusScore;
+                @Nonnull String puzzleId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+                mPostPuzzleScoreModel.post(puzzleId, sumScore);
+                fillFlipNumbers(sumScore);
+            }
         }
     };
 

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.login.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -48,7 +49,7 @@ public class ForgetPassCycleTask implements DbService.IDbTask
 
         if (passwordToken != null && newPassword != null)
         {
-            @Nullable HttpStatus status = resetPassword(passwordToken, newPassword);
+            @Nullable HttpStatus status = resetPassword(dbTaskEnv.context, passwordToken, newPassword);
             if (status != null)
             {
                 return packStatusToBundle(status);
@@ -57,7 +58,7 @@ public class ForgetPassCycleTask implements DbService.IDbTask
 
         if(currentEmail != null)
         {
-            @Nullable HttpStatus status = forgotPassword(currentEmail);
+            @Nullable HttpStatus status = forgotPassword(dbTaskEnv.context, currentEmail);
             if(status != null)
             {
                 return packStatusToBundle(status);
@@ -66,17 +67,17 @@ public class ForgetPassCycleTask implements DbService.IDbTask
         return null;
     }
 
-    private HttpStatus resetPassword(@Nonnull String passwordToken, @Nonnull String newPassword)
+    private HttpStatus resetPassword(@Nonnull Context context, @Nonnull String passwordToken, @Nonnull String newPassword)
     {
-        IRestClient client = RestClient.create();
+        IRestClient client = RestClient.create(context);
         return client.resetPassword(passwordToken, newPassword);
     }
 
-    private HttpStatus forgotPassword(@Nonnull String email)
+    private HttpStatus forgotPassword(@Nonnull Context context, @Nonnull String email)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.forgotPassword(email);
         }
         catch(Throwable e)

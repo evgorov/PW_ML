@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -63,7 +64,7 @@ public class PostPuzzleScoreTask implements DbService.IDbTask
         {
             if (sessionKey != null && puzzleId != null && scoreValue >= 0)
             {
-                HttpStatus status = postScore(sessionKey, puzzleId, scoreValue);
+                HttpStatus status = postScore(env.context, sessionKey, puzzleId, scoreValue);
                 if (status != null && status.value() == RestParams.SC_ERROR)
                 {
                     ScoreQueue.Score score = new ScoreQueue.Score(0, scoreValue, puzzleId);
@@ -82,11 +83,11 @@ public class PostPuzzleScoreTask implements DbService.IDbTask
         return b;
     }
 
-    private @Nullable HttpStatus postScore(@Nonnull String sessionKey, @Nonnull String puzzleId, int score)
+    private @Nullable HttpStatus postScore(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String puzzleId, int score)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.postPuzzleScore(sessionKey, puzzleId, score);
         }
         catch (Throwable e)

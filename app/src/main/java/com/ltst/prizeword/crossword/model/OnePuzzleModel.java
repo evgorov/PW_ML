@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,12 +30,15 @@ public class OnePuzzleModel implements IOnePuzzleModel
     private boolean mIsDestroyed;
     private @Nullable Puzzle mPuzzle;
     private long mSetId;
+    private @Nonnull Context mContext;
 
-    public OnePuzzleModel(@Nonnull IBcConnector bcConnector,
+    public OnePuzzleModel(@Nonnull Context context,
+                        @Nonnull IBcConnector bcConnector,
                           @Nonnull String sessionKey,
                           @Nonnull String puzzleServerId,
                           long setId)
     {
+        mContext = context;
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
         mPuzzleServerId = puzzleServerId;
@@ -225,7 +229,17 @@ public class OnePuzzleModel implements IOnePuzzleModel
         @Override
         protected void handleData(@Nullable Bundle result)
         {
-            // пока ничего не обрабатываем
+            if (result == null)
+            {
+                return;
+            }
+
+            int status = result.getInt(UpdatePuzzleUserDataOnServerTask.BF_STATUS);
+            if(status == RestParams.SC_ERROR)
+            {
+                PuzzleUserDataSynchronizer syncer = new PuzzleUserDataSynchronizer(mContext);
+                syncer.addPuzzleId(mPuzzleServerId);
+            }
         }
     }
 

@@ -28,10 +28,12 @@ public class PostPuzzleScoreModel
         mUploader = new Uploader();
     }
 
-    public void post(final @Nonnull String puzzleId, final int score)
+    public void post(@Nonnull String puzzleId, int score)
     {
         if(mIsDestroyed)
             return;
+        if(score < 0)
+            score = 0;
         mUploader.setIntent(PostPuzzleScoreTask.createIntent(mSessionKey, puzzleId, score));
         mUploader.update(null);
     }

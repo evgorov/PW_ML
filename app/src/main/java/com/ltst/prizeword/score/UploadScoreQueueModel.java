@@ -17,17 +17,29 @@ public class UploadScoreQueueModel
 {
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
+    private @Nonnull Updater mUpdater;
+    private boolean mIsDestroyed;
 
     public UploadScoreQueueModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
+        mUpdater = new Updater();
     }
 
     public void upload()
     {
-        Updater updater = new Updater();
-        updater.update(null);
+        if(mIsDestroyed)
+            return;
+        mUpdater.update(null);
+    }
+
+    public void close()
+    {
+        if(mIsDestroyed)
+            return;
+        mIsDestroyed = true;
+        mUpdater.close();
     }
 
     private class Updater extends ModelUpdater<DbService.DbTaskEnv>

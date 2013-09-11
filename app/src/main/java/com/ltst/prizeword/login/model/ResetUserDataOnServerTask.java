@@ -65,7 +65,7 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
             byte[] userPic = extras.getByteArray(BF_USER_PIC);
             String userName = extras.getString(BF_USER_NAME);
 
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(env.context);
             RestUserData response = null;
 
             if(sessionKey != Strings.EMPTY && userPic != null){

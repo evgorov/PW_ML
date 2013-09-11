@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -62,8 +63,8 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         }
         else
         {
-            RestPuzzle.RestPuzzleHolder holder = loadPuzzle(sessionKey, puzzleId);
-            RestPuzzleUserData.RestPuzzleUserDataHolder dataHolder = loadPuzzleUserData(sessionKey, puzzleId);
+            RestPuzzle.RestPuzzleHolder holder = loadPuzzle(env.context, sessionKey, puzzleId);
+            RestPuzzleUserData.RestPuzzleUserDataHolder dataHolder = loadPuzzleUserData(env.context, sessionKey, puzzleId);
             if (holder != null && dataHolder != null)
             {
                 Puzzle puzzle = parsePuzzle(holder, dataHolder);
@@ -86,11 +87,11 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         return bundle;
     }
 
-    private @Nullable RestPuzzle.RestPuzzleHolder loadPuzzle(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    private @Nullable RestPuzzle.RestPuzzleHolder loadPuzzle(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String puzzleId)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getPuzzle(sessionKey, puzzleId);
         }
         catch (Throwable e)
@@ -101,11 +102,11 @@ public class LoadOnePuzzleFromInternet implements DbService.IDbTask
         }
     }
 
-    static public @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder loadPuzzleUserData(@Nonnull String sessionKey, @Nonnull String puzzleId)
+    static public @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder loadPuzzleUserData(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String puzzleId)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getPuzzleUserData(sessionKey, puzzleId);
         }
         catch (Throwable e)

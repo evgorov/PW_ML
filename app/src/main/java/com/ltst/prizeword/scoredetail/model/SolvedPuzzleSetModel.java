@@ -53,10 +53,10 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
-    public void updateCurrentSets(@Nonnull IListenerVoid handler)
-    {
+    public void updateCurrentSets(@Nonnull IListenerVoid handler){}
 
-    }
+    @Override
+    public void synchronizePuzzleUserData(){}
 
     @Override
     public void close()

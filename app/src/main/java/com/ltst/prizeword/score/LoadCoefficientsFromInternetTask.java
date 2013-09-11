@@ -1,5 +1,6 @@
 package com.ltst.prizeword.score;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -48,7 +49,7 @@ public class LoadCoefficientsFromInternetTask implements DbService.IDbTask
             @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
             if (sessionKey != null)
             {
-                @Nullable RestCoefficients restCoefficients = loadCoefficients(sessionKey);
+                @Nullable RestCoefficients restCoefficients = loadCoefficients(env.context, sessionKey);
                 if (restCoefficients != null)
                 {
                     @Nonnull Coefficients coefficients = parseCoefficients(restCoefficients);
@@ -60,11 +61,11 @@ public class LoadCoefficientsFromInternetTask implements DbService.IDbTask
         return null;
     }
 
-    private @Nullable RestCoefficients loadCoefficients(@Nonnull String sessionKey)
+    private @Nullable RestCoefficients loadCoefficients(@Nonnull Context context, @Nonnull String sessionKey)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getCoefficients(sessionKey);
         }
         catch (Throwable e)

@@ -55,7 +55,7 @@ public class MergeAccountsTask implements DbService.IDbTask {
             String sessionKey2 = extras.getString(BF_MERGE_SESSION_KEY2);
 
             if(sessionKey1 != Strings.EMPTY && sessionKey2 != Strings.EMPTY){
-                IRestClient client = RestClient.create();
+                IRestClient client = RestClient.create(env.context);
                 RestUserData.RestAnswerMessageHolder response = client.mergeAccounts(sessionKey1, sessionKey2);
                 return getAnswerMessage(response);
             }

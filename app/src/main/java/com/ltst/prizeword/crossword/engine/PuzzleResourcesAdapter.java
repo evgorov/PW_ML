@@ -1,8 +1,11 @@
 package com.ltst.prizeword.crossword.engine;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IOnePuzzleModel;
 import com.ltst.prizeword.crossword.model.OnePuzzleModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -18,6 +21,8 @@ import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -50,11 +55,13 @@ public class PuzzleResourcesAdapter
     private boolean isInputMode;
     private @Nullable List<PuzzleTileState> mCurrentInputPuzzleStates;
     private @Nullable Point mCurrentTileFocusPoint;
+    private @Nonnull Context mContext;
 
-    public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
+    public PuzzleResourcesAdapter(@Nonnull Context context, @Nonnull IBcConnector bcConnector,
                                   @Nonnull String sessionKey,
                                   @Nonnull PuzzleSet puzzleSet)
     {
+        mContext = context;
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
         mPuzzleSet = puzzleSet;
@@ -70,7 +77,7 @@ public class PuzzleResourcesAdapter
 
     public void updatePuzzle(@Nonnull String puzzleServerId)
     {
-        mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
+        mPuzzleModel = new OnePuzzleModel(mContext, mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
@@ -87,7 +94,7 @@ public class PuzzleResourcesAdapter
         mResources = bundle.getParcelable(BF_RESOURCES);
         if (mPuzzle != null)
         {
-            mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mPuzzle.serverId, mPuzzleSet.id);
+            mPuzzleModel = new OnePuzzleModel(mContext, mBcConnector, mSessionKey, mPuzzle.serverId, mPuzzleSet.id);
         }
         for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
         {
@@ -119,6 +126,15 @@ public class PuzzleResourcesAdapter
             mCurrentInputPuzzleStates.clear();
             mCurrentInputPuzzleStates = null;
         }
+    }
+
+    public boolean isPuzzleInCurrentMonth()
+    {
+        long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        return currentMonth == mPuzzleSet.month;
     }
 
     public int getTimeLeft()

@@ -1,5 +1,6 @@
 package com.ltst.prizeword.login.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -113,7 +114,7 @@ public class LoadSessionKeyTask implements IBcTask
         {
             if(signUpFlag && email != null && password != null && name != null && surname != null)
             {
-                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignUp(email, name, surname,
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignUp(env.context, email, name, surname,
                                                                     password, birthdate, city, userpic);
                 if (holder != null)
                 {
@@ -123,7 +124,7 @@ public class LoadSessionKeyTask implements IBcTask
 
             if (email != null && password != null)
             {
-                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignIn(email, password);
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderBySignIn(env.context, email, password);
                 if (holder != null)
                 {
                     return getSessionKeyFromInternet(holder);
@@ -132,7 +133,7 @@ public class LoadSessionKeyTask implements IBcTask
 
             if (accessToken != null && providerName != null)
             {
-                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderByProvider(providerName, accessToken);
+                RestUserData.RestUserDataHolder holder = loadRestUserDataHolderByProvider(env.context, providerName, accessToken);
                 if (holder != null)
                 {
                     return getSessionKeyFromInternet(holder);
@@ -142,7 +143,8 @@ public class LoadSessionKeyTask implements IBcTask
         return null;
     }
 
-    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignUp(@Nonnull String email,
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignUp(@Nonnull Context context,
+                                                                                    @Nonnull String email,
                                                                                      @Nonnull String name,
                                                                                      @Nonnull String surname,
                                                                                      @Nonnull String password,
@@ -152,7 +154,7 @@ public class LoadSessionKeyTask implements IBcTask
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getSessionKeyBySignUp(email, name, surname, password, birthdate, city, userpic);
         }
         catch(Throwable e)
@@ -162,11 +164,11 @@ public class LoadSessionKeyTask implements IBcTask
         }
     }
 
-    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderByProvider(@Nonnull String provider, @Nonnull String accessToken)
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderByProvider(@Nonnull Context context, @Nonnull String provider, @Nonnull String accessToken)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getSessionKeyByProvider(provider, accessToken);
         }
         catch(Throwable e)
@@ -176,11 +178,11 @@ public class LoadSessionKeyTask implements IBcTask
         }
     }
 
-    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignIn(@Nonnull String email, @Nonnull String password)
+    private @Nullable RestUserData.RestUserDataHolder loadRestUserDataHolderBySignIn(@Nonnull Context context, @Nonnull String email, @Nonnull String password)
     {
         try
         {
-            IRestClient client = RestClient.create();
+            IRestClient client = RestClient.create(context);
             return client.getSessionKeyByLogin(email, password);
         }
         catch(Throwable e)

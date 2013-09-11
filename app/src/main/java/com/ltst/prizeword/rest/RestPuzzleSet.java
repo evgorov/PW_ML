@@ -1,6 +1,7 @@
 package com.ltst.prizeword.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.http.HttpStatus;
 
@@ -112,6 +113,7 @@ public class RestPuzzleSet
         this.puzzles = puzzles;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestPuzzleSetsHolder
     {
         private @JsonProperty("score") int score;

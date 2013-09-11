@@ -54,6 +54,7 @@ public class RestPuzzleUserData
         this.solvedQuestions = solvedQuestions;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestSolvedQuestion
     {
         private @JsonProperty("id") String id;
@@ -95,10 +96,10 @@ public class RestPuzzleUserData
         }
     }
 
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestPuzzleUserDataHolder
     {
-        private @Nullable RestPuzzleUserData mPuzzleUserData;
+        private @Nullable @JsonProperty("me") RestPuzzleUserData mPuzzleUserData;
         private @JsonIgnore HttpStatus status;
 
         @Nullable
