@@ -143,6 +143,10 @@ public class CrosswordsFragment extends SherlockFragment
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
         }
+        else
+        {
+            skipProgressBar();
+        }
 
         super.onResume();
     }
