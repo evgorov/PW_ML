@@ -73,18 +73,22 @@ public class HintsManager implements View.OnClickListener
     {
         SoundsWork.interfaceBtnMusic(mContext);
         // Покупка;
-        mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
 
         int count = 0;
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
+              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
                 count = 10;
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
+//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
+                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 count = 20;
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
+//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints30);
+                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 count = 30;
                 break;
         }
@@ -128,7 +132,7 @@ public class HintsManager implements View.OnClickListener
     @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
         @Override
         public void handle() {
-            Log.d("PRICE DONE!");
+
         }
     };
 
