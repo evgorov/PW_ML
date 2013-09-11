@@ -133,20 +133,20 @@ public class CrosswordsFragment extends SherlockFragment
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
 
-        if(!mLoadFlag)
-        {
-            mLoadFlag = true;
+//        if(!mLoadFlag)
+//        {
+//            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
-        }
-        else
-        {
-            skipProgressBar();
-        }
+//        }
+//        else
+//        {
+//            skipProgressBar();
+//        }
 
         super.onResume();
     }
