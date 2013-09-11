@@ -11,7 +11,6 @@ import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
-import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
@@ -30,7 +29,6 @@ public class HintsManager implements View.OnClickListener
     private @Nonnull TextView mPriceHints_30;
 
     private @Nonnull IManageHolder mIManageHolder;
-//    private @Nullable IListenerInt mHintChangeListener;
 
     private @Nonnull IManadges mIManadges;
     private @Nonnull Context mContext;
@@ -143,11 +141,6 @@ public class HintsManager implements View.OnClickListener
                 default:
                     return;
             }
-
-//            if (mHintChangeListener != null)
-//            {
-//                mHintChangeListener.handle(count);
-//            }
 
             setHintsCount(getHintsCount()+count);
         }

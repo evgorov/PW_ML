@@ -124,8 +124,6 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
-
-//        mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
 
@@ -173,7 +171,6 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onPause()
     {
-        mHintsManager.close();
         mPuzzleSetModel.close();
         mNewsModel.close();
         super.onStop();
