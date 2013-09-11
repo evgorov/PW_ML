@@ -555,7 +555,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
             final int baseScore = mCoefficientsModel.getBaseScore(type);
-            final int bonusScore = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+            int bonus = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
+            if(bonus < 0)
+                bonus = 0;
+            final int bonusScore = bonus;
 
             OneCrosswordActivity.this.runOnUiThread(new Runnable()
             {
