@@ -47,6 +47,10 @@
 
 -(void)dealloc
 {
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_START];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_COMPLETE];
     [gameTimer invalidate];
     gameTimer = nil;
 }

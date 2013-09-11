@@ -37,6 +37,7 @@ int tileHeight = 63;
 - (void)drawArrowForQuestionTile:(TileData *)tileData inBounds:(CGRect)rect;
 - (UIImage *)arrowImageForQuestionTile:(TileData *)tileData empty:(BOOL)empty;
 - (void)animateTileToCorrect:(TileData *)tileData;
+- (void)invalidateTile:(TileData *)tileData;
 
 - (IBAction)onTap:(id)sender;
 @end
@@ -91,6 +92,7 @@ int tileHeight = 63;
         
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_FOCUS_CHANGE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_CHANGE];
+        [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_INVALIDATE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     }
@@ -108,6 +110,7 @@ int tileHeight = 63;
 {
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_FOCUS_CHANGE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_CHANGE];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_TILE_INVALIDATE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
     [fieldView removeFromSuperview];
@@ -126,6 +129,7 @@ int tileHeight = 63;
             break;
             
         case EVENT_TILE_CHANGE:
+        case EVENT_TILE_INVALIDATE:
         case EVENT_GAME_REQUEST_PAUSE:
         case EVENT_GAME_REQUEST_RESUME:
             [fieldView handleEvent:event];
@@ -246,6 +250,11 @@ int tileHeight = 63;
 {
 }
 
+-(void)invalidateTile:(TileData *)tile
+{
+    [fieldView invalidateTile:tile];
+}
+
 @end
 
 @implementation GameFieldContentView
@@ -341,13 +350,20 @@ int tileHeight = 63;
         {
             TileData * tileData = event.data;
             
-            CGRect tileRect = CGRectMake(tileWidth * tileData.x + kTileOffset, tileHeight * tileData.y + kTileOffset, tileWidth, tileHeight);
-            [self setNeedsDisplayInRect:tileRect];
+            [self invalidateTile:tileData];
             
-            if (tileData.state == TILE_LETTER_CORRECT && tileData.prevState != TILE_LETTER_CORRECT_INPUT)
+            if (tileData.state == TILE_LETTER_CORRECT && tileData.prevState == TILE_LETTER_INPUT)
             {
                 [self animateTileToCorrect:tileData];
             }
+        }
+            break;
+            
+        case EVENT_TILE_INVALIDATE:
+        {
+            TileData * tileData = event.data;
+
+            [self invalidateTile:tileData];
         }
             break;
             
@@ -666,6 +682,12 @@ int tileHeight = 63;
             }];
         }];
     }];
+}
+
+- (void)invalidateTile:(TileData *)tileData
+{
+    CGRect tileRect = CGRectMake(tileWidth * tileData.x + kTileOffset, tileHeight * tileData.y + kTileOffset, tileWidth, tileHeight);
+    [self setNeedsDisplayInRect:tileRect];
 }
 
 - (void)onTap:(id)sender

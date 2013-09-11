@@ -481,6 +481,10 @@
             _questionsComplete++;
             [self saveSolvedQuestion:question];
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_CHANGE andData:question]];
+            for (TileData * letter in word)
+            {
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_TILE_INVALIDATE andData:letter]];
+            }
         }
     }
     for (TileData * question in completedQuestions)

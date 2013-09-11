@@ -213,13 +213,15 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblPercent.hidden = NO;
     
     [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
-    
+
+/*
     if (puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         _lblText2.hidden = YES;
         _imgStar.hidden = YES;
         _lblScore.hidden = YES;
     }
+*/
     NSString * text2 = @"Набрано ";
     CGSize text2Size = [text2 sizeWithFont:_lblText2.font];
     _lblText2.frame = CGRectIntegral(CGRectMake(_lblText2.frame.origin.x, _lblText2.frame.origin.y, text2Size.width, text2Size.height));

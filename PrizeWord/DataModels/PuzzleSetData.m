@@ -152,6 +152,10 @@
 
 -(int)score
 {
+    if (self.type.intValue == PUZZLESET_FREE)
+    {
+        return 0;
+    }
     int value = 0;
     for (PuzzleData * puzzle in self.puzzles) {
         value += [puzzle.score intValue];
