@@ -56,6 +56,14 @@ public class SynchronizePuzzleUserDataTask implements IBcTask
             bcTaskEnv.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             bcTaskEnv.context.getString(R.string.msg_no_internet)));
+            ArrayList<String> puzzlesNotSynced = new ArrayList<String>();
+            for (Puzzle puzzle : puzzles)
+            {
+                puzzlesNotSynced.add(puzzle.serverId);
+            }
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList(BF_NOT_SYNCED_PUZZLE_IDS, puzzlesNotSynced);
+            return bundle;
         }
         else
         if (sessionKey!= null && puzzles!= null)
