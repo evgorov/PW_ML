@@ -63,7 +63,6 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull HintsManager mHintsManager;
 
     private @Nonnull View mRoot;
-    private @Nonnull TextView mHintsCountView;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
     private @Nonnull List<String> mNewsList;
@@ -74,7 +73,6 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mNewsSimpleText;
     private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull View mProgressBar;
-    private int mHintsCount;
     private boolean mLoadFlag = false;
 
     private @Nonnull INewsModel mNewsModel;
@@ -102,8 +100,6 @@ public class CrosswordsFragment extends SherlockFragment
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
-        mHintsCountView = (TextView) v.findViewById(R.id.crossword_fragment_current_rest_count);
-
         mNewsList = new ArrayList<String>();
         mNewsLayout = (RelativeLayout) v.findViewById(R.id.news_layout);
         mGestureDetector = new GestureDetector(mContext, new TouchDetector(this));
@@ -112,6 +108,7 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsCloseBtn = (ImageView) v.findViewById(R.id.news_close_btn);
         mProgressBar =  v.findViewById(R.id.archive_progressBar);
         mRoot = v;
+        mHintsManager = new HintsManager(mContext, mRoot);
         return v;
     }
 
@@ -127,9 +124,8 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
-        mHintsManager = new HintsManager(mContext, mBcConnector, mSessionKey, mRoot);
 
-        mHintsManager.setHintChangeListener(hintsChangeHandler);
+//        mHintsManager.setHintChangeListener(hintsChangeHandler);
         mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
 
@@ -154,7 +150,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        outState.putInt(BF_HINTS_COUNT, mHintsCount);
+        outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
         super.onSaveInstanceState(outState);
     }
 
@@ -163,7 +159,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         if (savedInstanceState != null)
         {
-            mHintsCount = savedInstanceState.getInt(BF_HINTS_COUNT);
+            mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
         }
         super.onViewStateRestored(savedInstanceState);
     }
@@ -257,20 +253,12 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
-    private IListenerVoid updateHints = new IListenerVoid()
-    {
-        @Override
-        public void handle() {
-            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
-        }
-    };
-
         private IListenerVoid updateSetsFromDBHandler = new IListenerVoid()
     {
         @Override
         public void handle()
         {
-            mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            mHintsManager.setHintsCount(mPuzzleSetModel.getHintsCount());
             createCrosswordPanel();
             @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
 
@@ -301,8 +289,9 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-            mHintsCount = mPuzzleSetModel.getHintsCount();
-            mHintsCountView.setText(String.valueOf(mHintsCount));
+            int hintsCount = mPuzzleSetModel.getHintsCount();
+            mHintsManager.setHintsCount(hintsCount);
+
             createCrosswordPanel();
             skipProgressBar();
         }
@@ -313,22 +302,22 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-            mHintsCount = mPuzzleSetModel.getHintsCount();
-            mHintsCountView.setText(String.valueOf(mHintsCount));
+            int hintsCount = mPuzzleSetModel.getHintsCount();
+            mHintsManager.setHintsCount(hintsCount);
             createCrosswordPanel();
             mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         }
     };
 
-    private IListenerInt hintsChangeHandler = new IListenerInt()
-    {
-        @Override
-        public void handle(int i)
-        {
-            mHintsCount+=i;
-            mHintsCountView.setText(String.valueOf(mHintsCount));
-        }
-    };
+//    private IListenerInt hintsChangeHandler = new IListenerInt()
+//    {
+//        @Override
+//        public void handle(int i)
+//        {
+//            int hintsCount = mHintsManager.getHintsCount()+i;
+//            mHintsManager.setHintsCount(hintsCount);
+//        }
+//    };
 
     @Override
 
@@ -355,7 +344,7 @@ public class CrosswordsFragment extends SherlockFragment
                     {
                         if (puzzleSet.serverId.equals(setServerId))
                         {
-                            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mHintsCount);
+                            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mHintsManager.getHintsCount());
                             mContext.startActivity(intent);
                             break;
                         }
