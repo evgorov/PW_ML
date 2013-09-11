@@ -13,8 +13,8 @@
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:background="@drawable/score_friends_item_bg"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp">
+            android:layout_marginLeft="@dimen/score_left_right_margin"
+            android:layout_marginRight="@dimen/score_left_right_margin">
 
         <ImageView
                 android:id="@+id/score_item_image"
