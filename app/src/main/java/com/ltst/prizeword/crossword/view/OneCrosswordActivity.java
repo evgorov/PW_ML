@@ -216,7 +216,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
-        mPuzzleAdapter = new PuzzleResourcesAdapter(mBcConnector, mSessionKey, mPuzzleSet);
+        mPuzzleAdapter = new PuzzleResourcesAdapter(this, mBcConnector, mSessionKey, mPuzzleSet);
         mPuzzleAdapter.setPuzzleUpdater(mPuzzleUpdater);
         mPuzzleAdapter.setPuzzleStateHandler(mStateUpdater);
         mPuzzleAdapter.setPuzzleSolvedHandler(mSolvedUpdater);

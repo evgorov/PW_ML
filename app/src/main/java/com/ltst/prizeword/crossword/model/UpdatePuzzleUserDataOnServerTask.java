@@ -69,6 +69,12 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
             bcTaskEnv.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             bcTaskEnv.context.getString(R.string.msg_no_internet)));
+
+            if(puzzleId != null)
+            {
+                PuzzleUserDataSynchronizer syncer = new PuzzleUserDataSynchronizer(bcTaskEnv.context);
+                syncer.addPuzzleId(puzzleId);
+            }
         }
         else
         if (sessionKey!= null && puzzleId!= null && questions != null)
@@ -92,7 +98,7 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
         return null;
     }
 
-    private @Nonnull String parseJsonUserData(@Nonnull ArrayList<PuzzleQuestion> questions,
+    public static @Nonnull String parseJsonUserData(@Nonnull ArrayList<PuzzleQuestion> questions,
                                               @Nonnull String puzzleId,
                                               int timeleft, int score)
     {
@@ -122,5 +128,10 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
             Log.i(e.getMessage());
         }
         return new String(out.toByteArray());
+    }
+
+    public static @Nonnull String parseJsonUserData(@Nonnull Puzzle puzzle)
+    {
+        return parseJsonUserData(new ArrayList<PuzzleQuestion>(puzzle.questions), puzzle.serverId, puzzle.timeLeft, puzzle.score);
     }
 }

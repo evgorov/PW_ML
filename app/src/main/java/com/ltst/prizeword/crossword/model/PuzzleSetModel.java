@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.model;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,13 +26,15 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
     private @Nonnull HashMap<String,List<Puzzle>> mPuzzlesSet;
+    private @Nonnull PuzzleUserDataSynchronizer mSynchronizer;
     private int hintsCount;
     private boolean mIsDestroyed;
 
-    public PuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
+    public PuzzleSetModel(@Nonnull Context mContext, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
+        mSynchronizer = new PuzzleUserDataSynchronizer(mContext);
         hintsCount = 0;
     }
 
@@ -59,6 +62,29 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleCurrentSetsUpdater.update(handler);
     }
 
+    public void synchronizePuzzleUserData()
+    {
+        List<String> ids = mSynchronizer.getNotUpdatedPuzzlesIds();
+        if (ids == null)
+        {
+            return;
+        }
+        ArrayList<Puzzle> puzzlesToUpdate = new ArrayList<Puzzle>(ids.size());
+        outer_loop: for (List<Puzzle> puzzleList : mPuzzlesSet.values())
+        {
+            for (Puzzle puzzle : puzzleList)
+            {
+                if(ids.contains(puzzle.serverId))
+                {
+                    puzzlesToUpdate.add(puzzle);
+                    if(puzzlesToUpdate.size() == ids.size())
+                        break outer_loop;
+                }
+            }
+        }
+        mSynchronizer.sync(mBcConnector, mSessionKey, puzzlesToUpdate);
+    }
+
     @Override
     public void close()
     {
@@ -73,6 +99,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
         Log.i("Closing total set updater");
         mPuzzleTotalSetsInternetUpdater.close();
         mPuzzleCurrentSetsUpdater.close();
+
+        mSynchronizer.close();
 
         mIsDestroyed = true;
         Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$

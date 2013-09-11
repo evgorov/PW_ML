@@ -1,5 +1,6 @@
 package com.ltst.prizeword.crossword.engine;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 
@@ -50,11 +51,13 @@ public class PuzzleResourcesAdapter
     private boolean isInputMode;
     private @Nullable List<PuzzleTileState> mCurrentInputPuzzleStates;
     private @Nullable Point mCurrentTileFocusPoint;
+    private @Nonnull Context mContext;
 
-    public PuzzleResourcesAdapter(@Nonnull IBcConnector bcConnector,
+    public PuzzleResourcesAdapter(@Nonnull Context context, @Nonnull IBcConnector bcConnector,
                                   @Nonnull String sessionKey,
                                   @Nonnull PuzzleSet puzzleSet)
     {
+        mContext = context;
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
         mPuzzleSet = puzzleSet;
@@ -70,7 +73,7 @@ public class PuzzleResourcesAdapter
 
     public void updatePuzzle(@Nonnull String puzzleServerId)
     {
-        mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
+        mPuzzleModel = new OnePuzzleModel(mContext, mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
     }
@@ -87,7 +90,7 @@ public class PuzzleResourcesAdapter
         mResources = bundle.getParcelable(BF_RESOURCES);
         if (mPuzzle != null)
         {
-            mPuzzleModel = new OnePuzzleModel(mBcConnector, mSessionKey, mPuzzle.serverId, mPuzzleSet.id);
+            mPuzzleModel = new OnePuzzleModel(mContext, mBcConnector, mSessionKey, mPuzzle.serverId, mPuzzleSet.id);
         }
         for (IListener<PuzzleResources> puzzleResourcesHandler : mResourcesUpdaterList)
         {

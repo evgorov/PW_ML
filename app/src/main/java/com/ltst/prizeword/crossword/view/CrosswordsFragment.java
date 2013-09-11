@@ -131,7 +131,7 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mContext, mIManadges, mBcConnector, mSessionKey, mRoot);
 
         mHintsManager.setHintChangeListener(hintsChangeHandler);
-        mPuzzleSetModel = new PuzzleSetModel(mBcConnector, mSessionKey);
+        mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
 
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
@@ -256,7 +256,9 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle()
         {
             mHintsCountView.setText(String.valueOf(mPuzzleSetModel.getHintsCount()));
+            mPuzzleSetModel.synchronizePuzzleUserData();
             createCrosswordPanel();
+
             @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
 
             if (!puzzleSets.isEmpty())
