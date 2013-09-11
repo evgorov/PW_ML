@@ -114,7 +114,7 @@ public class RestInviteFriend
         this.status = status;
     }
 
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestInviteFriendHolder
     {
         private @JsonProperty() List<RestInviteFriend> friends;

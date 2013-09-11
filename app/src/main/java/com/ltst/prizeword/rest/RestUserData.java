@@ -180,7 +180,7 @@ public class RestUserData
 
 
 
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestUserProvider
     {
         private @JsonProperty("provider_id") String id;
@@ -220,7 +220,7 @@ public class RestUserData
         }
     }
 
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestUserDataHolder
     {
         private @JsonProperty("session_key") String mSessionKey;
@@ -262,7 +262,7 @@ public class RestUserData
         }
     }
 
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestUserDataSender
     {
         private @JsonProperty("session_key") String mSessionKey;
@@ -352,7 +352,7 @@ public class RestUserData
         }
     }
 
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestAnswerMessageHolder
     {
         private @JsonProperty("message") String mMessage;

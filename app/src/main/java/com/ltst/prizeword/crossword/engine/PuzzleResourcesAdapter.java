@@ -124,6 +124,11 @@ public class PuzzleResourcesAdapter
         }
     }
 
+    public boolean isPuzzleInCurrentMonth()
+    {
+        return false;
+    }
+
     public int getTimeLeft()
     {
         if (mPuzzle == null)

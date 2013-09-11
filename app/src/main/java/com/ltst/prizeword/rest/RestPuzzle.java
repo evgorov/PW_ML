@@ -103,6 +103,7 @@ public class RestPuzzle
         this.questions = questions;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestPuzzleHolder
     {
         private @Nullable RestPuzzle puzzles;

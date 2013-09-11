@@ -262,7 +262,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             loadPuzzle();
         }
 
-        fillFlipNumbers(54526);
+        fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
         if (mPauseMusic.isChecked())
@@ -393,7 +393,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if (show)
         {
-            fillFlipNumbers(25930);
             mStopPlayFlag = false;
             mFinalScreen.setVisibility(View.VISIBLE);
         } else
@@ -568,11 +567,13 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             });
 
-            int sumScore = baseScore + bonusScore;
-
-            mPostPuzzleScoreModel.post(mCurrentPuzzleServerId, sumScore);
-
-            fillFlipNumbers(sumScore);
+            if(mPuzzleAdapter.isPuzzleInCurrentMonth())
+            {
+                int sumScore = baseScore + bonusScore;
+                @Nonnull String puzzleId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
+                mPostPuzzleScoreModel.post(puzzleId, sumScore);
+                fillFlipNumbers(sumScore);
+            }
         }
     };
 

@@ -26,6 +26,7 @@ import com.ltst.prizeword.sounds.SoundsWork;
 import org.omich.velo.bcops.client.IBcConnector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static android.view.View.OnClickListener;
 
@@ -45,6 +46,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull IAutorization mAuthorization;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
     private @Nonnull IBcConnector mBcConnector;
+    private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
 
     @Override
     public void onAttach(Activity activity)
@@ -80,6 +82,16 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     {
         mDrawerHolder.lockDrawerClosed();
         super.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        if (mUploadScoreQueueModel != null)
+        {
+            mUploadScoreQueueModel.close();
+        }
+        super.onPause();
     }
 
     @Override
@@ -123,8 +135,8 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
             spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
             spref.commit();
 
-            UploadScoreQueueModel uploadScore = new UploadScoreQueueModel(mBcConnector, sessionKey);
-            uploadScore.upload();
+            mUploadScoreQueueModel = new UploadScoreQueueModel(mBcConnector, sessionKey);
+            mUploadScoreQueueModel.upload();
 
             switch (requestCode)
             {

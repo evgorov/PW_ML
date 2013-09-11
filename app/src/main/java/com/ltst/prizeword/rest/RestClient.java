@@ -658,11 +658,11 @@ public class RestClient implements IRestClient
         httpHeaders.set("Connection", "Close");
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        ResponseEntity<RestPuzzleUserData.RestPuzzleUserDataHolder> entity = null;
+        ResponseEntity<RestUserData.RestUserDataHolder> entity = null;
 
         try
         {
-            entity = restTemplate.exchange(RestParams.URL_POST_PUZZLE_SCORE, HttpMethod.POST, requestEntity, RestPuzzleUserData.RestPuzzleUserDataHolder.class, urlVariables);
+            entity = restTemplate.exchange(RestParams.URL_POST_PUZZLE_SCORE, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
         }
         catch (Exception e){
             Log.e(e.getMessage());
