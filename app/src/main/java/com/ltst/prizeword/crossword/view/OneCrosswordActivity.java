@@ -24,6 +24,7 @@ import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.crossword.sharing.MessageShareModel;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
@@ -46,12 +47,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
 
     public static @Nonnull
-    Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId, int hintsCount)
+    Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId,
+                        int hintsCount, boolean VkSharing, boolean FbSharing)
     {
         Intent intent = new Intent(context, OneCrosswordActivity.class);
         intent.putExtra(BF_PUZZLE_SET, set);
         intent.putExtra(BF_CURRENT_PUZZLE_SERVER_ID, puzzleServerId);
         intent.putExtra(BF_HINTS_COUNT, hintsCount);
+        intent.putExtra(BF_VK_SHARING, VkSharing);
+        intent.putExtra(BF_FB_SHARING, FbSharing);
         return intent;
     }
 
@@ -60,6 +64,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String BF_CURRENT_PUZZLE_INDEX = "OneCrosswordActivity.currentPuzzleIndex";
     public static final @Nonnull String BF_TIME_LEFT = "OneCrosswordActivity.timeLeft";
     public static final @Nonnull String BF_TIME_GIVEN = "OneCrosswordActivity.timeGiven";
+    public static final @Nonnull String BF_VK_SHARING = "OneCrosswordActivity.vkSharing";
+    public static final @Nonnull String BF_FB_SHARING = "OneCrosswordActivity.fbSharing";
 
     public static final @Nonnull String BF_MUSIC_STOP = "OneCrosswordActivity.musicStop";
     public static final @Nonnull String BF_SOUND_STOP = "OneCrosswordActivity.soundStop";
@@ -113,12 +119,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull android.widget.ToggleButton mPauseMusic;
     private @Nonnull android.widget.ToggleButton mPauseSound;
 
-
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
     private @Nonnull View mRootView;
 
     private @Nonnull View mProgressBar;
     private boolean mResourcesDecoded = false;
+
+    private boolean mFbSharing;
+    private boolean mVKSharing;
+    private @Nullable String mShareMessage;
+    private @Nonnull MessageShareModel mShareModel;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -167,6 +177,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 {
                     mHasFirstPuzzle = true;
                 }
+                mVKSharing = extras.getBoolean(BF_VK_SHARING);
+                mFbSharing = extras.getBoolean(BF_FB_SHARING);
             }
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
             mPauseSound.setChecked(SharedPreferencesValues.getSoundSwitch(this));
@@ -213,6 +225,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFinalMenuButton = (Button) findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button) findViewById(R.id.final_next_btn);
 
+        mFinalShareVkButton.setEnabled(mVKSharing);
+        mFinalShareFbButton.setEnabled(mFbSharing);
 
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
@@ -232,6 +246,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         mPuzzleView.setResourcesDecodedHandler(mResourcesDecodingHandler);
 
+        mShareModel = new MessageShareModel(mBcConnector, mSessionKey);
 
         mNextBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
@@ -239,6 +254,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mHintBtn.setOnClickListener(this);
         mFinalMenuButton.setOnClickListener(this);
         mFinalNextButton.setOnClickListener(this);
+        mFinalShareVkButton.setOnClickListener(this);
+        mFinalShareFbButton.setOnClickListener(this);
         mHintBtn.setText(String.valueOf(mHintsCount));
 
         mPauseMusic.setOnCheckedChangeListener(this);
@@ -286,12 +303,11 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mHintsModel.close();
         mCoefficientsModel.close();
         mPostPuzzleScoreModel.close();
+        mShareModel.close();
         if (mPauseMusic.isChecked())
             SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         mHasFirstPuzzle = false;
-        SoundsWork.releaseMPBack();
-        SoundsWork.releaseMPALL();
         super.onStop();
     }
 
@@ -317,6 +333,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         if (mPauseMusic.isChecked())
             SoundsWork.pauseBackgroundMusic();
+        SoundsWork.releaseMPBack();
+        SoundsWork.releaseMPALL();
         SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
         spref.putBoolean(SharedPreferencesValues.SP_MUSIC_SWITCH, mPauseMusic.isChecked());
         spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
@@ -363,6 +381,18 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 break;
             case R.id.header_stop_play_btn:
                 showPauseDialog(mStopPlayFlag);
+                break;
+            case R.id.final_share_vk_btn:
+                if(mShareMessage != null)
+                {
+                    mShareModel.shareMessageToVk(mShareMessage);
+                }
+                break;
+            case R.id.final_share_fb_btn:
+                if(mShareMessage != null)
+                {
+                    mShareModel.shareMessageToFb(mShareMessage);
+                }
                 break;
         }
     }
@@ -510,6 +540,15 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         showFinalDialog(false);
     }
 
+    private void formShareMessage(@Nullable String puzzleName, int timeSpent, int sumScore)
+    {
+        if(puzzleName == null)
+            return;
+        int timeInMinutes = timeSpent/60;
+        String shareFormat = getResources().getString(R.string.social_puzzle_share_message);
+        mShareMessage = String.format(shareFormat, puzzleName, timeInMinutes, sumScore);
+    }
+
     private void tick()
     {
         mTickerLaunched = true;
@@ -577,7 +616,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             if (SoundsWork.ALL_SOUNDS_FLAG)
                 SoundsWork.puzzleSolved(OneCrosswordActivity.this);
-            showFinalDialog(true);
+
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
             final int baseScore = mCoefficientsModel.getBaseScore(type);
@@ -596,12 +635,14 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 }
             });
 
+            int sumScore = baseScore + bonusScore;
             if(mPuzzleAdapter.isPuzzleInCurrentMonth())
             {
-                int sumScore = baseScore + bonusScore;
                 @Nonnull String puzzleId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
                 mPostPuzzleScoreModel.post(puzzleId, sumScore);
                 fillFlipNumbers(sumScore);
+                showFinalDialog(true);
+                formShareMessage(mPuzzleAdapter.getPuzzleName(), timeSpent, sumScore);
             }
         }
     };

@@ -42,4 +42,6 @@ public interface IRestClient
     @Nullable RestPuzzleSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData);
 
     @Nullable RestNews getNews(@Nonnull String sessionKey);
+
+    HttpStatus shareMessageToVk(@Nonnull String sessionKey, @Nonnull String message);
 }

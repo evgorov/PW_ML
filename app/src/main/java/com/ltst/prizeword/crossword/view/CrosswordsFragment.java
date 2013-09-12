@@ -361,7 +361,10 @@ public class CrosswordsFragment extends SherlockFragment
                     {
                         if (puzzleSet.serverId.equals(setServerId))
                         {
-                            @Nonnull Intent intent = OneCrosswordActivity.createIntent(mContext, puzzleSet, puzzle.serverId, mHintsManager.getHintsCount());
+                            @Nonnull Intent intent = OneCrosswordActivity.
+                                    createIntent(mContext, puzzleSet, puzzle.serverId,
+                                    mHintsManager.getHintsCount(),
+                                    mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
                             mContext.startActivity(intent);
                             break;
                         }

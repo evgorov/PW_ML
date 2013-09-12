@@ -188,4 +188,7 @@
 
     // ==== InviteFragment text ====
     <string name="invite_message_text">Чтобы приглашать друзей и получать за это дополнительные очки, добавьте социальные сети в меню приложения</string>
+
+    // ==== Share message ====
+    <string name="social_puzzle_share_message" formatted="false">Я только что разгадал сканворд %1s за %2s минут и получил за это %3s очков!</string>
 </resources>

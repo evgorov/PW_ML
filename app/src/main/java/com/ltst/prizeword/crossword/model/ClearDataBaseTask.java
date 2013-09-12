@@ -27,18 +27,7 @@ public class ClearDataBaseTask implements DbService.IDbTask {
     @Nullable
     @Override
     public Bundle execute(@Nonnull DbService.DbTaskEnv env) {
-
-        if(!BcTaskHelper.isNetworkAvailable(env.context))
-        {
-            env.bcToaster.showToast(
-                    NonnullableCasts.getStringOrEmpty(
-                            env.context.getString(R.string.msg_no_internet)));
-        }
-        else
-        {
-            env.dbw.clearDb();
-        }
-
+        env.dbw.clearDb();
         return null;
     }
 
