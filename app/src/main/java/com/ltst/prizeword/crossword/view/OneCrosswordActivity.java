@@ -71,6 +71,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     public static final @Nonnull String BF_SOUND_STOP = "OneCrosswordActivity.soundStop";
 
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull Context mContext;
     private @Nonnull PuzzleSet mPuzzleSet;
     private @Nonnull String mSessionKey;
 
@@ -192,6 +193,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     protected void onStart()
     {
         mBcConnector = new BcConnector(this);
+        mContext = this.getBaseContext();
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
         mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPostPuzzleScoreModel = new PostPuzzleScoreModel(mSessionKey, mBcConnector);
@@ -284,6 +286,33 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mStopPlayFlag = true;
         if (mPauseMusic.isChecked())
             SoundsWork.startBackgroundMusic(this);
+        //==========================================test
+        /*mFinalScreen.setVisibility(View.VISIBLE);
+        OneCrosswordActivity.this.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mFinalScore.setText("103");
+                Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.scale_score_and_bonus);
+                mFinalScore.setAnimation(anim);
+                assert anim != null;
+                mFinalScore.startAnimation(anim);
+                SoundsWork.scoreSetSound(mContext);
+                mFinalBonus.setText("204");
+                Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.scale_score_and_bonus);
+                assert anim1 != null;
+                anim1.setStartOffset(1500);
+                mFinalBonus.setAnimation(anim1);
+                mFinalBonus.startAnimation(anim1);
+                SoundsWork.scoreSetSound(mContext);
+            }
+        });
+
+        mFlipNumberAnimator.startAnimation(65554);*/
+
+        //============================================================
+
         super.onResume();
     }
 
@@ -621,7 +650,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             int timeSpent = mTimeGiven - mTimeLeft;
             final int baseScore = mCoefficientsModel.getBaseScore(type);
             int bonus = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
-            if(bonus < 0)
+            if (bonus < 0)
                 bonus = 0;
             final int bonusScore = bonus;
 
@@ -631,12 +660,21 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 public void run()
                 {
                     mFinalScore.setText(String.valueOf(baseScore));
+                    Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.scale_score_and_bonus);
+                    mFinalScore.setAnimation(anim);
+                    assert anim != null;
+                    mFinalScore.startAnimation(anim);
                     mFinalBonus.setText(String.valueOf(bonusScore));
+                    Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.scale_score_and_bonus);
+                    assert anim1 != null;
+                    anim1.setStartOffset(1500);
+                    mFinalBonus.setAnimation(anim1);
+                    mFinalBonus.startAnimation(anim1);
                 }
             });
 
             int sumScore = baseScore + bonusScore;
-            if(mPuzzleAdapter.isPuzzleInCurrentMonth())
+            if (mPuzzleAdapter.isPuzzleInCurrentMonth())
             {
                 @Nonnull String puzzleId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);
                 mPostPuzzleScoreModel.post(puzzleId, sumScore);

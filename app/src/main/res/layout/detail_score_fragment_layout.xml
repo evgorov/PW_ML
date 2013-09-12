@@ -33,30 +33,43 @@
 
     </FrameLayout>
     <!-- =================================================================================== -->
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-        <FrameLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="vertical">
 
-            <ImageView
+    <ProgressBar
+            android:id="@+id/list_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            style="?android:attr/progressBarStyleLarge"
+            />
+
+    <LinearLayout
+            android:id="@+id/score_detail_container"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:visibility="gone">
+
+        <FrameLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/crossword_panel_bg_title"/>
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/crossword_panel_bg_title"/>
 
             <ListView
-                android:id="@+id/score_listview"
-                android:orientation="vertical"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:cacheColorHint="#00000000"
-                android:listSelector="@android:color/transparent"
-                android:visibility="visible">
+                    android:id="@+id/score_listview"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="@android:color/transparent"
+                    android:visibility="visible">
 
                 <!--@TODO input brillian current crossword-->
                 <!--<include layout="@layout/crossword_panel_current"/>-->
@@ -65,38 +78,4 @@
             </ListView>
         </FrameLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:visibility="gone">
-
-        <FrameLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
-
-            <ImageView
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/crossword_panel_bg_title"
-                android:scaleType="fitXY"/>
-
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                >
-                <include layout="@layout/score_header"/>
-                <include layout="@layout/score_crossword_panel"/>
-                <include layout="@layout/score_footer_header_beetwen"/>
-                <include layout="@layout/score_friends_item"/>
-                <include layout="@layout/score_footer"/>
-            </LinearLayout>
-        </FrameLayout>
-
-    </LinearLayout>
-
-
 </LinearLayout>
