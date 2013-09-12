@@ -70,16 +70,19 @@ public class BuyCrosswordSetOnServerTask implements DbService.IDbTask {
             }
 
             RestPuzzleSet.RestPuzzleSetsHolder data = loadRestPuzzleSetFromInternet(env.context, setServerId, receiptData, signature);
-            if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
+            if(data != null)
             {
-                return null;
-            }
+                if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
+                {
+                    return null;
+                }
 //            if (data != null)
 //            {
 //                ArrayList<PuzzleSet> sets = LoadPuzzleSetsFromInternet.extractFromRest(data);
 //                env.dbw.putPuzzleSetList(sets);
 //                return LoadPuzzleSetsFromInternet.getFromDatabase(env);
 //            }
+            }
         }
         return null;
     }

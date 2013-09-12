@@ -3,7 +3,6 @@ package com.ltst.prizeword.manadges;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.android.billing.Base64;
 import com.android.billing.Base64DecoderException;
@@ -61,7 +60,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT      = "buy_set_brilliant";
-    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
+//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "set.golden.test.3";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER         = "buy_set_silver";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2        = "buy_set_silver2";
     static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
@@ -82,7 +82,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     static private final int REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED      = 109;
     static private final int REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE   = 200;
 
-    private @Nonnull IabHelper mIabHelper;
+    private @Nonnull IabHelper mHelper;
     private @Nonnull Activity mActivity;
     private @Nonnull Context mContext;
     private @Nonnull IManadges mIManadges;
@@ -94,6 +94,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull String mSessionKey;
     private @Nonnull HintsModel mHintsModel;
     private @Nonnull BuyCrosswordSetModel mBuyCrosswordSetModel;
+    private @Nonnull String mCrosswordSetServerId;
 
 
     public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
@@ -106,34 +107,35 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mPrices = new HashMap<ManadgeProduct, String>();
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
         mHandlerBuyProductEventList = new ArrayList<IListener<ManageHolder.ManadgeProduct>>();
-
-//        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-
-
-//        // Ответ о покупке;
-//        mIabHelper.queryInventoryAsync(mGotInventoryListener);
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        return mIabHelper.handleActivityResult(requestCode, resultCode, data);
+        return mHelper.handleActivityResult(requestCode, resultCode, data);
     }
 
     public void instance()
     {
 //        try{
-        mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
+        mHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
 //        }
 //        catch (Exception e)
 //        {
 //            Log.e(e.getMessage());
 //            Log.i("Can't use license public key of app"); //$NON-NLS-1$
 //        }
-        mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
+                if (!result.isSuccess()) {
+                    Log.e("Problem setting up in-app billing: " + result);
+                }
+                else
+                {
                     // Получаем цены с сервера;
                     reloadPoductsFromGooglePlay();
+                    // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
+//                    Log.d("Setup successful. Querying inventory.");
+//                    mHelper.queryInventoryAsync(mGotInventoryListener);
                 }
             }
         });
@@ -157,11 +159,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
     public void dispose()
     {
-        if (mIabHelper != null)
+        if (mHelper != null)
         {
-            mIabHelper.dispose();
+            mHelper.dispose();
         }
-        mIabHelper = null;
+        mHelper = null;
         mIPurchaseSetModel.close();
     }
 
@@ -235,7 +237,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void buyCrosswordSet(@Nonnull ManageHolder.ManadgeProduct product, @Nonnull String crosswordSetServerId)
     {
-
+        mCrosswordSetServerId = crosswordSetServerId;
+        buyProduct(product);
     }
 
 
@@ -247,8 +250,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         @Nonnull String token = UUIDTools.generateStringUUID();
         if(product_id!=null && product_request!=0){
             try {
-                mIabHelper.flagEndAsync();
-                mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
+                mHelper.flagEndAsync();
+                mHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
             } catch (Exception e)
             {
                 Log.e(e.getMessage());
@@ -279,7 +282,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         {
             additionalSkuList.add(extractProductId(product));
         }
-        mIabHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
+        mHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
     }
 
     public String getPriceProduct(ManageHolder.ManadgeProduct product)
@@ -299,30 +302,24 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-                // does the user have the premium upgrade?
-
+                @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
                 @Nonnull String prodict_id = null;
                 for(ManadgeProduct product : ManadgeProduct.values())
                 {
                     prodict_id = extractProductId(product);
-                    if(inventory.hasPurchase(prodict_id))
+                    if(inventory.hasDetails(prodict_id))
                     {
-                        // Восстанавливаем для продукта возможность покупки;
-                        mIabHelper.consumeAsync(inventory.getPurchase(prodict_id),mConsumeFinishedListener);
-
-                        @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
-                        purchase.googlePurchase = false;
-                        mIPurchaseSetModel.putOnePurchase(purchase, new IListenerVoid() {
-                            @Override
-                            public void handle() {
-
-                            }
-                        });
-
+                        @Nonnull String price = inventory.getSkuDetails(prodict_id).getPrice();
+                        mPrices.put(product, price);
+                        @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
+                        purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
+                        purchase.clientId = UUIDTools.generateStringUUID();
+                        purchases.add(purchase);
                     }
                 }
 
-                // update UI accordingly
+                // сохраняем цены в базу;
+                mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
             }
         }
     };
@@ -371,7 +368,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //            lst.add(pc);
 //            pc = inventory.getPurchase(extractProductId(hints30));
 //            lst.add(pc);
-//            mIabHelper.consumeAsync(lst, mConsumeMyltyFinishedListener);
+//            mHelper.consumeAsync(lst, mConsumeMyltyFinishedListener);
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             @Nonnull String prodict_id = null;
@@ -418,18 +415,25 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         break;
                 }
 
-//                mIabHelper.flagEndAsync();
+//                mHelper.flagEndAsync();
                 return;
             }
 
             // Восстанавливаем возможность сделать повторную покупку продукта;
-            mIabHelper.consumeAsync(purchase,mConsumeFinishedListener);
+            mHelper.consumeAsync(purchase, mConsumeFinishedListener);
 
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
             String responseSignature = purchase.getSignature();
             @Nonnull String responseJson = purchase.getOriginalJson();
+
+//            Crashlytics.log("------------------------------------------------");
+//            Crashlytics.log(5, "MyApp", "JSON: "+responseJson);
+//            Crashlytics.log(5, "MyApp", "SIGNATURE: "+responseSignature);
+//            Crashlytics.log("------------------------------------------------");
+//
+//            int k = 10/0;
 
 //            verify(APP_GOOGLE_PLAY_ID, data, responseSignature);
 
@@ -443,7 +447,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 switch (prod)
                 {
-                    case test_success:
                     case hints10:
                     case hints20:
                     case hints30:
@@ -454,6 +457,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     case set_silver:
                     case set_silver2:
                     case set_free:
+                    case test_success:
                         changeCrosswordSet(prod, responseGoogleId, responseJson, responseSignature);
                         break;
 //                    case test_success:
@@ -513,6 +517,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         switch (prod)
         {
+            case test_success:
             case set_brilliant:
                 break;
             case set_gold:

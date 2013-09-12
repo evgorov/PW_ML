@@ -120,6 +120,7 @@ public class CrosswordSet {
                 if (mSetServerId != null)
                 {
                     ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(mPuzzleSetType);
+//                    ManageHolder.ManadgeProduct product = ManageHolder.ManadgeProduct.test_success;
                     mIManageHolder.buyCrosswordSet(product, mSetServerId);
                 }
             }
