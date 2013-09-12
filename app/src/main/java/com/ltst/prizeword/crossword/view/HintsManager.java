@@ -72,11 +72,9 @@ public class HintsManager implements View.OnClickListener
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
                 mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
-//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
                 mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints30);
-//                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
                 break;
         }
     }

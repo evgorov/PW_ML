@@ -124,9 +124,14 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onResume()
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart()
     {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
@@ -149,7 +154,27 @@ public class CrosswordsFragment extends SherlockFragment
 //            skipProgressBar();
 //        }
 
-        super.onResume();
+        super.onStart();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStop()
+    {
+        mPuzzleSetModel.close();
+        mNewsModel.close();
+        super.onStop();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
     }
 
     @Override
@@ -167,20 +192,6 @@ public class CrosswordsFragment extends SherlockFragment
             mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
         }
         super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause()
-    {
-        mPuzzleSetModel.close();
-        mNewsModel.close();
-        super.onStop();
     }
 
     public void skipProgressBar()
