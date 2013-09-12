@@ -15,6 +15,7 @@ import java.util.logging.Handler;
 public final class SoundsWork
 {
     public static boolean ALL_SOUNDS_FLAG = true;
+    private static int count = 1;
     private static MediaPlayer mMediaPlayerBack;
     private static MediaPlayer mMediaPlayerAll;
     public Context mContext;
@@ -142,9 +143,15 @@ public final class SoundsWork
         if (ALL_SOUNDS_FLAG)
         {
             releaseMPALL();
-            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
+            if (count % 3 == 0)
+                mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_3);
+            else if (count % 2 == 0)
+                mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_2);
+            else
+                mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.type_1);
             mMediaPlayerAll.start();
         }
+        count++;
     }
 
     private static void releaseMPALL()
