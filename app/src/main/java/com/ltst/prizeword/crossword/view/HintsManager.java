@@ -40,7 +40,7 @@ public class HintsManager implements View.OnClickListener
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
         mIManageHolder.registerHandlerPriceProductsChange(mReloadPriceProductHandler);
-        mIManageHolder.registerHandlerBuyProductEvent(mBuyProductEventHandler);
+        mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
 
         mHintsCountView = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_count);
 
@@ -110,7 +110,7 @@ public class HintsManager implements View.OnClickListener
     };
 
     @Nonnull
-    IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManageHolder.ManadgeProduct>() {
+    IListener<ManageHolder.ManadgeProduct> mManadgeBuyProductIListener = new IListener<ManageHolder.ManadgeProduct>() {
         @Override
         public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
 

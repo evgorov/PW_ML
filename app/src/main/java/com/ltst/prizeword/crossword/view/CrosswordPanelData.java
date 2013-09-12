@@ -24,7 +24,6 @@ public class CrosswordPanelData {
     public int mScore = 0;
     public int mBuyCount = 0;
     public int mBuyScore = 0;
-    public @Nonnull String mBuyPrice = null;
 
     public int mMonth = 0;
     public int mYear = 1900;

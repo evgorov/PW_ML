@@ -339,9 +339,9 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
 
 
-    public void buyCrosswordSet(@Nonnull String crosswordSetServerId)
+    public void buyCrosswordSet(@Nonnull PuzzleSetModel.PuzzleSetType mPuzzleSetType, @Nonnull String crosswordSetServerId)
     {
-
+//        mCrosswordFragmentHolder.mIManageHolder.buyProduct();
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.tools.DeclensionTools;
 
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.security.cert.CollectionCertStoreParameters;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 12.08.13.
@@ -43,8 +45,6 @@ public class CrosswordFragmentHolder
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull View mViewCrossword;
     private static @Nonnull Context mContext;
-    private static @Nonnull IManadges mIManadges;
-    private static @Nonnull IManageHolder mIManageHolder;
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
@@ -62,8 +62,6 @@ public class CrosswordFragmentHolder
         this.mICrosswordFragment = (ICrosswordFragment) fragment;
         this.mViewCrossword = view;
         this.mContext = context;
-        this.mIManadges = (IManadges) context;
-        mIManageHolder = mIManadges.getManadgeHolder();
 
         mMapSets = new HashMap<String, List<PuzzleSet>>();
         mMapPuzzles = new HashMap<String, List<Puzzle>>();
@@ -177,21 +175,7 @@ public class CrosswordFragmentHolder
         data.mProgress = 0;
         data.mTotalCount = 0;
         data.mTotalCount = 0;
-        data.mBuyPrice = mIManageHolder.getPriceProduct(extractManadgeProductFrom(data.mType));
         return data;
-    }
-
-    private ManageHolder.ManadgeProduct extractManadgeProductFrom(PuzzleSetModel.PuzzleSetType type)
-    {
-            switch (type)
-            {
-                case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
-                case GOLD: return ManageHolder.ManadgeProduct.set_gold;
-                case SILVER: return ManageHolder.ManadgeProduct.set_silver;
-                case SILVER2: return ManageHolder.ManadgeProduct.set_silver2;
-                case FREE: return ManageHolder.ManadgeProduct.set_free;
-            }
-        return null;
     }
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)

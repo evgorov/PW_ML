@@ -11,11 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.manadges.IManadges;
+import com.ltst.prizeword.manadges.IManageHolder;
+import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.AnimationTools;
 import com.ltst.prizeword.tools.CustomProgressBar;
+
+import org.omich.velo.handlers.IListener;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -58,7 +64,12 @@ public class CrosswordSet {
     private @Nonnull RelativeLayout mLayout;
 
     private @Nullable String mSetServerId = null;
+    private @Nonnull PuzzleSetModel.PuzzleSetType mPuzzleSetType;
     private boolean mExpanding;
+
+    private static @Nonnull IManadges mIManadges;
+    private static @Nonnull IManageHolder mIManageHolder;
+
 
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
@@ -67,6 +78,10 @@ public class CrosswordSet {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mICrosswordFragment = iCrosswordFragment;
+
+        mIManadges = (IManadges) context;
+        mIManageHolder = mIManadges.getManadgeHolder();
+        mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
         mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
@@ -106,7 +121,7 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mICrosswordFragment.buyCrosswordSet(mSetServerId);
+                    mICrosswordFragment.buyCrosswordSet(mPuzzleSetType, mSetServerId);
                 }
             }
         });
@@ -136,7 +151,9 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
-        pBuyPrice.setText(data.mBuyPrice);
+        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(extractManadgeProductFrom(data.mType));
+        pBuyPrice.setText(mBuyPrice);
+        mPuzzleSetType = data.mType;
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
@@ -272,6 +289,27 @@ public class CrosswordSet {
             AnimationTools.collapse(mLayout, pBadgeContainer);
             SoundsWork.closeSet(mContext);
         }
+    }
+
+    private @Nonnull
+    IListener<ManageHolder.ManadgeProduct> mManadgeBuyProductIListener = new IListener<ManageHolder.ManadgeProduct>() {
+        @Override
+        public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
+
+        }
+    };
+
+    private ManageHolder.ManadgeProduct extractManadgeProductFrom(PuzzleSetModel.PuzzleSetType type)
+    {
+        switch (type)
+        {
+            case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
+            case GOLD: return ManageHolder.ManadgeProduct.set_gold;
+            case SILVER: return ManageHolder.ManadgeProduct.set_silver;
+            case SILVER2: return ManageHolder.ManadgeProduct.set_silver2;
+            case FREE: return ManageHolder.ManadgeProduct.set_free;
+        }
+        return null;
     }
 
     public enum CrosswordSetType{
