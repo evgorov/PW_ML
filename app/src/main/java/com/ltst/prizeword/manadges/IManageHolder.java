@@ -2,6 +2,7 @@ package com.ltst.prizeword.manadges;
 
 import android.content.Intent;
 
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -11,13 +12,8 @@ import javax.annotation.Nonnull;
  */
 public interface IManageHolder {
 
-//    void instance();
-//    void dispose();
-//    boolean onActivityResult(int requestCode, int resultCode, Intent data);
-
     void buyProduct(ManageHolder.ManadgeProduct product);
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
-    void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler);
+    void registerHandlerBuyProductEvent(@Nonnull IListener<ManageHolder.ManadgeProduct> handler);
     String getPriceProduct(ManageHolder.ManadgeProduct product);
-
 }

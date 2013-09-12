@@ -45,6 +45,7 @@ import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.login.view.ResetPassFragment;
 import com.ltst.prizeword.login.model.UserDataModel;
 import com.ltst.prizeword.login.view.SocialLoginActivity;
+import com.ltst.prizeword.manadges.IIabHelper;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
@@ -106,7 +107,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
-    private @Nonnull ManageHolder mManadgeHolder;
+    private @Nonnull IIabHelper mManadgeHolder;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
     private boolean mVkSwitch;
@@ -304,6 +305,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onStop()
     {
+        mManadgeHolder.pause();
         super.onStop();
     }
 
@@ -312,6 +314,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         mUserDataModel = new UserDataModel(this, mBcConnector);
         reloadUserData();
+        mManadgeHolder.resume();
         super.onResume();
     }
 
@@ -673,6 +676,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                 else
 
                     selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+
+                mManadgeHolder.resume();
             } else
             {
                 mDrawerMenu.clean();
@@ -852,43 +857,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-//    @Override
-//    public void buyProduct(ManageHolder.ManadgeProduct product)
-//    {
-//        // Покупка;
-//        mManadgeHolder.buyProduct(product);
-//    }
-//
-//    @Override
-//    public void reloadPriceProducts()
-//    {
-//        // Обновляем прайс лист продуктов;
-//        mManadgeHolder.reloadPoductsFromGooglePlay();
-//    }
-//
-//    @Override
-//    public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
-//    {
-//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-//    }
-//
-//    @Override
-//    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
-//    {
-//        mManadgeHolder.registerHandlerPriceProductsChange(handler);
-//    }
-//
-//    @Override
-//    public String getPriceProduct(ManageHolder.ManadgeProduct product)
-//    {
-//        // Возвращаем цену продукта;
-//        return mManadgeHolder.getPriceProduct(product);
-//    }
-
     @Nonnull
     @Override
     public IManageHolder getManadgeHolder()
     {
-        return  mManadgeHolder;
+        return (IManageHolder) mManadgeHolder;
     }
 }

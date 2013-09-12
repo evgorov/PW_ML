@@ -436,8 +436,7 @@ public class DbReader implements IDbReader
     @Override
     public ArrayList<Purchase> getPurchases()
     {
-        final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
-                null, null);
+        final  Cursor cursor = mDb.query(TNAME_PURCHASES, FIELDS_P_PURCHASES, null, null, null, null, null);
         @Nullable ArrayList<Purchase> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
         return purchases;
     }

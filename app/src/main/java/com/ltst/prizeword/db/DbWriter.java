@@ -369,25 +369,29 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
-    public void putPurchases(@Nonnull List<Purchase> purchases) {
+    public void putPurchases(@Nullable ArrayList<Purchase> purchases) {
+        if(purchases == null) return;
         for(Purchase purchase : purchases){
             putPurchase(purchase);
         }
     }
-        @Override
-    public void putPurchase(@Nonnull Purchase purchase) {
+
+    @Override
+    public void putPurchase(@Nullable Purchase purchase) {
+        if(purchase == null) return;
 
         final @Nonnull ContentValues values = mPurchaseValuesCreator.createObjectContentValues(purchase);
         final @Nullable Purchase existsPurchase = getPurchaseByGoogleId(purchase.googleId);
 
-        if(purchase == null)
+        if(existsPurchase == null)
         {
             DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
             {
                 @Override
                 public void handle()
                 {
-                    mDb.insert(TNAME_PURCHASES, null, values);
+                    long id = mDb.insert(TNAME_PURCHASES, null, values);
+                    int k = 1;
                 }
             });
         }
@@ -398,7 +402,8 @@ public class DbWriter extends  DbReader implements IDbWriter
                 @Override
                 public void handle()
                 {
-                    mDb.update(TNAME_PURCHASES, values, ColsPurchases.ID + "=" + existsPurchase.id, null);
+                    int k = mDb.update(TNAME_PURCHASES, values, ColsPurchases.ID + "=" + existsPurchase.id, null);
+                    int p = 1;
                 }
             });
         }
@@ -578,7 +583,7 @@ public class DbWriter extends  DbReader implements IDbWriter
         public ContentValues createObjectContentValues(@Nullable Purchase object)
         {
             ContentValues cv  = new ContentValues();
-            cv.put(ColsPurchases.ID, object.id);
+//            cv.put(ColsPurchases.ID, object.id);
             cv.put(ColsPurchases.CLIENT_ID, object.clientId);
             cv.put(ColsPurchases.GOOGLE_ID, object.googleId);
             cv.put(ColsPurchases.PRICE, object.price);
