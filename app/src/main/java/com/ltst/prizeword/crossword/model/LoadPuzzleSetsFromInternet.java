@@ -271,7 +271,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
     {
-        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzgzleTotalSets(env.context, sessionKey,year,month);
+        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(env.context, sessionKey,year,month);
         if (data != null)
         {
             @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
