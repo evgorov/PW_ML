@@ -51,7 +51,8 @@ public class RestParams
     public static final @Nonnull String SCORE = "score";
     public static final @Nonnull String SOURCE = "source";
     public static final @Nonnull String SOLVED = "solved";
-    public static final @Nonnull String RECEIPT_DATA = "receipt-data";
+    public static final @Nonnull String RECEIPT_DATA = "android_reciept";
+    public static final @Nonnull String SIGNATURE = "android_signature";
 
     // == API URLS ==
 

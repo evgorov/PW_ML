@@ -3,6 +3,7 @@ package com.ltst.prizeword.manadges;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.android.billing.Base64;
 import com.android.billing.Base64DecoderException;
@@ -32,10 +33,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints10;
-import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints20;
-import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints30;
 
 /**
  * Created by cosic on 28.08.13.
@@ -96,6 +93,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull List<IListener<ManageHolder.ManadgeProduct>> mHandlerBuyProductEventList;
     private @Nonnull String mSessionKey;
     private @Nonnull HintsModel mHintsModel;
+    private @Nonnull BuyCrosswordSetModel mBuyCrosswordSetModel;
 
 
     public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
@@ -147,12 +145,14 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
+        mBuyCrosswordSetModel = new BuyCrosswordSetModel(mBcConnector, mSessionKey);
     }
 
     @Override
     public void pause()
     {
         mHintsModel.close();
+        mBuyCrosswordSetModel.close();
     }
 
     public void dispose()
@@ -208,7 +208,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     static @Nonnull ManageHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
     {
         if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-            return hints10;
+            return ManadgeProduct.hints10;
         else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
             return ManadgeProduct.hints20;
         else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
@@ -235,7 +235,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void buyCrosswordSet(@Nonnull ManageHolder.ManadgeProduct product, @Nonnull String crosswordSetServerId)
     {
-        int k = 1;
+
     }
 
 
@@ -450,14 +450,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         changeHintsCount(prod);
                         break;
                     case set_brilliant:
-                        break;
                     case set_gold:
-                        break;
                     case set_silver:
-                        break;
                     case set_silver2:
-                        break;
                     case set_free:
+                        changeCrosswordSet(prod, responseGoogleId, responseJson, responseSignature);
                         break;
 //                    case test_success:
 //                        break;
@@ -498,8 +495,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             public void handle() {
 
                 // Меняем состояние товара;
-                @Nonnull String responseGoogleId = extractProductId(prod);
-                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+                @Nonnull String googleId = extractProductId(prod);
+                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
                 product.googlePurchase = false;
                 mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
@@ -507,6 +504,46 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 mBuyProductEventHandler.handle(prod);
             }
         });
+    }
+
+    private void changeCrosswordSet(final @Nonnull ManageHolder.ManadgeProduct prod,
+                                    @Nonnull String responseGoogleId,
+                                    @Nonnull String responseJson,
+                                    @Nonnull String responseSignature)
+    {
+        switch (prod)
+        {
+            case set_brilliant:
+                break;
+            case set_gold:
+                break;
+            case set_silver:
+                break;
+            case set_silver2:
+                break;
+            case set_free:
+                break;
+            default:
+                return;
+        }
+
+        mBuyCrosswordSetModel.buyCrosswordSet(responseGoogleId, responseJson, responseSignature, new IListenerVoid(){
+
+            @Override
+            public void handle() {
+
+                // Меняем состояние товара;
+                @Nonnull String googleId = extractProductId(prod);
+                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
+                product.googlePurchase = false;
+                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+                // Рассылаем уведомления, что покупка прошла успешно;
+                mBuyProductEventHandler.handle(prod);
+
+            }
+        });
+
     }
 
     @Nonnull IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManadgeProduct>() {
