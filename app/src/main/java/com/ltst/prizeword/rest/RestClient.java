@@ -339,7 +339,7 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
+    public RestPuzzleTotalSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
     {
         String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
 
@@ -355,11 +355,11 @@ public class RestClient implements IRestClient
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        @Nullable ResponseEntity<RestPuzzleSet.RestPuzzleSetsHolder> entity = null;
-        @Nullable RestPuzzleSet.RestPuzzleSetsHolder holder = null;
+        @Nullable ResponseEntity<RestPuzzleTotalSet.RestPuzzleSetsHolder> entity = null;
+        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder holder = null;
         try
         {
-            entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleSet.RestPuzzleSetsHolder.class, urlVariables);
+            entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleTotalSet.RestPuzzleSetsHolder.class, urlVariables);
             holder = entity.getBody();
         } catch (HttpClientErrorException e)
         {

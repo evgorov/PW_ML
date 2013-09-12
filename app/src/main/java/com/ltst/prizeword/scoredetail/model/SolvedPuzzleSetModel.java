@@ -59,6 +59,11 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     public void synchronizePuzzleUserData(){}
 
     @Override
+    public void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler) {
+
+    }
+
+    @Override
     public void close()
     {
         Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$

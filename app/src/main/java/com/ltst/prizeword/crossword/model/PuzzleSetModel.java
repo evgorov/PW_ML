@@ -62,6 +62,16 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleCurrentSetsUpdater.update(handler);
     }
 
+    @Override
+    public void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler)
+    {
+        if(mIsDestroyed)
+            return;
+        @Nonnull Intent intent = LoadPuzzleSetsFromInternet.createBuyCrosswordSetIntent(mSessionKey, setServerId, receiptData, signature);
+        mBuyPuzzleTotalSetUpdater.setIntent(intent);
+        mBuyPuzzleTotalSetUpdater.update(handler);
+    }
+
     public void synchronizePuzzleUserData()
     {
         List<String> ids = mSynchronizer.getNotUpdatedPuzzlesIds();
@@ -99,6 +109,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         Log.i("Closing total set updater");
         mPuzzleTotalSetsInternetUpdater.close();
         mPuzzleCurrentSetsUpdater.close();
+        mBuyPuzzleTotalSetUpdater.close();
 
         mSynchronizer.close();
 
@@ -164,6 +175,23 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     };
 
+    private Updater mBuyPuzzleTotalSetUpdater = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return mIntent;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
+
     private Updater mPuzzleTotalSetsInternetUpdater = new Updater()
     {
         @Nonnull
@@ -219,7 +247,13 @@ public class PuzzleSetModel implements IPuzzleSetModel
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
+        public @Nonnull Intent mIntent;
+
         protected Updater(){}
+
+        public void setIntent(@Nonnull Intent mIntent) {
+            this.mIntent = mIntent;
+        }
 
         @Nonnull
         @Override

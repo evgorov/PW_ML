@@ -13,7 +13,10 @@ import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.crossword.view.ICrosswordFragment;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -93,7 +96,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull List<IListener<ManageHolder.ManadgeProduct>> mHandlerBuyProductEventList;
     private @Nonnull String mSessionKey;
     private @Nonnull HintsModel mHintsModel;
-    private @Nonnull BuyCrosswordSetModel mBuyCrosswordSetModel;
+    private @Nonnull PuzzleSetModel mPuzzleSetModel;
     private @Nonnull String mCrosswordSetServerId;
 
 
@@ -147,14 +150,14 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
-        mBuyCrosswordSetModel = new BuyCrosswordSetModel(mBcConnector, mSessionKey);
+            mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
     }
 
     @Override
     public void pause()
     {
         mHintsModel.close();
-        mBuyCrosswordSetModel.close();
+        mPuzzleSetModel.close();
     }
 
     public void dispose()
@@ -428,13 +431,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             String responseSignature = purchase.getSignature();
             @Nonnull String responseJson = purchase.getOriginalJson();
 
-//            Crashlytics.log("------------------------------------------------");
-//            Crashlytics.log(5, "MyApp", "JSON: "+responseJson);
-//            Crashlytics.log(5, "MyApp", "SIGNATURE: "+responseSignature);
-//            Crashlytics.log("------------------------------------------------");
-//
-//            int k = 10/0;
-
 //            verify(APP_GOOGLE_PLAY_ID, data, responseSignature);
 
             @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
@@ -532,10 +528,13 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 return;
         }
 
-        mBuyCrosswordSetModel.buyCrosswordSet(responseGoogleId, responseJson, responseSignature, new IListenerVoid(){
+        mPuzzleSetModel.buyCrosswordSet(responseGoogleId, responseJson, responseSignature, new IListenerVoid() {
 
             @Override
             public void handle() {
+
+                @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+                @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
 
                 // Меняем состояние товара;
                 @Nonnull String googleId = extractProductId(prod);

@@ -144,7 +144,8 @@ public class CrosswordsFragment extends SherlockFragment
 //            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
-        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+        updateCurrentSet();
+//        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
@@ -326,21 +327,6 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-//    private IListenerInt hintsChangeHandler = new IListenerInt()
-//    {
-//        @Override
-//        public void handle(int i)
-//        {
-//            int hintsCount = mHintsManager.getHintsCount()+i;
-//            mHintsManager.setHintsCount(hintsCount);
-//        }
-//    };
-
-    public void buyCrosswordSet(@Nonnull PuzzleSetModel.PuzzleSetType mPuzzleSetType, @Nonnull String crosswordSetServerId)
-    {
-//        mCrosswordFragmentHolder.mIManageHolder.buyProduct();
-    }
-
     @Override
     public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
     {
@@ -360,8 +346,8 @@ public class CrosswordsFragment extends SherlockFragment
                         {
                             @Nonnull Intent intent = OneCrosswordActivity.
                                     createIntent(mContext, puzzleSet, puzzle.serverId,
-                                    mHintsManager.getHintsCount(),
-                                    mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
+                                            mHintsManager.getHintsCount(),
+                                            mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
                             mContext.startActivity(intent);
                             break;
                         }
@@ -372,6 +358,10 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
+    @Override
+    public void updateCurrentSet() {
+        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+    }
 
     @Override public void notifySwipe(SwipeMethod swipe)
     {

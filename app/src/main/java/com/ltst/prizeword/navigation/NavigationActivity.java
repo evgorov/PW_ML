@@ -864,4 +864,5 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         return (IManageHolder) mManadgeHolder;
     }
+
 }

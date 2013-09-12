@@ -296,7 +296,7 @@ public class CrosswordSet {
     IListener<ManageHolder.ManadgeProduct> mManadgeBuyProductIListener = new IListener<ManageHolder.ManadgeProduct>() {
         @Override
         public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
-
+            mICrosswordFragment.updateCurrentSet();
         }
     };
 

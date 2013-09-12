@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface IPuzzleSetModel
 {
@@ -18,5 +19,6 @@ public interface IPuzzleSetModel
     @Nonnull HashMap<String, List<Puzzle>> getPuzzlesSet();
     int getHintsCount();
     public void synchronizePuzzleUserData();
+    void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler);
     void close();
 }

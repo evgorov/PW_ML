@@ -17,7 +17,9 @@ import com.ltst.prizeword.rest.RestPuzzleUserData;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.log.Log;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,10 +39,15 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_STATUS_CODE          = "LoadPuzzleSetsFromInternet.statusCode";
     public static final @Nonnull String BF_VOLUME_PUZZLE        = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
-    private static final @Nonnull String VOLUME_SHORT = "short";
-    private static final @Nonnull String VOLUME_LONG  = "long";
-    private static final @Nonnull String VOLUME_SORT  = "sort";
-    private static final @Nonnull String VOLUME_CURR  = "current";
+    private static final @Nonnull String BF_SET_SERVER_ID       = "LoadPuzzleSetsFromInternet.setServerId";
+    private static final @Nonnull String BF_RECEIPT_DATA        = "LoadPuzzleSetsFromInternet.receiptData";
+    private static final @Nonnull String BF_SIGNATURE           = "LoadPuzzleSetsFromInternet.signature";
+
+    private static final @Nonnull String VOLUME_SHORT    = "short";
+    private static final @Nonnull String VOLUME_LONG     = "long";
+    private static final @Nonnull String VOLUME_SORT     = "sort";
+    private static final @Nonnull String VOLUME_CURR     = "current";
+    private static final @Nonnull String VOLUME_BUY      = "buy";
 
     public static final
     @Nonnull
@@ -78,6 +85,19 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_CURR);
+        return intent;
+    }
+
+    public static final @Nonnull Intent createBuyCrosswordSetIntent(@Nonnull String sessionKey,
+                                                                    @Nonnull String setServerId,
+                                                                    @Nonnull String receiptData,
+                                                                    @Nonnull String signature){
+        @Nonnull Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_SET_SERVER_ID, setServerId);
+        intent.putExtra(BF_RECEIPT_DATA, receiptData);
+        intent.putExtra(BF_SIGNATURE, signature);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_BUY);
         return intent;
     }
 
@@ -149,6 +169,29 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             {
                 return getFromDatabase(env);
             }
+            else if(volumePuzzle.equals(VOLUME_BUY))
+            {
+                @Nullable String setServerId =  env.extras.getString(BF_SET_SERVER_ID);
+                @Nullable String receiptData =  env.extras.getString(BF_RECEIPT_DATA);
+                @Nullable String signature =    env.extras.getString(BF_SIGNATURE);
+                if (setServerId == Strings.EMPTY || receiptData == Strings.EMPTY || signature == Strings.EMPTY)
+                {
+                    return null;
+                }
+
+                RestPuzzleTotalSet.RestPuzzleSetsHolder data = buyRestPuzzleSetFromInternet(env.context, setServerId, receiptData, signature);
+                if(data != null)
+                {
+                    if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
+                    {
+                        return null;
+                    }
+
+                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
+                    env.dbw.putPuzzleTotalSetList(sets);
+                    return getFromDatabase(env);
+                }
+            }
         }
         return getFromDatabase(env);
     }
@@ -180,6 +223,21 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         } catch (Throwable e)
         {
             Log.e(e.getMessage());
+            Log.i("Can't load data from internet"); //$NON-NLS-1$
+            return null;
+        }
+    }
+
+    private @Nullable
+    RestPuzzleTotalSet.RestPuzzleSetsHolder buyRestPuzzleSetFromInternet(@Nonnull Context context, @Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature)
+    {
+        try
+        {
+            IRestClient client = RestClient.create(context);
+            return client.postBuySet(setServerId, receiptData, signature);
+        }
+        catch(Throwable e)
+        {
             Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
         }
@@ -271,7 +329,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
     {
-        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(env.context, sessionKey,year,month);
+        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(env.context, sessionKey, year, month);
         if (data != null)
         {
             @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
