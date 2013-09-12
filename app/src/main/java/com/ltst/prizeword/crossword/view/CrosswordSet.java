@@ -136,31 +136,28 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
+        pBuyPrice.setText(data.mBuyPrice);
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
-            pBuyPrice.setText(R.string.buy_three_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_br));
             pTitleText.setText(R.string.puzzless_hint_brilliant_crossword);
             pTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.GOLD)
         {
-            pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_au));
             pTitleText.setText(R.string.puzzless_hint_gold_crossword);
             pTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimensionPixelSize(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER)
         {
-            pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag));
             pTitleText.setText(R.string.puzzless_hint_silver_crossword);
             pTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimensionPixelSize(R.dimen.puzzles_badge_title_text_size));
         }
         else if (data.mType == PuzzleSetModel.PuzzleSetType.SILVER2)
         {
-            pBuyPrice.setText(R.string.buy_two_dollar);
             pTitleImage.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.puzzles_set_ag2));
             pTitleText.setText(R.string.puzzless_hint_silver2_crossword);
             pTitleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimensionPixelSize(R.dimen.puzzles_badge_title_long_text_size));
