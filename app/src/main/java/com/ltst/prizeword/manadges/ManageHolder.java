@@ -33,6 +33,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints10;
+import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints20;
+import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints30;
 
 /**
  * Created by cosic on 28.08.13.
@@ -106,7 +108,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
         mHandlerBuyProductEventList = new ArrayList<IListener<ManageHolder.ManadgeProduct>>();
 
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+//        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
 
 
 //        // Ответ о покупке;
@@ -142,7 +144,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void resume()
     {
-//        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
     }
 
@@ -238,7 +240,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         @Nonnull String token = UUIDTools.generateStringUUID();
         if(product_id!=null && product_request!=0){
             try {
-//                mIabHelper.flagEndAsync();
+                mIabHelper.flagEndAsync();
                 mIabHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
             } catch (Exception e)
             {
@@ -318,7 +320,15 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         }
     };
 
-    // Получаем информацию о возобновлении покупаемости товара;
+    IabHelper.OnConsumeMultiFinishedListener mConsumeMyltyFinishedListener = new IabHelper.OnConsumeMultiFinishedListener()
+    {
+        @Override
+        public void onConsumeMultiFinished(List<Purchase> purchases, List<IabResult> results) {
+
+        }
+    };
+
+        // Получаем информацию о возобновлении покупаемости товара;
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener()
     {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
@@ -344,6 +354,17 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 // handle error
                 return;
             }
+
+////            Восстанавливаем возможность сделать повторную покупку продукта;
+//            Purchase pc = null;
+//            List<Purchase> lst = new ArrayList<Purchase>(3);
+//            pc = inventory.getPurchase(extractProductId(hints10));
+//            lst.add(pc);
+//            pc = inventory.getPurchase(extractProductId(hints20));
+//            lst.add(pc);
+//            pc = inventory.getPurchase(extractProductId(hints30));
+//            lst.add(pc);
+//            mIabHelper.consumeAsync(lst, mConsumeMyltyFinishedListener);
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             @Nonnull String prodict_id = null;
@@ -390,6 +411,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         break;
                 }
 
+//                mIabHelper.flagEndAsync();
                 return;
             }
 
