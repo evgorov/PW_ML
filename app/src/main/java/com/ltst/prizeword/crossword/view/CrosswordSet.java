@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
@@ -23,7 +22,6 @@ import com.ltst.prizeword.tools.CustomProgressBar;
 
 import org.omich.velo.handlers.IListener;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import javax.annotation.Nonnull;
@@ -121,7 +119,8 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mICrosswordFragment.buyCrosswordSet(mPuzzleSetType, mSetServerId);
+                    ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(mPuzzleSetType);
+                    mIManageHolder.buyCrosswordSet(product, mSetServerId);
                 }
             }
         });
@@ -151,7 +150,8 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
-        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(extractManadgeProductFrom(data.mType));
+        ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(data.mType);
+        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(product);
         pBuyPrice.setText(mBuyPrice);
         mPuzzleSetType = data.mType;
 
@@ -299,15 +299,30 @@ public class CrosswordSet {
         }
     };
 
-    private ManageHolder.ManadgeProduct extractManadgeProductFrom(PuzzleSetModel.PuzzleSetType type)
+    private ManageHolder.ManadgeProduct extractManadgeProductFromPuzzleSetType(PuzzleSetModel.PuzzleSetType type)
     {
         switch (type)
         {
             case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
-            case GOLD: return ManageHolder.ManadgeProduct.set_gold;
-            case SILVER: return ManageHolder.ManadgeProduct.set_silver;
-            case SILVER2: return ManageHolder.ManadgeProduct.set_silver2;
-            case FREE: return ManageHolder.ManadgeProduct.set_free;
+            case GOLD:      return ManageHolder.ManadgeProduct.set_gold;
+            case SILVER:    return ManageHolder.ManadgeProduct.set_silver;
+            case SILVER2:   return ManageHolder.ManadgeProduct.set_silver2;
+            case FREE:      return ManageHolder.ManadgeProduct.set_free;
+            default:break;
+        }
+        return null;
+    }
+
+    private PuzzleSetModel.PuzzleSetType extractPuzzleSetTypeFromManadgeProduct(ManageHolder.ManadgeProduct product)
+    {
+        switch (product)
+        {
+            case set_brilliant: return PuzzleSetModel.PuzzleSetType.BRILLIANT;
+            case set_gold:      return PuzzleSetModel.PuzzleSetType.GOLD;
+            case set_silver:    return PuzzleSetModel.PuzzleSetType.SILVER;
+            case set_silver2:   return PuzzleSetModel.PuzzleSetType.SILVER2;
+            case set_free:      return PuzzleSetModel.PuzzleSetType.FREE;
+            default:break;
         }
         return null;
     }

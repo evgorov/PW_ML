@@ -13,6 +13,7 @@ import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -229,6 +230,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
             return ManadgeProduct.test_unavailable;
         return null;
+    }
+
+    @Override
+    public void buyCrosswordSet(@Nonnull ManageHolder.ManadgeProduct product, @Nonnull String crosswordSetServerId)
+    {
+        int k = 1;
     }
 
 
@@ -559,6 +566,20 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             Log.e("Base64 decoding failed.");
         }
         return false;
+    }
+
+    public ManageHolder.ManadgeProduct extractManadgeProductFromPuzzleSetType(PuzzleSetModel.PuzzleSetType type)
+    {
+        switch (type)
+        {
+            case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
+            case GOLD: return ManageHolder.ManadgeProduct.set_gold;
+            case SILVER: return ManageHolder.ManadgeProduct.set_silver;
+            case SILVER2: return ManageHolder.ManadgeProduct.set_silver2;
+            case FREE: return ManageHolder.ManadgeProduct.set_free;
+            default:break;
+        }
+        return null;
     }
 
 }
