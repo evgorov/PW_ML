@@ -246,6 +246,13 @@ public class PuzzleResourcesAdapter
         return mIBitmapResourceModel;
     }
 
+    public @Nullable String getPuzzleName()
+    {
+        if (mPuzzle == null)
+            return null;
+        return mPuzzle.name;
+    }
+
     @Nullable
     public PuzzleResources getResources()
     {

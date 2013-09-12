@@ -307,8 +307,9 @@
                             android:id="@+id/final_score"
                             style="@style/FinalValueScoreText"
                             android:layout_width="40dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
                             android:maxEms="3"
+                            android:gravity="center"
                             android:singleLine="true"
                             android:text="0"
                             />
@@ -328,10 +329,10 @@
                             android:id="@+id/final_bonus"
                             style="@style/FinalValueScoreText"
                             android:layout_width="40dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
                             android:maxEms="3"
+                            android:gravity="center"
                             android:singleLine="true"
-
                             android:text="0"
                             />
 
@@ -351,7 +352,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="34dp"
+                        android:layout_marginTop="22dp"
                         android:layout_marginLeft="39dp"
                         >
 
@@ -388,7 +389,7 @@
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="13dp"
                         >
 
                     <Button

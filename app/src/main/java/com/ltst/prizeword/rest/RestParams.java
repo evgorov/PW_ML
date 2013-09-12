@@ -53,6 +53,7 @@ public class RestParams
     public static final @Nonnull String SOLVED = "solved";
     public static final @Nonnull String RECEIPT_DATA = "android_reciept";
     public static final @Nonnull String SIGNATURE = "android_signature";
+    public static final @Nonnull String MESSAGE = "message";
 
     // == API URLS ==
 
@@ -125,6 +126,10 @@ public class RestParams
 
     public static final @Nonnull String URL_POST_PUZZLE_SCORE = URL_API + "/score" + addParam(SESSION_KEY, true) + addParam(SOURCE, false) + addParam(SCORE, false) + addParam(SOLVED, false);
     public static final @Nonnull String URL_POST_BUY_PUZZLE_SET = URL_API + "/sets/%s/buy" + addParam(RECEIPT_DATA, true);
+
+    // ==== sharing =====
+    public static final @Nonnull String URL_SHARE_VK = URL_API + "/" + VK_PROVIDER + "/share" + addParam(SESSION_KEY, true) + addParam(MESSAGE, false);
+
     // ================
 
     public static @Nonnull String addParam(@Nonnull String name, boolean firstParam)

@@ -12,6 +12,8 @@ import org.omich.velo.log.Log;
 
 import java.util.logging.Handler;
 
+import javax.annotation.Nonnull;
+
 public final class SoundsWork
 {
     public static boolean ALL_SOUNDS_FLAG = true;
@@ -20,7 +22,7 @@ public final class SoundsWork
     private static MediaPlayer mMediaPlayerAll;
     public Context mContext;
 
-    public static void startBackgroundMusic(Context context)
+    public static void startBackgroundMusic(@Nonnull Context context)
     {
         if (mMediaPlayerBack == null)
         {
@@ -31,30 +33,12 @@ public final class SoundsWork
             mMediaPlayerBack.start();
     }
 
-    public static void startAllSounds(Context context)
-    {
-    }
-
-    public static void stopAllSounds()
-    {
-    }
-
     public static void pauseBackgroundMusic()
     {
         mMediaPlayerBack.pause();
     }
 
-    public static void resumeBackgroundMusic()
-    {
-        mMediaPlayerBack.start();
-    }
-
-    public static void stopBackgroundMusic()
-    {
-        mMediaPlayerBack.stop();
-    }
-
-    public static void sidebarMusic(Context context)
+    public static void sidebarMusic(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -78,7 +62,7 @@ public final class SoundsWork
         }
     }
 
-    public static void interfaceBtnMusic(Context context)
+    public static void interfaceBtnMusic(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -88,7 +72,7 @@ public final class SoundsWork
         }
     }
 
-    public static void questionAnswered(Context context)
+    public static void questionAnswered(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -98,7 +82,7 @@ public final class SoundsWork
         }
     }
 
-    public static void puzzleSolved(Context context)
+    public static void puzzleSolved(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -108,7 +92,7 @@ public final class SoundsWork
         }
     }
 
-    public static void buySet(Context context)
+    public static void buySet(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -118,7 +102,7 @@ public final class SoundsWork
         }
     }
 
-    public static void openSet(Context context)
+    public static void openSet(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -128,7 +112,7 @@ public final class SoundsWork
         }
     }
 
-    public static void closeSet(Context context)
+    public static void closeSet(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -138,7 +122,7 @@ public final class SoundsWork
         }
     }
 
-    public static void keyboardBtn(Context context)
+    public static void keyboardBtn(@Nonnull Context context)
     {
         if (ALL_SOUNDS_FLAG)
         {
@@ -154,7 +138,28 @@ public final class SoundsWork
         count++;
     }
 
-    private static void releaseMPALL()
+    public static void scoreSetSound(@Nonnull Context context)
+    {
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.secondary_ding);
+            mMediaPlayerAll.start();
+        }
+    }
+
+    public static void scoreAllCountSound(@Nonnull Context context)
+    {
+        if (ALL_SOUNDS_FLAG)
+        {
+            releaseMPALL();
+            mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.counting);
+            mMediaPlayerAll.start();
+        }
+    }
+
+
+    public static void releaseMPALL()
     {
         if (mMediaPlayerAll != null)
         {
@@ -162,6 +167,21 @@ public final class SoundsWork
             {
                 mMediaPlayerAll.release();
                 mMediaPlayerAll = null;
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void releaseMPBack()
+    {
+        if (mMediaPlayerBack != null)
+        {
+            try
+            {
+                mMediaPlayerBack.release();
+                mMediaPlayerBack = null;
             } catch (Exception e)
             {
                 e.printStackTrace();

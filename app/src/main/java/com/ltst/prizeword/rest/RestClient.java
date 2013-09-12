@@ -716,4 +716,28 @@ public class RestClient implements IRestClient
         holder.setStatus(entity.getStatusCode());
         return holder;
     }
+
+    @Override
+    public HttpStatus shareMessageToVk(@Nonnull String sessionKey, @Nonnull String message)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.MESSAGE, message);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        try
+        {
+            restTemplate.exchange(RestParams.URL_SHARE_VK, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        } catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
+
+        return null;
+    }
 }

@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -67,6 +69,9 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
 
     private @Nonnull ScoreCrosswordFragmentHolder mScoreHolder;
 
+    private @Nonnull ProgressBar mProgressBar;
+    private @Nonnull LinearLayout mScoreDetailContainer;
+
     @Override public void onAttach(Activity activity)
     {
         mContext = activity;
@@ -91,6 +96,8 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         mFriendTV = (TextView) mCrosswordView.findViewById(R.id.score_friends_name_from_count);
         mScoreInMonth = (TextView) v.findViewById(R.id.score_in_month_header);
         mScoreHolder = new ScoreCrosswordFragmentHolder(mContext, this, inflater, mCrosswordView);
+        mProgressBar = (ProgressBar) v.findViewById(R.id.list_progressBar);
+        mScoreDetailContainer = (LinearLayout) v.findViewById(R.id.score_detail_container);
         mScoreListVeiw.setDivider(null);
         mScoreListVeiw.addFooterView(mFooterView);
         mScoreListVeiw.addHeaderView(mCrosswordView);
@@ -159,7 +166,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         }
         mInviteBtn.setOnClickListener(this);
         mMenuBtn.setOnClickListener(this);
-        if(mINavigationActivity.getIsTablet())
+        if (mINavigationActivity.getIsTablet())
             mMenuBtn.setVisibility(View.GONE);
 
     }
@@ -217,11 +224,10 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         @Override
         public void handle()
         {
-            //ProgressBar bar = mProgressBar;
-            //assert bar !=null;
-            //bar.setVisibility(View.GONE);
-            //mScoreListVeiw.setVisibility(View.VISIBLE);
-
+            ProgressBar bar = mProgressBar;
+            assert bar != null;
+            bar.setVisibility(View.GONE);
+            mScoreDetailContainer.setVisibility(View.VISIBLE);
         }
     };
 
@@ -234,7 +240,7 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
 
             int count = mScoreDetailAdapter.getCountFriends();
             @Nonnull String[] friends_text = mContext.getResources().getStringArray(R.array.friends_name_from_count);
-            @Nonnull String friends = DeclensionTools.units(count,friends_text);
+            @Nonnull String friends = DeclensionTools.units(count, friends_text);
             mFriendTV.setText(friends);
             mScoreInvitedCount.setText(Integer.toString(count));
             assert mCoefModel != null;

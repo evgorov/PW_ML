@@ -306,6 +306,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onStop()
     {
         mManadgeHolder.pause();
+        SoundsWork.releaseMPALL();
         super.onStop();
     }
 
