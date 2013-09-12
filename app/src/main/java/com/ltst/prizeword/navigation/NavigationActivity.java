@@ -304,6 +304,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onStop()
     {
+        mManadgeHolder.pause();
         super.onStop();
     }
 
@@ -320,7 +321,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onPause()
     {
         mUserDataModel.close();
-        mManadgeHolder.pause();
         super.onPause();
     }
 

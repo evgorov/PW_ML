@@ -1,6 +1,5 @@
 package com.ltst.prizeword.crossword.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -12,7 +11,6 @@ import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
 import org.omich.velo.handlers.IListener;
-import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -32,14 +30,12 @@ public class HintsManager implements View.OnClickListener
 
     private @Nonnull IManadges mIManadges;
     private @Nonnull Context mContext;
-    private @Nonnull Activity mActivity;
 
     private int mHintsCount;
 
     public HintsManager(@Nonnull Context context, View parentView)
     {
         mContext = context;
-        mActivity = (Activity) context;
 
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
@@ -62,11 +58,6 @@ public class HintsManager implements View.OnClickListener
         setPrice();
     }
 
-    public void setHintChangeListener(@Nullable IListenerInt hintChangeListener)
-    {
-//        mHintChangeListener = hintChangeListener;
-    }
-
     @Override
     public void onClick(View v)
     {
@@ -76,8 +67,8 @@ public class HintsManager implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
-//              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
+//              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
+              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
                 mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
