@@ -154,7 +154,7 @@ public final class SoundsWork
         count++;
     }
 
-    private static void releaseMPALL()
+    public static void releaseMPALL()
     {
         if (mMediaPlayerAll != null)
         {
@@ -162,6 +162,21 @@ public final class SoundsWork
             {
                 mMediaPlayerAll.release();
                 mMediaPlayerAll = null;
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void releaseMPBack()
+    {
+        if (mMediaPlayerBack != null)
+        {
+            try
+            {
+                mMediaPlayerBack.release();
+                mMediaPlayerBack = null;
             } catch (Exception e)
             {
                 e.printStackTrace();

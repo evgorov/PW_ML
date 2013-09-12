@@ -290,6 +290,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             SoundsWork.pauseBackgroundMusic();
         mPuzzleView.recycle();
         mHasFirstPuzzle = false;
+        SoundsWork.releaseMPBack();
+        SoundsWork.releaseMPALL();
         super.onStop();
     }
 
