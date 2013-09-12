@@ -4,16 +4,27 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.android.billing.Base64;
+import com.android.billing.Base64DecoderException;
 import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
+import com.android.billing.Security;
+import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +32,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static com.ltst.prizeword.manadges.ManageHolder.ManadgeProduct.hints10;
+
 /**
  * Created by cosic on 28.08.13.
  */
-public class ManageHolder implements IManageHolder {
+public class ManageHolder implements IManageHolder, IIabHelper {
 
     public enum ManadgeProduct{
         hints10,
@@ -41,7 +54,8 @@ public class ManageHolder implements IManageHolder {
         test_unavailable
     };
 
-    private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
+//    private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
+    private final @Nonnull String APP_GOOGLE_PLAY_ID = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtspobFVSi6fZ6L3q5l64JVVcJaK19gVWllXQi5FxaN1V0Yti84O+Xzuw7fWWnrgleKLRNSMPrOd/rQrDAHhEm9kk7gq0PUzLwOzpqgnvWa9fsvQVc5jOi69O7B2Vn+KftNQ+VXReFXpEp4IA6DKIu3f0gNqha/szA2eq1uDyO+MXtU9Kpz2XeAedpVNSMn9OEDR2U4rN39GUqumg0NwidbpCkfhbmSGYoJOPAUOIXf5J1YIeR75pBV2GCUiT4d8fCGCv/UMunTbNkI+BjDov/hmzU4njk1sIlSSpz0a9pM4v6Q2dIrrKIrOsjSI7r+c/C2U2dqviAUZ96tYDS+bp7wIDAQAB";
 
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
     static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
@@ -76,7 +90,9 @@ public class ManageHolder implements IManageHolder {
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
     private @Nonnull HashMap<ManadgeProduct,String> mPrices;
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
-    private @Nonnull List<IListenerVoid> mHandlerBuyProductEventList;
+    private @Nonnull List<IListener<ManageHolder.ManadgeProduct>> mHandlerBuyProductEventList;
+    private @Nonnull String mSessionKey;
+    private @Nonnull HintsModel mHintsModel;
 
 
     public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
@@ -88,7 +104,10 @@ public class ManageHolder implements IManageHolder {
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mPrices = new HashMap<ManadgeProduct, String>();
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
-        mHandlerBuyProductEventList = new ArrayList<IListenerVoid>();
+        mHandlerBuyProductEventList = new ArrayList<IListener<ManageHolder.ManadgeProduct>>();
+
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+
 
 //        // Ответ о покупке;
 //        mIabHelper.queryInventoryAsync(mGotInventoryListener);
@@ -101,8 +120,14 @@ public class ManageHolder implements IManageHolder {
 
     public void instance()
     {
-        Log.d("INSTANCE PRICE");
+//        try{
         mIabHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
+//        }
+//        catch (Exception e)
+//        {
+//            Log.e(e.getMessage());
+//            Log.i("Can't use license public key of app"); //$NON-NLS-1$
+//        }
         mIabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
                 if (result.isSuccess()) {
@@ -112,6 +137,19 @@ public class ManageHolder implements IManageHolder {
             }
         });
         reloadProductsFromDataBase();
+    }
+
+    @Override
+    public void resume()
+    {
+//        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
+    }
+
+    @Override
+    public void pause()
+    {
+        mHintsModel.close();
     }
 
     public void dispose()
@@ -164,6 +202,34 @@ public class ManageHolder implements IManageHolder {
         return 0;
     }
 
+    static @Nonnull ManageHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
+    {
+        if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            return hints10;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+            return ManadgeProduct.hints20;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+            return ManadgeProduct.hints30;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT))
+            return ManadgeProduct.set_brilliant;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_GOLD))
+            return ManadgeProduct.set_gold;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER))
+            return ManadgeProduct.set_silver;
+        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2))
+            return ManadgeProduct.set_silver2;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+            return ManadgeProduct.test_success;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+            return ManadgeProduct.test_cancel;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+            return ManadgeProduct.test_refunded;
+        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+            return ManadgeProduct.test_unavailable;
+        return null;
+    }
+
+
     public void buyProduct(ManageHolder.ManadgeProduct product)
     {
         // Start popup window. Покупка;
@@ -186,7 +252,7 @@ public class ManageHolder implements IManageHolder {
         mHandlerReloadPriceList.add(handler);
     }
 
-    public void registerHandlerBuyProductEvent(@Nonnull IListenerVoid handler)
+    public void registerHandlerBuyProductEvent(@Nonnull IListener<ManadgeProduct> handler)
     {
         mHandlerBuyProductEventList.add(handler);
     }
@@ -237,7 +303,7 @@ public class ManageHolder implements IManageHolder {
 
                         @Nonnull com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
                         purchase.googlePurchase = false;
-                        mIPurchaseSetModel.putPurchase(purchase, new IListenerVoid() {
+                        mIPurchaseSetModel.putOnePurchase(purchase, new IListenerVoid() {
                             @Override
                             public void handle() {
 
@@ -290,6 +356,7 @@ public class ManageHolder implements IManageHolder {
                     mPrices.put(product, price);
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(prodict_id);
                     purchase.price = inventory.getSkuDetails(prodict_id).getPrice();
+                    purchase.clientId = UUIDTools.generateStringUUID();
                     purchases.add(purchase);
                 }
             }
@@ -304,9 +371,25 @@ public class ManageHolder implements IManageHolder {
     {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase)
         {
+            int resultCode = result.getResponse();
             if (result.isFailure())
             {
                 Log.e("Error purchasing: " + result);
+
+                switch (resultCode)
+                {
+                    case 0:
+                        // Sussessfull;
+                    case -1005:
+                        // User canceled. (response: -1005:User cancelled);
+                        break;
+                    case -1008:
+                        // IAB returned null purchaseData or dataSignature (response: -1008:Unknown error);
+                        break;
+                    default:
+                        break;
+                }
+
                 return;
             }
 
@@ -316,17 +399,96 @@ public class ManageHolder implements IManageHolder {
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
-            @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
-            if (product == null)
-            {
-                return;
-            }
+            String responseSignature = purchase.getSignature();
+            @Nonnull String responseJson = purchase.getOriginalJson();
 
+//            verify(APP_GOOGLE_PLAY_ID, data, responseSignature);
+
+            @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
             product.googlePurchase = true;
             product.clientId = responseClientId;
-            mIPurchaseSetModel.putPurchase(product, mSaveOnePurchaseToDataBase);
+            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
-            mBuyProductEventHandler.handle();
+            ManageHolder.ManadgeProduct prod = extractProduct(responseGoogleId);
+            if(prod !=null)
+            {
+                switch (prod)
+                {
+                    case test_success:
+                    case hints10:
+                    case hints20:
+                    case hints30:
+                        changeHintsCount(prod);
+                        break;
+                    case set_brilliant:
+                        break;
+                    case set_gold:
+                        break;
+                    case set_silver:
+                        break;
+                    case set_silver2:
+                        break;
+                    case set_free:
+                        break;
+//                    case test_success:
+//                        break;
+                    case test_cancel:
+                        break;
+                    case test_refunded:
+                        break;
+                    case test_unavailable:
+                        break;
+                    default:break;
+                }
+
+            }
+        }
+    };
+
+    private void changeHintsCount(final ManageHolder.ManadgeProduct prod)
+    {
+        int count = 0;
+        switch (prod)
+        {
+            case test_success:
+            case hints10:
+                count = 10;
+                break;
+            case hints20:
+                count = 20;
+                break;
+            case hints30:
+                count = 30;
+                break;
+            default:
+                return;
+        }
+
+        mHintsModel.changeHints(count, new IListenerVoid() {
+            @Override
+            public void handle() {
+
+                // Меняем состояние товара;
+                @Nonnull String responseGoogleId = extractProductId(prod);
+                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseGoogleId);
+                product.googlePurchase = false;
+                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+                // Рассылаем уведомления, что покупка прошла успешно;
+                mBuyProductEventHandler.handle(prod);
+            }
+        });
+    }
+
+    @Nonnull IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManadgeProduct>() {
+        @Override
+        public void handle(@Nullable ManadgeProduct manadgeProduct) {
+
+            for(IListener<ManageHolder.ManadgeProduct> handle : mHandlerBuyProductEventList)
+            {
+                Log.d("PRICE SEND DONE!");
+                handle.handle(manadgeProduct);
+            }
         }
     };
 
@@ -351,13 +513,30 @@ public class ManageHolder implements IManageHolder {
         }
     };
 
-    @Nonnull IListenerVoid mBuyProductEventHandler = new IListenerVoid() {
-        @Override
-        public void handle() {
-            for(IListenerVoid handle : mHandlerBuyProductEventList)
-            {
-                handle.handle();
+    public static boolean verify(@Nonnull String base64EncodedPublicKey, String signedData, String signature)
+    {
+        @Nonnull PublicKey publicKey = Security.generatePublicKey(base64EncodedPublicKey);
+        @Nonnull String SIGNATURE_ALGORITHM = "SHA1withRSA";
+        Signature sig;
+        try {
+            sig = Signature.getInstance(SIGNATURE_ALGORITHM);
+            sig.initVerify(publicKey);
+            sig.update(signedData.getBytes());
+            if (!sig.verify(Base64.decode(signature))) {
+                Log.e("Signature verification failed.");
+                return false;
             }
+            return true;
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("NoSuchAlgorithmException.");
+        } catch (InvalidKeyException e) {
+            Log.e("Invalid key specification.");
+        } catch (SignatureException e) {
+            Log.e("Signature exception.");
+        } catch (Base64DecoderException e) {
+            Log.e("Base64 decoding failed.");
         }
-    };
+        return false;
+    }
+
 }

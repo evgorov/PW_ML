@@ -80,15 +80,12 @@ public class PurchaseSetModel implements IPurchaseSetModel
     }
 
     @Override
-    public void putPurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler)
+    public void putOnePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler)
     {
         if (mIsDestroyed)
             return;
-//        mPurchaseDone = purchase;
-        @Nonnull Intent intent = new Intent();
-        intent.putExtra(LoadPurchaseTask.BF_LOCAL_TASK, LoadPurchaseTask.LT_LOAD_FROM_GOOGLEPLAY);
-        intent.putExtra(LoadPurchaseTask.BF_ONE_PURCHASE, purchase);
 
+        @Nonnull Intent intent = LoadPurchaseTask.createUpdateOnePurchseToDataBase(purchase);
         mReloadFromGooglePlaySession.setIntent(intent);
         mReloadFromGooglePlaySession.update(handler);
     }
@@ -99,10 +96,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
         if (mIsDestroyed)
             return;
 
-        @Nonnull Intent intent = new Intent();
-        intent.putExtra(LoadPurchaseTask.BF_LOCAL_TASK, LoadPurchaseTask.LT_LOAD_FROM_GOOGLEPLAY);
-        intent.putParcelableArrayListExtra(LoadPurchaseTask.BF_MANY_PURCHASES, purchases);
-
+        @Nonnull Intent intent = LoadPurchaseTask.createUpdatePurchsesToDataBase(purchases);
         mReloadFromGooglePlaySession.setIntent(intent);
         mReloadFromGooglePlaySession.update(handler);
     }
