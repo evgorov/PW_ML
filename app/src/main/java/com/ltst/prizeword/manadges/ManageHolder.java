@@ -272,6 +272,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             // сохраняем цены в базу;
             mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
+
+            // уведзобляем подписчиков, что пришли цены;
+            mPriceEventHandler.handle();
         }
     };
 
@@ -357,8 +360,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             for(IListener<Bundle> handle : mHandlerBuyProductEventList)
             {
-                Log.d("PRICE SEND DONE!");
                 handle.handle(bundle);
+            }
+        }
+    };
+
+    @Nonnull IListenerVoid mPriceEventHandler = new IListenerVoid() {
+        @Override
+        public void handle() {
+
+            for(IListenerVoid handle : mHandlerReloadPriceList)
+            {
+                Log.d("PRICE SEND DONE!");
+                handle.handle();
             }
         }
     };
