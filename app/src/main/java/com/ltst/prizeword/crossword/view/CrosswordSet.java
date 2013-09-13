@@ -238,6 +238,7 @@ public class CrosswordSet {
             {
                 // Куплены;
                 pBuyCrosswordContaiter.setVisibility(View.GONE);
+                expandingBadgeContainer(true);
             }
             else
             {

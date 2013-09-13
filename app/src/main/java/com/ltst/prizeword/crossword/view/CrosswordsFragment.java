@@ -132,7 +132,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onStart()
     {
-//        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
