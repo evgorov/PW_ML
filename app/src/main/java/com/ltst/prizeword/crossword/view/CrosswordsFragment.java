@@ -19,10 +19,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
+import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.news.INewsModel;
@@ -75,6 +77,8 @@ public class CrosswordsFragment extends SherlockFragment
     private boolean mLoadFlag = false;
 
     private @Nonnull INewsModel mNewsModel;
+    private @Nonnull HintsModel mHintsModel;
+    private @Nonnull IManadges mIManadges;
 
     private int mIndicatorPosition;
 
@@ -86,7 +90,7 @@ public class CrosswordsFragment extends SherlockFragment
         mContext = (Context) activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mIFragmentActivity = (IFragmentsHolderActivity) activity;
-
+        mIManadges = (IManadges) activity;
         super.onAttach(activity);
     }
 
@@ -110,7 +114,7 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsCloseBtn = (ImageView) v.findViewById(R.id.news_close_btn);
         mProgressBar =  v.findViewById(R.id.archive_progressBar);
         mRoot = v;
-        mHintsManager = new HintsManager(mContext, mRoot);
+        mHintsManager = new HintsManager(mContext, this, mRoot);
         return v;
     }
 
@@ -132,9 +136,10 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
-        mHintsManager = new HintsManager(mContext, mRoot);
+//        mHintsManager = new HintsManager(mContext, mRoot);
         mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
+        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
 
 //        if(!mLoadFlag)
 //        {
@@ -166,6 +171,7 @@ public class CrosswordsFragment extends SherlockFragment
     {
         mPuzzleSetModel.close();
         mNewsModel.close();
+        mHintsModel.close();
         super.onStop();
     }
 
@@ -197,6 +203,7 @@ public class CrosswordsFragment extends SherlockFragment
         View bar = mProgressBar;
         assert bar != null;
         bar.setVisibility(View.GONE);
+        mIManadges.getManadgeHolder().reloadInventory();
     }
 
     @Override
@@ -358,6 +365,16 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void updateCurrentSet() {
         mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+    }
+
+    @Override
+    public HintsModel getHintsModel() {
+        return mHintsModel;
+    }
+
+    @Override
+    public IPuzzleSetModel getPuzzleSetModel() {
+        return mPuzzleSetModel;
     }
 
     @Override public void notifySwipe(SwipeMethod swipe)

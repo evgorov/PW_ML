@@ -1,6 +1,7 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
+import com.ltst.prizeword.crossword.model.Puzzle;
+import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
@@ -21,8 +25,11 @@ import com.ltst.prizeword.tools.AnimationTools;
 import com.ltst.prizeword.tools.CustomProgressBar;
 
 import org.omich.velo.handlers.IListener;
+import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -155,6 +162,8 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
+        mSetServerId = data.mServerId;
+        mIManageHolder.registerProduct(mSetServerId);
         @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
         pBuyPrice.setText(mBuyPrice);
         mPuzzleSetType = data.mType;
@@ -266,7 +275,6 @@ public class CrosswordSet {
                         R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
             }
         }
-        mSetServerId = data.mServerId;
     }
 
     public void setVisibleMonth(boolean visible)
@@ -296,10 +304,33 @@ public class CrosswordSet {
     }
 
     private @Nonnull
-    IListener<String> mManadgeBuyProductIListener = new IListener<String>() {
+    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>() {
         @Override
-        public void handle(@Nullable String gooleId) {
-            mICrosswordFragment.updateCurrentSet();
+        public void handle(@Nullable Bundle bundle) {
+
+            final @Nonnull String googleId = ManageHolder.extractFromBundleGoogleId(bundle);
+            final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
+            final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
+            if(googleId.equals(mSetServerId))
+            {
+
+                IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
+                if(iPuzzleSetModel != null)
+                {
+                    iPuzzleSetModel.buyCrosswordSet(googleId, json, signature, new IListenerVoid() {
+
+                        @Override
+                        public void handle() {
+
+//                        @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
+//                        @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
+
+                            mIManageHolder.productBuyOnServer(googleId);
+                            mICrosswordFragment.updateCurrentSet();
+                        }
+                    });
+                }
+            }
         }
     };
 

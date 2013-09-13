@@ -1,11 +1,15 @@
 package com.ltst.prizeword.crossword.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.manadges.IManageHolder;
+import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
@@ -34,14 +38,14 @@ public class HintsManager implements View.OnClickListener
     private @Nonnull TextView mPriceHints_20;
     private @Nonnull TextView mPriceHints_30;
 
-    private @Nonnull IManageHolder mIManageHolder;
-
     private @Nonnull IManadges mIManadges;
+    private @Nonnull IManageHolder mIManageHolder;
+    private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull Context mContext;
 
     private int mHintsCount;
 
-    public HintsManager(@Nonnull Context context, View parentView)
+    public HintsManager(@Nonnull Context context, @Nonnull SherlockFragment fragment, View parentView)
     {
         mContext = context;
 
@@ -49,6 +53,10 @@ public class HintsManager implements View.OnClickListener
         mIManageHolder = mIManadges.getManadgeHolder();
         mIManageHolder.registerHandlerPriceProductsChange(mReloadPriceProductHandler);
         mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+        mIManageHolder.registerProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+        mIManageHolder.registerProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
+        mIManageHolder.registerProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
+        mICrosswordFragment = (ICrosswordFragment) fragment;
 
         mHintsCountView = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_count);
 
@@ -118,29 +126,44 @@ public class HintsManager implements View.OnClickListener
     };
 
     @Nonnull
-    IListener<String> mManadgeBuyProductIListener = new IListener<String>() {
+    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>() {
         @Override
-        public void handle(@Nullable String hintsId) {
+        public void handle(@Nullable Bundle bundle) {
 
             int count = 0;
-            if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            final @Nonnull String googleId = ManageHolder.extractFromBundleGoogleId(bundle);
+            if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
             {
                 count = 10;
             }
-            else if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+            else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
             {
                 count = 20;
             }
-            else if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+            else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
             {
                 count = 30;
             }
-//            else if(hintsId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
 //            {
 //            }
             else
                 return;
-            setHintsCount(getHintsCount()+count);
+
+            HintsModel hintsModel = mICrosswordFragment.getHintsModel();
+            if(hintsModel != null)
+            {
+                hintsModel.changeHints(count, new IListenerVoid() {
+                    @Override
+                    public void handle() {
+
+                        // Меняем состояние товара;
+                        mIManageHolder.productBuyOnServer(googleId);
+                    }
+                });
+
+                setHintsCount(getHintsCount()+count);
+            }
         }
     };
 }

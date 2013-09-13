@@ -1,6 +1,7 @@
 package com.ltst.prizeword.manadges;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 
@@ -17,6 +18,12 @@ public interface IManageHolder {
     void buyProduct(@Nonnull String googleId);
     void buyCrosswordSet(@Nonnull String crosswordSetServerId);
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
-    void registerHandlerBuyProductEvent(@Nonnull IListener<String,String,String> handler);
+    void registerHandlerBuyProductEvent(@Nonnull IListener<Bundle> handler);
+    void registerProduct(@Nonnull String googleId);
     String getPriceProduct(@Nonnull String googleId);
+    void productBuyOnGooglePlay(@Nonnull String googleId);
+    void productBuyOnServer(@Nonnull String googleId);
+    void reloadInventory();
 }
+
+

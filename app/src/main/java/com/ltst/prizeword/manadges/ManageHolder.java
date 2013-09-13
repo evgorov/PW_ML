@@ -3,6 +3,7 @@ package com.ltst.prizeword.manadges;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.android.billing.Base64;
 import com.android.billing.Base64DecoderException;
@@ -12,10 +13,6 @@ import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.app.SharedPreferencesValues;
-import com.ltst.prizeword.crossword.model.HintsModel;
-import com.ltst.prizeword.crossword.model.Puzzle;
-import com.ltst.prizeword.crossword.model.PuzzleSet;
-import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -30,7 +27,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -41,49 +37,12 @@ import javax.annotation.Nullable;
  */
 public class ManageHolder implements IManageHolder, IIabHelper {
 
-//    public enum ManadgeProduct{
-//        hints10,
-//        hints20,
-//        hints30,
-//        set_brilliant,
-//        set_gold,
-//        set_silver,
-//        set_silver2,
-//        set_free,
-//        test_success,
-//        test_cancel,
-//        test_refunded,
-//        test_unavailable
-//    };
+    final static public @Nonnull String BF_GOOGLE_ID = "ManageHolder.googleId";
+    final static public @Nonnull String BF_JSON = "ManageHolder.json";
+    final static public @Nonnull String BF_SIGNATURE = "ManageHolder.signature";
 
 //    private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
     private final @Nonnull String APP_GOOGLE_PLAY_ID = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtspobFVSi6fZ6L3q5l64JVVcJaK19gVWllXQi5FxaN1V0Yti84O+Xzuw7fWWnrgleKLRNSMPrOd/rQrDAHhEm9kk7gq0PUzLwOzpqgnvWa9fsvQVc5jOi69O7B2Vn+KftNQ+VXReFXpEp4IA6DKIu3f0gNqha/szA2eq1uDyO+MXtU9Kpz2XeAedpVNSMn9OEDR2U4rN39GUqumg0NwidbpCkfhbmSGYoJOPAUOIXf5J1YIeR75pBV2GCUiT4d8fCGCv/UMunTbNkI+BjDov/hmzU4njk1sIlSSpz0a9pM4v6Q2dIrrKIrOsjSI7r+c/C2U2dqviAUZ96tYDS+bp7wIDAQAB";
-
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT      = "buy_set_brilliant";
-////    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "buy_set_gold";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_GOLD           = "set.golden.test.3";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER         = "buy_set_silver";
-//    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2        = "buy_set_silver2";
-//    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
-//    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
-//    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
-//    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
-//
-//
-//    static private final int REQUEST_GOOGLE_PLAY_HINTS_10              = 100;
-//    static private final int REQUEST_GOOGLE_PLAY_HINTS_20              = 101;
-//    static private final int REQUEST_GOOGLE_PLAY_HINTS_30              = 102;
-//    static private final int REQUEST_GOOGLE_PLAY_SET_BRILLIANT         = 103;
-//    static private final int REQUEST_GOOGLE_PLAY_SET_GOLD              = 104;
-//    static private final int REQUEST_GOOGLE_PLAY_SET_SILVER            = 105;
-//    static private final int REQUEST_GOOGLE_PLAY_SET_SILVER2           = 106;
-//    static private final int REQUEST_GOOGLE_TEST_PRODUCT_SUCCESS       = 107;
-//    static private final int REQUEST_GOOGLE_TEST_PRODUCT_CANCEL        = 108;
-//    static private final int REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED      = 109;
-//    static private final int REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE   = 200;
 
     private @Nonnull IabHelper mHelper;
     private @Nonnull Activity mActivity;
@@ -91,13 +50,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull IManadges mIManadges;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
-    private @Nonnull HashMap<String/*googleId*/,String/*price*/> mPrices;
     private @Nonnull List<String/*googleId*/> mGoogleIdContainer;
     private @Nonnull List<IListenerVoid/*googleId*/> mHandlerReloadPriceList;
-    private @Nonnull List<IListener<String,String,String>> mHandlerBuyProductEventList;
+    private @Nonnull List<IListener<Bundle>> mHandlerBuyProductEventList;
     private @Nonnull String mSessionKey;
-    private @Nonnull HintsModel mHintsModel;
-    private @Nonnull PuzzleSetModel mPuzzleSetModel;
 
     private int REQUERT_CODE_COUNTER;
 
@@ -108,9 +64,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mIManadges = (IManadges) activity;
         mBcConnector = bcConnector;
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
-        mPrices = new HashMap<String, String>();
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
-        mHandlerBuyProductEventList = new ArrayList<IListener<String,String,String>>();
+        mHandlerBuyProductEventList = new ArrayList<IListener<Bundle>>();
         mGoogleIdContainer = new ArrayList<String>();
         REQUERT_CODE_COUNTER = 0;
     }
@@ -138,29 +93,25 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 else
                 {
                     // Получаем цены с сервера;
-                    reloadPoductsFromGooglePlay();
+                    reloadInventory();
                     // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 //                    Log.d("Setup successful. Querying inventory.");
 //                    mHelper.queryInventoryAsync(mGotInventoryListener);
                 }
             }
         });
-        reloadProductsFromDataBase();
+        reloadInventoryFromDataBase();
     }
 
     @Override
     public void resume()
     {
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
-            mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
     }
 
     @Override
     public void pause()
     {
-        mHintsModel.close();
-        mPuzzleSetModel.close();
     }
 
     public void dispose()
@@ -173,79 +124,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mIPurchaseSetModel.close();
     }
 
-//    static @Nonnull String extractProductId(ManageHolder.ManadgeProduct product)
-//    {
-//        switch (product)
-//        {
-//            case hints10:           return GOOGLE_PLAY_PRODUCT_ID_HINTS_10;
-//            case hints20:           return GOOGLE_PLAY_PRODUCT_ID_HINTS_20;
-//            case hints30:           return GOOGLE_PLAY_PRODUCT_ID_HINTS_30;
-//            case set_brilliant:     return GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT;
-//            case set_gold:          return GOOGLE_PLAY_PRODUCT_ID_SET_GOLD;
-//            case set_silver:        return GOOGLE_PLAY_PRODUCT_ID_SET_SILVER;
-//            case set_silver2:       return GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2;
-//            case test_success:      return GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
-//            case test_cancel:       return GOOGLE_PLAY_TEST_PRODUCT_CANCEL;
-//            case test_refunded:     return GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
-//            case test_unavailable:  return GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
-//            default: break;
-//        }
-//        return null;
-//    }
-
-//    static int extractProductRequest(ManageHolder.ManadgeProduct product)
-//    {
-//        switch (product)
-//        {
-//            case hints10:           return REQUEST_GOOGLE_PLAY_HINTS_10;
-//            case hints20:           return REQUEST_GOOGLE_PLAY_HINTS_20;
-//            case hints30:           return REQUEST_GOOGLE_PLAY_HINTS_30;
-//            case set_brilliant:     return REQUEST_GOOGLE_PLAY_SET_BRILLIANT;
-//            case set_gold:          return REQUEST_GOOGLE_PLAY_SET_GOLD;
-//            case set_silver:        return REQUEST_GOOGLE_PLAY_SET_SILVER;
-//            case set_silver2:       return REQUEST_GOOGLE_PLAY_SET_SILVER2;
-//            case test_success:           return REQUEST_GOOGLE_TEST_PRODUCT_SUCCESS;
-//            case test_cancel:       return REQUEST_GOOGLE_TEST_PRODUCT_CANCEL;
-//            case test_refunded:     return REQUEST_GOOGLE_TEST_PRODUCT_REFUNDED;
-//            case test_unavailable:  return REQUEST_GOOGLE_TEST_PRODUCT_UNAVAILABLE;
-//            default: break;
-//        }
-//        return 0;
-//    }
-
-//    static @Nonnull ManageHolder.ManadgeProduct extractProduct(@Nonnull String googleId)
-//    {
-//        if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//            return ManadgeProduct.hints10;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//            return ManadgeProduct.hints20;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//            return ManadgeProduct.hints30;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_BRILLIANT))
-//            return ManadgeProduct.set_brilliant;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_GOLD))
-//            return ManadgeProduct.set_gold;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER))
-//            return ManadgeProduct.set_silver;
-//        else if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_SET_SILVER2))
-//            return ManadgeProduct.set_silver2;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//            return ManadgeProduct.test_success;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//            return ManadgeProduct.test_cancel;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//            return ManadgeProduct.test_refunded;
-//        else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//            return ManadgeProduct.test_unavailable;
-//        return null;
-//    }
-
     @Override
     public void buyCrosswordSet(@Nonnull String crosswordSetServerId)
     {
         buyProduct(crosswordSetServerId);
     }
-
 
     public void buyProduct(@Nonnull String googleId)
     {
@@ -262,42 +145,43 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         }
     }
 
+    @Override
     public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
     {
         mHandlerReloadPriceList.add(handler);
     }
 
-    public void registerHandlerBuyProductEvent(@Nonnull IListener<String,String,String> handler)
+    @Override
+    public void registerHandlerBuyProductEvent(@Nonnull IListener<Bundle> handler)
     {
         mHandlerBuyProductEventList.add(handler);
     }
 
+    @Override
     public void registerProduct(@Nonnull String googleId)
     {
+        if(googleId == Strings.EMPTY || mGoogleIdContainer.contains(googleId))
+            return;
         mGoogleIdContainer.add(googleId);
     }
 
-    public void reloadProductsFromDataBase()
+    public void reloadInventoryFromDataBase()
     {
         mIPurchaseSetModel.reloadPurchases(mReloadPurchaseFromDataBase);
     }
 
-    public void reloadPoductsFromGooglePlay()
+    public void reloadInventory()
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-        List<String> additionalSkuList = new ArrayList<String>();
-        for(String googleId : mGoogleIdContainer)
-        {
-            additionalSkuList.add(googleId);
-        }
-        mHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
+        mHelper.queryInventoryAsync(true, mGoogleIdContainer, mQueryFinishedListener);
     }
 
     public String getPriceProduct(@Nonnull String googleId)
     {
-        if(!mPrices.containsKey(googleId))
+        com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
+        if(purchase==null)
             return null;
-        return mPrices.get(googleId);
+        return purchase.price;
     }
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener()
@@ -315,8 +199,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 {
                     if(inventory.hasDetails(googleId))
                     {
-                        @Nonnull String price = inventory.getSkuDetails(googleId).getPrice();
-                        mPrices.put(googleId, price);
                         @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
                         purchase.price = inventory.getSkuDetails(googleId).getPrice();
                         purchase.clientId = UUIDTools.generateStringUUID();
@@ -381,8 +263,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 if(inventory.hasDetails(googleId))
                 {
-                    @Nonnull String price = inventory.getSkuDetails(googleId).getPrice();
-                    mPrices.put(googleId, price);
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
                     purchase.price = inventory.getSkuDetails(googleId).getPrice();
                     purchase.clientId = UUIDTools.generateStringUUID();
@@ -439,126 +319,46 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             product.clientId = responseClientId;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
-            ManageHolder.ManadgeProduct prod = extractProduct(responseGoogleId);
-            if(prod !=null)
-            {
-                switch (prod)
-                {
-                    case hints10:
-                    case hints20:
-                    case hints30:
-                        changeHintsCount(prod);
-                        break;
-                    case set_brilliant:
-                    case set_gold:
-                    case set_silver:
-                    case set_silver2:
-                    case set_free:
-                    case test_success:
-                        changeCrosswordSet(prod, responseGoogleId, responseJson, responseSignature);
-                        break;
-//                    case test_success:
-//                        break;
-                    case test_cancel:
-                        break;
-                    case test_refunded:
-                        break;
-                    case test_unavailable:
-                        break;
-                    default:break;
-                }
-
-            }
+            // рассылаем уведомления, что продукт куплен на GooglePlay;
+            notifyBuyOnServer(responseGoogleId, responseJson, responseSignature);
         }
     };
 
-    private void changeHintsCount(final ManageHolder.ManadgeProduct prod)
+    @Override
+    public void productBuyOnGooglePlay(@Nonnull String googleId)
     {
-        int count = 0;
-        switch (prod)
-        {
-            case test_success:
-            case hints10:
-                count = 10;
-                break;
-            case hints20:
-                count = 20;
-                break;
-            case hints30:
-                count = 30;
-                break;
-            default:
-                return;
-        }
-
-        mHintsModel.changeHints(count, new IListenerVoid() {
-            @Override
-            public void handle() {
-
-                // Меняем состояние товара;
-                @Nonnull String googleId = extractProductId(prod);
-                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
-                product.googlePurchase = false;
-                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
-                // Рассылаем уведомления, что покупка прошла успешно;
-                mBuyProductEventHandler.handle(prod);
-            }
-        });
+        // Меняем состояние товара;
+        @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
+        product.googlePurchase = true;
+        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
     }
 
-    private void changeCrosswordSet(final @Nonnull ManageHolder.ManadgeProduct prod,
-                                    @Nonnull String responseGoogleId,
-                                    @Nonnull String responseJson,
-                                    @Nonnull String responseSignature)
+    @Override
+    public void productBuyOnServer(@Nonnull String googleId)
     {
-        switch (prod)
-        {
-            case test_success:
-            case set_brilliant:
-                break;
-            case set_gold:
-                break;
-            case set_silver:
-                break;
-            case set_silver2:
-                break;
-            case set_free:
-                break;
-            default:
-                return;
-        }
-
-        mPuzzleSetModel.buyCrosswordSet(responseGoogleId, responseJson, responseSignature, new IListenerVoid() {
-
-            @Override
-            public void handle() {
-
-                @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-                @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
-
-                // Меняем состояние товара;
-                @Nonnull String googleId = extractProductId(prod);
-                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
-                product.googlePurchase = false;
-                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
-                // Рассылаем уведомления, что покупка прошла успешно;
-                mBuyProductEventHandler.handle(prod);
-
-            }
-        });
-
+        // Меняем состояние товара;
+        @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(googleId);
+        product.googlePurchase = false;
+        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
     }
 
-    @Nonnull IListener<ManageHolder.ManadgeProduct> mBuyProductEventHandler = new IListener<ManadgeProduct>() {
+    private void notifyBuyOnServer(final @Nonnull String responseGoogleId,
+                                   final @Nonnull String responseJson,
+                                   final @Nonnull String responseSignature)
+    {
+        // Рассылаем уведомления, что покупка прошла успешно;
+        @Nonnull Bundle bundle = packToBundle(responseGoogleId,responseJson,responseSignature);
+        mBuyProductEventHandler.handle(bundle);
+    }
+
+    @Nonnull IListener<Bundle> mBuyProductEventHandler = new IListener<Bundle>() {
         @Override
-        public void handle(@Nullable ManadgeProduct manadgeProduct) {
+        public void handle(@Nullable Bundle bundle) {
 
-            for(IListener<ManageHolder.ManadgeProduct> handle : mHandlerBuyProductEventList)
+            for(IListener<Bundle> handle : mHandlerBuyProductEventList)
             {
                 Log.d("PRICE SEND DONE!");
-                handle.handle(manadgeProduct);
+                handle.handle(bundle);
             }
         }
     };
@@ -610,18 +410,31 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         return false;
     }
 
-//    public ManageHolder.ManadgeProduct extractManadgeProductFromPuzzleSetType(PuzzleSetModel.PuzzleSetType type)
-//    {
-//        switch (type)
-//        {
-//            case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
-//            case GOLD: return ManageHolder.ManadgeProduct.set_gold;
-//            case SILVER: return ManageHolder.ManadgeProduct.set_silver;
-//            case SILVER2: return ManageHolder.ManadgeProduct.set_silver2;
-//            case FREE: return ManageHolder.ManadgeProduct.set_free;
-//            default:break;
-//        }
-//        return null;
+    static public Bundle packToBundle(@Nonnull String googleId, @Nonnull String json, @Nonnull String signature)
+    {
+        @Nonnull Bundle bundle = new Bundle();
+        bundle.putString(BF_GOOGLE_ID, googleId);
+        bundle.putString(BF_JSON, json);
+        bundle.putString(BF_SIGNATURE, signature);
+        return bundle;
+    }
+
+    static public @Nonnull String extractFromBundleGoogleId(@Nonnull Bundle bundle)
+    {
+        @Nonnull String googleId = bundle.getString(BF_GOOGLE_ID);
+        return googleId;
+    }
+
+    static public @Nonnull String extractFromBundleJson(@Nonnull Bundle bundle)
+    {
+        @Nonnull String googleId = bundle.getString(BF_JSON);
+        return googleId;
+    }
+
+    static public @Nonnull String extractFromBundleSignature(@Nonnull Bundle bundle)
+    {
+        @Nonnull String googleId = bundle.getString(BF_SIGNATURE);
+        return googleId;
     }
 
 }
