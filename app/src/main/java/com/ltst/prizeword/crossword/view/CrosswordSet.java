@@ -119,8 +119,8 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(mPuzzleSetType);
-//                    ManageHolder.ManadgeProduct product = ManageHolder.ManadgeProduct.test_success;
+//                    ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(mPuzzleSetType);
+                    ManageHolder.ManadgeProduct product = ManageHolder.ManadgeProduct.test_success;
                     mIManageHolder.buyCrosswordSet(product, mSetServerId);
                 }
             }

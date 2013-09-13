@@ -16,7 +16,6 @@ import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.crossword.view.ICrosswordFragment;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -247,19 +246,21 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
     public void buyProduct(ManageHolder.ManadgeProduct product)
     {
-        // Start popup window. Покупка;
-        @Nonnull String product_id = extractProductId(product);
-        int  product_request = extractProductRequest(product);
-        @Nonnull String token = UUIDTools.generateStringUUID();
-        if(product_id!=null && product_request!=0){
-            try {
-                mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
-            } catch (Exception e)
-            {
-                Log.e(e.getMessage());
-            }
-        }
+        mHelper.queryInventoryAsync(mGotInventoryListener);
+
+//        // Start popup window. Покупка;
+//        @Nonnull String product_id = extractProductId(product);
+//        int  product_request = extractProductRequest(product);
+//        @Nonnull String token = UUIDTools.generateStringUUID();
+//        if(product_id!=null && product_request!=0){
+//            try {
+//                mHelper.flagEndAsync();
+//                mHelper.launchPurchaseFlow(mActivity, product_id, product_request, mPurchaseFinishedListener, token);
+//            } catch (Exception e)
+//            {
+//                Log.e(e.getMessage());
+//            }
+//        }
     }
 
     public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)

@@ -117,7 +117,7 @@ public class HintsManager implements View.OnClickListener
             int count = 0;
             switch (manadgeProduct)
             {
-                case test_success:
+//                case test_success:
                 case hints10:
                     count = 10;
                     break;

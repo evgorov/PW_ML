@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +23,6 @@ import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
-import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.news.INewsModel;
@@ -35,7 +33,6 @@ import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.handlers.IListenerInt;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.Calendar;
@@ -144,7 +141,7 @@ public class CrosswordsFragment extends SherlockFragment
 //            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
-        updateCurrentSet();
+        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
@@ -360,7 +357,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void updateCurrentSet() {
-        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
     }
 
     @Override public void notifySwipe(SwipeMethod swipe)
