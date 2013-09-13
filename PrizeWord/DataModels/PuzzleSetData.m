@@ -152,10 +152,6 @@
 
 -(int)score
 {
-    if (self.type.intValue == PUZZLESET_FREE)
-    {
-        return 0;
-    }
     int value = 0;
     for (PuzzleData * puzzle in self.puzzles) {
         value += [puzzle.score intValue];
@@ -173,7 +169,7 @@
     return [[self.puzzles allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         PuzzleData * puzzle1 = obj1;
         PuzzleData * puzzle2 = obj2;
-        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id options:NSLiteralSearch|NSNumericSearch|NSCaseInsensitiveSearch];
+        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id options:NSLiteralSearch|NSCaseInsensitiveSearch];
     }];
 }
 
