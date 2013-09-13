@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.manadges.IManageHolder;
-import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
@@ -18,6 +17,15 @@ import javax.annotation.Nullable;
 
 public class HintsManager implements View.OnClickListener
 {
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
+    static private final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+
+
     private @Nonnull TextView mHintsCountView;
     private @Nonnull View mBuyHints_10;
     private @Nonnull View mBuyHints_20;
@@ -68,13 +76,13 @@ public class HintsManager implements View.OnClickListener
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
 //              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.test_success);
-              mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints10);
+              mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
-                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints20);
+                mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
-                mIManageHolder.buyProduct(ManageHolder.ManadgeProduct.hints30);
+                mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
                 break;
         }
     }
@@ -85,9 +93,9 @@ public class HintsManager implements View.OnClickListener
 
     private void setPrice()
     {
-        mPriceHints_10.setText(mIManageHolder.getPriceProduct(ManageHolder.ManadgeProduct.hints10));
-        mPriceHints_20.setText(mIManageHolder.getPriceProduct(ManageHolder.ManadgeProduct.hints20));
-        mPriceHints_30.setText(mIManageHolder.getPriceProduct(ManageHolder.ManadgeProduct.hints30));
+        mPriceHints_10.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10));
+        mPriceHints_20.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20));
+        mPriceHints_30.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_30));
     }
 
     public int getHintsCount()
@@ -110,27 +118,28 @@ public class HintsManager implements View.OnClickListener
     };
 
     @Nonnull
-    IListener<ManageHolder.ManadgeProduct> mManadgeBuyProductIListener = new IListener<ManageHolder.ManadgeProduct>() {
+    IListener<String> mManadgeBuyProductIListener = new IListener<String>() {
         @Override
-        public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
+        public void handle(@Nullable String hintsId) {
 
             int count = 0;
-            switch (manadgeProduct)
+            if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
             {
-//                case test_success:
-                case hints10:
-                    count = 10;
-                    break;
-                case hints20:
-                    count = 20;
-                    break;
-                case hints30:
-                    count = 30;
-                    break;
-                default:
-                    return;
+                count = 10;
             }
-
+            else if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+            {
+                count = 20;
+            }
+            else if(hintsId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+            {
+                count = 30;
+            }
+//            else if(hintsId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            {
+//            }
+            else
+                return;
             setHintsCount(getHintsCount()+count);
         }
     };

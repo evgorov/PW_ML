@@ -14,9 +14,9 @@ import javax.annotation.Nonnull;
  */
 public interface IManageHolder {
 
-    void buyProduct(ManageHolder.ManadgeProduct product);
-    void buyCrosswordSet(@Nonnull ManageHolder.ManadgeProduct product, @Nonnull String crosswordSetServerId);
+    void buyProduct(@Nonnull String googleId);
+    void buyCrosswordSet(@Nonnull String crosswordSetServerId);
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
-    void registerHandlerBuyProductEvent(@Nonnull IListener<ManageHolder.ManadgeProduct> handler);
-    String getPriceProduct(ManageHolder.ManadgeProduct product);
+    void registerHandlerBuyProductEvent(@Nonnull IListener<String,String,String> handler);
+    String getPriceProduct(@Nonnull String googleId);
 }

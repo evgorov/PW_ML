@@ -32,6 +32,11 @@ import javax.annotation.Nullable;
  */
 public class CrosswordSet {
 
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull Context mContext;
     private @Nonnull LayoutInflater mInflater;
@@ -119,9 +124,8 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-//                    ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(mPuzzleSetType);
-                    ManageHolder.ManadgeProduct product = ManageHolder.ManadgeProduct.test_success;
-                    mIManageHolder.buyCrosswordSet(product, mSetServerId);
+//                    mIManageHolder.buyCrosswordSet(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+                    mIManageHolder.buyCrosswordSet(mSetServerId);
                 }
             }
         });
@@ -151,8 +155,7 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
-        ManageHolder.ManadgeProduct product = extractManadgeProductFromPuzzleSetType(data.mType);
-        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(product);
+        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
         pBuyPrice.setText(mBuyPrice);
         mPuzzleSetType = data.mType;
 
@@ -293,40 +296,12 @@ public class CrosswordSet {
     }
 
     private @Nonnull
-    IListener<ManageHolder.ManadgeProduct> mManadgeBuyProductIListener = new IListener<ManageHolder.ManadgeProduct>() {
+    IListener<String> mManadgeBuyProductIListener = new IListener<String>() {
         @Override
-        public void handle(@Nullable ManageHolder.ManadgeProduct manadgeProduct) {
+        public void handle(@Nullable String gooleId) {
             mICrosswordFragment.updateCurrentSet();
         }
     };
-
-    private ManageHolder.ManadgeProduct extractManadgeProductFromPuzzleSetType(PuzzleSetModel.PuzzleSetType type)
-    {
-        switch (type)
-        {
-            case BRILLIANT: return ManageHolder.ManadgeProduct.set_brilliant;
-            case GOLD:      return ManageHolder.ManadgeProduct.set_gold;
-            case SILVER:    return ManageHolder.ManadgeProduct.set_silver;
-            case SILVER2:   return ManageHolder.ManadgeProduct.set_silver2;
-            case FREE:      return ManageHolder.ManadgeProduct.set_free;
-            default:break;
-        }
-        return null;
-    }
-
-    private PuzzleSetModel.PuzzleSetType extractPuzzleSetTypeFromManadgeProduct(ManageHolder.ManadgeProduct product)
-    {
-        switch (product)
-        {
-            case set_brilliant: return PuzzleSetModel.PuzzleSetType.BRILLIANT;
-            case set_gold:      return PuzzleSetModel.PuzzleSetType.GOLD;
-            case set_silver:    return PuzzleSetModel.PuzzleSetType.SILVER;
-            case set_silver2:   return PuzzleSetModel.PuzzleSetType.SILVER2;
-            case set_free:      return PuzzleSetModel.PuzzleSetType.FREE;
-            default:break;
-        }
-        return null;
-    }
 
     public enum CrosswordSetType{
         CURRENT,
