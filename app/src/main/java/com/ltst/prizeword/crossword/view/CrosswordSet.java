@@ -60,8 +60,7 @@ public class CrosswordSet {
     private @Nonnull LinearLayout pCurrentCrosswordContaiter;
     private @Nonnull TextView pRatioText;
     private @Nonnull TextView pProgressText;
-    private @Nonnull
-    CustomProgressBar pProgress;
+    private @Nonnull CustomProgressBar pProgress;
     private @Nonnull TextView pScoreText;
 
     private @Nonnull LinearLayout pBuyCrosswordContaiter;
@@ -92,6 +91,7 @@ public class CrosswordSet {
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
         mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+        mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
         mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
@@ -164,8 +164,7 @@ public class CrosswordSet {
 //        mRootView.setVisibility(View.VISIBLE);
         mSetServerId = data.mServerId;
         mIManageHolder.registerProduct(mSetServerId);
-        @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
-        pBuyPrice.setText(mBuyPrice);
+        mManadgePriceListener.handle();
         mPuzzleSetType = data.mType;
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
@@ -334,7 +333,17 @@ public class CrosswordSet {
         }
     };
 
-    public enum CrosswordSetType{
+    private @Nonnull
+    IListenerVoid mManadgePriceListener = new IListenerVoid() {
+
+        @Override
+        public void handle() {
+            @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
+            pBuyPrice.setText(mBuyPrice);
+        }
+    };
+
+        public enum CrosswordSetType{
         CURRENT,
         ARCHIVE
     }
