@@ -233,7 +233,7 @@ public class CrosswordFragmentHolder
         if (!mListCrosswordSet.containsKey(data.mId))
         {
             mListCrosswordSet.put(data.mId, crosswordSet);
-            crosswordSetMonth.addCrosswordSet(data.mType, crosswordSet);
+            crosswordSetMonth.addCrosswordSet(data, crosswordSet);
         }
         if (!mListCrosswordSetMonth.containsKey(data.mMonth))
         {
@@ -257,6 +257,12 @@ public class CrosswordFragmentHolder
                 }
             }
         }
+
+        if(crosswordSetMonth != null)
+        {
+            crosswordSetMonth.setSortSets();
+        }
+
     }
 
     private void addBadge(@Nonnull Puzzle puzzle)

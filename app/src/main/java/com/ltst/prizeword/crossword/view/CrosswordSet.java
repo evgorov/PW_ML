@@ -226,6 +226,7 @@ public class CrosswordSet {
             mCrosswordSetType = CrosswordSetType.CURRENT;
             pTitleImage.setVisibility(View.VISIBLE);
             pSwitcher.setVisibility(View.GONE);
+//            pMonthBackground.setVisibility(View.GONE);
 
             if(mSetServerId == null)
             {
