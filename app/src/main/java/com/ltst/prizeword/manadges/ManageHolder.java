@@ -93,7 +93,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 else
                 {
                     // Получаем цены с сервера;
-                    reloadInventory();
+//                    reloadInventory();
                     // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 //                    Log.d("Setup successful. Querying inventory.");
 //                    mHelper.queryInventoryAsync(mGotInventoryListener);
@@ -272,9 +272,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             // сохраняем цены в базу;
             mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
-
-            // уведзобляем подписчиков, что пришли цены;
-            mPriceEventHandler.handle();
         }
     };
 
@@ -387,7 +384,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Nonnull IListenerVoid mSavePurchasesToDataBase = new IListenerVoid() {
         @Override
         public void handle() {
-
+            // уведзобляем подписчиков, что пришли цены;
+            mPriceEventHandler.handle();
         }
     };
 
