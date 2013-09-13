@@ -364,7 +364,14 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void updateCurrentSet() {
-        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mPuzzleSetModel.updateTotalDataByDb(new IListenerVoid() {
+            @Override
+            public void handle() {
+                createCrosswordPanel();
+                skipProgressBar();
+            }
+        });
     }
 
     @Override

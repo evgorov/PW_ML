@@ -83,8 +83,8 @@ public class HintsManager implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-              mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
-//              mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+//              mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+              mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
                 mIManageHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
@@ -144,10 +144,10 @@ public class HintsManager implements View.OnClickListener
             {
                 count = 30;
             }
-            else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-            {
-                count = 10;
-            }
+//            else if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            {
+//                count = 10;
+//            }
             else
                 return;
 
