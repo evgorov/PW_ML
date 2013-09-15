@@ -147,7 +147,11 @@
     {
         return 1;
     }
-    return (float)[self solved] / self.puzzles_count.intValue;
+    float value = 0;
+    for (PuzzleData * puzzle in self.puzzles) {
+        value += puzzle.progress;
+    }
+    return value / self.puzzles_count.intValue;
 }
 
 -(int)score

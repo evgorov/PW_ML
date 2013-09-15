@@ -27,7 +27,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 -(void)initBougtSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
 -(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
 -(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
--(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved;
+-(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved andPercent:(float)percent;
 
 @end
 
@@ -212,7 +212,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _btnShowMore.hidden = NO;
     _lblPercent.hidden = NO;
     
-    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
+    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved andPercent:puzzleSetData.percent];
 
 /*
     if (puzzleSetData.type.intValue == PUZZLESET_FREE)
@@ -243,7 +243,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblPercent.hidden = NO;
     _imgScoreBg.hidden = NO;
     
-    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved];
+    [self initProgressWithPuzzlesCount:puzzleSetData.total puzzlesSolved:puzzleSetData.solved andPercent:puzzleSetData.percent];
     
     _imgStar.frame = CGRectIntegral(CGRectMake(_imgScoreBg.frame.origin.x + _imgStar.frame.size.width / 2, _imgStar.frame.origin.y, _imgStar.frame.size.width, _imgStar.frame.size.height));
     
@@ -291,7 +291,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
 }
 
--(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved
+-(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved andPercent:(float)progress
 {
     NSString * text = @"Разгадано ";
     CGSize textSize = [text sizeWithFont:_lblText1.font];
@@ -317,16 +317,12 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     {
         imgProgress = [imgProgress stretchableImageWithLeftCapWidth:(imageSize.width / 2 - 1) topCapHeight:(imageSize.height / 2 - 1)];
     }
-    float progress = 1;
-    if (count != 0)
-    {
-        progress = (float)solved / count;
-    }
+
     UIImageView * progressbar = [[UIImageView alloc] initWithFrame:CGRectMake(1, 1, (progressbarView.frame.size.width - 2) * progress, imageSize.height)];
     progressbar.image = imgProgress;
     [progressbarView addSubview:progressbar];
     
-    NSString * percentString = [NSString stringWithFormat:@" %d%%", (int)(100 * progress)];
+    NSString * percentString = [NSString stringWithFormat:@" %d%%", (int)round(100 * progress)];
     CGSize percentSize = [percentString sizeWithFont:_lblPercent.font];
     _lblPercent.frame = CGRectIntegral(CGRectMake(progressbarView.frame.origin.x + progressbarView.frame.size.width, _lblPercent.frame.origin.y, percentSize.width, percentSize.height));
     _lblPercent.text = percentString;
