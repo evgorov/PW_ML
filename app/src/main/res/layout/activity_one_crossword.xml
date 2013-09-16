@@ -1,33 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/gamefield_root_view"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <FrameLayout
+        android:id="@+id/gamefield_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
-    <LinearLayout
+        <LinearLayout
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".OneCrosswordActivity"
             android:orientation="vertical">
-        <!--<View android:layout_width="match_parent"-->
-        <!--android:layout_height="64dp"/>-->
+            <!--<View android:layout_width="match_parent"-->
+            <!--android:layout_height="64dp"/>-->
 
-
-        <FrameLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@drawable/navigationbar_bg">
 
-            <Button
+                <Button
                     android:id="@+id/header_stop_play_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:background="@drawable/header_stop_but"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/header_timer_textview"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -36,7 +39,7 @@
                     android:background="@drawable/header_timer_bg"
                     />
 
-            <Button
+                <Button
                     android:id="@+id/header_hint_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,25 +48,25 @@
                     android:background="@drawable/header_hint_but"
                     android:drawableLeft="@drawable/header_hint_draw"
                     />
-        </FrameLayout>
+            </FrameLayout>
 
-        <FrameLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
+            <FrameLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
 
-            <View
+                <View
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:layout_width="0px"
                     android:layout_height="0px"/>
 
-            <com.ltst.prizeword.crossword.view.PuzzleView
+                <com.ltst.prizeword.crossword.view.PuzzleView
                     android:id="@+id/puzzle_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     />
 
-            <FrameLayout
+                <FrameLayout
                     android:id="@+id/gamefild_pause_bg"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
@@ -73,7 +76,7 @@
                     android:visibility="gone"
                     >
 
-                <LinearLayout
+                    <LinearLayout
                         android:id="@+id/gamefild_pause_alert"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -82,7 +85,7 @@
                         android:layout_gravity="center_horizontal|top"
                         >
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:orientation="horizontal"
@@ -90,7 +93,7 @@
                             android:layout_gravity="center_vertical|center"
                             android:background="@drawable/gamefild_pause_progressbar_bg">
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/gamefield_progressbar_percent"
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
@@ -100,7 +103,7 @@
                                 android:text="0"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -108,7 +111,7 @@
                                 android:text="@string/gamefield_percent"
                                 />
 
-                        <LinearLayout
+                            <LinearLayout
                                 android:id="@+id/gamefield_progress_bg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -117,7 +120,7 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/gamefild_pause_progressbar_bg2">
 
-                            <LinearLayout
+                                <LinearLayout
                                     android:id="@+id/gamefield_progress_fg"
                                     android:layout_width="20dp"
                                     android:layout_height="wrap_content"
@@ -127,11 +130,11 @@
                                     android:layout_marginRight="1dp"
                                     android:background="@drawable/pause_progressbar"/>
 
+                            </LinearLayout>
+
                         </LinearLayout>
 
-                    </LinearLayout>
-
-                    <TextView
+                        <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:text="@string/gamefield_pause"
@@ -140,7 +143,7 @@
                             style="@style/GamefieldPauseText"
                             />
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:orientation="horizontal"
@@ -148,13 +151,13 @@
                             android:layout_marginTop="25dp"
                             android:background="@drawable/gamefild_pause_textview_bg">
 
-                        <LinearLayout
+                            <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:orientation="vertical"
                                 >
 
-                            <TextView
+                                <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center_vertical|left"
@@ -163,7 +166,7 @@
                                     style="@style/GamefieldNearSwitchText"
                                     android:text="@string/gamefield_sound"/>
 
-                            <TextView
+                                <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:layout_gravity="center_vertical|left"
@@ -173,16 +176,16 @@
                                     android:text="@string/gamefield_music"/>
 
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                        <LinearLayout
+                            <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:orientation="vertical"
                                 android:layout_marginLeft="80dp"
                                 >
 
-                            <ToggleButton
+                                <ToggleButton
                                     android:id="@+id/pause_sounds_switcher"
                                     android:layout_width="85dp"
                                     android:layout_height="43dp"
@@ -191,7 +194,7 @@
                                     android:background="@drawable/menu_switcher"
                                     android:layout_marginTop="2dp"/>
 
-                            <ToggleButton
+                                <ToggleButton
                                     android:id="@+id/pause_music_switcher"
                                     android:layout_width="85dp"
                                     android:layout_height="43dp"
@@ -200,10 +203,10 @@
                                     android:background="@drawable/menu_switcher"
                                     android:layout_marginTop="2dp"/>
 
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -211,14 +214,14 @@
                             android:layout_marginTop="20dp"
                             >
 
-                        <Button
+                            <Button
                                 android:id="@+id/gamefild_menu_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal|bottom"
                                 android:background="@drawable/gamefild_pause_menu_but"/>
 
-                        <Button
+                            <Button
                                 android:id="@+id/gamefild_next_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -226,41 +229,36 @@
                                 android:layout_gravity="center_horizontal|bottom"
                                 android:background="@drawable/gamefild_pause_next_but"
                                 />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
+                </FrameLayout>
 
-            <ImageView
+                <ImageView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:src="@drawable/navigationbar_bg_shadow"/>
-        </FrameLayout>
+            </FrameLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@drawable/forget_bg"
-            >
-
-        <FrameLayout
+            <FrameLayout
                 android:id="@+id/final_screen"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:clickable="true"
+                android:background="@drawable/forget_bg"
                 >
 
-            <FrameLayout
+                <FrameLayout
                     android:id="@+id/final_alert"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     >
 
-                <LinearLayout
+                    <LinearLayout
                         android:id="@+id/final_share_alert"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -269,7 +267,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="180dp">
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -277,23 +275,23 @@
                             android:layout_marginTop="75dp"
                             >
 
-                        <Button
+                            <Button
                                 android:id="@+id/final_share_fb_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/final_share_fb_but"/>
 
-                        <Button
+                            <Button
                                 android:id="@+id/final_share_vk_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
                                 android:background="@drawable/final_share_vk_but"
                                 />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
@@ -301,7 +299,7 @@
                         android:background="@drawable/final_bg"
                         >
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:orientation="horizontal"
@@ -309,7 +307,7 @@
                             android:layout_marginLeft="58dp"
                             >
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/final_score"
                                 style="@style/FinalValueScoreText"
                                 android:layout_width="40dp"
@@ -320,7 +318,7 @@
                                 android:text="0"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/final_score_type"
                                 style="@style/FinalNameScoreText"
                                 android:layout_width="50dp"
@@ -331,7 +329,7 @@
                                 android:text="очков"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/final_bonus"
                                 style="@style/FinalValueScoreText"
                                 android:layout_width="40dp"
@@ -342,7 +340,7 @@
                                 android:text="0"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/final_bonus_type"
                                 style="@style/FinalNameScoreText"
                                 android:layout_width="50dp"
@@ -351,9 +349,9 @@
                                 android:layout_marginLeft="4dp"
                                 android:text="очка"
                                 />
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
+                        <LinearLayout
                             android:id="@+id/final_flip_number"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
@@ -362,39 +360,39 @@
                             android:layout_marginLeft="39dp"
                             >
 
-                        <TextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/Final_number_text"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/Final_number_text"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/Final_number_text"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/Final_number_text"
                                 />
 
-                        <TextView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 style="@style/Final_number_text"
                                 />
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -402,14 +400,14 @@
                             android:layout_marginTop="13dp"
                             >
 
-                        <Button
+                            <Button
                                 android:id="@+id/final_menu_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal|bottom"
                                 android:background="@drawable/gamefild_pause_menu_but"/>
 
-                        <Button
+                            <Button
                                 android:id="@+id/final_next_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -417,15 +415,14 @@
                                 android:layout_gravity="center_horizontal|bottom"
                                 android:background="@drawable/gamefild_pause_next_but"
                                 />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                </FrameLayout>
 
             </FrameLayout>
 
-        </FrameLayout>
-    </LinearLayout>
-
-    <RelativeLayout
+        <RelativeLayout
             android:id="@+id/crossword_progressBar"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -435,7 +432,7 @@
             android:focusableInTouchMode="true"
             >
 
-        <ProgressBar
+            <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -443,6 +440,7 @@
                 android:visibility="visible"
                 style="?android:attr/progressBarStyleLarge"
                 />
-    </RelativeLayout>
+        </RelativeLayout>
 
-</FrameLayout>
+    </FrameLayout>
+</LinearLayout>
