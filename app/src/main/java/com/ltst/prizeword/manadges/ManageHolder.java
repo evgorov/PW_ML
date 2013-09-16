@@ -13,8 +13,10 @@ import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.view.HintsManager;
 import com.ltst.prizeword.tools.UUIDTools;
 
+import org.jetbrains.annotations.NotNull;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListener;
@@ -96,7 +98,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //                    reloadInventory();
                     // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 //                    Log.d("Setup successful. Querying inventory.");
-//                    mHelper.queryInventoryAsync(mGotInventoryListener);
+                    // Получаем список товаров, которые были куплены пользователем;
+                    mHelper.queryInventoryAsync(mGotInventoryListener);
                 }
             }
         });
@@ -194,20 +197,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-                @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
-                for(@Nonnull String googleId : mGoogleIdContainer)
+                // Восстанавливаем покупку подсказок, если по какой-дибо причине это небыло сделано ранее;
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
                 {
-                    if(inventory.hasDetails(googleId))
-                    {
-                        @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
-                        purchase.price = inventory.getSkuDetails(googleId).getPrice();
-                        purchase.clientId = UUIDTools.generateStringUUID();
-                        purchases.add(purchase);
-                    }
+                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10), mConsumeFinishedListener);
                 }
-
-                // сохраняем цены в базу;
-                mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+                {
+                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20), mConsumeFinishedListener);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+                {
+                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30), mConsumeFinishedListener);
+                }
             }
         }
     };
@@ -247,16 +249,15 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 return;
             }
 
-////            Восстанавливаем возможность сделать повторную покупку продукта;
-//            Purchase pc = null;
-//            List<Purchase> lst = new ArrayList<Purchase>(3);
-//            pc = inventory.getPurchase(extractProductId(hints10));
-//            lst.add(pc);
-//            pc = inventory.getPurchase(extractProductId(hints20));
-//            lst.add(pc);
-//            pc = inventory.getPurchase(extractProductId(hints30));
-//            lst.add(pc);
-//            mHelper.consumeAsync(lst, mConsumeMyltyFinishedListener);
+//            Восстанавливаем возможность сделать повторную покупку продукта;
+            Purchase pc = null;
+            List<Purchase> lst = new ArrayList<Purchase>(1);
+            pc = inventory.getPurchase("hints10");
+            if(pc != null)
+            {
+                lst.add(pc);
+                mHelper.consumeAsync(lst, mConsumeMyltyFinishedListener);
+            }
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             for(@Nonnull String googleId : mGoogleIdContainer)
@@ -303,8 +304,24 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 return;
             }
 
-            // Восстанавливаем возможность сделать повторную покупку продукта;
-            mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+            // Восстанавливаем покупки подсказок;
+            if(purchase != null)
+            {
+                @Nonnull String sku = purchase.getSku();
+                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+                {
+                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                }
+                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+                {
+                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                }
+                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+                {
+                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                }
+            }
+
 
             int responseState = purchase.getPurchaseState();
             String responseGoogleId = purchase.getSku();
