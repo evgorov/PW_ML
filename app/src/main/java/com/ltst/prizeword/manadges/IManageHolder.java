@@ -15,8 +15,7 @@ import javax.annotation.Nonnull;
  */
 public interface IManageHolder {
 
-    void buyProduct(@Nonnull String googleId);
-    void buyCrosswordSet(@Nonnull String crosswordSetServerId);
+    void buyProduct(@Nonnull String sku);
     void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler);
     void registerHandlerBuyProductEvent(@Nonnull IListener<Bundle> handler);
     void registerProduct(@Nonnull String googleId);

@@ -131,7 +131,7 @@ public class HintsManager implements View.OnClickListener
         public void handle(@Nullable Bundle bundle) {
 
             int count = 0;
-            final @Nonnull String googleId = ManageHolder.extractFromBundleGoogleId(bundle);
+            final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
             {
                 count = 10;

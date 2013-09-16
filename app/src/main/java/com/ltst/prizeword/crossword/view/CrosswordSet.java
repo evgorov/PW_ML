@@ -16,8 +16,6 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
-import com.ltst.prizeword.crossword.model.Puzzle;
-import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
@@ -30,8 +28,6 @@ import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -133,7 +129,7 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mIManageHolder.buyCrosswordSet(mSetServerId);
+                    mIManageHolder.buyProduct(mSetServerId);
 //                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
                 }
             }
@@ -311,7 +307,7 @@ public class CrosswordSet {
         @Override
         public void handle(@Nullable Bundle bundle) {
 
-            final @Nonnull String googleId = ManageHolder.extractFromBundleGoogleId(bundle);
+            final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
             final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
             if(googleId.equals(mSetServerId))

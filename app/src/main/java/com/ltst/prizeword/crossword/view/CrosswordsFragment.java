@@ -74,7 +74,6 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull TextView mNewsSimpleText;
     private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull View mProgressBar;
-    private boolean mLoadFlag = false;
 
     private @Nonnull INewsModel mNewsModel;
     private @Nonnull HintsModel mHintsModel;
