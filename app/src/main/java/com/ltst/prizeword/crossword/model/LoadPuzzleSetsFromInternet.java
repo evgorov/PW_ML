@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
@@ -161,8 +163,14 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             }
             else if (volumePuzzle.equals(VOLUME_CURR))
             {
-                Calendar cal = Calendar.getInstance();
-                getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1, env);
+
+                long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(currentTime);
+                int month = calendar.get(Calendar.MONTH) + 1;
+                int year = calendar.get(Calendar.YEAR);
+
+                getFromServer(sessionKey,year,month,env);
                 return getFromDatabase(env);
             }
             else if (volumePuzzle.equals(VOLUME_SORT))

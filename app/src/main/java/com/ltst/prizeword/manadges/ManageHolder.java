@@ -39,9 +39,9 @@ import javax.annotation.Nullable;
  */
 public class ManageHolder implements IManageHolder, IIabHelper {
 
-    final static public @Nonnull String BF_GOOGLE_ID = "ManageHolder.googleId";
-    final static public @Nonnull String BF_JSON = "ManageHolder.json";
-    final static public @Nonnull String BF_SIGNATURE = "ManageHolder.signature";
+    final static public @Nonnull String BF_GOOGLE_ID    = "ManageHolder.googleId";
+    final static public @Nonnull String BF_JSON         = "ManageHolder.json";
+    final static public @Nonnull String BF_SIGNATURE    = "ManageHolder.signature";
 
 //    private final @Nonnull String APP_GOOGLE_PLAY_ID = "4a6bbda29147dab10d4928f5df3a2bfc3d9b0bdb";
     private final @Nonnull String APP_GOOGLE_PLAY_ID = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtspobFVSi6fZ6L3q5l64JVVcJaK19gVWllXQi5FxaN1V0Yti84O+Xzuw7fWWnrgleKLRNSMPrOd/rQrDAHhEm9kk7gq0PUzLwOzpqgnvWa9fsvQVc5jOi69O7B2Vn+KftNQ+VXReFXpEp4IA6DKIu3f0gNqha/szA2eq1uDyO+MXtU9Kpz2XeAedpVNSMn9OEDR2U4rN39GUqumg0NwidbpCkfhbmSGYoJOPAUOIXf5J1YIeR75pBV2GCUiT4d8fCGCv/UMunTbNkI+BjDov/hmzU4njk1sIlSSpz0a9pM4v6Q2dIrrKIrOsjSI7r+c/C2U2dqviAUZ96tYDS+bp7wIDAQAB";
@@ -52,10 +52,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull IManadges mIManadges;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
-    private @Nonnull List<String/*googleId*/> mGoogleIdContainer;
-    private @Nonnull List<IListenerVoid/*googleId*/> mHandlerReloadPriceList;
+    private @Nonnull List<String> mGoogleIdContainer;
+    private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
     private @Nonnull List<IListener<Bundle>> mHandlerBuyProductEventList;
-    private @Nonnull String mSessionKey;
 
     private int REQUERT_CODE_COUNTER;
 
@@ -104,17 +103,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
         });
         reloadInventoryFromDataBase();
-    }
-
-    @Override
-    public void resume()
-    {
-        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-    }
-
-    @Override
-    public void pause()
-    {
     }
 
     public void dispose()
@@ -193,7 +181,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             if (result.isFailure())
             {
-
+                    Log.e("Problem setting up in-app billing: " + result);
             }
             else
             {
@@ -385,7 +373,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             for(IListenerVoid handle : mHandlerReloadPriceList)
             {
-                Log.d("PRICE SEND DONE!");
                 handle.handle();
             }
         }

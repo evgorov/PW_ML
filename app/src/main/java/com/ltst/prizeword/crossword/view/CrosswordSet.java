@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
@@ -220,7 +222,7 @@ public class CrosswordSet {
         if(pBadgeContainer.getAdapter() == null)
             pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
-        if(data.mMonth == Calendar.getInstance().get(Calendar.MONTH)+1)
+        if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
         {
             // Текущие наборы сетов сканвордов;
             mCrosswordSetType = CrosswordSetType.CURRENT;
@@ -345,6 +347,16 @@ public class CrosswordSet {
             pBuyPrice.setText(mBuyPrice);
         }
     };
+
+    public boolean isPuzzleInCurrentMonth(int year, int month)
+    {
+        long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+        return currentYear == year && currentMonth == month;
+    }
 
         public enum CrosswordSetType{
         CURRENT,
