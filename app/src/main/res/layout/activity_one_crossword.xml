@@ -238,181 +238,193 @@
 
     </LinearLayout>
 
-    <FrameLayout
-            android:id="@+id/final_screen"
-            android:layout_height="match_parent"
+
+    <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="@drawable/forget_bg"
-            android:visibility="gone"
-            android:clickable="true"
             >
 
         <FrameLayout
-                android:id="@+id/final_alert"
+                android:id="@+id/final_screen"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:visibility="visible"
+                android:clickable="true"
                 >
 
-            <LinearLayout
-                    android:id="@+id/final_share_alert"
-                    android:layout_height="wrap_content"
+            <FrameLayout
+                    android:id="@+id/final_alert"
+                    android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/final_share_bg"
                     android:layout_gravity="center"
-                    android:layout_marginTop="180dp">
-
-                <LinearLayout
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="75dp"
-                        >
-
-                    <Button
-                            android:id="@+id/final_share_fb_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/final_share_fb_but"/>
-
-                    <Button
-                            android:id="@+id/final_share_vk_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:background="@drawable/final_share_vk_but"
-                            />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:background="@drawable/final_bg"
                     >
 
                 <LinearLayout
+                        android:id="@+id/final_share_alert"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="100dp"
-                        android:layout_marginLeft="58dp"
-                        >
+                        android:orientation="vertical"
+                        android:background="@drawable/final_share_bg"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="180dp">
 
-                    <TextView
-                            android:id="@+id/final_score"
-                            style="@style/FinalValueScoreText"
-                            android:layout_width="40dp"
-                            android:layout_height="30dp"
-                            android:maxEms="3"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="0"
-                            />
-
-                    <TextView
-                            android:id="@+id/final_score_type"
-                            style="@style/FinalNameScoreText"
-                            android:layout_width="50dp"
+                    <LinearLayout
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginRight="28dp"
-                            android:text="очков"
-                            />
-
-                    <TextView
-                            android:id="@+id/final_bonus"
-                            style="@style/FinalValueScoreText"
-                            android:layout_width="40dp"
-                            android:layout_height="30dp"
-                            android:maxEms="3"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="0"
-                            />
-
-                    <TextView
-                            android:id="@+id/final_bonus_type"
-                            style="@style/FinalNameScoreText"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:layout_marginLeft="4dp"
-                            android:text="очка"
-                            />
-                </LinearLayout>
-
-                <LinearLayout
-                        android:id="@+id/final_flip_number"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="22dp"
-                        android:layout_marginLeft="39dp"
-                        >
-
-                    <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Final_number_text"
-                            />
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Final_number_text"
-                    />
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Final_number_text"
-                    />
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Final_number_text"
-                    />
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/Final_number_text"
-                    />
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="75dp"
+                            >
 
+                        <Button
+                                android:id="@+id/final_share_fb_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/final_share_fb_but"/>
+
+                        <Button
+                                android:id="@+id/final_share_vk_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:background="@drawable/final_share_vk_but"
+                                />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="13dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:background="@drawable/final_bg"
                         >
 
-                    <Button
-                            android:id="@+id/final_menu_btn"
-                            android:layout_width="wrap_content"
+                    <LinearLayout
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:background="@drawable/gamefild_pause_menu_but"/>
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginLeft="58dp"
+                            >
 
-                    <Button
-                            android:id="@+id/final_next_btn"
-                            android:layout_width="wrap_content"
+                        <TextView
+                                android:id="@+id/final_score"
+                                style="@style/FinalValueScoreText"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:maxEms="3"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="0"
+                                />
+
+                        <TextView
+                                android:id="@+id/final_score_type"
+                                style="@style/FinalNameScoreText"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="28dp"
+                                android:text="очков"
+                                />
+
+                        <TextView
+                                android:id="@+id/final_bonus"
+                                style="@style/FinalValueScoreText"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:maxEms="3"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="0"
+                                />
+
+                        <TextView
+                                android:id="@+id/final_bonus_type"
+                                style="@style/FinalNameScoreText"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:layout_marginLeft="4dp"
+                                android:text="очка"
+                                />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/final_flip_number"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:background="@drawable/gamefild_pause_next_but"
-                            />
+                            android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="22dp"
+                            android:layout_marginLeft="39dp"
+                            >
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Final_number_text"
+                                />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="13dp"
+                            >
+
+                        <Button
+                                android:id="@+id/final_menu_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:background="@drawable/gamefild_pause_menu_but"/>
+
+                        <Button
+                                android:id="@+id/final_next_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:background="@drawable/gamefild_pause_next_but"
+                                />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+
+            </FrameLayout>
 
         </FrameLayout>
+    </LinearLayout>
 
-    </FrameLayout>
     <RelativeLayout
             android:id="@+id/crossword_progressBar"
             android:layout_width="fill_parent"
@@ -422,6 +434,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             >
+
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
