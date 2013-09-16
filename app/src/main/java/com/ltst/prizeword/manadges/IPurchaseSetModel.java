@@ -15,7 +15,7 @@ public interface IPurchaseSetModel {
 
     void reloadPurchases(@Nonnull IListenerVoid handler);
     void putOnePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler);
-    @Nullable Purchase getPurchase(@Nullable String googleId);
+    @Nonnull Purchase getPurchase(@Nullable String googleId);
     void close();
     void putPurchases(@Nonnull ArrayList<Purchase> purchases, @Nonnull IListenerVoid handler);
 }

@@ -36,7 +36,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
     }
 
     public
-    @Nullable
+    @Nonnull
     Purchase getPurchase(@Nullable String googleId)
     {
         if (googleId != null && mPurchases != null)

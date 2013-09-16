@@ -116,12 +116,21 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     public void buyProduct(@Nonnull String sku)
     {
         // Start popup window. Покупка;
-        @Nonnull String token = UUIDTools.generateStringUUID();
+
         if(sku != Strings.EMPTY){
-            try {
+            @Nonnull com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(sku);
+            @Nonnull String token = (product.clientId==Strings.EMPTY || product.clientId==null)
+                    ? UUIDTools.generateStringUUID()
+                    : product.clientId;
+            product.clientId = token;
+
+            try
+            {
                 mHelper.flagEndAsync();
                 mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mPurchaseFinishedListener, token);
-            } catch (Exception e)
+                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+            }
+            catch (Exception e)
             {
                 Log.e(e.getMessage());
             }
@@ -305,7 +314,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseSku);
             product.googlePurchase = true;
-            product.clientId = responseClientId;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
             // рассылаем уведомления, что продукт куплен на GooglePlay;
