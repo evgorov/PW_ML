@@ -29,6 +29,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nonnull PuzzleUserDataSynchronizer mSynchronizer;
     private int hintsCount;
     private boolean mIsDestroyed;
+    private boolean answerState;
 
     public PuzzleSetModel(@Nonnull Context mContext, @Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
@@ -36,6 +37,11 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mSessionKey = sessionKey;
         mSynchronizer = new PuzzleUserDataSynchronizer(mContext);
         hintsCount = 0;
+    }
+
+    @Override
+    public boolean isAnswerState() {
+        return answerState;
     }
 
     @Override
@@ -274,8 +280,10 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             if (result == null)
             {
+                answerState = false;
                 return;
             }
+            answerState = true;
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
             hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
             mPuzzlesSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);

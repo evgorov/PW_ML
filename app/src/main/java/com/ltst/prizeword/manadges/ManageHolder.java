@@ -50,7 +50,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull IManadges mIManadges;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
-    private @Nonnull List<String> mGoogleIdContainer;
+    private @Nonnull List<String> mSkuContainer;
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
     private @Nonnull List<IListener<Bundle>> mHandlerBuyProductEventList;
 
@@ -65,7 +65,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
         mHandlerBuyProductEventList = new ArrayList<IListener<Bundle>>();
-        mGoogleIdContainer = new ArrayList<String>();
+        mSkuContainer = new ArrayList<String>();
         REQUERT_CODE_COUNTER = 0;
     }
 
@@ -93,8 +93,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 }
                 else
                 {
-                    // Получаем список товаров, которые были куплены пользователем;
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
+//                    // Получаем список товаров, которые были куплены пользователем;
+//                    mHelper.queryInventoryAsync(mGotInventoryListener);
                 }
             }
         });
@@ -152,9 +152,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void registerProduct(@Nonnull String sku)
     {
-        if(sku == Strings.EMPTY || mGoogleIdContainer.contains(sku))
+        if(sku == Strings.EMPTY || mSkuContainer.contains(sku))
             return;
-        mGoogleIdContainer.add(sku);
+        mSkuContainer.add(sku);
     }
 
     public void reloadInventoryFromDataBase()
@@ -166,7 +166,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     public void reloadInventory()
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-        mHelper.queryInventoryAsync(true, mGoogleIdContainer, mQueryFinishedListener);
+        mHelper.queryInventoryAsync(true, mSkuContainer, mQueryFinishedListener);
     }
 
     @Override
@@ -185,6 +185,20 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             if (result.isFailure())
             {
                     Log.e("Problem setting up in-app billing: " + result);
+            }
+            else
+            {
+            }
+        }
+    };
+
+    private IabHelper.QueryInventoryFinishedListener mResetConsumableListener = new IabHelper.QueryInventoryFinishedListener()
+    {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+
+            if (result.isFailure())
+            {
+                Log.e("Problem setting up in-app billing: " + result);
             }
             else
             {
@@ -221,8 +235,13 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 // provision the in-app purchase to the user
                 // (for example, credit 50 gold coins to player's character)
                 int responseState = purchase.getPurchaseState();
-                String responseGoogleId = purchase.getSku();
+                String responseSku = purchase.getSku();
                 String responseClientId = purchase.getDeveloperPayload();
+
+                // Восстанавливаем состояние покупки в базе для Google Play как не купленная;
+                @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseSku);
+                product.googlePurchase = false;
+                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
             else {
                 Log.e("Problem setting up in-app billing: " + result);
@@ -241,7 +260,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
-            for(@Nonnull String googleId : mGoogleIdContainer)
+            for(@Nonnull String googleId : mSkuContainer)
             {
                 if(inventory.hasDetails(googleId))
                 {
@@ -280,28 +299,26 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     default:
                         break;
                 }
-
-//                mHelper.flagEndAsync();
                 return;
             }
 
-            // Восстанавливаем покупки подсказок;
-            if(purchase != null)
-            {
-                @Nonnull String sku = purchase.getSku();
-                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-                {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                }
-                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-                {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                }
-                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-                {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                }
-            }
+//            // Восстанавливаем покупки подсказок;
+//            if(purchase != null)
+//            {
+//                @Nonnull String sku = purchase.getSku();
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//            }
 
 
             int responseState = purchase.getPurchaseState();
@@ -312,8 +329,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
 //            verify(APP_GOOGLE_PLAY_ID, data, responseSignature);
 
+            // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
             @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseSku);
             product.googlePurchase = true;
+            product.serverPurchase = true;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
             // рассылаем уведомления, что продукт куплен на GooglePlay;
@@ -322,21 +341,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     };
 
     @Override
-    public void productBuyOnGooglePlay(@Nonnull String sku)
-    {
-        // Меняем состояние товара;
-        @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(sku);
-        product.googlePurchase = true;
-        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-    }
-
-    @Override
     public void productBuyOnServer(@Nonnull String sku)
     {
         // Меняем состояние товара;
         @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(sku);
-        product.googlePurchase = false;
+        product.serverPurchase = false;
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+        // Восстанавливаем покупаемость товара;
+        // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+        @Nonnull List<String> list = new ArrayList<String>(1);
+        list.add(sku);
+        mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+
     }
 
     private void notifyBuyOnServer(final @Nonnull String responseSku,
@@ -391,6 +408,28 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
         }
     };
+
+    private void verifyControllPurchases()
+    {
+        @Nonnull com.ltst.prizeword.manadges.Purchase purchase = null;
+        for(@Nonnull String sku : mSkuContainer)
+        {
+            purchase = mIPurchaseSetModel.getPurchase(sku);
+            if(purchase!=null)
+            {
+                if(purchase.googlePurchase == true && purchase.serverPurchase == false)
+                {
+                    // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
+
+                }
+                if(purchase.googlePurchase == true && purchase.serverPurchase == true)
+                {
+                    // Состояние продукта: был куплен на Google Play, но не прошел запрос покупки на сервере;
+
+                }
+            }
+        }
+    }
 
     public static boolean verify(@Nonnull String base64EncodedPublicKey, String signedData, String signature)
     {

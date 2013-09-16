@@ -20,7 +20,6 @@ public interface IManageHolder {
     void registerHandlerBuyProductEvent(@Nonnull IListener<Bundle> handler);
     void registerProduct(@Nonnull String googleId);
     String getPriceProduct(@Nonnull String googleId);
-    void productBuyOnGooglePlay(@Nonnull String googleId);
     void productBuyOnServer(@Nonnull String googleId);
     void reloadInventory();
 }

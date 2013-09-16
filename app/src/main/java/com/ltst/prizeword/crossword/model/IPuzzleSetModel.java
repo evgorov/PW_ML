@@ -1,5 +1,7 @@
 package com.ltst.prizeword.crossword.model;
 
+import com.actionbarsherlock.R;
+
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.HashMap;
@@ -20,5 +22,6 @@ public interface IPuzzleSetModel
     int getHintsCount();
     public void synchronizePuzzleUserData();
     void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler);
+    boolean isAnswerState();
     void close();
 }

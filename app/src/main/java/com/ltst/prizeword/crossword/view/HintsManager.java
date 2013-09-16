@@ -101,9 +101,12 @@ public class HintsManager implements View.OnClickListener
 
     private void setPrice()
     {
-        mPriceHints_10.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10));
-        mPriceHints_20.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20));
-        mPriceHints_30.setText(mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_30));
+        String priceHints10 = mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+        String priceHints20 = mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
+        String priceHints30 = mIManageHolder.getPriceProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
+        mPriceHints_10.setText(priceHints10);
+        mPriceHints_20.setText(priceHints20);
+        mPriceHints_30.setText(priceHints30);
     }
 
     public int getHintsCount()

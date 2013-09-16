@@ -129,8 +129,8 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mIManageHolder.buyProduct(mSetServerId);
-//                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+//                    mIManageHolder.buyProduct(mSetServerId);
+                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
                 }
             }
         });
@@ -310,11 +310,11 @@ public class CrosswordSet {
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
             final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
-            if(googleId.equals(mSetServerId))
-//            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            if(googleId.equals(mSetServerId))
+            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
-                IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
+                final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)
                 {
                     iPuzzleSetModel.buyCrosswordSet(googleId, json, signature, new IListenerVoid() {
@@ -325,8 +325,11 @@ public class CrosswordSet {
 //                        @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
 //                        @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
 
-                            mIManageHolder.productBuyOnServer(googleId);
-                            mICrosswordFragment.updateCurrentSet();
+                            if(iPuzzleSetModel.isAnswerState())
+                            {
+                                mIManageHolder.productBuyOnServer(googleId);
+                                mICrosswordFragment.updateCurrentSet();
+                            }
                         }
                     });
                 }
