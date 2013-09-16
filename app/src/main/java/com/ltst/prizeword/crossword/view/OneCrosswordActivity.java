@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -279,7 +280,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         if (restoredBundle != null)
         {
             mPuzzleAdapter.restoreState(restoredBundle);
-            mPuzzleView.restoreState(restoredBundle);
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+                mPuzzleView.restoreState(restoredBundle);
             mPuzzleLoaded = true;
             hideProgressBar();
             if (!mTickerLaunched && mPuzzleLoaded)
@@ -364,7 +366,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         outState.putBoolean(BF_MUSIC_STOP, mPauseMusic.isChecked());
         outState.putBoolean(BF_SOUND_STOP, mPauseSound.isChecked());
         mPuzzleAdapter.saveState(outState);
-        mPuzzleView.saveState(outState);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+            mPuzzleView.saveState(outState);
         uiHelper.onSaveInstanceState(outState);
     }
 
