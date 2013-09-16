@@ -3,4 +3,5 @@
     <dimen name="puzzles_badge_set_title_text_size">16sp</dimen>
     <dimen name="puzzles_badge_title_text_size">20sp</dimen>
     <dimen name="puzzles_badge_title_long_text_size">18sp</dimen>
+    <dimen name="score_badge_title_long_text_size">14sp</dimen>
 </resources>
