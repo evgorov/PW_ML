@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
 import com.ltst.prizeword.login.model.LoadUserDataFromInternetTask;
 import com.ltst.prizeword.login.model.UserData;
@@ -44,17 +46,17 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
         {
             return null;
         }
+        @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
+        int hintsToChange = extras.getInt(BF_HINTS_TO_CHANGE);
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             env.context.getString(R.string.msg_no_internet)));
+            saveHintsToChange(env.context, hintsToChange);
         }
         else
         {
-            @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
-            int hintsToChange = extras.getInt(BF_HINTS_TO_CHANGE);
-
             if (sessionKey != null)
             {
                 RestUserData.RestUserDataHolder holder = changeHints(env.context, sessionKey, hintsToChange);
@@ -64,9 +66,18 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
                     @Nullable List<UserProvider> providerData = LoadUserDataFromInternetTask.parseProviderData(holder.getUserData());
                     env.dbw.putUser(userData, providerData);
                 }
+                else
+                    saveHintsToChange(env.context, hintsToChange);
             }
         }
         return null;
+    }
+
+    private void saveHintsToChange(@Nonnull Context context, int hintsToChange)
+    {
+        SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(context);
+        int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
+        mHelper.putInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, (currentHintsChangeCount + hintsToChange)).commit();
     }
 
     private RestUserData.RestUserDataHolder changeHints (@Nonnull Context context, @Nonnull String sessionKey, int hints)
