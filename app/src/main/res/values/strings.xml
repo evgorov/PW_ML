@@ -197,4 +197,6 @@
 
     // ==== Share message ====
     <string name="social_puzzle_share_message" formatted="false">Я только что разгадал сканворд %1s за %2s минут и получил за это %3s очков!</string>
+    <string name="facebook_app_id">390010757745933</string>
+    <string name="facebook_app_error">Операция невозможна. Установите приложение Facebook.</string>
 </resources>

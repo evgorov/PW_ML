@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -13,9 +15,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -130,6 +135,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private boolean mVKSharing;
     private @Nullable String mShareMessage;
     private @Nonnull MessageShareModel mShareModel;
+    private UiLifecycleHelper uiHelper;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -187,6 +193,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mPauseMusic.setChecked(SharedPreferencesValues.getMusicSwitch(this));
         }
         mPuzzlesCount = mPuzzleSet.puzzlesId.size();
+
+        uiHelper = new UiLifecycleHelper(this, null);
+        uiHelper.onCreate(bundle);
     }
 
     @Override
@@ -271,7 +280,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         if (restoredBundle != null)
         {
             mPuzzleAdapter.restoreState(restoredBundle);
-            mPuzzleView.restoreState(restoredBundle);
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+                mPuzzleView.restoreState(restoredBundle);
             mPuzzleLoaded = true;
             hideProgressBar();
             if (!mTickerLaunched && mPuzzleLoaded)
@@ -281,6 +291,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             loadPuzzle();
         }
 
+        showFinalDialog(false);
         fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -312,7 +323,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mFlipNumberAnimator.startAnimation(65554);*/
 
         //============================================================
-
+        uiHelper.onResume();
         super.onResume();
     }
 
@@ -321,6 +332,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     {
         mStopPlayFlag = false;
         mTickerLaunched = false;
+        uiHelper.onPause();
         super.onPause();
     }
 
@@ -354,7 +366,9 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         outState.putBoolean(BF_MUSIC_STOP, mPauseMusic.isChecked());
         outState.putBoolean(BF_SOUND_STOP, mPauseSound.isChecked());
         mPuzzleAdapter.saveState(outState);
-        mPuzzleView.saveState(outState);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+            mPuzzleView.saveState(outState);
+        uiHelper.onSaveInstanceState(outState);
     }
 
     @Override
@@ -368,7 +382,25 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         spref.putBoolean(SharedPreferencesValues.SP_MUSIC_SWITCH, mPauseMusic.isChecked());
         spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
         spref.commit();
+        uiHelper.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.e("Activity", String.format("Error: %s", error.toString()));
+            }
+
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.i("Activity", "Success!");
+            }
+        });
     }
 
     private void showProgressBar()
@@ -420,7 +452,18 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             case R.id.final_share_fb_btn:
                 if(mShareMessage != null)
                 {
-                    mShareModel.shareMessageToFb(mShareMessage);
+                    if (FacebookDialog.canPresentShareDialog(getApplicationContext(),
+                            FacebookDialog.ShareDialogFeature.SHARE_DIALOG))
+                    {
+                        FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                                .setDescription(mShareMessage)
+                                .build();
+                        uiHelper.trackPendingDialogCall(shareDialog.present());
+                    }
+                    else
+                    {
+                        Toast.makeText(this, R.string.facebook_app_error, Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
         }
@@ -674,6 +717,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             });
 
             int sumScore = baseScore + bonusScore;
+            mPuzzleAdapter.setScore(sumScore);
             if (mPuzzleAdapter.isPuzzleInCurrentMonth())
             {
                 @Nonnull String puzzleId = mPuzzleSet.puzzlesId.get(mCurrentPuzzleIndex);

@@ -37,13 +37,6 @@ public class MessageShareModel
         mIsDestroyed = true;
     }
 
-    public void shareMessageToFb(@Nonnull String message)
-    {
-        if(mIsDestroyed)
-            return;
-
-    }
-
     public void shareMessageToVk(@Nonnull String message)
     {
         if(mIsDestroyed)
