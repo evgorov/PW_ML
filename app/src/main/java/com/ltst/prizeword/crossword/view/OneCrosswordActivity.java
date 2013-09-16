@@ -291,7 +291,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             loadPuzzle();
         }
 
-        showFinalDialog(true);
+        showFinalDialog(false);
         fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
