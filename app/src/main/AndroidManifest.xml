@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme" >
 
         <meta-data android:name="com.crashlytics.ApiKey" android:value="cee41ec1b82a8d52a74d0691bb17056d0f38cb8f"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
         <service
             android:name=".db.DbService"

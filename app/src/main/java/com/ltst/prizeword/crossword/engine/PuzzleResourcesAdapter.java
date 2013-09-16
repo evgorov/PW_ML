@@ -163,6 +163,14 @@ public class PuzzleResourcesAdapter
         }
     }
 
+    public void setScore(int score)
+    {
+        if (mPuzzle != null && score >= 0)
+        {
+            mPuzzle.score = score;
+        }
+    }
+
     public int getSolvedQuestionsPercent()
     {
         if (mPuzzle == null)

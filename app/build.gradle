@@ -16,6 +16,7 @@ dependencies {
     compile project(':libs:project-androidsupportv4')
     compile project(':libs:thirdparty:actionbarsherlock-gradle')
     compile project(':libs:thirdparty:slidingmenu-gradle')
+    compile project(':libs:thirdparty:facebook-gradle')
     compile project(':libs:project-annotations')
     compile project(':libs:project-log')
     compile project(':libs:project-events')
