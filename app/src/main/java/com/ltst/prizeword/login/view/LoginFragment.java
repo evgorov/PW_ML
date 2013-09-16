@@ -16,6 +16,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.app.IBcConnectorOwner;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.view.CrosswordsFragment;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
@@ -24,6 +25,7 @@ import com.ltst.prizeword.score.UploadScoreQueueModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,6 +49,7 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
     private @Nonnull IBcConnector mBcConnector;
     private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
+    private @Nullable HintsModel mHintsModel;
 
     @Override
     public void onAttach(Activity activity)
@@ -90,6 +93,10 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         if (mUploadScoreQueueModel != null)
         {
             mUploadScoreQueueModel.close();
+        }
+        if (mHintsModel != null)
+        {
+            mHintsModel.close();
         }
         super.onPause();
     }
@@ -137,6 +144,20 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
 
             mUploadScoreQueueModel = new UploadScoreQueueModel(mBcConnector, sessionKey);
             mUploadScoreQueueModel.upload();
+            mHintsModel = new HintsModel(mBcConnector, sessionKey);
+            final SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(mContext);
+            int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
+            if(currentHintsChangeCount != 0)
+            {
+                mHintsModel.changeHints(currentHintsChangeCount, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        mHelper.erase(SharedPreferencesValues.SP_HINTS_TO_CHANGE);
+                    }
+                });
+            }
 
             switch (requestCode)
             {
