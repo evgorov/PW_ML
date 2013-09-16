@@ -129,8 +129,8 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-//                    mIManageHolder.buyProduct(mSetServerId);
-                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+                    mIManageHolder.buyProduct(mSetServerId);
+//                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
                 }
             }
         });
@@ -310,8 +310,8 @@ public class CrosswordSet {
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
             final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
-//            if(googleId.equals(mSetServerId))
-            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+            if(googleId.equals(mSetServerId))
+//            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
                 final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();

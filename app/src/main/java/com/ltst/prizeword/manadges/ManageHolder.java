@@ -12,6 +12,7 @@ import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.android.billing.Security;
+import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.view.HintsManager;
 import com.ltst.prizeword.tools.UUIDTools;
 
@@ -417,14 +418,25 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             purchase = mIPurchaseSetModel.getPurchase(sku);
             if(purchase!=null)
             {
-                if(purchase.googlePurchase == true && purchase.serverPurchase == false)
+                if(purchase.googlePurchase == true && purchase.serverPurchase == false
+                        && (
+                        sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                            )
+                        )
                 {
                     // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
+                    // Восстанавливаем покупаемость товара;
+                    // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+                    @Nonnull List<String> list = new ArrayList<String>(1);
+                    list.add(sku);
+                    mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
 
                 }
                 if(purchase.googlePurchase == true && purchase.serverPurchase == true)
                 {
-                    // Состояние продукта: был куплен на Google Play, но не прошел запрос покупки на сервере;
+                    // Состояние продукта: был куплен на Google Play, но еще не прошел запрос покупки на сервере;
 
                 }
             }
