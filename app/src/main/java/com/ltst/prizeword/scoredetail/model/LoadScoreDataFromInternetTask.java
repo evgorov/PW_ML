@@ -102,6 +102,7 @@ public class LoadScoreDataFromInternetTask implements IBcTask
         } else
         {
             Bundle bundle = new Bundle();
+            boolean resive = false;
             RestInviteFriend.RestInviteFriendHolder holder = loadScoreData(env.context, sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
@@ -109,6 +110,7 @@ public class LoadScoreDataFromInternetTask implements IBcTask
                 if (friends != null && friends.size() > 0)
                 {
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
+                    resive = true;
                 }
             }
             holder = loadScoreData(env.context, sessionKey, RestParams.FB_PROVIDER);
@@ -121,13 +123,10 @@ public class LoadScoreDataFromInternetTask implements IBcTask
                     bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
                     return bundle;
                 }
-            }
-
-            return bundle;
+            } else if (resive)
+                return bundle;
 
         }
-
-
         return null;
     }
 
