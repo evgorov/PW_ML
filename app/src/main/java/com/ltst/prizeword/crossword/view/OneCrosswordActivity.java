@@ -110,10 +110,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private boolean mStopPlayFlag;
 
+    private boolean mNeedOnCloseLoader;
+
     private @Nonnull Animation mAnimationSlideInTop;
     private @Nonnull Animation mAnimationSlideOutTop;
-    private @Nullable Bundle restoredBundle;
 
+    private @Nullable Bundle restoredBundle;
     private @Nonnull View mFinalScreen;
     private @Nonnull Button mFinalShareVkButton;
     private @Nonnull Button mFinalShareFbButton;
@@ -123,18 +125,19 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     private @Nonnull Button mFinalMenuButton;
     private @Nonnull Button mFinalNextButton;
     private @Nonnull android.widget.ToggleButton mPauseMusic;
+
     private @Nonnull android.widget.ToggleButton mPauseSound;
-
     private @Nonnull FlipNumberAnimator mFlipNumberAnimator;
+
     private @Nonnull View mRootView;
-
     private @Nonnull View mProgressBar;
-    private boolean mResourcesDecoded = false;
 
+    private boolean mResourcesDecoded = false;
     private boolean mFbSharing;
     private boolean mVKSharing;
     private @Nullable String mShareMessage;
     private @Nonnull MessageShareModel mShareModel;
+
     private UiLifecycleHelper uiHelper;
 
     @Override
@@ -196,6 +199,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
         uiHelper = new UiLifecycleHelper(this, null);
         uiHelper.onCreate(bundle);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        close();
     }
 
     @Override
@@ -403,6 +412,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         });
     }
 
+    private void close()
+    {
+        showProgressBar();
+        mPuzzleAdapter.updatePuzzleUserData(mOnCloseHandler);
+    }
+
     private void showProgressBar()
     {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -431,7 +446,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             case R.id.final_menu_btn:
             case R.id.gamefild_menu_btn:
-                onBackPressed();
+                close();
                 break;
             case R.id.final_next_btn:
             case R.id.gamefild_next_btn:
@@ -740,6 +755,19 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             mStateUpdater.handle();
             if (!mTickerLaunched && mPuzzleLoaded)
                 tick();
+        }
+    };
+
+    private final @Nonnull IListenerVoid mOnCloseHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            hideProgressBar();
+            Intent intent = new Intent();
+            intent.putExtra(BF_PUZZLE_SET, mPuzzleSet.serverId);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     };
 

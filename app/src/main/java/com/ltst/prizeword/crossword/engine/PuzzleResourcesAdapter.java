@@ -33,7 +33,7 @@ public class PuzzleResourcesAdapter
     public static final @Nonnull String BF_PUZZLE = "PuzzleResourcesAdapter.puzzle";
     public static final @Nonnull String BF_RESOURCES = "PuzzleResourcesAdapter.resources";
 
-    private @Nonnull IOnePuzzleModel mPuzzleModel;
+    private @Nullable IOnePuzzleModel mPuzzleModel;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nonnull PuzzleSet mPuzzleSet;
@@ -312,6 +312,14 @@ public class PuzzleResourcesAdapter
         if (mPuzzleModel != null)
         {
             mPuzzleModel.updatePuzzleUserData();
+        }
+    }
+
+    public void updatePuzzleUserData(@Nonnull IListenerVoid handler)
+    {
+        if (mPuzzleModel != null)
+        {
+            mPuzzleModel.updatePuzzleUserData(handler);
         }
     }
 
