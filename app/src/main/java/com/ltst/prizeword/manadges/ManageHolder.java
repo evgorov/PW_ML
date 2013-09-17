@@ -95,6 +95,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 {
 //                    // Получаем список товаров, которые были куплены пользователем;
 //                    mHelper.queryInventoryAsync(mGotInventoryListener);
+
+                    verifyControllPurchases();
                 }
             }
         });
@@ -464,7 +466,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //                {
 //                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
 //                }
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
             }
 
 
@@ -484,9 +486,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             product.signature = responseSignature;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
-            // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;
-            @Nonnull Bundle bundle = packToBundle(responseSku,responseJson,responseSignature);
-            mBuyProductEventHandler.handle(bundle);
+            verifyControllPurchases();
         }
     };
 
@@ -499,11 +499,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
         // Восстанавливаем покупаемость товара;
-        // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-        @Nonnull List<String> list = new ArrayList<String>(1);
-        list.add(sku);
-        mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
-
+        verifyControllPurchases();
     }
 
     private @Nonnull IListener<Bundle> mBuyProductEventHandler = new IListener<Bundle>() {
@@ -560,15 +556,15 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             if(purchase!=null)
             {
                 if(purchase.googlePurchase == true && purchase.serverPurchase == false
-                        && (
-                        sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                            )
+//                        && (
+//                        sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+//                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+//                            )
                         )
                 {
                     // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
@@ -582,6 +578,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 if(purchase.googlePurchase == true && purchase.serverPurchase == true)
                 {
                     // Состояние продукта: был куплен на Google Play, но еще не прошел запрос покупки на сервере;
+                    // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;
+                    @Nonnull String json = purchase.receipt_data;
+                    @Nonnull String signature = purchase.signature;
+                    @Nonnull Bundle bundle = packToBundle(sku,json,signature);
+                    mBuyProductEventHandler.handle(bundle);
 
                 }
             }
