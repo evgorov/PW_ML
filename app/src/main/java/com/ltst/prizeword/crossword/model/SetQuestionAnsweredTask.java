@@ -34,7 +34,7 @@ public class SetQuestionAnsweredTask implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_QUESTION_ID, questionsIds);
         intent.putExtra(BF_ANSWERED, answered);
-        intent.putExtra(BF_INTENT_TYPE, BF_INTENT_TYPE_SINGLE);
+        intent.putExtra(BF_INTENT_TYPE, BF_INTENT_TYPE_MULTIPLE);
         return intent;
     }
 
