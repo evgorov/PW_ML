@@ -31,7 +31,7 @@ module Middleware
     error(BasicModel::NotFound) { halt(403, { message: 'Неправильное имя пользователя или пароль' }.to_json) }
     error(ItunesReceiptVerifier::ItunesInvalidUserError) { halt(403, { message: 'Этот товар куплен для другого пользователя' }.to_json) }
     error(ItunesReceiptVerifier::ItunesReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
-    error(ItunesReceiptVerifier::AndroidReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
+    error(AndroidReceiptVerifier::AndroidReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
 
     get '/me' do
       env['token_auth'].authorize!
