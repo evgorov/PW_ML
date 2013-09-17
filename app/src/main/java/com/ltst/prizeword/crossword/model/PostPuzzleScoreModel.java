@@ -46,7 +46,7 @@ public class PostPuzzleScoreModel
             Log.w("PostPuzzleScoreModel.destroy() called more than once"); //$NON-NLS-1$
         }
 
-        mUploader.close();
+//        mUploader.close();
 
         mIsDestroyed = true;
         Log.i("PostPuzzleScoreModel.destroy() end"); //$NON-NLS-1$

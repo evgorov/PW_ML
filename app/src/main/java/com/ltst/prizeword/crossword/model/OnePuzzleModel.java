@@ -63,8 +63,8 @@ public class OnePuzzleModel implements IOnePuzzleModel
 
         mPuzzleDbUpdater.close();
         mPuzzleInternetUpdater.close();
-        mPuzzleUserDataUpdater.close();
-        mSetQuestionAnsweredUpdater.close();
+//        mPuzzleUserDataUpdater.close();
+//        mSetQuestionAnsweredUpdater.close();
 
         mIsDestroyed = true;
         Log.i("OnePuzzleModel.destroy() end"); //$NON-NLS-1$
