@@ -17,6 +17,7 @@ import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,8 +92,30 @@ public class OnePuzzleModel implements IOnePuzzleModel
     {
         if(mIsDestroyed)
             return;
-        mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createIntent(q.id, answered));
+        mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createSingleIntent(q.id, answered));
         mSetQuestionAnsweredUpdater.update(null);
+    }
+
+    @Override
+    public void putAnsweredQuestionsToDb(@Nullable IListenerVoid handler)
+    {
+        if(mIsDestroyed)
+            return;
+        List<Long> answeredQuestionIdList = new ArrayList<Long>();
+        for (PuzzleQuestion question : mPuzzle.questions)
+        {
+            if(question.isAnswered)
+            {
+                answeredQuestionIdList.add(question.id);
+            }
+        }
+        Long[] idArray = new Long[answeredQuestionIdList.size()];
+        idArray = answeredQuestionIdList.toArray(idArray);
+        mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createMultipleIntent(idArray, true));
+        if (handler != null)
+            mSetQuestionAnsweredUpdater.update(handler);
+        else
+            mSetQuestionAnsweredUpdater.update(null);
     }
 
     @Override

@@ -14,6 +14,8 @@ public class SharedPreferencesValues
     public static final @Nonnull String SP_SOUND_SWITCH = "soundSwitch";
     public static final @Nonnull String SP_CURRENT_DATE = "date";
 
+    public static final @Nonnull String SP_HINTS_TO_CHANGE = "hintsToChange";
+
     public static String getSessionKey(@Nonnull Context context)
     {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);

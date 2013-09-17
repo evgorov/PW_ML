@@ -327,6 +327,31 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
+    public void setQuestionAnswered(final long[] questionsIdArray, boolean answered)
+    {
+        if (questionsIdArray == null)
+        {
+            return;
+        }
+
+        final ContentValues values = new ContentValues();
+        values.put(ColsPuzzleQuestions.IS_ANSWERED, answered);
+
+        DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                for (int i = 0; i < questionsIdArray.length; i++)
+                {
+                    long questionId = questionsIdArray[i];
+                    mDb.update(TNAME_PUZZLE_QUESTIONS, values, ColsPuzzleQuestions.ID + "=" + questionId, null);
+                }
+            }
+        });
+    }
+
+    @Override
     public void putCoefficients(@Nonnull Coefficients coefficients)
     {
         final ContentValues values = mCoefficientsContentValuesCreator.createObjectContentValues(coefficients);

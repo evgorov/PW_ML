@@ -12,5 +12,6 @@ public interface IOnePuzzleModel
     @Nullable Puzzle getPuzzle();
     void setQuestionAnswered(@Nonnull PuzzleQuestion q, boolean answered);
     void updatePuzzleUserData();
+    void putAnsweredQuestionsToDb(@Nullable IListenerVoid handler);
     void close();
 }

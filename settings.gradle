@@ -1,6 +1,7 @@
 include ':libs:project-androidsupportv4'
 include ':libs:thirdparty:actionbarsherlock-gradle'
 include ':libs:thirdparty:slidingmenu-gradle'
+include ':libs:thirdparty:facebook-gradle'
 include ':libs:project-annotations'
 include ':libs:project-log'
 include ':libs:project-events'

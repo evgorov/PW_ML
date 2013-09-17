@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.db.DbService;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -12,13 +14,27 @@ public class SetQuestionAnsweredTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_QUESTION_ID = "SetQuestionAnsweredTask.questionId";
     public static final @Nonnull String BF_ANSWERED = "SetQuestionAnsweredTask.answered";
+    private static final @Nonnull String BF_INTENT_TYPE = "SetQuestionAnsweredTask.intentType";
+    private static final @Nonnull String BF_INTENT_TYPE_SINGLE = "SetQuestionAnsweredTask.single";
+    private static final @Nonnull String BF_INTENT_TYPE_MULTIPLE = "SetQuestionAnsweredTask.multiple";
 
     public static final @Nonnull
-    Intent createIntent(long questionId, boolean answered)
+    Intent createSingleIntent(long questionId, boolean answered)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_QUESTION_ID, questionId);
         intent.putExtra(BF_ANSWERED, answered);
+        intent.putExtra(BF_INTENT_TYPE, BF_INTENT_TYPE_SINGLE);
+        return intent;
+    }
+
+    public static final @Nonnull
+    Intent createMultipleIntent(Long[] questionsIds, boolean answered)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_QUESTION_ID, questionsIds);
+        intent.putExtra(BF_ANSWERED, answered);
+        intent.putExtra(BF_INTENT_TYPE, BF_INTENT_TYPE_SINGLE);
         return intent;
     }
 
@@ -31,9 +47,24 @@ public class SetQuestionAnsweredTask implements DbService.IDbTask
         {
             return null;
         }
-        long questionId = extras.getLong(BF_QUESTION_ID);
-        boolean answered = extras.getBoolean(BF_ANSWERED);
-        dbTaskEnv.dbw.setQuestionAnswered(questionId, answered);
+        @Nullable String intentType = extras.getString(BF_INTENT_TYPE);
+        if (intentType == null)
+        {
+            return null;
+        }
+
+        if(intentType.equals(BF_INTENT_TYPE_SINGLE))
+        {
+            long questionId = extras.getLong(BF_QUESTION_ID);
+            boolean answered = extras.getBoolean(BF_ANSWERED);
+            dbTaskEnv.dbw.setQuestionAnswered(questionId, answered);
+        }
+        if(intentType.equals(BF_INTENT_TYPE_MULTIPLE))
+        {
+            long[] questionId = extras.getLongArray(BF_QUESTION_ID);
+            boolean answered = extras.getBoolean(BF_ANSWERED);
+            dbTaskEnv.dbw.setQuestionAnswered(questionId, answered);
+        }
         return null;
     }
 }
