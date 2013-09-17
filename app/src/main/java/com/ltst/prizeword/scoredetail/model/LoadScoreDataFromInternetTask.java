@@ -102,13 +102,15 @@ public class LoadScoreDataFromInternetTask implements IBcTask
         } else
         {
             Bundle bundle = new Bundle();
+            boolean resive = false;
             RestInviteFriend.RestInviteFriendHolder holder = loadScoreData(env.context, sessionKey, RestParams.VK_PROVIDER);
             if (holder != null)
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.VK_PROVIDER);
-                if (friends != null && friends.size()>0)
+                if (friends != null && friends.size() > 0)
                 {
                     bundle.putParcelableArrayList(BF_FRIEND_VK_DATA, friends);
+                    resive = true;
                 }
             }
             holder = loadScoreData(env.context, sessionKey, RestParams.FB_PROVIDER);
@@ -116,26 +118,15 @@ public class LoadScoreDataFromInternetTask implements IBcTask
             {
                 ArrayList<ScoreFriendsData> friends = parseInvitedFriends(holder, RestParams.FB_PROVIDER);
 
-                if (friends != null && friends.size()>0)
+                if (friends != null && friends.size() > 0)
                 {
                     bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
                     return bundle;
                 }
-            }
-
-            ArrayList<ScoreFriendsData> friends = new ArrayList<ScoreFriendsData>();
-            ScoreFriendsData midData = new ScoreFriendsData("Павел", "Сон", Strings.EMPTY, 0, 0, new int[1],
-                    Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, RestParams.FB_PROVIDER, RestParams.FRIEND_TYPE_DATA);
-            friends.add(midData);
-            midData = new ScoreFriendsData("Pavel", "Son", Strings.EMPTY, 0, 0, new int[1],
-                    Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, RestParams.FB_PROVIDER, RestParams.FRIEND_TYPE_DATA);
-            friends.add(midData);
-            bundle.putParcelableArrayList(BF_FRIEND_FB_DATA, friends);
-            return bundle;
+            } else if (resive)
+                return bundle;
 
         }
-
-
         return null;
     }
 

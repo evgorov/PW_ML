@@ -84,6 +84,7 @@
                     android:layout_marginLeft="4sp"
                     android:layout_marginBottom="1sp"
                     android:textSize="@dimen/puzzles_badge_score_text_size"
+                    style="PuzzlesHintCommonTextStyle"
                     android:text="1 290"
                     />
         </LinearLayout>
