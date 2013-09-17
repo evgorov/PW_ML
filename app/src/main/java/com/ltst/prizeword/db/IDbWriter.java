@@ -28,6 +28,7 @@ public interface IDbWriter extends IDbReader
 
     void putFriendsImage(@Nonnull String url, @Nonnull byte[] bytes);
     void setQuestionAnswered(long questionId, boolean answered);
+    void setQuestionAnswered(long[] questionId, boolean answered);
 
     void putCoefficients(@Nonnull Coefficients coefficients);
     void putScoreToQueue(@Nonnull ScoreQueue.Score score);

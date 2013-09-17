@@ -72,7 +72,10 @@ public class PuzzleResourcesAdapter
 
     public void close()
     {
-        mPuzzleModel.close();
+        if (mPuzzleModel != null)
+        {
+            mPuzzleModel.close();
+        }
     }
 
     public void updatePuzzle(@Nonnull String puzzleServerId)
@@ -80,6 +83,14 @@ public class PuzzleResourcesAdapter
         mPuzzleModel = new OnePuzzleModel(mContext, mBcConnector, mSessionKey, puzzleServerId, mPuzzleSet.id);
         mPuzzleModel.updateDataByDb(updateHandler);
         mPuzzleModel.updateDataByInternet(updateHandler);
+    }
+
+    public void syncAnsweredQuestions(@Nullable IListenerVoid handler)
+    {
+        if (mPuzzleModel != null)
+        {
+            mPuzzleModel.putAnsweredQuestionsToDb(handler);
+        }
     }
 
     public void saveState(@Nonnull Bundle bundle)
@@ -312,14 +323,6 @@ public class PuzzleResourcesAdapter
         if (mPuzzleModel != null)
         {
             mPuzzleModel.updatePuzzleUserData();
-        }
-    }
-
-    public void updatePuzzleUserData(@Nonnull IListenerVoid handler)
-    {
-        if (mPuzzleModel != null)
-        {
-            mPuzzleModel.updatePuzzleUserData(handler);
         }
     }
 

@@ -110,7 +110,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private boolean mStopPlayFlag;
 
-    private boolean mNeedOnCloseLoader;
+    private boolean mIsClosed = false;
 
     private @Nonnull Animation mAnimationSlideInTop;
     private @Nonnull Animation mAnimationSlideOutTop;
@@ -414,8 +414,16 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private void close()
     {
-        showProgressBar();
-        mPuzzleAdapter.updatePuzzleUserData(mOnCloseHandler);
+        if(mStopPlayFlag)
+        {
+            showPauseDialog(true);
+        }
+        else
+        {
+            showProgressBar();
+            mPuzzleAdapter.syncAnsweredQuestions(mOnCloseHandler);
+            mPuzzleAdapter.updatePuzzleUserData();
+        }
     }
 
     private void showProgressBar()
@@ -597,6 +605,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         mPuzzleLoaded = false;
         if (mCurrentPuzzleServerId == null && !mHasFirstPuzzle)
         {
+            mPuzzleAdapter.syncAnsweredQuestions(null);
             mCurrentPuzzleIndex++;
             if (mCurrentPuzzleIndex >= mPuzzlesCount)
                 mCurrentPuzzleIndex = 0;
@@ -763,6 +772,10 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         @Override
         public void handle()
         {
+            if(mIsClosed)
+                return;
+
+            mIsClosed = true;
             hideProgressBar();
             Intent intent = new Intent();
             intent.putExtra(BF_PUZZLE_SET, mPuzzleSet.serverId);
