@@ -36,7 +36,6 @@
 -(void)loadMonthSets;
 -(void)loadMe;
 -(void)loadCoefficients;
--(void)repeatUncompleteOperations;
 -(void)parseDateFromResponse:(NSHTTPURLResponse *)response;
 
 @end

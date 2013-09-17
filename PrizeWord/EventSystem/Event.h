@@ -37,6 +37,8 @@ typedef enum EventType {
     EVENT_PRODUCT_FAILED,
     EVENT_PRODUCT_ERROR,
     
+    EVENT_ALL_REQUESTS_CANCELED,
+    
     EVENTS_COUNT
 } EventType;
 

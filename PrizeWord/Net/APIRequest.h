@@ -32,6 +32,7 @@ typedef void(^FailCallback)(NSError * error);
 +(APIRequest *)putRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 +(void)cancelAll;
 +(void)clearCache;
++(int)requestsCount;
 
 -(void)runUsingCache:(BOOL)useCache silentMode:(BOOL)silentMode;
 -(void)cancel;

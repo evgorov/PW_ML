@@ -72,6 +72,7 @@ static NSMutableDictionary * apiCache = nil;
         {
             [request cancel];
         }
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ALL_REQUESTS_CANCELED]];
     }
 }
 
@@ -81,6 +82,11 @@ static NSMutableDictionary * apiCache = nil;
     {
         [apiCache removeAllObjects];
     }
+}
+
++(int)requestsCount
+{
+    return [apiRequests count];
 }
 
 -(void)prepareRequest

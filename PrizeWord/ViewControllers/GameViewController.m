@@ -27,6 +27,7 @@
 #import "NSString+Utils.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <StoreKit/StoreKit.h>
+#import "UserDataManager.h"
 
 const int TAG_USEHINT = 100;
 const int TAG_BUYHINTS = 101;
@@ -159,6 +160,7 @@ extern NSString * PRODUCTID_HINTS10;
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_BOUGHT];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_ERROR];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_PRODUCT_FAILED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -185,6 +187,7 @@ extern NSString * PRODUCTID_HINTS10;
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_BOUGHT];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_ERROR];
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_PRODUCT_FAILED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_ME_UPDATED];
     [textField removeFromSuperview];
     textField = nil;
     gameFieldView = nil;
@@ -550,23 +553,16 @@ extern NSString * PRODUCTID_HINTS10;
         
         if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
-            APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * dict = [parser objectWithData:receivedData];
-                [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
-                [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
-                [self hideActivityIndicator];
-                [self handleHintClick:nil];
-            } failCallback:^(NSError *error) {
-                [self hideActivityIndicator];
-                [textField becomeFirstResponder];
-                NSLog(@"hints error: %@", error.description);
-            }];
-            [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-            [request.params setObject:[NSString stringWithFormat:@"%d", 10] forKey:@"hints_change"];
-            [request runUsingCache:NO silentMode:YES];
+            [[UserDataManager sharedManager] addHints:10];
         }
+    }
+    else if (event.type == EVENT_ME_UPDATED)
+    {
+        UserData * user = event.data;
+        if (user != nil)
+        {
+            [btnHint setTitle:[NSString stringWithFormat:@"%d", user.hints] forState:UIControlStateNormal];
+       }
     }
 }
 
@@ -605,27 +601,8 @@ extern NSString * PRODUCTID_HINTS10;
     }
     if (alertView.tag == TAG_USEHINT)
     {
-        APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
-        } failCallback:^(NSError *error) {
-            UserData * loggedInUser = [GlobalData globalData].loggedInUser;
-            loggedInUser.hints--;
-            [GlobalData globalData].loggedInUser = loggedInUser;
-            [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];
-            NSString * savedHintsKey = [NSString stringWithFormat:@"savedHints%@", [GlobalData globalData].loggedInUser.user_id];
-            int savedHints = [[NSUserDefaults standardUserDefaults] integerForKey:savedHintsKey];
-            savedHints--;
-            [[NSUserDefaults standardUserDefaults] setInteger:savedHints forKey:savedHintsKey];
-            
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
-        }];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:@"-1" forKey:@"hints_change"];
-        [request runUsingCache:NO silentMode:YES];
+        [[UserDataManager sharedManager] addHints:-1];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
     }
     else if (alertView.tag == TAG_BUYHINTS)
     {

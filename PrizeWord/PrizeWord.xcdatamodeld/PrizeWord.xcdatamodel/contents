@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3389" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="HintsQuery" representedClassName="HintsQuery" syncable="YES">
+        <attribute name="done" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="hints" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="key" attributeType="String" syncable="YES"/>
+        <attribute name="user" attributeType="String" indexed="YES" syncable="YES"/>
+    </entity>
     <entity name="Puzzle" representedClassName="PuzzleData" syncable="YES">
         <attribute name="height" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <attribute name="issuedAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -36,9 +42,21 @@
         <attribute name="user_id" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
     </entity>
+    <entity name="ScoreQuery" representedClassName="ScoreQuery" syncable="YES">
+        <attribute name="done" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="key" attributeType="String" syncable="YES"/>
+        <attribute name="score" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="user" attributeType="String" indexed="YES" syncable="YES"/>
+    </entity>
+    <fetchRequest name="HintsFetchRequest" entity="HintsQuery" predicateString="user == $USER AND key == $KEY"/>
+    <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
+    <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND key == $KEY"/>
+    <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND done == 0"/>
     <elements>
-        <element name="Puzzle" positionX="-6120" positionY="-16110" width="128" height="210"/>
-        <element name="PuzzleSet" positionX="-6381" positionY="-16029" width="128" height="195"/>
-        <element name="Question" positionX="-6336" positionY="-15786" width="128" height="180"/>
+        <element name="Puzzle" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PuzzleSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Question" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ScoreQuery" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="HintsQuery" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

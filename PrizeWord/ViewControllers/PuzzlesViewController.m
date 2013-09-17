@@ -24,6 +24,7 @@
 #import "NSString+Utils.h"
 #import "FISoundEngine.h"
 #import "PrizewordStoreObserver.h"
+#import "UserDataManager.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -819,20 +820,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction
 {
-    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"hints: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * dict = [parser objectWithData:receivedData];
-        [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[dict objectForKey:@"me"]];
-        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
-        [self hideActivityIndicator];
-    } failCallback:^(NSError *error) {
-        [self hideActivityIndicator];
-        NSLog(@"hints error: %@", error.description);
-    }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:[NSString stringWithFormat:@"%d", count] forKey:@"hints_change"];
-    [request runUsingCache:NO silentMode:YES];
+    [[UserDataManager sharedManager] addHints:count];
 }
 
 #pragma mark user interaction

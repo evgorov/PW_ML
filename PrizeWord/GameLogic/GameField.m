@@ -19,6 +19,7 @@
 #import "UserData.h"
 #import "SBJsonParser.h"
 #import "FISoundEngine.h"
+#import "UserDataManager.h"
 
 @interface GameField (private)
 
@@ -572,46 +573,7 @@
             scoreForPuzzle = 0;
         }
         [_puzzle setScore:[NSNumber numberWithInt:scoreForPuzzle]];
-        if (!isArchivePuzzle && _puzzle.puzzleSet.type.intValue != PUZZLESET_FREE)
-        {
-            NSString * savedScoreKey = [NSString stringWithFormat:@"savedScore%@", [GlobalData globalData].loggedInUser.user_id];
-            NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
-            if (savedScore == nil)
-            {
-                savedScore = [NSMutableDictionary new];
-            }
-            [savedScore setValue:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", scoreForPuzzle], @"score", @"1", @"solved", _puzzle.puzzle_id, @"source", nil] forKey:_puzzle.puzzle_id];
-            [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:savedScoreKey];
-            APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-
-                NSMutableDictionary * savedScore = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:savedScoreKey] mutableCopy];
-                [savedScore removeObjectForKey:_puzzle.puzzle_id];
-                [[NSUserDefaults standardUserDefaults] setValue:savedScore forKey:savedScoreKey];
-
-                SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * data = [parser objectWithData:receivedData];
-                UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-                if (userData != nil)
-                {
-                    [GlobalData globalData].loggedInUser = userData;
-                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
-                }
-            } failCallback:^(NSError *error) {
-                NSLog(@"score error! %@", error.description);
-            }];
-            
-            [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-            [request.params setObject:[NSString stringWithFormat:@"%d", scoreForPuzzle] forKey:@"score"];
-            [request.params setObject:@"1" forKey:@"solved"];
-            [request.params setObject:_puzzle.puzzle_id forKey:@"source"];
-            [request runUsingCache:NO silentMode:YES];
-            
-            UserData * userData = [GlobalData globalData].loggedInUser;
-            userData.month_score += scoreForPuzzle;
-            [GlobalData globalData].loggedInUser = userData;
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
-        }
+        [[UserDataManager sharedManager] addScore:scoreForPuzzle forKey:_puzzle.puzzle_id];
     }
 
     NSError * error;

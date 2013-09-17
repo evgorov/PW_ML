@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6B18D275177DBAB000E3A4C5 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6B18D274177DBAB000E3A4C5 /* background_music.mp3 */; };
+		6B32E7E217E81DAD007AE3F9 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B32E7E117E81DAD007AE3F9 /* UserDataManager.m */; };
+		6B32E7E517E8226F007AE3F9 /* ScoreQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B32E7E417E8226F007AE3F9 /* ScoreQuery.m */; };
+		6B32E7E817E82270007AE3F9 /* HintsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B32E7E717E82270007AE3F9 /* HintsQuery.m */; };
 		6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */; };
 		6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7991771FBEC003D57B6 /* Security.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
@@ -614,6 +617,12 @@
 
 /* Begin PBXFileReference section */
 		6B18D274177DBAB000E3A4C5 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = background_music.mp3; path = sounds/background_music.mp3; sourceTree = "<group>"; };
+		6B32E7E017E81DAD007AE3F9 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDataManager.h; path = Net/UserDataManager.h; sourceTree = "<group>"; };
+		6B32E7E117E81DAD007AE3F9 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDataManager.m; path = Net/UserDataManager.m; sourceTree = "<group>"; };
+		6B32E7E317E8226F007AE3F9 /* ScoreQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreQuery.h; path = PrizeWord/DataModels/ScoreQuery.h; sourceTree = "<group>"; };
+		6B32E7E417E8226F007AE3F9 /* ScoreQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoreQuery.m; path = PrizeWord/DataModels/ScoreQuery.m; sourceTree = "<group>"; };
+		6B32E7E617E82270007AE3F9 /* HintsQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintsQuery.h; path = PrizeWord/DataModels/HintsQuery.h; sourceTree = "<group>"; };
+		6B32E7E717E82270007AE3F9 /* HintsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintsQuery.m; path = PrizeWord/DataModels/HintsQuery.m; sourceTree = "<group>"; };
 		6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		6B3CC7991771FBEC003D57B6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
@@ -1382,6 +1391,8 @@
 				F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */,
 				F2C52D5916D8D3FA00871649 /* SocialNetworks.h */,
 				F2C52D5A16D8D3FB00871649 /* SocialNetworks.m */,
+				6B32E7E017E81DAD007AE3F9 /* UserDataManager.h */,
+				6B32E7E117E81DAD007AE3F9 /* UserDataManager.m */,
 			);
 			name = Net;
 			sourceTree = "<group>";
@@ -1441,6 +1452,10 @@
 				F2848E3516AA76740041C1D5 /* GlobalData.m */,
 				F2848E3716AA77980041C1D5 /* UserData.h */,
 				F2848E3816AA77980041C1D5 /* UserData.m */,
+				6B32E7E617E82270007AE3F9 /* HintsQuery.h */,
+				6B32E7E717E82270007AE3F9 /* HintsQuery.m */,
+				6B32E7E317E8226F007AE3F9 /* ScoreQuery.h */,
+				6B32E7E417E8226F007AE3F9 /* ScoreQuery.m */,
 			);
 			name = DataModels;
 			path = ..;
@@ -2820,6 +2835,8 @@
 				F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */,
 				F2D6271D165DF8FE00EF6E8A /* RootViewController.m in Sources */,
 				F2950232165DFF7900DACFBA /* GameViewController.m in Sources */,
+				6B32E7E217E81DAD007AE3F9 /* UserDataManager.m in Sources */,
+				6B32E7E517E8226F007AE3F9 /* ScoreQuery.m in Sources */,
 				F2950238165E016400DACFBA /* EventManager.m in Sources */,
 				F295023B165E036800DACFBA /* Event.m in Sources */,
 				F2950241165EADC500DACFBA /* GameLogic.m in Sources */,
@@ -2870,6 +2887,7 @@
 				F2C52D5B16D8D3FB00871649 /* SocialNetworks.m in Sources */,
 				F26B992716E7454C008E117B /* NSString+Utils.m in Sources */,
 				F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */,
+				6B32E7E817E82270007AE3F9 /* HintsQuery.m in Sources */,
 				F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */,
 				F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */,
 				F20F0F0A16E8C1B6009AEEE6 /* FISampleFormat.m in Sources */,
@@ -2962,8 +2980,8 @@
 		F2D62717165DF80900EF6E8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -2976,8 +2994,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2985,8 +3003,8 @@
 		F2D62718165DF80900EF6E8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -2999,8 +3017,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

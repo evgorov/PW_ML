@@ -25,6 +25,7 @@
 #import "FISoundEngine.h"
 #import "NSString+Utils.h"
 #import <QuartzCore/CALayer.h>
+#import "UserDataManager.h"
 
 @interface RootViewController (private)
 
@@ -250,10 +251,10 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     
     UIFont * font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:([AppDelegate currentDelegate].isIPad ? 18 : 13)];
     while (btnScore.subviews.count > 1) {
-        [[btnScore.subviews objectAtIndex:(btnScore.subviews.count - 1)] removeFromSuperview];
+        [[btnScore.subviews lastObject] removeFromSuperview];
     }
     while (btnRating.subviews.count > 1) {
-        [[btnRating.subviews objectAtIndex:(btnRating.subviews.count - 1)] removeFromSuperview];
+        [[btnRating.subviews lastObject] removeFromSuperview];
     }
     NSString * score = [NSString stringWithFormat:@"%d ", [GlobalData globalData].loggedInUser.month_score];
     CGSize scoreSize = [score sizeWithFont:font];
@@ -308,7 +309,8 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [mainMenuVKSwitch setOn:([GlobalData globalData].loggedInUser.vkProvider != nil) animated:YES];
     [mainMenuVKSwitch setEnabled:([GlobalData globalData].loggedInUser.vkProvider == nil)];
     
-    [[GlobalData globalData] repeatUncompleteOperations];
+    [[UserDataManager sharedManager] restoreUnfinishedScoreQueries];
+    [[UserDataManager sharedManager] restoreUnfinishedHintsQueries];
 }
 
 -(void)showMenuAnimated:(BOOL)animated
