@@ -12,7 +12,6 @@ import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.android.billing.Security;
-import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.crossword.view.HintsManager;
 import com.ltst.prizeword.tools.UUIDTools;
 
@@ -134,6 +133,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             catch (Exception e)
             {
                 Log.e(e.getMessage());
+                mIManadges.sendMessage(e.getMessage());
             }
         }
     }
@@ -189,6 +189,43 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
+
+                @Nonnull List<String> list = new ArrayList<String>();
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED);
+                }
+                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+                {
+                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL);
+                }
+                // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
+                // Восстанавливаем покупаемость товара;
+                // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+                if(list.size()>0)
+                {
+                    mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                }
             }
         }
     };
@@ -203,18 +240,52 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-                // Восстанавливаем покупку подсказок, если по какой-дибо причине это небыло сделано ранее;
-                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+//                // Восстанавливаем покупку подсказок, если по какой-дибо причине это небыло сделано ранее;
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED), mConsumeFinishedListener);
+//                }
+//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+//                {
+//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE), mConsumeFinishedListener);
+//                }
+
+
+                @Nonnull List<Purchase> list = new ArrayList<Purchase>();
+                for(@Nonnull String sku : mSkuContainer)
                 {
-                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10), mConsumeFinishedListener);
+                    if(inventory.hasPurchase(sku));
+                    {
+                        @Nullable Purchase purchase = inventory.getPurchase(sku);
+                        if(purchase != null)
+                        {
+                            list.add(inventory.getPurchase(sku));
+                        }
+                    }
                 }
-                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+                if(list.size()>0)
                 {
-                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20), mConsumeFinishedListener);
-                }
-                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-                {
-                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30), mConsumeFinishedListener);
+                    mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
                 }
             }
         }
@@ -260,6 +331,61 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 return;
             }
 
+//            @Nonnull List<String> list = new ArrayList<String>();
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED);
+//            }
+//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+//            {
+//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL);
+//            }
+//            // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
+//            // Восстанавливаем покупаемость товара;
+//            // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+//            if(list.size()>0)
+//            {
+//                mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+//            }
+
+
+//            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
+//            for(@Nonnull String sku : mSkuContainer)
+//            {
+//                if(inventory.hasPurchase(sku));
+//                {
+//                    @Nullable Purchase purchase = inventory.getPurchase(sku);
+//                    if(purchase != null)
+//                    {
+//                        list.add(inventory.getPurchase(sku));
+//                    }
+//                }
+//            }
+//            if(list.size()>0)
+//            {
+//                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
+//            }
+
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             for(@Nonnull String googleId : mSkuContainer)
             {
@@ -267,7 +393,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 {
                     @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
                     purchase.price = inventory.getSkuDetails(googleId).getPrice();
-                    purchase.clientId = UUIDTools.generateStringUUID();
+                    purchase.clientId = (purchase.clientId == null || purchase.clientId == Strings.EMPTY)
+                            ? UUIDTools.generateStringUUID() : purchase.clientId;
                     purchases.add(purchase);
                 }
             }
@@ -286,26 +413,28 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             if (result.isFailure())
             {
                 Log.e("Error purchasing: " + result);
-
                 switch (resultCode)
                 {
                     case 0:
                         // Sussessfull;
+                        break;
                     case -1005:
                         // User canceled. (response: -1005:User cancelled);
                         break;
                     case -1008:
                         // IAB returned null purchaseData or dataSignature (response: -1008:Unknown error);
+                        mIManadges.sendMessage("Error purchasing: " + result);
                         break;
                     default:
+                        mIManadges.sendMessage("Unknown error: " + result);
                         break;
                 }
                 return;
             }
 
-//            // Восстанавливаем покупки подсказок;
-//            if(purchase != null)
-//            {
+            // Восстанавливаем покупки подсказок;
+            if(purchase != null)
+            {
 //                @Nonnull String sku = purchase.getSku();
 //                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
 //                {
@@ -319,7 +448,24 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //                {
 //                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
 //                }
-//            }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
+//                {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                }
+                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+            }
 
 
             int responseState = purchase.getPurchaseState();
@@ -336,8 +482,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             product.serverPurchase = true;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
-            // рассылаем уведомления, что продукт куплен на GooglePlay;
-            notifyBuyOnServer(responseSku, responseJson, responseSignature);
+            // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;
+            @Nonnull Bundle bundle = packToBundle(responseSku,responseJson,responseSignature);
+            mBuyProductEventHandler.handle(bundle);
         }
     };
 
@@ -355,15 +502,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         list.add(sku);
         mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
 
-    }
-
-    private void notifyBuyOnServer(final @Nonnull String responseSku,
-                                   final @Nonnull String responseJson,
-                                   final @Nonnull String responseSignature)
-    {
-        // Рассылаем уведомления, что покупка прошла успешно;
-        @Nonnull Bundle bundle = packToBundle(responseSku,responseJson,responseSignature);
-        mBuyProductEventHandler.handle(bundle);
     }
 
     private @Nonnull IListener<Bundle> mBuyProductEventHandler = new IListener<Bundle>() {
@@ -400,6 +538,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         public void handle() {
             // уведзобляем подписчиков, что пришли цены;
             mPriceEventHandler.handle();
+            verifyControllPurchases();
         }
     };
 
@@ -423,6 +562,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
                                 ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
                                 ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
                             )
                         )
                 {

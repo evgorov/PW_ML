@@ -341,10 +341,11 @@ public class RestClient implements IRestClient
     @Override
     public RestPuzzleTotalSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
     {
-        String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
+        @Nonnull String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
+        @Nonnull String param = receiptData.replace("\"","\\\"");
 
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put(RestParams.RECEIPT_DATA, receiptData);
+        urlVariables.put(RestParams.RECEIPT_DATA, param);
         urlVariables.put(RestParams.SIGNATURE, signature);
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
@@ -353,26 +354,30 @@ public class RestClient implements IRestClient
         restTemplate.setMessageConverters(messageConverters);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
+//        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         @Nullable ResponseEntity<RestPuzzleTotalSet.RestPuzzleSetsHolder> entity = null;
         @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder holder = null;
         try
         {
             entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleTotalSet.RestPuzzleSetsHolder.class, urlVariables);
             holder = entity.getBody();
-        } catch (HttpClientErrorException e)
+            holder.setHttpStatus(entity.getStatusCode());
+            return holder;
+        }
+        catch (HttpClientErrorException e)
         {
             Log.e(e.getMessage());
         }
-        finally
+        catch (Exception e)
         {
-            if (entity == null)
-            {
-                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
-                holder.setHttpStatus(status);
-            }
+            Log.e(e.getMessage());
         }
+        holder = new RestPuzzleTotalSet.RestPuzzleSetsHolder();
+        holder.setHttpStatus(HttpStatus.valueOf(RestParams.SC_ERROR));
         return holder;
     }
 

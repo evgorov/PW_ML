@@ -24,10 +24,10 @@ public class HintsManager implements View.OnClickListener
     static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
     static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints21";
     static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
 
 
     private @Nonnull TextView mHintsCountView;

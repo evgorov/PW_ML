@@ -207,8 +207,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override protected void onSaveInstanceState(Bundle outState)
     {
-        super.onSaveInstanceState(outState);
         outState.putInt(CURENT_POSITION, mCurrentSelectedFragmentPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Override protected void onRestoreInstanceState(Bundle savedInstanceState)
@@ -859,6 +859,11 @@ public class NavigationActivity extends SherlockFragmentActivity
     public IManageHolder getManadgeHolder()
     {
         return (IManageHolder) mManadgeHolder;
+    }
+
+    @Override
+    public void sendMessage(@Nonnull String msg) {
+        ErrorAlertDialog.showDialog(this,msg);
     }
 
 }

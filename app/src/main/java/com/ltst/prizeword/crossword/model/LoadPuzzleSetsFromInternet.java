@@ -192,12 +192,18 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 {
                     if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
                     {
+                        @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
+                        env.dbw.putPuzzleTotalSetList(sets);
+                        return getFromDatabase(env);
+                    }
+                    else
+                    {
                         return null;
                     }
-
-                    @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
-                    env.dbw.putPuzzleTotalSetList(sets);
-                    return getFromDatabase(env);
+                }
+                else
+                {
+                    return null;
                 }
             }
         }

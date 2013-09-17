@@ -125,7 +125,7 @@ public class RestParams
     public static final @Nonnull String URL_GET_COEFFICIENTS = URL_API + "/coefficients" + addParam(SESSION_KEY, true);
 
     public static final @Nonnull String URL_POST_PUZZLE_SCORE = URL_API + "/score" + addParam(SESSION_KEY, true) + addParam(SOURCE, false) + addParam(SCORE, false) + addParam(SOLVED, false);
-    public static final @Nonnull String URL_POST_BUY_PUZZLE_SET = URL_API + "/sets/%s/buy" + addParam(RECEIPT_DATA, true);
+    public static final @Nonnull String URL_POST_BUY_PUZZLE_SET = URL_API + "/sets/%s/buy" + addParam(RECEIPT_DATA, true) + addParam(SIGNATURE, false);
 
     // ==== sharing =====
     public static final @Nonnull String URL_SHARE_VK = URL_API + "/" + VK_PROVIDER + "/share" + addParam(SESSION_KEY, true) + addParam(MESSAGE, false);

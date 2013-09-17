@@ -322,9 +322,6 @@ public class CrosswordSet {
                         @Override
                         public void handle() {
 
-//                        @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
-//                        @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
-
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
