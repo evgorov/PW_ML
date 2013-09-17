@@ -130,7 +130,9 @@ public class DbReader implements IDbReader
                     ColsPurchases.GOOGLE_ID,
                     ColsPurchases.PRICE,
                     ColsPurchases.GOOGLE_PURCHASE,
-                    ColsPurchases.SERVER_PURCHASE
+                    ColsPurchases.SERVER_PURCHASE,
+                    ColsPurchases.RECEIPT_DATA,
+                    ColsPurchases.SIGNATURE
             };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -570,7 +572,9 @@ public class DbReader implements IDbReader
             String price = c.getString(3);
             boolean googlePurchase = c.getInt(4) == 1;
             boolean serverPurchase = c.getInt(5) == 1;
-            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase);
+            String receipt_data = c.getString(6);
+            String signature = c.getString(7);
+            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase, receipt_data, signature);
         }
     };
 

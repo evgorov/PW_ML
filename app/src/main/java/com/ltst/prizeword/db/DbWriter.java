@@ -584,11 +584,13 @@ public class DbWriter extends  DbReader implements IDbWriter
         {
             ContentValues cv  = new ContentValues();
 //            cv.put(ColsPurchases.ID, object.id);
-            cv.put(ColsPurchases.CLIENT_ID, object.clientId);
-            cv.put(ColsPurchases.GOOGLE_ID, object.googleId);
-            cv.put(ColsPurchases.PRICE, object.price);
-            cv.put(ColsPurchases.GOOGLE_PURCHASE, object.googlePurchase);
-            cv.put(ColsPurchases.SERVER_PURCHASE, object.serverPurchase);
+            cv.put(ColsPurchases.CLIENT_ID,         object.clientId);
+            cv.put(ColsPurchases.GOOGLE_ID,         object.googleId);
+            cv.put(ColsPurchases.PRICE,             object.price);
+            cv.put(ColsPurchases.GOOGLE_PURCHASE,   object.googlePurchase);
+            cv.put(ColsPurchases.SERVER_PURCHASE,   object.serverPurchase);
+            cv.put(ColsPurchases.RECEIPT_DATA,      object.receipt_data);
+            cv.put(ColsPurchases.SIGNATURE,         object.signature);
             return cv;
         }
     };

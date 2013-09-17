@@ -20,6 +20,8 @@ public class Purchase implements Parcelable {
     public @Nonnull String price;
     public boolean googlePurchase;
     public boolean serverPurchase;
+    public @Nonnull String receipt_data;
+    public @Nonnull String signature;
 
     public Purchase()
     {
@@ -27,7 +29,8 @@ public class Purchase implements Parcelable {
     }
 
     public Purchase(long id, @Nonnull String clientId, @Nonnull String googleId,
-                    @Nonnull String price, boolean googlePurchase, boolean serverPurchase)
+                    @Nonnull String price, boolean googlePurchase, boolean serverPurchase,
+                    @Nonnull String receipt_data, @Nonnull String signature)
     {
         this.id = id;
         this.clientId = clientId;
@@ -35,6 +38,8 @@ public class Purchase implements Parcelable {
         this.price = price;
         this.googlePurchase = googlePurchase;
         this.serverPurchase = serverPurchase;
+        this.receipt_data = receipt_data;
+        this.signature = signature;
     }
 
     public static Creator<Purchase> CREATOR = new Creator<Purchase>() {
@@ -47,8 +52,10 @@ public class Purchase implements Parcelable {
             @Nonnull String price = ParcelableTools.getNonnullString(source.readString());;
             boolean googlePurchase = ParcelableTools.getBooleanFromInt(source.readInt());
             boolean serverPurchase = ParcelableTools.getBooleanFromInt(source.readInt());
+            @Nonnull String receipt_data = ParcelableTools.getNonnullString(source.readString());;
+            @Nonnull String signature = ParcelableTools.getNonnullString(source.readString());;
 
-            return new Purchase(id,clientId,googleId,price, googlePurchase,serverPurchase);
+            return new Purchase(id,clientId,googleId,price, googlePurchase,serverPurchase,receipt_data,signature);
         }
 
         @Override
@@ -70,5 +77,7 @@ public class Purchase implements Parcelable {
         dest.writeString(price);
         dest.writeInt(googlePurchase ? 1 : 0);
         dest.writeInt(serverPurchase ? 1 : 0);
+        dest.writeString(receipt_data);
+        dest.writeString(signature);
     }
 }

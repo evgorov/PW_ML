@@ -125,7 +125,9 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsPurchases.GOOGLE_ID                   + " text not null, "
             + ColsPurchases.PRICE                       + " text not null, "
             + ColsPurchases.GOOGLE_PURCHASE             + " boolean not null default false, "
-            + ColsPurchases.SERVER_PURCHASE             + " boolean not null default false "
+            + ColsPurchases.SERVER_PURCHASE             + " boolean not null default false, "
+            + ColsPurchases.RECEIPT_DATA                + " text, "
+            + ColsPurchases.SIGNATURE                   + " text "
             + ")";
 
     public static final class ColsPuzzleSets
@@ -239,6 +241,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String PRICE                   = "price";
         public static final @Nonnull String GOOGLE_PURCHASE         = "google_purchase";
         public static final @Nonnull String SERVER_PURCHASE         = "server_purchase";
+        public static final @Nonnull String RECEIPT_DATA            = "receipt_data";
+        public static final @Nonnull String SIGNATURE               = "signature";
     }
 
     // ===============================================

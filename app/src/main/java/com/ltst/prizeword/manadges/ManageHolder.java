@@ -480,6 +480,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(responseSku);
             product.googlePurchase = true;
             product.serverPurchase = true;
+            product.receipt_data = responseJson;
+            product.signature = responseSignature;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
             // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;
