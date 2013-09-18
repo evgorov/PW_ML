@@ -152,7 +152,7 @@ module Middleware
           receipt_data = params['receipt_data'] || params['receipt-data']
           ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id, "ru.aipmedia.prizeword.#{params['id']}")
         else
-          AndroidReceiptVerifier.verify!(ANDROID_PUBLIC_KEY, params['android_reciept'], params['android_signature'])
+          AndroidReceiptVerifier.verify!(ANDROID_PUBLIC_KEY, params['android_reciept'].gsub(/\\/,''), params['android_signature'])
         end
       end
 
