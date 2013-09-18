@@ -129,8 +129,15 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mIManageHolder.buyProduct(mSetServerId);
+                    if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+                    {
+                        mIManageHolder.buyProduct(mSetServerId);
 //                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+                    }
+                    else
+                    {
+                        mIManageHolder.uploadProduct(mSetServerId);
+                    }
                 }
             }
         });
