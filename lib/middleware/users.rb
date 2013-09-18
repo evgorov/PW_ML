@@ -158,7 +158,7 @@ module Middleware
 
       user = current_user
       user['sets'] ||= []
-      user['sets'] = [puzzle_set.to_hash] | user['sets']
+      user['sets'] = [puzzle_set.to_hash.merge('bought' => true)] | user['sets']
       user.save
 
       puzzle_set.to_json
