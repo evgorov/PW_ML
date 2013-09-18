@@ -109,8 +109,13 @@ public class OnePuzzleModel implements IOnePuzzleModel
                 answeredQuestionIdList.add(question.id);
             }
         }
-        Long[] idArray = new Long[answeredQuestionIdList.size()];
-        idArray = answeredQuestionIdList.toArray(idArray);
+        long[] idArray = new long[answeredQuestionIdList.size()];
+        int index = 0;
+        for (Long id : answeredQuestionIdList)
+        {
+            idArray[index] = id;
+            index ++;
+        }
         mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createMultipleIntent(idArray, true));
         if (handler != null)
             mSetQuestionAnsweredUpdater.update(handler);

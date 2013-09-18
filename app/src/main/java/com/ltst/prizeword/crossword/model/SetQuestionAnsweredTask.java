@@ -29,7 +29,7 @@ public class SetQuestionAnsweredTask implements DbService.IDbTask
     }
 
     public static final @Nonnull
-    Intent createMultipleIntent(Long[] questionsIds, boolean answered)
+    Intent createMultipleIntent(long[] questionsIds, boolean answered)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_QUESTION_ID, questionsIds);
