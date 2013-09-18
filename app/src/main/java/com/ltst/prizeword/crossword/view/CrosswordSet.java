@@ -218,7 +218,7 @@ public class CrosswordSet {
 
         pScoreText.setText(String.valueOf(data.mScore));
 
-        pBuyCountText.setText(String.valueOf(data.mBuyCount));
+        pBuyCountText.setText(String.valueOf(data.mTotalCount));
 
         pBuyScore.setText(String.valueOf(data.mBuyScore));
 

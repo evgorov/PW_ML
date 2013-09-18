@@ -16,6 +16,7 @@ import com.ltst.prizeword.rest.RestPuzzleQuestion;
 import com.ltst.prizeword.rest.RestPuzzleSet;
 import com.ltst.prizeword.rest.RestPuzzleTotalSet;
 import com.ltst.prizeword.rest.RestPuzzleUserData;
+import com.ltst.prizeword.score.Coefficients;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
@@ -323,6 +324,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     @Nullable
     Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
+//        @Nullable Coefficients coefficients = env.dbw.getCoefficients();
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
         int hintsCount = env.dbw.getUserHintsCount();
         List<Puzzle> puzzles = null;
