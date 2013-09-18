@@ -187,14 +187,23 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     return null;
                 }
 
-                RestPuzzleTotalSet.RestPuzzleSetsHolder data = buyRestPuzzleSetFromInternet(env.context, sessionKey, setServerId, receiptData, signature);
+                RestPuzzleTotalSet.RestPuzzleOneSetHolder data = buyRestPuzzleSetFromInternet(env.context, sessionKey, setServerId, receiptData, signature);
                 if(data != null)
                 {
                     if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
                     {
-                        @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
-                        env.dbw.putPuzzleTotalSetList(sets);
-                        return getFromDatabase(env);
+                        RestPuzzleTotalSet set = data.getPuzzleSet();
+                        if(set != null)
+                        {
+                            RestPuzzleTotalSet.RestPuzzleSetsHolder dataset = new RestPuzzleTotalSet.RestPuzzleSetsHolder();
+                            dataset.setPuzzleSets(new ArrayList<RestPuzzleTotalSet>());
+                            dataset.addPuzzleSet(set);
+                            dataset.setHttpStatus(data.getHttpStatus());
+
+                                @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, dataset);
+                                env.dbw.putPuzzleTotalSetList(sets);
+                                return getFromDatabase(env);
+                        }
                     }
                     else
                     {
@@ -243,7 +252,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     private @Nullable
-    RestPuzzleTotalSet.RestPuzzleSetsHolder buyRestPuzzleSetFromInternet(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature)
+    RestPuzzleTotalSet.RestPuzzleOneSetHolder buyRestPuzzleSetFromInternet(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature)
     {
         try
         {

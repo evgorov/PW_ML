@@ -371,22 +371,23 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //            }
 
 
-//            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
-//            for(@Nonnull String sku : mSkuContainer)
-//            {
-//                if(inventory.hasPurchase(sku));
-//                {
-//                    @Nullable Purchase purchase = inventory.getPurchase(sku);
-//                    if(purchase != null)
-//                    {
-//                        list.add(inventory.getPurchase(sku));
-//                    }
-//                }
-//            }
-//            if(list.size()>0)
-//            {
-//                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
-//            }
+            // Восстанавливаю покупаемость всех продуктов! REMOVE IN THE FUTURE!
+            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
+            for(@Nonnull String sku : mSkuContainer)
+            {
+                if(inventory.hasPurchase(sku));
+                {
+                    @Nullable Purchase purchase = inventory.getPurchase(sku);
+                    if(purchase != null)
+                    {
+                        list.add(inventory.getPurchase(sku));
+                    }
+                }
+            }
+            if(list.size()>0)
+            {
+                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
+            }
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             for(@Nonnull String googleId : mSkuContainer)
