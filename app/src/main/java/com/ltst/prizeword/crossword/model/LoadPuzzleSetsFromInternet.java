@@ -34,22 +34,24 @@ import javax.annotation.Nullable;
 
 public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY          = "LoadPuzzleSetsFromInternet.sessionKey";
-    public static final @Nonnull String BF_PUZZLE_SETS          = "LoadPuzzleSetsFromInternet.puzzleSets";
-    public static final @Nonnull String BF_PUZZLES_AT_SET       = "LoadPuzzleSetsFromInternet.puzzles";
-    public static final @Nonnull String BF_HINTS_COUNT          = "LoadPuzzleSetsFromInternet.hintsCount";
-    public static final @Nonnull String BF_STATUS_CODE          = "LoadPuzzleSetsFromInternet.statusCode";
-    public static final @Nonnull String BF_VOLUME_PUZZLE        = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull String BF_SESSION_KEY              = "LoadPuzzleSetsFromInternet.sessionKey";
+    public static final @Nonnull String BF_PUZZLE_SETS              = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_ONE_PUZZLE_SET_SERVER_ID = "LoadPuzzleSetsFromInternet.onePuzzleSetServerId";
+    public static final @Nonnull String BF_PUZZLES_AT_SET           = "LoadPuzzleSetsFromInternet.puzzles";
+    public static final @Nonnull String BF_HINTS_COUNT              = "LoadPuzzleSetsFromInternet.hintsCount";
+    public static final @Nonnull String BF_STATUS_CODE              = "LoadPuzzleSetsFromInternet.statusCode";
+    public static final @Nonnull String BF_VOLUME_PUZZLE            = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
-    private static final @Nonnull String BF_SET_SERVER_ID       = "LoadPuzzleSetsFromInternet.setServerId";
-    private static final @Nonnull String BF_RECEIPT_DATA        = "LoadPuzzleSetsFromInternet.receiptData";
-    private static final @Nonnull String BF_SIGNATURE           = "LoadPuzzleSetsFromInternet.signature";
+    private static final @Nonnull String BF_SET_SERVER_ID           = "LoadPuzzleSetsFromInternet.setServerId";
+    private static final @Nonnull String BF_RECEIPT_DATA            = "LoadPuzzleSetsFromInternet.receiptData";
+    private static final @Nonnull String BF_SIGNATURE               = "LoadPuzzleSetsFromInternet.signature";
 
     private static final @Nonnull String VOLUME_SHORT    = "short";
     private static final @Nonnull String VOLUME_LONG     = "long";
     private static final @Nonnull String VOLUME_SORT     = "sort";
     private static final @Nonnull String VOLUME_CURR     = "current";
     private static final @Nonnull String VOLUME_BUY      = "buy";
+    private static final @Nonnull String VOLUME_ONE      = "one";
 
     public static final
     @Nonnull
@@ -87,6 +89,17 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_CURR);
+        return intent;
+    }
+
+    public static final
+    @Nonnull
+    Intent createOneSetIntent(@Nonnull String sessionKey, @Nonnull String puzzleSetServerId)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_ONE_PUZZLE_SET_SERVER_ID, puzzleSetServerId);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_ONE);
         return intent;
     }
 
@@ -176,6 +189,11 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             else if (volumePuzzle.equals(VOLUME_SORT))
             {
                 return getFromDatabase(env);
+            }
+            else if (volumePuzzle.equals(VOLUME_ONE))
+            {
+                @Nonnull String puzzleOneSetServerId = env.extras.getString(BF_ONE_PUZZLE_SET_SERVER_ID);
+                return getFromDatabase(puzzleOneSetServerId,env);
             }
             else if(volumePuzzle.equals(VOLUME_BUY))
             {
@@ -325,6 +343,22 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
     }
+
+    public static
+    @Nullable
+    Bundle getFromDatabase(@Nonnull String puzzleOneSetServerId, @Nonnull DbService.DbTaskEnv env)
+    {
+        PuzzleSet set = env.dbw.getPuzzleSetByServerId(puzzleOneSetServerId);
+        int hintsCount = env.dbw.getUserHintsCount();
+        List<Puzzle> puzzles = null;
+        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
+        puzzles = env.dbw.getPuzzlesBySetId(set.id);
+        mapPuzzles.put(set.serverId, puzzles);
+        ArrayList<PuzzleSet> sets = new ArrayList<PuzzleSet>();
+        sets.add(set);
+        return packToBundle(sets, hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+    }
+
     public static
     @Nullable
     Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)

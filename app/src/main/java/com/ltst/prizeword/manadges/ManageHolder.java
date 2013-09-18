@@ -13,6 +13,7 @@ import com.android.billing.Inventory;
 import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.crossword.view.HintsManager;
+import com.ltst.prizeword.navigation.INavigationActivity;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -48,6 +49,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull Activity mActivity;
     private @Nonnull Context mContext;
     private @Nonnull IManadges mIManadges;
+    private @Nonnull INavigationActivity mINavigationActivity;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
     private @Nonnull List<String> mSkuContainer;
@@ -61,6 +63,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mActivity = activity;
         mContext = (Context) activity;
         mIManadges = (IManadges) activity;
+        mINavigationActivity = (INavigationActivity) activity;
         mBcConnector = bcConnector;
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
         mHandlerReloadPriceList = new ArrayList<IListenerVoid>();
@@ -135,7 +138,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             catch (Exception e)
             {
                 Log.e(e.getMessage());
-                mIManadges.sendMessage(e.getMessage());
+                mINavigationActivity.sendMessage(e.getMessage());
             }
         }
     }
@@ -425,10 +428,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         break;
                     case -1008:
                         // IAB returned null purchaseData or dataSignature (response: -1008:Unknown error);
-                        mIManadges.sendMessage("Error purchasing: " + result);
+                        mINavigationActivity.sendMessage("Error purchasing: " + result);
                         break;
                     default:
-                        mIManadges.sendMessage("Unknown error: " + result);
+                        mINavigationActivity.sendMessage("Unknown error: " + result);
                         break;
                 }
                 return;

@@ -80,6 +80,7 @@ public class NavigationActivity extends SherlockFragmentActivity
         CompoundButton.OnCheckedChangeListener,
         IReloadUserData,
         IBitmapAsyncTask,
+        INavigationActivity,
         IManadges
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
@@ -89,6 +90,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
+
+    public final static int REQUEST_ANSWER_CROSSWORD_SET_ID = 5;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
@@ -221,6 +224,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        // Проверяем ответ, обработается он библиотекой контроля покупок In-App Billing;
         if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
         {
             // not handled, so handle it ourselves (here's where you'd
@@ -243,7 +247,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                     try
                     {
                         photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-                    } catch (IOException e)
+                    }
+                    catch (IOException e)
                     {
                         e.printStackTrace();
                     }
@@ -274,7 +279,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
                     break;
             }
-        } else
+        }
+        else
         {
             switch (requestCode)
             {
@@ -292,6 +298,33 @@ public class NavigationActivity extends SherlockFragmentActivity
                     break;
             }
         }
+
+        // Рассылаем ответ по фреймам;
+        if (mIsDestroyed)
+            return;
+        int size = mDrawerItems.size();
+        for (int i = 0; i < size; i++)
+        {
+            try
+            {
+                @Nonnull String classname = mDrawerItems.get(i).getFragmentClassName();
+                @Nullable Fragment fr = Fragment.instantiate(this, classname);
+                @Nullable INavigationFragmentListener iNavigationFragmentListener = (INavigationFragmentListener) fr;
+                if(iNavigationFragmentListener!=null)
+                {
+                    iNavigationFragmentListener.onNavigationActivityResult(requestCode,resultCode,data);
+                }
+            }
+            catch (ClassCastException e)
+            {
+
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
     }
 
     @Override

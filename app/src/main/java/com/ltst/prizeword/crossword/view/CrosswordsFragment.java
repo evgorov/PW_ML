@@ -25,8 +25,10 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
+import com.ltst.prizeword.navigation.INavigationFragmentListener;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.news.NewsModel;
@@ -35,6 +37,7 @@ import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.Calendar;
@@ -47,7 +50,9 @@ import javax.annotation.Nullable;
 
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
-        ICrosswordFragment, ITouchInterface
+        ICrosswordFragment,
+        ITouchInterface,
+        INavigationFragmentListener
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
@@ -351,7 +356,7 @@ public class CrosswordsFragment extends SherlockFragment
                                     createIntent(mContext, puzzleSet, puzzle.serverId,
                                             mHintsManager.getHintsCount(),
                                             mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
-                            mContext.startActivity(intent);
+                            ((Activity)mContext).startActivityForResult(intent, NavigationActivity.REQUEST_ANSWER_CROSSWORD_SET_ID);
                             break;
                         }
                     }
@@ -444,4 +449,22 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
+    @Override
+    public void onNavigationActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == NavigationActivity.REQUEST_ANSWER_CROSSWORD_SET_ID && data != null)
+        {
+            @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
+            if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
+            {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
+                    @Override
+                    public void handle() {
+                        createCrosswordPanel();
+                        skipProgressBar();
+                    }
+                });
+            }
+        }
+    }
 }

@@ -8,5 +8,4 @@ import javax.annotation.Nonnull;
 public interface IManadges {
 
     @Nonnull IManageHolder getManadgeHolder();
-    void sendMessage(@Nonnull String msg);
 }

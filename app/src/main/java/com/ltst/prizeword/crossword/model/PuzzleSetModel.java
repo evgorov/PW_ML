@@ -69,6 +69,15 @@ public class PuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
+    public void updateOneSet(@Nonnull String puzzleSetServerId, @Nonnull IListenerVoid handler) {
+        if(mIsDestroyed)
+            return;
+        Intent intent = LoadPuzzleSetsFromInternet.createOneSetIntent(mSessionKey, puzzleSetServerId);
+        mPuzzleOneSetUpdater.setIntent(intent);
+        mPuzzleOneSetUpdater.update(handler);
+    }
+
+    @Override
     public void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler)
     {
         if(mIsDestroyed)
@@ -116,6 +125,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleTotalSetsInternetUpdater.close();
         mPuzzleCurrentSetsUpdater.close();
         mBuyPuzzleTotalSetUpdater.close();
+        mPuzzleOneSetUpdater.close();
 
         mSynchronizer.close();
 
@@ -232,6 +242,22 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     };
 
+    private Updater mPuzzleOneSetUpdater = new Updater()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return mIntent;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return LoadPuzzleSetsFromInternet.class;
+        }
+    };
 
     private Updater mPuzzleSetsDbUpdater = new Updater()
     {

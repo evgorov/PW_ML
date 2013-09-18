@@ -56,6 +56,11 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     public void updateCurrentSets(@Nonnull IListenerVoid handler){}
 
     @Override
+    public void updateOneSet(@Nonnull String puzzleSetServerId, @Nonnull IListenerVoid handler) {
+
+    }
+
+    @Override
     public void synchronizePuzzleUserData(){}
 
     @Override
