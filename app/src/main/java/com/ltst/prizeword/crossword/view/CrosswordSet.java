@@ -236,11 +236,14 @@ public class CrosswordSet {
             {
                 // Куплены;
                 pBuyCrosswordContaiter.setVisibility(View.GONE);
+                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
+                pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
                 expandingBadgeContainer(true);
             }
             else
             {
                 // Некуплены;
+                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
                 pCurrentCrosswordContaiter.setVisibility(View.GONE);
 //                pBadgeContainer.setVisibility(View.GONE);
                 expandingBadgeContainer(false);
