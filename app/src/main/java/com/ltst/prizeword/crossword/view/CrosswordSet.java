@@ -346,8 +346,11 @@ public class CrosswordSet {
 
         @Override
         public void handle() {
-            @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
-            pBuyPrice.setText(mBuyPrice);
+            if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+            {
+                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
+                pBuyPrice.setText(mBuyPrice);
+            }
         }
     };
 
