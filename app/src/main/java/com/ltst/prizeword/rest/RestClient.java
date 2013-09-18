@@ -339,12 +339,13 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleTotalSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
+    public RestPuzzleTotalSet.RestPuzzleSetsHolder postBuySet(@Nonnull String sessionKey, @Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
     {
         @Nonnull String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
         @Nonnull String param = receiptData.replace("\"","\\\"");
 
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         urlVariables.put(RestParams.RECEIPT_DATA, param);
         urlVariables.put(RestParams.SIGNATURE, signature);
 

@@ -187,7 +187,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                     return null;
                 }
 
-                RestPuzzleTotalSet.RestPuzzleSetsHolder data = buyRestPuzzleSetFromInternet(env.context, setServerId, receiptData, signature);
+                RestPuzzleTotalSet.RestPuzzleSetsHolder data = buyRestPuzzleSetFromInternet(env.context, sessionKey, setServerId, receiptData, signature);
                 if(data != null)
                 {
                     if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
@@ -243,12 +243,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     private @Nullable
-    RestPuzzleTotalSet.RestPuzzleSetsHolder buyRestPuzzleSetFromInternet(@Nonnull Context context, @Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature)
+    RestPuzzleTotalSet.RestPuzzleSetsHolder buyRestPuzzleSetFromInternet(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature)
     {
         try
         {
             IRestClient client = RestClient.create(context);
-            return client.postBuySet(setServerId, receiptData, signature);
+            return client.postBuySet(sessionKey, setServerId, receiptData, signature);
         }
         catch(Throwable e)
         {
