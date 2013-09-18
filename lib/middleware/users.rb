@@ -157,11 +157,12 @@ module Middleware
       end
 
       user = current_user
+      result = puzzle_set.to_hash.merge('bought' => true)
       user['sets'] ||= []
-      user['sets'] = [puzzle_set.to_hash.merge('bought' => true)] | user['sets']
+      user['sets'] = [result] | user['sets']
       user.save
 
-      puzzle_set.to_json
+      result.to_json
     end
 
     post '/register_device' do
