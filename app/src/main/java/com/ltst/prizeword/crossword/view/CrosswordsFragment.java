@@ -362,8 +362,19 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void purchaseResult(boolean result) {
+        if(result)
+        {
+            updateCurrentSet();
+        }
+        else
+        {
+            skipProgressBar();
+        }
+    }
+
     public void updateCurrentSet() {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateTotalDataByDb(new IListenerVoid() {
             @Override
             public void handle() {
@@ -381,6 +392,18 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public IPuzzleSetModel getPuzzleSetModel() {
         return mPuzzleSetModel;
+    }
+
+    @Override
+    public void waitLoader(boolean wait) {
+        if(wait)
+        {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            skipProgressBar();
+        }
     }
 
     @Override public void notifySwipe(SwipeMethod swipe)

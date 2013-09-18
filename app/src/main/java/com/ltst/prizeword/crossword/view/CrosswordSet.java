@@ -236,7 +236,6 @@ public class CrosswordSet {
             {
                 // Куплены;
                 pBuyCrosswordContaiter.setVisibility(View.GONE);
-                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
                 pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
                 expandingBadgeContainer(true);
             }
@@ -317,6 +316,7 @@ public class CrosswordSet {
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
+                mICrosswordFragment.waitLoader(true);
                 final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)
                 {
@@ -328,7 +328,11 @@ public class CrosswordSet {
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
-                                mICrosswordFragment.updateCurrentSet();
+                                mICrosswordFragment.purchaseResult(true);
+                            }
+                            else
+                            {
+                                mICrosswordFragment.purchaseResult(false);
                             }
                         }
                     });

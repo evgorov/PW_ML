@@ -571,9 +571,20 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
                     // Восстанавливаем покупаемость товара;
                     // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-                    @Nonnull List<String> list = new ArrayList<String>(1);
-                    list.add(sku);
-                    mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                    try
+                    {
+                        @Nonnull List<String> list = new ArrayList<String>(1);
+                        list.add(sku);
+                        mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                    }
+                    catch (IllegalStateException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(e.getMessage());
+                    }
 
                 }
                 if(purchase.googlePurchase == true && purchase.serverPurchase == true)
