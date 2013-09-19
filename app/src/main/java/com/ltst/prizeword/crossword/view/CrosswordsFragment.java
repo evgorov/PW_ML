@@ -400,7 +400,7 @@ public class CrosswordsFragment extends SherlockFragment
                                             mHintsManager.getHintsCount(),
                                             mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
                             startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
-                            break;
+                            return;
                         }
                     }
                 }
