@@ -22,6 +22,7 @@
     <string name="score_fragment_title">Детализация очков</string>
     <string name="splashscreen_fragment_title">Заставка</string>
 
+    <string name="donwload">Скачать</string>
     <string name="ending">-й</string>
     <string name="points">" очков"</string>
     <string name="user">Пользователь</string>

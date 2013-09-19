@@ -339,19 +339,22 @@ public class RestClient implements IRestClient
 
     @Nullable
     @Override
-    public RestPuzzleTotalSet.RestPuzzleSetsHolder postBuySet(@Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
+    public RestPuzzleTotalSet.RestPuzzleOneSetHolder postBuySet(@Nonnull String sessionKey, @Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
     {
         @Nonnull String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
         @Nonnull String param = receiptData.replace("\"","\\\"");
 
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
         urlVariables.put(RestParams.RECEIPT_DATA, param);
         urlVariables.put(RestParams.SIGNATURE, signature);
 
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-        messageConverters.add(new FormHttpMessageConverter());
-        messageConverters.add(new StringHttpMessageConverter());
-        restTemplate.setMessageConverters(messageConverters);
+//        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+//        messageConverters.add(new FormHttpMessageConverter());
+//        messageConverters.add(new StringHttpMessageConverter());
+//        restTemplate.setMessageConverters(messageConverters);
+
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
@@ -359,12 +362,12 @@ public class RestClient implements IRestClient
 //        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        @Nullable ResponseEntity<RestPuzzleTotalSet.RestPuzzleSetsHolder> entity = null;
-        @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder holder = null;
+        @Nullable ResponseEntity<RestPuzzleTotalSet> entity = null;
+        @Nullable RestPuzzleTotalSet.RestPuzzleOneSetHolder holder = new RestPuzzleTotalSet.RestPuzzleOneSetHolder();
         try
         {
-            entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleTotalSet.RestPuzzleSetsHolder.class, urlVariables);
-            holder = entity.getBody();
+            entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestPuzzleTotalSet.class, urlVariables);
+            holder.setPuzzleSet(entity.getBody());
             holder.setHttpStatus(entity.getStatusCode());
             return holder;
         }
@@ -376,7 +379,7 @@ public class RestClient implements IRestClient
         {
             Log.e(e.getMessage());
         }
-        holder = new RestPuzzleTotalSet.RestPuzzleSetsHolder();
+        holder = new RestPuzzleTotalSet.RestPuzzleOneSetHolder();
         holder.setHttpStatus(HttpStatus.valueOf(RestParams.SC_ERROR));
         return holder;
     }

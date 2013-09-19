@@ -235,7 +235,7 @@
                     android:id="@+id/crossword_panel_buy_price"
                     android:textSize="@dimen/puzzles_badge_text_size"
                     style="@style/PuzzlesHintWhiteTextStyle"
-                    android:text=""/>
+                    android:text="@string/donwload"/>
 
         </LinearLayout>
 

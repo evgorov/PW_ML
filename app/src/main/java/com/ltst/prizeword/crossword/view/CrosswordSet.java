@@ -129,8 +129,15 @@ public class CrosswordSet {
                 SoundsWork.buySet(mContext);
                 if (mSetServerId != null)
                 {
-                    mIManageHolder.buyProduct(mSetServerId);
+                    if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+                    {
+                        mIManageHolder.buyProduct(mSetServerId);
 //                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
+                    }
+                    else
+                    {
+                        mIManageHolder.uploadProduct(mSetServerId);
+                    }
                 }
             }
         });
@@ -211,7 +218,7 @@ public class CrosswordSet {
 
         pScoreText.setText(String.valueOf(data.mScore));
 
-        pBuyCountText.setText(String.valueOf(data.mBuyCount));
+        pBuyCountText.setText(String.valueOf(data.mTotalCount));
 
         pBuyScore.setText(String.valueOf(data.mBuyScore));
 
@@ -236,11 +243,13 @@ public class CrosswordSet {
             {
                 // Куплены;
                 pBuyCrosswordContaiter.setVisibility(View.GONE);
+                pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
                 expandingBadgeContainer(true);
             }
             else
             {
                 // Некуплены;
+                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
                 pCurrentCrosswordContaiter.setVisibility(View.GONE);
 //                pBadgeContainer.setVisibility(View.GONE);
                 expandingBadgeContainer(false);
@@ -314,6 +323,7 @@ public class CrosswordSet {
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
+                mICrosswordFragment.waitLoader(true);
                 final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)
                 {
@@ -326,6 +336,11 @@ public class CrosswordSet {
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
                                 mICrosswordFragment.updateOneSet(mSetServerId);
+                                mICrosswordFragment.purchaseResult(true);
+                            }
+                            else
+                            {
+                                mICrosswordFragment.purchaseResult(false);
                             }
                         }
                     });
@@ -339,8 +354,11 @@ public class CrosswordSet {
 
         @Override
         public void handle() {
-            @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
-            pBuyPrice.setText(mBuyPrice);
+            if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+            {
+                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
+                pBuyPrice.setText(mBuyPrice);
+            }
         }
     };
 

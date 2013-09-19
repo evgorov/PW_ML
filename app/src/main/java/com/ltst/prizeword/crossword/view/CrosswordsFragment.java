@@ -30,6 +30,7 @@ import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.news.NewsModel;
+import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
@@ -65,6 +66,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull String mSessionKey;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
     private @Nonnull HintsManager mHintsManager;
+    private @Nonnull CoefficientsModel mCoefficientsModel;
 
     private @Nonnull View mRoot;
     private @Nonnull Button mMenuBackButton;
@@ -169,6 +171,7 @@ public class CrosswordsFragment extends SherlockFragment
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
 //        mHintsManager = new HintsManager(mContext, mRoot);
+        mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
@@ -178,6 +181,7 @@ public class CrosswordsFragment extends SherlockFragment
 //            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+            mCoefficientsModel.updateFromInternet(updatePuzzleSetCofficients);
             mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
@@ -209,6 +213,7 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onStop()
     {
+        mCoefficientsModel.close();
         mPuzzleSetModel.close();
         mNewsModel.close();
         mHintsModel.close();
@@ -358,6 +363,15 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
+    private IListenerVoid updatePuzzleSetCofficients = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+            mCrosswordFragmentHolder.setCoefficients(mCoefficientsModel.getCoefficients());
+        }
+    };
+
     private IListenerVoid updateCurrentSetsHandler = new IListenerVoid()
     {
         @Override
@@ -402,8 +416,19 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
+    public void purchaseResult(boolean result) {
+        if(result)
+        {
+            updateCurrentSet();
+        }
+        else
+        {
+            skipProgressBar();
+        }
+    }
+
     public void updateCurrentSet() {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateTotalDataByDb(new IListenerVoid() {
             @Override
             public void handle() {
@@ -435,6 +460,18 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public IPuzzleSetModel getPuzzleSetModel() {
         return mPuzzleSetModel;
+    }
+
+    @Override
+    public void waitLoader(boolean wait) {
+        if(wait)
+        {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            skipProgressBar();
+        }
     }
 
     @Override public void notifySwipe(SwipeMethod swipe)

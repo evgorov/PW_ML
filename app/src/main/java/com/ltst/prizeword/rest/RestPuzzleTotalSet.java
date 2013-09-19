@@ -114,6 +114,7 @@ public class RestPuzzleTotalSet
         this.puzzles = puzzles;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RestPuzzleSetsHolder
     {
         private @JsonProperty() List<RestPuzzleTotalSet> mPuzzleSets;
@@ -129,6 +130,41 @@ public class RestPuzzleTotalSet
         public void setPuzzleSets(List<RestPuzzleTotalSet> puzzleSets)
         {
             mPuzzleSets = puzzleSets;
+        }
+
+        public void addPuzzleSet(RestPuzzleTotalSet set)
+        {
+            mPuzzleSets.add(set);
+        }
+
+
+        public HttpStatus getHttpStatus()
+        {
+            return mHttpStatus;
+        }
+
+        public void setHttpStatus(HttpStatus httpStatus)
+        {
+            mHttpStatus = httpStatus;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RestPuzzleOneSetHolder
+    {
+        private @JsonProperty() RestPuzzleTotalSet mPuzzleSet;
+        private @JsonIgnore HttpStatus mHttpStatus;
+
+        public RestPuzzleOneSetHolder(){}
+
+        public RestPuzzleTotalSet getPuzzleSet()
+        {
+            return mPuzzleSet;
+        }
+
+        public void setPuzzleSet(RestPuzzleTotalSet puzzleSet)
+        {
+            mPuzzleSet = puzzleSet;
         }
 
         public HttpStatus getHttpStatus()

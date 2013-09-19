@@ -144,6 +144,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     }
 
     @Override
+    public void uploadProduct(@Nonnull String sku) {
+        // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
+        @Nullable com.ltst.prizeword.manadges.Purchase product = mIPurchaseSetModel.getPurchase(sku);
+        product.googlePurchase = false;
+        product.serverPurchase = true;
+        product.receipt_data = "";
+        product.signature = "";
+        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+        verifyControllPurchases();
+    }
+
+    @Override
     public void registerHandlerPriceProductsChange(@Nonnull IListenerVoid handler)
     {
         mHandlerReloadPriceList.add(handler);
@@ -374,22 +387,23 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //            }
 
 
-//            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
-//            for(@Nonnull String sku : mSkuContainer)
-//            {
-//                if(inventory.hasPurchase(sku));
-//                {
-//                    @Nullable Purchase purchase = inventory.getPurchase(sku);
-//                    if(purchase != null)
-//                    {
-//                        list.add(inventory.getPurchase(sku));
-//                    }
-//                }
-//            }
-//            if(list.size()>0)
-//            {
-//                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
-//            }
+            // Восстанавливаю покупаемость всех продуктов! REMOVE IN THE FUTURE!
+            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
+            for(@Nonnull String sku : mSkuContainer)
+            {
+                if(inventory.hasPurchase(sku));
+                {
+                    @Nullable Purchase purchase = inventory.getPurchase(sku);
+                    if(purchase != null)
+                    {
+                        list.add(inventory.getPurchase(sku));
+                    }
+                }
+            }
+            if(list.size()>0)
+            {
+                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
+            }
 
             @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
             for(@Nonnull String googleId : mSkuContainer)
@@ -573,12 +587,24 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
                     // Восстанавливаем покупаемость товара;
                     // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-                    @Nonnull List<String> list = new ArrayList<String>(1);
-                    list.add(sku);
-                    mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                    try
+                    {
+                        @Nonnull List<String> list = new ArrayList<String>(1);
+                        list.add(sku);
+                        mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                    }
+                    catch (IllegalStateException e)
+                    {
+                        Log.e(e.getMessage());
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(e.getMessage());
+                    }
 
                 }
-                if(purchase.googlePurchase == true && purchase.serverPurchase == true)
+//                if(purchase.googlePurchase == true && purchase.serverPurchase == true)
+                if(purchase.serverPurchase == true)
                 {
                     // Состояние продукта: был куплен на Google Play, но еще не прошел запрос покупки на сервере;
                     // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;

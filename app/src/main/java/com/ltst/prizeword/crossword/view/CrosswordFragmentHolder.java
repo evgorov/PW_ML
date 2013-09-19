@@ -21,6 +21,7 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.tools.DeclensionTools;
 
 import org.omich.velo.handlers.IListener;
@@ -54,7 +55,7 @@ public class CrosswordFragmentHolder
 
     @Nonnull HashMap<String, List<PuzzleSet>> mMapSets;
     @Nonnull HashMap<String, List<Puzzle>> mMapPuzzles;
-
+    @Nonnull Coefficients mCoefficients;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
@@ -96,6 +97,10 @@ public class CrosswordFragmentHolder
                         ? R.drawable.puzzles_current_puzzles_head_rest_panel_nocritical
                         : R.drawable.puzzles_current_puzzles_head_rest_panel_clitical));
 
+    }
+
+    public void setCoefficients(@Nonnull Coefficients coefficients) {
+        this.mCoefficients = coefficients;
     }
 
     @Nonnull
@@ -175,7 +180,7 @@ public class CrosswordFragmentHolder
         data.mScore = 0;
         data.mProgress = 0;
         data.mTotalCount = 0;
-        data.mTotalCount = 0;
+
         return data;
     }
 
@@ -239,6 +244,31 @@ public class CrosswordFragmentHolder
             data.mProgress = percents;
             data.mResolveCount = solved;
             data.mTotalCount = puzzles.size();
+
+            int baseScore = 0;
+            switch (data.mType)
+            {
+                case BRILLIANT:
+                    baseScore = mCoefficients.brilliantBaseScore;
+                    break;
+                case GOLD:
+                    baseScore = mCoefficients.goldBaseScore;
+                    break;
+                case SILVER:
+                    baseScore = mCoefficients.silver1BaseScore;
+                    break;
+                case SILVER2:
+                    baseScore = mCoefficients.silver2BaseScore;
+                    break;
+                case FREE:
+                    baseScore = mCoefficients.freeBaseScore;
+                    break;
+                default:
+                    break;
+            }
+
+            data.mBuyScore = baseScore*data.mTotalCount;
+
             addPanel(data);
         }
     }
