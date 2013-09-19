@@ -35,7 +35,8 @@ public final class SoundsWork
 
     public static void pauseBackgroundMusic()
     {
-        mMediaPlayerBack.pause();
+        if(mMediaPlayerBack != null)
+            mMediaPlayerBack.pause();
     }
 
     public static void sidebarMusic(@Nonnull Context context)

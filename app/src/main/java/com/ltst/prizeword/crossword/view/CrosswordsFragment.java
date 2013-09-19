@@ -137,15 +137,17 @@ public class CrosswordsFragment extends SherlockFragment
                         @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
                         if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
                         {
-                            assert mProgressBar != null;
-                            mProgressBar.setVisibility(View.VISIBLE);
-                            mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
-                                @Override
-                                public void handle() {
-                                    createCrosswordPanel();
-                                    skipProgressBar();
-                                }
-                            });
+                            CrosswordSetUpdateMember.mPuzzleSetServerId = puzzleSetServerId;
+                            CrosswordSetUpdateMember.mNeedUpdate = true;
+//                            assert mProgressBar != null;
+//                            mProgressBar.setVisibility(View.VISIBLE);
+//                            mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
+//                                @Override
+//                                public void handle() {
+//                                    createCrosswordPanel();
+//                                    skipProgressBar();
+//                                }
+//                            });
                         }
                     }
                 }break;
@@ -184,7 +186,23 @@ public class CrosswordsFragment extends SherlockFragment
         }
         else
         {
-            skipProgressBar();
+            if(CrosswordSetUpdateMember.mNeedUpdate)
+            {
+                CrosswordSetUpdateMember.mNeedUpdate = false;
+                assert mProgressBar != null;
+                mProgressBar.setVisibility(View.VISIBLE);
+                mPuzzleSetModel.updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId, new IListenerVoid() {
+                    @Override
+                    public void handle() {
+                        createCrosswordPanel();
+                        skipProgressBar();
+                    }
+                });
+            }
+            else
+            {
+                skipProgressBar();
+            }
         }
 
         super.onStart();
@@ -249,12 +267,10 @@ public class CrosswordsFragment extends SherlockFragment
             }
         });
         mNewsCloseBtn.setOnClickListener(this);
-        mNewsLayout.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                switch (view.getId())
-                {
+        mNewsLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (view.getId()) {
                     case R.id.news_layout:
                         mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
                         mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
@@ -475,4 +491,10 @@ public class CrosswordsFragment extends SherlockFragment
             }
         }
     };
+
+    private static class CrosswordSetUpdateMember
+    {
+        static @Nonnull String mPuzzleSetServerId;
+        static boolean mNeedUpdate;
+    }
 }
