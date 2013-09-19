@@ -8,6 +8,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestParams;
@@ -157,11 +158,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             }
             else if (volumePuzzle.equals(VOLUME_LONG))
             {
+                long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+                Calendar calnow = Calendar.getInstance();
+                calnow.setTimeInMillis(currentTime);
+
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
-
-                Calendar calnow = Calendar.getInstance();
-
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_MONTH, 1);
                 cal.set(Calendar.MONTH, app_release_month);
@@ -169,7 +171,9 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
                 while(cal.before(calnow))
                 {
-                    getFromServer(sessionKey,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH), env);
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    getFromServer(sessionKey,year,month,env);
                     cal.add(Calendar.MONTH,1);
                 }
                 return getFromDatabase(env);
