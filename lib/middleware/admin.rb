@@ -38,9 +38,9 @@ module Middleware
       end
 
       def set_puzzle_data(o, params)
-        o['base_score'] = params['base_score'].to_i
         o['height'] = params['height'].to_i
         o['width'] = params['width'].to_i
+        o['author'] = "#{current_user['name']} #{current_user['surname']}"
         o['issuedAt'] = params['issuedAt']
         o['name'] = params['name']
         o['set_id'] = params['set_id']
@@ -100,22 +100,15 @@ module Middleware
 
     post '/questions' do
       authorize_editor!
-      Puzzle.storage(env['redis']).tap { |o|
-        prev_id, current_id = o['set_id'], params['set_id']
-        set_puzzle_data(o, params)
-        begin
-          prev_set = PuzzleSet.storage(env['redis']).load(prev_id)
-          prev_set['puzzle_ids'].reject!{ |id| id == o.id }
-          prev_set.save!
-        rescue BasicModel::NotFound
-        end
-        begin
-          set = PuzzleSet.storage(env['redis']).load(current_id)
-          set['puzzle_ids'] |= [o.id]
-          set.save!
-        rescue BasicModel::NotFound
-        end
-      }.save.to_json
+      current_id = params['set_id']
+      puzzle = Puzzle.storage(env['redis']).tap { |o| set_puzzle_data(o, params) }.save
+      if current_id
+        set = PuzzleSet.storage(env['redis']).load(current_id)
+        set['puzzle_ids'] |= [puzzle.id]
+        set.save
+      end
+
+      puzzle.to_json
     end
 
     put '/questions/:id' do
@@ -123,17 +116,15 @@ module Middleware
       Puzzle.storage(env['redis']).load(params['id']).tap { |o|
         prev_id, current_id = o['set_id'], params['set_id']
         set_puzzle_data(o, params)
-        begin
+        if prev_id
           prev_set = PuzzleSet.storage(env['redis']).load(prev_id)
           prev_set['puzzle_ids'].reject!{ |id| id == o.id }
           prev_set.save
-        rescue BasicModel::NotFound
         end
-        begin
+        if current_id
           set = PuzzleSet.storage(env['redis']).load(current_id)
           set['puzzle_ids'] |= [o.id]
           set.save
-        rescue BasicModel::NotFound
         end
       }.save.to_json
     end

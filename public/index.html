@@ -84,6 +84,9 @@
                 <tr>
                   <th>ID</th>
                   <th>Название</th>
+                  <th>сет</th>
+                  <th>Автор</th>
+                  <th>Создан</th>
                   <th></th>
                 </tr>
               </thead>
@@ -189,8 +192,6 @@
               <input type="text" class="input-mini" placeholder="10x10" role="puzzle-size">
               <label class="">Название:</label>
               <input type="text" class="input-large" placeholder="Сканворды народов мира" role="puzzle-name">
-              <label class="">Счет:</label>
-              <input type="text" class="input-small" placeholder="1000" role="puzzle-base-score">
               <label class="">Время:</label>
               <input type="text" class="input-small" placeholder="100" role="puzzle-time-given">
               <label class="">Сет:</label>
@@ -288,8 +289,8 @@
           <% if(puzzles.length === 0) { %>
             <li>Нет сканвордов</li>
           <% } else { %>
-            <% _.each(puzzle_ids, function(o){ %>
-              <li><%- o %></li>
+            <% _.each(puzzles, function(o){ %>
+              <li><%- o.name %></li>
             <% }); %>
           <% }; %>
         </ul>

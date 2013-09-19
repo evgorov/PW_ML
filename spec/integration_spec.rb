@@ -279,7 +279,6 @@ describe 'Integration spec' do
 
     post('/puzzles',
          {
-           base_score: 50,
            height: 20,
            width: 20,
            issuedAt: Time.now.to_s,
@@ -295,7 +294,6 @@ describe 'Integration spec' do
 
     post('/puzzles',
          {
-           base_score: 50,
            height: 20,
            width: 20,
            issuedAt: Time.now.to_s,

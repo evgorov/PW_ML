@@ -182,7 +182,6 @@ var Puzzle = Backbone.Model.extend({
       "questions": [],
       "name": _.uniqueId('Сканворд'),
       "issuedAt": (new Date).toISOString().split('T')[0],
-      "base_score": 0,
       "time_given": 60000,
       "height": 10,
       "width": 10
@@ -190,6 +189,9 @@ var Puzzle = Backbone.Model.extend({
   },
 
   initialize: function(){
+
+    if(!this.get('author')) this.set('author', 'Аноним');
+
     this.field = new Field({
       questions: this.get('questions'),
       width: this.get('width'),
@@ -453,7 +455,6 @@ var PuzzleView = Backbone.View.extend({
 
     this.model.set('name', name);
     this.model.set('set_id', setId);
-    this.model.set('base_score', baseScore);
     this.model.set('time_given', timeGiven);
     this.model.set('height', parseInt(size.split('x')[0]));
     this.model.set('width', parseInt(size.split('x')[1]));
@@ -503,7 +504,6 @@ var PuzzleView = Backbone.View.extend({
 
     this.$el.find('[role="puzzle-size"]').val(fieldSize);
     this.$el.find('[role="puzzle-name"]').val(this.model.get('name'));
-    this.$el.find('[role="puzzle-base-score"]').val(this.model.get('base_score'));
     this.$el.find('[role="puzzle-time-given"]').val(this.model.get('time_given'));
 
     $set.empty().append($('<option>'));
@@ -561,6 +561,9 @@ var PuzzlesView = Backbone.View.extend({
       var t = '<tr>' +
               '<td><%= id %></td>' +
               '<td><%= name %></td>' +
+              '<td><%= set_id %></td>' +
+              '<td><%= author %></td>' +
+              '<td><%= created_at %></td>' +
               '<td><button class="btn btn-small" role="edit-puzzle" data-id="<%= id %>">Редактировать</button></td>' +
               '</tr>';
       return _.template(t);
