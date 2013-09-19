@@ -325,7 +325,7 @@ public class CrosswordSet {
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
-                                mICrosswordFragment.updateCurrentSet();
+                                mICrosswordFragment.updateOneSet(mSetServerId);
                             }
                         }
                     });

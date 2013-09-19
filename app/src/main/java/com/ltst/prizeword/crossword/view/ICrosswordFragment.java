@@ -12,6 +12,7 @@ public interface ICrosswordFragment {
 
     public void choicePuzzle(@Nonnull String setServerId, long puzzleId);
     public void updateCurrentSet();
+    public void updateOneSet(@Nonnull String puzzleSetServerId);
     HintsModel getHintsModel();
     IPuzzleSetModel getPuzzleSetModel();
 }

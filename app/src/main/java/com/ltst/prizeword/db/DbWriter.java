@@ -449,6 +449,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                 mDb.delete(TNAME_USERS, null, null);
                 mDb.delete(TNAME_COEFFICIENTS, null, null);
                 mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
+                mDb.delete(TNAME_PURCHASES, null, null);
             }
         });
     }

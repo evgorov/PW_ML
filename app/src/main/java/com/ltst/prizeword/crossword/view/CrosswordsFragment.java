@@ -189,15 +189,7 @@ public class CrosswordsFragment extends SherlockFragment
             if(CrosswordSetUpdateMember.mNeedUpdate)
             {
                 CrosswordSetUpdateMember.mNeedUpdate = false;
-                assert mProgressBar != null;
-                mProgressBar.setVisibility(View.VISIBLE);
-                mPuzzleSetModel.updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId, new IListenerVoid() {
-                    @Override
-                    public void handle() {
-                        createCrosswordPanel();
-                        skipProgressBar();
-                    }
-                });
+                updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId);
             }
             else
             {
@@ -413,6 +405,20 @@ public class CrosswordsFragment extends SherlockFragment
     public void updateCurrentSet() {
         mProgressBar.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateTotalDataByDb(new IListenerVoid() {
+            @Override
+            public void handle() {
+                createCrosswordPanel();
+                skipProgressBar();
+            }
+        });
+    }
+
+    @Override
+    public void updateOneSet(@Nonnull String puzzleSetServerId) {
+        if(mPuzzleSetModel == null)
+            return;
+        mProgressBar.setVisibility(View.VISIBLE);
+        mPuzzleSetModel.updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId, new IListenerVoid() {
             @Override
             public void handle() {
                 createCrosswordPanel();
