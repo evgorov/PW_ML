@@ -66,7 +66,6 @@ import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
-import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,8 +90,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
-
-    public final static int REQUEST_ANSWER_CROSSWORD_SET_ID = 5;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
@@ -297,28 +294,6 @@ public class NavigationActivity extends SherlockFragmentActivity
                 }
                 default:
                     break;
-            }
-        }
-
-        // Рассылаем ответ по фреймам;
-        if (mIsDestroyed)
-            return;
-        int size = mDrawerItems.size();
-        for (int i = 0; i < size; i++)
-        {
-            try
-            {
-                @Nonnull String classname = mDrawerItems.get(i).getFragmentClassName();
-                @Nullable Fragment fr = Fragment.instantiate(this, classname);
-                @Nullable INavigationFragmentListener iNavigationFragmentListener = (INavigationFragmentListener) fr;
-                if(iNavigationFragmentListener!=null)
-                {
-                    iNavigationFragmentListener.onNavigationActivityResult(requestCode,resultCode,data);
-                }
-            }
-            catch (ClassCastException e)
-            {
-                Log.e(e.toString());
             }
         }
 

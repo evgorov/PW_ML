@@ -25,10 +25,8 @@ import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
-import com.ltst.prizeword.navigation.INavigationFragmentListener;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.news.NewsModel;
@@ -51,16 +49,16 @@ import javax.annotation.Nullable;
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
         ICrosswordFragment,
-        ITouchInterface,
-        INavigationFragmentListener
+        ITouchInterface
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
     public static final @Nonnull String BF_HINTS_COUNT = FRAGMENT_ID + ".hintsCount";
 
-    private @Nonnull Context mContext;
+    private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 5;
 
+    private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull INavigationDrawerHolder mINavigationDrawerHolder;
     private @Nonnull com.ltst.prizeword.navigation.IFragmentsHolderActivity mIFragmentActivity;
@@ -128,6 +126,32 @@ public class CrosswordsFragment extends SherlockFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case REQUEST_ANSWER_CROSSWORD_SET_ID:
+                {
+                    if(data.hasExtra(OneCrosswordActivity.BF_PUZZLE_SET))
+                    {
+                        @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
+                        if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
+                        {
+                            assert mProgressBar != null;
+                            mProgressBar.setVisibility(View.VISIBLE);
+                            mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
+                                @Override
+                                public void handle() {
+                                    createCrosswordPanel();
+                                    skipProgressBar();
+                                }
+                            });
+                        }
+                    }
+                }break;
+                default:break;
+            }
+        }
     }
 
     @Override
@@ -359,7 +383,7 @@ public class CrosswordsFragment extends SherlockFragment
                                     createIntent(mContext, puzzleSet, puzzle.serverId,
                                             mHintsManager.getHintsCount(),
                                             mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
-                            ((Activity)mContext).startActivityForResult(intent, NavigationActivity.REQUEST_ANSWER_CROSSWORD_SET_ID);
+                            startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
                             break;
                         }
                     }
@@ -451,24 +475,4 @@ public class CrosswordsFragment extends SherlockFragment
             }
         }
     };
-
-    @Override
-    public void onNavigationActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == NavigationActivity.REQUEST_ANSWER_CROSSWORD_SET_ID && data != null)
-        {
-            @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
-            if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
-            {
-                assert mProgressBar != null;
-                mProgressBar.setVisibility(View.VISIBLE);
-                mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
-                    @Override
-                    public void handle() {
-                        createCrosswordPanel();
-                        skipProgressBar();
-                    }
-                });
-            }
-        }
-    }
 }
