@@ -28,6 +28,7 @@ import org.omich.velo.handlers.IListenerVoid;
 
 import java.security.cert.CollectionCertStoreParameters;
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -180,13 +181,30 @@ public class CrosswordFragmentHolder
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
-        if (!sets.isEmpty())
+        for(PuzzleSet set : sets)
         {
-            PuzzleSet set = sets.get(0);
             String key = String.format("%d-%d", set.year, set.month);
+            List<PuzzleSet> sst = null;
             if (mMapSets.containsKey(key))
+            {
+                sst = mMapSets.get(key);
+                for(int i=0; i<sst.size(); i++)
+                {
+                    PuzzleSet sett = sst.get(i);
+                    if(sett.serverId.equals(set.serverId))
+                    {
+                        sst.remove(i);
+                        break;
+                    }
+                }
                 mMapSets.remove(key);
-            mMapSets.put(key, sets);
+            }
+            if(sst == null)
+            {
+                sst = new ArrayList<PuzzleSet>();
+            }
+            sst.add(set);
+            mMapSets.put(key, sst);
         }
 
         for (String key : mapPuzzles.keySet())
