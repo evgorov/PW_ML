@@ -776,7 +776,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                 return;
 
             mIsClosed = true;
-            hideProgressBar();
+//            hideProgressBar();
             Intent intent = new Intent();
             intent.putExtra(BF_PUZZLE_SET, mPuzzleSet.serverId);
             setResult(RESULT_OK, intent);
