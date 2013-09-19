@@ -119,6 +119,11 @@ public class UsersListModel implements IUsersListModel
         @Override
         protected void handleData (@Nullable Bundle result)
         {
+            if (result == null)
+            {
+                return;
+            }
+
             Source source = mSource;
             BgImageDownloader downloader = mDownloader;
             if(mIsDestroyed)
