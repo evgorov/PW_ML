@@ -66,6 +66,7 @@ import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -317,11 +318,7 @@ public class NavigationActivity extends SherlockFragmentActivity
             }
             catch (ClassCastException e)
             {
-
-            }
-            catch (Exception e)
-            {
-
+                Log.e(e.toString());
             }
         }
 

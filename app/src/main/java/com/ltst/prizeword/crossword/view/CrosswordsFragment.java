@@ -85,12 +85,14 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull IManadges mIManadges;
 
     private int mIndicatorPosition;
+    private boolean flgOneUpload;
 
     // ==== Livecycle =================================
 
     @Override
     public void onAttach(Activity activity)
     {
+        flgOneUpload = false;
         mContext = (Context) activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mIFragmentActivity = (IFragmentsHolderActivity) activity;
@@ -145,21 +147,21 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
 
-//        if(!mLoadFlag)
-//        {
+        if(!flgOneUpload)
+        {
 //            mLoadFlag = true;
 //        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
-        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+            mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
 //        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
 //        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
-//        }
-//        else
-//        {
-//            skipProgressBar();
-//        }
+        }
+        else
+        {
+            skipProgressBar();
+        }
 
         super.onStart();
     }
@@ -204,6 +206,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     public void skipProgressBar()
     {
+        flgOneUpload = true;
         View bar = mProgressBar;
         assert bar != null;
         bar.setVisibility(View.GONE);
@@ -456,6 +459,7 @@ public class CrosswordsFragment extends SherlockFragment
             @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
             if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
             {
+                assert mProgressBar != null;
                 mProgressBar.setVisibility(View.VISIBLE);
                 mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
                     @Override
