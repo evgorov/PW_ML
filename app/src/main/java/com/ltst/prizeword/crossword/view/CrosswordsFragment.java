@@ -4,16 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -27,21 +21,17 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.news.INewsModel;
-import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.news.NewsModel;
 import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
-import com.ltst.prizeword.swipe.TouchDetector;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,23 +62,15 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull HintsManager mHintsManager;
     private @Nonnull CoefficientsModel mCoefficientsModel;
 
-    private @Nonnull View mRoot;
     private @Nonnull Button mMenuBackButton;
+    private @Nonnull NewsHolder mNewsHolder;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
-    private @Nonnull List<String> mNewsList;
-    private @Nonnull RelativeLayout mNewsLayout;
-    private @Nonnull GestureDetector mGestureDetector;
-    private @Nonnull LinearLayout mNewsIndicatorLayout;
-    private @Nonnull ImageView mSimpleImage;
-    private @Nonnull TextView mNewsSimpleText;
-    private @Nonnull ImageView mNewsCloseBtn;
     private @Nonnull View mProgressBar;
 
     private @Nonnull INewsModel mNewsModel;
     private @Nonnull HintsModel mHintsModel;
     private @Nonnull IManadges mIManadges;
 
-    private int mIndicatorPosition;
     private boolean flgOneUpload;
 
     // ==== Livecycle =================================
@@ -116,17 +98,11 @@ public class CrosswordsFragment extends SherlockFragment
             mMenuBackButton.setVisibility(View.GONE);
         }
 
+        mNewsHolder = new NewsHolder(mContext, this, inflater, v);
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
+        mHintsManager = new HintsManager(mContext, this, v);
 
-        mNewsList = new ArrayList<String>();
-        mNewsLayout = (RelativeLayout) v.findViewById(R.id.news_layout);
-        mGestureDetector = new GestureDetector(mContext, new TouchDetector(this));
-        mNewsIndicatorLayout = (LinearLayout) v.findViewById(R.id.news_indicator_layout);
-        mNewsSimpleText = (TextView) v.findViewById(R.id.news_simple_text);
-        mNewsCloseBtn = (ImageView) v.findViewById(R.id.news_close_btn);
         mProgressBar =  v.findViewById(R.id.archive_progressBar);
-        mRoot = v;
-        mHintsManager = new HintsManager(mContext, this, mRoot);
         return v;
     }
 
@@ -245,7 +221,7 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
             mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
-            mCrosswordFragmentHolder.setMapSets((HashMap<String,List<PuzzleSet>>)savedInstanceState.getSerializable(BF_SETS));
+            mCrosswordFragmentHolder.setMapSets((HashMap<String, List<PuzzleSet>>) savedInstanceState.getSerializable(BF_SETS));
             mCrosswordFragmentHolder.setCoefficients((Coefficients) savedInstanceState.getParcelable(BF_COEFFICIENTS));
         }
         super.onViewStateRestored(savedInstanceState);
@@ -263,34 +239,6 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
-//        mCrossWordButton.setOnClickListener(this);
-        mNewsLayout.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                return mGestureDetector.onTouchEvent(motionEvent);
-            }
-        });
-        mNewsCloseBtn.setOnClickListener(this);
-        mNewsLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (view.getId()) {
-                    case R.id.news_layout:
-                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
-                        if (mIndicatorPosition < mNewsList.size() - 1)
-                            mIndicatorPosition++;
-                        else if (mIndicatorPosition == mNewsList.size() - 1)
-                            mIndicatorPosition = 0;
-                        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
-                        mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
-                        break;
-                }
-                return false;
-            }
-        });
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -305,8 +253,6 @@ public class CrosswordsFragment extends SherlockFragment
             case R.id.crossword_fragment_header_menu_btn:
                 mINavigationDrawerHolder.toogle();
                 break;
-            case R.id.news_close_btn:
-                mNewsLayout.setVisibility(View.GONE);
             default:
                 break;
         }
@@ -480,66 +426,18 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
-    @Override public void notifySwipe(SwipeMethod swipe)
-    {
-        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
-        if (swipe.equals(SwipeMethod.SWIPE_RIGHT))
-        {
-            if (mIndicatorPosition > 0)
-                mIndicatorPosition--;
-        } else if (swipe.equals(SwipeMethod.SWIPE_LEFT))
-        {
-            if (mIndicatorPosition < mNewsList.size() - 1)
-                mIndicatorPosition++;
-            else if (mIndicatorPosition == mNewsList.size() - 1)
-                mIndicatorPosition = 0;
-        }
-        mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-        mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
-        mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
-
-    }
-
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
     {
         @Override public void handle()
         {
-            News news = mNewsModel.getNews();
-            if (news != null)
-            {
-                if (news.message1 == null && news.message2 == null && news.message3 == null)
-                {
-                    mNewsLayout.setVisibility(View.GONE);
-                } else
-                {
-                    mNewsList.clear();
-                    mNewsList.add(news.message1);
-                    mNewsList.add(news.message2);
-                    mNewsList.add(news.message3);
-
-                    mNewsIndicatorLayout.removeAllViewsInLayout();
-                    LinearLayout.LayoutParams params;
-                    for (int i = 0; i < mNewsList.size(); i++)
-                    {
-                        mSimpleImage = new ImageView(mContext);
-                        mSimpleImage.setImageResource(R.drawable.puzzles_news_page);
-                        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        if (i != 0)
-                            params.setMargins(4, 0, 0, 0);
-                        mSimpleImage.setLayoutParams(params);
-                        mSimpleImage.setId(i);
-
-                        mNewsIndicatorLayout.addView(mSimpleImage);
-                    }
-                    mIndicatorPosition = 0;
-                    mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
-                    mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
-                    mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
-                }
-            }
+            mNewsHolder.fillNews(mNewsModel.getNews());
         }
     };
+
+    @Override
+    public void notifySwipe(SwipeMethod swipe) {
+        mNewsHolder.notifySwipe(swipe);
+    }
 
     private static class CrosswordSetUpdateMember
     {
