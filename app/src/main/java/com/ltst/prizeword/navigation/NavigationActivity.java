@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.widget.CompoundButton;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -869,6 +871,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void sendMessage(@Nonnull String msg) {
         ErrorAlertDialog.showDialog(this,msg);
+    }
+
+    public static void debug(@Nonnull String msg)
+    {
+        Calendar cal = Calendar.getInstance();
+        Log.d(LOG_TAG, String.format("%02d:%02d:%02d",cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE),cal.get(Calendar.SECOND)) + ": " + msg);
     }
 
 }
