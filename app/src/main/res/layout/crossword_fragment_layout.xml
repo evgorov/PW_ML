@@ -36,6 +36,16 @@
 
     <!-- ================================= NEWS ================================================== -->
 
+    <ProgressBar
+        android:id="@+id/crossword_progressbar_sync"
+        android:layout_below="@+id/crossword_fragment_header_menu_cnt"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        style="?android:attr/progressBarStyleSmall"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ScrollView
         android:layout_below="@+id/crossword_fragment_header_menu_cnt"
         android:layout_width="match_parent"

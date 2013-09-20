@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -62,10 +63,11 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull HintsManager mHintsManager;
     private @Nonnull CoefficientsModel mCoefficientsModel;
 
+    private @Nonnull View mProgressbarSync;
+    private @Nonnull View mProgressBar;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull NewsHolder mNewsHolder;
     private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
-    private @Nonnull View mProgressBar;
 
     private @Nonnull INewsModel mNewsModel;
     private @Nonnull HintsModel mHintsModel;
@@ -103,6 +105,7 @@ public class CrosswordsFragment extends SherlockFragment
         mHintsManager = new HintsManager(mContext, this, v);
 
         mProgressBar =  v.findViewById(R.id.archive_progressBar);
+        mProgressbarSync = v.findViewById(R.id.crossword_progressbar_sync);
         return v;
     }
 
@@ -234,6 +237,7 @@ public class CrosswordsFragment extends SherlockFragment
         View bar = mProgressBar;
         assert bar != null;
         bar.setVisibility(View.GONE);
+        mProgressbarSync.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateSync(handlerSync);
         mIManadges.getManadgeHolder().reloadInventory();
     }
@@ -340,7 +344,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-
+            mProgressbarSync.setVisibility(View.GONE);
         }
     };
 
