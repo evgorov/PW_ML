@@ -35,14 +35,12 @@
     </com.ltst.prizeword.crossword.view.BackFrameLayout>
 
     <!-- ================================= NEWS ================================================== -->
-
     <ProgressBar
         android:id="@+id/crossword_progressbar_sync"
-        android:layout_below="@+id/crossword_fragment_header_menu_cnt"
         android:layout_alignParentRight="true"
         android:layout_margin="4dp"
         style="?android:attr/progressBarStyleSmall"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
