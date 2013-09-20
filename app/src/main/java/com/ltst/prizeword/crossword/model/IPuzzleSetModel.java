@@ -18,6 +18,7 @@ public interface IPuzzleSetModel
     void updateTotalDataByDb(@Nonnull IListenerVoid handler);
     void updateDataByInternet(@Nonnull IListenerVoid handler);
     void updateTotalDataByInternet(@Nonnull IListenerVoid handler);
+    void updateHints(@Nonnull IListenerVoid handler);
     @Nonnull List<PuzzleSet> getPuzzleSets();
     @Nonnull HashMap<String, List<Puzzle>> getPuzzlesSet();
     int getHintsCount();

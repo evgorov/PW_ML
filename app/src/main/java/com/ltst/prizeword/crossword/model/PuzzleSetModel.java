@@ -126,6 +126,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleCurrentSetsUpdater.close();
         mBuyPuzzleTotalSetUpdater.close();
         mPuzzleOneSetUpdater.close();
+        mHintsUpdater.close();
 
         mSynchronizer.close();
 
@@ -172,9 +173,27 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleTotalSetsInternetUpdater.update(handler);
     }
 
+    @Override
+    public void updateHints(@Nonnull IListenerVoid handler)
+    {
+        if(mIsDestroyed)
+            return;
+        mHintsUpdater.update(handler);
+    }
+
     // ==== updaters =====================================
 
-    private Updater mPuzzleSetsInternetUpdater = new Updater()
+    private Updater mHintsUpdater = new UpdaterHints()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return LoadHintsTask.createIntent(mSessionKey);
+        }
+    };
+
+    private Updater mPuzzleSetsInternetUpdater = new UpdaterSets()
     {
         @Nonnull
         @Override
@@ -182,16 +201,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return LoadPuzzleSetsFromInternet.createShortIntent(mSessionKey);
         }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
-        {
-            return LoadPuzzleSetsFromInternet.class;
-        }
     };
 
-    private Updater mBuyPuzzleTotalSetUpdater = new Updater()
+    private Updater mBuyPuzzleTotalSetUpdater = new UpdaterSets()
     {
         @Nonnull
         @Override
@@ -199,16 +211,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return mIntent;
         }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
-        {
-            return LoadPuzzleSetsFromInternet.class;
-        }
     };
 
-    private Updater mPuzzleTotalSetsInternetUpdater = new Updater()
+    private Updater mPuzzleTotalSetsInternetUpdater = new UpdaterSets()
     {
         @Nonnull
         @Override
@@ -216,16 +221,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return LoadPuzzleSetsFromInternet.createLongIntent(mSessionKey);
         }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
-        {
-            return LoadPuzzleSetsFromInternet.class;
-        }
     };
 
-    private Updater mPuzzleCurrentSetsUpdater = new Updater()
+    private Updater mPuzzleCurrentSetsUpdater = new UpdaterSets()
     {
         @Nonnull
         @Override
@@ -233,16 +231,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return LoadPuzzleSetsFromInternet.createCurrentSetsIntent(mSessionKey);
         }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
-        {
-            return LoadPuzzleSetsFromInternet.class;
-        }
     };
 
-    private Updater mPuzzleOneSetUpdater = new Updater()
+    private Updater mPuzzleOneSetUpdater = new UpdaterSets()
     {
         @Nonnull
         @Override
@@ -250,16 +241,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return mIntent;
         }
-
-        @Nonnull
-        @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
-        {
-            return LoadPuzzleSetsFromInternet.class;
-        }
     };
 
-    private Updater mPuzzleSetsDbUpdater = new Updater()
+    private Updater mPuzzleSetsDbUpdater = new UpdaterSets()
     {
 
         @Nonnull
@@ -268,14 +252,52 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return LoadPuzzleSetsFromDatabase.createIntent();
         }
+    };
+
+    private abstract class UpdaterHints extends Updater
+    {
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadHintsTask.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
         {
-            return LoadPuzzleSetsFromDatabase.class;
+            if (result == null)
+            {
+                return;
+            }
+            hintsCount = result.getInt(LoadHintsTask.BF_HINTS_COUNT);
         }
     };
+
+    private abstract class UpdaterSets extends Updater
+    {
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadPuzzleSetsFromDatabase.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            if (result == null)
+            {
+                answerState = false;
+                return;
+            }
+            answerState = true;
+            mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
+            mPuzzlesSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
+        }
+    };
+
+
 
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
@@ -301,19 +323,6 @@ public class PuzzleSetModel implements IPuzzleSetModel
             return DbService.class;
         }
 
-        @Override
-        protected void handleData(@Nullable Bundle result)
-        {
-            if (result == null)
-            {
-                answerState = false;
-                return;
-            }
-            answerState = true;
-            mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
-            hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
-            mPuzzlesSet = (HashMap<String,List<Puzzle> >) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
-        }
     }
 
 

@@ -176,6 +176,8 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
 
+        mPuzzleSetModel.updateHints(updateHints);
+
         if(!flgOneUpload)
         {
 //            mLoadFlag = true;
@@ -323,7 +325,7 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle()
         {
             mPuzzleSetModel.synchronizePuzzleUserData();
-            mHintsManager.setHintsCount(mPuzzleSetModel.getHintsCount());
+//            mHintsManager.setHintsCount(mPuzzleSetModel.getHintsCount());
             createCrosswordPanel();
 
             @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
@@ -355,8 +357,8 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-            int hintsCount = mPuzzleSetModel.getHintsCount();
-            mHintsManager.setHintsCount(hintsCount);
+//            int hintsCount = mPuzzleSetModel.getHintsCount();
+//            mHintsManager.setHintsCount(hintsCount);
 
             createCrosswordPanel();
             skipProgressBar();
@@ -372,13 +374,23 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid updateCurrentSetsHandler = new IListenerVoid()
+    private IListenerVoid updateHints = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             int hintsCount = mPuzzleSetModel.getHintsCount();
             mHintsManager.setHintsCount(hintsCount);
+        }
+    };
+
+    private IListenerVoid updateCurrentSetsHandler = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+//            int hintsCount = mPuzzleSetModel.getHintsCount();
+//            mHintsManager.setHintsCount(hintsCount);
             createCrosswordPanel();
             mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
         }

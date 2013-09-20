@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.prizeword.app.ModelUpdater;
-import com.ltst.prizeword.crossword.model.IPuzzleSetModel;
 import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromDatabase;
 import com.ltst.prizeword.crossword.model.LoadPuzzleSetsFromInternet;
 import com.ltst.prizeword.crossword.model.Puzzle;
@@ -24,20 +23,18 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class SolvedPuzzleSetModel implements IPuzzleSetModel
+public class SolvedPuzzleSetModel implements ISolvedPuzzleSetModel
 {
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull String mSessionKey;
     private @Nullable List<PuzzleSet> mPuzzleSetList;
     private @Nonnull HashMap<String, List<Puzzle>> mPuzzlesSet;
-    private int hintsCount;
     private boolean mIsDestroyed;
 
     public SolvedPuzzleSetModel(@Nonnull IBcConnector bcConnector, @Nonnull String sessionKey)
     {
         mBcConnector = bcConnector;
         mSessionKey = sessionKey;
-        hintsCount = 0;
     }
 
     @Override
@@ -51,28 +48,6 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
     {
         mPuzzleSetsDbUpdater.update(handler);
     }
-
-    @Override
-    public void updateCurrentSets(@Nonnull IListenerVoid handler){}
-
-    @Override
-    public void updateOneSet(@Nonnull String puzzleSetServerId, @Nonnull IListenerVoid handler) {
-
-    }
-
-    @Override
-    public void synchronizePuzzleUserData(){}
-
-    @Override
-    public void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler) {
-
-    }
-
-    @Override
-    public boolean isAnswerState() {
-        return false;
-    }
-
 
     @Override
     public void close()
@@ -102,12 +77,6 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
             return mPuzzleSetList;
         }
         return new ArrayList<PuzzleSet>();
-    }
-
-    @Override
-    public int getHintsCount()
-    {
-        return hintsCount;
     }
 
     @Nonnull
@@ -215,7 +184,6 @@ public class SolvedPuzzleSetModel implements IPuzzleSetModel
                 return;
             }
             mPuzzleSetList = LoadPuzzleSetsFromInternet.extractFromBundle(result);
-            hintsCount = result.getInt(LoadPuzzleSetsFromInternet.BF_HINTS_COUNT);
             mPuzzlesSet = (HashMap<String, List<Puzzle>>) result.getSerializable(LoadPuzzleSetsFromInternet.BF_PUZZLES_AT_SET);
         }
     }

@@ -8,7 +8,6 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestParams;
@@ -17,8 +16,6 @@ import com.ltst.prizeword.rest.RestPuzzleQuestion;
 import com.ltst.prizeword.rest.RestPuzzleSet;
 import com.ltst.prizeword.rest.RestPuzzleTotalSet;
 import com.ltst.prizeword.rest.RestPuzzleUserData;
-import com.ltst.prizeword.score.Coefficients;
-
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
@@ -40,7 +37,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     public static final @Nonnull String BF_PUZZLE_SETS              = "LoadPuzzleSetsFromInternet.puzzleSets";
     public static final @Nonnull String BF_ONE_PUZZLE_SET_SERVER_ID = "LoadPuzzleSetsFromInternet.onePuzzleSetServerId";
     public static final @Nonnull String BF_PUZZLES_AT_SET           = "LoadPuzzleSetsFromInternet.puzzles";
-    public static final @Nonnull String BF_HINTS_COUNT              = "LoadPuzzleSetsFromInternet.hintsCount";
     public static final @Nonnull String BF_STATUS_CODE              = "LoadPuzzleSetsFromInternet.statusCode";
     public static final @Nonnull String BF_VOLUME_PUZZLE            = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
@@ -332,12 +328,11 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     private static
     @Nonnull
-    Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, int hintsCount, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles, int status)
+    Bundle packToBundle(@Nonnull ArrayList<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles, int status)
     {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PUZZLE_SETS, sets);
         bundle.putInt(BF_STATUS_CODE, status);
-        bundle.putInt(BF_HINTS_COUNT, hintsCount);
         bundle.putSerializable(BF_PUZZLES_AT_SET, mapPuzzles);
         return bundle;
     }
@@ -346,9 +341,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     @Nullable
     Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
-//        @Nullable Coefficients coefficients = env.dbw.getCoefficients();
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
-        int hintsCount = env.dbw.getUserHintsCount();
         List<Puzzle> puzzles = null;
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
         for (PuzzleSet puzzleSet : sets)
@@ -356,7 +349,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
             mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
-        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+        return packToBundle(new ArrayList<PuzzleSet>(sets), mapPuzzles, RestParams.SC_SUCCESS);
     }
 
     public static
@@ -364,14 +357,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     Bundle getFromDatabase(@Nonnull String puzzleOneSetServerId, @Nonnull DbService.DbTaskEnv env)
     {
         PuzzleSet set = env.dbw.getPuzzleSetByServerId(puzzleOneSetServerId);
-        int hintsCount = env.dbw.getUserHintsCount();
         List<Puzzle> puzzles = null;
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
         puzzles = env.dbw.getPuzzlesBySetId(set.id);
         mapPuzzles.put(set.serverId, puzzles);
         ArrayList<PuzzleSet> sets = new ArrayList<PuzzleSet>();
         sets.add(set);
-        return packToBundle(sets, hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+        return packToBundle(sets, mapPuzzles, RestParams.SC_SUCCESS);
     }
 
     public static
@@ -379,7 +371,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
-        int hintsCount = env.dbw.getUserHintsCount();
         List<Puzzle> puzzles = null;
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
         for (PuzzleSet puzzleSet : sets)
@@ -387,7 +378,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             puzzles = env.dbw.getSolvedPuzzlesBySetId(puzzleSet.id);
             mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
-        return packToBundle(new ArrayList<PuzzleSet>(sets), hintsCount, mapPuzzles, RestParams.SC_SUCCESS);
+        return packToBundle(new ArrayList<PuzzleSet>(sets), mapPuzzles, RestParams.SC_SUCCESS);
     }
 
     private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
@@ -399,7 +390,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             env.dbw.putPuzzleTotalSetList(sets);
         }
     }
-
 
     static public
     @Nonnull
