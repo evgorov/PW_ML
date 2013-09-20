@@ -15,6 +15,8 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.crossword.model.Puzzle;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
@@ -163,6 +165,31 @@ public class CrosswordFragmentHolder
     private CrosswordSetMonth getCrosswordSetMonth(int month)
     {
         return (month >= 0 && mListCrosswordSetMonth.containsKey(month)) ? mListCrosswordSetMonth.get(month) : new CrosswordSetMonth(mContext);
+    }
+
+    public boolean isNeedUploadPuzzlrSetsFromInternet()
+    {
+        boolean flg = true;
+        for(@Nonnull List<PuzzleSet> puzzleSets: mMapSets.values())
+        {
+            if (!puzzleSets.isEmpty())
+            {
+                long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(currentTime);
+                int month = cal.get(Calendar.MONTH)+1;
+                int year = cal.get(Calendar.YEAR);
+                for(PuzzleSet puzzleSet : puzzleSets)
+                {
+                    if(puzzleSet.month != month || puzzleSet.year != year)
+                    {
+                        flg = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return flg;
     }
 
     // ================== CROSSWORD PANELS ITEM ======================

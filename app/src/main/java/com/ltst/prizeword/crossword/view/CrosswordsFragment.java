@@ -39,7 +39,6 @@ import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
-import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,15 +140,6 @@ public class CrosswordsFragment extends SherlockFragment
                         {
                             CrosswordSetUpdateMember.mPuzzleSetServerId = puzzleSetServerId;
                             CrosswordSetUpdateMember.mNeedUpdate = true;
-//                            assert mProgressBar != null;
-//                            mProgressBar.setVisibility(View.VISIBLE);
-//                            mPuzzleSetModel.updateOneSet(puzzleSetServerId, new IListenerVoid() {
-//                                @Override
-//                                public void handle() {
-//                                    createCrosswordPanel();
-//                                    skipProgressBar();
-//                                }
-//                            });
                         }
                     }
                 }break;
@@ -170,7 +160,6 @@ public class CrosswordsFragment extends SherlockFragment
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
-//        mHintsManager = new HintsManager(mContext, mRoot);
         mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
@@ -180,14 +169,8 @@ public class CrosswordsFragment extends SherlockFragment
 
         if(!flgOneUpload)
         {
-//            mLoadFlag = true;
-//        mPuzzleSetModel.updateDataByInternet(updateSetsFromDBHandler);
-//        mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
             mCoefficientsModel.updateFromInternet(updatePuzzleSetCofficients);
             mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
-//        mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
-//        mPuzzleSetModel.updateDataByDb(updateSetsFromDBHandler);
-//        mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
         }
         else
@@ -325,30 +308,16 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle()
         {
             mPuzzleSetModel.synchronizePuzzleUserData();
-//            mHintsManager.setHintsCount(mPuzzleSetModel.getHintsCount());
             createCrosswordPanel();
 
-            @Nonnull List<PuzzleSet> puzzleSets = mPuzzleSetModel.getPuzzleSets();
-
-            if (!puzzleSets.isEmpty())
+            if(mCrosswordFragmentHolder.isNeedUploadPuzzlrSetsFromInternet())
             {
-                Calendar cal = Calendar.getInstance();
-                boolean flg = false;
-                for(PuzzleSet puzzleSet : puzzleSets)
-                {
-                    if(puzzleSet.month != cal.get(Calendar.MONTH)+1 || puzzleSet.year != cal.get(Calendar.YEAR))
-                    {
-                        flg = true;
-                        break;
-                    }
-                }
-                if(flg)
-                {
-                    skipProgressBar();
-                    return;
-                }
+                mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
             }
-            mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
+            else
+            {
+                skipProgressBar();
+            }
         }
     };
 
@@ -357,9 +326,6 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-//            int hintsCount = mPuzzleSetModel.getHintsCount();
-//            mHintsManager.setHintsCount(hintsCount);
-
             createCrosswordPanel();
             skipProgressBar();
         }
@@ -389,10 +355,15 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
-//            int hintsCount = mPuzzleSetModel.getHintsCount();
-//            mHintsManager.setHintsCount(hintsCount);
             createCrosswordPanel();
-            mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+            if(mCrosswordFragmentHolder.isNeedUploadPuzzlrSetsFromInternet())
+            {
+                mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
+            }
+            else
+            {
+                skipProgressBar();
+            }
         }
     };
 
@@ -552,4 +523,5 @@ public class CrosswordsFragment extends SherlockFragment
         static @Nonnull String mPuzzleSetServerId;
         static boolean mNeedUpdate;
     }
+
 }
