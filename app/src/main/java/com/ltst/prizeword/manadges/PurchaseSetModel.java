@@ -163,7 +163,6 @@ public class PurchaseSetModel implements IPurchaseSetModel
             if (result != null)
             {
                 mPurchases = LoadPurchaseTask.extractFromBundle(result);
-                Log.d("PRICE LOAD FROM GOOGLE PLAY: "+ (mPurchases == null ? "null" : mPurchases.size()));
             }
         }
     }

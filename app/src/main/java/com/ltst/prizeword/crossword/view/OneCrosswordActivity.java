@@ -30,26 +30,36 @@ import com.ltst.prizeword.crossword.model.PostPuzzleScoreModel;
 import com.ltst.prizeword.crossword.model.PuzzleSet;
 import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.crossword.sharing.MessageShareModel;
+import com.ltst.prizeword.manadges.IIabHelper;
+import com.ltst.prizeword.manadges.IManadges;
+import com.ltst.prizeword.manadges.IManageHolder;
+import com.ltst.prizeword.manadges.ManageHolder;
+import com.ltst.prizeword.navigation.INavigationActivity;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.CustomProgressBar;
 import com.ltst.prizeword.tools.DimenTools;
+import com.ltst.prizeword.tools.ErrorAlertDialog;
 
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class OneCrosswordActivity extends SherlockActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener
+public class OneCrosswordActivity extends SherlockActivity
+        implements  View.OnClickListener, CompoundButton.OnCheckedChangeListener, INavigationActivity
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
     public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
+
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
 
     public static @Nonnull
     Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId,
@@ -140,6 +150,8 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
 
     private UiLifecycleHelper uiHelper;
 
+    private @Nonnull ManageHolder mManadgeHolder;
+
     @Override
     protected void onCreate(Bundle bundle)
     {
@@ -156,6 +168,12 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        mBcConnector = new BcConnector(this);
+        mManadgeHolder = new ManageHolder(this, mBcConnector);
+        mManadgeHolder.instance();
+        mManadgeHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+        mManadgeHolder.registerProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
 
         mRootView = findViewById(R.id.gamefield_root_view);
         mPauseSound = (ToggleButton) findViewById(R.id.pause_sounds_switcher);
@@ -210,7 +228,6 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
     @Override
     protected void onStart()
     {
-        mBcConnector = new BcConnector(this);
         mContext = this.getBaseContext();
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
         mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
@@ -392,11 +409,21 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
         spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
         spref.commit();
         uiHelper.onDestroy();
+        mManadgeHolder.dispose();
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
+        {
+            // not handled, so handle it ourselves (here's where you'd
+            // perform any handling of activity results not related to in-app
+            // billing...
+            return;
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
@@ -534,7 +561,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
             return;
 
         mPuzzleView.hideKeyboard();
-        if (mHintsCount == 0)
+        if (mHintsCount <= 0)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.gamefield_hint_no_message).setTitle(R.string.gamefield_hint_dialog_title)
@@ -543,6 +570,7 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                         @Override public void onClick(DialogInterface dialogInterface, int i)
                         {
                             // сдесь должна быть покупка 10-и подсказок
+                            mManadgeHolder.buyProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
                         }
                     })
                     .setNegativeButton(R.string.gamefield_hint_dialog_cancel, new DialogInterface.OnClickListener()
@@ -825,5 +853,51 @@ public class OneCrosswordActivity extends SherlockActivity implements View.OnCli
                     break;
             }
         }
+    }
+
+    @Nonnull
+    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>() {
+        @Override
+        public void handle(@Nullable Bundle bundle) {
+
+            int count = 0;
+            final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
+            if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            {
+                count = 10;
+            }
+
+            else
+                return;
+
+            if(mHintsModel != null)
+            {
+                mHintsModel.changeHints(count, new IListenerVoid() {
+                    @Override
+                    public void handle() {
+
+                        // Меняем состояние товара;
+                        mManadgeHolder.productBuyOnServer(googleId);
+                    }
+                });
+
+                mHintsCount+=count;
+
+                mHintsModel.changeHints(count, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        mHintBtn.setText(String.valueOf(mHintsCount));
+                        hideProgressBar();
+                    }
+                });
+            }
+        }
+    };
+
+    @Override
+    public void sendMessage(@Nonnull String msg) {
+        ErrorAlertDialog.showDialog(this, msg);
     }
 }

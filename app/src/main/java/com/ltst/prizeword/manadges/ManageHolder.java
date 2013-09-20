@@ -48,7 +48,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull IabHelper mHelper;
     private @Nonnull Activity mActivity;
     private @Nonnull Context mContext;
-    private @Nonnull IManadges mIManadges;
     private @Nonnull INavigationActivity mINavigationActivity;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPurchaseSetModel mIPurchaseSetModel;
@@ -62,7 +61,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     public ManageHolder(@Nonnull Activity activity, @Nonnull IBcConnector bcConnector) {
         mActivity = activity;
         mContext = (Context) activity;
-        mIManadges = (IManadges) activity;
         mINavigationActivity = (INavigationActivity) activity;
         mBcConnector = bcConnector;
         mIPurchaseSetModel = new PurchaseSetModel(mBcConnector);
