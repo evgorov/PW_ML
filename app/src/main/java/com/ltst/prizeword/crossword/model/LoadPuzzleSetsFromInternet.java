@@ -158,6 +158,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
+                calnow.add(Calendar.MONTH,1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));

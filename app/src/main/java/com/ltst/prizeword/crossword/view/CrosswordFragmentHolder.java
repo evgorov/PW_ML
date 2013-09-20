@@ -180,29 +180,20 @@ public class CrosswordFragmentHolder
         return (month >= 0 && mListCrosswordSetMonth.containsKey(month)) ? mListCrosswordSetMonth.get(month) : new CrosswordSetMonth(mContext);
     }
 
-    public boolean isNeedUploadPuzzlrSetsFromInternet()
+    public boolean isNeedUploadAllPuzzlrSetsFromInternet()
     {
-        boolean flg = true;
-        for(@Nonnull List<PuzzleSet> puzzleSets: mMapSets.values())
-        {
-            if (!puzzleSets.isEmpty())
-            {
-                long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(currentTime);
-                int month = cal.get(Calendar.MONTH)+1;
-                int year = cal.get(Calendar.YEAR);
-                for(PuzzleSet puzzleSet : puzzleSets)
-                {
-                    if(puzzleSet.month != month || puzzleSet.year != year)
-                    {
-                        flg = false;
-                        break;
-                    }
-                }
-            }
-        }
-        return flg;
+        return mMapSets.size() == 0;
+    }
+
+    public boolean isNeedUploadCurrentPuzzlrSetsFromInternet()
+    {
+        long currentTime = SharedPreferencesHelper.getInstance(mContext).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(currentTime);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        @Nonnull String key = formatTime(year, month);
+        return !mMapSets.containsKey(key);
     }
 
     // ================== CROSSWORD PANELS ITEM ======================
@@ -224,11 +215,16 @@ public class CrosswordFragmentHolder
         return data;
     }
 
+    @Nonnull private String formatTime(int year, int month)
+    {
+        return String.format("%d-%d", year, month);
+    }
+
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
         for(PuzzleSet set : sets)
         {
-            String key = String.format("%d-%d", set.year, set.month);
+            String key = formatTime(set.year, set.month);
             List<PuzzleSet> sst = null;
             if (mMapSets.containsKey(key))
             {

@@ -148,21 +148,22 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsModel = new NewsModel(mSessionKey, mBcConnector);
         mHintsModel = new HintsModel(mBcConnector, mSessionKey);
 
-        mPuzzleSetModel.updateHints(updateHints);
+        mPuzzleSetModel.updateHints(handlerUpdateHints);
 
         if(!flgOneUpload)
         {
             mNewsModel.updateFromInternet(mRefreshHandler);
-            mCoefficientsModel.updateFromInternet(updatePuzzleSetCofficients);
+            mCoefficientsModel.updateFromInternet(handlerUpdatePuzzleSet);
             if(mCrosswordFragmentHolder.getMapSets().size() == 0
                     || mCrosswordFragmentHolder.getMapPuzzles().size() == 0)
             {
-                mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+//                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
+                mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
                 flgOneUpload = true;
-                createCrosswordPanel();
             }
             else
             {
+                createCrosswordPanel();
                 skipProgressBar();
             }
         }
@@ -271,26 +272,30 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
-        private IListenerVoid updateSetsFromDBHandler = new IListenerVoid()
+        private IListenerVoid handlerUpdateSetsFromDB = new IListenerVoid()
     {
         @Override
         public void handle()
         {
-            mPuzzleSetModel.synchronizePuzzleUserData();
             createCrosswordPanel();
 
-            if(mCrosswordFragmentHolder.isNeedUploadPuzzlrSetsFromInternet())
+            if(mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
             {
-                mPuzzleSetModel.updateTotalDataByInternet(updateSetsFromServerHandler);
+                mPuzzleSetModel.updateTotalDataByInternet(handlerUpdateSetsFromServer);
+            }
+            else if(mCrosswordFragmentHolder.isNeedUploadCurrentPuzzlrSetsFromInternet())
+            {
+                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
             }
             else
             {
+                mPuzzleSetModel.synchronizePuzzleUserData();
                 skipProgressBar();
             }
         }
     };
 
-    private IListenerVoid updateSetsFromServerHandler = new IListenerVoid()
+    private IListenerVoid handlerUpdateSetsFromServer = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -300,7 +305,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid updatePuzzleSetCofficients = new IListenerVoid()
+    private IListenerVoid handlerUpdatePuzzleSet = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -309,7 +314,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid updateHints = new IListenerVoid()
+    private IListenerVoid handlerUpdateHints = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -319,20 +324,13 @@ public class CrosswordsFragment extends SherlockFragment
         }
     };
 
-    private IListenerVoid updateCurrentSetsHandler = new IListenerVoid()
+    private IListenerVoid handlerUpdateCurrentSets = new IListenerVoid()
     {
         @Override
         public void handle()
         {
             createCrosswordPanel();
-            if(mCrosswordFragmentHolder.isNeedUploadPuzzlrSetsFromInternet())
-            {
-                mPuzzleSetModel.updateTotalDataByDb(updateSetsFromDBHandler);
-            }
-            else
-            {
-                skipProgressBar();
-            }
+            skipProgressBar();
         }
     };
 
