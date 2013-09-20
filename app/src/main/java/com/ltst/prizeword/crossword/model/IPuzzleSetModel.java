@@ -22,7 +22,8 @@ public interface IPuzzleSetModel
     @Nonnull List<PuzzleSet> getPuzzleSets();
     @Nonnull HashMap<String, List<Puzzle>> getPuzzlesSet();
     int getHintsCount();
-    public void synchronizePuzzleUserData();
+    void synchronizePuzzleUserData();
+    void updateSync(@Nonnull IListenerVoid handler);
     void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler);
     boolean isAnswerState();
     void close();

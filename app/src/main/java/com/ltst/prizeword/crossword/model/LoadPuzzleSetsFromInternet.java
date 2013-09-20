@@ -50,6 +50,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     private static final @Nonnull String VOLUME_CURR     = "current";
     private static final @Nonnull String VOLUME_BUY      = "buy";
     private static final @Nonnull String VOLUME_ONE      = "one";
+    private static final @Nonnull String VOLUME_SYNC     = "sync";
 
     public static final
     @Nonnull
@@ -115,6 +116,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
+    @Nonnull
+    Intent createSyncIntent(@Nonnull String sessionKey)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_SESSION_KEY, sessionKey);
+        intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_SYNC);
+        return intent;
+    }
+
+    public static final
     @Nullable
     List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
     {
@@ -134,7 +145,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             env.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             env.context.getString(R.string.msg_no_internet)));
-        } else
+        }
+        else
         {
             @Nullable String sessionKey = env.extras.getString(BF_SESSION_KEY);
             @Nullable String volumePuzzle = env.extras.getString(BF_VOLUME_PUZZLE);
@@ -196,6 +208,30 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             {
                 @Nonnull String puzzleOneSetServerId = env.extras.getString(BF_ONE_PUZZLE_SET_SERVER_ID);
                 return getFromDatabase(puzzleOneSetServerId,env);
+            }
+            else if (volumePuzzle.equals(VOLUME_SYNC))
+            {
+                long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
+                Calendar calnow = Calendar.getInstance();
+                calnow.setTimeInMillis(currentTime);
+                calnow.add(Calendar.MONTH,1);
+
+                int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
+                int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                cal.set(Calendar.MONTH, app_release_month);
+                cal.set(Calendar.YEAR, app_release_year);
+
+                while(cal.before(calnow))
+                {
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    getFromServer(sessionKey,year,month,env);
+                    cal.add(Calendar.MONTH,1);
+                }
+
+                return getFromDatabase(env);
             }
             else if(volumePuzzle.equals(VOLUME_BUY))
             {

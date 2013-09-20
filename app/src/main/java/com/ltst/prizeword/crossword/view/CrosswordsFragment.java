@@ -234,6 +234,7 @@ public class CrosswordsFragment extends SherlockFragment
         View bar = mProgressBar;
         assert bar != null;
         bar.setVisibility(View.GONE);
+        mPuzzleSetModel.updateSync(handlerSync);
         mIManadges.getManadgeHolder().reloadInventory();
     }
 
@@ -331,6 +332,15 @@ public class CrosswordsFragment extends SherlockFragment
         {
             createCrosswordPanel();
             skipProgressBar();
+        }
+    };
+
+    private IListenerVoid handlerSync = new IListenerVoid()
+    {
+        @Override
+        public void handle()
+        {
+
         }
     };
 
