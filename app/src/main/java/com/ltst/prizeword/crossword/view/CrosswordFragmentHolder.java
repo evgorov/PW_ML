@@ -101,8 +101,21 @@ public class CrosswordFragmentHolder
 
     }
 
+    @Nonnull
+    public Coefficients getCoefficients() {
+        return mCoefficients;
+    }
+
     public void setCoefficients(@Nonnull Coefficients coefficients) {
         this.mCoefficients = coefficients;
+    }
+
+    public void setMapSets(@Nonnull HashMap<String, List<PuzzleSet>> mMapSets) {
+        this.mMapSets = mMapSets;
+    }
+
+    public void setMapPuzzles(@Nonnull HashMap<String, List<Puzzle>> mMapPuzzles) {
+        this.mMapPuzzles = mMapPuzzles;
     }
 
     @Nonnull

@@ -326,8 +326,6 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     };
 
-
-
     private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
         public @Nonnull Intent mIntent;
@@ -351,9 +349,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return DbService.class;
         }
-
     }
-
 
     public enum PuzzleSetType
     {

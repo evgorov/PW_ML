@@ -27,9 +27,11 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.news.NewsModel;
+import com.ltst.prizeword.score.Coefficients;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.swipe.ITouchInterface;
@@ -54,6 +56,9 @@ public class CrosswordsFragment extends SherlockFragment
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
+    public static final @Nonnull String BF_SETS = FRAGMENT_ID + ".allSets";
+    public static final @Nonnull String BF_PUZZLES = FRAGMENT_ID + ".allPuzzles";
+    public static final @Nonnull String BF_COEFFICIENTS = FRAGMENT_ID + ".coefficients";
     public static final @Nonnull String BF_HINTS_COUNT = FRAGMENT_ID + ".hintsCount";
 
     private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 5;
@@ -107,7 +112,9 @@ public class CrosswordsFragment extends SherlockFragment
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
         mMenuBackButton.setOnClickListener(this);
         if(mIFragmentActivity.getIsTablet())
+        {
             mMenuBackButton.setVisibility(View.GONE);
+        }
 
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
 
@@ -169,9 +176,19 @@ public class CrosswordsFragment extends SherlockFragment
 
         if(!flgOneUpload)
         {
-            mCoefficientsModel.updateFromInternet(updatePuzzleSetCofficients);
-            mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
             mNewsModel.updateFromInternet(mRefreshHandler);
+            mCoefficientsModel.updateFromInternet(updatePuzzleSetCofficients);
+            if(mCrosswordFragmentHolder.getMapSets().size() == 0
+                    || mCrosswordFragmentHolder.getMapPuzzles().size() == 0)
+            {
+                mPuzzleSetModel.updateCurrentSets(updateCurrentSetsHandler);
+                flgOneUpload = true;
+                createCrosswordPanel();
+            }
+            else
+            {
+                skipProgressBar();
+            }
         }
         else
         {
@@ -215,6 +232,9 @@ public class CrosswordsFragment extends SherlockFragment
     public void onSaveInstanceState(Bundle outState)
     {
         outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
+        outState.putSerializable(BF_SETS,mCrosswordFragmentHolder.getMapSets());
+        outState.putSerializable(BF_PUZZLES,mCrosswordFragmentHolder.getMapPuzzles());
+        outState.putParcelable(BF_COEFFICIENTS, mCrosswordFragmentHolder.getCoefficients());
         super.onSaveInstanceState(outState);
     }
 
@@ -224,6 +244,9 @@ public class CrosswordsFragment extends SherlockFragment
         if (savedInstanceState != null)
         {
             mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
+            mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
+            mCrosswordFragmentHolder.setMapSets((HashMap<String,List<PuzzleSet>>)savedInstanceState.getSerializable(BF_SETS));
+            mCrosswordFragmentHolder.setCoefficients((Coefficients) savedInstanceState.getParcelable(BF_COEFFICIENTS));
         }
         super.onViewStateRestored(savedInstanceState);
     }
