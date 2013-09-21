@@ -155,6 +155,7 @@ public final class SoundsWork
         {
             releaseMPALL();
             mMediaPlayerAll = mMediaPlayerAll.create(context, R.raw.counting);
+            mMediaPlayerAll.setLooping(true);
             mMediaPlayerAll.start();
         }
     }
