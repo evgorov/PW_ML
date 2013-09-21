@@ -20,7 +20,6 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
-import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.AnimationTools;
 import com.ltst.prizeword.tools.CustomProgressBar;
@@ -367,7 +366,6 @@ public class CrosswordSet {
             {
                 @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
                 pBuyPrice.setText(mBuyPrice);
-                NavigationActivity.debug("set price set: "+mSetServerId+ " "+ mBuyPrice);
             }
         }
     };

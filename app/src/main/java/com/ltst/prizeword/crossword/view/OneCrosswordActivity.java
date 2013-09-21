@@ -35,6 +35,7 @@ import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.navigation.INavigationActivity;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.score.CoefficientsModel;
 import com.ltst.prizeword.score.ICoefficientsModel;
 import com.ltst.prizeword.sounds.IListenerQuestionAnswered;
@@ -808,6 +809,7 @@ public class OneCrosswordActivity extends SherlockActivity
             Intent intent = new Intent();
             intent.putExtra(BF_PUZZLE_SET, mPuzzleSet.serverId);
             setResult(RESULT_OK, intent);
+            NavigationActivity.debug("close crossword");
             finish();
         }
     };

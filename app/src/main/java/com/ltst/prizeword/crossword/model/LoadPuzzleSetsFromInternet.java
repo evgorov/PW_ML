@@ -257,7 +257,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                             dataset.addPuzzleSet(set);
                             dataset.setHttpStatus(data.getHttpStatus());
 
-                                @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, dataset);
+                                @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, dataset);
                                 env.dbw.putPuzzleTotalSetList(sets);
                                 return getFromDatabase(env);
                         }
@@ -338,9 +338,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     private
-    @Nonnull
-    ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull Context context, @Nonnull String sessionKey, @Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
+    @Nullable
+    ArrayList<PuzzleTotalSet> extractFromTotalRest(@Nonnull DbService.DbTaskEnv env, @Nonnull String sessionKey, @Nonnull RestPuzzleTotalSet.RestPuzzleSetsHolder data)
     {
+        @Nonnull Context context = env.context;
         @Nonnull ArrayList<PuzzleTotalSet> sets = new ArrayList<PuzzleTotalSet>(data.getPuzzleSets().size());
         @Nonnull List<RestPuzzleTotalSet> listRestPuzzleTotalSets = data.getPuzzleSets();
         for (RestPuzzleTotalSet restPuzzleSet : listRestPuzzleTotalSets)
@@ -349,7 +350,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             @Nonnull List<RestPuzzle> listRestPuzzles = restPuzzleSet.getPuzzles();
             for (RestPuzzle restPuzzle : listRestPuzzles)
             {
-                NavigationActivity.debug("------- sync ------- "+restPuzzle.getPuzzleId());
+                if(env.ci.isCancelled()) return null;
+//                NavigationActivity.debug("------- sync ------- "+restPuzzle.getPuzzleId());
                 @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
                 @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(context, sessionKey, puzzleServerId);
                 @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);
@@ -425,7 +427,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         @Nullable RestPuzzleTotalSet.RestPuzzleSetsHolder data = loadPuzzleTotalSets(env.context, sessionKey, year, month);
         if (data != null)
         {
-            @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env.context, sessionKey, data);
+            @Nullable List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, data);
+            if(sets == null) return;
             env.dbw.putPuzzleTotalSetList(sets);
         }
     }
