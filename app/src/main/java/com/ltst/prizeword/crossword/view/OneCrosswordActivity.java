@@ -160,7 +160,7 @@ public class OneCrosswordActivity extends SherlockActivity
     private @Nonnull ManageHolder mManadgeHolder;
     int mSumScore = 0;
     int mBaseScore = 0;
-    int mBonusScore=0;
+    int mBonusScore = 0;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -912,20 +912,34 @@ public class OneCrosswordActivity extends SherlockActivity
 
         if (animation.equals(mAnimationSlideInTopForFinal))
         {
-            mFinalShareAlert.setVisibility(View.VISIBLE);
-            mAnimationSlideInTopForFinalShare.reset();
-            mFinalShareAlert.clearAnimation();
-            mFinalShareAlert.startAnimation(mAnimationSlideInTopForFinalShare);
+            OneCrosswordActivity.this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mFinalShareAlert.setVisibility(View.VISIBLE);
+                    mAnimationSlideInTopForFinalShare.reset();
+                    mFinalShareAlert.clearAnimation();
+                    mFinalShareAlert.startAnimation(mAnimationSlideInTopForFinalShare);
+                }
+            });
         }
         if (animation.equals(mAnimationSlideInTopForFinalShare))
         {
-            mFinalScore.setText(String.valueOf(mBaseScore));
-            mFinalScore.setAnimation(animForScore);
-            mFinalScore.startAnimation(animForScore);
-            mFinalBonus.setText(String.valueOf(mBonusScore));
-            animForBonus.setStartOffset(1500);
-            mFinalBonus.setAnimation(animForBonus);
-            mFinalBonus.startAnimation(animForBonus);
+            OneCrosswordActivity.this.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mFinalScore.setText(String.valueOf(mBaseScore));
+                    mFinalScore.setAnimation(animForScore);
+                    mFinalScore.startAnimation(animForScore);
+                    mFinalBonus.setText(String.valueOf(mBonusScore));
+                    animForBonus.setStartOffset(1500);
+                    mFinalBonus.setAnimation(animForBonus);
+                    mFinalBonus.startAnimation(animForBonus);
+                }
+            });
         }
 
         if (animation.equals(animForBonus) || animation.equals(animForScore))
