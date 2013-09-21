@@ -53,14 +53,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class OneCrosswordActivity extends SherlockActivity
-        implements  View.OnClickListener, CompoundButton.OnCheckedChangeListener, INavigationActivity, Animation.AnimationListener
+        implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, INavigationActivity, Animation.AnimationListener
 {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
     public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
 
-    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10 = "hints10";
 
     public static @Nonnull
     Intent createIntent(@Nonnull Context context, @Nonnull PuzzleSet set, @Nonnull String puzzleServerId,
@@ -159,6 +159,8 @@ public class OneCrosswordActivity extends SherlockActivity
 
     private @Nonnull ManageHolder mManadgeHolder;
     int mSumScore = 0;
+    int mBaseScore = 0;
+    int mBonusScore=0;
 
     @Override
     protected void onCreate(Bundle bundle)
@@ -314,6 +316,8 @@ public class OneCrosswordActivity extends SherlockActivity
         animForScore.setAnimationListener(this);
         animForBonus.setAnimationListener(this);
         mAnimationSlideInTopForFinal.setAnimationListener(this);
+        mAnimationSlideInTopForFinalShare.setAnimationListener(this);
+
         super.onStart();
     }
 
@@ -323,7 +327,7 @@ public class OneCrosswordActivity extends SherlockActivity
         if (restoredBundle != null)
         {
             mPuzzleAdapter.restoreState(restoredBundle);
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
                 mPuzzleView.restoreState(restoredBundle);
             mPuzzleLoaded = true;
             hideProgressBar();
@@ -384,7 +388,7 @@ public class OneCrosswordActivity extends SherlockActivity
         outState.putBoolean(BF_MUSIC_STOP, mPauseMusic.isChecked());
         outState.putBoolean(BF_SOUND_STOP, mPauseSound.isChecked());
         mPuzzleAdapter.saveState(outState);
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
             mPuzzleView.saveState(outState);
         uiHelper.onSaveInstanceState(outState);
     }
@@ -406,7 +410,8 @@ public class OneCrosswordActivity extends SherlockActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
 
         if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
         {
@@ -436,11 +441,10 @@ public class OneCrosswordActivity extends SherlockActivity
 
     private void close()
     {
-        if(mStopPlayFlag)
+        if (mStopPlayFlag)
         {
             showPauseDialog(true);
-        }
-        else
+        } else
         {
             showProgressBar();
             mPuzzleAdapter.syncAnsweredQuestions(mOnCloseHandler);
@@ -489,13 +493,13 @@ public class OneCrosswordActivity extends SherlockActivity
                 showPauseDialog(mStopPlayFlag);
                 break;
             case R.id.final_share_vk_btn:
-                if(mShareMessage != null)
+                if (mShareMessage != null)
                 {
                     mShareModel.shareMessageToVk(mShareMessage);
                 }
                 break;
             case R.id.final_share_fb_btn:
-                if(mShareMessage != null)
+                if (mShareMessage != null)
                 {
                     if (FacebookDialog.canPresentShareDialog(getApplicationContext(),
                             FacebookDialog.ShareDialogFeature.SHARE_DIALOG))
@@ -504,8 +508,7 @@ public class OneCrosswordActivity extends SherlockActivity
                                 .setDescription(mShareMessage)
                                 .build();
                         uiHelper.trackPendingDialogCall(shareDialog.present());
-                    }
-                    else
+                    } else
                     {
                         Toast.makeText(this, R.string.facebook_app_error, Toast.LENGTH_LONG).show();
                     }
@@ -664,9 +667,9 @@ public class OneCrosswordActivity extends SherlockActivity
 
     private void formShareMessage(@Nullable String puzzleName, int timeSpent, int sumScore)
     {
-        if(puzzleName == null)
+        if (puzzleName == null)
             return;
-        int timeInMinutes = timeSpent/60;
+        int timeInMinutes = timeSpent / 60;
         String shareFormat = getResources().getString(R.string.social_puzzle_share_message);
         mShareMessage = String.format(shareFormat, puzzleName, timeInMinutes, sumScore);
     }
@@ -741,13 +744,13 @@ public class OneCrosswordActivity extends SherlockActivity
 
             PuzzleSetModel.PuzzleSetType type = PuzzleSetModel.getPuzzleTypeByString(mPuzzleSet.type);
             int timeSpent = mTimeGiven - mTimeLeft;
-            final int baseScore = mCoefficientsModel.getBaseScore(type);
+            mBaseScore = mCoefficientsModel.getBaseScore(type);
             int bonus = mCoefficientsModel.getBonusScore(timeSpent, mTimeGiven);
             if (bonus < 0)
                 bonus = 0;
-            final int bonusScore = bonus;
+            mBonusScore = bonus;
 
-            OneCrosswordActivity.this.runOnUiThread(new Runnable()
+            /*OneCrosswordActivity.this.runOnUiThread(new Runnable()
             {
                 @Override
                 public void run()
@@ -760,9 +763,9 @@ public class OneCrosswordActivity extends SherlockActivity
                     mFinalBonus.setAnimation(animForBonus);
                     mFinalBonus.startAnimation(animForBonus);
                 }
-            });
+            });*/
 
-            mSumScore = baseScore + bonusScore;
+            mSumScore = mBaseScore + mBonusScore;
             mPuzzleAdapter.setScore(mSumScore);
             if (mPuzzleAdapter.isPuzzleInCurrentMonth())
             {
@@ -794,7 +797,7 @@ public class OneCrosswordActivity extends SherlockActivity
         @Override
         public void handle()
         {
-            if(mIsClosed)
+            if (mIsClosed)
                 return;
 
             mIsClosed = true;
@@ -851,32 +854,34 @@ public class OneCrosswordActivity extends SherlockActivity
     }
 
     @Nonnull
-    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>() {
+    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>()
+    {
         @Override
-        public void handle(@Nullable Bundle bundle) {
+        public void handle(@Nullable Bundle bundle)
+        {
 
             int count = 0;
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
-            if(googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            if (googleId.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
             {
                 count = 10;
-            }
-
-            else
+            } else
                 return;
 
-            if(mHintsModel != null)
+            if (mHintsModel != null)
             {
-                mHintsModel.changeHints(count, new IListenerVoid() {
+                mHintsModel.changeHints(count, new IListenerVoid()
+                {
                     @Override
-                    public void handle() {
+                    public void handle()
+                    {
 
                         // Меняем состояние товара;
                         mManadgeHolder.productBuyOnServer(googleId);
                     }
                 });
 
-                mHintsCount+=count;
+                mHintsCount += count;
 
                 mHintsModel.changeHints(count, new IListenerVoid()
                 {
@@ -892,7 +897,8 @@ public class OneCrosswordActivity extends SherlockActivity
     };
 
     @Override
-    public void sendMessage(@Nonnull String msg) {
+    public void sendMessage(@Nonnull String msg)
+    {
         ErrorAlertDialog.showDialog(this, msg);
     }
 
@@ -903,10 +909,7 @@ public class OneCrosswordActivity extends SherlockActivity
 
     @Override public void onAnimationEnd(Animation animation)
     {
-        if (animation.equals(animForBonus) || animation.equals(animForScore))
-            SoundsWork.scoreSetSound(mContext);
-        if (animation.equals(animForBonus))
-            fillFlipNumbers(mSumScore);
+
         if (animation.equals(mAnimationSlideInTopForFinal))
         {
             mFinalShareAlert.setVisibility(View.VISIBLE);
@@ -914,6 +917,21 @@ public class OneCrosswordActivity extends SherlockActivity
             mFinalShareAlert.clearAnimation();
             mFinalShareAlert.startAnimation(mAnimationSlideInTopForFinalShare);
         }
+        if (animation.equals(mAnimationSlideInTopForFinalShare))
+        {
+            mFinalScore.setText(String.valueOf(mBaseScore));
+            mFinalScore.setAnimation(animForScore);
+            mFinalScore.startAnimation(animForScore);
+            mFinalBonus.setText(String.valueOf(mBonusScore));
+            animForBonus.setStartOffset(1500);
+            mFinalBonus.setAnimation(animForBonus);
+            mFinalBonus.startAnimation(animForBonus);
+        }
+
+        if (animation.equals(animForBonus) || animation.equals(animForScore))
+            SoundsWork.scoreSetSound(mContext);
+        if (animation.equals(animForBonus))
+            mFlipNumberAnimator.startAnimation(mSumScore);
     }
 
     @Override public void onAnimationRepeat(Animation animation)
