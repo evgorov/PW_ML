@@ -22,7 +22,7 @@ public interface IManageHolder {
     void registerProduct(@Nonnull String googleId);
     String getPriceProduct(@Nonnull String googleId);
     void productBuyOnServer(@Nonnull String googleId);
-    void reloadInventory();
+    void reloadInventory(@Nonnull IListenerVoid handler);
 }
 
 

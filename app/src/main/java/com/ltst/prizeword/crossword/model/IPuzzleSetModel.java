@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 public interface IPuzzleSetModel
 {
-    void updateDataByDb(@Nonnull IListenerVoid handler);
     void updateCurrentSets(@Nonnull IListenerVoid handler);
     void updateOneSet(@Nonnull String puzzleSetServerId, @Nonnull IListenerVoid handler);
     void updateTotalDataByDb(@Nonnull IListenerVoid handler);

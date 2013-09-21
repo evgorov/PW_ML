@@ -45,11 +45,25 @@ public class PuzzleSetModel implements IPuzzleSetModel
     }
 
     @Override
-    public void updateDataByDb(@Nonnull IListenerVoid handler)
+    public @Nonnull List<PuzzleSet> getPuzzleSets()
     {
-        if(mIsDestroyed)
-            return;
-        mPuzzleSetsDbUpdater.update(handler);
+        if (mPuzzleSetList != null)
+        {
+            return mPuzzleSetList;
+        }
+        return new ArrayList<PuzzleSet>();
+    }
+
+    @Override
+    public int getHintsCount()
+    {
+        return hintsCount;
+    }
+
+    @Nonnull
+    @Override
+    public HashMap<String, List<Puzzle>> getPuzzlesSet() {
+        return mPuzzlesSet;
     }
 
     @Override
@@ -115,53 +129,6 @@ public class PuzzleSetModel implements IPuzzleSetModel
             }
         }
         mSynchronizer.sync(mBcConnector, mSessionKey, puzzlesToUpdate);
-    }
-
-    @Override
-    public void close()
-    {
-        Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$
-        if(mIsDestroyed)
-        {
-            Log.w("PuzzleSetModel.destroy() called more than once"); //$NON-NLS-1$
-        }
-
-        mPuzzleSetsDbUpdater.close();
-        mPuzzleSetsInternetUpdater.close();
-        Log.i("Closing total set updater");
-        mPuzzleTotalSetsInternetUpdater.close();
-        mPuzzleCurrentSetsUpdater.close();
-        mBuyPuzzleTotalSetUpdater.close();
-        mPuzzleOneSetUpdater.close();
-        mHintsUpdater.close();
-
-        mSynchronizer.close();
-
-        mIsDestroyed = true;
-        Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
-
-    }
-
-    @Override
-    public @Nonnull List<PuzzleSet> getPuzzleSets()
-    {
-        if (mPuzzleSetList != null)
-        {
-            return mPuzzleSetList;
-        }
-        return new ArrayList<PuzzleSet>();
-    }
-
-    @Override
-    public int getHintsCount()
-    {
-        return hintsCount;
-    }
-
-    @Nonnull
-    @Override
-    public HashMap<String, List<Puzzle>> getPuzzlesSet() {
-        return mPuzzlesSet;
     }
 
     @Override
@@ -371,6 +338,32 @@ public class PuzzleSetModel implements IPuzzleSetModel
         {
             return DbService.class;
         }
+    }
+
+    @Override
+    public void close()
+    {
+        Log.i("PuzzleSetModel.destroy() begin"); //$NON-NLS-1$
+        if(mIsDestroyed)
+        {
+            Log.w("PuzzleSetModel.destroy() called more than once"); //$NON-NLS-1$
+        }
+
+        mPuzzleSetsDbUpdater.close();
+        mPuzzleSetsInternetUpdater.close();
+        Log.i("Closing total set updater");
+        mPuzzleTotalSetsInternetUpdater.close();
+        mPuzzleCurrentSetsUpdater.close();
+        mBuyPuzzleTotalSetUpdater.close();
+        mPuzzleOneSetUpdater.close();
+        mSyncUpdater.close();
+        mHintsUpdater.close();
+
+        mSynchronizer.close();
+
+        mIsDestroyed = true;
+        Log.i("PuzzleSetModel.destroy() end"); //$NON-NLS-1$
+
     }
 
     public enum PuzzleSetType

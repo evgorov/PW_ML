@@ -10,6 +10,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.crossword.model.HintsModel;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.manadges.IManadges;
 
@@ -107,6 +108,7 @@ public class HintsManager implements View.OnClickListener
         mPriceHints_10.setText(priceHints10);
         mPriceHints_20.setText(priceHints20);
         mPriceHints_30.setText(priceHints30);
+        NavigationActivity.debug("set price hint");
     }
 
     public int getHintsCount()

@@ -14,6 +14,7 @@ import com.android.billing.Purchase;
 import com.android.billing.Security;
 import com.ltst.prizeword.crossword.view.HintsManager;
 import com.ltst.prizeword.navigation.INavigationActivity;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.tools.UUIDTools;
 
 import org.omich.velo.bcops.client.IBcConnector;
@@ -54,6 +55,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull List<String> mSkuContainer;
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
     private @Nonnull List<IListener<Bundle>> mHandlerBuyProductEventList;
+    private @Nonnull IListenerVoid mNotifyInventoryHandler;
 
     private int REQUERT_CODE_COUNTER;
 
@@ -180,9 +182,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     }
 
     @Override
-    public void reloadInventory()
+    public void reloadInventory(@Nonnull IListenerVoid handler)
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+        mNotifyInventoryHandler = handler;
         mHelper.queryInventoryAsync(true, mSkuContainer, mQueryFinishedListener);
     }
 
@@ -344,8 +347,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         {
             if (result.isFailure()) {
                 Log.e("Problem setting up in-app billing: " + result);
-                return;
             }
+            else
+            {
 
 //            @Nonnull List<String> list = new ArrayList<String>();
 //            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
@@ -384,40 +388,43 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //                mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
 //            }
 
+                NavigationActivity.debug("before inventory query on google play: "+mSkuContainer.size());
 
-            // Восстанавливаю покупаемость всех продуктов! REMOVE IN THE FUTURE!
-            @Nonnull List<Purchase> list = new ArrayList<Purchase>();
-            for(@Nonnull String sku : mSkuContainer)
-            {
-                if(inventory.hasPurchase(sku));
+                // Восстанавливаю покупаемость всех продуктов! REMOVE IN THE FUTURE!
+                @Nonnull List<Purchase> list = new ArrayList<Purchase>();
+                for(@Nonnull String sku : mSkuContainer)
                 {
-                    @Nullable Purchase purchase = inventory.getPurchase(sku);
-                    if(purchase != null)
+                    if(inventory.hasPurchase(sku));
                     {
-                        list.add(inventory.getPurchase(sku));
+                        @Nullable Purchase purchase = inventory.getPurchase(sku);
+                        if(purchase != null)
+                        {
+                            list.add(inventory.getPurchase(sku));
+                        }
                     }
                 }
-            }
-            if(list.size()>0)
-            {
-                mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
-            }
-
-            @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
-            for(@Nonnull String googleId : mSkuContainer)
-            {
-                if(inventory.hasDetails(googleId))
+                if(list.size()>0)
                 {
-                    @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
-                    purchase.price = inventory.getSkuDetails(googleId).getPrice();
-                    purchase.clientId = (purchase.clientId == null || purchase.clientId == Strings.EMPTY)
-                            ? UUIDTools.generateStringUUID() : purchase.clientId;
-                    purchases.add(purchase);
+                    mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
                 }
-            }
 
-            // сохраняем цены в базу;
-            mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
+                @Nonnull ArrayList<com.ltst.prizeword.manadges.Purchase> purchases = new ArrayList<com.ltst.prizeword.manadges.Purchase>();
+                for(@Nonnull String googleId : mSkuContainer)
+                {
+                    if(inventory.hasDetails(googleId))
+                    {
+                        @Nullable com.ltst.prizeword.manadges.Purchase purchase = mIPurchaseSetModel.getPurchase(googleId);
+                        purchase.price = inventory.getSkuDetails(googleId).getPrice();
+                        purchase.clientId = (purchase.clientId == null || purchase.clientId == Strings.EMPTY)
+                                ? UUIDTools.generateStringUUID() : purchase.clientId;
+                        purchases.add(purchase);
+                    }
+                }
+
+                // сохраняем цены в базу;
+                mIPurchaseSetModel.putPurchases(purchases, mSavePurchasesToDataBase);
+            }
+            mNotifyInventoryHandler.handle();
         }
     };
 
@@ -517,7 +524,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         verifyControllPurchases();
     }
 
-    private @Nonnull IListener<Bundle> mBuyProductEventHandler = new IListener<Bundle>() {
+    private @Nonnull IListener<Bundle> mHandlerBuyProductEvent = new IListener<Bundle>() {
         @Override
         public void handle(@Nullable Bundle bundle) {
 
@@ -528,10 +535,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         }
     };
 
-    private @Nonnull IListenerVoid mPriceEventHandler = new IListenerVoid() {
+    private @Nonnull IListenerVoid mHandlerPriceEvent = new IListenerVoid() {
         @Override
         public void handle() {
 
+            NavigationActivity.debug("notify price: "+mHandlerReloadPriceList.size());
             for(IListenerVoid handle : mHandlerReloadPriceList)
             {
                 handle.handle();
@@ -550,7 +558,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         @Override
         public void handle() {
             // уведзобляем подписчиков, что пришли цены;
-            mPriceEventHandler.handle();
+            mHandlerPriceEvent.handle();
             verifyControllPurchases();
         }
     };
@@ -609,7 +617,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     @Nonnull String json = purchase.receipt_data;
                     @Nonnull String signature = purchase.signature;
                     @Nonnull Bundle bundle = packToBundle(sku,json,signature);
-                    mBuyProductEventHandler.handle(bundle);
+                    mHandlerBuyProductEvent.handle(bundle);
 
                 }
             }

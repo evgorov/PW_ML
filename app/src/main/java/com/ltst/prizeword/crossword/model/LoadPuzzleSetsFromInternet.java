@@ -8,6 +8,7 @@ import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.rest.IRestClient;
 import com.ltst.prizeword.rest.RestClient;
 import com.ltst.prizeword.rest.RestParams;
@@ -348,6 +349,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             @Nonnull List<RestPuzzle> listRestPuzzles = restPuzzleSet.getPuzzles();
             for (RestPuzzle restPuzzle : listRestPuzzles)
             {
+                NavigationActivity.debug("------- sync ------- "+restPuzzle.getPuzzleId());
                 @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
                 @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(context, sessionKey, puzzleServerId);
                 @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);

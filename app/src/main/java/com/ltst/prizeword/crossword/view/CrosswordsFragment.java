@@ -22,6 +22,7 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.navigation.IFragmentsHolderActivity;
 import com.ltst.prizeword.navigation.INavigationDrawerHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.news.INewsModel;
 import com.ltst.prizeword.news.NewsModel;
 import com.ltst.prizeword.score.Coefficients;
@@ -52,7 +53,7 @@ public class CrosswordsFragment extends SherlockFragment
     public static final @Nonnull String BF_COEFFICIENTS = FRAGMENT_ID + ".coefficients";
     public static final @Nonnull String BF_HINTS_COUNT = FRAGMENT_ID + ".hintsCount";
 
-    private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 5;
+    private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 500;
 
     private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
@@ -143,6 +144,7 @@ public class CrosswordsFragment extends SherlockFragment
     public void onStart()
     {
         mProgressBar.setVisibility(View.VISIBLE);
+        mProgressbarSync.setVisibility(View.GONE);
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
@@ -162,7 +164,7 @@ public class CrosswordsFragment extends SherlockFragment
             {
 //                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
                 mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
-                flgOneUpload = true;
+//                flgOneUpload = true;
             }
             else
             {
@@ -199,6 +201,7 @@ public class CrosswordsFragment extends SherlockFragment
         mPuzzleSetModel.close();
         mNewsModel.close();
         mHintsModel.close();
+        NavigationActivity.debug("stop");
         super.onStop();
     }
 
@@ -212,8 +215,8 @@ public class CrosswordsFragment extends SherlockFragment
     public void onSaveInstanceState(Bundle outState)
     {
         outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
-        outState.putSerializable(BF_SETS,mCrosswordFragmentHolder.getMapSets());
-        outState.putSerializable(BF_PUZZLES,mCrosswordFragmentHolder.getMapPuzzles());
+        outState.putSerializable(BF_SETS, mCrosswordFragmentHolder.getMapSets());
+        outState.putSerializable(BF_PUZZLES, mCrosswordFragmentHolder.getMapPuzzles());
         outState.putParcelable(BF_COEFFICIENTS, mCrosswordFragmentHolder.getCoefficients());
         super.onSaveInstanceState(outState);
     }
@@ -233,13 +236,27 @@ public class CrosswordsFragment extends SherlockFragment
 
     public void skipProgressBar()
     {
+        NavigationActivity.debug("skip");
+        mProgressBar.setVisibility(View.GONE);
+        if(!flgOneUpload)
+        {
+            NavigationActivity.debug("request inventory");
+            mIManadges.getManadgeHolder().reloadInventory(new IListenerVoid(){
+                @Override
+                public void handle() {
+                    NavigationActivity.debug("start sync");
+                    mProgressbarSync.setVisibility(View.VISIBLE);
+                    mPuzzleSetModel.updateSync(handlerSync);
+                }
+            });
+        }
+        else
+        {
+            NavigationActivity.debug("start sync");
+            mProgressbarSync.setVisibility(View.VISIBLE);
+            mPuzzleSetModel.updateSync(handlerSync);
+        }
         flgOneUpload = true;
-        View bar = mProgressBar;
-        assert bar != null;
-        bar.setVisibility(View.GONE);
-        mProgressbarSync.setVisibility(View.VISIBLE);
-        mPuzzleSetModel.updateSync(handlerSync);
-        mIManadges.getManadgeHolder().reloadInventory();
     }
 
     @Override
@@ -344,6 +361,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle()
         {
+            NavigationActivity.debug("end sync!");
             mProgressbarSync.setVisibility(View.GONE);
         }
     };

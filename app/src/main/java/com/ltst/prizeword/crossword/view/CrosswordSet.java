@@ -20,6 +20,7 @@ import com.ltst.prizeword.crossword.model.PuzzleSetModel;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
+import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.AnimationTools;
 import com.ltst.prizeword.tools.CustomProgressBar;
@@ -77,7 +78,7 @@ public class CrosswordSet {
     private static @Nonnull IManadges mIManadges;
     private static @Nonnull IManageHolder mIManageHolder;
 
-
+    private boolean flgOneRegister = false;
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
 
@@ -88,8 +89,8 @@ public class CrosswordSet {
 
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
-        mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
-        mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
+//        mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+//        mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
         mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
@@ -228,6 +229,14 @@ public class CrosswordSet {
         if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
         {
             // Текущие наборы сетов сканвордов;
+
+            if(!flgOneRegister)
+            {
+                mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+                mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
+                flgOneRegister = true;
+            }
+
             mCrosswordSetType = CrosswordSetType.CURRENT;
             pTitleImage.setVisibility(View.VISIBLE);
             pSwitcher.setVisibility(View.GONE);
@@ -358,6 +367,7 @@ public class CrosswordSet {
             {
                 @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
                 pBuyPrice.setText(mBuyPrice);
+                NavigationActivity.debug("set price set: "+mSetServerId+ " "+ mBuyPrice);
             }
         }
     };
