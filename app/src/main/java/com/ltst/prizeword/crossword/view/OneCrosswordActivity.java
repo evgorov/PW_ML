@@ -344,7 +344,7 @@ public class OneCrosswordActivity extends SherlockActivity
             loadPuzzle();
         }
 
-        showFinalDialog(true);
+//        showFinalDialog(true);
         //fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -737,6 +737,11 @@ public class OneCrosswordActivity extends SherlockActivity
             {
                 selectNextUnsolvedPuzzle();
             }
+
+            mTimeLeft = mPuzzleAdapter.getTimeLeft();
+            mTimeGiven = mPuzzleAdapter.getTimeGiven();
+            fillTimer();
+            
             if (mResourcesDecoded)
             {
                 hideProgressBar();
