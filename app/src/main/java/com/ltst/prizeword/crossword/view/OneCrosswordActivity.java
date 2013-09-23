@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +20,13 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.facebook.AccessToken;
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Session;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.WebDialog;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
@@ -338,7 +344,7 @@ public class OneCrosswordActivity extends SherlockActivity
             loadPuzzle();
         }
 
-        showFinalDialog(false);
+//        showFinalDialog(true);
         //fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -510,8 +516,29 @@ public class OneCrosswordActivity extends SherlockActivity
                         uiHelper.trackPendingDialogCall(shareDialog.present());
                     } else
                     {
-                        Toast.makeText(this, R.string.facebook_app_error, Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage(R.string.facebook_app_error);
+                        builder.setPositiveButton(R.string.ok_bnt_title, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                Intent marketFbIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.facebook.katana"));
+                                OneCrosswordActivity.this.startActivity(marketFbIntent);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel_message_button, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setCancelable(true)
+                        .create().show();
                     }
+
                 }
                 break;
         }
