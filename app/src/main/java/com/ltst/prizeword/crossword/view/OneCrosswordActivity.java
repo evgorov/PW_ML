@@ -741,7 +741,7 @@ public class OneCrosswordActivity extends SherlockActivity
             mTimeLeft = mPuzzleAdapter.getTimeLeft();
             mTimeGiven = mPuzzleAdapter.getTimeGiven();
             fillTimer();
-            
+
             if (mResourcesDecoded)
             {
                 hideProgressBar();
