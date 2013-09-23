@@ -89,7 +89,7 @@ public class ResetUserDataOnServerTask implements DbService.IDbTask {
                 return LoadUserDataFromInternetTask.getUserDataFromDatabase(env);
             }
         }
-        return null;
+        return LoadUserDataFromInternetTask.getUserDataFromDatabase(env);
     }
 
 }
