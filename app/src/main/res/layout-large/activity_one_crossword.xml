@@ -29,8 +29,8 @@
                 android:id="@+id/header_timer_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                style="@style/GamefieldTimerText"
                 android:layout_gravity="center_vertical|center"
+                style="@style/GamefieldTimerText"
                 android:background="@drawable/header_timer_bg" />
 
             <Button
@@ -97,20 +97,21 @@
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_vertical"
                             style="@style/GamefieldPercentText"
-                            android:text="@string/gamefield_percent" />
+                            android:text="@string/gamefield_percent"
+                            android:textColor="@color/header_text_color" />
 
                         <LinearLayout
                             android:id="@+id/gamefield_progress_bg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="7dp"
                             android:orientation="horizontal"
                             android:background="@drawable/gamefild_pause_progressbar_bg2">
 
                             <LinearLayout
                                 android:id="@+id/gamefield_progress_fg"
-                                android:layout_width="20dp"
+                                android:layout_width="17dp"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:layout_marginTop="2dp"
@@ -119,7 +120,6 @@
                                 android:background="@drawable/pause_progressbar" />
 
                         </LinearLayout>
-
                     </LinearLayout>
 
                     <TextView
@@ -127,15 +127,15 @@
                         android:layout_width="wrap_content"
                         android:text="@string/gamefield_pause"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="25dp"
-                        style="@style/GamefieldPauseText" />
+                        style="@style/GamefieldPauseText"
+                        android:layout_marginTop="40dp" />
 
                     <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/gamefild_pause_textview_bg">
 
                         <LinearLayout
@@ -147,8 +147,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="40dp"
-                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginTop="22dp"
                                 style="@style/GamefieldNearSwitchText"
                                 android:text="@string/gamefield_sound" />
 
@@ -156,8 +156,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:layout_gravity="center_vertical|left"
-                                android:layout_marginLeft="40dp"
-                                android:layout_marginTop="26dp"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginTop="38dp"
                                 style="@style/GamefieldNearSwitchText"
                                 android:text="@string/gamefield_music" />
 
@@ -168,7 +168,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:orientation="vertical"
-                            android:layout_marginLeft="80dp">
+                            android:layout_marginLeft="125dp">
 
                             <ToggleButton
                                 android:id="@+id/pause_sounds_switcher"
@@ -177,7 +177,7 @@
                                 android:textOn=""
                                 android:textOff=""
                                 android:background="@drawable/menu_switcher"
-                                android:layout_marginTop="2dp" />
+                                android:layout_marginTop="13dp" />
 
                             <ToggleButton
                                 android:id="@+id/pause_music_switcher"
@@ -186,7 +186,7 @@
                                 android:textOn=""
                                 android:textOff=""
                                 android:background="@drawable/menu_switcher"
-                                android:layout_marginTop="2dp" />
+                                android:layout_marginTop="20dp" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -196,7 +196,7 @@
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="40dp">
 
                         <Button
                             android:id="@+id/gamefild_menu_btn"
@@ -209,7 +209,7 @@
                             android:id="@+id/gamefild_next_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
+                            android:layout_marginLeft="8dp"
                             android:layout_gravity="center_horizontal|bottom"
                             android:background="@drawable/gamefild_pause_next_but" />
                     </LinearLayout>
@@ -233,7 +233,6 @@
         android:clickable="true">
 
         <FrameLayout
-
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:layout_gravity="center">
@@ -245,7 +244,7 @@
                 android:orientation="vertical"
                 android:background="@drawable/final_share_bg"
                 android:layout_gravity="center"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="260dp"
                 android:visibility="gone">
 
                 <LinearLayout
@@ -253,7 +252,7 @@
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="75dp">
+                    android:layout_marginTop="105dp">
 
                     <Button
                         android:id="@+id/final_share_fb_btn"
@@ -265,7 +264,7 @@
                         android:id="@+id/final_share_vk_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:background="@drawable/final_share_vk_but" />
                 </LinearLayout>
             </LinearLayout>
@@ -282,14 +281,14 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginLeft="58dp">
+                    android:layout_marginTop="140dp"
+                    android:layout_marginLeft="75dp">
 
                     <TextView
                         android:id="@+id/final_score"
                         style="@style/FinalValueScoreText"
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
                         android:maxEms="3"
                         android:gravity="center"
                         android:singleLine="true"
@@ -298,7 +297,7 @@
                     <TextView
                         android:id="@+id/final_score_type"
                         style="@style/FinalNameScoreText"
-                        android:layout_width="50dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:layout_marginLeft="4dp"
@@ -308,11 +307,12 @@
                     <TextView
                         android:id="@+id/final_bonus"
                         style="@style/FinalValueScoreText"
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
-                        android:maxEms="3"
+                        android:layout_width="60dp"
                         android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:maxEms="3"
                         android:singleLine="true"
+
                         android:text="0" />
 
                     <TextView
@@ -331,8 +331,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginLeft="40dp">
+                    android:layout_marginTop="44dp"
+                    android:layout_marginLeft="50dp">
 
                     <!--десятки тысяч-->
                     <FrameLayout
@@ -437,16 +437,14 @@
                             android:layout_height="wrap_content" />
                     </FrameLayout>
 
-
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="35dp">
 
                     <Button
                         android:id="@+id/final_menu_btn"
@@ -459,7 +457,7 @@
                         android:id="@+id/final_next_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_gravity="center_horizontal|bottom"
                         android:background="@drawable/gamefild_pause_next_but" />
                 </LinearLayout>
@@ -486,5 +484,6 @@
             android:visibility="visible"
             style="?android:attr/progressBarStyleLarge" />
     </RelativeLayout>
+
 
 </FrameLayout>
