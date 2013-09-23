@@ -99,7 +99,7 @@ public class SharedPreferencesHelper
 
     public @Nonnull SharedPreferencesHelper erase(@Nonnull String key)
     {
-        editor.remove(key);
+        editor.remove(key).commit();
         return this;
     }
 

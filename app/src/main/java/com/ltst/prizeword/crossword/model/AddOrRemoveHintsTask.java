@@ -53,7 +53,7 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
             env.bcToaster.showToast(
                     NonnullableCasts.getStringOrEmpty(
                             env.context.getString(R.string.msg_no_internet)));
-            saveHintsToChange(env.context, hintsToChange);
+            saveHintsToChange(env, hintsToChange);
         }
         else
         {
@@ -67,17 +67,19 @@ public class AddOrRemoveHintsTask implements DbService.IDbTask
                     env.dbw.putUser(userData, providerData);
                 }
                 else
-                    saveHintsToChange(env.context, hintsToChange);
+                    saveHintsToChange(env, hintsToChange);
             }
         }
         return null;
     }
 
-    private void saveHintsToChange(@Nonnull Context context, int hintsToChange)
+    private void saveHintsToChange(@Nonnull DbService.DbTaskEnv env, int hintsToChange)
     {
-        SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(context);
+        SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(env.context);
         int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
         mHelper.putInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, (currentHintsChangeCount + hintsToChange)).commit();
+
+        env.dbw.changeHintsCount(hintsToChange);
     }
 
     private RestUserData.RestUserDataHolder changeHints (@Nonnull Context context, @Nonnull String sessionKey, int hints)

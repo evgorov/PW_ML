@@ -33,6 +33,7 @@ public interface IDbWriter extends IDbReader
     void putCoefficients(@Nonnull Coefficients coefficients);
     void putScoreToQueue(@Nonnull ScoreQueue.Score score);
     void clearScoreQueue();
+    void changeHintsCount(int hintsDelta);
 
     void putPurchase(@Nullable Purchase purchase);
     void putPurchases(@Nullable ArrayList<Purchase> purchases);

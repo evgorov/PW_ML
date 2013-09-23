@@ -48,8 +48,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     private @Nonnull IAutorization mAuthorization;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
     private @Nonnull IBcConnector mBcConnector;
-    private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
-    private @Nullable HintsModel mHintsModel;
 
     @Override
     public void onAttach(Activity activity)
@@ -88,20 +86,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     }
 
     @Override
-    public void onPause()
-    {
-        if (mUploadScoreQueueModel != null)
-        {
-            mUploadScoreQueueModel.close();
-        }
-        if (mHintsModel != null)
-        {
-            mHintsModel.close();
-        }
-        super.onPause();
-    }
-
-    @Override
     public void onClick(View v)
     {
         SoundsWork.interfaceBtnMusic(mContext);
@@ -136,29 +120,6 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
     {
         if (resultCode == SherlockFragmentActivity.RESULT_OK)
         {
-
-            String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
-            spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
-            spref.commit();
-
-            mUploadScoreQueueModel = new UploadScoreQueueModel(mBcConnector, sessionKey);
-            mUploadScoreQueueModel.upload();
-            mHintsModel = new HintsModel(mBcConnector, sessionKey);
-            final SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(mContext);
-            int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
-            if(currentHintsChangeCount != 0)
-            {
-                mHintsModel.changeHints(currentHintsChangeCount, new IListenerVoid()
-                {
-                    @Override
-                    public void handle()
-                    {
-                        mHelper.erase(SharedPreferencesValues.SP_HINTS_TO_CHANGE);
-                    }
-                });
-            }
-
             switch (requestCode)
             {
                 case REQUEST_LOGIN_FB:

@@ -435,6 +435,18 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
+    public void changeHintsCount(int hintsDelta)
+    {
+        UserData userData = getUserById(SQLiteHelper.ID_USER);
+        ArrayList<UserProvider> userProviders = getUserProvidersByUserId(SQLiteHelper.ID_USER);
+        if (userData != null && userProviders != null)
+        {
+            userData.hints += hintsDelta;
+            putUser(userData, userProviders);
+        }
+    }
+
+    @Override
     public void clearDb() {
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
