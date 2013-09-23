@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -24,7 +25,9 @@ import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.sounds.SoundsWork;
 
+import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.ISlowSource;
@@ -110,8 +113,16 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         InviteFragmentAdapter adapter = mAdapter;
         if (adapter == null)
         {
-            adapter = new InviteFragmentAdapter(mContext, model, mIFragmentActivity.getFbSwitch(),
-                    mIFragmentActivity.getVkSwitch());
+            if(!BcTaskHelper.isNetworkAvailable(mContext))
+            {
+                Toast.makeText(mContext, NonnullableCasts.getStringOrEmpty(
+                        mContext.getString(R.string.msg_no_internet)), Toast.LENGTH_LONG).show();
+                adapter = new InviteFragmentAdapter(mContext, model, true, true);
+            }
+            else
+            {
+                adapter = new InviteFragmentAdapter(mContext, model, mIFragmentActivity.getFbSwitch(), mIFragmentActivity.getVkSwitch());
+            }
             Log.i(LOG_TAG, "create adapterVk"); //$NON-NLS-1$
             mAdapter = adapter;
             adapter.setRefreshHandler(mRefreshHandler);

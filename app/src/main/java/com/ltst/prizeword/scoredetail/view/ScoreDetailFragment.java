@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -30,7 +31,9 @@ import com.ltst.prizeword.scoredetail.model.SolvedPuzzleSetModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.tools.DeclensionTools;
 
+import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -137,7 +140,6 @@ public class ScoreDetailFragment extends SherlockFragment implements View.OnClic
         ScoreDetailAdapter adapter = mScoreDetailAdapter;
         if (adapter == null)
         {
-
             adapter = new ScoreDetailAdapter(mContext, mFriendDataModel, mCoefModel);
             mScoreDetailAdapter = adapter;
             adapter.setRefreshHandler(mRefreshHandler);

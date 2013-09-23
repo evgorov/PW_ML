@@ -42,51 +42,57 @@ public class LoadFriendsDataFromInternetTask implements DbService.IDbTask
     public static @Nullable
     List<ISlowSource.Item<InviteFriendsData, Bitmap>> extractFriendsFromBundle(@Nullable Bundle taskResult)
     {
-        if (taskResult == null)
-            return null;
-
-        List<InviteFriendsData> VkFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_VK_DATA);
-        List<InviteFriendsData> FbFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_FB_DATA);
-
-        if (VkFriendsItems == null && FbFriendsItems == null)
-            return null;
-
         List<ISlowSource.Item<InviteFriendsData, Bitmap>> resultItems = new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>();
-
-        if (VkFriendsItems != null)
+        if (taskResult != null)
         {
-            for (InviteFriendsData item : VkFriendsItems)
+            List<InviteFriendsData> VkFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_VK_DATA);
+            List<InviteFriendsData> FbFriendsItems = taskResult.<InviteFriendsData>getParcelableArrayList(BF_FRIEND_FB_DATA);
+
+            if (VkFriendsItems != null || FbFriendsItems != null)
             {
-                if (item != null)
+                if (VkFriendsItems != null)
                 {
-                    byte[] image = item.pngImage;
-                    Bitmap bitmap = (image == null)
-                            ? null
-                            : BitmapFactory.decodeByteArray(image, 0, image.length);
-                    resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                    for (InviteFriendsData item : VkFriendsItems)
+                    {
+                        if (item != null)
+                        {
+                            byte[] image = item.pngImage;
+                            Bitmap bitmap = (image == null)
+                                    ? null
+                                    : BitmapFactory.decodeByteArray(image, 0, image.length);
+                            resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                        }
+                    }
+                }
+
+                if(FbFriendsItems != null){
+                    if(!FbFriendsItems.isEmpty())
+                    {
+                        InviteFriendsData midData = new InviteFriendsData(Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, 0, 0, new int[1],
+                                Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, InviteFriendsData.NO_PROVIDER);
+                        resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(midData, null));
+                    }
+
+                    for (InviteFriendsData item : FbFriendsItems)
+                    {
+                        if (item != null)
+                        {
+                            byte[] image = item.pngImage;
+                            Bitmap bitmap = (image == null)
+                                    ? null
+                                    : BitmapFactory.decodeByteArray(image, 0, image.length);
+                            resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
+                        }
+                    }
                 }
             }
         }
 
-        if(FbFriendsItems != null){
-            if(!FbFriendsItems.isEmpty())
-            {
-                InviteFriendsData midData = new InviteFriendsData(Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, 0, 0, new int[1],
-                        Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, InviteFriendsData.NO_PROVIDER);
-                resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(midData, null));
-            }
-
-            for (InviteFriendsData item : FbFriendsItems)
-            {
-                if (item != null)
-                {
-                    byte[] image = item.pngImage;
-                    Bitmap bitmap = (image == null)
-                            ? null
-                            : BitmapFactory.decodeByteArray(image, 0, image.length);
-                    resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(item, bitmap));
-                }
-            }
+        if(resultItems.size() == 0)
+        {
+            InviteFriendsData midData = new InviteFriendsData(Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, 0, 0, new int[1],
+                    Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, null, InviteFriendsData.NO_PROVIDER);
+            resultItems.add(new ISlowSource.Item<InviteFriendsData, Bitmap>(midData, null));
         }
 
         return resultItems;

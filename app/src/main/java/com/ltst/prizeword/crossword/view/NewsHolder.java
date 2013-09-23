@@ -10,12 +10,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.news.News;
 import com.ltst.prizeword.swipe.ITouchInterface;
 import com.ltst.prizeword.swipe.TouchDetector;
+
+import org.omich.velo.bcops.BcTaskHelper;
+import org.omich.velo.cast.NonnullableCasts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +100,16 @@ public class NewsHolder {
                 return false;
             }
         });
+
+        if(!BcTaskHelper.isNetworkAvailable(mContext))
+        {
+            mNewsLayout.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mNewsLayout.setVisibility(View.GONE);
+        }
+
     }
 
     public void notifySwipe(ITouchInterface.SwipeMethod swipe)

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.prizeword.R;
@@ -22,7 +23,9 @@ import com.ltst.prizeword.navigation.INavigationDrawerHolder;
 import com.ltst.prizeword.rating.model.UsersListModel;
 import com.ltst.prizeword.sounds.SoundsWork;
 
+import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -189,7 +192,15 @@ public class RatingFragment extends SherlockFragment implements View.OnClickList
             ProgressBar bar = mProgressBar;
             assert bar != null;
             bar.setVisibility(View.GONE);
-            mRatingContainer.setVisibility(View.VISIBLE);
+            if(!BcTaskHelper.isNetworkAvailable(mContext))
+            {
+                Toast.makeText(mContext, NonnullableCasts.getStringOrEmpty(
+                        mContext.getString(R.string.msg_no_internet)), Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                mRatingContainer.setVisibility(View.VISIBLE);
+            }
         }
     };
 }
