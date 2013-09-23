@@ -344,7 +344,7 @@ public class OneCrosswordActivity extends SherlockActivity
             loadPuzzle();
         }
 
-//        showFinalDialog(true);
+        //showFinalDialog(true);
         //fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
