@@ -577,6 +577,9 @@ public class PuzzleFieldDrawer
 
     public synchronized void drawCurrentInputWithAnimation(final @Nonnull Canvas canvas, final @Nullable IListenerVoid animationEndHandler)
     {
+        if (mInputTileList == null)
+            return;
+
         if(mInputListCreated)
         {
             PuzzleTileState[] stateArray = new PuzzleTileState[mInputTileList.size()];

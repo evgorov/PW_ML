@@ -99,8 +99,11 @@ public class OnePuzzleModel implements IOnePuzzleModel
     @Override
     public void putAnsweredQuestionsToDb(@Nullable IListenerVoid handler)
     {
-        if(mIsDestroyed)
+        if(mIsDestroyed || mPuzzle == null)
             return;
+        if (mPuzzle.questions == null)
+            return;
+
         List<Long> answeredQuestionIdList = new ArrayList<Long>();
         for (PuzzleQuestion question : mPuzzle.questions)
         {
