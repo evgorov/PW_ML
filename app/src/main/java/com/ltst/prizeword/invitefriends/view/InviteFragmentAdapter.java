@@ -92,7 +92,8 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
             viewHolder.inviteBtn.setVisibility(View.GONE);
             viewHolder.nameView.setVisibility(View.GONE);
             viewHolder.surnameView.setVisibility(View.GONE);
-        } else
+        }
+        else
         {
             viewHolder.layout.setBackgroundResource(R.drawable.invite_item_bg);
             viewHolder.imageView.setVisibility(View.VISIBLE);
