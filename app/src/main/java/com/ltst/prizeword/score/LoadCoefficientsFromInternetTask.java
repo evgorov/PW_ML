@@ -54,11 +54,10 @@ public class LoadCoefficientsFromInternetTask implements DbService.IDbTask
                 {
                     @Nonnull Coefficients coefficients = parseCoefficients(restCoefficients);
                     env.dbw.putCoefficients(coefficients);
-                    return getFromDatabase(env);
                 }
             }
         }
-        return null;
+        return getFromDatabase(env);
     }
 
     private @Nullable RestCoefficients loadCoefficients(@Nonnull Context context, @Nonnull String sessionKey)

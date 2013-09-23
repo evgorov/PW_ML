@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -33,6 +34,9 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.crossword.model.HintsModel;
+import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.IUserDataModel;
 import com.ltst.prizeword.login.model.UserProvider;
 import com.ltst.prizeword.invitefriends.view.InviteFriendsFragment;
 import com.ltst.prizeword.login.view.RulesFragment;
@@ -53,6 +57,7 @@ import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
+import com.ltst.prizeword.score.UploadScoreQueueModel;
 import com.ltst.prizeword.scoredetail.view.ScoreDetailFragment;
 import com.ltst.prizeword.sounds.SoundsWork;
 import com.ltst.prizeword.splashscreen.SplashScreenFragment;
@@ -64,8 +69,10 @@ import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -108,7 +115,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
-    private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull IUserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull IIabHelper mManadgeHolder;
     private @Nonnull String mPositionText;
@@ -117,6 +124,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     private boolean mFbSwitch;
     private boolean mIsDestroyed = false;
     private boolean mIsTablet = false;
+
+    private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
+    private @Nullable HintsModel mHintsModel;
 
 
     @Override
@@ -328,6 +338,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onPause()
     {
         mUserDataModel.close();
+        if (mUploadScoreQueueModel != null)
+        {
+            mUploadScoreQueueModel.close();
+        }
+        if (mHintsModel != null)
+        {
+            mHintsModel.close();
+        }
         super.onPause();
     }
 
@@ -656,6 +674,30 @@ public class NavigationActivity extends SherlockFragmentActivity
         mUserDataModel.loadUserImageFromDB(user_id, mTaskHandlerLoadUserImageFromServer);
     }
 
+    private void checkSyncData()
+    {
+        @Nullable String sessionKey = SharedPreferencesValues.getSessionKey(this);
+        if (sessionKey == null)
+            return;
+
+        mUploadScoreQueueModel = new UploadScoreQueueModel(mBcConnector, sessionKey);
+        mUploadScoreQueueModel.upload();
+        mHintsModel = new HintsModel(mBcConnector, sessionKey);
+        final SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(mContext);
+        int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
+        if(currentHintsChangeCount != 0)
+        {
+            mHintsModel.changeHints(currentHintsChangeCount, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mHelper.erase(SharedPreferencesValues.SP_HINTS_TO_CHANGE);
+                }
+            });
+        }
+    }
+
     private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
     {
         @Override
@@ -680,9 +722,12 @@ public class NavigationActivity extends SherlockFragmentActivity
                 if (mCurrentSelectedFragmentPosition != 0)
                     selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
                 else
-
+                {
+                    checkSyncData();
                     selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-            } else
+                }
+            }
+            else
             {
                 mDrawerMenu.clean();
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);

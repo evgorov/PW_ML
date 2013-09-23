@@ -78,7 +78,7 @@ public class LoadPurchaseTask implements DbService.IDbTask {
                 return getFromDatabase(env);
             }
         }
-        return null;
+        return getFromDatabase(env);
     }
 
     static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)

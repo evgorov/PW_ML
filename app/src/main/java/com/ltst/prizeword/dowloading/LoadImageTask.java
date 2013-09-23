@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.LoadUserDataFromDataBase;
 import com.ltst.prizeword.rest.RestImg;
 
 import org.omich.velo.bcops.BcTaskHelper;
@@ -71,18 +72,12 @@ public class LoadImageTask implements DbService.IDbTask {
                 if(buffer != null)
                 {
 //                saveImageToDb(env, imageUrl, buffer);
-                    return getLoadingImage(buffer);
+                    env.dbw.putUserImage(buffer);
+                    return LoadUserDataFromDataBase.getUserImageFromDB(env);
                 }
             }
         }
-        return null;
-    }
-
-    private static @Nullable Bundle getLoadingImage(@Nullable byte[] buffer)
-    {
-        Bundle bundle = new Bundle();
-        bundle.putByteArray(BF_BITMAP, buffer);
-        return bundle;
+        return LoadUserDataFromDataBase.getUserImageFromDB(env);
     }
 
 }
