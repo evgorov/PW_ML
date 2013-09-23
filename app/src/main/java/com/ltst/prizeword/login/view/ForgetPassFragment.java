@@ -226,8 +226,7 @@ public class ForgetPassFragment extends SherlockFragment
                 mSuccessAlertBg.clearAnimation();
                 mSuccessAlertBg.startAnimation(mAnimationSlideInTop);
                 // скрываем клавиатуру;
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                hideKeyboard();
                 // Очищаем поле email;
                 mEmailEditText.setText(Strings.EMPTY);
             } else
