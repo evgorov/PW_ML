@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="100dp"
                     android:maxLines="1"
+                    android:maxWidth="100dp"
                     android:layout_marginLeft="15dp"
                     style="@style/InviteItemNameText"
                     android:text="Пупкин"
@@ -101,6 +102,7 @@
                         android:maxWidth="25dp"
                         android:layout_marginLeft="15dp"
                         android:text="021"
+                        android:drawableLeft="@drawable/rating_count_icon"
                         style="@style/Rating_bold_number_text"
                         />
                 <TextView
@@ -126,6 +128,7 @@
                 android:maxWidth="30dp"
                 android:layout_marginLeft="10dp"
                 android:text="0"
+                android:drawableLeft="@drawable/rating_score_icon"
                 style="@style/Rating_bold_number_text"
                 />
     </LinearLayout>
