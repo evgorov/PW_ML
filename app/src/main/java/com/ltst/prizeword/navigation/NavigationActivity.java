@@ -324,18 +324,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
-//        String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mUserDataModel = new UserDataModel(this, mBcConnector);
-//        if(!BcTaskHelper.isNetworkAvailable(mContext) && sessionKey != null && sessionKey != Strings.EMPTY)
-//        {
-//            Toast.makeText(mContext, NonnullableCasts.getStringOrEmpty(
-//                            mContext.getString(R.string.msg_no_internet)), Toast.LENGTH_LONG).show();
-//
-//        }
-//        else
-//        {
-            reloadUserData();
-//        }
+        reloadUserData();
         super.onResume();
     }
 
