@@ -2,7 +2,10 @@ package com.ltst.prizeword.login.model;
 
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 26.07.13.
@@ -17,5 +20,12 @@ public interface IUserDataModel {
     void loadProvidersFromDB(long user_id, @Nonnull IListenerVoid handler);
     void mergeAccounts(final @Nonnull String sessionKey1, final @Nonnull String sessionKey2, @Nonnull IListenerVoid handler);
     void clearDataBase(@Nonnull IListenerVoid handler);
+    void setProvider(@Nonnull String mProvider);
+    UserData getUserData();
+    byte[] getUserPic();
+    @Nullable ArrayList<UserProvider> getProviders();
+    int getStatusCodeAnswer();
+    @Nonnull String getStatusMessageAnswer();
+    @Nonnull String getProvider();
     void close();
 }

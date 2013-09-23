@@ -60,10 +60,9 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 @Nonnull UserData userData = parseUserData(response);
                 @Nullable List<UserProvider> providerData = parseProviderData(response);
                 env.dbw.putUser(userData, providerData);
-                return getUserDataFromDatabase(env, userData.email);
             }
         }
-        return null;
+        return getUserDataFromDatabase(env);
     }
 
     public static @Nullable Bundle getSessionKeyFromInternet(RestUserData.RestUserDataHolder holder)
@@ -113,7 +112,7 @@ public class LoadUserDataFromInternetTask implements DbService.IDbTask
                 response.getUserpicUrl(),null);
     }
 
-    public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env, @Nonnull String email)
+    public static @Nullable Bundle getUserDataFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         Bundle bundle = new Bundle();
         UserData data = env.dbw.getUserById(SQLiteHelper.ID_USER);

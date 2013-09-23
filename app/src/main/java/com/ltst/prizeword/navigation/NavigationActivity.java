@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URI;
@@ -33,6 +34,8 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.SharedPreferencesHelper;
 import com.ltst.prizeword.app.SharedPreferencesValues;
+import com.ltst.prizeword.db.DbService;
+import com.ltst.prizeword.login.model.IUserDataModel;
 import com.ltst.prizeword.login.model.UserProvider;
 import com.ltst.prizeword.invitefriends.view.InviteFriendsFragment;
 import com.ltst.prizeword.login.view.RulesFragment;
@@ -64,8 +67,10 @@ import com.ltst.prizeword.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
@@ -108,7 +113,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private int mCurrentSelectedFragmentPosition = 0;
 
-    private @Nonnull UserDataModel mUserDataModel;
+    private @Nonnull IUserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull IIabHelper mManadgeHolder;
     private @Nonnull String mPositionText;
@@ -319,8 +324,18 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
+//        String sessionKey = SharedPreferencesValues.getSessionKey(mContext);
         mUserDataModel = new UserDataModel(this, mBcConnector);
-        reloadUserData();
+//        if(!BcTaskHelper.isNetworkAvailable(mContext) && sessionKey != null && sessionKey != Strings.EMPTY)
+//        {
+//            Toast.makeText(mContext, NonnullableCasts.getStringOrEmpty(
+//                            mContext.getString(R.string.msg_no_internet)), Toast.LENGTH_LONG).show();
+//
+//        }
+//        else
+//        {
+            reloadUserData();
+//        }
         super.onResume();
     }
 
@@ -682,7 +697,8 @@ public class NavigationActivity extends SherlockFragmentActivity
                 else
 
                     selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-            } else
+            }
+            else
             {
                 mDrawerMenu.clean();
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
