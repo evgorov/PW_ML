@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -151,8 +153,19 @@ public class ForgetPassFragment extends SherlockFragment
 
     private void hideKeyboard()
     {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        FragmentActivity activity = getActivity();
+        if (activity == null)
+            return;
+        View curFocus = activity.getCurrentFocus();
+        if (curFocus == null)
+            return;
+
+        IBinder binder = curFocus.getWindowToken();
+        if (binder != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     @Override
