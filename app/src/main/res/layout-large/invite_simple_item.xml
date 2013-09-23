@@ -57,5 +57,4 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="40dp"
             android:background="@drawable/invite_invite_but"/>
-
 </LinearLayout>
