@@ -120,10 +120,7 @@ public class OnePuzzleModel implements IOnePuzzleModel
             index ++;
         }
         mSetQuestionAnsweredUpdater.setIntent(SetQuestionAnsweredTask.createMultipleIntent(idArray, true));
-        if (handler != null)
-            mSetQuestionAnsweredUpdater.update(handler);
-        else
-            mSetQuestionAnsweredUpdater.update(null);
+        mSetQuestionAnsweredUpdater.update(handler);
     }
 
     @Override
