@@ -64,9 +64,9 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
         if(user_id >= 0){
             switch (status){
                 case STATUS_LOAD_PROVIDERS:
-                    return  getUserProviderFromDB(env, user_id);
+                    return  getUserProviderFromDB(env);
                 case STATUS_LOAD_USERIMAGE:
-                    return  getUserImageFromDB(env, user_id);
+                    return  getUserImageFromDB(env);
                 default:
                     break;
             }
@@ -74,7 +74,7 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
         return  null;
     }
 
-    public static @Nullable Bundle getUserProviderFromDB(@Nonnull DbService.DbTaskEnv env, long user_id)
+    public static @Nullable Bundle getUserProviderFromDB(@Nonnull DbService.DbTaskEnv env)
     {
         Bundle bundle = new Bundle();
         @Nullable ArrayList<UserProvider> data = env.dbw.getUserProvidersByUserId(SQLiteHelper.ID_USER);
@@ -82,7 +82,7 @@ public class LoadUserDataFromDataBase implements DbService.IDbTask {
         return bundle;
     }
 
-    public static @Nullable Bundle getUserImageFromDB(@Nonnull DbService.DbTaskEnv env, long user_id)
+    public static @Nullable Bundle getUserImageFromDB(@Nonnull DbService.DbTaskEnv env)
     {
         Bundle bundle = new Bundle();
         @Nullable UserImage data = env.dbw.getUserImage(SQLiteHelper.ID_USER);

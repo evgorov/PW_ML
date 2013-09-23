@@ -195,7 +195,7 @@ public class UserDataModel implements IUserDataModel
                 mUserPic = null;
                 return;
             }
-            mUserPic = result.getByteArray(LoadImageTask.BF_BITMAP);
+            mUserPic = result.getByteArray(LoadUserDataFromDataBase.BF_IMAGE_DATA);
         }
     };
 
