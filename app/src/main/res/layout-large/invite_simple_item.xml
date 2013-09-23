@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/invite_item_layout"
               android:orientation="horizontal"
@@ -28,9 +27,8 @@
         <TextView
                 android:id="@+id/invite_item_name_textview"
                 android:layout_height="wrap_content"
-                android:layout_width="200dp"
+                android:layout_width="100dp"
                 android:maxLines="1"
-                android:maxWidth="100dp"
                 android:layout_marginLeft="15dp"
                 style="@style/InviteItemNameText"
                 />
@@ -38,16 +36,15 @@
         <TextView
                 android:id="@+id/invite_item_surname_textview"
                 android:layout_height="wrap_content"
-                android:layout_width="200dp"
+                android:layout_width="100dp"
                 android:maxLines="1"
-                android:maxWidth="100dp"
                 android:layout_marginLeft="15dp"
                 style="@style/InviteItemNameText"
                 />
     </LinearLayout>
-    <ImageView
+    <View
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_weight="1"/>
 
     <Button
