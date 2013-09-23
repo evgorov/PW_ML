@@ -83,7 +83,7 @@
                     android:layout_width="100dp"
                     android:maxLines="1"
                     android:maxWidth="100dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
                     style="@style/InviteItemNameText"
                     android:text="dwdaw"/>
 
@@ -103,6 +103,7 @@
                         android:layout_marginLeft="15dp"
                         android:text="021"
                         android:drawableLeft="@drawable/rating_count_icon"
+                        android:drawablePadding="3dp"
                         style="@style/Rating_bold_number_text"
                         />
                 <TextView
@@ -129,6 +130,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="0"
                 android:drawableLeft="@drawable/rating_score_icon"
+                android:drawablePadding="3dp"
                 style="@style/Rating_bold_number_text"
                 />
     </LinearLayout>
