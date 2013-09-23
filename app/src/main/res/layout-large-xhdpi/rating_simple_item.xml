@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/rating_cell_border"
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:clickable="false"
+             android:background="@drawable/rating_cell_border">
+
+    <LinearLayout
+            android:id="@+id/rating_cell_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginLeft="28dp"
+            android:layout_marginRight="28dp"
+            android:background="@drawable/rating_cell_bg">
+
+        <FrameLayout
+                android:id="@+id/rating_position_background_layout"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/rating_cell_other_place_bg"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="10dp"
+                >
+
+            <ImageView
+                    android:id="@+id/rating_item_dynamics"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/rating_cell_move_none"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="10dp"
+                    />
+
+            <TextView
+                    android:id="@+id/rating_item_position_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="@style/Rating_number_text"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="10dp"
+                    android:text="1"
+                    />
+        </FrameLayout>
+
+        <ImageView
+                android:id="@+id/rating_item_image"
+                android:layout_height="@dimen/size_avatar"
+                android:layout_width="@dimen/size_avatar"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/rating_cell_photo_mask"
+                />
+
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="148dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+            <TextView
+                    android:id="@+id/rating_item_surname_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:maxLines="1"
+                    android:maxWidth="100dp"
+                    android:layout_marginLeft="15dp"
+                    style="@style/InviteItemNameText"
+                    android:text="Пупкин"
+                    />
+
+            <TextView
+                    android:id="@+id/rating_item_name_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:maxLines="1"
+                    android:maxWidth="100dp"
+                    android:layout_marginLeft="15dp"
+                    style="@style/InviteItemNameText"
+                    android:text="dwdaw"/>
+
+            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="6dp">
+
+                <TextView
+                        android:id="@+id/rating_item_solved"
+                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:maxLines="1"
+                        android:maxWidth="30dp"
+                        android:layout_marginLeft="28dp"
+                        android:text="021"
+                        style="@style/Rating_bold_number_text"
+                        />
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        android:text=" отгадано"
+                        style="@style/Rating_text_number_text"
+                        />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/rating_item_score"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
+                android:layout_width="30dp"
+                android:maxLines="1"
+                android:maxWidth="30dp"
+                android:layout_marginLeft="20dp"
+                android:text="0"
+                style="@style/Rating_bold_number_text"
+                />
+    </LinearLayout>
+
+</FrameLayout>
