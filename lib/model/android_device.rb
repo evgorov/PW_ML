@@ -11,9 +11,9 @@ class AndroidDevice < BasicModel
     raise InvalidState.new("Missing device id") unless self['id']
   end
 
-  def send_notifications(message, options)
+  def send_notifications(message)
     self.batches do |arr|
-      GCM.send_notification(arr, { message: message }, options)
+      GCM.send_notification(arr, { message: message })
     end
   end
 end
