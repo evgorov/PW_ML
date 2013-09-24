@@ -93,11 +93,6 @@ module Middleware
       }.to_json
     end
 
-    get '/devices' do
-      authorize_admin!
-      Device.new.storage(env['redis']).all(params['page'].to_i).to_json
-    end
-
     post '/questions' do
       authorize_editor!
       current_id = params['set_id']

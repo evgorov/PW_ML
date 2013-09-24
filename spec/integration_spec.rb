@@ -277,11 +277,27 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
 
-    post('/puzzles',
+    post('/sets',
+         {
+           year: Time.now.year,
+           month: Time.now.month,
+           name: 'Cool set',
+           published: 'true',
+           type: 'golden',
+           session_key: session_key
+         })
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    admin_set_id = response_data['id']
+
+    post('/questions',
          {
            height: 20,
            width: 20,
            issuedAt: Time.now.to_s,
+           set_id: admin_set_id,
            name: 'puzzle 1 FTW',
            questions: [{a: 1}].to_json,
            time_given:  400,
@@ -291,13 +307,13 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     puzzle1_id = response_data['id']
 
-
-    post('/puzzles',
+    post('/questions',
          {
            height: 20,
            width: 20,
            issuedAt: Time.now.to_s,
            name: 'puzzle 2 FTW',
+           set_id: admin_set_id,
            questions: [{a: 1}].to_json,
            time_given:  400,
            session_key: session_key
@@ -306,25 +322,11 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     puzzle2_id = response_data['id']
 
-    post('/sets',
-         {
-           year: Time.now.year,
-           month: Time.now.month,
-           name: 'Cool set',
-           published: 'true',
-           puzzle_ids: [puzzle1_id, puzzle2_id].to_json,
-           type: 'golden',
-           session_key: session_key
-         })
-
-    last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    admin_set_id = response_data['id']
     get('/published_sets', mode: 'short', session_key: session_key)
     last_response.status.should == 200
     last_response_should_be_json
     response_data = JSON.parse(last_response.body)
+    response_data[0]['puzzles'].size.should == 2
     response_data[0]['puzzles'][0]['name'].should == nil
     set_id = response_data[0]['id']
 
@@ -699,24 +701,23 @@ describe 'Integration spec' do
     end
   end
 
-  it '/register_device adds device to list of avialible devices' do
+  it 'POST /ios/register_device' do
     post '/signup', valid_user_data
     post '/login', email: valid_user_data['email'], password: valid_user_data['password']
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
     post '/register_device', session_key: session_key, id: 'device1'
     last_response.status.should == 200
-
-    admin_user
-    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+    post '/ios/register_device', session_key: session_key, id: 'device2'
     last_response.status.should == 200
-    last_response_should_be_json
+  end
+
+  it 'POST /android/register_device' do
+    post '/signup', valid_user_data
+    post '/login', email: valid_user_data['email'], password: valid_user_data['password']
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
-    get '/devices', session_key: session_key
+    post '/android/register_device', session_key: session_key, id: 'device1'
     last_response.status.should == 200
-    last_response_should_be_json
-    response_data = JSON.parse(last_response.body)
-    response_data.first['id'].should == 'device1'
   end
 end

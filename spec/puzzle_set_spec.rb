@@ -11,6 +11,7 @@ describe PuzzleSet do
   end
 
   it '#save existing set' do
+    Puzzle.stub(storage: mock.as_null_object)
     storage = mock(:storage).as_null_object
     storage.stub(namespace: storage)
     subject.merge!(set_in_storage)

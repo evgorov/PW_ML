@@ -71,9 +71,13 @@ class BasicModel
     self.collection_for_key('all', page)
   end
 
-  def all_in_batches(&blk)
+  def batches(&blk)
     page, items = 0, []
-    items.each(&blk) while !(items = self.all(page += 1)).empty?
+    yield items while !(items = self.all(page += 1)).empty?
+  end
+
+  def all_in_batches(&blk)
+    batches { |arr| arr.each(&blk) }
   end
 
   def size

@@ -29,6 +29,7 @@ module Middleware
       # Doing this in request thread for now, if will perform badly on
       # huge number of tokens, move to worker.
       Device.storage(env['redis']).send_notifications(params['message'], @options)
+      AndroidDevice.storage(env['redis']).send_notifications(params['message'])
     end
   end
 end

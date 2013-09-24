@@ -11,6 +11,7 @@ group :app do
   gem 'bcrypt-ruby', require: 'bcrypt'
   gem 'pony'
   gem 'grocer'
+  gem 'pushmeup'
   gem 'unicorn'
 end
 
@@ -22,4 +23,3 @@ group :test do
   gem 'webmock', '>= 1.8.0', '< 1.9'
   gem 'pry'
 end
-
