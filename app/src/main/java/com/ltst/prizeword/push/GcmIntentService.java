@@ -15,11 +15,13 @@ import com.ltst.prizeword.navigation.NavigationActivity;
 
 import org.omich.velo.log.Log;
 
+import javax.annotation.Nullable;
+
+
 public class GcmIntentService extends IntentService
 {
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
+    private @Nullable NotificationManager mNotificationManager;
 
     public static final String TAG = "GcmIntentService.class";
 

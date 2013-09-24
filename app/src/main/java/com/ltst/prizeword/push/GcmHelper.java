@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -200,7 +201,7 @@ public class GcmHelper implements IActivityLifeCycle
             @Override
             protected void onPostExecute(String msg)
             {
-
+                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
             }
         }.execute(null, null, null);
     }
