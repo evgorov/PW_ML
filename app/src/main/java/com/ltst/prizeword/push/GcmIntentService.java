@@ -25,6 +25,11 @@ public class GcmIntentService extends IntentService
 
     public static final String TAG = "GcmIntentService.class";
 
+    public GcmIntentService()
+    {
+        super("GcmIntentService");
+    }
+
     public GcmIntentService(String name)
     {
         super(name);

@@ -55,6 +55,8 @@ public class RestParams
     public static final @Nonnull String SIGNATURE = "android_signature";
     public static final @Nonnull String MESSAGE = "message";
 
+    public static final @Nonnull String GCM_DEVICE_ID = "id";
+
     // == API URLS ==
 
     // == login/auth
@@ -129,6 +131,9 @@ public class RestParams
 
     // ==== sharing =====
     public static final @Nonnull String URL_SHARE_VK = URL_API + "/" + VK_PROVIDER + "/share" + addParam(SESSION_KEY, true) + addParam(MESSAGE, false);
+
+    // ==== push, gcm =====
+    public static final @Nonnull String URL_REGISTER_DEVICE = URL_API + "/android/register_device" + addParam(SESSION_KEY, true) + addParam(GCM_DEVICE_ID, false);
 
     // ================
 

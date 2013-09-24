@@ -2,6 +2,7 @@ package com.ltst.prizeword.push;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,13 +13,22 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.ltst.prizeword.app.ModelUpdater;
 import com.ltst.prizeword.navigation.NavigationActivity;
 import com.ltst.prizeword.tools.IActivityLifeCycle;
 
+import org.omich.velo.bcops.BcBaseService;
+import org.omich.velo.bcops.IBcBaseTask;
+import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.bcops.simple.BcService;
+import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.log.Log;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class GcmHelper implements IActivityLifeCycle
 {
@@ -27,29 +37,31 @@ public class GcmHelper implements IActivityLifeCycle
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private static final String SENDER_ID = "921729497728";
-    private static final String API_KEY = "AIzaSyA34JlxoX3ROhhY9Pfcz3dtPKN5yfaUjqI";
 
     private GoogleCloudMessaging gcm;
     private AtomicInteger msgId = new AtomicInteger();
-    private String regid;
+    private @Nullable String mRegistrationId;
+    private @Nullable String mSessionKey;
+    private @Nullable RegistrationIdSender mSender;
 
     private Activity mActivity;
+    private @Nonnull IBcConnector mBcConnector;
 
-    public GcmHelper(Activity activity)
+    public GcmHelper(Activity activity, @Nonnull IBcConnector bcConnector)
     {
         mActivity = activity;
+        mBcConnector = bcConnector;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+
+    private void performRegistration()
     {
-        // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         if (checkPlayServices())
         {
             gcm = GoogleCloudMessaging.getInstance(mActivity);
-            regid = getRegistrationId(mActivity);
+            mRegistrationId = getRegistrationId(mActivity);
 
-            if (regid.isEmpty())
+            if (mRegistrationId.isEmpty())
             {
                 registerInBackground();
             }
@@ -57,6 +69,19 @@ public class GcmHelper implements IActivityLifeCycle
         {
             Log.i("No valid Google Play Services APK found.");
         }
+    }
+
+    public void onAuthorized(@Nullable String sessionKey)
+    {
+        mSessionKey = sessionKey;
+        performRegistration();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
+        performRegistration();
     }
 
     @Override
@@ -68,7 +93,10 @@ public class GcmHelper implements IActivityLifeCycle
     @Override
     public void onPause()
     {
-
+        if (mSender != null)
+        {
+            mSender.close();
+        }
     }
 
     @Override
@@ -175,8 +203,8 @@ public class GcmHelper implements IActivityLifeCycle
                     {
                         gcm = GoogleCloudMessaging.getInstance(mActivity);
                     }
-                    regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
+                    mRegistrationId = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration ID=" + mRegistrationId;
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
@@ -187,7 +215,7 @@ public class GcmHelper implements IActivityLifeCycle
                     // 'from' address in the message.
 
                     // Persist the regID - no need to register again.
-                    storeRegistrationId(mActivity, regid);
+                    storeRegistrationId(mActivity, mRegistrationId);
                 } catch (IOException ex)
                 {
                     msg = "Error :" + ex.getMessage();
@@ -242,5 +270,66 @@ public class GcmHelper implements IActivityLifeCycle
     private void sendRegistrationIdToBackend()
     {
         // Your implementation here.
+        mSender = new RegistrationIdSender();
+        if (mSessionKey != null)
+        {
+            if (mRegistrationId != null)
+            {
+                mSender.setIntent(SendRegistrationIdTask.createIntent(mSessionKey, mRegistrationId));
+                mSender.update(null);
+            }
+        }
+        else
+        {
+            if (mRegistrationId != null)
+            {
+                mSender.setIntent(SendRegistrationIdTask.createIntent(mRegistrationId));
+                mSender.update(null);
+            }
+        }
+    }
+
+    private class RegistrationIdSender extends ModelUpdater<IBcTask.BcTaskEnv>
+    {
+        private @Nonnull Intent mIntent;
+
+        public void setIntent(@Nonnull Intent intent)
+        {
+            mIntent = intent;
+        }
+
+        @Nonnull
+        @Override
+        protected IBcConnector getBcConnector()
+        {
+            return mBcConnector;
+        }
+
+        @Nullable
+        @Override
+        protected Intent createIntent()
+        {
+            return mIntent;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        {
+            return SendRegistrationIdTask.class;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        {
+            return BcService.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+
+        }
     }
 }

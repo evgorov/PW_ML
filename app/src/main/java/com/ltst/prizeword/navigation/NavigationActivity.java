@@ -139,8 +139,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        mGcmHelper = new GcmHelper(this);
-        mGcmHelper.onCreate(savedInstanceState);
+
         Crashlytics.start(this);
 
         mIsTablet = DimenTools.isTablet(this);
@@ -150,6 +149,9 @@ public class NavigationActivity extends SherlockFragmentActivity
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
+
+        mGcmHelper = new GcmHelper(this, mBcConnector);
+//        mGcmHelper.onCreate(savedInstanceState);
 
         // Устанавливаем русскую локаль для всего приложения;
         Locale locale = new Locale("ru");
@@ -596,6 +598,9 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onAuthotized()
     {
+        String sessionKey = SharedPreferencesValues.getSessionKey(this);
+        mGcmHelper.onAuthorized(sessionKey);
+//        mGcmHelper.onAuthorized(null);
         reloadUserData();
         if (mIsTablet)
             lockDrawerOpened();

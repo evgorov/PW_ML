@@ -748,4 +748,24 @@ public class RestClient implements IRestClient
 
         return null;
     }
+
+    @Override
+    public void sendRegistrationId(@Nonnull String sessionKey, @Nonnull String registrationId)
+    {
+        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.GCM_DEVICE_ID, registrationId);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+        ResponseEntity<String> entity = null;
+        try
+        {
+            entity = restTemplate.exchange(RestParams.URL_REGISTER_DEVICE, HttpMethod.POST, requestEntity, String.class, urlVariables);
+        } catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
+    }
 }
