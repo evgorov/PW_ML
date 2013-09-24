@@ -5,6 +5,7 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 require "bundler/setup"
 
 require 'rack/contrib/static_cache'
+require 'rack/cache'
 require 'middleware/apn_pusher'
 require 'middleware/redis_middleware'
 require 'middleware/basic_registration'
@@ -15,6 +16,7 @@ require 'middleware/users'
 require 'middleware/admin'
 require 'middleware/counter'
 require 'middleware/uploader'
+require 'middleware/etag'
 
 class IndexPage
 
@@ -28,11 +30,15 @@ class IndexPage
   end
 end
 
+use Rack::Cache
+use Etag
+
 use IndexPage
 use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.html"],
                        :root => "public", :versioning => false
 
 use Middleware::RedisMiddleware
+
 
 use Middleware::Uploader, serve_from: '/img/uploads'
 

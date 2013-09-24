@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 group :app do
   gem 'rack'
   gem 'rack-contrib', require: 'rack/contrib'
+  gem 'rack-cache', require: 'rack/cache'
   gem 'sinatra', require: 'sinatra/base'
   gem 'httparty'
   gem 'redis'

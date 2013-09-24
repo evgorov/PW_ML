@@ -8,8 +8,11 @@ require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
 require 'middleware/users'
 require 'middleware/admin'
+require 'middleware/etag'
 
 require 'rack/test'
+require 'rack/cache'
+require 'digest/sha1'
 require 'vcr'
 require 'webmock'
 require 'json'
@@ -60,6 +63,8 @@ describe 'Integration spec' do
     app = Rack::Builder.new do
       use Rack::Lint
       use Rack::ContentLength
+      use Rack::Cache
+      use Etag
       use Middleware::RedisMiddleware
       use Middleware::Uploader
 
@@ -382,6 +387,37 @@ describe 'Integration spec' do
     post '/login', email: valid_user_data['email'], password: 'new_password'
     last_response.status.should == 200
   end
+
+
+  it 'supports etag caching for /sets' do
+    admin_user
+    post '/login', email: user_in_storage['email'], password: user_in_storage_password
+
+    last_response.status.should == 200
+    last_response_should_be_json
+    response_data = JSON.parse(last_response.body)
+    session_key = response_data['session_key']
+
+    post('/sets',
+         {
+           year: Time.now.year,
+           month: Time.now.month,
+           name: 'Cool set',
+           puzzles: [{ name: 'puzzle1' }, { name: 'puzzle2' }].to_json,
+           type: 'golden',
+           published: true,
+           session_key: session_key
+         })
+
+    last_response.status.should == 200
+
+    get('/sets', { session_key: session_key })
+    last_response.status.should == 200
+    etag = Digest::SHA1.hexdigest(last_response.body)
+    get('/sets', { session_key: session_key }, { 'HTTP_IF_NONE_MATCH' => etag })
+    last_response.status.should == 304
+  end
+
 
   it 'admin' do
     admin_user

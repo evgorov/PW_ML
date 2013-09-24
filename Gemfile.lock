@@ -32,6 +32,8 @@ GEM
       httparty
       json
     rack (1.4.1)
+    rack-cache (1.2)
+      rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
     rack-protection (1.2.0)
@@ -81,6 +83,7 @@ DEPENDENCIES
   pry
   pushmeup
   rack
+  rack-cache
   rack-contrib
   rack-test
   rake
