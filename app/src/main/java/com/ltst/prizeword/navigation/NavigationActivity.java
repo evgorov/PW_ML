@@ -55,6 +55,7 @@ import com.ltst.prizeword.manadges.IIabHelper;
 import com.ltst.prizeword.manadges.IManadges;
 import com.ltst.prizeword.manadges.IManageHolder;
 import com.ltst.prizeword.manadges.ManageHolder;
+import com.ltst.prizeword.push.GcmHelper;
 import com.ltst.prizeword.rating.view.RatingFragment;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.score.UploadScoreQueueModel;
@@ -78,6 +79,8 @@ import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class NavigationActivity extends SherlockFragmentActivity
         implements
@@ -128,12 +131,16 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
     private @Nullable HintsModel mHintsModel;
 
+    private @Nonnull GcmHelper mGcmHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        mGcmHelper = new GcmHelper(this);
+        mGcmHelper.onCreate(savedInstanceState);
         Crashlytics.start(this);
 
         mIsTablet = DimenTools.isTablet(this);
@@ -316,12 +323,14 @@ public class NavigationActivity extends SherlockFragmentActivity
     {
         super.onDestroy();
         mIsDestroyed = true;
+        mGcmHelper.onDestroy();
         mManadgeHolder.dispose();
     }
 
     @Override
     protected void onStop()
     {
+        mGcmHelper.onStop();
         SoundsWork.releaseMPALL();
         super.onStop();
     }
@@ -329,6 +338,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onResume()
     {
+        mGcmHelper.onResume();
         mUserDataModel = new UserDataModel(this, mBcConnector);
         reloadUserData();
         super.onResume();
@@ -337,6 +347,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onPause()
     {
+        mGcmHelper.onPause();
         mUserDataModel.close();
         if (mUploadScoreQueueModel != null)
         {
@@ -915,7 +926,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     @Override
     public void sendMessage(@Nonnull String msg) {
-        ErrorAlertDialog.showDialog(this,msg);
+        ErrorAlertDialog.showDialog(this, msg);
     }
 
     public static void debug(@Nonnull String msg)

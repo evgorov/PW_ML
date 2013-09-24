@@ -8,12 +8,14 @@ buildscript {
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
+
 apply plugin: 'android'
 apply plugin: 'crashlytics'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':libs:project-androidsupportv4')
+    compile project(':libs:thirdparty:google-play-services_lib')
     compile project(':libs:thirdparty:actionbarsherlock-gradle')
     compile project(':libs:thirdparty:slidingmenu-gradle')
     compile project(':libs:thirdparty:facebook-gradle')
@@ -24,7 +26,6 @@ dependencies {
     compile project(':libs:project-bcops')
     compile project(':libs:project-lists')
     compile project(':libs:project-sherlock')
-
 }
 
 android {
