@@ -289,13 +289,15 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
-                case REQUEST_LOGIN_VK:
-                case REQUEST_LOGIN_FB:
-                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER);
-                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
+//                case REQUEST_LOGIN_VK:
+//                case REQUEST_LOGIN_FB:
+//                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+//                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+//                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+//                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER);
+//                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
+//                    break;
+                default:
                     break;
             }
         }

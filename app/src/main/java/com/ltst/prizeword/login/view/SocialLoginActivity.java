@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.ltst.prizeword.R;
 import com.ltst.prizeword.app.ModelUpdater;
+import com.ltst.prizeword.app.SharedPreferencesHelper;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.login.model.LoadSessionKeyTask;
 import com.ltst.prizeword.rest.RestParams;
 import com.ltst.prizeword.login.model.SocialParser;
@@ -22,6 +24,7 @@ import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.bcops.simple.BcService;
 import org.omich.velo.bcops.simple.IBcTask;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
@@ -187,11 +190,17 @@ public class SocialLoginActivity extends SherlockActivity
                 return;
 
             @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
+            mSessionKey = sessionKey;
+            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(getBaseContext());
             if(sessionKey != null)
             {
-                mSessionKey = sessionKey;
-//                Log.i(NavigationActivity.LOG_TAG, "SocialLogin SESSION KEY ="+sessionKey);
+                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
             }
+            else
+            {
+                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+            }
+            spref.commit();
         }
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.android.billing.Base64;
 import com.android.billing.Base64DecoderException;
+import com.android.billing.IabException;
 import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
@@ -186,7 +187,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
         mNotifyInventoryHandler = handler;
-        mHelper.queryInventoryAsync(true, mSkuContainer, mQueryFinishedListener);
+        try
+        {
+            mHelper.flagEndAsync();
+            mHelper.queryInventoryAsync(true, mSkuContainer, mQueryFinishedListener);
+        }
+        catch(IllegalStateException e)
+        {
+            Log.e(e.getMessage());
+        }
+        catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
     }
 
     @Override
