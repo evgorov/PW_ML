@@ -13,7 +13,7 @@ class AndroidDevice < BasicModel
 
   def send_notifications(message)
     self.batches do |arr|
-      GCM.send_notification(arr, { message: message })
+      GCM.send_notification(arr.map(&:id), { message: message })
     end
   end
 end
