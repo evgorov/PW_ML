@@ -127,6 +127,7 @@ public class NavigationActivity extends SherlockFragmentActivity
     private boolean mFbSwitch;
     private boolean mIsDestroyed = false;
     private boolean mIsTablet = false;
+    private boolean mNotificationsEnabled = true;
 
     private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
     private @Nullable HintsModel mHintsModel;
@@ -221,6 +222,10 @@ public class NavigationActivity extends SherlockFragmentActivity
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
+
+        mNotificationsEnabled = SharedPreferencesValues.getNotificationsSwitch(this);
+        mDrawerMenu.mNotificationSwitcher.setChecked(mNotificationsEnabled);
+        SharedPreferencesValues.setNotifications(this, mNotificationsEnabled);
 
         initNavigationDrawerItems();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -598,8 +603,12 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     public void onAuthotized()
     {
-        String sessionKey = SharedPreferencesValues.getSessionKey(this);
-        mGcmHelper.onAuthorized(sessionKey);
+        if(mNotificationsEnabled)
+        {
+            String sessionKey = SharedPreferencesValues.getSessionKey(this);
+            mGcmHelper.onAuthorized(sessionKey);
+            mDrawerMenu.mNotificationSwitcher.setChecked(true);
+        }
 //        mGcmHelper.onAuthorized(null);
         reloadUserData();
         if (mIsTablet)
@@ -902,6 +911,17 @@ public class NavigationActivity extends SherlockFragmentActivity
                     }
                     break;
                 case R.id.menu_notification_switcher:
+                    SharedPreferencesValues.setNotifications(this, !mNotificationsEnabled);
+                    mNotificationsEnabled = !mNotificationsEnabled;
+                    if(mNotificationsEnabled)
+                    {
+                        String sessionKey = SharedPreferencesValues.getSessionKey(this);
+                        mGcmHelper.onAuthorized(sessionKey);
+                    }
+                    else
+                    {
+                        mGcmHelper.unregister();
+                    }
                     break;
                 default:
                     break;

@@ -77,6 +77,26 @@ public class GcmHelper implements IActivityLifeCycle
         performRegistration();
     }
 
+    public void unregister()
+    {
+        try
+        {
+            if (gcm != null)
+            {
+                gcm.unregister();
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        final SharedPreferences prefs = getGcmPreferences(mActivity);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(PROPERTY_REG_ID);
+        editor.remove(PROPERTY_APP_VERSION);
+        editor.commit();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -229,7 +249,7 @@ public class GcmHelper implements IActivityLifeCycle
             @Override
             protected void onPostExecute(String msg)
             {
-                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
             }
         }.execute(null, null, null);
     }
