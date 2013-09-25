@@ -5,18 +5,20 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.ltst.prizeword.R;
+import com.ltst.prizeword.app.SharedPreferencesValues;
 import com.ltst.prizeword.navigation.NavigationActivity;
+import com.ltst.prizeword.rest.RestParams;
 
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nullable;
-
 
 public class GcmIntentService extends IntentService
 {
@@ -39,12 +41,21 @@ public class GcmIntentService extends IntentService
     protected void onHandleIntent(Intent intent)
     {
         Bundle extras = intent.getExtras();
+        if (extras == null)
+        {
+            return;
+        }
+
+        boolean notificationsEnabled = SharedPreferencesValues.getNotificationsSwitch(this);
+        if(!notificationsEnabled)
+            return;
+
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         // The getMessageType() intent parameter must be the intent you received
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
 
-        if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
+        if (!extras.isEmpty()) {
             /*
              * Filter messages based on message type. Since it is likely that GCM will be
              * extended in the future with new message types, just ignore any message types you're
@@ -56,22 +67,19 @@ public class GcmIntentService extends IntentService
                 sendNotification("Deleted messages on server: " + extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // This loop represents the service doing some work.
-                for (int i = 0; i < 5; i++) {
-                    Log.i(TAG, "Working... " + (i + 1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    }
-                }
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
-                Log.i(TAG, "Received: " + extras.toString());
+                @Nullable String message = extras.getString(RestParams.MESSAGE);
+                if (message == null)
+                {
+                    sendNotification(extras.toString());
+                }
+                else
+                {
+                    sendNotification(message);
+                }
+                Log.i(TAG, "Received notification: " + extras.toString());
             }
         }
-
         Log.i(TAG, "Completed service @ " + SystemClock.elapsedRealtime());
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
@@ -86,13 +94,15 @@ public class GcmIntentService extends IntentService
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, NavigationActivity.class), 0);
 
+        Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.push);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("GCM Notification")
+                        .setContentTitle("Уведомление от PrizeWord")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setSound(sound);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

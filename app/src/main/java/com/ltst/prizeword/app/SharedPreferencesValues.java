@@ -16,6 +16,8 @@ public class SharedPreferencesValues
 
     public static final @Nonnull String SP_HINTS_TO_CHANGE = "hintsToChange";
 
+    public static final @Nonnull String SP_NOTIFICATIONS = "notifications";
+
     public static String getSessionKey(@Nonnull Context context)
     {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
@@ -28,5 +30,15 @@ public class SharedPreferencesValues
     public static boolean getSoundSwitch(@Nonnull Context context){
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         return  helper.getBoolean(SP_SOUND_SWITCH,true);
+    }
+    public static boolean getNotificationsSwitch(@Nonnull Context context){
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        return helper.getBoolean(SP_NOTIFICATIONS, false);
+    }
+
+    public static void setNotifications(@Nonnull Context context, boolean value)
+    {
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        helper.putBoolean(SP_NOTIFICATIONS, value).commit();
     }
 }
