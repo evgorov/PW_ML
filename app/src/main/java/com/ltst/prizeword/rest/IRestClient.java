@@ -45,5 +45,5 @@ public interface IRestClient
 
     HttpStatus shareMessageToVk(@Nonnull String sessionKey, @Nonnull String message);
 
-    public void sendRegistrationId(@Nonnull String sessionKey, @Nonnull String registrationId);
+    public HttpStatus sendRegistrationId(@Nonnull String sessionKey, @Nonnull String registrationId);
 }

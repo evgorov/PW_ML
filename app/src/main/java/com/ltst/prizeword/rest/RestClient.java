@@ -48,6 +48,7 @@ import javax.annotation.Nullable;
 public class RestClient implements IRestClient
 {
     private @Nonnull Context mContext;
+
     public static IRestClient create(@Nonnull Context context)
     {
         return new RestClient(context);
@@ -342,7 +343,7 @@ public class RestClient implements IRestClient
     public RestPuzzleTotalSet.RestPuzzleOneSetHolder postBuySet(@Nonnull String sessionKey, @Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature)
     {
         @Nonnull String url = String.format(RestParams.URL_POST_BUY_PUZZLE_SET, serverSetId);
-        @Nonnull String param = receiptData.replace("\"","\\\"");
+        @Nonnull String param = receiptData.replace("\"", "\\\"");
 
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
@@ -370,12 +371,10 @@ public class RestClient implements IRestClient
             holder.setPuzzleSet(entity.getBody());
             holder.setHttpStatus(entity.getStatusCode());
             return holder;
-        }
-        catch (HttpClientErrorException e)
+        } catch (HttpClientErrorException e)
         {
             Log.e(e.getMessage());
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             Log.e(e.getMessage());
         }
@@ -384,7 +383,9 @@ public class RestClient implements IRestClient
         return holder;
     }
 
-    @Nullable @Override public RestNews getNews(@Nonnull String sessionKey)
+    @Nullable
+    @Override
+    public RestNews getNews(@Nonnull String sessionKey)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
@@ -486,7 +487,8 @@ public class RestClient implements IRestClient
     }
 
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public RestInviteFriend.RestInviteFriendHolder getFriendsData(@Nonnull String sessionKey, @Nonnull String providerName)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
@@ -514,8 +516,8 @@ public class RestClient implements IRestClient
     public RestInviteFriend.RestInviteFriendHolder sendInviteToFriends(@Nonnull String sessionKey, @Nonnull String providerName, @Nonnull String ids)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put(RestParams.SESSION_KEY,sessionKey);
-        urlVariables.put(RestParams.USER_PUZZLE_IDS,ids);
+        urlVariables.put(RestParams.SESSION_KEY, sessionKey);
+        urlVariables.put(RestParams.USER_PUZZLE_IDS, ids);
         @Nonnull String url = Strings.EMPTY;
         if (providerName.equals(RestParams.VK_PROVIDER))
         {
@@ -550,12 +552,10 @@ public class RestClient implements IRestClient
         try
         {
             entity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class, urlVariables);
-        }
-        catch (HttpClientErrorException e)
+        } catch (HttpClientErrorException e)
         {
             Log.e(e.getMessage());
-        }
-        finally
+        } finally
         {
             if (entity == null)
             {
@@ -599,11 +599,10 @@ public class RestClient implements IRestClient
         try
         {
             entity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, RestUserData.RestAnswerMessageHolder.class, urlVariables);
-        }
-        catch (Exception e){
+        } catch (Exception e)
+        {
             Log.e(e.getMessage());
-        }
-        finally
+        } finally
         {
             if (entity == null)
             {
@@ -686,11 +685,10 @@ public class RestClient implements IRestClient
         try
         {
             entity = restTemplate.exchange(RestParams.URL_POST_PUZZLE_SCORE, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        }
-        catch (Exception e){
+        } catch (Exception e)
+        {
             Log.e(e.getMessage());
-        }
-        finally
+        } finally
         {
             if (entity == null)
             {
@@ -701,7 +699,8 @@ public class RestClient implements IRestClient
         return entity.getStatusCode();
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public RestInviteFriend.RestInviteFriendHolder getFriendsScoreData(@Nonnull String sessionKey, @Nonnull String providerName)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
@@ -750,7 +749,7 @@ public class RestClient implements IRestClient
     }
 
     @Override
-    public void sendRegistrationId(@Nonnull String sessionKey, @Nonnull String registrationId)
+    public HttpStatus sendRegistrationId(@Nonnull String sessionKey, @Nonnull String registrationId)
     {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
@@ -758,14 +757,26 @@ public class RestClient implements IRestClient
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<String> entity = null;
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        ResponseEntity<RestInfoMessage> entity = null;
         try
         {
-            entity = restTemplate.exchange(RestParams.URL_REGISTER_DEVICE, HttpMethod.POST, requestEntity, String.class, urlVariables);
-        } catch (Exception e)
+            entity = restTemplate.exchange(RestParams.URL_REGISTER_DEVICE, HttpMethod.POST, requestEntity, RestInfoMessage.class, urlVariables);
+        }
+        catch (Exception e)
         {
             Log.e(e.getMessage());
         }
+        finally
+        {
+            if (entity == null)
+            {
+                HttpStatus status = HttpStatus.valueOf(RestParams.SC_ERROR);
+                return status;
+            }
+        }
+        return entity.getStatusCode();
     }
 }
