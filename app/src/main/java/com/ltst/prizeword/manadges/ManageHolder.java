@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.billing.Base64;
 import com.android.billing.Base64DecoderException;
@@ -82,18 +83,22 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void instance()
     {
-//        try{
-        mHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
-//        }
-//        catch (Exception e)
-//        {
-//            Log.e(e.getMessage());
-//            Log.i("Can't use license public key of app"); //$NON-NLS-1$
-//        }
+        try
+        {
+            mHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
+        }
+        catch (Exception e)
+        {
+            Log.e(e.getMessage());
+            Log.i("Can't use license public key of app"); //$NON-NLS-1$
+            Toast.makeText(mContext, "Was't instance in-app billing lib: "+e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
+                if (!result.isSuccess())
+                {
                     Log.e("Problem setting up in-app billing: " + result);
+                    Toast.makeText(mContext, "Problem setting up in-app billing: " + result, Toast.LENGTH_LONG).show();
                 }
                 else
                 {
