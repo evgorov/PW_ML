@@ -141,7 +141,7 @@
 
         </LinearLayout>
 
-        <com.ltst.prizeword.crossword.view.BadgeGridView
+        <com.ltst.przwrd.crossword.view.BadgeGridView
                 android:id="@+id/score_crossword_panel_badges_container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -159,7 +159,7 @@
 
             <!--@TODO add crosswords panels-->
 
-        </com.ltst.prizeword.crossword.view.BadgeGridView>
+        </com.ltst.przwrd.crossword.view.BadgeGridView>
 
         <LinearLayout
                 android:id="@+id/score_crossword_panel_splitter"

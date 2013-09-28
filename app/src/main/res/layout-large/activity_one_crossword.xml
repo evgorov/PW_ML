@@ -53,7 +53,7 @@
                 android:layout_width="0px"
                 android:layout_height="0px" />
 
-            <com.ltst.prizeword.crossword.view.PuzzleView
+            <com.ltst.przwrd.crossword.view.PuzzleView
                 android:id="@+id/puzzle_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

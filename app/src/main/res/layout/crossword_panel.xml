@@ -247,7 +247,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
-        <com.ltst.prizeword.crossword.view.BadgeGridView
+        <com.ltst.przwrd.crossword.view.BadgeGridView
             android:id="@+id/crossword_panel_badges_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -265,7 +265,7 @@
 
             <!--@TODO add crosswords panels-->
 
-        </com.ltst.prizeword.crossword.view.BadgeGridView>
+        </com.ltst.przwrd.crossword.view.BadgeGridView>
     </RelativeLayout>
 
 

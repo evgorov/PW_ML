@@ -7,7 +7,7 @@
 
     <!-- =================================================================================== -->
 
-    <com.ltst.prizeword.crossword.view.BackFrameLayout
+    <com.ltst.przwrd.crossword.view.BackFrameLayout
         android:id="@+id/crossword_fragment_header_menu_cnt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:text="@string/puzzless_hint_actionbar_title"
             />
 
-    </com.ltst.prizeword.crossword.view.BackFrameLayout>
+    </com.ltst.przwrd.crossword.view.BackFrameLayout>
 
     <!-- ================================= NEWS ================================================== -->
     <ProgressBar
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                <com.ltst.przwrd.crossword.view.BackFrameLayout
                     android:id="@+id/crossword_fragment_layout_container1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -208,7 +208,7 @@
 
                     </LinearLayout>
 
-                </com.ltst.prizeword.crossword.view.BackFrameLayout>
+                </com.ltst.przwrd.crossword.view.BackFrameLayout>
             </LinearLayout>
 
             <!-- =========================== HINTS ======================================================== -->
@@ -216,7 +216,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                <com.ltst.przwrd.crossword.view.BackFrameLayout
                     android:id="@+id/crossword_fragment_layout_container2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -378,7 +378,7 @@
 
                     </LinearLayout>
 
-                </com.ltst.prizeword.crossword.view.BackFrameLayout>
+                </com.ltst.przwrd.crossword.view.BackFrameLayout>
 
             </LinearLayout>
 
@@ -388,7 +388,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ltst.prizeword.crossword.view.BackFrameLayout
+                <com.ltst.przwrd.crossword.view.BackFrameLayout
                     android:id="@+id/crossword_fragment_layout_container3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -419,7 +419,7 @@
                         <!--@TODO input brillian current crossword-->
 
                     </LinearLayout>
-                </com.ltst.prizeword.crossword.view.BackFrameLayout>
+                </com.ltst.przwrd.crossword.view.BackFrameLayout>
 
             </LinearLayout>
 
