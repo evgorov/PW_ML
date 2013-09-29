@@ -80,6 +80,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void instance()
     {
+
         try
         {
             mHelper = new IabHelper(mContext,APP_GOOGLE_PLAY_ID);
@@ -646,64 +647,42 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         int resultCode = result.getResponse();
         switch (resultCode)
         {
-            case 0:
+            case IabHelper.BILLING_RESPONSE_RESULT_OK:
 //                OK/-1001:Remote exception during initialization/" +
                 break;
-            case -1002:
+            case IabHelper.IABHELPER_ERROR_BASE:
+                break;
+            case IabHelper.IABHELPER_REMOTE_EXCEPTION:
+                break;
+            case IabHelper.IABHELPER_BAD_RESPONSE:
 //                Bad response received/" +
                 break;
-            case -1003:
+            case IabHelper.IABHELPER_VERIFICATION_FAILED:
 //                Purchase signature verification failed/" +
                 break;
-            case -1004:
+            case IabHelper.IABHELPER_SEND_INTENT_FAILED:
 //                Send intent failed/" +
                 break;
-            case -1005:
+            case IabHelper.IABHELPER_USER_CANCELLED:
 //                User cancelled/" +
                 break;
-            case -1006:
+            case IabHelper.IABHELPER_UNKNOWN_PURCHASE_RESPONSE:
 //                Unknown purchase response/" +
                 break;
-            case -1007:
+            case IabHelper.IABHELPER_MISSING_TOKEN:
 //                Missing token/" +
                 break;
-            case -1008:
+            case IabHelper.IABHELPER_UNKNOWN_ERROR:
 //                Unknown error/" +
                 break;
-            case -1009:
+            case IabHelper.IABHELPER_SUBSCRIPTIONS_NOT_AVAILABLE:
 //                    Subscriptions not available/" +
                 break;
-            case -1010:
+            case IabHelper.IABHELPER_INVALID_CONSUMPTION:
 //                    Invalid consumption attempt").split("/");
                 break;
             default: break;
         }
-    }
-
-    public static boolean verify(@Nonnull String base64EncodedPublicKey, String signedData, String signature)
-    {
-        @Nonnull PublicKey publicKey = Security.generatePublicKey(base64EncodedPublicKey);
-        @Nonnull String SIGNATURE_ALGORITHM = "SHA1withRSA";
-        Signature sig;
-        try {
-            sig = Signature.getInstance(SIGNATURE_ALGORITHM);
-            sig.initVerify(publicKey);
-            sig.update(signedData.getBytes());
-            if (!sig.verify(Base64.decode(signature))) {
-                Log.e("Signature verification failed.");
-                return false;
-            }
-            return true;
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("NoSuchAlgorithmException.");
-        } catch (InvalidKeyException e) {
-            Log.e("Invalid key specification.");
-        } catch (SignatureException e) {
-            Log.e("Signature exception.");
-        } catch (Base64DecoderException e) {
-            Log.e("Base64 decoding failed.");
-        }
-        return false;
     }
 
     static public Bundle packToBundle(@Nonnull String sku, @Nonnull String json, @Nonnull String signature)
