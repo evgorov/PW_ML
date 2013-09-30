@@ -96,10 +96,10 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
 
         viewHolder.nameView.setText(quick.firstName);
         viewHolder.surnameView.setText(quick.lastName);
-        if (quick.status.equals("already_registered")) {
+        if (quick.status.equals("already_registered")|| quick.status.equals("invite_sent")) {
             viewHolder.inviteBtn.setEnabled(false);
 
-        } else if (quick.status.equals("uninvited") || quick.status.equals("invite_sent")) {
+        } else if (quick.status.equals("uninvited") ) {
             viewHolder.inviteBtn.setEnabled(true);
             viewHolder.inviteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
