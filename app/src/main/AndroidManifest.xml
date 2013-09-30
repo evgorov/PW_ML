@@ -70,7 +70,10 @@
             android:label="@string/rules_fragment_title"
             android:theme="@style/TransparentActivity">
         </activity>
-
+        <activity
+                android:name=".invitefriends.view.LoginFacebook"
+                android:screenOrientation="portrait">
+        </activity>
         <receiver
                 android:name=".push.GcmBroadcastReceiver"
                 android:permission="com.google.android.c2dm.permission.SEND" >

@@ -3,18 +3,24 @@ package com.ltst.przwrd.invitefriends.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.invitefriends.model.IInviteFriendsDataModel;
 import com.ltst.przwrd.invitefriends.model.InviteFriendsData;
+import com.ltst.przwrd.login.view.IInviteFriendsFragment;
+import com.ltst.przwrd.rest.RestParams;
 import com.ltst.przwrd.sounds.SoundsWork;
 
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.SlowSourceAdapter;
+import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,13 +32,22 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     private @Nonnull Context mContext;
     private boolean mFbSwitch;
     private boolean mVkSwitch;
+    private Session mFbSession;
+    private @Nonnull String mAccessTokenFb;
+    private @Nonnull IInviteFriendsFragment mInviteFriendsFragment;
 
-    public InviteFragmentAdapter(@Nonnull Context context, @Nonnull IInviteFriendsDataModel model, boolean fbSwitch, boolean vkSwitch) {
+    public void setmAccessTokenFb(@Nonnull String mAccessTokenFb) {
+        this.mAccessTokenFb = mAccessTokenFb;
+    }
+
+    public InviteFragmentAdapter(@Nonnull Context context, @Nonnull IInviteFriendsFragment inviteFriendsFragment, @Nonnull IInviteFriendsDataModel model, boolean fbSwitch, boolean vkSwitch) {
         super(context, model.getSource());
         mContext = context;
         mModel = model;
         this.mFbSwitch = fbSwitch;
         this.mVkSwitch = vkSwitch;
+        this.mInviteFriendsFragment = inviteFriendsFragment;
+        mFbSession = new Session(mContext);
         updateByInternet();
     }
 
@@ -96,10 +111,10 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
 
         viewHolder.nameView.setText(quick.firstName);
         viewHolder.surnameView.setText(quick.lastName);
-        if (quick.status.equals("already_registered")|| quick.status.equals("invite_sent")) {
+        if (quick.status.equals("already_registered") || quick.status.equals("invite_sent")) {
             viewHolder.inviteBtn.setEnabled(false);
 
-        } else if (quick.status.equals("uninvited") ) {
+        } else if (quick.status.equals("uninvited")) {
             viewHolder.inviteBtn.setEnabled(true);
             viewHolder.inviteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,7 +149,13 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     }
 
     public void invite(@Nonnull String id, @Nonnull String provider, @Nullable IListenerVoid handler) {
-        mModel.sendInviteFriends(id, provider, handler);
+        if (provider.equals(RestParams.FB_PROVIDER)) {
+            mInviteFriendsFragment.invite();
+
+
+            //mFbSession.open(,callback);
+        } else
+            mModel.sendInviteFriends(id, provider, handler);
     }
 
 
@@ -158,5 +179,17 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         }
     }
 
-
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        if (state.isOpened()) {
+            Log.i("aut", "Logged in...");
+        } else if (state.isClosed()) {
+            Log.i("aut", "Logged out...");
+        }
+    }
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
 }

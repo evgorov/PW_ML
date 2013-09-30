@@ -92,6 +92,7 @@ public class SocialLoginActivity extends SherlockActivity
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             mProgressBar.setVisibility(ProgressBar.GONE);
+
         }
     }
 

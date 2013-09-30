@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 public class SharedPreferencesValues
 {
     public static final @Nonnull String SP_SESSION_KEY = "sessionKey";
+    public static final @Nonnull String SP_FACEBOOK_TOKEN = "facebookToken";
 
     public static final @Nonnull String NO_SESSION_KEY = "NO_SESSION_KEY";
 
@@ -41,4 +42,17 @@ public class SharedPreferencesValues
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         helper.putBoolean(SP_NOTIFICATIONS, value).commit();
     }
+
+    public static void setFacebookToken(@Nonnull Context context, @Nonnull String value)
+    {
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        helper.putString(SP_FACEBOOK_TOKEN, value).commit();
+    }
+
+    public static String getFacebookToken(@Nonnull Context context)
+    {
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        return helper.getString(SP_FACEBOOK_TOKEN, null);
+    }
+
 }

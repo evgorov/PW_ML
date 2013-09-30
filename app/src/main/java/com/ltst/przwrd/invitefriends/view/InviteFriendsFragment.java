@@ -2,12 +2,15 @@ package com.ltst.przwrd.invitefriends.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,11 +18,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.IBcConnectorOwner;
+import com.ltst.przwrd.app.SharedPreferencesHelper;
+import com.ltst.przwrd.app.SharedPreferencesValues;
+import com.ltst.przwrd.crossword.view.OneCrosswordActivity;
 import com.ltst.przwrd.invitefriends.model.InviteFriendsData;
 import com.ltst.przwrd.invitefriends.model.InviteFriendsDataModel;
+import com.ltst.przwrd.login.model.LoadSessionKeyTask;
+import com.ltst.przwrd.login.model.SocialParser;
+import com.ltst.przwrd.login.view.IInviteFriendsFragment;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
 import com.ltst.przwrd.rest.RestParams;
@@ -35,8 +48,7 @@ import org.omich.velo.lists.ISlowSource;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class InviteFriendsFragment extends SherlockFragment implements View.OnClickListener
-{
+public class InviteFriendsFragment extends SherlockFragment implements View.OnClickListener, IInviteFriendsFragment {
     private @Nonnull String LOG_TAG = "InviteFriends";
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.InviteFiends.view.InviteFriendsFragment";
@@ -60,11 +72,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nullable ViewGroup mMessageView;
 
     private boolean mDataRequested = false;
+
+    private final int REQUEST_GET_FACEBOOK_TOKEN = 1;
     // ==== Livecycle =================================
 
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         Log.i(LOG_TAG, "InviteFriendsFragment.onAttach()"); //$NON-NLS-1$
 
         mContext = (Context) activity;
@@ -76,8 +89,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(LOG_TAG, "InviteFriendsFragment.onCreateView()"); //$NON-NLS-1$
         View v = inflater.inflate(R.layout.invite_friends_fragment_layout, container, false);
         mMenuBtn = (Button) v.findViewById(R.id.header_menu_btn);
@@ -92,18 +104,58 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mMessageView = (ViewGroup) v.findViewById(R.id.invite_message_not_social);
         mMenuBtn.setOnClickListener(this);
         mInviteAllBtn.setOnClickListener(this);
+
         return v;
 
     }
 
     @Override
-    public void onStart()
+    public void getToken() {
+        @Nonnull Intent intent = new Intent(mContext, LoginFacebook.class);
+        startActivityForResult(intent, REQUEST_GET_FACEBOOK_TOKEN);
+    }
+
+    @Override
+    public void invite()
     {
+        @Nonnull String token = SharedPreferencesValues.getFacebookToken(mContext);
+        if(token == null)
+        {
+            getToken();
+            return;
+        }
+        else
+        {
+            Toast.makeText(mContext,"Token ok!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case REQUEST_GET_FACEBOOK_TOKEN:
+                {
+                    if(data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN))
+                    {
+                        invite();
+                    }
+                }break;
+                default:break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
         Log.i(LOG_TAG, "InviteFriendsFragment.onStart()"); //$NON-NLS-1$
 
         InviteFriendsDataModel model = mModel;
-        if (model == null)
-        {
+        if (model == null) {
             model = new InviteFriendsDataModel(mContext, mBcConnector);
             mModel = model;
 
@@ -111,17 +163,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         }
 
         InviteFragmentAdapter adapter = mAdapter;
-        if (adapter == null)
-        {
-            if(!BcTaskHelper.isNetworkAvailable(mContext))
-            {
+        if (adapter == null) {
+            if (!BcTaskHelper.isNetworkAvailable(mContext)) {
                 Toast.makeText(mContext, NonnullableCasts.getStringOrEmpty(
                         mContext.getString(R.string.msg_no_internet)), Toast.LENGTH_LONG).show();
-                adapter = new InviteFragmentAdapter(mContext, model, true, true);
-            }
-            else
-            {
-                adapter = new InviteFragmentAdapter(mContext, model, mIFragmentActivity.getFbSwitch(), mIFragmentActivity.getVkSwitch());
+                adapter = new InviteFragmentAdapter(mContext, this, model, true, true);
+            } else {
+                adapter = new InviteFragmentAdapter(mContext, this, model, mIFragmentActivity.getFbSwitch(), mIFragmentActivity.getVkSwitch());
             }
             Log.i(LOG_TAG, "create adapterVk"); //$NON-NLS-1$
             mAdapter = adapter;
@@ -133,19 +181,16 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         Log.i(LOG_TAG, "InviteFriendsFragment.onResume()"); //$NON-NLS-1$
         InviteFriendsDataModel m = mModel;
-        if (m != null)
-        {
+        if (m != null) {
             m.resumeLoading();
             Log.i(LOG_TAG, "resume Vkloading"); //$NON-NLS-1$
         }
 
         InviteFragmentAdapter adapter = mAdapter;
-        if (adapter != null && !mDataRequested)
-        {
+        if (adapter != null && !mDataRequested) {
             adapter.updateByInternet();
             mDataRequested = true;
             Log.i(LOG_TAG, "update by internet"); //$NON-NLS-1$
@@ -154,18 +199,15 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         Log.i(LOG_TAG, "InviteFriendsFragment.onStop()"); //$NON-NLS-1$
         InviteFriendsDataModel m = mModel;
-        if (m != null)
-        {
+        if (m != null) {
             m.pauseLoading();
             Log.i(LOG_TAG, "Pause Loading"); //$NON-NLS-1$
         }
@@ -173,12 +215,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         Log.i(LOG_TAG, "InviteFriendsFragment.onDestroy()"); //$NON-NLS-1$
         InviteFriendsDataModel model = mModel;
-        if (model != null)
-        {
+        if (model != null) {
             model.close();
             Log.i(LOG_TAG, "Close model"); //$NON-NLS-1$
 
@@ -191,14 +231,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "InviteFriendsFragment.onActivityCreated()"); //$NON-NLS-1$
         mMenuBtn.setOnClickListener(this);
         mInviteAllBtn.setOnClickListener(this);
         mFriendsListView.setDivider(null);
-        if (mIFragmentActivity.getVkSwitch())
-        {
+        if (mIFragmentActivity.getVkSwitch()) {
             mFriendsListView.addHeaderView(mHeaderImage);
             mFriendsListView.addFooterView(mFooterImage);
         } else if (mIFragmentActivity.getFbSwitch())
@@ -208,11 +246,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     // ==== Events =================================
 
-    @Override public void onClick(View view)
-    {
+    @Override
+    public void onClick(View view) {
         SoundsWork.interfaceBtnMusic(mContext);
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.header_menu_btn:
                 mINavigationDrawerHolder.toogle();
                 break;
@@ -222,27 +259,22 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         }
     }
 
-    private void inviteAll()
-    {
+    private void inviteAll() {
 
         InviteFragmentAdapter adapter = mAdapter;
         ISlowSource.Item<InviteFriendsData, Bitmap> data;
         StringBuffer ids_vk = new StringBuffer();
         StringBuffer ids_fb = new StringBuffer();
-        if (adapter != null)
-        {
-            for (int i = 0; i < adapter.getCount(); i++)
-            {
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getCount(); i++) {
 
                 data = (ISlowSource.Item<InviteFriendsData, Bitmap>) adapter.getItem(i);
                 if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.VK_PROVIDER)
-                        && !data.quick.status.equals("already_registered"))
-                {
+                        && !data.quick.status.equals("already_registered")) {
                     ids_vk.append(data.quick.id);
                     ids_vk.append(',');
                 } else if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.FB_PROVIDER)
-                        && !data.quick.status.equals("already_registered"))
-                {
+                        && !data.quick.status.equals("already_registered")) {
                     ids_fb.append(data.quick.id);
                     ids_fb.append(',');
                 }
@@ -252,25 +284,36 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         }
     }
 
-    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
-    {
+    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             ProgressBar bar = mProgressBar;
             assert bar != null;
             bar.setVisibility(View.GONE);
 //            mFriendsListView.setVisibility(View.VISIBLE);
-            if (mIFragmentActivity.getVkSwitch() || mIFragmentActivity.getFbSwitch())
-            {
+            if (mIFragmentActivity.getVkSwitch() || mIFragmentActivity.getFbSwitch()) {
                 mFriendsContainer.setVisibility(View.VISIBLE);
                 mInviteAllBtn.setEnabled(true);
-            } else
-            {
+            } else {
                 mMessageView.setVisibility(View.VISIBLE);
                 mInviteAllBtn.setEnabled(false);
             }
             mDataRequested = false;
         }
     };
+
+    private void onSessionStateChange(Session session, SessionState state, Exception excepton) {
+        if (state.isOpened())
+            org.omich.velo.log.Log.i("aut", "logged in");
+        if (state.isClosed())
+            org.omich.velo.log.Log.i("aut", "logged out");
+    }
+
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
+
 }
