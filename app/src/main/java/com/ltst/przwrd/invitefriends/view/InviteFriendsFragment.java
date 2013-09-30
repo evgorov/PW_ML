@@ -132,6 +132,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     @Override
     public void invite() {
+        initInvite(mIds);
+    }
+
+    private void initInvite(@Nonnull String str){
         @Nonnull String token = SharedPreferencesValues.getFacebookToken(mContext);
         if (token == null) {
             getToken();
@@ -139,12 +143,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         } else {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH, (cal.get(Calendar.DAY_OF_MONTH) + 2));
-
             Date date = cal.getTime();
             try {
                 date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date.toString());
             } catch (ParseException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             AccessToken access_token = AccessToken.createFromExistingAccessToken(token, date, null, AccessTokenSource.TEST_USER, null);
@@ -152,12 +154,9 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                 mFbSession.open(access_token, callback);
             Bundle params = new Bundle();
             params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
-            params.putString("title","PrizeWord");
-            params.putString("to",mIds);
-            // 2. Optionally provide a 'to' param to direct the request at a specific user
-            //params.putString("to", mIds);  // Phil
+            params.putString("title", "PrizeWord");
+            params.putString("to", str);
             showDialogWithoutNotificationBar(params, mFbSession);
-            Toast.makeText(mContext, "Token ok!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -332,22 +331,27 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         ISlowSource.Item<InviteFriendsData, Bitmap> data;
         StringBuffer ids_vk = new StringBuffer();
         StringBuffer ids_fb = new StringBuffer();
+        int countFbFriends = 0;
         if (adapter != null) {
             for (int i = 0; i < adapter.getCount(); i++) {
 
                 data = (ISlowSource.Item<InviteFriendsData, Bitmap>) adapter.getItem(i);
                 if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.VK_PROVIDER)
-                        && !data.quick.status.equals("already_registered")) {
+                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
                     ids_vk.append(data.quick.id);
                     ids_vk.append(',');
                 } else if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.FB_PROVIDER)
-                        && !data.quick.status.equals("already_registered")) {
-                    ids_fb.append(data.quick.id);
-                    ids_fb.append(',');
+                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
+                    if (countFbFriends < 50) {
+                        ids_fb.append(data.quick.id);
+                        ids_fb.append(',');
+                        countFbFriends++;
+                    }
                 }
             }
-            adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
-            adapter.invite(ids_fb.toString(), RestParams.FB_PROVIDER, null);
+            //adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
+            //adapter.invite(ids_fb.toString(), RestParams.FB_PROVIDER, null);
+            initInvite(ids_fb.toString());
         }
     }
 
