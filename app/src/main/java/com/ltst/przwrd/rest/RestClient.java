@@ -527,6 +527,8 @@ public class RestClient implements IRestClient
             url = RestParams.URL_POST_FB_FRIEND_INVITE;
         }
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+        httpHeaders.set("Connection", "Close");
         //HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         //ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.POST, requestEntity,String.class, urlVariables);
         URI uri = restTemplate.postForLocation(url, null, urlVariables);
