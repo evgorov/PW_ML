@@ -20,9 +20,14 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenSource;
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.WebDialog;
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
@@ -44,6 +49,12 @@ import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.ISlowSource;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,6 +85,9 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private boolean mDataRequested = false;
 
     private final int REQUEST_GET_FACEBOOK_TOKEN = 1;
+
+    private @Nonnull Session mFbSession;
+    private @Nonnull String mIds;
     // ==== Livecycle =================================
 
     @Override
@@ -84,6 +98,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mIFragmentActivity = (IFragmentsHolderActivity) activity;
+        mFbSession = new Session(activity);
         super.onAttach(activity);
     }
 
@@ -116,36 +131,88 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
     @Override
-    public void invite()
-    {
+    public void invite() {
         @Nonnull String token = SharedPreferencesValues.getFacebookToken(mContext);
-        if(token == null)
-        {
+        if (token == null) {
             getToken();
             return;
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_MONTH, (cal.get(Calendar.DAY_OF_MONTH) + 2));
+
+            Date date = cal.getTime();
+            try {
+                date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date.toString());
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            AccessToken access_token = AccessToken.createFromExistingAccessToken(token, date, null, AccessTokenSource.TEST_USER, null);
+            if (!mFbSession.isOpened())
+                mFbSession.open(access_token, callback);
+            Bundle params = new Bundle();
+            params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
+            params.putString("title","PrizeWord");
+            params.putString("to",mIds);
+            // 2. Optionally provide a 'to' param to direct the request at a specific user
+            //params.putString("to", mIds);  // Phil
+            showDialogWithoutNotificationBar(params, mFbSession);
+            Toast.makeText(mContext, "Token ok!", Toast.LENGTH_SHORT).show();
         }
-        else
-        {
-            Toast.makeText(mContext,"Token ok!", Toast.LENGTH_SHORT).show();
-        }
+    }
+
+    @Override
+    public void setIdsFriends(@Nonnull String id) {
+        mIds = id;
+    }
+
+
+    private void showDialogWithoutNotificationBar(Bundle params, Session session) {
+
+        WebDialog requestDialog = (new WebDialog.RequestsDialogBuilder(mContext, session, params)).setOnCompleteListener(new WebDialog.OnCompleteListener() {
+            @Override
+            public void onComplete(Bundle values, FacebookException error) {
+                if (error != null) {
+                    if (error instanceof FacebookOperationCanceledException) {
+                        Toast.makeText(mContext,
+                                "Request cancelled",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext,
+                                "Network Error",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    final String requestId = values.getString("request");
+                    if (requestId != null) {
+                        Toast.makeText(mContext,
+                                "Request sent",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext,
+                                "Request cancelled",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).build();
+        requestDialog.show();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK)
-        {
-            switch (requestCode)
-            {
-                case REQUEST_GET_FACEBOOK_TOKEN:
-                {
-                    if(data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN))
-                    {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_GET_FACEBOOK_TOKEN: {
+                    if (data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN)) {
                         invite();
                     }
-                }break;
-                default:break;
+                }
+                break;
+                default:
+                    break;
             }
         }
     }

@@ -195,6 +195,7 @@
 
     // ==== InviteFragment text ====
     <string name="invite_message_text">Чтобы приглашать друзей и получать за это дополнительные очки, добавьте социальные сети в меню приложения</string>
+    <string name="invite_message_fb_text">Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!</string>
 
     // ==== Share message ====
     <string name="social_puzzle_share_message" formatted="false">Я только что разгадал сканворд %1s за %2s минут и получил за это %3s очков!</string>

@@ -33,12 +33,8 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     private boolean mFbSwitch;
     private boolean mVkSwitch;
     private Session mFbSession;
-    private @Nonnull String mAccessTokenFb;
     private @Nonnull IInviteFriendsFragment mInviteFriendsFragment;
 
-    public void setmAccessTokenFb(@Nonnull String mAccessTokenFb) {
-        this.mAccessTokenFb = mAccessTokenFb;
-    }
 
     public InviteFragmentAdapter(@Nonnull Context context, @Nonnull IInviteFriendsFragment inviteFriendsFragment, @Nonnull IInviteFriendsDataModel model, boolean fbSwitch, boolean vkSwitch) {
         super(context, model.getSource());
@@ -149,11 +145,10 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
     }
 
     public void invite(@Nonnull String id, @Nonnull String provider, @Nullable IListenerVoid handler) {
+
         if (provider.equals(RestParams.FB_PROVIDER)) {
+            mInviteFriendsFragment.setIdsFriends(id);
             mInviteFriendsFragment.invite();
-
-
-            //mFbSession.open(,callback);
         } else
             mModel.sendInviteFriends(id, provider, handler);
     }
