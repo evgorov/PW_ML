@@ -7,7 +7,9 @@ import android.os.Bundle;
 
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.db.DbService;
+import com.ltst.przwrd.db.SQLiteHelper;
 import com.ltst.przwrd.login.model.LoadUserDataFromDataBase;
+import com.ltst.przwrd.login.model.UserImage;
 import com.ltst.przwrd.rest.RestImg;
 
 import org.omich.velo.bcops.BcTaskHelper;
@@ -24,13 +26,27 @@ public class LoadImageTask implements DbService.IDbTask {
 
     public static final String BF_BITMAP   = "LoadImageTask.Bitmap"; //$NON-NLS-1$
     public static final String BF_IMAGEID  = "LoadImageTask.ImageId"; //$NON-NLS-1$
+    public static final String BF_VOLUME  = "LoadImageTask.volume"; //$NON-NLS-1$
 
-    public static @Nonnull android.content.Intent createIntent(@Nonnull String imageId)
+    private static final @Nonnull String VOLUME_SHORT    = "short";
+    private static final @Nonnull String VOLUME_LONG     = "long";
+
+    public static @Nonnull Intent createIntent(@Nonnull String imageId)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_IMAGEID, imageId);
+        intent.putExtra(BF_VOLUME, VOLUME_LONG);
         return intent;
     }
+
+    public static @Nonnull Intent createIntentShort(@Nonnull String imageId)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(BF_IMAGEID, imageId);
+        intent.putExtra(BF_VOLUME, VOLUME_SHORT);
+        return intent;
+    }
+
     public static @Nullable Bitmap extractBitmapFromResult(@Nullable Bundle taskResult)
             throws OmOutOfMemoryException
     {
@@ -63,21 +79,53 @@ public class LoadImageTask implements DbService.IDbTask {
         }
         else
         {
-            String imageUrl = (extras == null ? null : extras.getString(BF_IMAGEID));
-            if(imageUrl != null)
+            @Nonnull String volume = extras.getString(BF_VOLUME);
+            if(volume.equals(VOLUME_LONG))
             {
-                IImagesDownloadingClient client = RestImg.createImagesClient();
-                byte[] buffer = client.getImage(imageUrl);
+                String imageUrl = (extras == null ? null : extras.getString(BF_IMAGEID));
 
-                if(buffer != null)
+                if(imageUrl != null)
                 {
+                    IImagesDownloadingClient client = RestImg.createImagesClient();
+                    byte[] buffer = client.getImage(imageUrl);
+
+                    if(buffer != null)
+                    {
 //                saveImageToDb(env, imageUrl, buffer);
-                    env.dbw.putUserImage(buffer);
-                    return LoadUserDataFromDataBase.getUserImageFromDB(env);
+                        env.dbw.putUserImage(buffer);
+                        return LoadUserDataFromDataBase.getUserImageFromDB(env);
+                    }
+                }
+            }
+            else if(volume.equals(VOLUME_SHORT))
+            {
+                String imageUrl = (extras == null ? null : extras.getString(BF_IMAGEID));
+
+                if(imageUrl != null)
+                {
+                    IImagesDownloadingClient client = RestImg.createImagesClient();
+                    byte[] buffer = client.getImage(imageUrl);
+
+                    if(buffer != null)
+                    {
+                        return packToBundle(buffer);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
         }
         return LoadUserDataFromDataBase.getUserImageFromDB(env);
+    }
+
+
+    public static @Nullable Bundle packToBundle(@Nonnull byte[] images)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putByteArray(LoadUserDataFromDataBase.BF_IMAGE_DATA, images);
+        return bundle;
     }
 
 }
