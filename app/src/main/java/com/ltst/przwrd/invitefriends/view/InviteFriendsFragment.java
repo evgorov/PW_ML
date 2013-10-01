@@ -64,6 +64,8 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     public static final @Nonnull
     String FRAGMENT_ID = "com.ltst.prizeword.InviteFiends.view.InviteFriendsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = InviteFriendsFragment.class.getName();
+    public static final @Nonnull String ALL_TYPE = "all";
+    public static final @Nonnull String SINGLE_TYPE = "single";
 
     private @Nonnull android.content.Context mContext;
     private @Nonnull IBcConnector mBcConnector;
@@ -131,12 +133,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
     @Override
-    public void invite() {
-        initInvite(mIds);
+    public void invite(@Nullable IListenerVoid handler) {
+        initInvite(mIds, SINGLE_TYPE,handler);
     }
 
-    private void initInvite(@Nonnull String str){
+    private void initInvite(@Nonnull String str, @Nonnull String type, @Nullable IListenerVoid handler) {
         @Nonnull String token = SharedPreferencesValues.getFacebookToken(mContext);
+
         if (token == null) {
             getToken();
             return;
@@ -156,7 +159,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
             params.putString("title", "PrizeWord");
             params.putString("to", str);
-            showDialogWithoutNotificationBar(params, mFbSession);
+            showDialogWithoutNotificationBar(params, mFbSession, str,handler);
         }
     }
 
@@ -166,12 +169,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
 
-    private void showDialogWithoutNotificationBar(Bundle params, Session session) {
+    private void showDialogWithoutNotificationBar(Bundle params, Session session, final String ids, final IListenerVoid handler) {
 
         WebDialog requestDialog = (new WebDialog.RequestsDialogBuilder(mContext, session, params)).setOnCompleteListener(new WebDialog.OnCompleteListener() {
             @Override
             public void onComplete(Bundle values, FacebookException error) {
                 if (error != null) {
+                    getToken();
                     if (error instanceof FacebookOperationCanceledException) {
                         Toast.makeText(mContext,
                                 "Request cancelled",
@@ -187,6 +191,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                         Toast.makeText(mContext,
                                 "Request sent",
                                 Toast.LENGTH_SHORT).show();
+                        mAdapter.setFbStatusFriends(ids,handler);
                     } else {
                         Toast.makeText(mContext,
                                 "Request cancelled",
@@ -206,7 +211,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             switch (requestCode) {
                 case REQUEST_GET_FACEBOOK_TOKEN: {
                     if (data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN)) {
-                        invite();
+                        invite(null);
                     }
                 }
                 break;
@@ -350,8 +355,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                 }
             }
             //adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
-            //adapter.invite(ids_fb.toString(), RestParams.FB_PROVIDER, null);
-            initInvite(ids_fb.toString());
+            initInvite(ids_fb.toString(), ALL_TYPE,null);
         }
     }
 

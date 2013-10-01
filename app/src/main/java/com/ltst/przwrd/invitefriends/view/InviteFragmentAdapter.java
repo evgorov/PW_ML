@@ -19,6 +19,7 @@ import com.ltst.przwrd.rest.RestParams;
 import com.ltst.przwrd.sounds.SoundsWork;
 
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.lists.KeepViewHolderAdapter;
 import org.omich.velo.lists.SlowSourceAdapter;
 import org.omich.velo.log.Log;
 
@@ -118,11 +119,11 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
                     SoundsWork.interfaceBtnMusic(mContext);
                     switch (v.getId()) {
                         case R.id.invite_add_btn:
-                            prBar.setVisibility(View.VISIBLE);
+                            //prBar.setVisibility(View.VISIBLE);
                             invite(id, provider, new IListenerVoid() {
                                 @Override
                                 public void handle() {
-                                    prBar.setVisibility(View.GONE);
+                                    //prBar.setVisibility(View.GONE);
                                     btn.setEnabled(false);
                                 }
                             });
@@ -148,9 +149,13 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
 
         if (provider.equals(RestParams.FB_PROVIDER)) {
             mInviteFriendsFragment.setIdsFriends(id);
-            mInviteFriendsFragment.invite();
-        } else
+            mInviteFriendsFragment.invite(handler);
+        } else if (provider.equals(RestParams.VK_PROVIDER))
             mModel.sendInviteFriends(id, provider, handler);
+    }
+
+    public void setFbStatusFriends(@Nonnull String ids, @Nullable IListenerVoid handler) {
+            mModel.sendInviteFriends(ids, RestParams.FB_PROVIDER, handler);
     }
 
 
@@ -181,6 +186,7 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
             Log.i("aut", "Logged out...");
         }
     }
+
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
