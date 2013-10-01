@@ -134,7 +134,36 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     @Override
     public void invite(@Nullable IListenerVoid handler) {
-        initInvite(mIds, SINGLE_TYPE,handler);
+        initInvite(mIds, SINGLE_TYPE, handler);
+    }
+
+    private void inviteAll() {
+
+        InviteFragmentAdapter adapter = mAdapter;
+        ISlowSource.Item<InviteFriendsData, Bitmap> data;
+        StringBuffer ids_vk = new StringBuffer();
+        StringBuffer ids_fb = new StringBuffer();
+        int countFbFriends = 0;
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+
+                data = (ISlowSource.Item<InviteFriendsData, Bitmap>) adapter.getItem(i);
+                if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.VK_PROVIDER)
+                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
+                    ids_vk.append(data.quick.id);
+                    ids_vk.append(',');
+                } else if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.FB_PROVIDER)
+                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
+                    if (countFbFriends < 50) {
+                        ids_fb.append(data.quick.id);
+                        ids_fb.append(',');
+                        countFbFriends++;
+                    }
+                }
+            }
+            adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
+            initInvite(ids_fb.toString(), ALL_TYPE, null);
+        }
     }
 
     private void initInvite(@Nonnull String str, @Nonnull String type, @Nullable IListenerVoid handler) {
@@ -145,7 +174,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             return;
         } else {
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.DAY_OF_MONTH, (cal.get(Calendar.DAY_OF_MONTH) + 2));
+            cal.set(Calendar.DAY_OF_MONTH, (cal.get(Calendar.DAY_OF_MONTH) + 5));
             Date date = cal.getTime();
             try {
                 date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date.toString());
@@ -159,7 +188,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
             params.putString("title", "PrizeWord");
             params.putString("to", str);
-            showDialogWithoutNotificationBar(params, mFbSession, str,handler);
+            showDialogWithoutNotificationBar(params, mFbSession, str, type, handler);
         }
     }
 
@@ -169,7 +198,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     }
 
 
-    private void showDialogWithoutNotificationBar(Bundle params, Session session, final String ids, final IListenerVoid handler) {
+    private void showDialogWithoutNotificationBar(Bundle params, Session session, final String ids, final String type, final IListenerVoid handler) {
 
         WebDialog requestDialog = (new WebDialog.RequestsDialogBuilder(mContext, session, params)).setOnCompleteListener(new WebDialog.OnCompleteListener() {
             @Override
@@ -177,13 +206,13 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                 if (error != null) {
                     getToken();
                     if (error instanceof FacebookOperationCanceledException) {
-                        Toast.makeText(mContext,
+                        /*Toast.makeText(mContext,
                                 "Request cancelled",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();*/
                     } else {
-                        Toast.makeText(mContext,
+                        /*Toast.makeText(mContext,
                                 "Network Error",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();*/
                     }
                 } else {
                     final String requestId = values.getString("request");
@@ -191,7 +220,17 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                         Toast.makeText(mContext,
                                 "Request sent",
                                 Toast.LENGTH_SHORT).show();
-                        mAdapter.setFbStatusFriends(ids,handler);
+                        if (type.equals(SINGLE_TYPE))
+                            mAdapter.setFbStatusFriends(ids, handler);
+                        else if (type.equals(ALL_TYPE)) {
+                            mAdapter.setFbStatusFriends(ids, new IListenerVoid() {
+                                @Override
+                                public void handle() {
+                                    mAdapter.updateByInternet();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
                     } else {
                         Toast.makeText(mContext,
                                 "Request cancelled",
@@ -330,34 +369,6 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         }
     }
 
-    private void inviteAll() {
-
-        InviteFragmentAdapter adapter = mAdapter;
-        ISlowSource.Item<InviteFriendsData, Bitmap> data;
-        StringBuffer ids_vk = new StringBuffer();
-        StringBuffer ids_fb = new StringBuffer();
-        int countFbFriends = 0;
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-
-                data = (ISlowSource.Item<InviteFriendsData, Bitmap>) adapter.getItem(i);
-                if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.VK_PROVIDER)
-                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
-                    ids_vk.append(data.quick.id);
-                    ids_vk.append(',');
-                } else if (!data.quick.id.equals(Strings.EMPTY) && data.quick.providerName.equals(RestParams.FB_PROVIDER)
-                        && (!data.quick.status.equals("already_registered") || !data.quick.status.equals("invite_sent"))) {
-                    if (countFbFriends < 50) {
-                        ids_fb.append(data.quick.id);
-                        ids_fb.append(',');
-                        countFbFriends++;
-                    }
-                }
-            }
-            //adapter.invite(ids_vk.toString(), RestParams.VK_PROVIDER, null);
-            initInvite(ids_fb.toString(), ALL_TYPE,null);
-        }
-    }
 
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid() {
         @Override
