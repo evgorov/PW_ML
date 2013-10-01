@@ -41,7 +41,6 @@ public class InviteFriendsDataModel implements IInviteFriendsDataModel
     {
         this.mContext = context;
         this.mBcConnector = mBcConnector;
-
         BgImageDownloader downloader = new FriendsImageDownloader(mBcConnector, LoadFriendsImageTask.class);
         mDownloader = downloader;
         mSource = new Source(new ArrayList<ISlowSource.Item<InviteFriendsData, Bitmap>>(), downloader);

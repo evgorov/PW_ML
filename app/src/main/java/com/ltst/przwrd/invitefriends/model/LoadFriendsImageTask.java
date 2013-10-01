@@ -11,7 +11,7 @@ public class LoadFriendsImageTask extends LoadImageTask
 {
     public static @Nonnull Intent createIntent(@Nonnull String imageId)
     {
-        return LoadImageTask.createIntent(imageId);
+        return LoadImageTask.createIntentShort(imageId);
     }
 
     protected void callPutImageMethod(@Nonnull IDbWriter storage, @Nonnull String key, @Nonnull byte[] bytes)

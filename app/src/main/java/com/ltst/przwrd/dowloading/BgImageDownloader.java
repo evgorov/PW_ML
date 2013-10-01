@@ -45,9 +45,12 @@ public abstract class BgImageDownloader implements ILoadingQueue.IBgDownloader<S
     }
 
     //==== IBgDownloader =================================================
+
+
     @Override
     public void loadSlowData(@Nonnull String previewUrl, final @Nonnull PairListeners.IListenerBooleanObject<Bitmap> handler)
     {
+
         String taskId = mImageLoadingTaskId;
         if (taskId != null)
         {
@@ -106,7 +109,7 @@ public abstract class BgImageDownloader implements ILoadingQueue.IBgDownloader<S
         @Override
         public Intent createIntentFromTask(@Nonnull String previewImageUrl)
         {
-            return LoadImageTask.createIntent(previewImageUrl);
+            return LoadImageTask.createIntentShort(previewImageUrl);
         }
     }
 }

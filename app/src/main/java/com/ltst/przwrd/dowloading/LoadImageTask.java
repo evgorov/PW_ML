@@ -117,14 +117,14 @@ public class LoadImageTask implements DbService.IDbTask {
                 }
             }
         }
-        return LoadUserDataFromDataBase.getUserImageFromDB(env);
+        return null;
     }
 
 
     public static @Nullable Bundle packToBundle(@Nonnull byte[] images)
     {
         Bundle bundle = new Bundle();
-        bundle.putByteArray(LoadUserDataFromDataBase.BF_IMAGE_DATA, images);
+        bundle.putByteArray(LoadImageTask.BF_BITMAP, images);
         return bundle;
     }
 
