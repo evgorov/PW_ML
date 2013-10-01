@@ -67,6 +67,11 @@ public class PuzzleManager
 
     }
 
+    public void setDrawText(boolean drawText)
+    {
+        mFieldDrawer.setDrawText(drawText);
+    }
+
     public void setResourcesDecodedHandler(@Nullable IListenerVoid resourcesDecodedHandler)
     {
         mFieldDrawer.setResourcesDecodedHandler(resourcesDecodedHandler);
