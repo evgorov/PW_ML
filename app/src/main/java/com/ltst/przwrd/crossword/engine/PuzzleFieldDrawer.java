@@ -58,6 +58,8 @@ public class PuzzleFieldDrawer
     private boolean mAnimateInput = false;
     private boolean mInputListCreated = false;
 
+    private boolean mDrawText = true;
+
     private @Nullable IListenerVoid mResourcesDecodedHandler;
 
     public PuzzleFieldDrawer(@Nonnull Context context, @Nonnull PuzzleResourcesAdapter adapter,
@@ -82,6 +84,11 @@ public class PuzzleFieldDrawer
                 }
             }
         });
+    }
+
+    public void setDrawText(boolean drawText)
+    {
+        mDrawText = drawText;
     }
 
     // ====== init/deinit =====================
@@ -481,7 +488,10 @@ public class PuzzleFieldDrawer
                 break;
         }
         mBitmapManager.drawResource(questionRes, canvas, rect);
-        drawQuestionText(canvas, question, rect);
+        if(mDrawText)
+        {
+            drawQuestionText(canvas, question, rect);
+        }
     }
 
     private void drawLetterByState(@Nonnull Canvas canvas, @Nonnull RectF rect,

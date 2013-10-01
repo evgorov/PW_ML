@@ -537,6 +537,7 @@ public class OneCrosswordActivity extends SherlockActivity
 
     private void showPauseDialog(boolean show)
     {
+        mPuzzleView.setDrawText(!show);
         if (show)
         {
             mPuzzleView.cancelInput();

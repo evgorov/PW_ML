@@ -85,6 +85,14 @@ public class PuzzleView extends View
         return true;
     }
 
+    public void setDrawText(boolean drawText)
+    {
+        if (mPuzzleManager != null && mViewScreenRect != null)
+        {
+            mPuzzleManager.setDrawText(drawText);
+            invalidate(mViewScreenRect);
+        }
+    }
 
     public void setAdapter(@Nonnull PuzzleResourcesAdapter adapter)
     {
