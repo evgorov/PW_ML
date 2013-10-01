@@ -8,6 +8,7 @@ import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.db.DbService;
+import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.rest.IRestClient;
 import com.ltst.przwrd.rest.RestClient;
 import com.ltst.przwrd.rest.RestParams;
@@ -170,7 +171,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,1);
+                NavigationActivity.debug("now:  "+calnow.get(Calendar.MONTH) +" "+calnow.get(Calendar.DAY_OF_MONTH));
+                calnow.add(Calendar.MONTH,2);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -183,6 +185,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 {
                     int year = cal.get(Calendar.YEAR);
                     int month = cal.get(Calendar.MONTH);
+                    NavigationActivity.debug("set: month "+month);
                     getFromServer(sessionKey,year,month,env);
                     cal.add(Calendar.MONTH,1);
                 }
@@ -214,7 +217,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,1);
+                calnow.add(Calendar.MONTH,2);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
