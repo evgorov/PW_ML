@@ -37,7 +37,7 @@ public class CrosswordFragmentHolder
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
     private @Nonnull HashMap<Long, CrosswordSet> mListCrosswordSet;
-    private @Nonnull HashMap<Integer, CrosswordSetMonth> mListCrosswordSetMonth;
+    private @Nonnull HashMap<String, CrosswordSetMonth> mListCrosswordSetMonth;
 
     @Nonnull HashMap<String, List<PuzzleSet>> mMapSets;
     @Nonnull HashMap<String, List<Puzzle>> mMapPuzzles;
@@ -55,7 +55,7 @@ public class CrosswordFragmentHolder
         mMapPuzzles = new HashMap<String, List<Puzzle>>();
 
         mListCrosswordSet = new HashMap<Long, CrosswordSet>();
-        mListCrosswordSetMonth = new HashMap<Integer, CrosswordSetMonth>();
+        mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
 
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
@@ -159,9 +159,9 @@ public class CrosswordFragmentHolder
         return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext, mICrosswordFragment);
     }
 
-    private CrosswordSetMonth getCrosswordSetMonth(int month)
+    private CrosswordSetMonth getCrosswordSetMonth(String key)
     {
-        return (month >= 0 && mListCrosswordSetMonth.containsKey(month)) ? mListCrosswordSetMonth.get(month) : new CrosswordSetMonth(mContext);
+        return (mListCrosswordSetMonth.containsKey(key)) ? mListCrosswordSetMonth.get(key) : new CrosswordSetMonth(mContext);
     }
 
     public boolean isNeedUploadAllPuzzlrSetsFromInternet()
@@ -301,7 +301,8 @@ public class CrosswordFragmentHolder
                 continue;
             PuzzleSet set = sets2.get(0);
             CrosswordPanelData data = extractCrosswordPanelData(set);
-            @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
+            String key = formatTime(data.mYear, data.mMonth);
+            @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);
             if(crosswordSetMonth != null)
             {
                 crosswordSetMonth.setSortSets();
@@ -311,7 +312,8 @@ public class CrosswordFragmentHolder
 
     private void addPanel(@Nonnull CrosswordPanelData data)
     {
-        @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
+        String key = formatTime(data.mYear, data.mMonth);
+        @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);
         @Nonnull CrosswordSet crosswordSet = getCrosswordSet(data.mId);
         crosswordSet.fillPanel(data);
         if (!mListCrosswordSet.containsKey(data.mId))
@@ -319,9 +321,9 @@ public class CrosswordFragmentHolder
             mListCrosswordSet.put(data.mId, crosswordSet);
             crosswordSetMonth.addCrosswordSet(data, crosswordSet);
         }
-        if (!mListCrosswordSetMonth.containsKey(data.mMonth))
+        if (!mListCrosswordSetMonth.containsKey(key))
         {
-            mListCrosswordSetMonth.put(data.mMonth, crosswordSetMonth);
+            mListCrosswordSetMonth.put(key, crosswordSetMonth);
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
             {
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
