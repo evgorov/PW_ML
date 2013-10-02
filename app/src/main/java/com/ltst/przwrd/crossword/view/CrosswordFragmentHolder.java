@@ -206,6 +206,7 @@ public class CrosswordFragmentHolder
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
+        // этой функцией я не очень доволен, надо будет обязательно переписать, просто на скорую руку создавал;
         for(PuzzleSet set : sets)
         {
             String key = formatTime(set.year, set.month);
@@ -290,6 +291,21 @@ public class CrosswordFragmentHolder
             data.mBuyScore = baseScore*data.mTotalCount;
 
             addPanel(data);
+
+        }
+
+        // сортируем пазлы в архиве;
+        for(List<PuzzleSet> sets2 : mMapSets.values())
+        {
+            if(sets2.size() == 0)
+                continue;
+            PuzzleSet set = sets2.get(0);
+            CrosswordPanelData data = extractCrosswordPanelData(set);
+            @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
+            if(crosswordSetMonth != null)
+            {
+                crosswordSetMonth.setSortSets();
+            }
         }
     }
 
@@ -314,7 +330,8 @@ public class CrosswordFragmentHolder
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver2);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutFree);
             }
-            else{
+            else
+            {
                 if(data.mBought)
                 {
                     mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
@@ -324,11 +341,6 @@ public class CrosswordFragmentHolder
                     mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutFree);
                 }
             }
-        }
-
-        if(crosswordSetMonth != null)
-        {
-            crosswordSetMonth.setSortSets();
         }
 
     }

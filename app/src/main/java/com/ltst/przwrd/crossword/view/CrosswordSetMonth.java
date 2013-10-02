@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
+import com.ltst.przwrd.navigation.NavigationActivity;
 
 import java.util.HashMap;
 
@@ -60,33 +61,30 @@ public class CrosswordSetMonth{
 
     public void addCrosswordSet(@Nonnull CrosswordPanelData data, @Nonnull CrosswordSet view){
         @Nonnull PuzzleSetModel.PuzzleSetType type = data.mType;
-        mCrosswordDatas.put(type, view);
 
         if(type == PuzzleSetModel.PuzzleSetType.BRILLIANT){
             mLinearLayoutBrilliant.addView(view.getView());
             mLinearLayoutBrilliant.setVisibility(View.VISIBLE);
-            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.GOLD){
             mLinearLayoutGold.addView(view.getView());
             mLinearLayoutGold.setVisibility(View.VISIBLE);
-            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.SILVER){
             mLinearLayoutSilver.addView(view.getView());
             mLinearLayoutSilver.setVisibility(View.VISIBLE);
-            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.SILVER2){
             mLinearLayoutSilver2.addView(view.getView());
             mLinearLayoutSilver2.setVisibility(View.VISIBLE);
-            view.setVisibleMonth(false);
         }
         else if(type == PuzzleSetModel.PuzzleSetType.FREE){
             mLinearLayoutFree.addView(view.getView());
             mLinearLayoutFree.setVisibility(View.VISIBLE);
-            view.setVisibleMonth(false);
         }
+        if(mCrosswordDatas.containsKey(type))
+            mCrosswordDatas.remove(type);
+        mCrosswordDatas.put(type, view);
     }
 
     private @Nullable LinearLayout getMonthContainer(PuzzleSetModel.PuzzleSetType type)
@@ -105,6 +103,7 @@ public class CrosswordSetMonth{
 
     public void setSortSets()
     {
+        NavigationActivity.debug("-----------------");
         boolean visability = true;
         for(PuzzleSetModel.PuzzleSetType type : PuzzleSetModel.PuzzleSetType.values())
         {
@@ -113,10 +112,11 @@ public class CrosswordSetMonth{
                 continue;
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
                 return;
-            LinearLayout layout = getMonthContainer(type);
-            if(layout == null)
-                continue;
-            if(layout.getVisibility() == View.GONE)
+
+            boolean flg = crosswordSet.getView().getVisibility() == View.VISIBLE;
+            NavigationActivity.debug("month="+crosswordSet.pMonthText.getText()+" type="+type+" "+" id="+crosswordSet.getSetServerId()+crosswordSet.getCrosswordSetType()+" "+"visability="+visability+" flg="+flg);
+
+            if(crosswordSet.getView().getVisibility() != View.VISIBLE)
             {
                 crosswordSet.setVisibleMonth(false);
             }
@@ -124,8 +124,12 @@ public class CrosswordSetMonth{
             {
                 crosswordSet.setVisibleMonth(visability);
                 if(visability)
+                {
+                    NavigationActivity.debug("set month visible");
                     visability = false;
+                }
             }
+
         }
     }
 

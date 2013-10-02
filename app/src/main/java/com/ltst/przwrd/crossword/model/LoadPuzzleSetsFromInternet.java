@@ -8,6 +8,7 @@ import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.db.DbService;
+import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.rest.IRestClient;
 import com.ltst.przwrd.rest.RestClient;
 import com.ltst.przwrd.rest.RestParams;
@@ -179,12 +180,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(cal.before(calnow))
+                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
+                    int year = calnow.get(Calendar.YEAR);
+                    int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);
-                    cal.add(Calendar.MONTH,1);
+                    calnow.add(Calendar.MONTH,-1);
                 }
                 return getFromDatabase(env);
             }
@@ -223,14 +224,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(cal.before(calnow))
+                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
+                    int year = calnow.get(Calendar.YEAR);
+                    int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);
-                    cal.add(Calendar.MONTH,1);
+                    calnow.add(Calendar.MONTH,-1);
                 }
-
                 return getFromDatabase(env);
             }
             else if(volumePuzzle.equals(VOLUME_BUY))
