@@ -50,7 +50,7 @@ public class CrosswordSet {
 
     private @Nonnull View mRootView;
     private @Nonnull RelativeLayout pMonthBackground;
-    public @Nonnull TextView pMonthText;
+    private @Nonnull TextView pMonthText;
     private @Nonnull LinearLayout pTitleImage;
     private @Nonnull TextView pTitleText;
     private @Nonnull ToggleButton pSwitcher;
@@ -70,14 +70,13 @@ public class CrosswordSet {
     private @Nonnull BadgeGridView pBadgeContainer;
     private @Nonnull RelativeLayout mLayout;
 
-    private @Nullable String mSetServerId = null;
-    private @Nonnull PuzzleSetModel.PuzzleSetType mPuzzleSetType;
-    private boolean mExpanding;
-
     private static @Nonnull IManadges mIManadges;
+
     private static @Nonnull IManageHolder mIManageHolder;
+    private @Nonnull CrosswordPanelData mCrosswordPanelData;
 
     private boolean flgOneRegister = false;
+    private boolean mExpanding;
 
     public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
 
@@ -88,8 +87,6 @@ public class CrosswordSet {
 
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
-//        mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
-//        mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
 
         mRootView =  mInflater.inflate(R.layout.crossword_panel, null, false);
         mLayout = (RelativeLayout) mRootView.findViewById(R.id.crossword_123);
@@ -127,16 +124,16 @@ public class CrosswordSet {
             @Override
             public void onClick(View view) {
                 SoundsWork.buySet(mContext);
-                if (mSetServerId != null)
+                if (mCrosswordPanelData.mServerId != null)
                 {
-                    if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+                    if(mCrosswordPanelData.mType != PuzzleSetModel.PuzzleSetType.FREE)
                     {
-                        mIManageHolder.buyProduct(mSetServerId);
+                        mIManageHolder.buyProduct(mCrosswordPanelData.mServerId);
 //                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
                     }
                     else
                     {
-                        mIManageHolder.uploadProduct(mSetServerId);
+                        mIManageHolder.uploadProduct(mCrosswordPanelData.mServerId);
                     }
                 }
             }
@@ -146,18 +143,18 @@ public class CrosswordSet {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
                 SoundsWork.interfaceBtnMusic(mContext);
-                if (mSetServerId != null)
+                if (mCrosswordPanelData.mServerId != null)
                 {
-                    mICrosswordFragment.choicePuzzle(mSetServerId, puzzleId);
+                    mICrosswordFragment.choicePuzzle(mCrosswordPanelData.mServerId, puzzleId);
                 }
             }
         });
 
     }
 
-    public @Nonnull String getSetServerId()
+    public @Nullable CrosswordPanelData getCrosswordPanelData()
     {
-        return mSetServerId;
+        return mCrosswordPanelData;
     }
 
     public @Nonnull View getView()
@@ -172,10 +169,9 @@ public class CrosswordSet {
     public void fillPanel(@Nonnull CrosswordPanelData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
-        mSetServerId = data.mServerId;
-        mIManageHolder.registerProduct(mSetServerId);
+        mCrosswordPanelData = data;
+        mIManageHolder.registerProduct(mCrosswordPanelData.mServerId);
         mManadgePriceListener.handle();
-        mPuzzleSetType = data.mType;
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
         {
@@ -246,7 +242,7 @@ public class CrosswordSet {
             pSwitcher.setVisibility(View.GONE);
 //            pMonthBackground.setVisibility(View.GONE);
 
-            if(mSetServerId == null)
+            if(mCrosswordPanelData.mServerId == null)
             {
                 expandingBadgeContainer(true);
 //                pBadgeContainer.setVisibility(View.VISIBLE);
@@ -280,7 +276,7 @@ public class CrosswordSet {
             pTitleImage.setVisibility(View.VISIBLE);
             pBuyCrosswordContaiter.setVisibility(View.GONE);
 
-            if(mSetServerId == null)
+            if(mCrosswordPanelData.mServerId == null)
             {
                 expandingBadgeContainer(false);
             }
@@ -329,7 +325,7 @@ public class CrosswordSet {
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
             final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
-            if(googleId.equals(mSetServerId))
+            if(googleId.equals(mCrosswordPanelData.mServerId))
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
@@ -345,7 +341,7 @@ public class CrosswordSet {
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
-                                mICrosswordFragment.updateOneSet(mSetServerId);
+                                mICrosswordFragment.updateOneSet(mCrosswordPanelData.mServerId);
                                 mICrosswordFragment.purchaseResult(true);
                             }
                             else
@@ -364,9 +360,9 @@ public class CrosswordSet {
 
         @Override
         public void handle() {
-            if(mPuzzleSetType != PuzzleSetModel.PuzzleSetType.FREE)
+            if(mCrosswordPanelData.mType != PuzzleSetModel.PuzzleSetType.FREE)
             {
-                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mSetServerId);
+                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mCrosswordPanelData.mServerId);
                 pBuyPrice.setText(mBuyPrice);
             }
         }

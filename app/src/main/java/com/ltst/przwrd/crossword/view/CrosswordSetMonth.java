@@ -9,7 +9,9 @@ import android.widget.LinearLayout;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.navigation.NavigationActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +22,6 @@ import javax.annotation.Nullable;
 public class CrosswordSetMonth{
 
     private @Nonnull Context mContext;
-    private @Nonnull LayoutInflater mInflater;
 
     public @Nonnull LinearLayout mLinearLayoutBrilliant;
     public @Nonnull LinearLayout mLinearLayoutGold;
@@ -28,13 +29,12 @@ public class CrosswordSetMonth{
     public @Nonnull LinearLayout mLinearLayoutSilver2;
     public @Nonnull LinearLayout mLinearLayoutFree;
 
-    private @Nonnull HashMap<PuzzleSetModel.PuzzleSetType, CrosswordSet> mCrosswordDatas;
+    private @Nonnull List<CrosswordSet> mCrosswordDatas;
 
     public CrosswordSetMonth(@Nonnull Context context) {
         this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mCrosswordDatas = new HashMap<PuzzleSetModel.PuzzleSetType, CrosswordSet>(5);
+        mCrosswordDatas = new ArrayList<CrosswordSet>();
 
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         mLinearLayoutBrilliant = new LinearLayout(mContext, null);
@@ -82,9 +82,7 @@ public class CrosswordSetMonth{
             mLinearLayoutFree.addView(view.getView());
             mLinearLayoutFree.setVisibility(View.VISIBLE);
         }
-        if(mCrosswordDatas.containsKey(type))
-            mCrosswordDatas.remove(type);
-        mCrosswordDatas.put(type, view);
+        mCrosswordDatas.add(view);
     }
 
     private @Nullable LinearLayout getMonthContainer(PuzzleSetModel.PuzzleSetType type)
@@ -101,35 +99,42 @@ public class CrosswordSetMonth{
         return null;
     }
 
+    public CrosswordSet getCrosswordSet(long id)
+    {
+        for(CrosswordSet crosswordSet : mCrosswordDatas)
+        {
+            if(crosswordSet.getCrosswordPanelData().mId == id)
+            {
+                return crosswordSet;
+            }
+        }
+        return null;
+    }
+
     public void setSortSets()
     {
-        NavigationActivity.debug("-----------------");
         boolean visability = true;
         for(PuzzleSetModel.PuzzleSetType type : PuzzleSetModel.PuzzleSetType.values())
         {
-            CrosswordSet crosswordSet = mCrosswordDatas.get(type);
-            if(crosswordSet == null)
-                continue;
-            if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
-                return;
-
-            boolean flg = crosswordSet.getView().getVisibility() == View.VISIBLE;
-            NavigationActivity.debug("month="+crosswordSet.pMonthText.getText()+" type="+type+" "+" id="+crosswordSet.getSetServerId()+crosswordSet.getCrosswordSetType()+" "+"visability="+visability+" flg="+flg);
-
-            if(crosswordSet.getView().getVisibility() != View.VISIBLE)
+            for(CrosswordSet crosswordSet : mCrosswordDatas)
             {
-                crosswordSet.setVisibleMonth(false);
-            }
-            else
-            {
-                crosswordSet.setVisibleMonth(visability);
-                if(visability)
+                if(crosswordSet.getCrosswordPanelData().mType != type
+                        || crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
+                    continue;
+
+                if(crosswordSet.getView().getVisibility() != View.VISIBLE)
                 {
-                    NavigationActivity.debug("set month visible");
-                    visability = false;
+                    crosswordSet.setVisibleMonth(false);
+                }
+                else
+                {
+                    crosswordSet.setVisibleMonth(visability);
+                    if(visability)
+                    {
+                        visability = false;
+                    }
                 }
             }
-
         }
     }
 
