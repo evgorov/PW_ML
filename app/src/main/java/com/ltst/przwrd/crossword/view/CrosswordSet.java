@@ -145,7 +145,9 @@ public class CrosswordSet {
                 SoundsWork.interfaceBtnMusic(mContext);
                 if (mCrosswordPanelData.mServerId != null)
                 {
-                    mICrosswordFragment.choicePuzzle(mCrosswordPanelData.mServerId, puzzleId);
+                    BadgeAdapter adapter = getAdapter();
+                    BadgeData data = (BadgeData) adapter.getItem(position);
+                    mICrosswordFragment.choicePuzzle(mCrosswordPanelData.mServerId, data.mServerId);
                 }
             }
         });

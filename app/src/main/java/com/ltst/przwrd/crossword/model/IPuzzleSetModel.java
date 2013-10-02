@@ -22,6 +22,8 @@ public interface IPuzzleSetModel
     void synchronizePuzzleUserData();
     void updateSync(@Nonnull IListenerVoid handler);
     void buyCrosswordSet(@Nonnull String setServerId, @Nonnull String receiptData, @Nonnull String signature, @Nullable IListenerVoid handler);
+    void loadOnePuzzleSetFromDB(@Nonnull String setServerId, @Nonnull IListenerVoid handler);
+    PuzzleSet getOnePuzzleSet();
     boolean isAnswerState();
     void close();
 }

@@ -32,7 +32,6 @@ public class CrosswordFragmentHolder
 
     private static @Nonnull LayoutInflater mInflater;
     private @Nonnull ICrosswordFragment mICrosswordFragment;
-    private @Nonnull View mViewCrossword;
     private static @Nonnull Context mContext;
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
@@ -46,7 +45,6 @@ public class CrosswordFragmentHolder
     {
         this.mInflater = inflater;
         this.mICrosswordFragment = (ICrosswordFragment) fragment;
-        this.mViewCrossword = view;
         this.mContext = context;
 
         mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
@@ -61,9 +59,6 @@ public class CrosswordFragmentHolder
         int monthMaxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int scopeDays = Integer.valueOf(mContext.getResources().getString(R.string.puzzless_rest_scope_days));
         int restDays = monthMaxDays - day + 1;
-
-//        DateFormatSymbols symbols = new DateFormatSymbols();
-//        mCrosswordPanelCurrent.mMonthTV.setText(symbols.getMonths()[month]);
 
         mCrosswordPanelCurrent.mMonthTV.setText(
                 mContext.getResources().getStringArray(R.array.menu_group_months_at_imenit_padezh)[month]);
@@ -87,26 +82,6 @@ public class CrosswordFragmentHolder
     public void setCoefficients(@Nonnull Coefficients coefficients) {
         this.mCoefficients = coefficients;
     }
-
-//    public void setMapSets(@Nonnull HashMap<String, List<PuzzleSet>> mMapSets) {
-//        this.mMapSets = mMapSets;
-//    }
-//
-//    public void setMapPuzzles(@Nonnull HashMap<String, List<Puzzle>> mMapPuzzles) {
-//        this.mMapPuzzles = mMapPuzzles;
-//    }
-
-//    @Nonnull
-//    public HashMap<String, List<PuzzleSet>> getMapSets()
-//    {
-//        return mMapSets;
-//    }
-//
-//    @Nonnull
-//    public HashMap<String, List<Puzzle>> getMapPuzzles()
-//    {
-//        return mMapPuzzles;
-//    }
 
     // ================== CROSSWORD PANELS ======================
 
@@ -147,11 +122,6 @@ public class CrosswordFragmentHolder
             mCrosswordsContainerBackgroud = (BackFrameLayout) view.findViewById(R.id.crossword_fragment_layout_container3);
         }
     }
-
-//    private CrosswordSet getCrosswordSet(long id)
-//    {
-//        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext, mICrosswordFragment);
-//    }
 
     private CrosswordSetMonth getCrosswordSetMonth(String key)
     {

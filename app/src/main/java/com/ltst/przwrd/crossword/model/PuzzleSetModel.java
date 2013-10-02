@@ -27,6 +27,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
     private @Nullable List<PuzzleSet> mPuzzleSetList;
     private @Nonnull HashMap<String,List<Puzzle>> mPuzzlesSet;
     private @Nonnull PuzzleUserDataSynchronizer mSynchronizer;
+    private @Nonnull PuzzleSet mOnePuzzleSet;
     private int hintsCount;
     private boolean mIsDestroyed;
     private boolean answerState;
@@ -52,6 +53,12 @@ public class PuzzleSetModel implements IPuzzleSetModel
             return mPuzzleSetList;
         }
         return new ArrayList<PuzzleSet>();
+    }
+
+    @Override
+    public PuzzleSet getOnePuzzleSet()
+    {
+        return mOnePuzzleSet;
     }
 
     @Override
@@ -153,6 +160,16 @@ public class PuzzleSetModel implements IPuzzleSetModel
         if(mIsDestroyed)
             return;
         mHintsUpdater.update(handler);
+    }
+
+    @Override
+    public void loadOnePuzzleSetFromDB(@Nonnull String setServerId, @Nonnull IListenerVoid handler)
+    {
+        if(mIsDestroyed)
+            return;
+        mSyncUpdater.close();
+        mOnePuzzleSetDbUpdater.setIntent(LoadOnePuzzleSet.createIntent(setServerId));
+        mOnePuzzleSetDbUpdater.update(handler);
     }
 
     // ==== updaters =====================================
@@ -279,6 +296,34 @@ public class PuzzleSetModel implements IPuzzleSetModel
         }
     };
 
+    private Updater mOnePuzzleSetDbUpdater = new UpdaterSets()
+    {
+        @Nonnull
+        @Override
+        protected Intent createIntent()
+        {
+            return mIntent;
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass() {
+            return LoadOnePuzzleSet.class;
+        }
+
+        @Override
+        protected void handleData(@Nullable Bundle result)
+        {
+            if (result == null)
+            {
+                return;
+            }
+
+            mOnePuzzleSet = result.getParcelable(LoadOnePuzzleSet.BF_PUZZLE_SETS);
+//            hintsCount = result.getInt(LoadHintsTask.BF_HINTS_COUNT);
+        }
+    };
+
     private abstract class UpdaterHints extends Updater
     {
 
@@ -319,7 +364,9 @@ public class PuzzleSetModel implements IPuzzleSetModel
     {
         public @Nonnull Intent mIntent;
 
-        protected Updater(){}
+        protected Updater(){
+
+        }
 
         public void setIntent(@Nonnull Intent mIntent) {
             this.mIntent = mIntent;
@@ -358,6 +405,7 @@ public class PuzzleSetModel implements IPuzzleSetModel
         mPuzzleOneSetUpdater.close();
         mSyncUpdater.close();
         mHintsUpdater.close();
+        mOnePuzzleSetDbUpdater.close();
 
         mSynchronizer.close();
 

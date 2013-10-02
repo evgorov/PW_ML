@@ -182,6 +182,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
                 while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
+                    if(env.ci.isCancelled())
+                        return null;
                     int year = calnow.get(Calendar.YEAR);
                     int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);
@@ -226,6 +228,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
                 while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
+                    if(env.ci.isCancelled())
+                        return null;
                     int year = calnow.get(Calendar.YEAR);
                     int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);

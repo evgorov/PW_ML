@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.przwrd.R;
@@ -211,29 +212,6 @@ public class CrosswordsFragment extends SherlockFragment
         super.onPause();
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState)
-//    {
-//        outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
-//        outState.putSerializable(BF_SETS, mCrosswordFragmentHolder.getMapSets());
-//        outState.putSerializable(BF_PUZZLES, mCrosswordFragmentHolder.getMapPuzzles());
-//        outState.putParcelable(BF_COEFFICIENTS, mCrosswordFragmentHolder.getCoefficients());
-//        super.onSaveInstanceState(outState);
-//    }
-//
-//    @Override
-//    public void onViewStateRestored(Bundle savedInstanceState)
-//    {
-//        if (savedInstanceState != null)
-//        {
-//            mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
-//            mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
-//            mCrosswordFragmentHolder.setMapSets((HashMap<String, List<PuzzleSet>>) savedInstanceState.getSerializable(BF_SETS));
-//            mCrosswordFragmentHolder.setCoefficients((Coefficients) savedInstanceState.getParcelable(BF_COEFFICIENTS));
-//        }
-//        super.onViewStateRestored(savedInstanceState);
-//    }
-
     public void skipProgressBar()
     {
         NavigationActivity.debug("skip");
@@ -367,8 +345,21 @@ public class CrosswordsFragment extends SherlockFragment
     };
 
     @Override
-    public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
+    public void choicePuzzle(@Nonnull String setServerId, @Nonnull final String puzzleServerId)
     {
+
+        mPuzzleSetModel.loadOnePuzzleSetFromDB(setServerId, new IListenerVoid(){
+
+            @Override
+            public void handle() {
+                @Nonnull PuzzleSet puzzleSet = mPuzzleSetModel.getOnePuzzleSet();
+                            @Nonnull Intent intent = OneCrosswordActivity.
+                                    createIntent(mContext, puzzleSet, puzzleServerId,
+                                            mHintsManager.getHintsCount(),
+                                            mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
+                            startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
+            }
+        });
 //        @Nonnull HashMap<String, List<PuzzleSet>> mapSets = mCrosswordFragmentHolder.getMapSets();
 //        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mCrosswordFragmentHolder.getMapPuzzles();
 //
