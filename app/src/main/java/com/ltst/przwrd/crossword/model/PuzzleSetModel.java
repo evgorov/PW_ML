@@ -168,6 +168,17 @@ public class PuzzleSetModel implements IPuzzleSetModel
         if(mIsDestroyed)
             return;
         mSyncUpdater.close();
+        mSynchronizer.close();
+//        mPuzzleSetsDbUpdater.close();
+//        mPuzzleSetsInternetUpdater.close();
+//        mPuzzleTotalSetsInternetUpdater.close();
+//        mPuzzleCurrentSetsUpdater.close();
+//        mBuyPuzzleTotalSetUpdater.close();
+//        mPuzzleOneSetUpdater.close();
+//        mSyncUpdater.close();
+//        mHintsUpdater.close();
+
+
         mOnePuzzleSetDbUpdater.setIntent(LoadOnePuzzleSet.createIntent(setServerId));
         mOnePuzzleSetDbUpdater.update(handler);
     }

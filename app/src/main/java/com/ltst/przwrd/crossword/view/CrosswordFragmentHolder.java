@@ -37,6 +37,7 @@ public class CrosswordFragmentHolder
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
     private @Nonnull HashMap<String, CrosswordSetMonth> mListCrosswordSetMonth;
+    private @Nonnull List<PuzzleSet> mPuzzleSetList;
 
     @Nonnull Coefficients mCoefficients;
 
@@ -48,6 +49,7 @@ public class CrosswordFragmentHolder
         this.mContext = context;
 
         mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
+        mPuzzleSetList = new ArrayList<PuzzleSet>();
 
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
         mCrosswordPanelArchive = new CrosswordPanelArchiveHolder(view);
@@ -128,6 +130,16 @@ public class CrosswordFragmentHolder
         return (mListCrosswordSetMonth.containsKey(key)) ? mListCrosswordSetMonth.get(key) : new CrosswordSetMonth(mContext);
     }
 
+    public PuzzleSet getPuzzleSet(@Nonnull String puzzleSetServerId)
+    {
+        for(@Nonnull PuzzleSet puzzleSet : mPuzzleSetList)
+        {
+            if(puzzleSet.serverId.equals(puzzleSetServerId))
+                return puzzleSet;
+        }
+        return null;
+    }
+
     public boolean isNeedUploadAllPuzzlrSetsFromInternet()
     {
         for(CrosswordSetMonth crosswordSetMonth : mListCrosswordSetMonth.values())
@@ -177,7 +189,7 @@ public class CrosswordFragmentHolder
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
-
+        mPuzzleSetList.addAll(sets);
         for (PuzzleSet set : sets)
         {
             CrosswordPanelData data = extractCrosswordPanelData(set);

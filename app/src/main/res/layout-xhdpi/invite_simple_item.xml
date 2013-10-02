@@ -1,79 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/invite_item_layout"
+        android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/invite_item_bg"
+        >
 
-    <ProgressBar
-            android:id="@+id/invite_item_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            style="?android:attr/progressBarStyleSmall"
+
+    <ImageView
+            android:id="@+id/invite_item_ava"
+            android:layout_height="@dimen/size_avatar"
+            android:layout_width="@dimen/size_avatar"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/invite_empty_ava"
             />
 
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/invite_item_bg">
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
 
+        <TextView
+                android:id="@+id/invite_item_name_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:maxLines="1"
+                android:maxWidth="100dp"
+                android:layout_marginLeft="15dp"
+                style="@style/InviteItemNameText"
 
-        <ImageView
-                android:id="@+id/invite_item_ava"
-                android:layout_height="@dimen/size_avatar"
-                android:layout_width="@dimen/size_avatar"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center_vertical|left"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/invite_empty_ava"
                 />
 
-        <LinearLayout
+        <TextView
+                android:id="@+id/invite_item_surname_textview"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical">
-
-            <TextView
-                    android:id="@+id/invite_item_name_textview"
-                    android:layout_height="wrap_content"
-                    android:layout_width="100dp"
-                    android:maxLines="1"
-                    android:maxWidth="100dp"
-                    android:layout_marginLeft="15dp"
-                    style="@style/InviteItemNameText"
-
-                    />
-
-            <TextView
-                    android:id="@+id/invite_item_surname_textview"
-                    android:layout_height="wrap_content"
-                    android:layout_width="100dp"
-                    android:maxLines="1"
-                    android:maxWidth="100dp"
-                    android:layout_marginLeft="15dp"
-                    style="@style/InviteItemNameText"
-                    />
-        </LinearLayout>
-
-        <View
-                android:layout_height="match_parent"
-                android:layout_width="0dip"
-                android:layout_weight="1"/>
-
-        <Button
-                android:id="@+id/invite_add_btn"
-                android:layout_height="wrap_content"
-                android:layout_width="55dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="30dp"
-                android:background="@drawable/invite_invite_but"/>
-
+                android:layout_width="100dp"
+                android:maxLines="1"
+                android:maxWidth="100dp"
+                android:layout_marginLeft="15dp"
+                style="@style/InviteItemNameText"
+                />
     </LinearLayout>
-</FrameLayout>
+
+    <View
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="1"/>
+
+    <Button
+            android:id="@+id/invite_add_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/invite_invite_but"/>
+</LinearLayout>
