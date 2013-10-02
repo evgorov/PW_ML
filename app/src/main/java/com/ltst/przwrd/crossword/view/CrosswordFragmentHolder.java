@@ -39,8 +39,6 @@ public class CrosswordFragmentHolder
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
     private @Nonnull HashMap<String, CrosswordSetMonth> mListCrosswordSetMonth;
 
-    @Nonnull HashMap<String, List<PuzzleSet>> mMapSets;
-    @Nonnull HashMap<String, List<Puzzle>> mMapPuzzles;
     @Nonnull Coefficients mCoefficients;
 
     public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
@@ -50,9 +48,6 @@ public class CrosswordFragmentHolder
         this.mICrosswordFragment = (ICrosswordFragment) fragment;
         this.mViewCrossword = view;
         this.mContext = context;
-
-        mMapSets = new HashMap<String, List<PuzzleSet>>();
-        mMapPuzzles = new HashMap<String, List<Puzzle>>();
 
         mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
 
@@ -93,25 +88,25 @@ public class CrosswordFragmentHolder
         this.mCoefficients = coefficients;
     }
 
-    public void setMapSets(@Nonnull HashMap<String, List<PuzzleSet>> mMapSets) {
-        this.mMapSets = mMapSets;
-    }
+//    public void setMapSets(@Nonnull HashMap<String, List<PuzzleSet>> mMapSets) {
+//        this.mMapSets = mMapSets;
+//    }
+//
+//    public void setMapPuzzles(@Nonnull HashMap<String, List<Puzzle>> mMapPuzzles) {
+//        this.mMapPuzzles = mMapPuzzles;
+//    }
 
-    public void setMapPuzzles(@Nonnull HashMap<String, List<Puzzle>> mMapPuzzles) {
-        this.mMapPuzzles = mMapPuzzles;
-    }
-
-    @Nonnull
-    public HashMap<String, List<PuzzleSet>> getMapSets()
-    {
-        return mMapSets;
-    }
-
-    @Nonnull
-    public HashMap<String, List<Puzzle>> getMapPuzzles()
-    {
-        return mMapPuzzles;
-    }
+//    @Nonnull
+//    public HashMap<String, List<PuzzleSet>> getMapSets()
+//    {
+//        return mMapSets;
+//    }
+//
+//    @Nonnull
+//    public HashMap<String, List<Puzzle>> getMapPuzzles()
+//    {
+//        return mMapPuzzles;
+//    }
 
     // ================== CROSSWORD PANELS ======================
 
@@ -165,7 +160,14 @@ public class CrosswordFragmentHolder
 
     public boolean isNeedUploadAllPuzzlrSetsFromInternet()
     {
-        return mMapSets.size() == 0;
+        for(CrosswordSetMonth crosswordSetMonth : mListCrosswordSetMonth.values())
+        {
+            if(!crosswordSetMonth.emptyCrosswordDatas())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isNeedUploadCurrentPuzzlrSetsFromInternet()
@@ -176,7 +178,7 @@ public class CrosswordFragmentHolder
         int month = cal.get(Calendar.MONTH)+1;
         int year = cal.get(Calendar.YEAR);
         @Nonnull String key = formatTime(year, month);
-        return !mMapSets.containsKey(key);
+        return !mListCrosswordSetMonth.containsKey(key);
     }
 
     // ================== CROSSWORD PANELS ITEM ======================
@@ -205,39 +207,6 @@ public class CrosswordFragmentHolder
 
     public void fillSet(@Nonnull List<PuzzleSet> sets, @Nonnull HashMap<String, List<Puzzle>> mapPuzzles)
     {
-        // этой функцией я не очень доволен, надо будет обязательно переписать, просто на скорую руку создавал;
-        for(PuzzleSet set : sets)
-        {
-            String key = formatTime(set.year, set.month);
-            List<PuzzleSet> sst = null;
-            if (mMapSets.containsKey(key))
-            {
-                sst = mMapSets.get(key);
-                for(int i=0; i<sst.size(); i++)
-                {
-                    PuzzleSet sett = sst.get(i);
-                    if(sett.serverId.equals(set.serverId))
-                    {
-                        sst.remove(i);
-                        break;
-                    }
-                }
-                mMapSets.remove(key);
-            }
-            if(sst == null)
-            {
-                sst = new ArrayList<PuzzleSet>();
-            }
-            sst.add(set);
-            mMapSets.put(key, sst);
-        }
-
-        for (String key : mapPuzzles.keySet())
-        {
-            if (mMapPuzzles.containsKey(key))
-                mMapPuzzles.remove(key);
-            mMapPuzzles.put(key, mapPuzzles.get(key));
-        }
 
         for (PuzzleSet set : sets)
         {
@@ -290,15 +259,11 @@ public class CrosswordFragmentHolder
             data.mBuyScore = baseScore*data.mTotalCount;
 
             addPanel(data);
-
         }
 
         // сортируем пазлы в архиве;
-        for(List<PuzzleSet> setsort : mMapSets.values())
+        for(PuzzleSet set : sets)
         {
-            if(setsort.size() == 0)
-                continue;
-            PuzzleSet set = setsort.get(0);
             CrosswordPanelData data = extractCrosswordPanelData(set);
             String key = formatTime(data.mYear, data.mMonth);
             @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);

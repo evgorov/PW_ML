@@ -158,8 +158,9 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mNewsModel.updateFromInternet(mRefreshHandler);
             mCoefficientsModel.updateFromInternet(handlerUpdatePuzzleSet);
-            if(mCrosswordFragmentHolder.getMapSets().size() == 0
-                    || mCrosswordFragmentHolder.getMapPuzzles().size() == 0)
+//            if(mCrosswordFragmentHolder.getMapSets().size() == 0
+//                    || mCrosswordFragmentHolder.getMapPuzzles().size() == 0)
+            if(mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
             {
 //                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
                 mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
@@ -210,28 +211,28 @@ public class CrosswordsFragment extends SherlockFragment
         super.onPause();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
-        outState.putSerializable(BF_SETS, mCrosswordFragmentHolder.getMapSets());
-        outState.putSerializable(BF_PUZZLES, mCrosswordFragmentHolder.getMapPuzzles());
-        outState.putParcelable(BF_COEFFICIENTS, mCrosswordFragmentHolder.getCoefficients());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState)
-    {
-        if (savedInstanceState != null)
-        {
-            mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
-            mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
-            mCrosswordFragmentHolder.setMapSets((HashMap<String, List<PuzzleSet>>) savedInstanceState.getSerializable(BF_SETS));
-            mCrosswordFragmentHolder.setCoefficients((Coefficients) savedInstanceState.getParcelable(BF_COEFFICIENTS));
-        }
-        super.onViewStateRestored(savedInstanceState);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState)
+//    {
+//        outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
+//        outState.putSerializable(BF_SETS, mCrosswordFragmentHolder.getMapSets());
+//        outState.putSerializable(BF_PUZZLES, mCrosswordFragmentHolder.getMapPuzzles());
+//        outState.putParcelable(BF_COEFFICIENTS, mCrosswordFragmentHolder.getCoefficients());
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//    @Override
+//    public void onViewStateRestored(Bundle savedInstanceState)
+//    {
+//        if (savedInstanceState != null)
+//        {
+//            mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
+//            mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
+//            mCrosswordFragmentHolder.setMapSets((HashMap<String, List<PuzzleSet>>) savedInstanceState.getSerializable(BF_SETS));
+//            mCrosswordFragmentHolder.setCoefficients((Coefficients) savedInstanceState.getParcelable(BF_COEFFICIENTS));
+//        }
+//        super.onViewStateRestored(savedInstanceState);
+//    }
 
     public void skipProgressBar()
     {
@@ -368,32 +369,32 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
     {
-        @Nonnull HashMap<String, List<PuzzleSet>> mapSets = mCrosswordFragmentHolder.getMapSets();
-        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mCrosswordFragmentHolder.getMapPuzzles();
-
-        @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
-        for (Puzzle puzzle : puzzles)
-        {
-            if (!puzzle.isSolved && puzzle.id == puzzleId)
-            {
-                for (List<PuzzleSet> listPuzzleSet : mapSets.values())
-                {
-                    for (PuzzleSet puzzleSet : listPuzzleSet)
-                    {
-                        if (puzzleSet.serverId.equals(setServerId))
-                        {
-                            @Nonnull Intent intent = OneCrosswordActivity.
-                                    createIntent(mContext, puzzleSet, puzzle.serverId,
-                                            mHintsManager.getHintsCount(),
-                                            mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
-                            startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
-                            return;
-                        }
-                    }
-                }
-                break;
-            }
-        }
+//        @Nonnull HashMap<String, List<PuzzleSet>> mapSets = mCrosswordFragmentHolder.getMapSets();
+//        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mCrosswordFragmentHolder.getMapPuzzles();
+//
+//        @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
+//        for (Puzzle puzzle : puzzles)
+//        {
+//            if (!puzzle.isSolved && puzzle.id == puzzleId)
+//            {
+//                for (List<PuzzleSet> listPuzzleSet : mapSets.values())
+//                {
+//                    for (PuzzleSet puzzleSet : listPuzzleSet)
+//                    {
+//                        if (puzzleSet.serverId.equals(setServerId))
+//                        {
+//                            @Nonnull Intent intent = OneCrosswordActivity.
+//                                    createIntent(mContext, puzzleSet, puzzle.serverId,
+//                                            mHintsManager.getHintsCount(),
+//                                            mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
+//                            startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
+//                            return;
+//                        }
+//                    }
+//                }
+//                break;
+//            }
+//        }
     }
 
     @Override

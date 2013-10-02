@@ -140,5 +140,9 @@ public class CrosswordSetMonth{
         }
     }
 
+    public boolean emptyCrosswordDatas()
+    {
+        return mCrosswordDatas.isEmpty();
+    }
 
 }
