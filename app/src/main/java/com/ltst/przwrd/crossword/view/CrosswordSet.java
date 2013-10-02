@@ -50,7 +50,7 @@ public class CrosswordSet {
 
     private @Nonnull View mRootView;
     private @Nonnull RelativeLayout pMonthBackground;
-    private @Nonnull TextView pMonthText;
+    public @Nonnull TextView pMonthText;
     private @Nonnull LinearLayout pTitleImage;
     private @Nonnull TextView pTitleText;
     private @Nonnull ToggleButton pSwitcher;
@@ -153,6 +153,11 @@ public class CrosswordSet {
             }
         });
 
+    }
+
+    public @Nonnull String getSetServerId()
+    {
+        return mSetServerId;
     }
 
     public @Nonnull View getView()
@@ -277,7 +282,6 @@ public class CrosswordSet {
 
             if(mSetServerId == null)
             {
-//                pBadgeContainer.setVisibility(View.GONE);
                 expandingBadgeContainer(false);
             }
             if(data.mMonth == 0)
@@ -285,8 +289,6 @@ public class CrosswordSet {
             }
             else
             {
-//                DateFormatSymbols symbols = new DateFormatSymbols();
-//                pMonthText.setText(symbols.getMonths()[data.mMonth-1]);
                 pMonthText.setText(mContext.getResources().getStringArray(
                         R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
             }

@@ -32,7 +32,7 @@
                 android:layout_marginBottom="1dp"
                 android:textSize="10sp"
                 style="@style/PuzzlesHintWhiteTextStyle"
-                android:text="Октябрь"
+                android:text="месяц"
                 />
 
         </RelativeLayout>

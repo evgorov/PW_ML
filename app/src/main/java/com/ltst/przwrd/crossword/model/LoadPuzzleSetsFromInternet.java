@@ -171,8 +171,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                NavigationActivity.debug("now:  "+calnow.get(Calendar.MONTH) +" "+calnow.get(Calendar.DAY_OF_MONTH));
-                calnow.add(Calendar.MONTH,2);
+                calnow.add(Calendar.MONTH,1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -181,13 +180,12 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(cal.before(calnow))
+                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
-                    NavigationActivity.debug("set: month "+month);
+                    int year = calnow.get(Calendar.YEAR);
+                    int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);
-                    cal.add(Calendar.MONTH,1);
+                    calnow.add(Calendar.MONTH,-1);
                 }
                 return getFromDatabase(env);
             }
@@ -217,7 +215,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,2);
+                calnow.add(Calendar.MONTH,1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -226,14 +224,13 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(cal.before(calnow))
+                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
+                    int year = calnow.get(Calendar.YEAR);
+                    int month = calnow.get(Calendar.MONTH);
                     getFromServer(sessionKey,year,month,env);
-                    cal.add(Calendar.MONTH,1);
+                    calnow.add(Calendar.MONTH,-1);
                 }
-
                 return getFromDatabase(env);
             }
             else if(volumePuzzle.equals(VOLUME_BUY))
