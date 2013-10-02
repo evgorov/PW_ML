@@ -4,8 +4,7 @@ import android.content.Context;
 
 import javax.annotation.Nonnull;
 
-public class SharedPreferencesValues
-{
+public class SharedPreferencesValues {
     public static final @Nonnull String SP_SESSION_KEY = "sessionKey";
     public static final @Nonnull String SP_FACEBOOK_TOKEN = "facebookToken";
 
@@ -19,40 +18,51 @@ public class SharedPreferencesValues
 
     public static final @Nonnull String SP_NOTIFICATIONS = "notifications";
 
-    public static String getSessionKey(@Nonnull Context context)
-    {
+    public static final @Nonnull String SP_FIRST_LAUNCH = "firstLaunch";
+
+    public static String getSessionKey(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
-        return  helper.getString(SP_SESSION_KEY, NO_SESSION_KEY);
+        return helper.getString(SP_SESSION_KEY, NO_SESSION_KEY);
     }
-    public static boolean getMusicSwitch(@Nonnull Context context){
+
+    public static boolean getMusicSwitch(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
-        return  helper.getBoolean(SP_MUSIC_SWITCH, true);
+        return helper.getBoolean(SP_MUSIC_SWITCH, true);
     }
-    public static boolean getSoundSwitch(@Nonnull Context context){
+
+    public static boolean getSoundSwitch(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
-        return  helper.getBoolean(SP_SOUND_SWITCH,true);
+        return helper.getBoolean(SP_SOUND_SWITCH, true);
     }
-    public static boolean getNotificationsSwitch(@Nonnull Context context){
+
+    public static boolean getNotificationsSwitch(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         return helper.getBoolean(SP_NOTIFICATIONS, false);
     }
 
-    public static void setNotifications(@Nonnull Context context, boolean value)
-    {
+    public static void setNotifications(@Nonnull Context context, boolean value) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         helper.putBoolean(SP_NOTIFICATIONS, value).commit();
     }
 
-    public static void setFacebookToken(@Nonnull Context context, @Nonnull String value)
-    {
+    public static void setFacebookToken(@Nonnull Context context, @Nonnull String value) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         helper.putString(SP_FACEBOOK_TOKEN, value).commit();
     }
 
-    public static String getFacebookToken(@Nonnull Context context)
-    {
+    public static String getFacebookToken(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         return helper.getString(SP_FACEBOOK_TOKEN, null);
+    }
+
+    public static void setFirstLaunchFlag(@Nonnull Context context, boolean value) {
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        helper.putBoolean(SP_FIRST_LAUNCH, value).commit();
+    }
+
+    public static boolean getFirstLaunchFlag(@Nonnull Context context) {
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        return helper.getBoolean(SP_FIRST_LAUNCH, true);
     }
 
 }

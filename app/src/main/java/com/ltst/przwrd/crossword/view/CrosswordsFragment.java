@@ -18,6 +18,7 @@ import com.ltst.przwrd.crossword.model.IPuzzleSetModel;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleSet;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
+import com.ltst.przwrd.login.view.RulesFragment;
 import com.ltst.przwrd.manadges.IManadges;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
@@ -42,8 +43,7 @@ import javax.annotation.Nullable;
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
         ICrosswordFragment,
-        ITouchInterface
-{
+        ITouchInterface {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
@@ -78,8 +78,7 @@ public class CrosswordsFragment extends SherlockFragment
     // ==== Livecycle =================================
 
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         flgOneUpload = false;
         mContext = (Context) activity;
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
@@ -89,14 +88,12 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.crossword_fragment_layout, container, false);
 
         mMenuBackButton = (Button) v.findViewById(R.id.crossword_fragment_header_menu_btn);
         mMenuBackButton.setOnClickListener(this);
-        if(mIFragmentActivity.getIsTablet())
-        {
+        if (mIFragmentActivity.getIsTablet()) {
             mMenuBackButton.setVisibility(View.GONE);
         }
 
@@ -104,32 +101,28 @@ public class CrosswordsFragment extends SherlockFragment
         mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
         mHintsManager = new HintsManager(mContext, this, v);
 
-        mProgressBar =  v.findViewById(R.id.archive_progressBar);
+        mProgressBar = v.findViewById(R.id.archive_progressBar);
         mProgressbarSync = v.findViewById(R.id.crossword_progressbar_sync);
         return v;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK)
-        {
-            switch (requestCode)
-            {
-                case REQUEST_ANSWER_CROSSWORD_SET_ID:
-                {
-                    if(data.hasExtra(OneCrosswordActivity.BF_PUZZLE_SET))
-                    {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_ANSWER_CROSSWORD_SET_ID: {
+                    if (data.hasExtra(OneCrosswordActivity.BF_PUZZLE_SET)) {
                         @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
-                        if(puzzleSetServerId !=null && puzzleSetServerId != Strings.EMPTY)
-                        {
+                        if (puzzleSetServerId != null && puzzleSetServerId != Strings.EMPTY) {
                             CrosswordSetUpdateMember.mPuzzleSetServerId = puzzleSetServerId;
                             CrosswordSetUpdateMember.mNeedUpdate = true;
                         }
                     }
-                }break;
-                default:break;
+                }
+                break;
+                default:
+                    break;
             }
         }
     }
@@ -137,11 +130,16 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onResume() {
         super.onResume();
+        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
+        if (firstLaunch) {
+            @Nonnull Intent intent = RulesFragment.createIntent(mContext);
+            this.startActivity(intent);
+           SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+        }
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressbarSync.setVisibility(View.GONE);
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
@@ -154,32 +152,23 @@ public class CrosswordsFragment extends SherlockFragment
 
         mPuzzleSetModel.updateHints(handlerUpdateHints);
 
-        if(!flgOneUpload)
-        {
+        if (!flgOneUpload) {
             mNewsModel.updateFromInternet(mRefreshHandler);
             mCoefficientsModel.updateFromInternet(handlerUpdatePuzzleSet);
-            if(mCrosswordFragmentHolder.getMapSets().size() == 0
-                    || mCrosswordFragmentHolder.getMapPuzzles().size() == 0)
-            {
+            if (mCrosswordFragmentHolder.getMapSets().size() == 0
+                    || mCrosswordFragmentHolder.getMapPuzzles().size() == 0) {
 //                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
                 mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
 //                flgOneUpload = true;
-            }
-            else
-            {
+            } else {
                 createCrosswordPanel();
                 skipProgressBar();
             }
-        }
-        else
-        {
-            if(CrosswordSetUpdateMember.mNeedUpdate)
-            {
+        } else {
+            if (CrosswordSetUpdateMember.mNeedUpdate) {
                 CrosswordSetUpdateMember.mNeedUpdate = false;
                 updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId);
-            }
-            else
-            {
+            } else {
                 skipProgressBar();
             }
         }
@@ -188,14 +177,12 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         mCoefficientsModel.close();
         mPuzzleSetModel.close();
         mNewsModel.close();
@@ -205,14 +192,12 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         outState.putInt(BF_HINTS_COUNT, mHintsManager.getHintsCount());
         outState.putSerializable(BF_SETS, mCrosswordFragmentHolder.getMapSets());
         outState.putSerializable(BF_PUZZLES, mCrosswordFragmentHolder.getMapPuzzles());
@@ -221,10 +206,8 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onViewStateRestored(Bundle savedInstanceState)
-    {
-        if (savedInstanceState != null)
-        {
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
             mHintsManager.setHintsCount(savedInstanceState.getInt(BF_HINTS_COUNT));
             mCrosswordFragmentHolder.setMapPuzzles((HashMap<String, List<Puzzle>>) savedInstanceState.getSerializable(BF_PUZZLES));
             mCrosswordFragmentHolder.setMapSets((HashMap<String, List<PuzzleSet>>) savedInstanceState.getSerializable(BF_SETS));
@@ -233,14 +216,12 @@ public class CrosswordsFragment extends SherlockFragment
         super.onViewStateRestored(savedInstanceState);
     }
 
-    public void skipProgressBar()
-    {
+    public void skipProgressBar() {
         NavigationActivity.debug("skip");
         mProgressBar.setVisibility(View.GONE);
-        if(!flgOneUpload)
-        {
+        if (!flgOneUpload) {
             NavigationActivity.debug("request inventory");
-            mIManadges.getManadgeHolder().reloadInventory(new IListenerVoid(){
+            mIManadges.getManadgeHolder().reloadInventory(new IListenerVoid() {
                 @Override
                 public void handle() {
                     NavigationActivity.debug("start sync");
@@ -248,9 +229,7 @@ public class CrosswordsFragment extends SherlockFragment
                     mPuzzleSetModel.updateSync(handlerSync);
                 }
             });
-        }
-        else
-        {
+        } else {
             NavigationActivity.debug("start sync");
             mProgressbarSync.setVisibility(View.VISIBLE);
             mPuzzleSetModel.updateSync(handlerSync);
@@ -259,19 +238,16 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
     // ==== Events =================================
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         SoundsWork.interfaceBtnMusic(mContext);
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.crossword_fragment_header_menu_btn:
                 mINavigationDrawerHolder.toogle();
                 break;
@@ -283,105 +259,80 @@ public class CrosswordsFragment extends SherlockFragment
     // =============================================
 
 
-    private void createCrosswordPanel()
-    {
+    private void createCrosswordPanel() {
         @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
-        if(sets != null && mapPuzzles != null)
-        {
+        if (sets != null && mapPuzzles != null) {
             mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
         }
     }
 
-        private IListenerVoid handlerUpdateSetsFromDB = new IListenerVoid()
-    {
+    private IListenerVoid handlerUpdateSetsFromDB = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             createCrosswordPanel();
 
-            if(mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
-            {
+            if (mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet()) {
                 mPuzzleSetModel.updateTotalDataByInternet(handlerUpdateSetsFromServer);
-            }
-            else if(mCrosswordFragmentHolder.isNeedUploadCurrentPuzzlrSetsFromInternet())
-            {
+            } else if (mCrosswordFragmentHolder.isNeedUploadCurrentPuzzlrSetsFromInternet()) {
                 mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
-            }
-            else
-            {
+            } else {
                 mPuzzleSetModel.synchronizePuzzleUserData();
                 skipProgressBar();
             }
         }
     };
 
-    private IListenerVoid handlerUpdateSetsFromServer = new IListenerVoid()
-    {
+    private IListenerVoid handlerUpdateSetsFromServer = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             createCrosswordPanel();
             skipProgressBar();
         }
     };
 
-    private IListenerVoid handlerUpdatePuzzleSet = new IListenerVoid()
-    {
+    private IListenerVoid handlerUpdatePuzzleSet = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             mCrosswordFragmentHolder.setCoefficients(mCoefficientsModel.getCoefficients());
         }
     };
 
-    private IListenerVoid handlerUpdateHints = new IListenerVoid()
-    {
+    private IListenerVoid handlerUpdateHints = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             int hintsCount = mPuzzleSetModel.getHintsCount();
             mHintsManager.setHintsCount(hintsCount);
         }
     };
 
-    private IListenerVoid handlerUpdateCurrentSets = new IListenerVoid()
-    {
+    private IListenerVoid handlerUpdateCurrentSets = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             createCrosswordPanel();
             skipProgressBar();
         }
     };
 
-    private IListenerVoid handlerSync = new IListenerVoid()
-    {
+    private IListenerVoid handlerSync = new IListenerVoid() {
         @Override
-        public void handle()
-        {
+        public void handle() {
             NavigationActivity.debug("end sync!");
             mProgressbarSync.setVisibility(View.GONE);
         }
     };
 
     @Override
-    public void choicePuzzle(@Nonnull String setServerId, long puzzleId)
-    {
+    public void choicePuzzle(@Nonnull String setServerId, long puzzleId) {
         @Nonnull HashMap<String, List<PuzzleSet>> mapSets = mCrosswordFragmentHolder.getMapSets();
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = mCrosswordFragmentHolder.getMapPuzzles();
 
         @Nonnull List<Puzzle> puzzles = mapPuzzles.get(setServerId);
-        for (Puzzle puzzle : puzzles)
-        {
-            if (!puzzle.isSolved && puzzle.id == puzzleId)
-            {
-                for (List<PuzzleSet> listPuzzleSet : mapSets.values())
-                {
-                    for (PuzzleSet puzzleSet : listPuzzleSet)
-                    {
-                        if (puzzleSet.serverId.equals(setServerId))
-                        {
+        for (Puzzle puzzle : puzzles) {
+            if (!puzzle.isSolved && puzzle.id == puzzleId) {
+                for (List<PuzzleSet> listPuzzleSet : mapSets.values()) {
+                    for (PuzzleSet puzzleSet : listPuzzleSet) {
+                        if (puzzleSet.serverId.equals(setServerId)) {
                             @Nonnull Intent intent = OneCrosswordActivity.
                                     createIntent(mContext, puzzleSet, puzzle.serverId,
                                             mHintsManager.getHintsCount(),
@@ -398,12 +349,9 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void purchaseResult(boolean result) {
-        if(result)
-        {
+        if (result) {
             updateCurrentSet();
-        }
-        else
-        {
+        } else {
             skipProgressBar();
         }
     }
@@ -421,7 +369,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void updateOneSet(@Nonnull String puzzleSetServerId) {
-        if(mPuzzleSetModel == null)
+        if (mPuzzleSetModel == null)
             return;
         mProgressBar.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId, new IListenerVoid() {
@@ -445,20 +393,16 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void waitLoader(boolean wait) {
-        if(wait)
-        {
+        if (wait) {
             mProgressBar.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             skipProgressBar();
         }
     }
 
-    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid()
-    {
-        @Override public void handle()
-        {
+    private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid() {
+        @Override
+        public void handle() {
             mNewsHolder.fillNews(mNewsModel.getNews());
         }
     };
@@ -468,8 +412,7 @@ public class CrosswordsFragment extends SherlockFragment
         mNewsHolder.notifySwipe(swipe);
     }
 
-    private static class CrosswordSetUpdateMember
-    {
+    private static class CrosswordSetUpdateMember {
         static @Nonnull String mPuzzleSetServerId;
         static boolean mNeedUpdate;
     }
