@@ -322,8 +322,7 @@ public class OneCrosswordActivity extends SherlockActivity
             loadPuzzle();
         }
 
-        hideProgressBar();
-        showFinalDialog(true);
+        //showFinalDialog(true);
         //fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -852,13 +851,11 @@ public class OneCrosswordActivity extends SherlockActivity
             OneCrosswordActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //mFinalScore.setText(String.valueOf(mBaseScore));
-                    mFinalScore.setText("21311");
+                    mFinalScore.setText(String.valueOf(mBaseScore));
                     mFinalScore.setVisibility(View.VISIBLE);
                     mFinalScore.setAnimation(animForScore);
                     mFinalScore.startAnimation(animForScore);
-                    //mFinalBonus.setText(String.valueOf(mBonusScore));
-                    mFinalBonus.setText("21312");
+                    mFinalBonus.setText(String.valueOf(mBonusScore));
                     mFinalBonus.setVisibility(View.VISIBLE);
                     animForBonus.setStartOffset(1500);
                     mFinalBonus.setAnimation(animForBonus);
