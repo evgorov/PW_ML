@@ -59,7 +59,9 @@ public class CrosswordSetMonth{
         mLinearLayoutFree.setOrientation(LinearLayout.VERTICAL);
     }
 
-    public void addCrosswordSet(@Nonnull CrosswordPanelData data, @Nonnull CrosswordSet view){
+    public void addCrosswordSet(@Nonnull CrosswordSet view)
+    {
+        @Nonnull CrosswordPanelData data = view.getCrosswordPanelData();
         @Nonnull PuzzleSetModel.PuzzleSetType type = data.mType;
 
         if(type == PuzzleSetModel.PuzzleSetType.BRILLIANT){

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by cosic on 12.08.13.
@@ -36,7 +37,6 @@ public class CrosswordFragmentHolder
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
     public @Nonnull CrosswordPanelArchiveHolder mCrosswordPanelArchive;
-    private @Nonnull HashMap<Long, CrosswordSet> mListCrosswordSet;
     private @Nonnull HashMap<String, CrosswordSetMonth> mListCrosswordSetMonth;
 
     @Nonnull HashMap<String, List<PuzzleSet>> mMapSets;
@@ -54,7 +54,6 @@ public class CrosswordFragmentHolder
         mMapSets = new HashMap<String, List<PuzzleSet>>();
         mMapPuzzles = new HashMap<String, List<Puzzle>>();
 
-        mListCrosswordSet = new HashMap<Long, CrosswordSet>();
         mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
 
         mCrosswordPanelCurrent = new CrosswordPanelCurrentHolder(view);
@@ -154,10 +153,10 @@ public class CrosswordFragmentHolder
         }
     }
 
-    private CrosswordSet getCrosswordSet(long id)
-    {
-        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext, mICrosswordFragment);
-    }
+//    private CrosswordSet getCrosswordSet(long id)
+//    {
+//        return (id >= 0 && mListCrosswordSet.containsKey(id)) ? mListCrosswordSet.get(id) : new CrosswordSet(mContext, mICrosswordFragment);
+//    }
 
     private CrosswordSetMonth getCrosswordSetMonth(String key)
     {
@@ -295,11 +294,11 @@ public class CrosswordFragmentHolder
         }
 
         // сортируем пазлы в архиве;
-        for(List<PuzzleSet> sets2 : mMapSets.values())
+        for(List<PuzzleSet> setsort : mMapSets.values())
         {
-            if(sets2.size() == 0)
+            if(setsort.size() == 0)
                 continue;
-            PuzzleSet set = sets2.get(0);
+            PuzzleSet set = setsort.get(0);
             CrosswordPanelData data = extractCrosswordPanelData(set);
             String key = formatTime(data.mYear, data.mMonth);
             @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);
@@ -314,13 +313,18 @@ public class CrosswordFragmentHolder
     {
         String key = formatTime(data.mYear, data.mMonth);
         @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);
-        @Nonnull CrosswordSet crosswordSet = getCrosswordSet(data.mId);
-        crosswordSet.fillPanel(data);
-        if (!mListCrosswordSet.containsKey(data.mId))
+        @Nullable CrosswordSet crosswordSet = crosswordSetMonth.getCrosswordSet(data.mId);
+        if(crosswordSet == null)
         {
-            mListCrosswordSet.put(data.mId, crosswordSet);
-            crosswordSetMonth.addCrosswordSet(data, crosswordSet);
+            crosswordSet = new CrosswordSet(mContext, mICrosswordFragment);
+            crosswordSet.fillPanel(data);
+            crosswordSetMonth.addCrosswordSet(crosswordSet);
         }
+        else
+        {
+            crosswordSet.fillPanel(data);
+        }
+
         if (!mListCrosswordSetMonth.containsKey(key))
         {
             mListCrosswordSetMonth.put(key, crosswordSetMonth);
@@ -357,10 +361,17 @@ public class CrosswordFragmentHolder
         data.mScore = puzzle.score;
         data.mProgress = puzzle.solvedPercent;
         data.mSetId = puzzle.setId;
-        CrosswordSet crosswordSet = getCrosswordSet(data.mSetId);
-        BadgeAdapter adapter = crosswordSet.getAdapter();
-        adapter.addBadgeData(data);
-        adapter.notifyDataSetChanged();
+
+        for(CrosswordSetMonth crosswordSetMonths : mListCrosswordSetMonth.values())
+        {
+            CrosswordSet crosswordSet = crosswordSetMonths.getCrosswordSet(data.mSetId);
+            if(crosswordSet == null)
+                continue;
+            BadgeAdapter adapter = crosswordSet.getAdapter();
+            adapter.addBadgeData(data);
+            adapter.notifyDataSetChanged();
+            break;
+        }
     }
 
 }
