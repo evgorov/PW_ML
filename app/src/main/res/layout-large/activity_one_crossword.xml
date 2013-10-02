@@ -277,53 +277,38 @@
                 android:layout_gravity="center"
                 android:background="@drawable/final_bg">
 
-                <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_height="90dp"
+                    android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginTop="140dp"
-                    android:layout_marginLeft="75dp">
+                    android:layout_marginTop="108dp"
+                    >
 
                     <TextView
                         android:id="@+id/final_score"
                         style="@style/FinalValueScoreText"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxEms="3"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="78dp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/final_score_type"
-                        style="@style/FinalNameScoreText"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="28dp"
-                        android:text="очков" />
+                        android:visibility="invisible"
+                        android:text="00000" />
 
                     <TextView
                         android:id="@+id/final_bonus"
                         style="@style/FinalValueScoreText"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="248dp"
                         android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:maxEms="3"
                         android:singleLine="true"
+                        android:visibility="invisible"
+                        android:text="00000" />
 
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/final_bonus_type"
-                        style="@style/FinalNameScoreText"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_marginLeft="4dp"
-                        android:text="очка" />
-                </LinearLayout>
+                </FrameLayout>
 
 
                 <LinearLayout
@@ -331,7 +316,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="50dp">
 
                     <!--десятки тысяч-->
