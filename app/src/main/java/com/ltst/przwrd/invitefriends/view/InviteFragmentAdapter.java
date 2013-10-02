@@ -73,17 +73,15 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         ImageView imageView = (ImageView) view.findViewById(R.id.invite_item_ava);
         Button inviteBtn = (Button) view.findViewById(R.id.invite_add_btn);
         View layout = view.findViewById(R.id.invite_item_layout);
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.invite_item_progressBar);
-        if (nameView == null || surnameView == null || imageView == null || inviteBtn == null || layout == null || progressBar == null) {
+        if (nameView == null || surnameView == null || imageView == null || inviteBtn == null || layout == null ) {
             throw new NullPointerException("Elements nameView, surnameView or imageView was null, but they must not be"); //$NON-NLS-1$
         }
-        return new ViewHolder(nameView, surnameView, imageView, inviteBtn, layout, progressBar);
+        return new ViewHolder(nameView, surnameView, imageView, inviteBtn, layout);
     }
 
 
     @Override
     protected void appendQuickDataToView(@Nonnull ViewHolder viewHolder, @Nonnull InviteFriendsData quick, @Deprecated @Nonnull View view, @Deprecated int position) {
-        final ProgressBar prBar = viewHolder.progressBar;
         final Button btn = viewHolder.inviteBtn;
         final String id = quick.id;
         final String provider = quick.providerName;
@@ -166,16 +164,14 @@ public class InviteFragmentAdapter extends SlowSourceAdapter<InviteFragmentAdapt
         final @Nonnull ImageView imageView;
         final @Nonnull Button inviteBtn;
         final @Nonnull View layout;
-        final @Nonnull ProgressBar progressBar;
 
         private ViewHolder(@Nonnull TextView nameView, @Nonnull TextView surnameView,
-                           @Nonnull ImageView imageView, @Nonnull Button inviteBtn, @Nonnull View layout, @Nonnull ProgressBar progressBar) {
+                           @Nonnull ImageView imageView, @Nonnull Button inviteBtn, @Nonnull View layout) {
             this.nameView = nameView;
             this.surnameView = surnameView;
             this.imageView = imageView;
             this.inviteBtn = inviteBtn;
             this.layout = layout;
-            this.progressBar = progressBar;
         }
     }
 

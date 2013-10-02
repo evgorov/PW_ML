@@ -6,15 +6,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <ProgressBar
-            android:id="@+id/invite_item_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            style="?android:attr/progressBarStyleSmall"
-            />
-
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
