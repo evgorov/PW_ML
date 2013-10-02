@@ -295,16 +295,6 @@
                         android:text="0" />
 
                     <TextView
-                        android:id="@+id/final_score_type"
-                        style="@style/FinalNameScoreText"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="28dp"
-                        android:text="очков" />
-
-                    <TextView
                         android:id="@+id/final_bonus"
                         style="@style/FinalValueScoreText"
                         android:layout_width="60dp"
@@ -315,14 +305,6 @@
 
                         android:text="0" />
 
-                    <TextView
-                        android:id="@+id/final_bonus_type"
-                        style="@style/FinalNameScoreText"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_marginLeft="4dp"
-                        android:text="очка" />
                 </LinearLayout>
 
 
