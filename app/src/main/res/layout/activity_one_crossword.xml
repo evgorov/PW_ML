@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/gamefield_root_view"
              android:layout_width="match_parent"
              android:layout_height="wrap_content">
@@ -474,4 +475,4 @@
                 style="?android:attr/progressBarStyleLarge"/>
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>
