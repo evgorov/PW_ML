@@ -1,8 +1,8 @@
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/gamefield_root_view"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gamefield_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
@@ -59,163 +59,170 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            <FrameLayout
+            <RelativeLayout
                     android:id="@+id/gamefild_pause_bg"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/forget_bg"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#cc000000"
                     android:clickable="true"
                     android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:visibility="gone">
 
-                <LinearLayout
-                        android:id="@+id/gamefild_pause_alert"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/gamefild_pause_bg"
-                        android:layout_gravity="center_horizontal|top">
+                <FrameLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        >
 
                     <LinearLayout
+                            android:id="@+id/gamefild_pause_alert"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="30dp"
-                            android:layout_gravity="center_vertical|center"
-                            android:background="@drawable/gamefild_pause_progressbar_bg">
-
-                        <TextView
-                                android:id="@+id/gamefield_progressbar_percent"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:paddingLeft="20dp"
-                                style="@style/GamefieldPercentText"
-                                android:text="0"/>
-
-                        <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                style="@style/GamefieldPercentText"
-                                android:text="@string/gamefield_percent"/>
+                            android:orientation="vertical"
+                            android:background="@drawable/gamefild_pause_bg"
+                            android:layout_gravity="center_horizontal|top">
 
                         <LinearLayout
-                                android:id="@+id/gamefield_progress_bg"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="4dp"
-                                android:layout_marginTop="3dp"
+                                android:layout_width="wrap_content"
                                 android:orientation="horizontal"
-                                android:background="@drawable/gamefild_pause_progressbar_bg2">
+                                android:layout_marginTop="30dp"
+                                android:layout_gravity="center_vertical|center"
+                                android:background="@drawable/gamefild_pause_progressbar_bg">
+
+                            <TextView
+                                    android:id="@+id/gamefield_progressbar_percent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    style="@style/GamefieldPercentText"
+                                    android:text="0"/>
+
+                            <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    style="@style/GamefieldPercentText"
+                                    android:text="@string/gamefield_percent"/>
 
                             <LinearLayout
-                                    android:id="@+id/gamefield_progress_fg"
-                                    android:layout_width="20dp"
+                                    android:id="@+id/gamefield_progress_bg"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginTop="3dp"
                                     android:orientation="horizontal"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginLeft="1dp"
-                                    android:layout_marginRight="1dp"
-                                    android:background="@drawable/pause_progressbar"/>
+                                    android:background="@drawable/gamefild_pause_progressbar_bg2">
+
+                                <LinearLayout
+                                        android:id="@+id/gamefield_progress_fg"
+                                        android:layout_width="20dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginLeft="1dp"
+                                        android:layout_marginRight="1dp"
+                                        android:background="@drawable/pause_progressbar"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
-
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="@string/gamefield_pause"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="25dp"
-                            style="@style/GamefieldPauseText"/>
-
-                    <LinearLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/gamefild_pause_textview_bg">
+                        <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/gamefield_pause"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="25dp"
+                                style="@style/GamefieldPauseText"/>
 
                         <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:orientation="vertical">
+                                android:orientation="horizontal"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/gamefild_pause_textview_bg">
 
-                            <TextView
+                            <LinearLayout
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:layout_gravity="center_vertical|left"
-                                    android:layout_marginLeft="40dp"
-                                    android:layout_marginTop="15dp"
-                                    style="@style/GamefieldNearSwitchText"
-                                    android:text="@string/gamefield_sound"/>
+                                    android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_gravity="center_vertical|left"
+                                        android:layout_marginLeft="40dp"
+                                        android:layout_marginTop="15dp"
+                                        style="@style/GamefieldNearSwitchText"
+                                        android:text="@string/gamefield_sound"/>
+
+                                <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_gravity="center_vertical|left"
+                                        android:layout_marginLeft="40dp"
+                                        android:layout_marginTop="26dp"
+                                        style="@style/GamefieldNearSwitchText"
+                                        android:text="@string/gamefield_music"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:layout_gravity="center_vertical|left"
-                                    android:layout_marginLeft="40dp"
-                                    android:layout_marginTop="26dp"
-                                    style="@style/GamefieldNearSwitchText"
-                                    android:text="@string/gamefield_music"/>
+                                    android:orientation="vertical"
+                                    android:layout_marginLeft="80dp">
 
+                                <ToggleButton
+                                        android:id="@+id/pause_sounds_switcher"
+                                        android:layout_width="85dp"
+                                        android:layout_height="43dp"
+                                        android:textOn=""
+                                        android:textOff=""
+                                        android:background="@drawable/menu_switcher"
+                                        android:layout_marginTop="2dp"/>
 
+                                <ToggleButton
+                                        android:id="@+id/pause_music_switcher"
+                                        android:layout_width="85dp"
+                                        android:layout_height="43dp"
+                                        android:textOn=""
+                                        android:textOff=""
+                                        android:background="@drawable/menu_switcher"
+                                        android:layout_marginTop="2dp"/>
+
+                            </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_marginLeft="80dp">
+                                android:layout_gravity="center_horizontal"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="20dp">
 
-                            <ToggleButton
-                                    android:id="@+id/pause_sounds_switcher"
-                                    android:layout_width="85dp"
-                                    android:layout_height="43dp"
-                                    android:textOn=""
-                                    android:textOff=""
-                                    android:background="@drawable/menu_switcher"
-                                    android:layout_marginTop="2dp"/>
+                            <Button
+                                    android:id="@+id/gamefild_menu_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal|bottom"
+                                    android:background="@drawable/gamefild_pause_menu_but"/>
 
-                            <ToggleButton
-                                    android:id="@+id/pause_music_switcher"
-                                    android:layout_width="85dp"
-                                    android:layout_height="43dp"
-                                    android:textOn=""
-                                    android:textOff=""
-                                    android:background="@drawable/menu_switcher"
-                                    android:layout_marginTop="2dp"/>
-
+                            <Button
+                                    android:id="@+id/gamefild_next_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_gravity="center_horizontal|bottom"
+                                    android:background="@drawable/gamefild_pause_next_but"/>
                         </LinearLayout>
                     </LinearLayout>
-
-                    <LinearLayout
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="20dp">
-
-                        <Button
-                                android:id="@+id/gamefild_menu_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal|bottom"
-                                android:background="@drawable/gamefild_pause_menu_but"/>
-
-                        <Button
-                                android:id="@+id/gamefild_next_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="4dp"
-                                android:layout_gravity="center_horizontal|bottom"
-                                android:background="@drawable/gamefild_pause_next_but"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
+                </FrameLayout>
+            </RelativeLayout>
 
             <ImageView
                     android:layout_height="wrap_content"
@@ -287,30 +294,30 @@
                         >
 
 
-                        <TextView
-                                android:id="@+id/final_score"
-                                style="@style/FinalValueScoreText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:layout_marginLeft="58dp"
-                                android:layout_gravity="center_vertical"
-                                android:gravity="center"
-                                android:visibility="invisible"
-                                android:text="00000"/>
+                    <TextView
+                            android:id="@+id/final_score"
+                            style="@style/FinalValueScoreText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:layout_marginLeft="58dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
+                            android:visibility="invisible"
+                            android:text="00000"/>
 
 
-                        <TextView
-                                android:id="@+id/final_bonus"
-                                style="@style/FinalValueScoreText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:layout_marginLeft="180dp"
-                                android:layout_gravity="center_vertical"
-                                android:gravity="center"
-                                android:visibility="invisible"
-                                android:text="00000"/>
+                    <TextView
+                            android:id="@+id/final_bonus"
+                            style="@style/FinalValueScoreText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:layout_marginLeft="180dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
+                            android:visibility="invisible"
+                            android:text="00000"/>
                 </FrameLayout>
 
 
@@ -464,7 +471,8 @@
             android:background="#cc000000"
             android:clickable="true"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            >
 
         <ProgressBar
                 android:layout_width="wrap_content"
