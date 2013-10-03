@@ -92,6 +92,7 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull ImageView mIconImg;
     private @Nonnull Button mRegisterFinishButton;
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
+    private @Nonnull IAutorization mAuthorization;
     private @Nonnull IReloadUserData mIReloadUserData;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
 
@@ -123,6 +124,7 @@ public class RegisterFragment extends SherlockFragment
         super.onAttach(activity);
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
+        mAuthorization = (IAutorization) activity;
         mIReloadUserData = (IReloadUserData) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         mDrawerHolder = (INavigationDrawerHolder)activity;
@@ -388,7 +390,7 @@ public class RegisterFragment extends SherlockFragment
                         mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
                         mBitmapAsyncTask.execute(bitmap);
                     }
-                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                    mAuthorization.onAuthotized();
                     break;
                 case RestParams.SC_FORBIDDEN:
                 {
