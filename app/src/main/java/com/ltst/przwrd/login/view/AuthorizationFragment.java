@@ -132,8 +132,6 @@ public class AuthorizationFragment extends SherlockFragment
                 {
                     // скрываем клавиатуру;
                     hideKeyboard();
-                    // Переключемся на фрагмент сканвордов;
-                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
                     mAuthorization.onAuthotized();
                 }
