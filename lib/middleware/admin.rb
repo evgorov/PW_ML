@@ -111,12 +111,12 @@ module Middleware
       Puzzle.storage(env['redis']).load(params['id']).tap { |o|
         prev_id, current_id = o['set_id'], params['set_id']
         set_puzzle_data(o, params)
-        if prev_id
+        if prev_id && prev_id != ""
           prev_set = PuzzleSet.storage(env['redis']).load(prev_id)
           prev_set['puzzle_ids'].reject!{ |id| id == o.id }
           prev_set.save
         end
-        if current_id
+        if current_id && current_id != ""
           set = PuzzleSet.storage(env['redis']).load(current_id)
           set['puzzle_ids'] |= [o.id]
           set.save
