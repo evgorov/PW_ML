@@ -462,9 +462,10 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)updateArchive:(NSArray *)sets
 {
-    NSLog(@"update archive");
+    NSLog(@"update archive. sets count: %d", sets.count);
     
     float yOffset = archiveView.frame.size.height;
+    /*
     NSMutableArray * subviewToDelete = [NSMutableArray arrayWithCapacity:archiveView.subviews.count];
     for (UIView * subview in archiveView.subviews)
     {
@@ -478,6 +479,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         yOffset -= subview.frame.size.height;
         [subview removeFromSuperview];
     }
+     */
 
     BOOL added = NO;
     for (PuzzleSetData * puzzleSet in sets)
@@ -512,8 +514,9 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [UIView animateWithDuration:0.3 animations:^{
         frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
     }];
+    
     [self resizeView:archiveView newHeight:yOffset animated:YES];
-    NSLog(@"update archive finish");
+    NSLog(@"update archive finished");
 }
 
 -(void)updateBaseScores
@@ -603,7 +606,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             --archiveLastYear;
         }
         
-        NSLog(@"loading archive for %d.%d", archiveLastMonth, archiveLastYear);
+        NSLog(@"loading archive for %02d.%d", archiveLastMonth, archiveLastYear);
         archiveLoading = YES;
 
         APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
@@ -645,7 +648,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }];
             if (puzzleIdsString.length == 0)
             {
-                archiveLoading = NO;
+                double delayInSeconds = 2.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    archiveLoading = NO;
+                });
                 [self updateArchive:archiveSets];
             }
             else
@@ -670,11 +677,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     }
                     
                     [[AppDelegate currentDelegate].managedObjectContext save:nil];
-                    archiveLoading = NO;
+                    double delayInSeconds = 2.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        archiveLoading = NO;
+                    });
                     [self updateArchive:archiveSets];
                 } failCallback:^(NSError *error) {
                     NSLog(@"Error: cannot load puzzles for archive sets!");
-                    archiveLoading = NO;
+                    double delayInSeconds = 2.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        archiveLoading = NO;
+                    });
                     [self updateArchive:archiveSets];
                 }];
                 [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
@@ -692,7 +707,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 return [set1.type compare:set2.type];
             }];
             
-            archiveLoading = NO;
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                archiveLoading = NO;
+            });
             [self updateArchive:sortedSets];
         }];
         [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];

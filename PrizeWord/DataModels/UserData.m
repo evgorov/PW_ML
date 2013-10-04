@@ -80,7 +80,6 @@
             {
                 _createdAt = [dateFormatter dateFromString:dateString];
             }
-            NSLog(@"%@", [dateFormatter stringFromDate:_createdAt]);
         }
 
         _vkProvider = nil;

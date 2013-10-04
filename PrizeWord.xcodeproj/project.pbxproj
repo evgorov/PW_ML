@@ -2980,8 +2980,8 @@
 		F2D62717165DF80900EF6E8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -2994,8 +2994,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
+				PROVISIONING_PROFILE = "12019C17-9B7C-419C-9E61-781449850CD2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "12019C17-9B7C-419C-9E61-781449850CD2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3003,8 +3003,8 @@
 		F2D62718165DF80900EF6E8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: A&P Media CJSC (93RY36MZZR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -3017,8 +3017,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FD74A9D-6F5A-4EDE-9CA1-4C7CD730B0C7";
+				PROVISIONING_PROFILE = "12019C17-9B7C-419C-9E61-781449850CD2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "12019C17-9B7C-419C-9E61-781449850CD2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
