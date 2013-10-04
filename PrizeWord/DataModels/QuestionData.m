@@ -120,19 +120,25 @@
     NSString * question_id = [NSString stringWithFormat:@"%@_%d_%d", puzzle.puzzle_id, [(NSNumber *)[dict objectForKey:@"column"] intValue], [(NSNumber *)[dict objectForKey:@"row"] intValue]];
     
     NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Question" inManagedObjectContext:managedObjectContext];
-    
-    [request setEntity:puzzleEntity];
-    [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(question_id = %@) AND (user_id = %@)", question_id, userId]];
+    NSFetchRequest *request = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"QuestionFetchRequest" substitutionVariables:@{@"QUESTION_ID": question_id}];
     
     NSError *error = nil;
     NSArray *questions = [managedObjectContext executeFetchRequest:request error:&error];
     
-    QuestionData * question;
-    if (questions == nil || questions.count == 0)
+    QuestionData * question = nil;
+    if (questions != nil)
+    {
+        for (QuestionData * q in questions)
+        {
+            if ([q.user_id compare:userId] == NSOrderedSame)
+            {
+                question = q;
+                break;
+            }
+        }
+    }
+    
+    if (question == nil)
     {
         question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:managedObjectContext];
         [question setQuestion_id:question_id];

@@ -42,6 +42,12 @@
         <attribute name="solved" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="puzzle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="questions" inverseEntity="Puzzle" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="question_id"/>
+                <index value="user_id"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="ScoreQuery" representedClassName="ScoreQuery" syncable="YES">
         <attribute name="done" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
@@ -51,6 +57,7 @@
     </entity>
     <fetchRequest name="HintsFetchRequest" entity="HintsQuery" predicateString="user == $USER AND key == $KEY"/>
     <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
+    <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID"/>
     <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND key == $KEY"/>
     <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND done == 0"/>
     <elements>
