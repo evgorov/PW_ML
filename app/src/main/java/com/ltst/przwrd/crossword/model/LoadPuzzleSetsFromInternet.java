@@ -219,23 +219,61 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 calnow.setTimeInMillis(currentTime);
                 calnow.add(Calendar.MONTH,1);
 
-                int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
-                int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.DAY_OF_MONTH, 1);
-                cal.set(Calendar.MONTH, app_release_month);
-                cal.set(Calendar.YEAR, app_release_year);
+                int year = calnow.get(Calendar.YEAR);
+                int month = calnow.get(Calendar.MONTH);
 
-                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
+                List<PuzzleSet> sets = env.dbw.getPuzzleSetsByDate(year, month);
+                List<Puzzle> puzzles = null;
+
+//                NavigationActivity.debug("---------------------------------------------------------- start");
+//                NavigationActivity.debug("set count="+sets.size());
+                for (PuzzleSet puzzleSet : sets)
                 {
-                    if(env.ci.isCancelled())
-                        return null;
-                    int year = calnow.get(Calendar.YEAR);
-                    int month = calnow.get(Calendar.MONTH);
-                    getFromServer(sessionKey,year,month,env);
-                    calnow.add(Calendar.MONTH,-1);
+//                    NavigationActivity.debug("puzzle set: id="+puzzleSet.serverId);
+                    if(!puzzleSet.isBought)
+                        continue;
+
+                    puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
+//                    NavigationActivity.debug("puzzles count="+puzzles.size());
+                    for(Puzzle puzzle : puzzles)
+                    {
+//                        NavigationActivity.debug("puzzle: id="+puzzle.serverId + " - start");
+                        @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(env.context, sessionKey, puzzle.serverId);
+                        if(restPuzzleUserDataHolder == null)
+                            continue;
+
+                        RestPuzzleUserData restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
+
+                        @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+                        @Nullable HashSet<String> solvedQuestionsIdSet = null;
+                        if (restPuzzleUserData != null)
+                        {
+                            solvedQuestions = restPuzzleUserData.getSolvedQuestions();
+                            if (solvedQuestions != null)
+                            {
+                                solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+                            }
+                        }
+
+                        List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(puzzle.questions.size());
+                        for (PuzzleQuestion q : puzzle.questions)
+                        {
+                            RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
+                            questions.add(q);
+                        }
+                        puzzle.questions = questions;
+                        if(puzzle.score == 0)
+                            puzzle.score = restPuzzleUserData.getScore();
+                        if(puzzle.timeLeft < restPuzzleUserData.getTimeLeft())
+                            puzzle.timeLeft = restPuzzleUserData.getTimeLeft();
+
+                        env.dbw.putPuzzle(puzzle);
+//                        NavigationActivity.debug("puzzle: id="+puzzle.serverId + " - put db");
+                    }
                 }
-                return getFromDatabase(env);
+                NavigationActivity.debug("---------------------------------------------------------- end");
+
+                return getFromDatabase(year, month, env);
             }
             else if(volumePuzzle.equals(VOLUME_BUY))
             {
@@ -354,7 +392,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             for (RestPuzzle restPuzzle : listRestPuzzles)
             {
                 if(env.ci.isCancelled()) return null;
-//                NavigationActivity.debug("------- sync ------- "+restPuzzle.getPuzzleId());
                 @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
                 @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(context, sessionKey, puzzleServerId);
                 @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);
@@ -412,18 +449,33 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 
     public static
     @Nullable
-    Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)
+    Bundle getFromDatabase(int year, int month, @Nonnull DbService.DbTaskEnv env)
     {
-        List<PuzzleSet> sets = env.dbw.getPuzzleSets();
+        List<PuzzleSet> sets = env.dbw.getPuzzleSetsByDate(year, month);
         List<Puzzle> puzzles = null;
         @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
         for (PuzzleSet puzzleSet : sets)
         {
-            puzzles = env.dbw.getSolvedPuzzlesBySetId(puzzleSet.id);
+            puzzles = env.dbw.getPuzzlesBySetId(puzzleSet.id);
             mapPuzzles.put(puzzleSet.serverId, puzzles);
         }
         return packToBundle(new ArrayList<PuzzleSet>(sets), mapPuzzles, RestParams.SC_SUCCESS);
     }
+
+//    public static
+//    @Nullable
+//    Bundle getSolvedFromDatabase(@Nonnull DbService.DbTaskEnv env)
+//    {
+//        List<PuzzleSet> sets = env.dbw.getPuzzleSets();
+//        List<Puzzle> puzzles = null;
+//        @Nonnull HashMap<String, List<Puzzle>> mapPuzzles = new HashMap<String, List<Puzzle>>();
+//        for (PuzzleSet puzzleSet : sets)
+//        {
+//            puzzles = env.dbw.getSolvedPuzzlesBySetId(puzzleSet.id);
+//            mapPuzzles.put(puzzleSet.serverId, puzzles);
+//        }
+//        return packToBundle(new ArrayList<PuzzleSet>(sets), mapPuzzles, RestParams.SC_SUCCESS);
+//    }
 
     private void getFromServer(@Nonnull String sessionKey, int year, int month, @Nonnull DbService.DbTaskEnv env)
     {
@@ -431,7 +483,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         if (data != null)
         {
             @Nullable List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, data);
-            if(sets == null) return;
+            if(sets == null)
+                return;
             env.dbw.putPuzzleTotalSetList(sets);
         }
     }
@@ -456,6 +509,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
             }
         }
+
         List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(questionList.size());
         for (RestPuzzleQuestion restQ : questionList)
         {

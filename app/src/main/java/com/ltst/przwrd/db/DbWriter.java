@@ -1,9 +1,11 @@
 package com.ltst.przwrd.db;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ltst.przwrd.manadges.Purchase;
+import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
@@ -203,6 +205,20 @@ public class DbWriter extends  DbReader implements IDbWriter
                         return;
                     }
 
+//                    NavigationActivity.debug("-------------------------------------------------------");
+//                    NavigationActivity.debug("puzzleId = " + existingPuzzle.id);
+//                    List<PuzzleQuestion> questions = getQuestionsByPuzzleId(existingPuzzle.id);
+//                    for(PuzzleQuestion question: questions)
+//                    {
+//                        NavigationActivity.debug(
+//                                "id = "+question.id
+//                                        +" column="+question.column+" row="+question.row
+//                                        +" answerPosition="+question.answerPosition+" isAnswered="+question.isAnswered
+//                                        +" questionText="+question.questionText+" answer="+question.answer
+//                        );
+//                    }
+//                    NavigationActivity.debug("-------------------------------------------------------");
+
                     int questionIndex = 0;
                     for (ContentValues contentValues : questionCv)
                     {
@@ -210,10 +226,13 @@ public class DbWriter extends  DbReader implements IDbWriter
                         if (existingQuestion == null)
                             continue;
 
+                        contentValues.put(ColsPuzzleQuestions.PUZZLE_ID, existingPuzzle.id);
                         int rows2 = mDb.update(TNAME_PUZZLE_QUESTIONS, contentValues,
-                                ColsPuzzleQuestions.PUZZLE_ID + "=" + existingQuestion.puzzleId + " AND " +
-                                ColsPuzzleQuestions.COLUMN + "=" + existingQuestion.column + " AND "
-                                + ColsPuzzleQuestions.ROW + "=" + existingQuestion.row, null);
+                                ColsPuzzleQuestions.PUZZLE_ID   + "=" + existingPuzzle.id + " AND " +
+                                ColsPuzzleQuestions.COLUMN      + "=" + existingQuestion.column + " AND " +
+                                ColsPuzzleQuestions.ROW         + "=" + existingQuestion.row  + " AND " +
+                                ColsPuzzleQuestions.IS_ANSWERED + "=" + "0" , null);
+
                         questionIndex ++;
                     }
                 }

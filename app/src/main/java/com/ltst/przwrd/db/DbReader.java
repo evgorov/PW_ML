@@ -237,6 +237,16 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
+    public List<PuzzleSet> getPuzzleSetsByDate(int year, int month) {
+        final Cursor cursor = mDb.query(TNAME_PUZZLE_SETS, FIELDS_P_PUZZLE_SETS,
+                ColsPuzzleSets.YEAR + " = " + year + " AND " +
+                ColsPuzzleSets.MONTH + " = " + month, null, null, null, null, null);
+        @Nullable List<PuzzleSet> set = createTypedListByCursor(cursor, mPuzzleSetCreator);
+        return set;
+    }
+
+    @Nullable
+    @Override
     public List<Puzzle> getPuzzles(List<String> serverIds)
     {
         int size = serverIds.size();

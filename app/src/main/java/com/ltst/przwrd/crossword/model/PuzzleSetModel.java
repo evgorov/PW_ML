@@ -110,6 +110,8 @@ public class PuzzleSetModel implements IPuzzleSetModel
     {
         if(mIsDestroyed)
             return;
+        mSyncUpdater.close();
+        mSynchronizer.close();
         @Nonnull Intent intent = LoadPuzzleSetsFromInternet.createBuyCrosswordSetIntent(mSessionKey, setServerId, receiptData, signature);
         mBuyPuzzleTotalSetUpdater.setIntent(intent);
         mBuyPuzzleTotalSetUpdater.update(handler);
