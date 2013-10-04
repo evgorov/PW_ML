@@ -107,7 +107,8 @@ public class SocialLoginActivity extends SherlockActivity
 //            Log.d(NavigationActivity.LOG_TAG, "SocialLogin PARSE URL = "+url);
             if(url.startsWith(RestParams.URL_VK_TOKEN) || url.startsWith(RestParams.URL_FB_TOKEN))
             {
-                if(!url.contains("error=")){
+                if(!url.contains("error="))
+                {
 //                    String[] auth = Auth.parseRedirectUrl(url);
                     String[] auth;
                     boolean isVK = false;
@@ -152,7 +153,10 @@ public class SocialLoginActivity extends SherlockActivity
                         }
                     });
                 }
-                else {
+                else
+                {
+                    Intent intent = new Intent();
+                    setResult(SherlockActivity.RESULT_OK, intent);
                     finish();
                 }
             }
@@ -192,16 +196,6 @@ public class SocialLoginActivity extends SherlockActivity
 
             @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
             mSessionKey = sessionKey;
-            SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(getBaseContext());
-            if(sessionKey != null)
-            {
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
-            }
-            else
-            {
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-            }
-            spref.commit();
         }
     }
 

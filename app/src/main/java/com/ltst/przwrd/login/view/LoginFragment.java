@@ -14,6 +14,8 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.przwrd.app.IBcConnectorOwner;
+import com.ltst.przwrd.app.SharedPreferencesHelper;
+import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.view.CrosswordsFragment;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
@@ -23,6 +25,7 @@ import com.ltst.przwrd.sounds.SoundsWork;
 import org.omich.velo.bcops.client.IBcConnector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static android.view.View.OnClickListener;
 
@@ -117,17 +120,26 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
             switch (requestCode)
             {
                 case REQUEST_LOGIN_FB:
-                {
-                    //успешно авторизовались в facebook
-                    mAuthorization.onAuthotized();
-                }
-                break;
                 case REQUEST_LOGIN_VK:
                 {
-                    //успешно авторизовались в vkontakte
+                    //успешно авторизовались в facebook или vkontakte;
+
+                    if(data.hasExtra(SocialLoginActivity.BF_SESSION_KEY))
+                    {
+                        @Nullable String sessionKey = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+                        if(sessionKey != null && !sessionKey.isEmpty())
+                        {
+                            spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
+                        }
+                        else
+                        {
+                            spref.erase(SharedPreferencesValues.SP_SESSION_KEY);
+                        }
+                        spref.commit();
+                    }
                     mAuthorization.onAuthotized();
                 }
-                break;
                 default:
                     break;
             }
