@@ -45,11 +45,6 @@ public class CrosswordsFragment extends SherlockFragment
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
-//    public static final @Nonnull String BF_SETS = FRAGMENT_ID + ".allSets";
-//    public static final @Nonnull String BF_PUZZLES = FRAGMENT_ID + ".allPuzzles";
-//    public static final @Nonnull String BF_COEFFICIENTS = FRAGMENT_ID + ".coefficients";
-//    public static final @Nonnull String BF_HINTS_COUNT = FRAGMENT_ID + ".hintsCount";
-
     private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 500;
 
     private @Nonnull Context mContext;
