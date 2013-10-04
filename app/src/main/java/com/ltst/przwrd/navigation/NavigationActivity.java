@@ -98,6 +98,7 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
+    public final static int REQUEST_RULES = 5;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull IBcConnector mBcConnector;
@@ -290,14 +291,12 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
-//                case REQUEST_LOGIN_VK:
-//                case REQUEST_LOGIN_FB:
-//                    SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
-//                    String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
-//                    String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
-//                    mUserDataModel.setProvider(requestCode == REQUEST_LOGIN_VK ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER);
-//                    mUserDataModel.mergeAccounts(sessionKey1, sessionKey2, mTaskHandlerMergeAccounts);
-//                    break;
+                case REQUEST_RULES:
+                {
+                    reloadUserData();
+                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                }
+                break;
                 default:
                     break;
             }
@@ -316,6 +315,13 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mDrawerMenu.mFacebookSwitcher.setChecked(false);
                     mDrawerMenu.mFacebookSwitcher.setEnabled(true);
                 }
+                case REQUEST_RULES:
+                {
+                    reloadUserData();
+                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+                }
+                break;
+
                 default:
                     break;
             }
@@ -608,7 +614,21 @@ public class NavigationActivity extends SherlockFragmentActivity
             mDrawerMenu.mNotificationSwitcher.setChecked(true);
         }
 //        mGcmHelper.onAuthorized(null);
-        reloadUserData();
+
+        // Если запуск первый, то стартуем обучалку;
+        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
+        if (firstLaunch)
+        {
+            @Nonnull Intent intent = RulesFragment.createIntent(mContext);
+            this.startActivityForResult(intent, REQUEST_RULES);
+            SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+        }
+        else
+        {
+            reloadUserData();
+            selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        }
+
         if (mIsTablet)
             lockDrawerOpened();
     }

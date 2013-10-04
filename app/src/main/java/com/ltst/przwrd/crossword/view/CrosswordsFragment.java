@@ -131,12 +131,12 @@ public class CrosswordsFragment extends SherlockFragment
     @Override
     public void onResume() {
         super.onResume();
-        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
-        if (firstLaunch) {
-            @Nonnull Intent intent = RulesFragment.createIntent(mContext);
-            this.startActivity(intent);
-           SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
-        }
+//        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
+//        if (firstLaunch) {
+//            @Nonnull Intent intent = RulesFragment.createIntent(mContext);
+//            this.startActivity(intent);
+//           SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+//        }
     }
 
     @Override

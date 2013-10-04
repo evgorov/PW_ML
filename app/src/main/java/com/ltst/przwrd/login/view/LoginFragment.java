@@ -119,14 +119,12 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 case REQUEST_LOGIN_FB:
                 {
                     //успешно авторизовались в facebook
-                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     mAuthorization.onAuthotized();
                 }
                 break;
                 case REQUEST_LOGIN_VK:
                 {
                     //успешно авторизовались в vkontakte
-                    mFragmentHolder.selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                     mAuthorization.onAuthotized();
                 }
                 break;
