@@ -510,12 +510,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
         [archiveView addSubview:puzzleSetView];
     }
     
-    UIView * frame = [archiveView.subviews objectAtIndex:1];
-    [UIView animateWithDuration:0.3 animations:^{
-        frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
-    }];
-    
-    [self resizeView:archiveView newHeight:yOffset animated:YES];
+    if (!added) {
+        archiveLoading = NO;
+        [self loadArchive];
+    }
+    else
+    {
+        UIView * frame = [archiveView.subviews objectAtIndex:1];
+        [UIView animateWithDuration:0.3 animations:^{
+            frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
+        }];
+        
+        [self resizeView:archiveView newHeight:yOffset animated:YES];
+    }
     NSLog(@"update archive finished");
 }
 
@@ -648,7 +655,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }];
             if (puzzleIdsString.length == 0)
             {
-                double delayInSeconds = 2.0;
+                double delayInSeconds = 1.0;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                     archiveLoading = NO;
@@ -677,7 +684,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     }
                     
                     [[AppDelegate currentDelegate].managedObjectContext save:nil];
-                    double delayInSeconds = 2.0;
+                    double delayInSeconds = 1.0;
                     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                         archiveLoading = NO;
@@ -685,7 +692,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     [self updateArchive:archiveSets];
                 } failCallback:^(NSError *error) {
                     NSLog(@"Error: cannot load puzzles for archive sets!");
-                    double delayInSeconds = 2.0;
+                    double delayInSeconds = 1.0;
                     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                         archiveLoading = NO;
@@ -707,7 +714,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 return [set1.type compare:set2.type];
             }];
             
-            double delayInSeconds = 2.0;
+            double delayInSeconds = 1.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 archiveLoading = NO;

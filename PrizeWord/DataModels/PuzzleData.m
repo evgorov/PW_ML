@@ -28,6 +28,7 @@
 @dynamic score;
 @dynamic questions;
 @dynamic puzzleSet;
+@dynamic etag;
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
@@ -147,16 +148,23 @@
 -(void)synchronize
 {
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        if (response.statusCode != 200)
+        if (response.statusCode == 304)
+        {
+            NSLog(@"puzzle %@ not modified", self.puzzle_id);
+        }
+        else if (response.statusCode != 200)
         {
             NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         }
         else
         {
+            NSString * etag = [[response allHeaderFields] objectForKey:@"Etag"];
+            self.etag = etag;
+            
             NSString * receivedString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
             receivedString = [receivedString substringWithRange:NSMakeRange(1, receivedString.length - 2)];
             receivedString = [receivedString stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
-            NSLog(@"puzzle %@ synchronization success: %@", self.puzzle_id, receivedString);
+            NSLog(@"puzzle %@ synchronization success", self.puzzle_id);
             SBJsonParser * parser = [SBJsonParser new];
             NSDictionary * data = [parser objectWithString:receivedString];
             NSArray * solvedData = [data objectForKey:@"solved_questions"];
@@ -224,6 +232,7 @@
             
             if (needUpdateServer)
             {
+                self.etag = @"";
                 NSMutableArray * solvedQuestions = [NSMutableArray new];
                 for (QuestionData * question in self.questions)
                 {
@@ -236,7 +245,7 @@
                 NSString * dataString = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
                 
                 APIRequest * putRequest = [APIRequest putRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id]  successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                    NSLog(@"put puzzle %@: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+//                    NSLog(@"put puzzle %@: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
                 } failCallback:^(NSError *error) {
                     NSLog(@"puz puzzle %@ failed: %@", self.puzzle_id, error.description);
                 }];
@@ -249,6 +258,9 @@
     } failCallback:^(NSError *error) {
         NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, error.description);
     }];
+    if (self.etag != nil) {
+        [request.headers setObject:self.etag forKey:@"If-None-Match"];
+    }
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
     [request.params setObject:self.puzzle_id forKey:@"id"];
     [request runUsingCache:NO silentMode:YES];

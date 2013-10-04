@@ -20,6 +20,7 @@
 @implementation APIRequest
 
 @synthesize params = _params;
+@synthesize headers = _headers;
 
 static NSMutableSet * apiRequests = nil;
 static NSMutableDictionary * apiCache = nil;
@@ -38,6 +39,7 @@ static NSMutableDictionary * apiCache = nil;
         successCallback = success;
         failCallback = fail;
         _params = [NSMutableDictionary new];
+        _headers = [NSMutableDictionary new];
         request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:command relativeToURL:[NSURL URLWithString:SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:30];
         request.HTTPMethod = httpMethod;
         receivedData = [NSMutableData new];
@@ -91,6 +93,10 @@ static NSMutableDictionary * apiCache = nil;
 
 -(void)prepareRequest
 {
+    for (NSString * key in self.headers) {
+        [request setValue:[self.headers objectForKey:key] forHTTPHeaderField:key];
+    }
+    
     if ([request.HTTPMethod compare:@"GET"] == NSOrderedSame)
     {
         NSMutableString * paramsString = [NSMutableString new];
@@ -226,7 +232,7 @@ static NSMutableDictionary * apiCache = nil;
 #pragma mark NSURLConnectionDataDelegate
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    NSLog(@"didReceiveData");
+//    NSLog(@"didReceiveData");
     [receivedData appendData:data];
 }
 
@@ -294,13 +300,13 @@ static NSMutableDictionary * apiCache = nil;
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     httpResponse = (NSHTTPURLResponse *)response;
-    NSLog(@"didReceiveResponse %d %@", httpResponse.statusCode, response.description);
+//    NSLog(@"didReceiveResponse %d %@", httpResponse.statusCode, response.description);
     [receivedData setLength:0];
 }
 
 -(void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
-    NSLog(@"didSendBodyData");
+//    NSLog(@"didSendBodyData");
 }
 
 @end

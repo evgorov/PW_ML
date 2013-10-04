@@ -26,6 +26,7 @@ typedef void(^FailCallback)(NSError * error);
 }
 
 @property (nonatomic, retain) NSMutableDictionary * params;
+@property (nonatomic, retain) NSMutableDictionary * headers;
 
 +(APIRequest *)getRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;
 +(APIRequest *)postRequest:(NSString *)command successCallback:(SuccessCallback)successCallback failCallback:(FailCallback)failCallback;

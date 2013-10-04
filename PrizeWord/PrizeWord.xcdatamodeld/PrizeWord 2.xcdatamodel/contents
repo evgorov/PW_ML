@@ -7,6 +7,7 @@
         <attribute name="user" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Puzzle" representedClassName="PuzzleData" syncable="YES">
+        <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" attributeType="Integer 16" minValueString="0" defaultValueString="20" syncable="YES"/>
         <attribute name="issuedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -54,7 +55,7 @@
     <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND done == 0"/>
     <elements>
         <element name="HintsQuery" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Puzzle" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="Puzzle" positionX="0" positionY="0" width="128" height="225"/>
         <element name="PuzzleSet" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Question" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ScoreQuery" positionX="0" positionY="0" width="128" height="105"/>

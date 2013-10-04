@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSNumber * score;
 @property (nonatomic, retain) NSSet *questions;
+@property (nonatomic, retain) NSString *etag;
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
