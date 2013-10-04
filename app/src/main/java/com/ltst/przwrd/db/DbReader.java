@@ -341,6 +341,12 @@ public class DbReader implements IDbReader
                         return row;
                     if (row < 0 && col < 0)
                         return -1;
+                    if (row > 0 && col > 0)
+                        return 1;
+                    if (row < 0 && col > 0)
+                        return -1;
+                    if (row > 0 && col < 0)
+                        return 1;
                     else return 1;
                 }
             });

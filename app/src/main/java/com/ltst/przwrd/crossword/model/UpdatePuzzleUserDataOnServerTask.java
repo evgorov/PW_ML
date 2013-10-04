@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.przwrd.R;
+import com.ltst.przwrd.db.DbService;
 import com.ltst.przwrd.rest.IRestClient;
 import com.ltst.przwrd.rest.RestClient;
 import com.ltst.przwrd.rest.RestPuzzleUserData;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.omich.velo.bcops.BcTaskHelper;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 import org.springframework.http.HttpStatus;
@@ -18,12 +18,13 @@ import org.springframework.http.HttpStatus;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class UpdatePuzzleUserDataOnServerTask implements IBcTask
+public class UpdatePuzzleUserDataOnServerTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "UpdatePuzzleUserDataOnServerTask.sessionKey";
     public static final @Nonnull String BF_PUZZLE_ID = "UpdatePuzzleUserDataOnServerTask.puzzleId";
@@ -50,7 +51,7 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
 
     @Nullable
     @Override
-    public Bundle execute(@Nonnull BcTaskEnv bcTaskEnv)
+    public Bundle execute(@Nonnull DbService.DbTaskEnv bcTaskEnv)
     {
         Bundle extras = bcTaskEnv.extras;
         if (extras == null)
@@ -59,7 +60,7 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
         }
         @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
         @Nullable String puzzleId = extras.getString(BF_PUZZLE_ID);
-        @Nullable ArrayList<PuzzleQuestion> questions = extras.getParcelableArrayList(BF_QUESTIONS);
+        @Nullable ArrayList<PuzzleQuestion> puzzleQuestions = extras.getParcelableArrayList(BF_QUESTIONS);
         int timeLeft = extras.getInt(BF_TIMELEFT);
         int score = extras.getInt(BF_SCORE);
 
@@ -76,9 +77,41 @@ public class UpdatePuzzleUserDataOnServerTask implements IBcTask
             }
         }
         else
-        if (sessionKey!= null && puzzleId!= null && questions != null)
+        if (sessionKey!= null && puzzleId!= null && puzzleQuestions != null)
         {
-            String jsonPuzzleUserData = parseJsonUserData(questions, puzzleId, timeLeft, score);
+            @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder =
+                    LoadOnePuzzleFromInternet.loadPuzzleUserData(bcTaskEnv.context, sessionKey, puzzleId);
+            if(restPuzzleUserDataHolder != null)
+            {
+                RestPuzzleUserData restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
+                @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+                @Nullable HashSet<String> solvedQuestionsIdSet = null;
+                if (restPuzzleUserData != null)
+                {
+                    solvedQuestions = restPuzzleUserData.getSolvedQuestions();
+                    if (solvedQuestions != null)
+                    {
+                        solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+                    }
+                }
+
+                List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(puzzleQuestions.size());
+                for (PuzzleQuestion q : puzzleQuestions)
+                {
+                    RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
+                    questions.add(q);
+                }
+                puzzleQuestions.clear();
+                puzzleQuestions = new ArrayList<PuzzleQuestion>(questions);
+                Puzzle puzzle = bcTaskEnv.dbw.getPuzzleByServerId(puzzleId);
+                if (puzzle != null)
+                {
+                    puzzle.questions = puzzleQuestions;
+                    bcTaskEnv.dbw.putPuzzle(puzzle);
+                }
+            }
+
+            String jsonPuzzleUserData = parseJsonUserData(puzzleQuestions, puzzleId, timeLeft, score);
             try
             {
                 IRestClient client = RestClient.create(bcTaskEnv.context);
