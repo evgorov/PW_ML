@@ -91,7 +91,10 @@ public class PuzzleUserDataSynchronizer
     private void addPuzzleIdsList(@Nonnull List<String> puzzleIds)
     {
         if(puzzleIds.isEmpty())
+        {
+            mPreferencesHelper.erase(SP_NOT_UPDATED_PUZZLE_IDS).commit();
             return;
+        }
         StringBuffer sb = new StringBuffer();
         String id = puzzleIds.get(0);
         sb.append(id);
