@@ -25,6 +25,7 @@
 #import "FISoundEngine.h"
 #import "PrizewordStoreObserver.h"
 #import "UserDataManager.h"
+#import "DataManager.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -616,138 +617,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
         NSLog(@"loading archive for %02d.%d", archiveLastMonth, archiveLastYear);
         archiveLoading = YES;
 
-        APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"archive loaded");
-            NSMutableArray * sets = [NSMutableArray new];
-            NSMutableDictionary * puzzleIdToSet = [NSMutableDictionary new];
-            SBJsonParser * parser = [SBJsonParser new];
-            NSArray * data = [parser objectWithData:receivedData];
-            NSMutableString * puzzleIdsString = [[NSMutableString alloc] initWithCapacity:1024];
-            for (NSDictionary * setData in data)
-            {
-                PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
-                [sets addObject:puzzleSet];
-                NSArray * puzzleIds = [setData objectForKey:@"puzzles"];
-                for (NSString * puzzleId in puzzleIds)
-                {
-                    PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
-                    if (puzzle == nil && puzzleSet.bought.boolValue)
-                    {
-                        if (puzzleIdsString.length != 0)
-                        {
-                            [puzzleIdsString appendString:@","];
-                        }
-                        [puzzleIdsString appendString:puzzleId];
-                        [puzzleIdToSet setObject:puzzleSet forKey:puzzleId];
-                    }
-                    else if (puzzle != nil)
-                    {
-                        [puzzleSet addPuzzlesObject:puzzle];
-                        [puzzle synchronize];
-                    }
-                }
-            }
-            NSArray * archiveSets = [sets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                PuzzleSetData * set1 = obj1;
-                PuzzleSetData * set2 = obj2;
-                
-                return [set1.type compare:set2.type];
-            }];
-            if (puzzleIdsString.length == 0)
-            {
-                double delayInSeconds = 1.0;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    archiveLoading = NO;
-                });
-                [self updateArchive:archiveSets];
-            }
-            else
-            {
-                NSLog(@"loading user_puzzles: %@", puzzleIdsString);
-                APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                    NSLog(@"user_puzzles loaded");
-                    
-                    NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
-                    for (NSDictionary * puzzleData in puzzlesData)
-                    {
-                        PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
-                        if (puzzle != nil)
-                        {
-                            PuzzleSetData * puzzleSet = [puzzleIdToSet objectForKey:puzzle.puzzle_id];
-                            if (puzzleSet != nil)
-                            {
-                                [puzzleIdToSet removeObjectForKey:puzzle.puzzle_id];
-                                [puzzleSet addPuzzlesObject:puzzle];
-                            }
-                        }
-                    }
-                    
-                    [[AppDelegate currentDelegate].managedObjectContext save:nil];
-                    double delayInSeconds = 1.0;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        archiveLoading = NO;
-                    });
-                    [self updateArchive:archiveSets];
-                } failCallback:^(NSError *error) {
-                    NSLog(@"Error: cannot load puzzles for archive sets!");
-                    double delayInSeconds = 1.0;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        archiveLoading = NO;
-                    });
-                    [self updateArchive:archiveSets];
-                }];
-                [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [puzzlesRequest.params setObject:puzzleIdsString forKey:@"ids"];
-                [puzzlesRequest runUsingCache:YES silentMode:YES];
-            }
-        } failCallback:^(NSError *error) {
-            NSLog(@"Error: cannot load month sets!");
-            
-            NSArray * sets = [PuzzleSetData puzzleSetsForMonth:archiveLastMonth year:archiveLastYear];
-            NSArray * sortedSets = [sets sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                PuzzleSetData * set1 = obj1;
-                PuzzleSetData * set2 = obj2;
-                
-                return [set1.type compare:set2.type];
-            }];
-            
-            double delayInSeconds = 1.0;
+        [[DataManager sharedManager] fetchArchiveSetsForMonth:archiveLastMonth year:archiveLastYear completion:^(NSArray *data, NSError *error) {
+            NSLog(@"fetch result");
+            double delayInSeconds = 0.3;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 archiveLoading = NO;
+                [self loadArchive];
             });
-            [self updateArchive:sortedSets];
-        }];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:[NSNumber numberWithInt:archiveLastMonth] forKey:@"month"];
-        [request.params setObject:[NSNumber numberWithInt:archiveLastYear] forKey:@"year"];
-        [request.params setObject:@"short" forKey:@"mode"];
-        [request runUsingCache:YES silentMode:YES];
-    }
-/*
-        APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            [self updateArchive:receivedData];
-            archiveLoading = NO;
-            if (archiveNeedLoading)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self loadArchive];
-                });
+            if (data != nil) {
+                [self updateArchive:data];
             }
-        } failCallback:^(NSError *error) {
-            NSLog(@"archive error: %@", error.description);
-            archiveLoading = NO;
         }];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:[NSNumber numberWithInt:archiveLastMonth] forKey:@"month"];
-        [request.params setObject:[NSNumber numberWithInt:archiveLastYear] forKey:@"year"];
-        [request.params setObject:@"full" forKey:@"mode"];
-        [request runUsingCache:YES silentMode:YES];
     }
-*/
 }
 
 -(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product
@@ -865,6 +747,22 @@ const int TAG_DYNAMIC_VIEWS = 101;
         archiveNeedLoading = YES;
         archiveLastMonth = [GlobalData globalData].currentMonth;
         archiveLastYear = [GlobalData globalData].currentYear;
+
+        float yOffset = archiveView.frame.size.height;
+        NSMutableArray * subviewToDelete = [NSMutableArray arrayWithCapacity:archiveView.subviews.count];
+        for (UIView * subview in archiveView.subviews)
+        {
+            if (subview.tag == TAG_DYNAMIC_VIEWS)
+            {
+                [subviewToDelete addObject:subview];
+            }
+        }
+        for (UIView * subview in subviewToDelete)
+        {
+            yOffset -= subview.frame.size.height;
+            [subview removeFromSuperview];
+        }
+        [self resizeView:archiveView newHeight:yOffset animated:YES];
     }
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];

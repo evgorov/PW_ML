@@ -57,6 +57,8 @@
     </entity>
     <fetchRequest name="HintsFetchRequest" entity="HintsQuery" predicateString="user == $USER AND key == $KEY"/>
     <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
+    <fetchRequest name="PuzzlesByIdFetchRequest" entity="Puzzle" predicateString="puzzle_id == $PUZZLE_ID AND user_id == $user_id"/>
+    <fetchRequest name="PuzzleSetsFetchRequest" entity="PuzzleSet" predicateString="month == $MONTH AND year == $YEAR AND user_id == $USER_ID"/>
     <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID"/>
     <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND key == $KEY"/>
     <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND done == 0"/>

@@ -344,6 +344,7 @@ static PrizewordStoreObserver * storeObserver = nil;
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [__managedObjectContext setUndoManager:[NSUndoManager new]];
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return __managedObjectContext;
