@@ -191,6 +191,7 @@ var Puzzle = Backbone.Model.extend({
   initialize: function(){
 
     if(!this.get('author')) this.set('author', 'Аноним');
+    if(!this.get('set_name')) this.set('set_name', this.get('set_id'));
 
     this.field = new Field({
       questions: this.get('questions'),
@@ -551,6 +552,8 @@ var Puzzles = Backbone.Collection.extend({
   url: '/questions',
   comparator: false,
   parse: function(response) {
+      this.currentPage = response.current_page;
+      this.totalPages = response.total_pages;
       return response.puzzles;
   }
 });
@@ -561,7 +564,7 @@ var PuzzlesView = Backbone.View.extend({
       var t = '<tr>' +
               '<td><%= id %></td>' +
               '<td><%= name %></td>' +
-              '<td><%= set_id %></td>' +
+              '<td><%= set_name %></td>' +
               '<td><%= author %></td>' +
               '<td><%= created_at %></td>' +
               '<td><button class="btn btn-small" role="edit-puzzle" data-id="<%= id %>">Редактировать</button></td>' +
@@ -574,8 +577,9 @@ var PuzzlesView = Backbone.View.extend({
     'click [role="pagination"] a': 'selectPage'
   },
 
-  initialize: function(){
+  initialize: function(options){
     this.collection.on('reset', this.render, this);
+    this.dependentCollection = options.dependentCollection;
     this.collection.fetch();
   },
 
@@ -599,7 +603,7 @@ var PuzzlesView = Backbone.View.extend({
   editPuzzle: function(e){
       var id = $(e.target).attr('data-id'),
           puzzle = this.collection.get(id);
-      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
+      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); this.dependentCollection.fetch(); }, this));
       var puzzleView = new PuzzleView({ model: puzzle });
       puzzleView.show();
   },
@@ -907,9 +911,10 @@ var PuzzleSetsView = Backbone.View.extend({
     'click [role="add-set"]': 'addNewSet'
   },
 
-  initialize: function(){
+  initialize: function(options){
     this.$el.attr('role', 'sets');
     this.collection.on('reset', this.render, this);
+    this.dependentCollection = options.dependentCollection;
 
     $('[role="sets-datepicker"]').datepicker({
       format: 'MM yyyy',
@@ -941,6 +946,7 @@ var PuzzleSetsView = Backbone.View.extend({
   addSet: function(set, editing){
     this.$el.find('[role="empty-set"]').remove();
     var view = new PuzzleSetView({ model: set });
+    set.on('sync', function(){ this.dependentCollection.fetch() }, this);
     if(editing === true) view.editing = true;
     this.$el.find('[role="sets-container"]').append(view.render().el);
   },
@@ -1221,10 +1227,10 @@ $(function(){
   usersView = new UsersView({ el: $('[role="users"]')[0], collection: users });
 
   puzzles = new Puzzles();
-  puzzlesView = new PuzzlesView({ el: $('[role="puzzles"]')[0], collection: puzzles });
+  puzzlesView = new PuzzlesView({ el: $('[role="puzzles"]')[0], collection: puzzles, dependentCollection: puzzleSets });
 
   puzzleSets = new PuzzleSets();
-  puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]')[0], collection: puzzleSets});
+  puzzleSetsView = new PuzzleSetsView({ el: $('[role="sets"]')[0], collection: puzzleSets, dependentCollection: puzzles });
 
   dashboardView = new DashboardView({ el: $('[role="dashboard"]')[0] });
 

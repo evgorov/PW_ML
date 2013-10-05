@@ -91,7 +91,7 @@ class BasicModel
   def collection_for_key(key, page = 1)
     page = 1 if page == 0
     # this should be done with by: 'nosort' but buggix is not in all versions of redis
-    ids = @storage.zrevrange(key, (page - 1) * PER_PAGE, page * PER_PAGE - 1)
+    ids = @storage.zrevrange(key, (page - 1) * self.class::PER_PAGE, page * self.class::PER_PAGE - 1)
     data_list = case ids.size
                 when 0; []
                 when 1; [@storage.get(ids.first)]

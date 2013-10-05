@@ -100,6 +100,7 @@ module Middleware
       if current_id
         set = PuzzleSet.storage(env['redis']).load(current_id)
         set['puzzle_ids'] |= [puzzle.id]
+        puzzle['set_name'] = set['name']
         set.save
       end
 
@@ -119,6 +120,7 @@ module Middleware
         if current_id && current_id != ""
           set = PuzzleSet.storage(env['redis']).load(current_id)
           set['puzzle_ids'] |= [o.id]
+          o['set_name'] = set['name']
           set.save
         end
       }.save.to_json
@@ -126,7 +128,14 @@ module Middleware
 
     get '/questions' do
       authorize_editor!
-      { 'puzzles' => Puzzle.storage(env['redis']).all }.to_json
+      puzzles = Puzzle.storage(env['redis'])
+      page = params[:page].to_i
+      page = 1 if page == 0
+      {
+        users: puzzles.all(page),
+        total_pages: (puzzles.size.to_f / Puzzle::PER_PAGE).ceil,
+        'puzzles' => puzzles.all(page)
+      }.to_json
     end
 
     get '/sets' do
@@ -150,6 +159,7 @@ module Middleware
       authorize_admin!
       PuzzleSet.storage(env['redis']).load(params['id']).tap { |o|
         set_puzzle_set_data(o, params)
+        o['puzzles'].each{ |p| p['set_name'] = o['name']; p.save }
       }.save.to_json
     end
 
