@@ -46,7 +46,7 @@ class UserData < BasicModel
   def merge!(other)
     case(other)
     when UserData
-      result = other.dup.merge(self.to_hash)
+      result = other.to_hash.deep_merge(self.to_hash)
 
       # merge friends
       result.to_hash.keys.grep(/_friends/).each do |k|
@@ -65,6 +65,7 @@ class UserData < BasicModel
         end
       end
       result['solved'], result['month_score'] = solved, score
+
       self.merge!(result.to_hash)
     when Hash
       # force storing 'password' field with []=
