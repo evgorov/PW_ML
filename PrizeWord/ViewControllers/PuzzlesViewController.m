@@ -466,22 +466,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     NSLog(@"update archive. sets count: %d", sets.count);
     
     float yOffset = archiveView.frame.size.height;
-    /*
-    NSMutableArray * subviewToDelete = [NSMutableArray arrayWithCapacity:archiveView.subviews.count];
-    for (UIView * subview in archiveView.subviews)
-    {
-        if (subview.tag == TAG_DYNAMIC_VIEWS)
-        {
-            [subviewToDelete addObject:subview];
-        }
-    }
-    for (UIView * subview in subviewToDelete)
-    {
-        yOffset -= subview.frame.size.height;
-        [subview removeFromSuperview];
-    }
-     */
-
     BOOL added = NO;
     for (PuzzleSetData * puzzleSet in sets)
     {
@@ -626,7 +610,9 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 [self loadArchive];
             });
             if (data != nil) {
-                [self updateArchive:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self updateArchive:data];
+                });
             }
         }];
     }

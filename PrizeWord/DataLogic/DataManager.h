@@ -14,6 +14,8 @@ typedef void(^ArrayDataFetchCallback)(NSArray * data, NSError * error);
 
 +(DataManager *)sharedManager;
 
+- (void)cancelAll;
+
 - (void)fetchArchiveSetsForMonth:(int)month year:(int)year completion:(ArrayDataFetchCallback)callback;
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
 

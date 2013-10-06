@@ -44,6 +44,17 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [backgroundOperationQueue cancelAllOperations];
+    backgroundOperationQueue = nil;
+}
+
+- (void)cancelAll
+{
+    [backgroundOperationQueue cancelAllOperations];
+}
+
 - (void)fetchArchiveSetsForMonth:(int)month year:(int)year completion:(ArrayDataFetchCallback)callback
 {
     NSBlockOperation * operation = [NSBlockOperation new];
