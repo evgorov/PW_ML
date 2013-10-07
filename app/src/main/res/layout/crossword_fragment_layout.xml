@@ -32,17 +32,18 @@
             android:text="@string/puzzless_hint_actionbar_title"
             />
 
+        <ProgressBar
+            android:id="@+id/crossword_progressbar_sync"
+            android:layout_alignParentRight="true"
+            android:layout_margin="4dp"
+            android:visibility="visible"
+            android:layout_gravity="center_vertical|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </com.ltst.przwrd.crossword.view.BackFrameLayout>
 
     <!-- ================================= NEWS ================================================== -->
-    <ProgressBar
-        android:id="@+id/crossword_progressbar_sync"
-        android:layout_alignParentRight="true"
-        android:layout_margin="4dp"
-        style="?android:attr/progressBarStyleSmall"
-        android:visibility="visible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <ScrollView
         android:layout_below="@+id/crossword_fragment_header_menu_cnt"
