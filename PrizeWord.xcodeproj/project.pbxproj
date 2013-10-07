@@ -13,6 +13,13 @@
 		6B32E7E817E82270007AE3F9 /* HintsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B32E7E717E82270007AE3F9 /* HintsQuery.m */; };
 		6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */; };
 		6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC7991771FBEC003D57B6 /* Security.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6B43157718029571007BE826 /* FramedBlockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B43157618029571007BE826 /* FramedBlockCell.m */; };
+		6B43157E1802AB14007BE826 /* frame_border_bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B4315781802AB14007BE826 /* frame_border_bottom@2x.png */; };
+		6B43157F1802AB14007BE826 /* frame_border_bottom@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B4315791802AB14007BE826 /* frame_border_bottom@2x~ipad.png */; };
+		6B4315801802AB14007BE826 /* frame_border_middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B43157A1802AB14007BE826 /* frame_border_middle@2x.png */; };
+		6B4315811802AB14007BE826 /* frame_border_middle@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B43157B1802AB14007BE826 /* frame_border_middle@2x~ipad.png */; };
+		6B4315821802AB14007BE826 /* frame_border_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B43157C1802AB14007BE826 /* frame_border_top@2x.png */; };
+		6B4315831802AB14007BE826 /* frame_border_top@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B43157D1802AB14007BE826 /* frame_border_top@2x~ipad.png */; };
 		6B9227C1180043A7004E1505 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C0180043A7004E1505 /* DataManager.m */; };
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
@@ -617,6 +624,14 @@
 		6B32E7E717E82270007AE3F9 /* HintsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintsQuery.m; path = PrizeWord/DataModels/HintsQuery.m; sourceTree = "<group>"; };
 		6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		6B3CC7991771FBEC003D57B6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6B43157518029571007BE826 /* FramedBlockCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FramedBlockCell.h; path = Views/FramedBlockCell.h; sourceTree = "<group>"; };
+		6B43157618029571007BE826 /* FramedBlockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FramedBlockCell.m; path = Views/FramedBlockCell.m; sourceTree = "<group>"; };
+		6B4315781802AB14007BE826 /* frame_border_bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_bottom@2x.png"; sourceTree = "<group>"; };
+		6B4315791802AB14007BE826 /* frame_border_bottom@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_bottom@2x~ipad.png"; sourceTree = "<group>"; };
+		6B43157A1802AB14007BE826 /* frame_border_middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_middle@2x.png"; sourceTree = "<group>"; };
+		6B43157B1802AB14007BE826 /* frame_border_middle@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_middle@2x~ipad.png"; sourceTree = "<group>"; };
+		6B43157C1802AB14007BE826 /* frame_border_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_top@2x.png"; sourceTree = "<group>"; };
+		6B43157D1802AB14007BE826 /* frame_border_top@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame_border_top@2x~ipad.png"; sourceTree = "<group>"; };
 		6B9227BC17FEA676004E1505 /* PrizeWord 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PrizeWord 2.xcdatamodel"; sourceTree = "<group>"; };
 		6B9227BF180043A7004E1505 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = DataLogic/DataManager.h; sourceTree = "<group>"; };
 		6B9227C0180043A7004E1505 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = DataLogic/DataManager.m; sourceTree = "<group>"; };
@@ -1602,6 +1617,12 @@
 		F286E320167C6B9500FF5E83 /* shared */ = {
 			isa = PBXGroup;
 			children = (
+				6B4315781802AB14007BE826 /* frame_border_bottom@2x.png */,
+				6B4315791802AB14007BE826 /* frame_border_bottom@2x~ipad.png */,
+				6B43157A1802AB14007BE826 /* frame_border_middle@2x.png */,
+				6B43157B1802AB14007BE826 /* frame_border_middle@2x~ipad.png */,
+				6B43157C1802AB14007BE826 /* frame_border_top@2x.png */,
+				6B43157D1802AB14007BE826 /* frame_border_top@2x~ipad.png */,
 				F268D56716F6D9A900F0FA0F /* switch_disabled@2x~ipad.png */,
 				F268D56816F6D9A900F0FA0F /* switch_disabled@2x.png */,
 				F279AE54168959F200424267 /* switch_on_bg~ipad.png */,
@@ -1884,6 +1905,8 @@
 				F268D53016E8E8D000F0FA0F /* PrizeWordButton.m */,
 				F268D57416F9A9F500F0FA0F /* NewsPageControl.h */,
 				F268D57516F9A9F500F0FA0F /* NewsPageControl.m */,
+				6B43157518029571007BE826 /* FramedBlockCell.h */,
+				6B43157618029571007BE826 /* FramedBlockCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2780,6 +2803,12 @@
 				F2840CDA171C2A700003F1F2 /* puzzles_news_bg.png in Resources */,
 				F2840CDB171C2A700003F1F2 /* puzzles_news_bg~ipad.png in Resources */,
 				6B18D275177DBAB000E3A4C5 /* background_music.mp3 in Resources */,
+				6B43157E1802AB14007BE826 /* frame_border_bottom@2x.png in Resources */,
+				6B43157F1802AB14007BE826 /* frame_border_bottom@2x~ipad.png in Resources */,
+				6B4315801802AB14007BE826 /* frame_border_middle@2x.png in Resources */,
+				6B4315811802AB14007BE826 /* frame_border_middle@2x~ipad.png in Resources */,
+				6B4315821802AB14007BE826 /* frame_border_top@2x.png in Resources */,
+				6B4315831802AB14007BE826 /* frame_border_top@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2884,6 +2913,7 @@
 				6B9227C1180043A7004E1505 /* DataManager.m in Sources */,
 				6B9227C418004DD4004E1505 /* APIClient.m in Sources */,
 				6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */,
+				6B43157718029571007BE826 /* FramedBlockCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2965,8 +2995,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 446EDF17F6BF42DA89FC1924 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -2982,8 +3012,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12019C17-9B7C-419C-9E61-781449850CD2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "12019C17-9B7C-419C-9E61-781449850CD2";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2992,8 +3022,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 446EDF17F6BF42DA89FC1924 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pavel Skorynin (V76DLXMLF3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/third-party\"",
@@ -3009,8 +3039,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12019C17-9B7C-419C-9E61-781449850CD2";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "12019C17-9B7C-419C-9E61-781449850CD2";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

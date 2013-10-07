@@ -603,6 +603,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
         [[DataManager sharedManager] fetchArchiveSetsForMonth:archiveLastMonth year:archiveLastYear completion:^(NSArray *data, NSError *error) {
             NSLog(@"fetch result");
+            [[AppDelegate currentDelegate].managedObjectContext save:nil];
             double delayInSeconds = 0.3;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
