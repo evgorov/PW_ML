@@ -13,20 +13,15 @@
 
 @class FISound;
 
-@interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate, UIScrollViewDelegate>
+@interface PuzzlesViewController : UIViewController<SKProductsRequestDelegate, EventListenerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 {
-    IBOutlet UIView *newsView;
-    IBOutlet UILabel *newsLbl1;
-    IBOutlet UILabel *newsLbl2;
-    IBOutlet UILabel *newsLbl3;
+    __weak IBOutlet UITableView *tableView;
+    
     IBOutlet UIView *currentPuzzlesView;
     IBOutlet UIView *hintsView;
     IBOutlet UIView *archiveView;
     IBOutlet UIView *setToBuyView;
     
-    IBOutlet UIPageControl *newsPaginator;
-    IBOutlet UIScrollView *newsScrollView;
-
     IBOutlet UILabel *puzzlesViewCaption;
     IBOutlet UIImageView *puzzlesTimeLeftBg;
     IBOutlet UILabel *puzzlesTimeLeftCaption;

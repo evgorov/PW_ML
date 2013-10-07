@@ -18,6 +18,7 @@ typedef void(^ArrayDataFetchCallback)(NSArray * data, NSError * error);
 
 - (void)fetchArchiveSetsForMonth:(int)month year:(int)year completion:(ArrayDataFetchCallback)callback;
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
+- (void)fetchNewsWithCompletion:(ArrayDataFetchCallback)callback;
 
 - (NSArray *)localGetArchiveSetsForMonth:(int)month year:(int)year;
 - (NSArray *)localGetPuzzles:(NSArray *)ids;

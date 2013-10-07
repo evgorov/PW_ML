@@ -26,6 +26,7 @@
 #import "PrizewordStoreObserver.h"
 #import "UserDataManager.h"
 #import "DataManager.h"
+#import "NewsCell.h"
 
 NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
 
@@ -39,17 +40,14 @@ const int TAG_STATIC_VIEWS = 0;
 const int TAG_DYNAMIC_VIEWS = 101;
 
 @interface PuzzlesViewController ()
-
--(void)updateNews;
+{
+    BOOL showNews;
+}
 
 -(void)handleBadgeClick:(id)sender;
 -(void)handleBuyClick:(id)sender;
 -(void)handleShowMoreClick:(id)sender;
 -(void)activateBadges:(PuzzleSetView *)puzzleSetView;
-
--(void)handleNewsPrev:(id)sender;
--(void)handleNewsNext:(id)sender;
--(void)handleNewsTap:(id)sender;
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize;
 -(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView;
@@ -75,21 +73,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     [super viewDidLoad];
     
+    tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile"]];
+    [tableView registerNib:[UINib nibWithNibName:@"NewsCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"newsCell"];
+    
+    showNews = YES;
+    
     self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen woth puzzles");
     puzzlesViewCaption.text = @"Сканворды за ...";   
     
-    UISwipeGestureRecognizer * newsRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsPrev:)];
-    newsRightGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    UISwipeGestureRecognizer * newsLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsNext:)];
-    newsLeftGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    UITapGestureRecognizer * newsTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleNewsTap:)];
-    [newsScrollView setGestureRecognizers:[NSArray arrayWithObjects:newsLeftGestureRecognizer, newsRightGestureRecognizer, newsTapGestureRecognizer, nil]];
-
-    [self addSimpleView:newsView];
+/*
     [self addFramedView:currentPuzzlesView];
     [self addFramedView:hintsView];
     [self addFramedView:archiveView];
-    
+*/
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
@@ -105,13 +101,10 @@ const int TAG_DYNAMIC_VIEWS = 101;
     archiveLastYear = [GlobalData globalData].currentYear;
     archiveLoading = NO;
     archiveNeedLoading = YES;
-    
-    [self updateNews];
 }
 
 - (void)viewDidUnload
 {
-    newsView = nil;
     currentPuzzlesView = nil;
     hintsView = nil;
     archiveView = nil;
@@ -119,14 +112,9 @@ const int TAG_DYNAMIC_VIEWS = 101;
     btnBuyHint2 = nil;
     btnBuyHint3 = nil;
     setToBuyView = nil;
-    newsPaginator = nil;
-    newsScrollView = nil;
     lblHintsLeft = nil;
     puzzlesViewCaption = nil;
     
-    newsLbl1 = nil;
-    newsLbl2 = nil;
-    newsLbl3 = nil;
     puzzlesTimeLeftBg = nil;
     puzzlesTimeLeftCaption = nil;
     
@@ -145,7 +133,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_ME_UPDATED];
     
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
     [[GlobalData globalData] loadMe];
     [[GlobalData globalData] loadCoefficients];
     [[GlobalData globalData] loadMonthSets];
@@ -156,8 +144,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     
     NSLog(@"puzzles view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
     
-    [self updateNews];
-    scrollView.delegate = self;
+//    scrollView.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -179,14 +166,14 @@ const int TAG_DYNAMIC_VIEWS = 101;
         [productsRequest cancel];
         productsRequest = nil;
     }
-    scrollView.delegate = nil;
+//    scrollView.delegate = nil;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    scrollView.contentOffset = CGPointZero;
+//    scrollView.contentOffset = CGPointZero;
 }
 
 #pragma mark EventListenerDelegate
@@ -194,7 +181,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     if (event.type == EVENT_PRODUCT_BOUGHT)
     {
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
         
         SKPaymentTransaction * paymentTransaction = event.data;
         NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
@@ -231,7 +218,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     else if (event.type == EVENT_PRODUCT_ERROR)
     {
         NSLog(@"EVENT_PRODUCT_ERROR");
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
         NSError * error = event.data;
         UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
@@ -239,7 +226,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     else if (event.type == EVENT_PRODUCT_FAILED)
     {
         NSLog(@"EVENT_PRODUCT_FAILED");
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
         SKPaymentTransaction * paymentTransaction = event.data;
         if (paymentTransaction.error != nil)
         {
@@ -323,7 +310,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }
     else if (event.type == EVENT_MONTH_SETS_UPDATED)
     {
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
         [self updateMonthSets:[GlobalData globalData].monthSets];
     }
     else if (event.type == EVENT_COEFFICIENTS_UPDATED)
@@ -337,58 +324,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }
 }
 
-#pragma mark update news, update and bought puzzles
--(void)updateNews
-{
-    APIRequest * newsUpdateRequest = [APIRequest getRequest:@"service_messages" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        if (response.statusCode == 200)
-        {
-            NSLog(@"news update success");
-            
-            NSDictionary * messages = [[SBJsonParser new] objectWithData:receivedData];
-            NSMutableArray * messagesArray = [NSMutableArray new];
-            if ([messages objectForKey:@"message1"] != (id)[NSNull null])
-            {
-                [messagesArray addObject:[messages objectForKey:@"message1"]];
-            }
-            if ([messages objectForKey:@"message2"] != (id)[NSNull null])
-            {
-                [messagesArray addObject:[messages objectForKey:@"message2"]];
-            }
-            if ([messages objectForKey:@"message3"] != (id)[NSNull null])
-            {
-                [messagesArray addObject:[messages objectForKey:@"message3"]];
-            }
-            newsPaginator.numberOfPages = messagesArray.count;
-            if (messagesArray.count == 0)
-            {
-                [self resizeView:newsView newHeight:0 animated:YES];
-            }
-            if (messagesArray.count >= 1)
-            {
-                newsLbl1.text = [messagesArray objectAtIndex:0];
-            }
-            if (messagesArray.count >= 2)
-            {
-                newsLbl2.text = [messagesArray objectAtIndex:1];
-            }
-            if (messagesArray.count >= 3)
-            {
-                newsLbl3.text = [messagesArray objectAtIndex:2];
-            }
-            [newsScrollView setContentSize:CGSizeMake(newsPaginator.numberOfPages * newsScrollView.frame.size.width, newsScrollView.frame.size.height)];
-        }
-        else
-        {
-            NSLog(@"news update failed: %d", response.statusCode);
-        }
-    } failCallback:^(NSError *error) {
-        NSLog(@"news update error: %@", error.description);
-    }];
-    [newsUpdateRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [newsUpdateRequest runUsingCache:YES silentMode:YES];
-}
-
+#pragma mark update and bought puzzles
 -(void)updateMonthSets:(NSArray *)monthSets
 {
     BOOL hasUnbought = NO;
@@ -439,7 +375,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [UIView animateWithDuration:0.3 animations:^{
         frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
     }];
-    [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
+//    [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
     
     // days left set-up
     NSCalendar * calendar = [NSCalendar currentCalendar];
@@ -506,7 +442,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             frame.frame = CGRectIntegral(CGRectMake(frame.frame.origin.x, frame.frame.origin.y, frame.frame.size.width, yOffset - frame.frame.origin.y * 2));
         }];
         
-        [self resizeView:archiveView newHeight:yOffset animated:YES];
+//        [self resizeView:archiveView newHeight:yOffset animated:YES];
     }
     NSLog(@"update archive finished");
 }
@@ -639,19 +575,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
 {
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
     NSLog(@"buy set: %@", puzzleSetView.puzzleSetData.set_id);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", puzzleSetView.puzzleSetData.set_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         NSLog(@"set bought! %@", puzzleSetView.puzzleSetData.set_id);
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
         if (response.statusCode == 200)
         {
-            [self showActivityIndicator];
+//            [self showActivityIndicator];
             APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
                 NSLog(@"puzzles loaded!");
                 [buySetSound play];
-                [self hideActivityIndicator];
+//                [self hideActivityIndicator];
                 
                 NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
                 for (NSDictionary * puzzleData in puzzlesData)
@@ -675,7 +611,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             } failCallback:^(NSError *error) {
                 [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
                 NSLog(@"puzzles error: %@", error.description);
-                [self hideActivityIndicator];
+//                [self hideActivityIndicator];
             }];
             
             [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
@@ -701,7 +637,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
     } failCallback:^(NSError *error) {
         NSLog(@"set error: %@", error.description);
-        [self hideActivityIndicator];
+//        [self hideActivityIndicator];
     }];
     [request.params setObject:puzzleSetView.puzzleSetData.set_id forKey:@"id"];
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
@@ -722,7 +658,9 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (IBAction)handleNewsCloseClick:(id)sender
 {
-    [self resizeView:newsView newHeight:0 animated:YES];
+    showNews = NO;
+    [tableView beginUpdates];
+    [tableView endUpdates];
 }
 
 -(void)handleBadgeClick:(id)sender
@@ -749,7 +687,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             yOffset -= subview.frame.size.height;
             [subview removeFromSuperview];
         }
-        [self resizeView:archiveView newHeight:yOffset animated:YES];
+//        [self resizeView:archiveView newHeight:yOffset animated:YES];
     }
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
@@ -759,7 +697,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     PuzzleSetView * setView = (PuzzleSetView *)((UIButton *)sender).superview;
     NSLog(@"buy click: %@", setView.puzzleSetData.set_id);
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
     
     if (setView.puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
@@ -793,47 +731,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
 }
 
-- (IBAction)handleNewsPaginatorChange:(id)sender
-{
-    [newsScrollView setContentOffset:CGPointMake(newsPaginator.currentPage * newsScrollView.frame.size.width, 0) animated:YES];
-}
-
--(void)handleNewsPrev:(id)sender
-{
-    if (newsPaginator.currentPage == 0)
-    {
-        return;
-    }
-    newsPaginator.currentPage = newsPaginator.currentPage - 1;
-    [self handleNewsPaginatorChange:newsPaginator];
-}
-
--(void)handleNewsNext:(id)sender
-{
-    if (newsPaginator.currentPage == newsPaginator.numberOfPages - 1)
-    {
-        return;
-    }
-    newsPaginator.currentPage = newsPaginator.currentPage + 1;
-    [self handleNewsPaginatorChange:newsPaginator];
-}
-
--(void)handleNewsTap:(id)sender
-{
-    if (newsPaginator.currentPage == newsPaginator.numberOfPages - 1)
-    {
-        newsPaginator.currentPage = 0;
-        [self handleNewsPaginatorChange:newsPaginator];
-        return;
-    }
-    newsPaginator.currentPage = newsPaginator.currentPage + 1;
-    [self handleNewsPaginatorChange:newsPaginator];
-}
 
 - (IBAction)handleBuyHints:(id)sender
 {
     UIButton * button = sender;
-    [self showActivityIndicator];
+//    [self showActivityIndicator];
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:[hintsProducts objectAtIndex:button.tag]]];
 }
 
@@ -841,7 +743,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView
 {
-    [self hideActivityIndicator];
+//    [self hideActivityIndicator];
     
     UIView * blockView = puzzleSetView.superview;
     CGSize oldSize = puzzleSetView.frame.size;
@@ -885,7 +787,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }];
         }
     }
-    [self resizeView:blockView newHeight:(blockView.frame.size.height + delta) animated:YES];
+//    [self resizeView:blockView newHeight:(blockView.frame.size.height + delta) animated:YES];
 }
 
 -(void)activateBadges:(PuzzleSetView *)puzzleSetView
@@ -921,6 +823,47 @@ const int TAG_DYNAMIC_VIEWS = 101;
     {
         archiveNeedLoading = NO;
     }
+}
+
+#pragma mark UITableViewDataSource and UITableViewDelegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        if (!showNews)
+        {
+            return 0;
+        }
+        return [AppDelegate currentDelegate].isIPad ? 136 : 110;
+    }
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        NewsCell * cell = [tableView dequeueReusableCellWithIdentifier:@"newsCell"];
+        [cell.btnClose addTarget:self action:@selector(handleNewsCloseClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell setup];
+        return cell;
+    }
+    return nil;
 }
 
 @end

@@ -12,7 +12,9 @@
 #import "SBJson.h"
 #import "UserData.h"
 #import "PuzzleData.h"
+#import "NewsData.h"
 #import "AppDelegate.h"
+#import "AFHTTPRequestOperation.h"
 
 @interface DataManager()
 {
@@ -235,7 +237,102 @@
     
     [fetchOperation setThreadPriority:0.3];
     [backgroundOperationQueue addOperation:fetchOperation];
+}
+
+- (void)fetchNewsWithCompletion:(ArrayDataFetchCallback)callback
+{
+    NSBlockOperation * operation = [NSBlockOperation new];
+    __block __weak NSBlockOperation * fetchOperation = operation;
     
+    [fetchOperation addExecutionBlock:^{
+        NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestTemplateForName:@"NewsFetchRequest"];
+        NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        __block NewsData * news = nil;
+        if (results != nil && results.count > 0)
+        {
+            news = results.lastObject;
+        }
+        else
+        {
+            news = [NSEntityDescription insertNewObjectForEntityForName:@"News" inManagedObjectContext:[AppDelegate currentDelegate].managedObjectContext];
+        }
+        
+        if ([fetchOperation isCancelled])
+        {
+            return;
+        }
+        
+        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey};
+        NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"service_messages" parameters:parameters];
+        NSLog(@"news etag: %@", news.etag);
+        [request setValue:news.etag forHTTPHeaderField:@"If-None-Match"];
+        
+        AFHTTPRequestOperation * op = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (operation.response.statusCode == 200)
+            {
+                NSDictionary * messages = [[SBJsonParser new] objectWithData:responseObject];
+                news.news1 = nil;
+                news.news2 = nil;
+                news.news3 = nil;
+                news.etag = [operation.response.allHeaderFields objectForKey:@"Etag"];
+                NSLog(@"news new etag: %@", news.etag);
+                if ([messages objectForKey:@"message1"] != (id)[NSNull null])
+                {
+                    news.news1 = [messages objectForKey:@"message1"];
+                }
+                if ([messages objectForKey:@"message2"] != (id)[NSNull null])
+                {
+                    news.news2 = [messages objectForKey:@"message2"];
+                }
+                if ([messages objectForKey:@"message3"] != (id)[NSNull null])
+                {
+                    news.news3 = [messages objectForKey:@"message3"];
+                }
+                [[AppDelegate currentDelegate].managedObjectContext save:nil];
+            }
+
+            if (callback != nil && ![fetchOperation isCancelled])
+            {
+                NSMutableArray * messagesArray = [NSMutableArray new];
+                if (news.news1 != nil)
+                {
+                    [messagesArray addObject:news.news1];
+                }
+                if (news.news2 != nil)
+                {
+                    [messagesArray addObject:news.news2];
+                }
+                if (news.news3 != nil)
+                {
+                    [messagesArray addObject:news.news3];
+                }
+                callback(messagesArray, nil);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (callback != nil && ![fetchOperation isCancelled])
+            {
+                NSMutableArray * messagesArray = [NSMutableArray new];
+                if (news.news1 != nil)
+                {
+                    [messagesArray addObject:news.news1];
+                }
+                if (news.news2 != nil)
+                {
+                    [messagesArray addObject:news.news2];
+                }
+                if (news.news3 != nil)
+                {
+                    [messagesArray addObject:news.news3];
+                }
+                callback(messagesArray, nil);
+            }
+        }];
+        
+        [[APIClient sharedClient] enqueueHTTPRequestOperation:op];
+        
+    }];
+    
+    [backgroundOperationQueue addOperation:operation];
 }
 
 #pragma mark local operations
