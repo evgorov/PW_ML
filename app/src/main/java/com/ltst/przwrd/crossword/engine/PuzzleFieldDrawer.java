@@ -322,6 +322,44 @@ public class PuzzleFieldDrawer
         p.set(x, y);
     }
 
+    public @Nullable Point getPuzzleTilesColumnRowPointByScreenCoords(@Nonnull PointF p)
+    {
+        if (mResources == null)
+        {
+            return null;
+        }
+
+        int framePadding = mResources.getFramePadding(mContext.getResources());
+        int padding = mResources.getPadding();
+        int tileGap = mResources.getTileGap();
+        int cols = mResources.getPuzzleColumnsCount();
+        int rows = mResources.getPuzzleRowsCount();
+
+        RectF rect = new RectF(mDrawingOffsetX + 2 * framePadding + padding,
+                mDrawingOffsetY + 2 * framePadding + padding,
+                mTileWidth + mDrawingOffsetX + 2 * framePadding + padding,
+                mTileHeight + mDrawingOffsetY + 2 * framePadding + padding);
+        Point column_row_point = null;
+        loop: for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (rect.contains(p.x, p.y))
+                {
+                    column_row_point = new Point(j, i);
+                    break loop;
+                }
+                rect.left += mTileWidth + tileGap;
+                rect.right += mTileWidth + tileGap;
+            }
+            rect.left = mDrawingOffsetX + 2 * framePadding + padding;
+            rect.right = mTileWidth + mDrawingOffsetX + 2 * framePadding + padding;
+            rect.top += mTileHeight + tileGap;
+            rect.bottom += mTileHeight + tileGap;
+        }
+        return column_row_point;
+    }
+
     public void createInputRectList(@Nullable List<PuzzleTileState> stateList, @Nonnull IListenerVoid postInvalidate)
     {
         if(stateList == null || stateList.isEmpty() || mInputListCreated)

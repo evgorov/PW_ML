@@ -151,16 +151,14 @@ public class PuzzleManager
 
         point.set(puzzleX, puzzleY);
 
-        mFieldDrawer.convertPointFromScreenCoordsToTilesAreaCoords(point);
+        @Nullable Point coords = mFieldDrawer.getPuzzleTilesColumnRowPointByScreenCoords(point);
+        if (coords == null)
+        {
+            return false;
+        }
 
-        int tileWidth = mFieldDrawer.getTileWidth();
-        int tileHeight = mFieldDrawer.getTileHeight();
-        if(tileWidth == 0)
-            tileWidth = 1;
-        if(tileHeight == 0)
-            tileHeight = 1;
-        final int col = (int)point.x/tileWidth;
-        final int row = (int)point.y/tileHeight;
+        final int col = coords.x;
+        final int row = coords.y;
         cancelLastQuestion();
         mInputFocusViewPoint = null;
         mResourcesAdapter.updatePuzzleStateByTap(col, row, new IListenerVoid()
