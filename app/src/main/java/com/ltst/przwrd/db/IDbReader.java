@@ -31,6 +31,8 @@ public interface IDbReader
 
     @Nullable List<PuzzleSet> getPuzzleSets();
 
+    @Nullable List<PuzzleSet> getPuzzleSetsByDate(int year, int month);
+
     @Nullable List<Puzzle> getSolvedPuzzlesBySetId(long id);
 
     @Nullable PuzzleSet getPuzzleSetById(long id);

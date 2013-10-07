@@ -11,8 +11,6 @@ import com.ltst.przwrd.rest.RestParams;
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.bcops.simple.BcService;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -214,7 +212,7 @@ public class OnePuzzleModel implements IOnePuzzleModel
         }
     }
 
-    private class PuzzleUserDataUpdater extends ModelUpdater<IBcTask.BcTaskEnv>
+    private class PuzzleUserDataUpdater extends ModelUpdater<DbService.DbTaskEnv>
     {
         @Nonnull
         @Override
@@ -242,16 +240,16 @@ public class OnePuzzleModel implements IOnePuzzleModel
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
             return UpdatePuzzleUserDataOnServerTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
         {
-            return BcService.class;
+            return DbService.class;
         }
 
         @Override

@@ -130,6 +130,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     private @Nullable HintsModel mHintsModel;
 
     private @Nonnull GcmHelper mGcmHelper;
+    private boolean mNeedMerge;
+    private @Nonnull String mProvider;
 
 
     @Override
@@ -291,6 +293,36 @@ public class NavigationActivity extends SherlockFragmentActivity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
+                case REQUEST_LOGIN_VK:
+                case REQUEST_LOGIN_FB:
+                {
+                    if(data.hasExtra(SocialLoginActivity.BF_SESSION_KEY))
+                    {
+                        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
+//                        String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                        String sessionKey2 = data.getStringExtra(SocialLoginActivity.BF_SESSION_KEY);
+                        spref.putString(SharedPreferencesValues.SP_SESSION_KEY_2, sessionKey2);
+                        spref.commit();
+
+                        mNeedMerge = true;
+                        mProvider = (requestCode == REQUEST_LOGIN_VK) ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER;
+                    }
+                    else
+                    {
+                        if(requestCode == REQUEST_LOGIN_VK)
+                        {
+                            mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+                            mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
+                        }
+                        else if(requestCode == REQUEST_LOGIN_FB)
+                        {
+                            mDrawerMenu.mFacebookSwitcher.setChecked(false);
+                            mDrawerMenu.mFacebookSwitcher.setEnabled(true);
+                        }
+                    }
+                }
+                break;
+
                 case REQUEST_RULES:
                 {
                     reloadUserData();
@@ -305,16 +337,16 @@ public class NavigationActivity extends SherlockFragmentActivity
         {
             switch (requestCode)
             {
-                case REQUEST_LOGIN_VK:
-                {
-                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
-                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
-                }
-                case REQUEST_LOGIN_FB:
-                {
-                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
-                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
-                }
+//                case REQUEST_LOGIN_VK:
+//                {
+//                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
+//                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
+//                }
+//                case REQUEST_LOGIN_FB:
+//                {
+//                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
+//                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
+//                }
                 case REQUEST_RULES:
                 {
                     reloadUserData();
@@ -350,7 +382,15 @@ public class NavigationActivity extends SherlockFragmentActivity
     protected void onResume()
     {
         mGcmHelper.onResume();
+
         mUserDataModel = new UserDataModel(this, mBcConnector);
+        if(mNeedMerge)
+        {
+            mUserDataModel.setProvider(mProvider);
+            mUserDataModel.mergeAccounts(mTaskHandlerMergeAccounts);
+            mNeedMerge = false;
+        }
+
         reloadUserData();
         super.onResume();
     }

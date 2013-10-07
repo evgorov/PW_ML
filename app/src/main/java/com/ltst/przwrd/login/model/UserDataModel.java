@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.przwrd.app.ModelUpdater;
+import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.model.ClearDataBaseTask;
 import com.ltst.przwrd.db.DbService;
 import com.ltst.przwrd.dowloading.LoadImageTask;
+import com.ltst.przwrd.login.view.SocialLoginActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.rest.RestParams;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -169,10 +172,15 @@ public class UserDataModel implements IUserDataModel
     }
 
     @Override
-    public void mergeAccounts(final @Nonnull String sessionKey1, final @Nonnull String sessionKey2, @Nonnull IListenerVoid handler)
+    public void mergeAccounts(@Nonnull IListenerVoid handler)
     {
         if (mIsDestroyed)
             return;
+
+        SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
+        String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+        String sessionKey2 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY_2, Strings.EMPTY);
+
         mMergeAccountsUpdater.setIntent(MergeAccountsTask.createIntentMergeAccounts(sessionKey1, sessionKey2));
         mMergeAccountsUpdater.update(handler);
     }

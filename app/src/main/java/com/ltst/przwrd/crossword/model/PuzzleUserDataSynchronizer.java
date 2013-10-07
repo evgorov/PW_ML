@@ -6,12 +6,11 @@ import android.os.Bundle;
 
 import com.ltst.przwrd.app.ModelUpdater;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
+import com.ltst.przwrd.db.DbService;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.bcops.simple.BcService;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.constants.Strings;
 
 import java.util.ArrayList;
@@ -91,7 +90,10 @@ public class PuzzleUserDataSynchronizer
     private void addPuzzleIdsList(@Nonnull List<String> puzzleIds)
     {
         if(puzzleIds.isEmpty())
+        {
+            mPreferencesHelper.erase(SP_NOT_UPDATED_PUZZLE_IDS).commit();
             return;
+        }
         StringBuffer sb = new StringBuffer();
         String id = puzzleIds.get(0);
         sb.append(id);
@@ -104,7 +106,7 @@ public class PuzzleUserDataSynchronizer
         mPreferencesHelper.putString(SP_NOT_UPDATED_PUZZLE_IDS, sb.toString()).commit();
     }
 
-    private class Updater extends ModelUpdater<IBcTask.BcTaskEnv>
+    private class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
         private @Nonnull IBcConnector mBcConnector;
         private @Nullable Intent mIntent;
@@ -135,16 +137,16 @@ public class PuzzleUserDataSynchronizer
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
             return SynchronizePuzzleUserDataTask.class;
         }
 
         @Nonnull
         @Override
-        protected Class<? extends BcBaseService<IBcTask.BcTaskEnv>> getServiceClass()
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
         {
-            return BcService.class;
+            return DbService.class;
         }
 
         @Override

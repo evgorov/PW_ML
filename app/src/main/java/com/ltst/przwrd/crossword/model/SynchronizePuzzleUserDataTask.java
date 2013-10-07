@@ -4,20 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.przwrd.R;
+import com.ltst.przwrd.db.DbService;
 import com.ltst.przwrd.rest.IRestClient;
 import com.ltst.przwrd.rest.RestClient;
+import com.ltst.przwrd.rest.RestPuzzleUserData;
 
 import org.omich.velo.bcops.BcTaskHelper;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class SynchronizePuzzleUserDataTask implements IBcTask
+public class SynchronizePuzzleUserDataTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "SynchronizePuzzleUserDataTask.sessionKey";
     public static final @Nonnull String BF_PUZZLES = "SynchronizePuzzleUserDataTask.puzzles";
@@ -36,7 +39,7 @@ public class SynchronizePuzzleUserDataTask implements IBcTask
 
     @Nullable
     @Override
-    public Bundle execute(@Nonnull BcTaskEnv bcTaskEnv)
+    public Bundle execute(@Nonnull DbService.DbTaskEnv bcTaskEnv)
     {
         Bundle extras = bcTaskEnv.extras;
         if (extras == null)
@@ -72,6 +75,35 @@ public class SynchronizePuzzleUserDataTask implements IBcTask
             IRestClient client = RestClient.create(bcTaskEnv.context);
             for (Puzzle puzzle : puzzles)
             {
+                @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder =
+                        LoadOnePuzzleFromInternet.loadPuzzleUserData(bcTaskEnv.context, sessionKey, puzzle.serverId);
+                if(restPuzzleUserDataHolder != null)
+                {
+                    RestPuzzleUserData restPuzzleUserData = restPuzzleUserDataHolder.getPuzzleUserData();
+                    @Nullable List<RestPuzzleUserData.RestSolvedQuestion> solvedQuestions = null;
+                    @Nullable HashSet<String> solvedQuestionsIdSet = null;
+                    if (restPuzzleUserData != null)
+                    {
+                        solvedQuestions = restPuzzleUserData.getSolvedQuestions();
+                        if (solvedQuestions != null)
+                        {
+                            solvedQuestionsIdSet = RestPuzzleUserData.prepareQuestionIdsSet(solvedQuestions);
+                        }
+                    }
+
+                    if (puzzle.questions != null)
+                    {
+                        List<PuzzleQuestion> questions = new ArrayList<PuzzleQuestion>(puzzle.questions.size());
+                        for (PuzzleQuestion q : puzzle.questions)
+                        {
+                            RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
+                            questions.add(q);
+                        }
+                        puzzle.questions = questions;
+                        bcTaskEnv.dbw.putPuzzle(puzzle);
+                    }
+                }
+
                 String jsonPuzzleUserData = UpdatePuzzleUserDataOnServerTask.parseJsonUserData(puzzle);
                 try
                 {

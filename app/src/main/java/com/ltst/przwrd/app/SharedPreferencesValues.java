@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 public class SharedPreferencesValues {
     public static final @Nonnull String SP_SESSION_KEY = "sessionKey";
+    public static final @Nonnull String SP_SESSION_KEY_2 = "sessionKey2";
     public static final @Nonnull String SP_FACEBOOK_TOKEN = "facebookToken";
 
     public static final @Nonnull String NO_SESSION_KEY = "NO_SESSION_KEY";
