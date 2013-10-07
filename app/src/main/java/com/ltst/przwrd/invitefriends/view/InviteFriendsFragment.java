@@ -184,6 +184,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             }*/
             if (!SharedPreferencesValues.getSessionStateFlag(mContext)) {
                 AccessToken access_token = AccessToken.createFromExistingAccessToken(token, null, null, AccessTokenSource.WEB_VIEW, null);
+                SharedPreferencesValues.setFacebookToken(mContext,access_token.getToken());
                 mFbSession = new Session(mContext);
                 mFbSession.open(access_token, callback);
             }
