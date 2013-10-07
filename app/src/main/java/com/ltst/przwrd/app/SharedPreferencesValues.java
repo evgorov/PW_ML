@@ -2,6 +2,8 @@ package com.ltst.przwrd.app;
 
 import android.content.Context;
 
+import org.omich.velo.constants.Strings;
+
 import javax.annotation.Nonnull;
 
 public class SharedPreferencesValues {
@@ -19,6 +21,8 @@ public class SharedPreferencesValues {
     public static final @Nonnull String SP_NOTIFICATIONS = "notifications";
 
     public static final @Nonnull String SP_FIRST_LAUNCH = "firstLaunch";
+
+    public static final @Nonnull String SP_SESSION_STATE = "sessionState";
 
     public static String getSessionKey(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
@@ -52,7 +56,7 @@ public class SharedPreferencesValues {
 
     public static String getFacebookToken(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
-        return helper.getString(SP_FACEBOOK_TOKEN, null);
+        return helper.getString(SP_FACEBOOK_TOKEN, Strings.EMPTY);
     }
 
     public static void setFirstLaunchFlag(@Nonnull Context context, boolean value) {
@@ -63,6 +67,15 @@ public class SharedPreferencesValues {
     public static boolean getFirstLaunchFlag(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
         return helper.getBoolean(SP_FIRST_LAUNCH, true);
+    }
+
+    public static void setSessionStateFlag(@Nonnull Context context, boolean value){
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        helper.putBoolean(SP_SESSION_STATE, value);
+    }
+    public static boolean getSessionStateFlag(@Nonnull Context context){
+        SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
+        return helper.getBoolean(SP_SESSION_STATE,false);
     }
 
 }

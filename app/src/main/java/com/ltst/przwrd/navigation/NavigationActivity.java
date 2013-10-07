@@ -652,6 +652,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
                 spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                 spref.commit();
+                SharedPreferencesValues.setFacebookToken(NavigationActivity.this,Strings.EMPTY);
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 mUserDataModel.clearDataBase(null);
                 break;

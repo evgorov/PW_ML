@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +91,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     private @Nonnull Session mFbSession;
     private @Nonnull String mIds;
+    private boolean FLAG_INVITE_ALL = false;
     // ==== Livecycle =================================
 
     @Override
@@ -100,7 +102,6 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
         mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mIFragmentActivity = (IFragmentsHolderActivity) activity;
-        mFbSession = new Session(activity);
         super.onAttach(activity);
     }
 
@@ -134,11 +135,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     @Override
     public void invite(@Nullable IListenerVoid handler) {
+        FLAG_INVITE_ALL = false;
         initInvite(mIds, SINGLE_TYPE, handler);
     }
 
     private void inviteAll() {
-
+        FLAG_INVITE_ALL = true;
         InviteFragmentAdapter adapter = mAdapter;
         ISlowSource.Item<InviteFriendsData, Bitmap> data;
         StringBuffer ids_vk = new StringBuffer();
@@ -168,22 +170,23 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
     private void initInvite(@Nonnull String str, @Nonnull String type, @Nullable IListenerVoid handler) {
         @Nonnull String token = SharedPreferencesValues.getFacebookToken(mContext);
-
-        if (token == null) {
+        if (token.equals(Strings.EMPTY)) {
             getToken();
             return;
         } else {
-            Calendar cal = Calendar.getInstance();
+            /*Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH, (cal.get(Calendar.DAY_OF_MONTH) + 5));
             Date date = cal.getTime();
             try {
                 date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date.toString());
             } catch (ParseException e) {
                 e.printStackTrace();
-            }
-            AccessToken access_token = AccessToken.createFromExistingAccessToken(token, date, null, AccessTokenSource.TEST_USER, null);
-            if (!mFbSession.isOpened())
+            }*/
+            if (!SharedPreferencesValues.getSessionStateFlag(mContext)) {
+                AccessToken access_token = AccessToken.createFromExistingAccessToken(token, null, null, AccessTokenSource.WEB_VIEW, null);
+                mFbSession = new Session(mContext);
                 mFbSession.open(access_token, callback);
+            }
             Bundle params = new Bundle();
             params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
             params.putString("title", "PrizeWord");
@@ -204,15 +207,17 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             @Override
             public void onComplete(Bundle values, FacebookException error) {
                 if (error != null) {
-                    getToken();
+                    //getToken();
                     if (error instanceof FacebookOperationCanceledException) {
-                        /*Toast.makeText(mContext,
+                        Toast.makeText(mContext,
                                 "Request cancelled",
-                                Toast.LENGTH_SHORT).show();*/
+                                Toast.LENGTH_SHORT).show();
                     } else {
-                        /*Toast.makeText(mContext,
-                                "Network Error",
-                                Toast.LENGTH_SHORT).show();*/
+                        SharedPreferencesValues.setSessionStateFlag(mContext,false);
+                        SharedPreferencesValues.setFacebookToken(mContext,Strings.EMPTY);
+                        Toast.makeText(mContext,
+                                "Token Error",
+                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     final String requestId = values.getString("request");
@@ -250,7 +255,10 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             switch (requestCode) {
                 case REQUEST_GET_FACEBOOK_TOKEN: {
                     if (data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN)) {
-                        invite(null);
+                        if (FLAG_INVITE_ALL)
+                            inviteAll();
+                        else
+                            invite(null);
                     }
                 }
                 break;
@@ -305,6 +313,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
             mDataRequested = true;
             Log.i(LOG_TAG, "update by internet"); //$NON-NLS-1$
         }
+
+        Session session  = Session.getActiveSession();
+        if(session!=null && (session.isOpened() || session.isClosed())){
+            onSessionStateChange(session,session.getState(),null);
+        }
+
         super.onResume();
     }
 
@@ -389,10 +403,15 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     };
 
     private void onSessionStateChange(Session session, SessionState state, Exception excepton) {
-        if (state.isOpened())
+        if (state.isOpened()) {
             org.omich.velo.log.Log.i("aut", "logged in");
-        if (state.isClosed())
+            SharedPreferencesValues.setSessionStateFlag(mContext,true);
+        }
+        if (state.isClosed()) {
             org.omich.velo.log.Log.i("aut", "logged out");
+            SharedPreferencesValues.setSessionStateFlag(mContext,false);
+            SharedPreferencesValues.setFacebookToken(mContext,Strings.EMPTY);
+        }
     }
 
     private Session.StatusCallback callback = new Session.StatusCallback() {
