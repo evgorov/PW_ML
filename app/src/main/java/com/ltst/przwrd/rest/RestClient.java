@@ -240,7 +240,7 @@ public class RestClient implements IRestClient {
                 data.setStatusCode(HttpStatus.NOT_FOUND);
             }
         }
-C
+
         if (data != null)
         {
             data.setStatusCode(HttpStatus.OK);
