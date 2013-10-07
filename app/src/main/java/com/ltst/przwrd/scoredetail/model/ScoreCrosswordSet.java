@@ -11,7 +11,7 @@ import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.crossword.view.BadgeAdapter;
 import com.ltst.przwrd.crossword.view.BadgeGridView;
 import com.ltst.przwrd.tools.CustomProgressBar;
-import com.ltst.przwrd.crossword.view.CrosswordPanelData;
+import com.ltst.przwrd.crossword.view.CrosswordSetData;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -76,7 +76,7 @@ public class ScoreCrosswordSet
         return (BadgeAdapter) pBadgeContainer.getAdapter();
     }
 
-    public void fillPanel(@Nonnull CrosswordPanelData data)
+    public void fillPanel(@Nonnull CrosswordSetData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
         if(!data.mBought)

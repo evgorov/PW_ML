@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 14.08.13.
  */
-public class CrosswordPanelData {
+public class CrosswordSetData {
 
     final static public int KIND_CURRENT = 1;
     final static public int KIND_ARCHIVE = 2;
@@ -32,6 +32,6 @@ public class CrosswordPanelData {
     public boolean mFirst = false;
     public boolean mLAst = false;
 
-    public CrosswordPanelData() {
+    public CrosswordSetData() {
     }
 }

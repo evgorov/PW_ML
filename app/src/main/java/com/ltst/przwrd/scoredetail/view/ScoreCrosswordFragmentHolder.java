@@ -12,7 +12,7 @@ import com.ltst.przwrd.crossword.model.PuzzleSet;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.crossword.view.BadgeAdapter;
 import com.ltst.przwrd.crossword.view.BadgeData;
-import com.ltst.przwrd.crossword.view.CrosswordPanelData;
+import com.ltst.przwrd.crossword.view.CrosswordSetData;
 import com.ltst.przwrd.scoredetail.model.ScoreCrosswordSet;
 import com.ltst.przwrd.scoredetail.model.ScoreCrosswordSetMonth;
 
@@ -72,12 +72,12 @@ public class ScoreCrosswordFragmentHolder
 
     // ================== CROSSWORD PANELS ITEM ======================
 
-    public CrosswordPanelData extractCrosswordPanelData(@Nonnull PuzzleSet set)
+    public CrosswordSetData extractCrosswordPanelData(@Nonnull PuzzleSet set)
     {
-        CrosswordPanelData data = new CrosswordPanelData();
+        CrosswordSetData data = new CrosswordSetData();
         data.mId = set.id;
         data.mServerId = set.serverId;
-        data.mKind = CrosswordPanelData.KIND_CURRENT;
+        data.mKind = CrosswordSetData.KIND_CURRENT;
         data.mType = PuzzleSetModel.getPuzzleTypeByString(set.type);
         data.mBought = set.isBought;
         data.mMonth = set.month;
@@ -96,7 +96,7 @@ public class ScoreCrosswordFragmentHolder
         for (PuzzleSet set : sets)
         {
             count++;
-            CrosswordPanelData data = extractCrosswordPanelData(set);
+            CrosswordSetData data = extractCrosswordPanelData(set);
 
             if (count == sets.size())
             {
@@ -140,7 +140,7 @@ public class ScoreCrosswordFragmentHolder
         }
     }
 
-    private void addPanel(@Nonnull CrosswordPanelData data)
+    private void addPanel(@Nonnull CrosswordSetData data)
     {
         @Nonnull ScoreCrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(data.mMonth);
         @Nonnull ScoreCrosswordSet crosswordSet = getCrosswordSet(data.mId);

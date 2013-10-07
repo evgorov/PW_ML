@@ -165,12 +165,12 @@ public class CrosswordFragmentHolder
 
     // ================== CROSSWORD PANELS ITEM ======================
 
-    public CrosswordPanelData extractCrosswordPanelData(@Nonnull PuzzleSet set)
+    public CrosswordSetData extractCrosswordPanelData(@Nonnull PuzzleSet set)
     {
-        CrosswordPanelData data = new CrosswordPanelData();
+        CrosswordSetData data = new CrosswordSetData();
         data.mId = set.id;
         data.mServerId = set.serverId;
-        data.mKind = CrosswordPanelData.KIND_CURRENT;
+        data.mKind = CrosswordSetData.KIND_CURRENT;
         data.mType = PuzzleSetModel.getPuzzleTypeByString(set.type);
         data.mBought = set.isBought;
         data.mMonth = set.month;
@@ -192,7 +192,7 @@ public class CrosswordFragmentHolder
         mPuzzleSetList.addAll(sets);
         for (PuzzleSet set : sets)
         {
-            CrosswordPanelData data = extractCrosswordPanelData(set);
+            CrosswordSetData data = extractCrosswordPanelData(set);
             addPanel(data);
             @Nonnull List<Puzzle> puzzles = mapPuzzles.get(set.serverId);
 
@@ -246,7 +246,7 @@ public class CrosswordFragmentHolder
         // сортируем пазлы в архиве;
         for(PuzzleSet set : sets)
         {
-            CrosswordPanelData data = extractCrosswordPanelData(set);
+            CrosswordSetData data = extractCrosswordPanelData(set);
             String key = formatTime(data.mYear, data.mMonth);
             @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);
             if(crosswordSetMonth != null)
@@ -256,7 +256,7 @@ public class CrosswordFragmentHolder
         }
     }
 
-    private void addPanel(@Nonnull CrosswordPanelData data)
+    private void addPanel(@Nonnull CrosswordSetData data)
     {
         String key = formatTime(data.mYear, data.mMonth);
         @Nonnull CrosswordSetMonth crosswordSetMonth = getCrosswordSetMonth(key);

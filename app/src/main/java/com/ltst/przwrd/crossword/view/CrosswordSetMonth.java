@@ -1,16 +1,13 @@
 package com.ltst.przwrd.crossword.view;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
-import com.ltst.przwrd.navigation.NavigationActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -61,7 +58,7 @@ public class CrosswordSetMonth{
 
     public void addCrosswordSet(@Nonnull CrosswordSet view)
     {
-        @Nonnull CrosswordPanelData data = view.getCrosswordPanelData();
+        @Nonnull CrosswordSetData data = view.getCrosswordSetData();
         @Nonnull PuzzleSetModel.PuzzleSetType type = data.mType;
 
         if(type == PuzzleSetModel.PuzzleSetType.BRILLIANT){
@@ -105,7 +102,7 @@ public class CrosswordSetMonth{
     {
         for(CrosswordSet crosswordSet : mCrosswordDatas)
         {
-            if(crosswordSet.getCrosswordPanelData().mId == id)
+            if(crosswordSet.getCrosswordSetData().mId == id)
             {
                 return crosswordSet;
             }
@@ -120,7 +117,7 @@ public class CrosswordSetMonth{
         {
             for(CrosswordSet crosswordSet : mCrosswordDatas)
             {
-                if(crosswordSet.getCrosswordPanelData().mType != type
+                if(crosswordSet.getCrosswordSetData().mType != type
                         || crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
                     continue;
 

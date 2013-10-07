@@ -73,8 +73,9 @@ public class CrosswordSet {
     private static @Nonnull IManadges mIManadges;
 
     private static @Nonnull IManageHolder mIManageHolder;
-    private @Nonnull CrosswordPanelData mCrosswordPanelData;
+    private @Nonnull CrosswordSetData mCrosswordSetData;
 
+    private boolean flgIsFilling = false;
     private boolean flgOneRegister = false;
     private boolean mExpanding;
 
@@ -124,16 +125,16 @@ public class CrosswordSet {
             @Override
             public void onClick(View view) {
                 SoundsWork.buySet(mContext);
-                if (mCrosswordPanelData.mServerId != null)
+                if (mCrosswordSetData.mServerId != null)
                 {
-                    if(mCrosswordPanelData.mType != PuzzleSetModel.PuzzleSetType.FREE)
+                    if(mCrosswordSetData.mType != PuzzleSetModel.PuzzleSetType.FREE)
                     {
-                        mIManageHolder.buyProduct(mCrosswordPanelData.mServerId);
+                        mIManageHolder.buyProduct(mCrosswordSetData.mServerId);
 //                    mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
                     }
                     else
                     {
-                        mIManageHolder.uploadProduct(mCrosswordPanelData.mServerId);
+                        mIManageHolder.uploadProduct(mCrosswordSetData.mServerId);
                     }
                 }
             }
@@ -143,20 +144,21 @@ public class CrosswordSet {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long puzzleId) {
                 SoundsWork.interfaceBtnMusic(mContext);
-                if (mCrosswordPanelData.mServerId != null)
+                if (mCrosswordSetData.mServerId != null)
                 {
                     BadgeAdapter adapter = getAdapter();
                     BadgeData data = (BadgeData) adapter.getItem(position);
-                    mICrosswordFragment.choicePuzzle(mCrosswordPanelData.mServerId, data.mServerId);
+                    mICrosswordFragment.choicePuzzle(mCrosswordSetData.mServerId, data.mServerId);
                 }
             }
         });
 
     }
 
-    public @Nullable CrosswordPanelData getCrosswordPanelData()
+    public @Nullable
+    CrosswordSetData getCrosswordSetData()
     {
-        return mCrosswordPanelData;
+        return mCrosswordSetData;
     }
 
     public @Nonnull View getView()
@@ -168,11 +170,11 @@ public class CrosswordSet {
         return (BadgeAdapter) pBadgeContainer.getAdapter();
     }
 
-    public void fillPanel(@Nonnull CrosswordPanelData data)
+    public void fillPanel(@Nonnull CrosswordSetData data)
     {
 //        mRootView.setVisibility(View.VISIBLE);
-        mCrosswordPanelData = data;
-        mIManageHolder.registerProduct(mCrosswordPanelData.mServerId);
+        mCrosswordSetData = data;
+        mIManageHolder.registerProduct(mCrosswordSetData.mServerId);
         mManadgePriceListener.handle();
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
@@ -228,69 +230,73 @@ public class CrosswordSet {
         if(pBadgeContainer.getAdapter() == null)
             pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
-        if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
+        if(!flgIsFilling)
         {
-            // Текущие наборы сетов сканвордов;
-
-            if(!flgOneRegister)
+            if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
             {
-                mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
-                mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
-                flgOneRegister = true;
-            }
+                // Текущие наборы сетов сканвордов;
 
-            mCrosswordSetType = CrosswordSetType.CURRENT;
-            pTitleImage.setVisibility(View.VISIBLE);
-            pSwitcher.setVisibility(View.GONE);
+                if(!flgOneRegister)
+                {
+                    mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+                    mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
+                    flgOneRegister = true;
+                }
+
+                mCrosswordSetType = CrosswordSetType.CURRENT;
+                pTitleImage.setVisibility(View.VISIBLE);
+                pSwitcher.setVisibility(View.GONE);
 //            pMonthBackground.setVisibility(View.GONE);
 
-            if(mCrosswordPanelData.mServerId == null)
-            {
-                expandingBadgeContainer(true);
-//                pBadgeContainer.setVisibility(View.VISIBLE);
-            }
+//            if(!flgIsFilling)
+//            {
+//                expandingBadgeContainer(true);
+////                pBadgeContainer.setVisibility(View.VISIBLE);
+//            }
 
-            if(data.mBought)
-            {
-                // Куплены;
-                pBuyCrosswordContaiter.setVisibility(View.GONE);
-                pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
-                expandingBadgeContainer(true);
-            }
-            else
-            {
-                // Некуплены;
-                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
-                pCurrentCrosswordContaiter.setVisibility(View.GONE);
+                if(data.mBought)
+                {
+                    // Куплены;
+                    pBuyCrosswordContaiter.setVisibility(View.GONE);
+                    pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
+                    expandingBadgeContainer(true);
+                }
+                else
+                {
+                    // Некуплены;
+                    pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
+                    pCurrentCrosswordContaiter.setVisibility(View.GONE);
 //                pBadgeContainer.setVisibility(View.GONE);
-                expandingBadgeContainer(false);
-            }
-        }
-        else
-        {
-            if(!data.mBought)
-            {
-                mRootView.setVisibility(View.GONE);
-            }
-
-            // Архивные наборы сетов сканвордов;
-            mCrosswordSetType = CrosswordSetType.ARCHIVE;
-            pTitleImage.setVisibility(View.VISIBLE);
-            pBuyCrosswordContaiter.setVisibility(View.GONE);
-
-            if(mCrosswordPanelData.mServerId == null)
-            {
-                expandingBadgeContainer(false);
-            }
-            if(data.mMonth == 0)
-            {
+                    expandingBadgeContainer(false);
+                }
             }
             else
             {
-                pMonthText.setText(mContext.getResources().getStringArray(
-                        R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
+                if(!data.mBought)
+                {
+                    mRootView.setVisibility(View.GONE);
+                }
+
+                // Архивные наборы сетов сканвордов;
+                mCrosswordSetType = CrosswordSetType.ARCHIVE;
+                pTitleImage.setVisibility(View.VISIBLE);
+                pBuyCrosswordContaiter.setVisibility(View.GONE);
+
+                if(!flgIsFilling)
+                {
+                    expandingBadgeContainer(false);
+                }
+                if(data.mMonth == 0)
+                {
+                }
+                else
+                {
+                    pMonthText.setText(mContext.getResources().getStringArray(
+                            R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
+                }
             }
         }
+        flgIsFilling = true;
     }
 
     public void setVisibleMonth(boolean visible)
@@ -327,7 +333,7 @@ public class CrosswordSet {
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
             final @Nonnull String json = ManageHolder.extractFromBundleJson(bundle);
             final @Nonnull String signature = ManageHolder.extractFromBundleSignature(bundle);
-            if(googleId.equals(mCrosswordPanelData.mServerId))
+            if(googleId.equals(mCrosswordSetData.mServerId))
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
@@ -343,7 +349,7 @@ public class CrosswordSet {
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
-                                mICrosswordFragment.updateOneSet(mCrosswordPanelData.mServerId);
+                                mICrosswordFragment.updateOneSet(mCrosswordSetData.mServerId);
                                 mICrosswordFragment.purchaseResult(true);
                             }
                             else
@@ -362,9 +368,9 @@ public class CrosswordSet {
 
         @Override
         public void handle() {
-            if(mCrosswordPanelData.mType != PuzzleSetModel.PuzzleSetType.FREE)
+            if(mCrosswordSetData.mType != PuzzleSetModel.PuzzleSetType.FREE)
             {
-                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mCrosswordPanelData.mServerId);
+                @Nonnull String mBuyPrice = mIManageHolder.getPriceProduct(mCrosswordSetData.mServerId);
                 pBuyPrice.setText(mBuyPrice);
             }
         }
