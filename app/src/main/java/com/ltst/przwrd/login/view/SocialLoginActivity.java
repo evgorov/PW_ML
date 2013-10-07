@@ -127,6 +127,7 @@ public class SocialLoginActivity extends SherlockActivity
                         return;
 
                     final @Nullable String access_token = auth[0];
+                    SharedPreferencesValues.setFacebookToken(this,access_token);
 
                     final boolean VK = isVK;
                     final boolean FB = isFb;
