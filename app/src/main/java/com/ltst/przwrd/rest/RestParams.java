@@ -70,7 +70,9 @@ public class RestParams
             + addParam(SURNAME, false)
             + addParam(PASSWORD, false);
 
-    public static final @Nonnull String URL_LOGIN = URL_API + "/login"
+    public static final @Nonnull String URL_LOGIN = URL_API + "/login";
+
+    public static final @Nonnull String URL_LOGIN_WITH_PARAMS = URL_LOGIN
             + addParam(EMAIL, true)
             + addParam(PASSWORD, false);
     public static final @Nonnull String URL_POST_LINK_ACCOUNTS = URL_API + "/link_accounts" + addParam(SESSION_KEY1, true) + addParam(SESSION_KEY2, false);
