@@ -9,6 +9,7 @@
 #import "NewsCell.h"
 #import "DataManager.h"
 #import "NewsPageControl.h"
+#import "AppDelegate.h"
 
 @interface NewsCell ()
 {
@@ -27,6 +28,11 @@
 @end
 
 @implementation NewsCell
+
++ (float)height
+{
+    return [AppDelegate currentDelegate].isIPad ? 136 : 110;
+}
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {

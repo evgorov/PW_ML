@@ -11,12 +11,8 @@
                 <outlet property="btnBuyHint1" destination="30" id="43"/>
                 <outlet property="btnBuyHint2" destination="31" id="44"/>
                 <outlet property="btnBuyHint3" destination="32" id="45"/>
-                <outlet property="currentPuzzlesView" destination="15" id="17"/>
                 <outlet property="hintsView" destination="24" id="29"/>
                 <outlet property="lblHintsLeft" destination="27" id="58"/>
-                <outlet property="puzzlesTimeLeftBg" destination="68" id="70"/>
-                <outlet property="puzzlesTimeLeftCaption" destination="69" id="71"/>
-                <outlet property="puzzlesViewCaption" destination="63" id="64"/>
                 <outlet property="setToBuyView" destination="46" id="48"/>
                 <outlet property="tableView" destination="BB2-ZJ-1RL" id="h48-Nq-DeO"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -30,7 +26,8 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="BB2-ZJ-1RL">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="422"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Huc-3a-hud"/>
                         <outlet property="delegate" destination="-1" id="brW-4A-Cf3"/>
@@ -38,44 +35,6 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
-        <view opaque="NO" autoresizesSubviews="NO" contentMode="scaleToFill" id="15">
-            <rect key="frame" x="0.0" y="0.0" width="303" height="45"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" id="72">
-                    <rect key="frame" x="0.0" y="12" width="300" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Сканворды за сентябрь" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="63">
-                            <rect key="frame" x="20" y="1" width="263" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.2156862745" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <size key="shadowOffset" width="0.0" height="1"/>
-                        </label>
-                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_set_timeleft_bg.png" id="68">
-                            <rect key="frame" x="220" y="4" width="70" height="15"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ост. 5 дней" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="69">
-                            <rect key="frame" x="220" y="1" width="78" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="9"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view opaque="NO" autoresizesSubviews="NO" contentMode="scaleToFill" id="24">
@@ -201,6 +160,5 @@
         <image name="puzzles_hints_bg.png" width="303" height="167"/>
         <image name="puzzles_set_br.png" width="52" height="26"/>
         <image name="puzzles_set_delimeter.png" width="303" height="4"/>
-        <image name="puzzles_set_timeleft_bg.png" width="70" height="15"/>
     </resources>
 </document>

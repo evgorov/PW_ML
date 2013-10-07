@@ -29,6 +29,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 @synthesize sessionKey = _sessionKey;
 @synthesize loggedInUser = _loggedInUser;
 @synthesize monthSets = _monthSets;
+@synthesize currentDay = _currentDay;
 @synthesize currentMonth = _currentMonth;
 @synthesize currentYear = _currentYear;
 @synthesize deviceToken = _deviceToken;
@@ -57,8 +58,9 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         _deviceToken = nil;
         NSDate * currentDate = [NSDate date];
         NSCalendar * calendar = [NSCalendar currentCalendar];
-        NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:currentDate];
+        NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
 
+        _currentDay = [components day];
         _currentMonth = [components month];
         _currentYear = [components year];
         coefficients = [[NSUserDefaults standardUserDefaults] dictionaryForKey:COEFFICIENTS_KEY];
@@ -311,6 +313,10 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         if ([dateString rangeOfString:MONTHS_ENG[month - 1]].location != NSNotFound)
         {
             _currentMonth = month;
+
+            int monthLocation = [dateString rangeOfString:MONTHS_ENG[month - 1]].location;
+            NSString * dayString = [dateString substringWithRange:NSMakeRange(monthLocation - 3, 2)];
+            _currentDay = [dayString intValue];
             break;
         }
     }

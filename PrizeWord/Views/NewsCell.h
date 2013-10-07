@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet PrizeWordButton *btnClose;
 
 - (void)setup;
++ (float)height;
 
 @end

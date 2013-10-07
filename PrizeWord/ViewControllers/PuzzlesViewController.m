@@ -27,8 +27,8 @@
 #import "UserDataManager.h"
 #import "DataManager.h"
 #import "NewsCell.h"
-
-NSString * MONTHS2[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
+#import "CurrentPuzzlesCell.h"
+#import "PuzzleSetCell.h"
 
 NSString * PRODUCTID_PREFIX = @"ru.aipmedia.prizeword.";
 NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
@@ -41,7 +41,29 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 @interface PuzzlesViewController ()
 {
+    __weak IBOutlet UITableView *tableView;
+    
+    IBOutlet UIView *hintsView;
+    IBOutlet UIView *archiveView;
+    IBOutlet UIView *setToBuyView;
+    
+    IBOutlet PrizeWordButton *btnBuyHint1;
+    IBOutlet PrizeWordButton *btnBuyHint2;
+    IBOutlet PrizeWordButton *btnBuyHint3;
+    IBOutlet UILabel *lblHintsLeft;
+    NSMutableArray * hintsProducts;
+    SKProductsRequest * productsRequest;
+    
     BOOL showNews;
+    
+    int archiveLastMonth;
+    int archiveLastYear;
+    BOOL archiveNeedLoading;
+    BOOL archiveLoading;
+    
+    FISound * buySetSound;
+    FISound * openSetSound;
+    FISound * closeSetSound;
 }
 
 -(void)handleBadgeClick:(id)sender;
@@ -73,13 +95,17 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     [super viewDidLoad];
     
-    tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile"]];
+    [scrollView removeFromSuperview];
+    tableView.backgroundView = nil;
+    UIImage * bgImage = [UIImage imageNamed:@"bg_dark_tile.jpg"];
+    tableView.backgroundColor = [UIColor colorWithPatternImage:bgImage];
     [tableView registerNib:[UINib nibWithNibName:@"NewsCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"newsCell"];
+    [tableView registerNib:[UINib nibWithNibName:@"CurrentPuzzlesCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"currentPuzzlesCell"];
+    [tableView registerNib:[UINib nibWithNibName:@"PuzzleSetCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"puzzleSetCell"];
     
     showNews = YES;
     
-    self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen woth puzzles");
-    puzzlesViewCaption.text = @"Сканворды за ...";   
+    self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen with puzzles");
     
 /*
     [self addFramedView:currentPuzzlesView];
@@ -105,7 +131,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (void)viewDidUnload
 {
-    currentPuzzlesView = nil;
     hintsView = nil;
     archiveView = nil;
     btnBuyHint1 = nil;
@@ -113,10 +138,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     btnBuyHint3 = nil;
     setToBuyView = nil;
     lblHintsLeft = nil;
-    puzzlesViewCaption = nil;
-    
-    puzzlesTimeLeftBg = nil;
-    puzzlesTimeLeftCaption = nil;
     
     [super viewDidUnload];
 }
@@ -200,6 +221,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         else
         {
+            /*
             for (UIView * subview in currentPuzzlesView.subviews)
             {
                 if ([subview isKindOfClass:[PuzzleSetView class]])
@@ -213,6 +235,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     }
                 }
             }
+            */
         }
     }
     else if (event.type == EVENT_PRODUCT_ERROR)
@@ -239,6 +262,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         NSLog(@"handle puzzle %@ synchronization", puzzleData.name);
         
         PuzzleSetView * oldView = nil;
+        /*
         for (UIView * view in currentPuzzlesView.subviews)
         {
             if (![view isKindOfClass:[PuzzleSetView class]])
@@ -269,6 +293,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             return;
         }
         else
+         */
         {
             // archive puzzles
             for (UIView * view in archiveView.subviews)
@@ -301,7 +326,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             [oldView removeFromSuperview];
             if (fabs(oldSize.height - newSize.height) > 0.01)
             {
-                [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
+//                [self resizeBlockView:currentPuzzlesView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
             }
             return;
             
@@ -327,6 +352,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 #pragma mark update and bought puzzles
 -(void)updateMonthSets:(NSArray *)monthSets
 {
+    /*
     BOOL hasUnbought = NO;
     NSMutableSet * productsIds = [NSMutableSet new];
 
@@ -369,7 +395,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }
         }
     }
-    puzzlesViewCaption.text = [NSString stringWithFormat:@"Сканворды за %@", MONTHS2[[GlobalData globalData].currentMonth - 1]];
+
     
     UIView * frame = [currentPuzzlesView.subviews objectAtIndex:1];
     [UIView animateWithDuration:0.3 animations:^{
@@ -377,15 +403,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }];
 //    [self resizeView:currentPuzzlesView newHeight:yOffset animated:YES];
     
-    // days left set-up
-    NSCalendar * calendar = [NSCalendar currentCalendar];
-    NSDate * currentDate = [NSDate new];
-    NSDateComponents * currentComponents = [calendar components:NSDayCalendarUnit fromDate:currentDate];
-    NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
-    int daysLeft = daysRange.location + daysRange.length - currentComponents.day;
-    puzzlesTimeLeftCaption.text = [NSString stringWithFormat:@"Ост. %d %@", daysLeft, [NSString declesion:daysLeft oneString:@"день" twoString:@"дня" fiveString:@"дней"]];
-    puzzlesTimeLeftCaption.hidden = daysLeft > 5;
-    puzzlesTimeLeftBg.hidden = daysLeft > 5;
     
     [self setupKnownPrices];
     // request information about products
@@ -395,6 +412,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
     productsRequest.delegate = self;
     [productsRequest start];
+     */
 }
 
 -(void)updateArchive:(NSArray *)sets
@@ -449,6 +467,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)updateBaseScores
 {
+    /*
     for (id subview in currentPuzzlesView.subviews)
     {
         if (![subview isKindOfClass:[PuzzleSetView class]])
@@ -462,6 +481,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
             puzzleSetView.lblScore.text = [NSString stringWithFormat:@" %@", [NSString digitString:minScore]];
         }
     }
+     */
 }
 
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
@@ -475,6 +495,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 -(void)setupKnownPrices
 {
+    /*
     // update sets' prices
     for (UIView * subview in currentPuzzlesView.subviews)
     {
@@ -513,6 +534,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [self updateHintButton:btnBuyHint2 withProduct:product];
     product = [[GlobalData globalData].products objectForKey:PRODUCTID_HINTS30];
     [self updateHintButton:btnBuyHint3 withProduct:product];
+    */
 }
 
 -(void)loadArchive
@@ -829,12 +851,16 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
+    {
+        return 1;
+    }
+    else if (section == 1)
     {
         return 1;
     }
@@ -849,7 +875,15 @@ const int TAG_DYNAMIC_VIEWS = 101;
         {
             return 0;
         }
-        return [AppDelegate currentDelegate].isIPad ? 136 : 110;
+        return [NewsCell height];
+    }
+    else if (indexPath.section == 1)
+    {
+        if (indexPath.row == 0)
+        {
+            return [CurrentPuzzlesCell height];
+        }
+        return [PuzzleSetCell height];
     }
     return 0;
 }
@@ -862,6 +896,26 @@ const int TAG_DYNAMIC_VIEWS = 101;
         [cell.btnClose addTarget:self action:@selector(handleNewsCloseClick:) forControlEvents:UIControlEventTouchUpInside];
         [cell setup];
         return cell;
+    }
+    else if (indexPath.section == 1)
+    {
+        if (indexPath.row == 0)
+        {
+            CurrentPuzzlesCell * cell = [tableView dequeueReusableCellWithIdentifier:@"currentPuzzlesCell"];
+            
+            NSCalendar * calendar = [NSCalendar currentCalendar];
+            NSDate * currentDate = [NSDate date];
+            NSDateComponents * currentComponents = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:currentDate];
+            [currentComponents setMonth:[GlobalData globalData].currentMonth];
+            [currentComponents setYear:[GlobalData globalData].currentYear];
+            [currentComponents setDay:[GlobalData globalData].currentDay];
+            currentDate = [calendar dateFromComponents:currentComponents];
+            NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
+            int daysLeft = daysRange.location + daysRange.length - [GlobalData globalData].currentDay;
+            int month = [GlobalData globalData].currentMonth;
+            [cell setupWithMonth:month daysLeft:daysLeft indexPath:indexPath tableView:tableView];
+            return cell;
+        }
     }
     return nil;
 }

@@ -75,6 +75,10 @@
                                         <nil key="highlightedColor"/>
                                         <color key="shadowColor" red="0.23529411759999999" green="0.20784313730000001" blue="0.1843137255" alpha="1" colorSpace="deviceRGB"/>
                                     </label>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="gaY-VZ-z4N">
+                                        <rect key="frame" x="177" y="13" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <connections>
                                     <outlet property="delegate" destination="GkT-uc-aAP" id="fYy-On-t8r"/>
@@ -84,8 +88,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityIndicator" destination="gaY-VZ-z4N" id="9Th-7M-vDd"/>
                 <outlet property="btnClose" destination="IVb-sm-asa" id="aDB-HR-zfl"/>
                 <outlet property="newsLbl1" destination="hbu-p5-A5g" id="1XW-eC-tqf"/>
                 <outlet property="newsLbl2" destination="zSH-Y4-YL6" id="hlG-nn-GIF"/>

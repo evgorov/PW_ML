@@ -80,7 +80,7 @@
                                     <outlet property="delegate" destination="FVk-cE-B61" id="i81-MB-aT4"/>
                                 </connections>
                             </scrollView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" id="8OJ-mX-Wmx">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" id="8OJ-mX-Wmx">
                                 <rect key="frame" x="150" y="30" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
@@ -88,6 +88,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicator" destination="8OJ-mX-Wmx" id="Fwf-5Z-Xfa"/>

@@ -11,19 +11,10 @@
                 <outlet property="btnBuyHint1" destination="30" id="43"/>
                 <outlet property="btnBuyHint2" destination="52" id="54"/>
                 <outlet property="btnBuyHint3" destination="53" id="55"/>
-                <outlet property="currentPuzzlesView" destination="15" id="17"/>
                 <outlet property="hintsView" destination="24" id="29"/>
                 <outlet property="lblHintsLeft" destination="27" id="66"/>
-                <outlet property="newsLbl1" destination="9" id="72"/>
-                <outlet property="newsLbl2" destination="61" id="73"/>
-                <outlet property="newsLbl3" destination="62" id="74"/>
-                <outlet property="newsPaginator" destination="11" id="64"/>
-                <outlet property="newsScrollView" destination="59" id="63"/>
-                <outlet property="newsView" destination="13" id="14"/>
-                <outlet property="puzzlesTimeLeftBg" destination="76" id="77"/>
-                <outlet property="puzzlesTimeLeftCaption" destination="75" id="78"/>
-                <outlet property="puzzlesViewCaption" destination="70" id="71"/>
                 <outlet property="setToBuyView" destination="46" id="48"/>
+                <outlet property="tableView" destination="jYU-sD-XtE" id="SpB-C3-hfQ"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -31,114 +22,15 @@
         <view contentMode="scaleToFill" id="1">
             <rect key="frame" x="0.0" y="0.0" width="480" height="954"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
-        <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" id="13">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="136"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_news_bg.png" id="8">
-                    <rect key="frame" x="19" y="0.0" width="442" height="116"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jYU-sD-XtE">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="954"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="10" customClass="PrizeWordButton">
-                    <rect key="frame" x="440" y="30" width="33" height="33"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" backgroundImage="puzzles_news_close_btn.png">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted" backgroundImage="puzzles_news_close_btn_down.png">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="handleNewsCloseClick:" destination="-1" eventType="touchUpInside" id="12"/>
-                    </connections>
-                </button>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="11" customClass="NewsPageControl">
-                    <rect key="frame" x="155" y="100" width="170" height="36"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="pageIndicatorTintColor" red="0.1137254902" green="0.1215686275" blue="0.1176470588" alpha="0.20000000000000001" colorSpace="deviceRGB"/>
-                    <color key="currentPageIndicatorTintColor" red="0.95686274510000002" green="0.7843137255" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <connections>
-                        <action selector="handleNewsPaginatorChange:" destination="-1" eventType="valueChanged" id="65"/>
-                    </connections>
-                </pageControl>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="59">
-                    <rect key="frame" x="45" y="20" width="391" height="63"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9">
-                            <rect key="frame" x="0.0" y="0.0" width="391" height="63"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="14"/>
-                            <color key="textColor" red="0.83529411760000005" green="0.81176470590000005" blue="0.76470588240000004" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.23529411759999999" green="0.20784313730000001" blue="0.1843137255" alpha="1" colorSpace="deviceRGB"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="3 золотых сканворда в этом месяце идут с удвоенными очками" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="61">
-                            <rect key="frame" x="391" y="0.0" width="391" height="63"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="14"/>
-                            <color key="textColor" red="0.83529411760000005" green="0.81176470590000005" blue="0.76470588240000004" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.23529411759999999" green="0.20784313730000001" blue="0.1843137255" alpha="1" colorSpace="deviceRGB"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="3 золотых сканворда в этом месяце идут с удвоенными очками" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="62">
-                            <rect key="frame" x="782" y="0.0" width="391" height="63"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="14"/>
-                            <color key="textColor" red="0.83529411760000005" green="0.81176470590000005" blue="0.76470588240000004" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.23529411759999999" green="0.20784313730000001" blue="0.1843137255" alpha="1" colorSpace="deviceRGB"/>
-                        </label>
-                    </subviews>
-                </scrollView>
+                    <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-        </view>
-        <view opaque="NO" autoresizesSubviews="NO" contentMode="scaleToFill" id="15">
-            <rect key="frame" x="0.0" y="0.0" width="443" height="55"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view contentMode="scaleToFill" id="79">
-                    <rect key="frame" x="0.0" y="16" width="433" height="28"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Сканворды за сентябрь" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="70">
-                            <rect key="frame" x="18" y="4" width="306" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.2156862745" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <size key="shadowOffset" width="0.0" height="1"/>
-                        </label>
-                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_set_timeleft_bg.png" id="76">
-                            <rect key="frame" x="341" y="5" width="85" height="18"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ост. 5 дней" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="75">
-                            <rect key="frame" x="350" y="3" width="78" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="11"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view opaque="NO" autoresizesSubviews="NO" contentMode="scaleToFill" id="24">
@@ -262,11 +154,7 @@
         <image name="puzzles_buy_hint_btn.png" width="75" height="33"/>
         <image name="puzzles_buy_hint_btn_down.png" width="75" height="33"/>
         <image name="puzzles_hints_bg.png" width="303" height="167"/>
-        <image name="puzzles_news_bg.png" width="320" height="110"/>
-        <image name="puzzles_news_close_btn.png" width="28" height="28"/>
-        <image name="puzzles_news_close_btn_down.png" width="28" height="28"/>
         <image name="puzzles_set_br.png" width="52" height="26"/>
         <image name="puzzles_set_delimeter.png" width="303" height="4"/>
-        <image name="puzzles_set_timeleft_bg.png" width="70" height="15"/>
     </resources>
 </document>

@@ -25,7 +25,8 @@
 @property (nonatomic) NSArray * monthSets;
 @property (nonatomic) NSString * deviceToken;
 @property (nonatomic) NSMutableDictionary * products;
-// in range [0, 11]
+@property () int currentDay;
+// in range [1, 12]
 @property () int currentMonth;
 @property () int currentYear;
 
