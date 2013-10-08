@@ -16,6 +16,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -213,17 +214,39 @@ public class RestClient implements IRestClient {
     @Nullable
     @Override
     public RestUserData.RestUserDataHolder getSessionKeyByLogin(@Nonnull String email, @Nonnull String password) {
-        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put(RestParams.EMAIL, email);
-        urlVariables.put(RestParams.PASSWORD, password);
+        RestUserData.RestUserDataHolder data = null;
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(RestParams.URL_LOGIN);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair(RestParams.EMAIL, email));
+            nameValuePairs.add(new BasicNameValuePair(RestParams.PASSWORD, password));
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<RestUserData.RestUserDataHolder> holder =
-                restTemplate.exchange(RestParams.URL_LOGIN, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        holder.getBody().setStatusCode(holder.getStatusCode());
-        return holder.getBody();
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = httpClient.execute(httpPost);
+            String content = EntityUtils.toString(response.getEntity());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonFactory jsonFactory = new JsonFactory();
+            try {
+                JsonParser jsonParser = jsonFactory.createJsonParser(content);
+                data = objectMapper.readValue(jsonParser, RestUserData.RestUserDataHolder.class);
+            } catch (IOException e) {
+                Log.e(e.getMessage());
+            }
+        } catch (Exception e) {
+            if (data != null)
+            {
+                data.setStatusCode(HttpStatus.NOT_FOUND);
+            }
+        }
+
+        if (data != null)
+        {
+            data.setStatusCode(HttpStatus.OK);
+        }
+
+        return data;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class OneCrosswordActivity extends SherlockActivity
 
     public static final @Nonnull String TIMER_TEXT_FORMAT = "%02d:%02d";
 
-    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10 = "hints10";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10 = HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10;
 
     public static
     @Nonnull
