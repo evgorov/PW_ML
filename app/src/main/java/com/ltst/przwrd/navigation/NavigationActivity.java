@@ -34,6 +34,8 @@ import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.model.HintsModel;
+import com.ltst.przwrd.crossword.model.IPuzzleSetModel;
+import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.login.model.IUserDataModel;
 import com.ltst.przwrd.login.model.UserProvider;
 import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
@@ -54,6 +56,7 @@ import com.ltst.przwrd.manadges.IIabHelper;
 import com.ltst.przwrd.manadges.IManadges;
 import com.ltst.przwrd.manadges.IManageHolder;
 import com.ltst.przwrd.manadges.ManageHolder;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.push.GcmHelper;
 import com.ltst.przwrd.rating.view.RatingFragment;
 import com.ltst.przwrd.rest.RestParams;
@@ -102,6 +105,7 @@ public class NavigationActivity extends BillingV3Activity
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
+    private @Nonnull IPuzzleSetModel mPuzzleSetModel;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull SlidingMenu mSlidingMenu;
@@ -130,6 +134,7 @@ public class NavigationActivity extends BillingV3Activity
     private @Nonnull GcmHelper mGcmHelper;
     private boolean mNeedMerge;
     private @Nonnull String mProvider;
+    private @Nonnull String mSessionKey;
 
 
     @Override
@@ -216,6 +221,7 @@ public class NavigationActivity extends BillingV3Activity
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
+        mDrawerMenu.mRestoreBtn.setOnClickListener(this);
 
         mNotificationsEnabled = SharedPreferencesValues.getNotificationsSwitch(this);
         mDrawerMenu.mNotificationSwitcher.setChecked(mNotificationsEnabled);
@@ -369,6 +375,8 @@ public class NavigationActivity extends BillingV3Activity
     {
         mGcmHelper.onResume();
 
+        mSessionKey = SharedPreferencesValues.getSessionKey(this);
+        mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
         mUserDataModel = new UserDataModel(this, mBcConnector);
         if(mNeedMerge)
         {
@@ -386,6 +394,7 @@ public class NavigationActivity extends BillingV3Activity
     {
         mGcmHelper.onPause();
         mUserDataModel.close();
+        mPuzzleSetModel.close();
         if (mUploadScoreQueueModel != null)
         {
             mUploadScoreQueueModel.close();
@@ -626,8 +635,8 @@ public class NavigationActivity extends BillingV3Activity
     {
         if(mNotificationsEnabled)
         {
-            String sessionKey = SharedPreferencesValues.getSessionKey(this);
-            mGcmHelper.onAuthorized(sessionKey);
+            mSessionKey = SharedPreferencesValues.getSessionKey(this);
+            mGcmHelper.onAuthorized(mSessionKey);
             mDrawerMenu.mNotificationSwitcher.setChecked(true);
         }
 //        mGcmHelper.onAuthorized(null);
@@ -698,6 +707,9 @@ public class NavigationActivity extends BillingV3Activity
             case R.id.menu_pride_score_btn:
                 selectNavigationFragmentByClassname(ScoreDetailFragment.FRAGMENT_CLASSNAME);
                 break;
+            case R.id.restore_buy:
+                getManadgeHolder().restoreProducts(mTaskHandlerRestoreProducts);
+                break;
             default:
                 break;
         }
@@ -759,7 +771,24 @@ public class NavigationActivity extends BillingV3Activity
         }
     }
 
-    private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
+    private IListenerVoid mTaskHandlerRestoreProducts = new IListenerVoid()
+    {
+        @Override
+        public void handle() {
+            @Nonnull List<PurchasePrizeWord> products = getManadgeHolder().getRestoreProducts();
+            for(PurchasePrizeWord product : products)
+            {
+                mPuzzleSetModel.buyCrosswordSet(product.googleId, product.receipt_data, product.signature, new IListenerVoid() {
+                    @Override
+                    public void handle() {
+
+                    }
+                });
+            }
+        }
+    };
+
+        private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -899,7 +928,8 @@ public class NavigationActivity extends BillingV3Activity
                 {
                     mDrawerMenu.mFacebookSwitcher.setEnabled(false);
                 }
-            } else
+            }
+            else
             {
                 if (provider == RestParams.VK_PROVIDER)
                 {

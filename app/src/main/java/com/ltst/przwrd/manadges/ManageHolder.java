@@ -10,7 +10,6 @@ import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
-import com.ltst.przwrd.crossword.view.HintsManager;
 import com.ltst.przwrd.navigation.INavigationActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.tools.UUIDTools;
@@ -32,6 +31,15 @@ import javax.annotation.Nullable;
  */
 public class ManageHolder implements IManageHolder, IIabHelper {
 
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "prizeword.ltst.hints10";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "prizeword.ltst.hints20";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "prizeword.ltst.hints30";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
+    static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+
+
     final static public @Nonnull String BF_SKU          = "ManageHolder.sku";
     final static public @Nonnull String BF_JSON         = "ManageHolder.json";
     final static public @Nonnull String BF_SIGNATURE    = "ManageHolder.signature";
@@ -48,6 +56,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     private @Nonnull List<IListenerVoid> mHandlerReloadPriceList;
     private @Nonnull List<IListener<Bundle>> mHandlerBuyProductEventList;
     private @Nonnull IListenerVoid mNotifyInventoryHandler;
+    private @Nonnull List<PurchasePrizeWord> mRestoreProducts;
 
     private int REQUERT_CODE_COUNTER;
 
@@ -112,6 +121,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     }
 
     @Override
+    @Nonnull
+    public List<PurchasePrizeWord> getRestoreProducts() {
+        return mRestoreProducts;
+    }
+
+    @Override
     public void buyProduct(@Nonnull String sku)
     {
         // Start popup window. Покупка;
@@ -126,7 +141,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             try
             {
                 mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mPurchaseFinishedListener, token);
+                mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, token);
                 mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
             catch (Exception e)
@@ -196,6 +211,42 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     }
 
     @Override
+    public void restoreProducts(final @Nonnull IListenerVoid handler) {
+        // Восстанавливаем покупки на устройстве;
+        mHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener()
+        {
+            public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+
+                if (result.isFailure())
+                {
+                    Log.e("Problem setting up in-app billing: " + result);
+                }
+                else
+                {
+                    List<Purchase> purchases = inventory.getPurchasesList();
+                    List<PurchasePrizeWord> purchasePrizeWords = new ArrayList<PurchasePrizeWord>(purchases.size());
+                    for(Purchase purchase : purchases)
+                    {
+                        @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(purchase.getSku());
+                        @Nonnull String token = (product.clientId==Strings.EMPTY || product.clientId==null)
+                                ? UUIDTools.generateStringUUID()
+                                : product.clientId;
+                        product.clientId = token;
+                        product.receipt_data = purchase.getOriginalJson();
+                        product.signature = purchase.getSignature();
+                        product.serverPurchase = true;
+                        purchasePrizeWords.add(product);
+//                        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+                    }
+                    mRestoreProducts = purchasePrizeWords;
+                    handler.handle();
+                }
+            }
+        }
+        );
+    }
+
+    @Override
     public String getPriceProduct(@Nonnull String sku)
     {
         PurchasePrizeWord purchase = mIPurchaseSetModel.getPurchase(sku);
@@ -214,47 +265,27 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-
-//                @Nonnull List<String> list = new ArrayList<String>();
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//                {
-//                    list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL);
-//                }
-//                // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
-//                // Восстанавливаем покупаемость товара;
-//                // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-//                if(list.size()>0)
-//                {
-//                    mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
-//                }
+                List<Purchase> purchases = inventory.getPurchasesList();
+                for(Purchase purchase : purchases)
+                {
+                    @Nonnull String sku = purchase.getSku();
+                    if( sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                        ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                        ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                        )
+                    {
+                        productBuyOnServer(sku);
+                    }
+                }
             }
         }
     };
 
+    // Восстанавливаем покупаемость продукта;
     private IabHelper.QueryInventoryFinishedListener mResetConsumableListener = new IabHelper.QueryInventoryFinishedListener()
     {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
@@ -265,52 +296,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-//                // Восстанавливаем покупку подсказок, если по какой-дибо причине это небыло сделано ранее;
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED), mConsumeFinishedListener);
-//                }
-//                if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//                {
-//                    mHelper.consumeAsync(inventory.getPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE), mConsumeFinishedListener);
-//                }
-
-
-                @Nonnull List<Purchase> list = new ArrayList<Purchase>();
-                for(@Nonnull String sku : mSkuContainer)
+                List<Purchase> purchases = inventory.getPurchasesList();
+                if(purchases.size()>0)
                 {
-                    if(inventory.hasPurchase(sku));
-                    {
-                        @Nullable Purchase purchase = inventory.getPurchase(sku);
-                        if(purchase != null)
-                        {
-                            list.add(inventory.getPurchase(sku));
-                        }
-                    }
-                }
-                if(list.size()>0)
-                {
-                    mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
+                    mHelper.consumeAsync(purchases, mConsumeMyltyFinishedListener);
                 }
             }
         }
@@ -321,27 +310,11 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         @Override
         public void onConsumeMultiFinished(List<Purchase> purchases, List<IabResult> results) {
 
-        }
-    };
-
-    // Получаем информацию о возобновлении покупаемости товара;
-    private IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener()
-    {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            if (result.isSuccess()) {
-                // provision the in-app purchase to the user
-                // (for example, credit 50 gold coins to player's character)
-                int responseState = purchase.getPurchaseState();
-                String responseSku = purchase.getSku();
-                String responseClientId = purchase.getDeveloperPayload();
-
-                // Восстанавливаем состояние покупки в базе для Google Play как не купленная;
-                @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(responseSku);
+            for(Purchase purchase : purchases)
+            {
+                @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(purchase.getSku());
                 product.googlePurchase = false;
                 mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-            }
-            else {
-                Log.e("Problem setting up in-app billing: " + result);
             }
         }
     };
@@ -357,64 +330,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
-
-//            @Nonnull List<String> list = new ArrayList<String>();
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED);
-//            }
-//            if(inventory.hasPurchase(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//            {
-//                list.add(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL);
-//            }
-//            // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
-//            // Восстанавливаем покупаемость товара;
-//            // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-//            if(list.size()>0)
-//            {
-//                mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
-//            }
-
-                NavigationActivity.debug("before inventory query on google play: "+mSkuContainer.size());
-
-                // Восстанавливаю покупаемость всех продуктов! REMOVE IN THE FUTURE!
-                @Nonnull List<Purchase> list = new ArrayList<Purchase>();
-                for(@Nonnull String sku : mSkuContainer)
-                {
-                    if(inventory.hasPurchase(sku));
-                    {
-                        @Nullable Purchase purchase = inventory.getPurchase(sku);
-                        if(purchase != null)
-                        {
-                            list.add(inventory.getPurchase(sku));
-                        }
-                    }
-                }
-                if(list.size()>0)
-                {
-                    mHelper.consumeAsync(list, mConsumeMyltyFinishedListener);
-                }
-
                 @Nonnull ArrayList<PurchasePrizeWord> purchases = new ArrayList<PurchasePrizeWord>();
                 for(@Nonnull String googleId : mSkuContainer)
                 {
@@ -436,77 +351,22 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     };
 
     // Ответ с результатом выполненой покупки;
-    private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener()
+    private IabHelper.OnIabPurchaseFinishedListener mBuyFinishedListener = new IabHelper.OnIabPurchaseFinishedListener()
     {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase)
         {
             int resultCode = result.getResponse();
             if (result.isFailure())
             {
-                Log.e("Error purchasing: " + result);
-                parseResultCode(result);
-                switch (resultCode)
-                {
-                    case 0:
-                        // Sussessfull;
-                        break;
-                    case -1005:
-                        // User canceled. (response: -1005:User cancelled);
-                        break;
-                    case -1008:
-                        // IAB returned null purchaseData or dataSignature (response: -1008:Unknown error);
-                        mINavigationActivity.sendMessage("Error purchasing: " + result);
-                        break;
-                    default:
-                        mINavigationActivity.sendMessage("Unknown error: " + result);
-                        break;
-                }
+                parseResultCode(result,purchase);
                 return;
             }
-
-            // Восстанавливаем покупки подсказок;
-            if(purchase != null)
-            {
-//                @Nonnull String sku = purchase.getSku();
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                if(sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE))
-//                {
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-//                }
-//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-            }
-
 
             int responseState = purchase.getPurchaseState();
             String responseSku = purchase.getSku();
             String responseClientId = purchase.getDeveloperPayload();
             String responseSignature = purchase.getSignature();
             @Nonnull String responseJson = purchase.getOriginalJson();
-
-//            verify(APP_GOOGLE_PLAY_ID, data, responseSignature);
 
             // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
             @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(responseSku);
@@ -588,13 +448,13 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 if(purchase.googlePurchase == true && purchase.serverPurchase == false
                         && (
-                        sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                                ||sku.equals(HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                                sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
                             )
                         )
                 {
@@ -617,7 +477,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     }
 
                 }
-//                if(purchase.googlePurchase == true && purchase.serverPurchase == true)
                 if(purchase.serverPurchase == true)
                 {
                     // Состояние продукта: был куплен на Google Play, но еще не прошел запрос покупки на сервере;
@@ -626,20 +485,19 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     @Nonnull String signature = purchase.signature;
                     @Nonnull Bundle bundle = packToBundle(sku,json,signature);
                     mHandlerBuyProductEvent.handle(bundle);
-
                 }
             }
         }
     }
 
-    private void parseResultCode(IabResult result)
+    private boolean parseResultCode(IabResult result, Purchase purchase)
     {
         int resultCode = result.getResponse();
         switch (resultCode)
         {
             case IabHelper.BILLING_RESPONSE_RESULT_OK:
 //                OK/-1001:Remote exception during initialization/" +
-                break;
+                return true;
             case IabHelper.IABHELPER_ERROR_BASE:
                 break;
             case IabHelper.IABHELPER_REMOTE_EXCEPTION:
@@ -664,6 +522,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 break;
             case IabHelper.IABHELPER_UNKNOWN_ERROR:
 //                Unknown error/" +
+                mINavigationActivity.sendMessage("Error purchasing: " + result);
+
                 break;
             case IabHelper.IABHELPER_SUBSCRIPTIONS_NOT_AVAILABLE:
 //                    Subscriptions not available/" +
@@ -671,8 +531,24 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             case IabHelper.IABHELPER_INVALID_CONSUMPTION:
 //                    Invalid consumption attempt").split("/");
                 break;
-            default: break;
+            case IabHelper.BILLING_RESPONSE_RESULT_USER_CANCELED:
+                break;
+            case IabHelper.BILLING_RESPONSE_RESULT_ITEM_UNAVAILABLE:
+                break;
+            case IabHelper.BILLING_RESPONSE_RESULT_DEVELOPER_ERROR:
+                break;
+            case IabHelper.BILLING_RESPONSE_RESULT_ERROR:
+                break;
+            case IabHelper.BILLING_RESPONSE_RESULT_ITEM_ALREADY_OWNED:
+                break;
+            case IabHelper.BILLING_RESPONSE_RESULT_ITEM_NOT_OWNED:
+                break;
+            default:
+                mINavigationActivity.sendMessage("Unknown error: " + result);
+                break;
         }
+        Log.e("Error purchasing: " + result);
+        return false;
     }
 
     static public Bundle packToBundle(@Nonnull String sku, @Nonnull String json, @Nonnull String signature)

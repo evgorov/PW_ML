@@ -30,6 +30,12 @@ public class Inventory {
 
     Inventory() { }
 
+    public List<Purchase> getPurchasesList() {
+        if(mPurchaseMap == null)
+            return new ArrayList<Purchase>();
+        return new ArrayList<Purchase>(mPurchaseMap.values());
+    }
+
     /** Returns the listing details for an in-app product. */
     public SkuDetails getSkuDetails(String sku) {
         return mSkuMap.get(sku);

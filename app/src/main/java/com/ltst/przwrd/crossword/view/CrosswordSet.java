@@ -37,10 +37,10 @@ import javax.annotation.Nullable;
  */
 public class CrosswordSet {
 
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL;
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_CANCEL;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
 
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull Context mContext;
@@ -336,7 +336,6 @@ public class CrosswordSet {
             if(googleId.equals(mCrosswordSetData.mServerId))
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
-
                 mICrosswordFragment.waitLoader(true);
                 final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)

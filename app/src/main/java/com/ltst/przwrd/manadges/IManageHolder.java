@@ -5,6 +5,8 @@ import android.os.Bundle;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -20,6 +22,8 @@ public interface IManageHolder {
     String getPriceProduct(@Nonnull String googleId);
     void productBuyOnServer(@Nonnull String googleId);
     void reloadInventory(@Nonnull IListenerVoid handler);
+    void restoreProducts(@Nonnull IListenerVoid handler);
+    List<PurchasePrizeWord> getRestoreProducts();
 }
 
 
