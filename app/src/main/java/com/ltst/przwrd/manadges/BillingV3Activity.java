@@ -29,18 +29,14 @@ public class BillingV3Activity extends BcConnectorActivity implements IManadges 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    protected boolean onActivityResultBillingV3(int requestCode, int resultCode, Intent data)
     {
         // Проверяем ответ, обработается он библиотекой контроля покупок In-App Billing;
-        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
-        {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
+        return mManadgeHolder.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

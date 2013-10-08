@@ -242,7 +242,8 @@ public class NavigationActivity extends BillingV3Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
+        if(this.onActivityResultBillingV3(requestCode, resultCode, data))
+            return;
 
         if (resultCode == RESULT_OK)
         {

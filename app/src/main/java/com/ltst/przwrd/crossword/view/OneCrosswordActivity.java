@@ -18,7 +18,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
 import com.ltst.przwrd.R;
@@ -30,6 +29,8 @@ import com.ltst.przwrd.crossword.model.PostPuzzleScoreModel;
 import com.ltst.przwrd.crossword.model.PuzzleSet;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.crossword.sharing.MessageShareModel;
+import com.ltst.przwrd.manadges.BillingV3Activity;
+import com.ltst.przwrd.manadges.IManageHolder;
 import com.ltst.przwrd.manadges.ManageHolder;
 import com.ltst.przwrd.navigation.INavigationActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
@@ -41,7 +42,6 @@ import com.ltst.przwrd.tools.CustomProgressBar;
 import com.ltst.przwrd.tools.DimenTools;
 import com.ltst.przwrd.tools.ErrorAlertDialog;
 
-import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.handlers.IListener;
 import org.omich.velo.handlers.IListenerVoid;
@@ -49,8 +49,12 @@ import org.omich.velo.handlers.IListenerVoid;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class OneCrosswordActivity extends SherlockActivity
-        implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, INavigationActivity, Animation.AnimationListener {
+public class OneCrosswordActivity extends BillingV3Activity
+        implements
+        View.OnClickListener,
+        CompoundButton.OnCheckedChangeListener,
+        INavigationActivity,
+        Animation.AnimationListener {
     public static final @Nonnull String BF_PUZZLE_SET = "OneCrosswordActivity.puzzleSet";
     public static final @Nonnull String BF_HINTS_COUNT = "OneCrosswordActivity.hintsCount";
 
@@ -153,7 +157,7 @@ public class OneCrosswordActivity extends SherlockActivity
 
     private UiLifecycleHelper uiHelper;
 
-    private @Nonnull ManageHolder mManadgeHolder;
+    private @Nonnull IManageHolder mManadgeHolder;
     int mSumScore = 0;
     int mBaseScore = 0;
     int mBonusScore = 0;
@@ -173,9 +177,8 @@ public class OneCrosswordActivity extends SherlockActivity
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        mBcConnector = new BcConnector(this);
-        mManadgeHolder = new ManageHolder(this, mBcConnector);
-        mManadgeHolder.instance();
+        mBcConnector = getBcConnector();
+        mManadgeHolder = getManadgeHolder();
         mManadgeHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
         mManadgeHolder.registerProduct(GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
 
@@ -385,22 +388,15 @@ public class OneCrosswordActivity extends SherlockActivity
         spref.putBoolean(SharedPreferencesValues.SP_SOUND_SWITCH, mPauseSound.isChecked());
         spref.commit();
         uiHelper.onDestroy();
-        mManadgeHolder.dispose();
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
+        if(super.onActivityResultBillingV3(requestCode, resultCode, data))
             return;
-        }
 
-        super.onActivityResult(requestCode, resultCode, data);
-
+        if(data == null) return;
         uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
             @Override
             public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
