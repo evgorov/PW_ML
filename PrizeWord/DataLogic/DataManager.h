@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 typedef void(^ArrayDataFetchCallback)(NSArray * data, NSError * error);
+typedef void(^DictionaryDataFetchCallback)(NSDictionary * data, NSError * error);
+
+@class PuzzleSetPackData;
 
 @interface DataManager : NSObject
 
@@ -16,11 +19,13 @@ typedef void(^ArrayDataFetchCallback)(NSArray * data, NSError * error);
 
 - (void)cancelAll;
 
+- (void)fetchCurrentMonthSetsWithCompletion:(ArrayDataFetchCallback)callback;
 - (void)fetchArchiveSetsForMonth:(int)month year:(int)year completion:(ArrayDataFetchCallback)callback;
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
 - (void)fetchNewsWithCompletion:(ArrayDataFetchCallback)callback;
+- (void)fetchPricesForProductIDs:(NSArray *)productIDs completion:(DictionaryDataFetchCallback)callback;
 
-- (NSArray *)localGetArchiveSetsForMonth:(int)month year:(int)year;
+- (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year;
 - (NSArray *)localGetPuzzles:(NSArray *)ids;
 
 @end

@@ -145,7 +145,11 @@
 
 -(TileData *)dataForPositionX:(uint)x y:(uint)y
 {
-    return [tiles objectAtIndex:(x + y * _tilesPerRow)];
+    if (x + y * _tilesPerRow < tiles.count)
+    {
+        return [tiles objectAtIndex:(x + y * _tilesPerRow)];
+    }
+    return nil;
 }
 
 -(TileData *)activeQuestion
@@ -552,7 +556,8 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
-    [[AppDelegate currentDelegate].managedObjectContext save:nil];
+    NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
+    [question.managedObjectContext save:nil];
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
@@ -576,11 +581,8 @@
         [[UserDataManager sharedManager] addScore:scoreForPuzzle forKey:_puzzle.puzzle_id];
     }
 
-    NSError * error;
-    [[AppDelegate currentDelegate].managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"error: %@", error.description);
-    }
+    NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
+    [question.managedObjectContext save:nil];
 }
 
 @end

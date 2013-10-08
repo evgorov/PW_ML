@@ -28,15 +28,27 @@
     </entity>
     <entity name="PuzzleSet" representedClassName="PuzzleSetData" syncable="YES">
         <attribute name="bought" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="puzzle_ids" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="puzzles_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="set_id" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" minValueString="0" maxValueString="4" defaultValueString="0" syncable="YES"/>
         <attribute name="user_id" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="puzzles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Puzzle" inverseName="puzzleSet" inverseEntity="Puzzle" syncable="YES"/>
+        <relationship name="puzzleSetPack" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PuzzleSetPack" inverseName="puzzleSets" inverseEntity="PuzzleSetPack" syncable="YES"/>
+    </entity>
+    <entity name="PuzzleSetPack" representedClassName="PuzzleSetPackData" syncable="YES">
+        <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="puzzleSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PuzzleSet" inverseName="puzzleSetPack" inverseEntity="PuzzleSet" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="year"/>
+                <index value="month"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="Question" representedClassName="QuestionData" syncable="YES">
         <attribute name="answer" attributeType="String" syncable="YES"/>
@@ -65,6 +77,7 @@
     <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
     <fetchRequest name="NewsFetchRequest" entity="News"/>
     <fetchRequest name="PuzzlesByIdFetchRequest" entity="Puzzle" predicateString="puzzle_id == $PUZZLE_ID AND user_id == $user_id"/>
+    <fetchRequest name="PuzzleSetPackFetchRequest" entity="PuzzleSetPack" predicateString="user_id == $USER_ID AND year == $YEAR AND month == $MONTH"/>
     <fetchRequest name="PuzzleSetsFetchRequest" entity="PuzzleSet" predicateString="month == $MONTH AND year == $YEAR AND user_id == $USER_ID"/>
     <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID"/>
     <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND key == $KEY"/>
@@ -76,5 +89,6 @@
         <element name="PuzzleSet" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Question" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ScoreQuery" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PuzzleSetPack" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

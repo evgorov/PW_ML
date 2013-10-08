@@ -19,7 +19,7 @@
 @property (readonly, strong, nonatomic) PrizeWordNavigationController *navController;
 @property (readonly, strong, nonatomic) RootViewController *rootViewController;
 
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -32,7 +32,7 @@
 + (AppDelegate *)currentDelegate;
 + (GameLogic *)gameLogic;
 + (id<SKPaymentTransactionObserver>)storeObserver;
-- (void)saveContext;
+//- (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (void)orientationChanged:(NSNotification *)note;
 - (void)setOrientation:(UIDeviceOrientation)targetOrientation;

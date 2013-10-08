@@ -30,10 +30,12 @@
 		6B6DE1B118033B2500D3DF52 /* CurrentPuzzlesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B018033B2500D3DF52 /* CurrentPuzzlesCell.xib */; };
 		6B6DE1B618033B4B00D3DF52 /* CurrentPuzzlesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B518033B4B00D3DF52 /* CurrentPuzzlesCell.m */; };
 		6B6DE1B818033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */; };
+		6B6DE1BB1803AF9000D3DF52 /* PuzzleSetPackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */; };
 		6B9227C1180043A7004E1505 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C0180043A7004E1505 /* DataManager.m */; };
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
 		6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B9227C81800534F004E1505 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6BD165DF1803DFC200F140AD /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165DE1803DFC200F140AD /* DataContext.m */; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -656,6 +658,8 @@
 		6B6DE1B418033B4B00D3DF52 /* CurrentPuzzlesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrentPuzzlesCell.h; path = Views/CurrentPuzzlesCell.h; sourceTree = "<group>"; };
 		6B6DE1B518033B4B00D3DF52 /* CurrentPuzzlesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrentPuzzlesCell.m; path = Views/CurrentPuzzlesCell.m; sourceTree = "<group>"; };
 		6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "CurrentPuzzlesCell~ipad.xib"; path = "Views/CurrentPuzzlesCell~ipad.xib"; sourceTree = "<group>"; };
+		6B6DE1B91803AF9000D3DF52 /* PuzzleSetPackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetPackData.h; path = PrizeWord/DataModels/PuzzleSetPackData.h; sourceTree = "<group>"; };
+		6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetPackData.m; path = PrizeWord/DataModels/PuzzleSetPackData.m; sourceTree = "<group>"; };
 		6B9227BC17FEA676004E1505 /* PrizeWord 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PrizeWord 2.xcdatamodel"; sourceTree = "<group>"; };
 		6B9227BF180043A7004E1505 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = DataLogic/DataManager.h; sourceTree = "<group>"; };
 		6B9227C0180043A7004E1505 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = DataLogic/DataManager.m; sourceTree = "<group>"; };
@@ -664,6 +668,8 @@
 		6B9227C5180052A1004E1505 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDataManager.h; path = DataLogic/UserDataManager.h; sourceTree = "<group>"; };
 		6B9227C6180052A1004E1505 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDataManager.m; path = DataLogic/UserDataManager.m; sourceTree = "<group>"; };
 		6B9227C81800534F004E1505 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6BD165DD1803DFC200F140AD /* DataContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataContext.h; path = DataLogic/DataContext.h; sourceTree = "<group>"; };
+		6BD165DE1803DFC200F140AD /* DataContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataContext.m; path = DataLogic/DataContext.m; sourceTree = "<group>"; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1350,6 +1356,8 @@
 				6B9227C0180043A7004E1505 /* DataManager.m */,
 				6B9227C5180052A1004E1505 /* UserDataManager.h */,
 				6B9227C6180052A1004E1505 /* UserDataManager.m */,
+				6BD165DD1803DFC200F140AD /* DataContext.h */,
+				6BD165DE1803DFC200F140AD /* DataContext.m */,
 			);
 			name = DataLogic;
 			sourceTree = "<group>";
@@ -1444,6 +1452,8 @@
 				F2868C7B166685D6003F0686 /* PuzzleData.m */,
 				F2868CC3166C9CDE003F0686 /* PuzzleSetData.h */,
 				F2868CC4166C9CDF003F0686 /* PuzzleSetData.m */,
+				6B6DE1B91803AF9000D3DF52 /* PuzzleSetPackData.h */,
+				6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */,
 				F2848E3416AA76740041C1D5 /* GlobalData.h */,
 				F2848E3516AA76740041C1D5 /* GlobalData.m */,
 				F2848E3716AA77980041C1D5 /* UserData.h */,
@@ -2931,6 +2941,7 @@
 				F279AE5116894E2F00424267 /* PrizeWordSwitchView.m in Sources */,
 				F2848E3616AA76740041C1D5 /* GlobalData.m in Sources */,
 				6B6DE1AB180339D500D3DF52 /* PuzzleSetCell.m in Sources */,
+				6BD165DF1803DFC200F140AD /* DataContext.m in Sources */,
 				F2848E3916AA77980041C1D5 /* UserData.m in Sources */,
 				F250910916B48F8D0045621E /* RatingCell.m in Sources */,
 				F250914816BA22FE0045621E /* InviteCellView.m in Sources */,
@@ -2961,6 +2972,7 @@
 				6B9227C418004DD4004E1505 /* APIClient.m in Sources */,
 				6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */,
 				6B6DE1A81802EE8E00D3DF52 /* NewsData.m in Sources */,
+				6B6DE1BB1803AF9000D3DF52 /* PuzzleSetPackData.m in Sources */,
 				6B43157718029571007BE826 /* FramedBlockCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

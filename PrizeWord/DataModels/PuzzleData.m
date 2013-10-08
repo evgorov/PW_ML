@@ -14,6 +14,7 @@
 #import "SBJsonParser.h"
 #import "SBJson.h"
 #import "EventManager.h"
+#import "DataContext.h"
 
 @implementation PuzzleData
 
@@ -32,7 +33,8 @@
 
 +(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
-    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    PuzzleData * puzzle;
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
@@ -60,22 +62,32 @@
         // 15 minutes
         time_given = [NSNumber numberWithInt:900];
     }
-
-    PuzzleData * puzzle;
+    
     if (puzzles == nil || puzzles.count == 0)
     {
         puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+        [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
         [puzzle setTime_left:time_given];
+        NSArray * questionsData = [dict objectForKey:@"questions"];
+        for (NSDictionary * questionData in questionsData) {
+            QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
+            [puzzle addQuestionsObject:question];
+        }
     }
     else
     {
         puzzle = [puzzles objectAtIndex:0];
+        [puzzle setTime_given:time_given];
     }
     
+    id puzzleId = [dict objectForKey:@"id"];
+    if (puzzleId == nil || puzzleId == [NSNull null])
+    {
+        NSLog(@"ERROR: puzzle id is null");
+    }
     [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
     [puzzle setName:[dict objectForKey:@"name"]];
     [puzzle setUser_id:userId];
-    [puzzle setTime_given:time_given];
     NSString * dateString = [dict objectForKey:@"issuedAt"];
     if (dateString != nil)
     {
@@ -92,11 +104,6 @@
         [puzzle setScore:[NSNumber numberWithInt:0]];
     }
     
-    NSArray * questionsData = [dict objectForKey:@"questions"];
-    for (NSDictionary * questionData in questionsData) {
-        QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
-        [puzzle addQuestionsObject:question];
-    }
 /*
     [managedObjectContext save:&error];
     if (error != nil) {
@@ -108,7 +115,7 @@
 
 +(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId
 {
-    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
@@ -150,6 +157,10 @@
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         if (response.statusCode == 304)
         {
+            if (self.puzzle_id == nil)
+            {
+                NSLog(@"ERROR: puzzle id is null");
+            }
             NSLog(@"puzzle %@ not modified", self.puzzle_id);
         }
         else if (response.statusCode != 200)
@@ -218,16 +229,15 @@
             
             if (wasUpdatedLocal)
             {
-                NSError * error = nil;
-                [[AppDelegate currentDelegate].managedObjectContext save:&error];
-                if (error != nil)
-                {
-                    NSLog(@"puzzle save error: %@", error.description);
-                }
-                else
-                {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.managedObjectContext != [DataContext currentContext])
+                    {
+                        NSLog(@"ERROR: managed objects contexts are not equal");
+                    }
+                    NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
+                    [self.managedObjectContext save:nil];
                     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
-                }
+                });
             }
             
             if (needUpdateServer)
@@ -262,6 +272,10 @@
         [request.headers setObject:self.etag forKey:@"If-None-Match"];
     }
     [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    if (self.puzzle_id == nil)
+    {
+        NSLog(@"ERROR: puzzle id is nil");
+    }
     [request.params setObject:self.puzzle_id forKey:@"id"];
     [request runUsingCache:NO silentMode:YES];
 }

@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class PuzzleData;
+@class PuzzleSetPackData;
 
 typedef enum PuzzleSetType
 {
@@ -31,11 +32,9 @@ PuzzleSetType;
 @property (nonatomic, retain) NSNumber * bought;
 @property (nonatomic, retain) NSNumber * puzzles_count;
 @property (nonatomic, retain) NSSet *puzzles;
-@property (nonatomic, retain) NSNumber * month;
-@property (nonatomic, retain) NSNumber * year;
+@property (nonatomic, retain) PuzzleSetPackData *puzzleSetPack;
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
-+(NSArray *)puzzleSetsForMonth:(int)month year:(int)year;
 
 -(int)solved;
 -(int)total;

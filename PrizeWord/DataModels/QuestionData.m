@@ -9,6 +9,7 @@
 #import "QuestionData.h"
 #import "PuzzleData.h"
 #import "AppDelegate.h"
+#import "DataContext.h"
 
 @implementation QuestionData
 
@@ -119,9 +120,7 @@
 {
     NSString * question_id = [NSString stringWithFormat:@"%@_%d_%d", puzzle.puzzle_id, [(NSNumber *)[dict objectForKey:@"column"] intValue], [(NSNumber *)[dict objectForKey:@"row"] intValue]];
     
-    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
-    
-    QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:managedObjectContext];
+    QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:[DataContext currentContext]];
     [question setQuestion_id:question_id];
     [question setUser_id:userId];
     NSString * answer = [dict objectForKey:@"answer"];

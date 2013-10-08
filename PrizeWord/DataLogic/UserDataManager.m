@@ -15,6 +15,7 @@
 #import "EventManager.h"
 #import "APIRequest.h"
 #import "SBJsonParser.h"
+#import "DataContext.h"
 
 @interface UserDataManager ()
 {
@@ -70,25 +71,21 @@
     }
     NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
     NSError * error = nil;
-    NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
     
     if (results != nil && results.count != 0)
     {
         return;
     }
-    NSManagedObjectContext * context = [AppDelegate currentDelegate].managedObjectContext;
+    NSManagedObjectContext * context = [DataContext currentContext];
     ScoreQuery * scoreQuery = [[ScoreQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"ScoreQuery" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
     scoreQuery.score = [NSNumber numberWithInt:score];
     scoreQuery.user = user.user_id;
     scoreQuery.key = key;
     scoreQuery.done = [NSNumber numberWithBool:NO];
-    [context save:&error];
-    if (error != nil)
-    {
-        NSLog(@"error: %@", error.localizedDescription);
-    }
+    [context save:nil];
     [self sendScore:score forKey:key];
-
+    
     user.month_score += score;
     [GlobalData globalData].loggedInUser = user;
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:user]];
@@ -101,20 +98,15 @@
     {
         return;
     }
-    NSManagedObjectContext * context = [AppDelegate currentDelegate].managedObjectContext;
+    NSManagedObjectContext * context = [DataContext currentContext];
     HintsQuery * hintsQuery = [[HintsQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"HintsQuery" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
     hintsQuery.hints = [NSNumber numberWithInt:hints];
     hintsQuery.user = user.user_id;
     hintsQuery.key = [NSString stringWithFormat:@"%lld%04d", (long long)[[NSDate date] timeIntervalSince1970], rand() % 1000];
     hintsQuery.done = [NSNumber numberWithBool:NO];
-    NSError * error = nil;
-    [context save:&error];
-    if (error != nil)
-    {
-        NSLog(@"error: %@", error.localizedDescription);
-    }
+    [context save:nil];
     [self sendHints:hints forKey:hintsQuery.key];
-
+    
     user.hints += hints;
     [GlobalData globalData].loggedInUser = user;
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:user]];
@@ -129,7 +121,7 @@
     }
     NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreUndoneFetchRequest" substitutionVariables:@{@"USER" : user.user_id}];
     NSError * error = nil;
-    NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
     if (error != nil)
     {
         NSLog(@"error: %@", error.localizedDescription);
@@ -151,7 +143,7 @@
     }
     NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"HintsUndoneFetchRequest" substitutionVariables:@{ @"USER" : user.user_id }];
     NSError * error = nil;
-    NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
     if (error != nil)
     {
         NSLog(@"error: %@", error.localizedDescription);
@@ -177,16 +169,16 @@
     APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         scoreQueriesInProgress--;
         NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-
+        
         NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
-        NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
         
         if (error == nil && results != nil && results.count != 0)
         {
             ScoreQuery * scoreQuery = [results lastObject];
             scoreQuery.done = [NSNumber numberWithBool:YES];
-            [[AppDelegate currentDelegate].managedObjectContext save:&error];
+            [[DataContext currentContext] save:nil];
         }
         if (error != nil)
         {
@@ -226,13 +218,13 @@
         hintsQueriesInProgress--;
         NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
-        NSArray * results = [[AppDelegate currentDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
         
         if (error == nil && results != nil && results.count != 0)
         {
             HintsQuery * hintsQuery = [results lastObject];
             hintsQuery.done = [NSNumber numberWithBool:YES];
-            [[AppDelegate currentDelegate].managedObjectContext save:&error];
+            [[DataContext currentContext] save:nil];
         }
         if (error != nil)
         {

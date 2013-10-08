@@ -13,6 +13,7 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "PuzzleSetView.h"
+#import "PuzzleSetPackData.h"
 #import "PuzzleSetData.h"
 #import "PuzzleData.h"
 #import "GlobalData.h"
@@ -29,6 +30,7 @@
 #import "NewsCell.h"
 #import "CurrentPuzzlesCell.h"
 #import "PuzzleSetCell.h"
+#import "DataContext.h"
 
 NSString * PRODUCTID_PREFIX = @"ru.aipmedia.prizeword.";
 NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
@@ -39,9 +41,35 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
 const int TAG_STATIC_VIEWS = 0;
 const int TAG_DYNAMIC_VIEWS = 101;
 
+@interface PuzzleSetState : NSObject
+
+@property () BOOL isShownFull;
+@property () float height;
+
+@end
+
+@implementation PuzzleSetState
+
+@synthesize isShownFull;
+@synthesize height;
+
+- (id)init
+{
+    self = [super init];
+    if (self != nil)
+    {
+        isShownFull = YES;
+        height = 0;
+    }
+    return self;
+}
+
+@end
+
 @interface PuzzlesViewController ()
 {
     __weak IBOutlet UITableView *tableView;
+    NSMutableArray * currentPuzzleSetStates;
     
     IBOutlet UIView *hintsView;
     IBOutlet UIView *archiveView;
@@ -75,7 +103,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 -(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView;
 
 -(void)updateArchive:(NSArray *)sets;
--(void)updateMonthSets:(NSArray *)monthSets;
+//-(void)updateMonthSets:(NSArray *)monthSets;
 -(void)updateBaseScores;
 -(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
@@ -95,6 +123,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     [super viewDidLoad];
     
+    currentPuzzleSetStates = [NSMutableArray new];
     [scrollView removeFromSuperview];
     tableView.backgroundView = nil;
     UIImage * bgImage = [UIImage imageNamed:@"bg_dark_tile.jpg"];
@@ -107,11 +136,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     
     self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen with puzzles");
     
-/*
-    [self addFramedView:currentPuzzlesView];
-    [self addFramedView:hintsView];
-    [self addFramedView:archiveView];
-*/
     btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
     btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
@@ -131,6 +155,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (void)viewDidUnload
 {
+    currentPuzzleSetStates = nil;
     hintsView = nil;
     archiveView = nil;
     btnBuyHint1 = nil;
@@ -336,7 +361,8 @@ const int TAG_DYNAMIC_VIEWS = 101;
     else if (event.type == EVENT_MONTH_SETS_UPDATED)
     {
 //        [self hideActivityIndicator];
-        [self updateMonthSets:[GlobalData globalData].monthSets];
+        [tableView reloadData];
+//        [self updateMonthSets:[GlobalData globalData].monthSets];
     }
     else if (event.type == EVENT_COEFFICIENTS_UPDATED)
     {
@@ -350,9 +376,9 @@ const int TAG_DYNAMIC_VIEWS = 101;
 }
 
 #pragma mark update and bought puzzles
+/*
 -(void)updateMonthSets:(NSArray *)monthSets
 {
-    /*
     BOOL hasUnbought = NO;
     NSMutableSet * productsIds = [NSMutableSet new];
 
@@ -412,8 +438,8 @@ const int TAG_DYNAMIC_VIEWS = 101;
     productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIds];
     productsRequest.delegate = self;
     [productsRequest start];
-     */
 }
+ */
 
 -(void)updateArchive:(NSArray *)sets
 {
@@ -427,11 +453,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
         {
             continue;
         }
-        if (puzzleSet.year.intValue == [GlobalData globalData].currentYear && puzzleSet.month.intValue == [GlobalData globalData].currentMonth)
+        if (puzzleSet.puzzleSetPack.year.intValue == [GlobalData globalData].currentYear && puzzleSet.puzzleSetPack.month.intValue == [GlobalData globalData].currentMonth)
         {
             continue;
         }
-        int month = puzzleSet.month.intValue;
+        int month = puzzleSet.puzzleSetPack.month.intValue;
         if (added)
         {
             month = 0;
@@ -561,7 +587,12 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
         [[DataManager sharedManager] fetchArchiveSetsForMonth:archiveLastMonth year:archiveLastYear completion:^(NSArray *data, NSError *error) {
             NSLog(@"fetch result");
-            [[AppDelegate currentDelegate].managedObjectContext save:nil];
+            if (data != nil && data.count > 0)
+            {
+                PuzzleSetData * puzzleSet = [data lastObject];
+                NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                [puzzleSet.managedObjectContext save:nil];
+            }
             double delayInSeconds = 0.3;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -569,8 +600,17 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 [self loadArchive];
             });
             if (data != nil) {
+                __block NSMutableArray * objectIDs = [NSMutableArray arrayWithCapacity:data.count];
+                for (NSManagedObject * object in data) {
+                    [objectIDs addObject:object.objectID];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self updateArchive:data];
+                    NSMutableArray * objects = [NSMutableArray arrayWithCapacity:objectIDs.count];
+                    for (NSManagedObjectID * objectID in objectIDs)
+                    {
+                        [objects addObject:[[DataContext currentContext] objectWithID:objectID]];
+                    }
+                    [self updateArchive:objects];
                 });
             }
         }];
@@ -622,11 +662,8 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 }
                 
                 [puzzleSetView.puzzleSetData setBought:[NSNumber numberWithBool:YES]];
-                NSError * error;
-                [[AppDelegate currentDelegate].managedObjectContext save:&error];
-                if (error != nil) {
-                    NSLog(@"error: %@", error.description);
-                }
+                NSAssert(puzzleSetView.puzzleSetData.managedObjectContext != nil, @"managed object context of managed object in nil");
+                [puzzleSetView.puzzleSetData.managedObjectContext save:nil];
                 [closeSetSound play];
                 [self switchSetViewToBought:puzzleSetView];
                 NSLog(@"view for puzzles created!");
@@ -689,7 +726,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     BadgeView * badge = (BadgeView *)sender;
     PuzzleData * puzzle = badge.puzzle;
-    if (puzzle.puzzleSet.month.intValue != [GlobalData globalData].currentMonth || puzzle.puzzleSet.year.intValue != [GlobalData globalData].currentYear)
+    if (puzzle.puzzleSet.puzzleSetPack.month.intValue != [GlobalData globalData].currentMonth || puzzle.puzzleSet.puzzleSetPack.year.intValue != [GlobalData globalData].currentYear)
     {
         archiveNeedLoading = YES;
         archiveLastMonth = [GlobalData globalData].currentMonth;
@@ -736,9 +773,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     UIButton * btnShowMore = (UIButton *)sender;
 
     PuzzleSetView * setView = (PuzzleSetView *)btnShowMore.superview;
-    UIView * blockView = setView.superview;
-    CGSize oldSize = setView.frame.size;
-
     btnShowMore.selected = !btnShowMore.selected;
     CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
     if (btnShowMore.selected)
@@ -749,8 +783,18 @@ const int TAG_DYNAMIC_VIEWS = 101;
     {
         [closeSetSound play];
     }
-    
-    [self resizeBlockView:blockView withInnerView:setView fromSize:oldSize toSize:newSize];
+    int idx = btnShowMore.tag;
+    if (idx < 0)
+    {
+        idx = -idx - 1;
+    }
+    else
+    {
+        PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:idx];
+        state.height = newSize.height;
+    }
+    [tableView beginUpdates];
+    [tableView endUpdates];
 }
 
 
@@ -862,7 +906,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }
     else if (section == 1)
     {
-        return 1;
+        if ([GlobalData globalData].monthSets == nil)
+        {
+            return 1;
+        }
+        return [GlobalData globalData].monthSets.count + 1;
     }
     return 0;
 }
@@ -881,9 +929,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
     {
         if (indexPath.row == 0)
         {
-            return [CurrentPuzzlesCell height];
+            if ([GlobalData globalData].monthSets != nil && [GlobalData globalData].monthSets.count > 0)
+            {
+                return [CurrentPuzzlesCell height] * 0.6f;
+            }
+            return  [CurrentPuzzlesCell height];
         }
-        return [PuzzleSetCell height];
+        if (currentPuzzleSetStates.count >= indexPath.row)
+        {
+            float height = [(PuzzleSetState *)[currentPuzzleSetStates objectAtIndex:indexPath.row - 1] height];
+            NSLog(@"row height: %0.0f", height);
+            return height;
+        }
+        return [PuzzleSetCell minHeight];
     }
     return 0;
 }
@@ -903,19 +961,82 @@ const int TAG_DYNAMIC_VIEWS = 101;
         {
             CurrentPuzzlesCell * cell = [tableView dequeueReusableCellWithIdentifier:@"currentPuzzlesCell"];
             
-            NSCalendar * calendar = [NSCalendar currentCalendar];
-            NSDate * currentDate = [NSDate date];
-            NSDateComponents * currentComponents = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:currentDate];
-            [currentComponents setMonth:[GlobalData globalData].currentMonth];
-            [currentComponents setYear:[GlobalData globalData].currentYear];
-            [currentComponents setDay:[GlobalData globalData].currentDay];
-            currentDate = [calendar dateFromComponents:currentComponents];
-            NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
-            int daysLeft = daysRange.location + daysRange.length - [GlobalData globalData].currentDay;
-            int month = [GlobalData globalData].currentMonth;
-            [cell setupWithMonth:month daysLeft:daysLeft indexPath:indexPath tableView:tableView];
+            if ([GlobalData globalData].monthSets != nil)
+            {
+                NSCalendar * calendar = [NSCalendar currentCalendar];
+                NSDate * currentDate = [NSDate date];
+                NSDateComponents * currentComponents = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:currentDate];
+                [currentComponents setMonth:[GlobalData globalData].currentMonth];
+                [currentComponents setYear:[GlobalData globalData].currentYear];
+                [currentComponents setDay:[GlobalData globalData].currentDay];
+                currentDate = [calendar dateFromComponents:currentComponents];
+                NSRange daysRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:currentDate];
+                int daysLeft = daysRange.location + daysRange.length - [GlobalData globalData].currentDay;
+                int month = [GlobalData globalData].currentMonth;
+                [cell setupWithMonth:month daysLeft:daysLeft indexPath:indexPath tableView:tableView];
+            }
+            else
+            {
+                [cell setupWithLoadingAndIndexPath:indexPath tableView:tableView];
+            }
             return cell;
         }
+        PuzzleSetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell" forIndexPath:indexPath];
+        while (currentPuzzleSetStates.count < indexPath.row)
+        {
+            [currentPuzzleSetStates addObject:[PuzzleSetState new]];
+        }
+        PuzzleSetData * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
+        PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:indexPath.row - 1];
+        if (cell.puzzleSetView != nil && [puzzleSet.set_id compare:cell.puzzleSetView.puzzleSetData.set_id] == NSOrderedSame)
+        {
+            NSLog(@"found set: %@", puzzleSet.set_id);
+            if (puzzleSet.set_id == nil)
+            {
+                NSLog(@"puzzle set id is nil");
+            }
+            if (state.height != cell.actualHeight)
+            {
+                state.height = cell.actualHeight;
+                [tableView reloadData];
+            }
+            return cell;
+        }
+        
+        [cell setupWithData:puzzleSet month:0 showSolved:YES showUnsolved:YES indexPath:indexPath inTableView:tableView];
+        
+        cell.puzzleSetView.btnShowMore.tag = indexPath.row - 1;
+        [cell.puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self activateBadges:cell.puzzleSetView];
+        if (!puzzleSet.bought.boolValue)
+        {
+            [cell.puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
+            if (puzzleSet.type.intValue == PUZZLESET_FREE)
+            {
+                [cell.puzzleSetView.btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
+            }
+            else
+            {
+                [cell.puzzleSetView.btnBuy setTitle:@"" forState:UIControlStateNormal];
+                [[DataManager sharedManager] fetchPricesForProductIDs:@[[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]] completion:^(NSDictionary *data, NSError *error) {
+                    if (data != nil && cell != nil && puzzleSet != nil)
+                    {
+                        NSString * price = [data objectForKey:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]];
+                        if (price != nil)
+                        {
+                            [cell.puzzleSetView.btnBuy setTitle:price forState:UIControlStateNormal];
+                        }
+                    }
+                }];
+            }
+        }
+        if (state.height != cell.actualHeight)
+        {
+            state.height = cell.actualHeight;
+            [tableView reloadData];
+        }
+        
+        return cell;
     }
     return nil;
 }

@@ -7,13 +7,58 @@
 //
 
 #import "PuzzleSetCell.h"
+#import "PuzzleSetView.h"
 #import "AppDelegate.h"
 
 @implementation PuzzleSetCell
 
-+ (float)height
+@synthesize puzzleSetView;
+
+static NSOperationQueue * backgroundOperationQueue = nil;
+
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    return [AppDelegate currentDelegate].isIPad ? 116 : 84;
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        puzzleSetView = nil;
+        if (backgroundOperationQueue == nil)
+        {
+            backgroundOperationQueue = [NSOperationQueue new];
+        }
+    }
+    return self;
+}
+
++ (float)minHeight
+{
+    return [[AppDelegate currentDelegate] isIPad] ? 150 : 140;
+}
+
+- (float)actualHeight
+{
+    return puzzleSetView.frame.size.height;
+}
+
+- (void)setupWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+{
+    if (puzzleSetData == nil)
+    {
+        NSLog(@"ERROR: puzzle set data is nil");
+    }
+    [self setupBackgroundForIndexPath:indexPath inTableView:tableView];
+    if (puzzleSetView != nil)
+    {
+        [puzzleSetView removeFromSuperview];
+    }
+    
+    puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
+    [self addSubview:puzzleSetView];
+}
+
+- (void)switchToBought
+{
+    [puzzleSetView switchToBought];
 }
 
 @end

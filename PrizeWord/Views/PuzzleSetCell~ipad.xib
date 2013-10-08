@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zm5-MM-7F7" customClass="PuzzleSetCell">
+        <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zm5-MM-7F7" customClass="PuzzleSetCell">
             <rect key="frame" x="0.0" y="0.0" width="480" height="136"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zm5-MM-7F7" id="LSw-Zv-vEP">
+            <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zm5-MM-7F7" id="LSw-Zv-vEP">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="135"/>
                 <autoresizingMask key="autoresizingMask"/>
             </tableViewCellContentView>

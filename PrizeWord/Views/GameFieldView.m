@@ -429,6 +429,10 @@ int tileHeight = 63;
 
 - (void)drawTile:(TileData *)tileData inRect:(CGRect)rect
 {
+    if (tileData == nil)
+    {
+        return;
+    }
     switch (tileData.state) {
         case TILE_QUESTION_NEW:
             [[UIImage imageNamed:@"tile_question_new"] drawInRect:rect];

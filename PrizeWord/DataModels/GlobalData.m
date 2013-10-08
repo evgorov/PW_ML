@@ -14,6 +14,9 @@
 #import "UserData.h"
 #import "EventManager.h"
 #import "AppDelegate.h"
+#import "DataManager.h"
+#import "APIClient.h"
+#import "DataContext.h"
 
 NSString * MONTHS_ENG[] = {@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"};
 NSString * COEFFICIENTS_KEY = @"coefficients";
@@ -161,6 +164,43 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)loadMonthSets
 {
+    [[DataManager sharedManager] fetchCurrentMonthSetsWithCompletion:^(NSArray *data, NSError *error) {
+        if (data != nil)
+        {
+            __block NSMutableArray * objectIDs = [NSMutableArray arrayWithCapacity:data.count];
+            for (NSManagedObject * object in data) {
+                [objectIDs addObject:object.objectID];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSMutableArray * objects = [NSMutableArray arrayWithCapacity:objectIDs.count];
+                for (NSManagedObjectID * objectID in objectIDs)
+                {
+                    [objects addObject:[[DataContext currentContext] objectWithID:objectID]];
+                }
+                _monthSets = objects;
+                if (_monthSets.count > 0)
+                {
+                    PuzzleSetData * puzzleSet = [_monthSets lastObject];
+                    NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                    [puzzleSet.managedObjectContext save:nil];
+                }
+                for (PuzzleSetData * puzzleSet in _monthSets)
+                {
+                    if (puzzleSet.set_id == nil)
+                    {
+                        NSLog(@"puzzle set id is nil");
+                    }
+                    for (PuzzleData * puzzle in puzzleSet.puzzles)
+                    {
+                        NSLog(@"puzzle id: %@", puzzle.puzzle_id);
+                    }
+                }
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
+            });
+
+        }
+    }];
+/*
     APIRequest * request = [APIRequest getRequest:@"published_sets" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
         [self parseDateFromResponse:response];
@@ -253,6 +293,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     [request.params setObject:[NSNumber numberWithInt:_currentYear] forKey:@"year"];
     [request.params setObject:@"short" forKey:@"mode"];
     [request runUsingCache:YES silentMode:YES];
+*/
 }
 
 -(void)loadMe
