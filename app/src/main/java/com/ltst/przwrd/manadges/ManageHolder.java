@@ -1,19 +1,15 @@
 package com.ltst.przwrd.manadges;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.widget.Toast;
 
 import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
-import com.android.vending.billing.IInAppBillingService;
 import com.ltst.przwrd.crossword.view.HintsManager;
 import com.ltst.przwrd.navigation.INavigationActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
@@ -182,19 +178,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void reloadInventory(@Nonnull IListenerVoid handler)
     {
-//        try
-//        {
-//            List<IabHelper.PurchaseHolder> list = mHelper.getPurchases();
-//            for(IabHelper.PurchaseHolder holder : list)
-//            {
-//                NavigationActivity.debug("sku:"+holder.sku+" purchaseData:"+holder.purchaseData+" signature:"+holder.signature);
-//            }
-//        }
-//        catch (RemoteException e)
-//        {
-//            Log.e(e.toString());
-//        }
-
         // Отправляем запрос на получие информации о продуктах приложения на Google Play;
         mNotifyInventoryHandler = handler;
         try

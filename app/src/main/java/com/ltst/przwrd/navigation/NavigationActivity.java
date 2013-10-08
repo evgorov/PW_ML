@@ -49,6 +49,7 @@ import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.login.view.ResetPassFragment;
 import com.ltst.przwrd.login.model.UserDataModel;
 import com.ltst.przwrd.login.view.SocialLoginActivity;
+import com.ltst.przwrd.manadges.BillingV3Activity;
 import com.ltst.przwrd.manadges.IIabHelper;
 import com.ltst.przwrd.manadges.IManadges;
 import com.ltst.przwrd.manadges.IManageHolder;
@@ -78,18 +79,16 @@ import javax.annotation.Nullable;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
-public class NavigationActivity extends SherlockFragmentActivity
+public class NavigationActivity extends BillingV3Activity
         implements
         IFragmentsHolderActivity,
-        IBcConnectorOwner,
         INavigationDrawerHolder,
         IAutorization,
         View.OnClickListener,
         CompoundButton.OnCheckedChangeListener,
         IReloadUserData,
         IBitmapAsyncTask,
-        INavigationActivity,
-        IManadges
+        INavigationActivity
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
@@ -101,8 +100,8 @@ public class NavigationActivity extends SherlockFragmentActivity
     public final static int REQUEST_RULES = 5;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
-    private @Nonnull IBcConnector mBcConnector;
     private @Nonnull Context mContext;
+    private @Nonnull IBcConnector mBcConnector;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull SlidingMenu mSlidingMenu;
@@ -117,7 +116,6 @@ public class NavigationActivity extends SherlockFragmentActivity
 
     private @Nonnull IUserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
-    private @Nonnull IIabHelper mManadgeHolder;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
     private boolean mVkSwitch;
@@ -142,10 +140,8 @@ public class NavigationActivity extends SherlockFragmentActivity
 
         Crashlytics.start(this);
 
+        mBcConnector = getBcConnector();
         mIsTablet = DimenTools.isTablet(this);
-        mBcConnector = new BcConnector(this);
-        mManadgeHolder = new ManageHolder(this, mBcConnector);
-        mManadgeHolder.instance();
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
@@ -160,7 +156,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         config.locale = locale;
         mContext.getResources().updateConfiguration(config, mContext.getResources().getDisplayMetrics());
 
-        mBcConnector = new BcConnector(this);
         mSlidingMenu = new SlidingMenu(this);
         if (!mIsTablet)
         {
@@ -247,15 +242,6 @@ public class NavigationActivity extends SherlockFragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        // Проверяем ответ, обработается он библиотекой контроля покупок In-App Billing;
-        if (mManadgeHolder.onActivityResult(requestCode, resultCode, data))
-        {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            return;
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK)
@@ -367,7 +353,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         super.onDestroy();
         mIsDestroyed = true;
         mGcmHelper.onDestroy();
-        mManadgeHolder.dispose();
     }
 
     @Override
@@ -565,15 +550,6 @@ public class NavigationActivity extends SherlockFragmentActivity
         }
     }
 
-    //==== IBcConnectorOwner ==============================================
-
-    @Nonnull
-    @Override
-    public IBcConnector getBcConnector()
-    {
-        return mBcConnector;
-    }
-
     // ==================== BACK_PRESS ==============================
 
     @Override
@@ -692,7 +668,7 @@ public class NavigationActivity extends SherlockFragmentActivity
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
                 spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
                 spref.commit();
-                SharedPreferencesValues.setFacebookToken(NavigationActivity.this,Strings.EMPTY);
+                SharedPreferencesValues.setFacebookToken(NavigationActivity.this, Strings.EMPTY);
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 mUserDataModel.clearDataBase(null);
                 break;
@@ -999,13 +975,6 @@ public class NavigationActivity extends SherlockFragmentActivity
                     break;
             }
         }
-    }
-
-    @Nonnull
-    @Override
-    public IManageHolder getManadgeHolder()
-    {
-        return (IManageHolder) mManadgeHolder;
     }
 
     @Override
