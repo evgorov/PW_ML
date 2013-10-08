@@ -180,7 +180,7 @@ module Middleware
       result.to_json
     end
 
-    get '/user_data/:id' do
+    get '/user_data' do
       authorize_admin!
       User.storage(env['redis']).load(params['id']).user_data.to_hash.to_json
     end
