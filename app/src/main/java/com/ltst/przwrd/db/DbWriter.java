@@ -1,11 +1,9 @@
 package com.ltst.przwrd.db;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.przwrd.manadges.Purchase;
-import com.ltst.przwrd.navigation.NavigationActivity;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
@@ -413,19 +411,19 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
-    public void putPurchases(@Nullable ArrayList<Purchase> purchases) {
+    public void putPurchases(@Nullable ArrayList<PurchasePrizeWord> purchases) {
         if(purchases == null) return;
-        for(Purchase purchase : purchases){
+        for(PurchasePrizeWord purchase : purchases){
             putPurchase(purchase);
         }
     }
 
     @Override
-    public void putPurchase(@Nullable Purchase purchase) {
+    public void putPurchase(@Nullable PurchasePrizeWord purchase) {
         if(purchase == null) return;
 
         final @Nonnull ContentValues values = mPurchaseValuesCreator.createObjectContentValues(purchase);
-        final @Nullable Purchase existsPurchase = getPurchaseByGoogleId(purchase.googleId);
+        final @Nullable PurchasePrizeWord existsPurchase = getPurchaseByGoogleId(purchase.googleId);
 
         if(existsPurchase == null)
         {
@@ -634,10 +632,10 @@ public class DbWriter extends  DbReader implements IDbWriter
         }
     };
 
-    private ContentValuesCreator<Purchase> mPurchaseValuesCreator  = new ContentValuesCreator<Purchase>()
+    private ContentValuesCreator<PurchasePrizeWord> mPurchaseValuesCreator  = new ContentValuesCreator<PurchasePrizeWord>()
     {
         @Override
-        public ContentValues createObjectContentValues(@Nullable Purchase object)
+        public ContentValues createObjectContentValues(@Nullable PurchasePrizeWord object)
         {
             ContentValues cv  = new ContentValues();
 //            cv.put(ColsPurchases.ID, object.id);

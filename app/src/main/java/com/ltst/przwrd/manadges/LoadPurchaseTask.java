@@ -35,14 +35,14 @@ public class LoadPurchaseTask implements DbService.IDbTask {
         return intent;
     }
 
-    final static public @Nonnull Intent createUpdateOnePurchseToDataBase(@Nonnull Purchase purchase){
+    final static public @Nonnull Intent createUpdateOnePurchseToDataBase(@Nonnull PurchasePrizeWord purchase){
         @Nonnull Intent intent = new Intent();
         intent.putExtra(BF_LOCAL_TASK, LT_SAVE_ONE_PRODUCT_TO_DATABASE);
         intent.putExtra(BF_ONE_PURCHASE, purchase);
         return intent;
     }
 
-    final static public @Nonnull Intent createUpdatePurchsesToDataBase(@Nonnull ArrayList<Purchase> purchases){
+    final static public @Nonnull Intent createUpdatePurchsesToDataBase(@Nonnull ArrayList<PurchasePrizeWord> purchases){
         @Nonnull Intent intent = new Intent();
         intent.putExtra(BF_LOCAL_TASK, LT_SAVE_PRODUCTS_TO_DATABASE);
         intent.putParcelableArrayListExtra(LoadPurchaseTask.BF_MANY_PURCHASES, purchases);
@@ -67,13 +67,13 @@ public class LoadPurchaseTask implements DbService.IDbTask {
             }
             else if(task.equals(LT_SAVE_ONE_PRODUCT_TO_DATABASE))
             {
-                @Nullable Purchase purchase = env.extras.getParcelable(BF_ONE_PURCHASE);
+                @Nullable PurchasePrizeWord purchase = env.extras.getParcelable(BF_ONE_PURCHASE);
                 env.dbw.putPurchase(purchase);
                 return getFromDatabase(env);
             }
             else if(task.equals(LT_SAVE_PRODUCTS_TO_DATABASE))
             {
-                @Nullable ArrayList<Purchase> purchases = env.extras.getParcelableArrayList(BF_MANY_PURCHASES);
+                @Nullable ArrayList<PurchasePrizeWord> purchases = env.extras.getParcelableArrayList(BF_MANY_PURCHASES);
                 env.dbw.putPurchases(purchases);
                 return getFromDatabase(env);
             }
@@ -83,18 +83,18 @@ public class LoadPurchaseTask implements DbService.IDbTask {
 
     static @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
-        @Nullable ArrayList<Purchase> purchase = env.dbw.getPurchases();
+        @Nullable ArrayList<PurchasePrizeWord> purchase = env.dbw.getPurchases();
         return packToBundle(purchase);
     }
 
-    static @Nonnull Bundle packToBundle(@Nullable ArrayList<Purchase> purchases)
+    static @Nonnull Bundle packToBundle(@Nullable ArrayList<PurchasePrizeWord> purchases)
     {
         @Nonnull Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BF_PURCHASES, purchases);
         return bundle;
     }
 
-    final static public @Nullable List<Purchase> extractFromBundle(@Nullable Bundle bundle)
+    final static public @Nullable List<PurchasePrizeWord> extractFromBundle(@Nullable Bundle bundle)
     {
         if (bundle == null)
         {

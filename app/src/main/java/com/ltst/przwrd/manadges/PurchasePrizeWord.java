@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by cosic on 29.08.13.
  */
-public class Purchase implements Parcelable {
+public class PurchasePrizeWord implements Parcelable {
 
     public long id;
     public @Nonnull String clientId;
@@ -23,14 +23,14 @@ public class Purchase implements Parcelable {
     public @Nonnull String receipt_data;
     public @Nonnull String signature;
 
-    public Purchase()
+    public PurchasePrizeWord()
     {
 
     }
 
-    public Purchase(long id, @Nonnull String clientId, @Nonnull String googleId,
-                    @Nonnull String price, boolean googlePurchase, boolean serverPurchase,
-                    @Nonnull String receipt_data, @Nonnull String signature)
+    public PurchasePrizeWord(long id, @Nonnull String clientId, @Nonnull String googleId,
+                             @Nonnull String price, boolean googlePurchase, boolean serverPurchase,
+                             @Nonnull String receipt_data, @Nonnull String signature)
     {
         this.id = id;
         this.clientId = clientId;
@@ -42,10 +42,10 @@ public class Purchase implements Parcelable {
         this.signature = signature;
     }
 
-    public static Creator<Purchase> CREATOR = new Creator<Purchase>() {
+    public static Creator<PurchasePrizeWord> CREATOR = new Creator<PurchasePrizeWord>() {
         @Nullable
         @Override
-        public Purchase createFromParcel(Parcel source) {
+        public PurchasePrizeWord createFromParcel(Parcel source) {
             long id = source.readLong();
             @Nonnull String clientId = ParcelableTools.getNonnullString(source.readString());
             @Nonnull String googleId = ParcelableTools.getNonnullString(source.readString());;
@@ -55,11 +55,11 @@ public class Purchase implements Parcelable {
             @Nonnull String receipt_data = ParcelableTools.getNonnullString(source.readString());;
             @Nonnull String signature = ParcelableTools.getNonnullString(source.readString());;
 
-            return new Purchase(id,clientId,googleId,price, googlePurchase,serverPurchase,receipt_data,signature);
+            return new PurchasePrizeWord(id,clientId,googleId,price, googlePurchase,serverPurchase,receipt_data,signature);
         }
 
         @Override
-        public Purchase[] newArray(int size) {
+        public PurchasePrizeWord[] newArray(int size) {
             return null;
         }
     };

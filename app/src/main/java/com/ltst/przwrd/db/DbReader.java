@@ -3,7 +3,7 @@ package com.ltst.przwrd.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.przwrd.manadges.Purchase;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
@@ -452,20 +452,20 @@ public class DbReader implements IDbReader
 
     @Nullable
     @Override
-    public ArrayList<Purchase> getPurchases()
+    public ArrayList<PurchasePrizeWord> getPurchases()
     {
         final  Cursor cursor = mDb.query(TNAME_PURCHASES, FIELDS_P_PURCHASES, null, null, null, null, null);
-        @Nullable ArrayList<Purchase> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
+        @Nullable ArrayList<PurchasePrizeWord> purchases = createTypedListByCursor(cursor, mPurchaseCreator);
         return purchases;
     }
 
     @Nullable
     @Override
-    public Purchase getPurchaseByGoogleId(@Nonnull String googleId)
+    public PurchasePrizeWord getPurchaseByGoogleId(@Nonnull String googleId)
     {
         final  Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_PURCHASES, FIELDS_P_PURCHASES,
                 ColsPurchases.GOOGLE_ID, googleId);
-        @Nullable Purchase purchase = createObjectByCursor(cursor, mPurchaseCreator);
+        @Nullable PurchasePrizeWord purchase = createObjectByCursor(cursor, mPurchaseCreator);
         return purchase;
     }
 
@@ -577,10 +577,10 @@ public class DbReader implements IDbReader
         }
     };
 
-    private ObjectCreatorByCursor<Purchase> mPurchaseCreator = new ObjectCreatorByCursor<Purchase>()
+    private ObjectCreatorByCursor<PurchasePrizeWord> mPurchaseCreator = new ObjectCreatorByCursor<PurchasePrizeWord>()
     {
         @Override
-        public Purchase createObject(Cursor c)
+        public PurchasePrizeWord createObject(Cursor c)
         {
             long id = c.getLong(0);
             String clientId = c.getString(1);
@@ -590,7 +590,7 @@ public class DbReader implements IDbReader
             boolean serverPurchase = c.getInt(5) == 1;
             String receipt_data = c.getString(6);
             String signature = c.getString(7);
-            return new Purchase(id, clientId, googleId, price, googlePurchase, serverPurchase, receipt_data, signature);
+            return new PurchasePrizeWord(id, clientId, googleId, price, googlePurchase, serverPurchase, receipt_data, signature);
         }
     };
 

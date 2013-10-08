@@ -13,8 +13,9 @@ import javax.annotation.Nullable;
 public interface IPurchaseSetModel {
 
     void reloadPurchases(@Nonnull IListenerVoid handler);
-    void putOnePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler);
-    @Nonnull Purchase getPurchase(@Nullable String googleId);
+    void putOnePurchase(@Nonnull PurchasePrizeWord purchase, @Nonnull IListenerVoid handler);
+    @Nonnull
+    PurchasePrizeWord getPurchase(@Nullable String googleId);
     void close();
-    void putPurchases(@Nonnull ArrayList<Purchase> purchases, @Nonnull IListenerVoid handler);
+    void putPurchases(@Nonnull ArrayList<PurchasePrizeWord> purchases, @Nonnull IListenerVoid handler);
 }

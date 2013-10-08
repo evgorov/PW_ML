@@ -1,6 +1,6 @@
 package com.ltst.przwrd.db;
 
-import com.ltst.przwrd.manadges.Purchase;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
@@ -45,8 +45,9 @@ public interface IDbReader
 
     @Nullable List<Puzzle> getPuzzlesBySetId(long setId);
 
-    @Nullable Purchase getPurchaseByGoogleId(@Nonnull String googleId);
-    @Nullable ArrayList<Purchase> getPurchases();
+    @Nullable
+    PurchasePrizeWord getPurchaseByGoogleId(@Nonnull String googleId);
+    @Nullable ArrayList<PurchasePrizeWord> getPurchases();
 
     @Nullable List<PuzzleQuestion> getQuestionsByPuzzleId(long puzzleId);
 

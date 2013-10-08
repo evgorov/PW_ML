@@ -271,7 +271,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 //                        NavigationActivity.debug("puzzle: id="+puzzle.serverId + " - put db");
                     }
                 }
-                NavigationActivity.debug("---------------------------------------------------------- end");
+//                NavigationActivity.debug("---------------------------------------------------------- end");
 
                 return getFromDatabase(year, month, env);
             }

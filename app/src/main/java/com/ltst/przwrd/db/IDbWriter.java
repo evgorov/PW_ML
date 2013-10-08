@@ -1,6 +1,6 @@
 package com.ltst.przwrd.db;
 
-import com.ltst.przwrd.manadges.Purchase;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleSet;
@@ -35,8 +35,8 @@ public interface IDbWriter extends IDbReader
     void clearScoreQueue();
     void changeHintsCount(int hintsDelta);
 
-    void putPurchase(@Nullable Purchase purchase);
-    void putPurchases(@Nullable ArrayList<Purchase> purchases);
+    void putPurchase(@Nullable PurchasePrizeWord purchase);
+    void putPurchases(@Nullable ArrayList<PurchasePrizeWord> purchases);
 
     void clearDb();
 }

@@ -25,8 +25,8 @@ public class PurchaseSetModel implements IPurchaseSetModel
 {
 
     private @Nonnull IBcConnector mBcConnector;
-    private @Nullable List<Purchase> mPurchases;
-//    private @Nonnull Purchase mPurchaseDone;
+    private @Nullable List<PurchasePrizeWord> mPurchases;
+//    private @Nonnull PurchasePrizeWord mPurchaseDone;
 
     private boolean mIsDestroyed;
 
@@ -37,11 +37,11 @@ public class PurchaseSetModel implements IPurchaseSetModel
 
     public
     @Nonnull
-    Purchase getPurchase(@Nullable String googleId)
+    PurchasePrizeWord getPurchase(@Nullable String googleId)
     {
         if (googleId != null && mPurchases != null)
         {
-            for (Purchase purchase : mPurchases)
+            for (PurchasePrizeWord purchase : mPurchases)
             {
                 if (purchase.googleId.equals(googleId))
                 {
@@ -49,7 +49,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
                 }
             }
         }
-        Purchase purchase = new Purchase();
+        PurchasePrizeWord purchase = new PurchasePrizeWord();
         purchase.googleId = googleId;
         return purchase;
     }
@@ -80,7 +80,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
     }
 
     @Override
-    public void putOnePurchase(@Nonnull Purchase purchase, @Nonnull IListenerVoid handler)
+    public void putOnePurchase(@Nonnull PurchasePrizeWord purchase, @Nonnull IListenerVoid handler)
     {
         if (mIsDestroyed)
             return;
@@ -91,7 +91,7 @@ public class PurchaseSetModel implements IPurchaseSetModel
     }
 
     @Override
-    public void putPurchases(@Nonnull ArrayList<Purchase> purchases, @Nonnull IListenerVoid handler)
+    public void putPurchases(@Nonnull ArrayList<PurchasePrizeWord> purchases, @Nonnull IListenerVoid handler)
     {
         if (mIsDestroyed)
             return;

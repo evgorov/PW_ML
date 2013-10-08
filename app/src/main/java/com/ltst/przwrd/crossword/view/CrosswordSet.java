@@ -37,10 +37,10 @@ import javax.annotation.Nullable;
  */
 public class CrosswordSet {
 
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
-    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = "android.test.unavailable";
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_CANCEL;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
+    static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = HintsManager.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
 
     private @Nonnull ICrosswordFragment mICrosswordFragment;
     private @Nonnull Context mContext;
