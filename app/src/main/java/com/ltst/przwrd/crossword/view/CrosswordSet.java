@@ -75,7 +75,6 @@ public class CrosswordSet {
     private static @Nonnull IManageHolder mIManageHolder;
     private @Nonnull CrosswordSetData mCrosswordSetData;
 
-    private boolean flgIsFilling = false;
     private boolean flgOneRegister = false;
     private boolean mExpanding;
 
@@ -155,8 +154,7 @@ public class CrosswordSet {
 
     }
 
-    public @Nullable
-    CrosswordSetData getCrosswordSetData()
+    public @Nullable CrosswordSetData getCrosswordSetData()
     {
         return mCrosswordSetData;
     }
@@ -230,73 +228,69 @@ public class CrosswordSet {
         if(pBadgeContainer.getAdapter() == null)
             pBadgeContainer.setAdapter(new BadgeAdapter(mContext,data.mType));
 
-        if(!flgIsFilling)
+        if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
         {
-            if(isPuzzleInCurrentMonth(data.mYear, data.mMonth))
+            // Текущие наборы сетов сканвордов;
+
+            if(!flgOneRegister)
             {
-                // Текущие наборы сетов сканвордов;
+                mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
+                mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
+                flgOneRegister = true;
+            }
 
-                if(!flgOneRegister)
-                {
-                    mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
-                    mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
-                    flgOneRegister = true;
-                }
-
-                mCrosswordSetType = CrosswordSetType.CURRENT;
-                pTitleImage.setVisibility(View.VISIBLE);
-                pSwitcher.setVisibility(View.GONE);
+            mCrosswordSetType = CrosswordSetType.CURRENT;
+            pTitleImage.setVisibility(View.VISIBLE);
+            pSwitcher.setVisibility(View.GONE);
 //            pMonthBackground.setVisibility(View.GONE);
 
-//            if(!flgIsFilling)
-//            {
-//                expandingBadgeContainer(true);
-////                pBadgeContainer.setVisibility(View.VISIBLE);
-//            }
+            if(mCrosswordSetData.mServerId == null)
+            {
+                expandingBadgeContainer(true);
+//                pBadgeContainer.setVisibility(View.VISIBLE);
+            }
 
-                if(data.mBought)
-                {
-                    // Куплены;
-                    pBuyCrosswordContaiter.setVisibility(View.GONE);
-                    pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
-                    expandingBadgeContainer(true);
-                }
-                else
-                {
-                    // Некуплены;
-                    pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
-                    pCurrentCrosswordContaiter.setVisibility(View.GONE);
-//                pBadgeContainer.setVisibility(View.GONE);
-                    expandingBadgeContainer(false);
-                }
+            if(data.mBought)
+            {
+                // Куплены;
+                pBuyCrosswordContaiter.setVisibility(View.GONE);
+                pCurrentCrosswordContaiter.setVisibility(View.VISIBLE);
+                expandingBadgeContainer(true);
             }
             else
             {
-                if(!data.mBought)
-                {
-                    mRootView.setVisibility(View.GONE);
-                }
-
-                // Архивные наборы сетов сканвордов;
-                mCrosswordSetType = CrosswordSetType.ARCHIVE;
-                pTitleImage.setVisibility(View.VISIBLE);
-                pBuyCrosswordContaiter.setVisibility(View.GONE);
-
-                if(!flgIsFilling)
-                {
-                    expandingBadgeContainer(false);
-                }
-                if(data.mMonth == 0)
-                {
-                }
-                else
-                {
-                    pMonthText.setText(mContext.getResources().getStringArray(
-                            R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
-                }
+                // Некуплены;
+                pBuyCrosswordContaiter.setVisibility(View.VISIBLE);
+                pCurrentCrosswordContaiter.setVisibility(View.GONE);
+//                pBadgeContainer.setVisibility(View.GONE);
+                expandingBadgeContainer(false);
             }
         }
-        flgIsFilling = true;
+        else
+        {
+            if(!data.mBought)
+            {
+                mRootView.setVisibility(View.GONE);
+            }
+
+            // Архивные наборы сетов сканвордов;
+            mCrosswordSetType = CrosswordSetType.ARCHIVE;
+            pTitleImage.setVisibility(View.VISIBLE);
+            pBuyCrosswordContaiter.setVisibility(View.GONE);
+
+            if(mCrosswordSetData.mServerId == null)
+            {
+                expandingBadgeContainer(false);
+            }
+            if(data.mMonth == 0)
+            {
+            }
+            else
+            {
+                pMonthText.setText(mContext.getResources().getStringArray(
+                        R.array.menu_group_months_at_imenit_padezh)[data.mMonth-1]);
+            }
+        }
     }
 
     public void setVisibleMonth(boolean visible)
@@ -336,6 +330,7 @@ public class CrosswordSet {
             if(googleId.equals(mCrosswordSetData.mServerId))
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
+
                 mICrosswordFragment.waitLoader(true);
                 final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)
@@ -385,7 +380,7 @@ public class CrosswordSet {
         return currentYear == year && currentMonth == month;
     }
 
-        public enum CrosswordSetType{
+    public enum CrosswordSetType{
         CURRENT,
         ARCHIVE
     }
