@@ -446,36 +446,43 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             purchase = mIPurchaseSetModel.getPurchase(sku);
             if(purchase!=null)
             {
-                if(purchase.googlePurchase == true && purchase.serverPurchase == false
-                        && (
-                                sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                            )
-                        )
+                if(purchase.googlePurchase == true)
                 {
-                    // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
-                    // Восстанавливаем покупаемость товара;
-                    // Отправляем запрос на получие информации о продуктах приложения на Google Play;
-                    try
+//                        && purchase.serverPurchase == false
+                    if (
+                            sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                                    ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                                    ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                            )
                     {
-                        @Nonnull List<String> list = new ArrayList<String>(1);
-                        list.add(sku);
-                        mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                        // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
+                        // Восстанавливаем покупаемость товара;
+                        // Отправляем запрос на получие информации о продуктах приложения на Google Play;
+                        try
+                        {
+                            @Nonnull List<String> list = new ArrayList<String>(1);
+                            list.add(sku);
+                            mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+                        }
+                        catch (IllegalStateException e)
+                        {
+                            Log.e(e.getMessage());
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(e.getMessage());
+                        }
                     }
-                    catch (IllegalStateException e)
+                    else
                     {
-                        Log.e(e.getMessage());
+                        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+                        product.googlePurchase = false;
+                        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
                     }
-                    catch (Exception e)
-                    {
-                        Log.e(e.getMessage());
-                    }
-
                 }
                 if(purchase.serverPurchase == true)
                 {

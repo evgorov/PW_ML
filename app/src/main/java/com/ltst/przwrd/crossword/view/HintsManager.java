@@ -76,7 +76,6 @@ public class HintsManager implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-//              mIManageHolder.buyProduct(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS);
               mIManageHolder.buyProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
@@ -84,6 +83,8 @@ public class HintsManager implements View.OnClickListener
                 break;
             case R.id.crossword_fragment_current_rest_buy_30_btn:
                 mIManageHolder.buyProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
+                break;
+            default:
                 break;
         }
     }
@@ -141,10 +142,6 @@ public class HintsManager implements View.OnClickListener
             {
                 count = 30;
             }
-//            else if(googleId.equals(ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
-//            {
-//                count = 10;
-//            }
             else
                 return;
 
@@ -155,8 +152,8 @@ public class HintsManager implements View.OnClickListener
                     @Override
                     public void handle() {
 
-                        // Меняем состояние товара;
-                        mIManageHolder.productBuyOnServer(googleId);
+//                        // Меняем состояние товара;
+//                        mIManageHolder.productBuyOnServer(googleId);
                     }
                 });
 
