@@ -1,5 +1,5 @@
 //
-//  DataLayer.m
+//  DataManager.m
 //  PrizeWord
 //
 //  Created by Pavel Skorynin on 10/5/13.
@@ -21,55 +21,9 @@
 #import <StoreKit/SKProduct.h>
 #import <StoreKit/SKProductsRequest.h>
 
-@interface SKProductsRequestDelegateWithBlock : NSObject<SKProductsRequestDelegate>
-{
-    void (^block)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *);
-}
-
-@property (nonatomic, retain) SKProductsRequest * request;
-
-- (id)initWithBlock:(void(^)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *))block;
-
-@end
-
-@implementation SKProductsRequestDelegateWithBlock
-
-@synthesize request;
-
-- (id)initWithBlock:(void (^)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *))block_
-{
-    self = [super init];
-    if (self != nil)
-    {
-        block = block_;
-    }
-    return self;
-}
-
-- (void)productsRequest:(SKProductsRequest *)request_ didReceiveResponse:(SKProductsResponse *)response
-{
-    if (block != nil)
-    {
-        block(self, response);
-    }
-}
-
-- (void)dealloc
-{
-    if (request != nil)
-    {
-        request.delegate = nil;
-        [request cancel];
-        request = nil;
-    }
-}
-
-@end
-
 @interface DataManager()
 {
     NSOperationQueue * backgroundOperationQueue;
-    NSMutableSet * productRequests;
 }
 
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
@@ -95,7 +49,6 @@
     {
         backgroundOperationQueue = [NSOperationQueue new];
         [backgroundOperationQueue setMaxConcurrentOperationCount:4];
-        productRequests = [NSMutableSet new];
     }
     return self;
 }
@@ -104,7 +57,6 @@
 {
     [backgroundOperationQueue cancelAllOperations];
     backgroundOperationQueue = nil;
-    productRequests = nil;
 }
 
 - (void)cancelAll
@@ -224,7 +176,13 @@
                     [managedObjectContext save:nil];
                     if (callback != nil && ![fetchOperation isCancelled])
                     {
-                        callback([localPack.puzzleSets allObjects], nil);
+                        NSArray * sortedSets = [[localPack.puzzleSets allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                            PuzzleSetData * set1 = obj1;
+                            PuzzleSetData * set2 = obj2;
+                            
+                            return [set1.type compare:set2.type];
+                        }];
+                        callback(sortedSets, nil);
                     }
                 }
             });
@@ -237,7 +195,13 @@
                     if (localPack != nil && localPack.puzzleSets.count > 0)
                     {
                         [managedObjectContext save:nil];
-                        callback(localPack.puzzleSets.allObjects, nil);
+                        NSArray * sortedSets = [[localPack.puzzleSets allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                            PuzzleSetData * set1 = obj1;
+                            PuzzleSetData * set2 = obj2;
+                            
+                            return [set1.type compare:set2.type];
+                        }];
+                        callback(sortedSets, nil);
                     }
                     else
                     {
@@ -272,7 +236,13 @@
             [managedObjectContext save:nil];
             if (callback != nil && ![fetchOperation isCancelled])
             {
-                callback(archivePack.puzzleSets.allObjects, nil);
+                NSArray * sortedSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                    PuzzleSetData * set1 = obj1;
+                    PuzzleSetData * set2 = obj2;
+                    
+                    return [set1.type compare:set2.type];
+                }];
+                callback(sortedSets, nil);
             }
             return;
         }
@@ -321,52 +291,50 @@
                     
                     __block NSBlockOperation * parentFetchOperation = fetchOperation;
                     [self fetchPuzzles:puzzleIdsToLoad completion:^(NSArray *puzzles, NSError *error) {
-                        if (current_dispatch_queue != dispatch_get_current_queue())
-                        {
-                            NSLog(@"Different threads. It is bad!");
-                        }
-                        if ([parentFetchOperation isCancelled])
-                        {
-                            [managedObjectContext.undoManager endUndoGrouping];
-                            [managedObjectContext.undoManager undo];
-                            return;
-                        }
-                        if (puzzles != nil)
-                        {
-                            NSArray * archiveSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                                PuzzleSetData * set1 = obj1;
-                                PuzzleSetData * set2 = obj2;
-                                
-                                return [set1.type compare:set2.type];
-                            }];
-                            
-                            for (PuzzleData * puzzle in puzzles)
+                        dispatch_async(current_dispatch_queue, ^{
+                            if ([parentFetchOperation isCancelled])
                             {
-                                for (PuzzleSetData * puzzleSet in archiveSets)
+                                [managedObjectContext.undoManager endUndoGrouping];
+                                [managedObjectContext.undoManager undo];
+                                return;
+                            }
+                            if (puzzles != nil)
+                            {
+                                NSArray * archiveSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                                    PuzzleSetData * set1 = obj1;
+                                    PuzzleSetData * set2 = obj2;
+                                    
+                                    return [set1.type compare:set2.type];
+                                }];
+                                
+                                for (PuzzleData * puzzle in puzzles)
                                 {
-                                    if ([puzzleSet.puzzle_ids rangeOfString:puzzle.puzzle_id].location != NSNotFound)
+                                    for (PuzzleSetData * puzzleSet in archiveSets)
                                     {
-                                        [puzzleSet addPuzzlesObject:puzzle];
-                                        break;
+                                        if ([puzzleSet.puzzle_ids rangeOfString:puzzle.puzzle_id].location != NSNotFound)
+                                        {
+                                            [puzzleSet addPuzzlesObject:puzzle];
+                                            break;
+                                        }
                                     }
                                 }
+                                [managedObjectContext.undoManager endUndoGrouping];
+                                [managedObjectContext save:nil];
+                                if (callback != nil && ![parentFetchOperation isCancelled])
+                                {
+                                    callback(archiveSets, nil);
+                                }
                             }
-                            [managedObjectContext.undoManager endUndoGrouping];
-                            [managedObjectContext save:nil];
-                            if (callback != nil && ![parentFetchOperation isCancelled])
+                            else
                             {
-                                callback(archiveSets, nil);
+                                [managedObjectContext.undoManager endUndoGrouping];
+                                [managedObjectContext.undoManager undo];
+                                if (callback != nil && ![parentFetchOperation isCancelled])
+                                {
+                                    callback(nil, error);
+                                }
                             }
-                        }
-                        else
-                        {
-                            [managedObjectContext.undoManager endUndoGrouping];
-                            [managedObjectContext.undoManager undo];
-                            if (callback != nil && ![parentFetchOperation isCancelled])
-                            {
-                                callback(nil, error);
-                            }
-                        }
+                        });
                     }];
                 }
                 else
@@ -533,7 +501,7 @@
                     {
                         news.news3 = [messages objectForKey:@"message3"];
                     }
-                    [managedObjectContext save:nil];
+                    [news.managedObjectContext save:nil];
                 }
                 
                 if (callback != nil && ![fetchOperation isCancelled])
@@ -585,87 +553,6 @@
     [backgroundOperationQueue addOperation:operation];
 }
 
-- (void)fetchPricesForProductIDs:(NSArray *)productIDs completion:(DictionaryDataFetchCallback)callback
-{
-    NSBlockOperation * operation = [NSBlockOperation new];
-    __block __weak NSBlockOperation * fetchOperation = operation;
-    NSLog(@"PRODUCT REQUEST: inilialize with products: %@", productIDs.description);
-    
-    [fetchOperation addExecutionBlock:^{
-        __block NSMutableDictionary * prices = [NSMutableDictionary new];
-        __block NSMutableSet * unknownProducts = [NSMutableSet new];
-
-        for (NSString * productID in productIDs)
-        {
-            SKProduct * product = [[GlobalData globalData].products objectForKey:productID];
-            if (product != nil)
-            {
-                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                [formatter setLocale:product.priceLocale];
-                NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-                [prices setObject:localizedMoneyString forKey:productID];
-                NSLog(@"PRODUCT REQUEST: product found: %@", product.productIdentifier);
-            }
-            else
-            {
-                NSLog(@"PRODUCT REQUEST: product unknown: %@", productID);
-                [unknownProducts addObject:productID];
-            }
-        }
-        
-        if (unknownProducts.count == 0)
-        {
-            if (callback != nil && ![fetchOperation isCancelled])
-            {
-                callback(prices, nil);
-            }
-            return;
-        }
-        
-        if ([fetchOperation isCancelled])
-        {
-            return;
-        }
-        
-        SKProductsRequestDelegateWithBlock * delegate = [[SKProductsRequestDelegateWithBlock alloc] initWithBlock:^(SKProductsRequestDelegateWithBlock * delegate, SKProductsResponse * response) {
-            if (response != nil && response.products != nil)
-            {
-                NSMutableArray * productsIDs = [NSMutableArray new];
-                for (SKProduct * product in response.products)
-                {
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                    [formatter setLocale:product.priceLocale];
-                    NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-                    [prices setObject:localizedMoneyString forKey:product.productIdentifier];
-                    [[GlobalData globalData].products setObject:product forKey:product.productIdentifier];
-                    [productsIDs addObject:product.productIdentifier];
-                }
-                NSLog(@"PRODUCT REQUEST: products requested: %@", productsIDs);
-                if (callback != nil && ![fetchOperation isCancelled])
-                {
-                    callback(prices, nil);
-                }
-            }
-            else
-            {
-                NSLog(@"PRODUCT REQUEST: request failed");
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [productRequests removeObject:delegate];
-            });
-        }];
-        SKProductsRequest * productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:unknownProducts];
-        delegate.request = productsRequest;
-        productsRequest.delegate = delegate;
-        [productsRequest start];
-        [productRequests addObject:delegate];
-    }];
-    
-    [operation setThreadPriority:0.3];
-    [backgroundOperationQueue addOperation:operation];}
-
 #pragma mark local operations
 
 - (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year
@@ -686,6 +573,11 @@
         }
     }
     return puzzles;
+}
+
+- (PuzzleSetData *)localGetSet:(NSString *)setID
+{
+    return [PuzzleSetData puzzleSetWithId:setID andUserId:[GlobalData globalData].loggedInUser.user_id];
 }
 
 @end

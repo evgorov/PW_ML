@@ -44,6 +44,8 @@
 		6BD165EC180564FB00F140AD /* LoadingCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */; };
 		6BD165EE1805651D00F140AD /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165ED1805651D00F140AD /* LoadingCell.xib */; };
 		6BD165F1180575C500F140AD /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BD165F0180575C500F140AD /* Crashlytics.framework */; };
+		6BD165F41805829800F140AD /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165F31805829800F140AD /* StoreManager.m */; };
+		6BD165F7180594D500F140AD /* LoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165F6180594D500F140AD /* LoadingCell.m */; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -680,13 +682,17 @@
 		6BD165DE1803DFC200F140AD /* DataContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataContext.m; path = DataLogic/DataContext.m; sourceTree = "<group>"; };
 		6BD165E018053A5300F140AD /* HintsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintsCell.h; path = Views/HintsCell.h; sourceTree = "<group>"; };
 		6BD165E118053A5300F140AD /* HintsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintsCell.m; path = Views/HintsCell.m; sourceTree = "<group>"; };
-		6BD165E318053A9600F140AD /* HintsCell~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HintsCell~ipad.xib"; path = "Views/HintsCell~ipad.xib"; sourceTree = "<group>"; };
+		6BD165E318053A9600F140AD /* HintsCell~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "HintsCell~ipad.xib"; path = "Views/HintsCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165E518053AA800F140AD /* HintsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HintsCell.xib; path = Views/HintsCell.xib; sourceTree = "<group>"; };
 		6BD165E718055F3500F140AD /* ArchiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ArchiveCell.xib; path = Views/ArchiveCell.xib; sourceTree = "<group>"; };
 		6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ArchiveCell~ipad.xib"; path = "Views/ArchiveCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoadingCell~ipad.xib"; path = "Views/LoadingCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165ED1805651D00F140AD /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadingCell.xib; path = Views/LoadingCell.xib; sourceTree = "<group>"; };
 		6BD165F0180575C500F140AD /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		6BD165F21805829800F140AD /* StoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StoreManager.h; path = Net/StoreManager.h; sourceTree = "<group>"; };
+		6BD165F31805829800F140AD /* StoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StoreManager.m; path = Net/StoreManager.m; sourceTree = "<group>"; };
+		6BD165F5180594D500F140AD /* LoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadingCell.h; path = Views/LoadingCell.h; sourceTree = "<group>"; };
+		6BD165F6180594D500F140AD /* LoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoadingCell.m; path = Views/LoadingCell.m; sourceTree = "<group>"; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1446,6 +1452,8 @@
 				F2C52D5A16D8D3FB00871649 /* SocialNetworks.m */,
 				6B9227C218004DD4004E1505 /* APIClient.h */,
 				6B9227C318004DD4004E1505 /* APIClient.m */,
+				6BD165F21805829800F140AD /* StoreManager.h */,
+				6BD165F31805829800F140AD /* StoreManager.m */,
 			);
 			name = Net;
 			sourceTree = "<group>";
@@ -1979,6 +1987,8 @@
 				6BD165E318053A9600F140AD /* HintsCell~ipad.xib */,
 				6BD165E718055F3500F140AD /* ArchiveCell.xib */,
 				6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */,
+				6BD165F5180594D500F140AD /* LoadingCell.h */,
+				6BD165F6180594D500F140AD /* LoadingCell.m */,
 				6BD165ED1805651D00F140AD /* LoadingCell.xib */,
 				6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */,
 			);
@@ -2971,6 +2981,7 @@
 				F2868CC2166B6964003F0686 /* TileImageHelper.m in Sources */,
 				F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */,
 				F2868CC9166CB15B003F0686 /* ReleaseNotesViewController.m in Sources */,
+				6BD165F7180594D500F140AD /* LoadingCell.m in Sources */,
 				F2868CDD166EF7C7003F0686 /* PrizeWordNavigationBar.m in Sources */,
 				F2868CE2166F047C003F0686 /* PrizeWordNavigationController.m in Sources */,
 				F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */,
@@ -2982,6 +2993,7 @@
 				F286E353167CA90000FF5E83 /* BadgeView.m in Sources */,
 				F286E3B0167DB30D00FF5E83 /* ScoreViewController.m in Sources */,
 				F286E3B4167DC06800FF5E83 /* BlockedViewController.m in Sources */,
+				6BD165F41805829800F140AD /* StoreManager.m in Sources */,
 				F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */,
 				F286E3EB167E378700FF5E83 /* RatingViewController.m in Sources */,
 				F286E3FF1681760300FF5E83 /* PuzzleSetView.m in Sources */,

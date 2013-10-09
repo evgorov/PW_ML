@@ -14,10 +14,7 @@
 #import "Event.h"
 #import "EventManager.h"
 #import "AppDelegate.h"
-
-NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
-NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.prizeword.hints20";
-NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
+#import "StoreManager.h"
 
 @interface HintsCell ()
 {
@@ -63,19 +60,19 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
     self.btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
     self.btnBuyHint2.titleLabel.font = self.btnBuyHint1.titleLabel.font;
     self.btnBuyHint3.titleLabel.font = self.btnBuyHint1.titleLabel.font;
-    __block NSArray * productIDs = @[PRODUCTID_HINTS10, PRODUCTID_HINTS20, PRODUCTID_HINTS30];
     __block NSArray * buttons = @[self.btnBuyHint1, self.btnBuyHint2, self.btnBuyHint3];
-    [[DataManager sharedManager] fetchPricesForProductIDs:productIDs completion:^(NSDictionary *data, NSError *error) {
+    [[StoreManager sharedManager] fetchPricesForHintsWithCompletion:^(NSArray *data, NSError *error) {
         if (data != nil && data.count == 3)
         {
             isInitialized = YES;
         }
-        for (int idx = 0; idx < 3; ++idx) {
-            if (data != nil && [data objectForKey:[productIDs objectAtIndex:idx]] != nil)
+        for (int idx = 0; idx < 3; ++idx)
+        {
+            if (data != nil && [data objectAtIndex:idx] != nil)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIButton * button = [buttons objectAtIndex:idx];
-                    [button setTitle:[data objectForKey:[productIDs objectAtIndex:idx]] forState:UIControlStateNormal];
+                    [button setTitle:[data objectAtIndex:idx] forState:UIControlStateNormal];
                 });
             }
         }
@@ -85,14 +82,7 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
 - (IBAction)handleBuyHintsClick:(id)sender
 {
     UIButton * button = sender;
-    NSArray * productIDs = @[PRODUCTID_HINTS10, PRODUCTID_HINTS20, PRODUCTID_HINTS30];
-    NSMutableDictionary * products = [GlobalData globalData].products;
-    SKProduct * product = [products objectForKey:[productIDs objectAtIndex:button.tag]];
-    if (product != nil)
-    {
-        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:product]];
-    }
-
+    [[StoreManager sharedManager] purchaseHints:(10 + (button.tag * 10))];
 }
 
 #pragma mark EventListenerDelegate

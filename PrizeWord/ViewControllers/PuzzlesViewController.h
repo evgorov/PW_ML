@@ -13,6 +13,6 @@
 
 @class FISound;
 
-@interface PuzzlesViewController : BlockedViewController<SKProductsRequestDelegate, EventListenerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface PuzzlesViewController : BlockedViewController<EventListenerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

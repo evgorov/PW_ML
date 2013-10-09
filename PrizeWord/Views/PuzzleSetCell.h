@@ -7,19 +7,25 @@
 //
 
 #import "FramedBlockCell.h"
+#import "EventListenerDelegate.h"
 
 @class PuzzleSetView;
 @class PuzzleSetData;
 
-@interface PuzzleSetCell : FramedBlockCell
+@interface PuzzleSetState : NSObject
+
+@property () BOOL isShownFull;
+@property () float height;
+
+@end
+
+@interface PuzzleSetCell : FramedBlockCell<EventListenerDelegate>
 
 @property (nonatomic, retain) PuzzleSetView * puzzleSetView;
 
 + (float)minHeight;
 
 - (float)actualHeight;
-- (void)setupWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-
--(void)switchToBought;
+- (void)setupWithData:(PuzzleSetData *)puzzleSetData state:(PuzzleSetState *)state month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 
 @end

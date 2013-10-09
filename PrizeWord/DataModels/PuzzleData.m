@@ -236,7 +236,7 @@
                     }
                     NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
                     [self.managedObjectContext save:nil];
-                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self]];
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self.puzzle_id]];
                 });
             }
             

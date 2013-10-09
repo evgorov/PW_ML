@@ -35,6 +35,7 @@ PuzzleSetType;
 @property (nonatomic, retain) PuzzleSetPackData *puzzleSetPack;
 
 +(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
++(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId;
 
 -(int)solved;
 -(int)total;

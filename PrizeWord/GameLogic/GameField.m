@@ -563,7 +563,11 @@
 
     if (_questionsComplete == _questionsTotal)
     {
-        int scoreForPuzzle = [[GlobalData globalData] baseScoreForType:_puzzle.puzzleSet.type.intValue] + [[GlobalData globalData] scoreForTime] * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
+        int scoreForPuzzle = [[GlobalData globalData] baseScoreForType:_puzzle.puzzleSet.type.intValue];
+        if ([_puzzle.time_given intValue] != 0)
+        {
+            scoreForPuzzle += [[GlobalData globalData] scoreForTime] * [_puzzle.time_left intValue] / [_puzzle.time_given intValue];
+        }
         
         BOOL isArchivePuzzle = YES;
         for (PuzzleSetData * puzzleSetData in [GlobalData globalData].monthSets) {

@@ -103,21 +103,18 @@
     return puzzleSet;
 }
 
-/*
-+(NSArray *)puzzleSetsForMonth:(int)month year:(int)year
++(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId
 {
-    NSManagedObjectContext * managedObjectContext = [AppDelegate currentDelegate].managedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *puzzleSetEntity = [NSEntityDescription entityForName:@"PuzzleSet"];
-    
-    [request setEntity:puzzleSetEntity];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(month = %d) AND (year = %d)", month, year]];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    NSFetchRequest *request = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetByIdFetchRequest" substitutionVariables:@{@"USER_ID": userId, @"SET_ID": setId}];
     
     NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:nil];
-    return puzzleSets;
+    if (puzzleSets == nil || puzzleSets.count == 0)
+    {
+        return nil;
+    }
+    return [puzzleSets lastObject];
 }
-*/
  
 -(int)solved
 {

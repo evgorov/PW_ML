@@ -77,6 +77,7 @@
     <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
     <fetchRequest name="NewsFetchRequest" entity="News"/>
     <fetchRequest name="PuzzlesByIdFetchRequest" entity="Puzzle" predicateString="puzzle_id == $PUZZLE_ID AND user_id == $user_id"/>
+    <fetchRequest name="PuzzleSetByIdFetchRequest" entity="PuzzleSet" predicateString="user_id == $USER_ID AND set_id == $SET_ID"/>
     <fetchRequest name="PuzzleSetPackFetchRequest" entity="PuzzleSetPack" predicateString="user_id == $USER_ID AND year == $YEAR AND month == $MONTH"/>
     <fetchRequest name="PuzzleSetsFetchRequest" entity="PuzzleSet" predicateString="month == $MONTH AND year == $YEAR AND user_id == $USER_ID"/>
     <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID"/>
@@ -87,8 +88,8 @@
         <element name="News" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Puzzle" positionX="0" positionY="0" width="0" height="0"/>
         <element name="PuzzleSet" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PuzzleSetPack" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Question" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ScoreQuery" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PuzzleSetPack" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
