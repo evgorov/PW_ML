@@ -185,7 +185,7 @@ module Middleware
       User.storage(env['redis']).load(params['id']).user_data.to_hash.to_json
     end
 
-    get '/sets/:id/force_buy' do
+    post '/sets/:id/force_buy' do
       authorize_admin!
 
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
