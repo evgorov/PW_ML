@@ -362,7 +362,7 @@ public class NavigationActivity extends BillingV3Activity
         {
             @Nonnull Intent intent = RulesActivity.createIntent(this);
             this.startActivity(intent);
-            SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+            SharedPreferencesValues.setFirstLaunchFlag(mContext, false);
         }
     }
 

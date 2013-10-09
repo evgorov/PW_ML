@@ -5,14 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,12 +45,12 @@ public class AuthorizationFragment extends SherlockFragment
         implements
         View.OnClickListener,
         INavigationBackPress,
-        EditText.OnKeyListener
+        EditText.OnKeyListener,
+        View.OnFocusChangeListener
 {
     private @Nonnull String LOG_TAG = "autorization";
 
-    public static final @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.login.view.AuthorizationFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.AuthorizationFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = AuthorizationFragment.class.getName();
 
     private @Nonnull IBcConnector mBcConnector;
@@ -93,33 +91,23 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
-        mEmailEditText.setOnKeyListener(this);
+//        mEmailEditText.setOnKeyListener(this);
         mPasswdlEditText.setOnKeyListener(this);
+        mEmailEditText.setOnFocusChangeListener(this);
+        mPasswdlEditText.setOnFocusChangeListener(this);
+
+//        mEmailEditText.setSelectAllOnFocus(true);
+//        mPasswdlEditText.setSelectAllOnFocus(true);
 
         mEmailEditText.setText("vlad@ltst.ru");
         mPasswdlEditText.setText("vlad");
 
-//        mEmailEditText.setSelectAllOnFocus(true);
-//        mPasswdlEditText.setSelectAllOnFocus(true);
         mEmailEditText.requestFocus();
 
 //        mEmailEditText.setText("hi@mail.ru");
 //        mPasswdlEditText.setText("hi");
 
         return v;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        if(mEmailEditText.isFocused())
-        {
-            @Nullable FragmentActivity fragment = getActivity();
-            InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(mEmailEditText, InputMethodManager.SHOW_IMPLICIT);
-        }
     }
 
     private  void authorizing(){
@@ -165,22 +153,41 @@ public class AuthorizationFragment extends SherlockFragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if(mEmailEditText.isFocused() && mEmailEditText.getText().length()==0)
+        {
+            @Nullable FragmentActivity fragment = getActivity();
+            InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mEmailEditText, InputMethodManager.SHOW_IMPLICIT);
+        }
+        else if(mPasswdlEditText.isFocused() && mPasswdlEditText.getText().length()==0)
+        {
+            @Nullable FragmentActivity fragment = getActivity();
+            InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mPasswdlEditText, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+
+    @Override
     public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
         switch (view.getId())
         {
-            case R.id.login_email_etext:
-            {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
-                {
-                    if(mPasswdlEditText.requestFocus())
-                    {
-                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        mEmailEditText.clearFocus();
-                        mPasswdlEditText.requestFocus();
-                    }
-                }
-            }
-            break;
+//            case R.id.login_email_etext:
+//            {
+//                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+//                {
+//                    if(mPasswdlEditText.requestFocus())
+//                    {
+//                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                        mEmailEditText.clearFocus();
+//                    }
+//                }
+//            }
+//            break;
             case R.id.login_passwd_etext:
             {
                 if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
@@ -211,6 +218,22 @@ public class AuthorizationFragment extends SherlockFragment
             case R.id.login_back_button:
                 hideKeyboard();
                 onBackKeyPress();
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId())
+        {
+            case R.id.login_email_etext:
+                mPasswdlEditText.setSelection(mPasswdlEditText.getText().length());
+                break;
+            case R.id.login_passwd_etext:
+                mPasswdlEditText.setSelection(mPasswdlEditText.getText().length());
                 break;
             default:
                 break;
@@ -279,7 +302,6 @@ public class AuthorizationFragment extends SherlockFragment
                     SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
                     spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
                     spref.commit();
-                    Log.i(LOG_TAG, "SESSION KEY = " + sessionKey);
                 }
             }
         }
