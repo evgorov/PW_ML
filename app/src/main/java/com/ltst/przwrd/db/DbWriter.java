@@ -269,19 +269,32 @@ public class DbWriter extends  DbReader implements IDbWriter
     {
         for (final PuzzleSet puzzleSet : list)
         {
-            PuzzleSet existingSet = getPuzzleSetByServerId(puzzleSet.serverId);
-            if(existingSet != null)
-                continue;
-
-            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            final PuzzleSet existingSet = getPuzzleSetByServerId(puzzleSet.serverId);
+            if(existingSet == null)
             {
-                @Override
-                public void handle()
+                DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
                 {
-                    ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
-                    mDb.insert(TNAME_PUZZLE_SETS, null, values);
-                }
-            });
+                    @Override
+                    public void handle()
+                    {
+                        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                        mDb.insert(TNAME_PUZZLE_SETS, null, values);
+                    }
+                });
+            }
+            else
+            {
+                DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+                        ContentValues values = mPuzzleSetContentValuesCreator.createObjectContentValues(puzzleSet);
+                        int count = mDb.update(TNAME_PUZZLE_SETS, values, ColsPuzzleSets.ID+"="+existingSet.id,null);
+                        int k = 1;
+                    }
+                });
+            }
         }
 
     }

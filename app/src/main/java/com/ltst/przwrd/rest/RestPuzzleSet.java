@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestPuzzleSet
 {
     private @JsonProperty("id") String id;
