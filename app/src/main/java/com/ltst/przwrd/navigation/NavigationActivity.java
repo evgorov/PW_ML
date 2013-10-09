@@ -10,7 +10,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
@@ -24,14 +23,13 @@ import android.widget.CompoundButton;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.przwrd.R;
-import com.ltst.przwrd.app.DeviceDetails;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.model.HintsModel;
 import com.ltst.przwrd.crossword.model.IPuzzleSetModel;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.crossword.view.CrosswordsFragment;
-import com.ltst.przwrd.crossword.view.ICrosswordFragment;
+import com.ltst.przwrd.crossword.view.ICrosswordsFragment;
 import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
 import com.ltst.przwrd.login.model.IUserDataModel;
 import com.ltst.przwrd.login.model.UserData;
@@ -773,9 +771,9 @@ public class NavigationActivity extends BillingV3Activity
             else
             {
                 Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
-                if (fr instanceof ICrosswordFragment)
+                if (fr instanceof ICrosswordsFragment)
                 {
-                    ((ICrosswordFragment) fr).updateAllSets();
+                    ((ICrosswordsFragment) fr).updateAllSets();
                 }
             }
         }
@@ -792,9 +790,9 @@ public class NavigationActivity extends BillingV3Activity
             if (data != null)
             {
                 Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
-                if (fr instanceof ICrosswordFragment)
+                if (fr instanceof ICrosswordsFragment)
                 {
-                    ((ICrosswordFragment) fr).setHintCount(data.hints);
+                    ((ICrosswordsFragment) fr).setHintCount(data.hints);
                 }
                 mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name + " " + data.surname : data.surname);
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));

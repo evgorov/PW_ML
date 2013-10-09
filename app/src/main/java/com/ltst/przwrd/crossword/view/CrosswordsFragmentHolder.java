@@ -31,7 +31,7 @@ public class CrosswordsFragmentHolder
 {
 
     private static @Nonnull LayoutInflater mInflater;
-    private @Nonnull ICrosswordFragment mICrosswordFragment;
+    private @Nonnull ICrosswordsFragment mICrosswordsFragment;
     private static @Nonnull Context mContext;
     public @Nonnull CrosswordPanelCurrentHolder mCrosswordPanelCurrent;
     public @Nonnull CrosswordPanelBuyHolder mCrosswordPanelBuy;
@@ -45,7 +45,7 @@ public class CrosswordsFragmentHolder
                                     @Nonnull LayoutInflater inflater, @Nonnull View view)
     {
         this.mInflater = inflater;
-        this.mICrosswordFragment = (ICrosswordFragment) fragment;
+        this.mICrosswordsFragment = (ICrosswordsFragment) fragment;
         this.mContext = context;
 
         mListCrosswordSetMonth = new HashMap<String, CrosswordSetMonth>();
@@ -263,7 +263,7 @@ public class CrosswordsFragmentHolder
         @Nullable CrosswordSet crosswordSet = crosswordSetMonth.getCrosswordSet(data.mId);
         if(crosswordSet == null)
         {
-            crosswordSet = new CrosswordSet(mContext, mICrosswordFragment);
+            crosswordSet = new CrosswordSet(mContext, mICrosswordsFragment);
             crosswordSet.fillPanel(data);
             crosswordSetMonth.addCrosswordSet(crosswordSet);
         }

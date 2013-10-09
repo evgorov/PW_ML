@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by cosic on 12.08.13.
  */
-public interface ICrosswordFragment {
+public interface ICrosswordsFragment {
 
     public void choicePuzzle(@Nonnull String setServerId, @Nonnull String puzzleServerId);
     public void updateAllSets();

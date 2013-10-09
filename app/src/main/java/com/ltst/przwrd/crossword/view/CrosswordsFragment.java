@@ -42,7 +42,7 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
-        ICrosswordFragment,
+        ICrosswordsFragment,
         ITouchInterface
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";

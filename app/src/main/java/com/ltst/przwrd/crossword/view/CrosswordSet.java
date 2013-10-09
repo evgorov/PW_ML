@@ -42,7 +42,7 @@ public class CrosswordSet {
     static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_REFUNDED;
     static private final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE      = ManageHolder.GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE;
 
-    private @Nonnull ICrosswordFragment mICrosswordFragment;
+    private @Nonnull ICrosswordsFragment mICrosswordsFragment;
     private @Nonnull Context mContext;
     private @Nonnull LayoutInflater mInflater;
 
@@ -78,12 +78,12 @@ public class CrosswordSet {
     private boolean flgOneRegister = false;
     private boolean mExpanding;
 
-    public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordFragment iCrosswordFragment) {
+    public CrosswordSet(@Nonnull Context context, @Nonnull ICrosswordsFragment iCrosswordsFragment) {
 
         mExpanding = false;
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mICrosswordFragment = iCrosswordFragment;
+        mICrosswordsFragment = iCrosswordsFragment;
 
         mIManadges = (IManadges) context;
         mIManageHolder = mIManadges.getManadgeHolder();
@@ -147,7 +147,7 @@ public class CrosswordSet {
                 {
                     BadgeAdapter adapter = getAdapter();
                     BadgeData data = (BadgeData) adapter.getItem(position);
-                    mICrosswordFragment.choicePuzzle(mCrosswordSetData.mServerId, data.mServerId);
+                    mICrosswordsFragment.choicePuzzle(mCrosswordSetData.mServerId, data.mServerId);
                 }
             }
         });
@@ -331,8 +331,8 @@ public class CrosswordSet {
 //            if(googleId.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS))
             {
 
-                mICrosswordFragment.waitLoader(true);
-                final IPuzzleSetModel iPuzzleSetModel = mICrosswordFragment.getPuzzleSetModel();
+                mICrosswordsFragment.waitLoader(true);
+                final IPuzzleSetModel iPuzzleSetModel = mICrosswordsFragment.getPuzzleSetModel();
                 if(iPuzzleSetModel != null)
                 {
                     iPuzzleSetModel.buyCrosswordSet(googleId, json, signature, new IListenerVoid() {
@@ -343,12 +343,12 @@ public class CrosswordSet {
                             if(iPuzzleSetModel.isAnswerState())
                             {
                                 mIManageHolder.productBuyOnServer(googleId);
-                                mICrosswordFragment.updateOneSet(mCrosswordSetData.mServerId);
-                                mICrosswordFragment.purchaseResult(true);
+                                mICrosswordsFragment.updateOneSet(mCrosswordSetData.mServerId);
+                                mICrosswordsFragment.purchaseResult(true);
                             }
                             else
                             {
-                                mICrosswordFragment.purchaseResult(false);
+                                mICrosswordsFragment.purchaseResult(false);
                             }
                         }
                     });

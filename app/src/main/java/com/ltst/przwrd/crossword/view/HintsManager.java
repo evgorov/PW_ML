@@ -33,7 +33,7 @@ public class HintsManager implements View.OnClickListener
 
     private @Nonnull IManadges mIManadges;
     private @Nonnull IManageHolder mIManageHolder;
-    private @Nonnull ICrosswordFragment mICrosswordFragment;
+    private @Nonnull ICrosswordsFragment mICrosswordsFragment;
     private @Nonnull Context mContext;
 
     private int mHintsCount;
@@ -49,7 +49,7 @@ public class HintsManager implements View.OnClickListener
         mIManageHolder.registerProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
         mIManageHolder.registerProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
         mIManageHolder.registerProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_30);
-        mICrosswordFragment = (ICrosswordFragment) fragment;
+        mICrosswordsFragment = (ICrosswordsFragment) fragment;
 
         mHintsCountView = (TextView) parentView.findViewById(R.id.crossword_fragment_current_rest_count);
 
@@ -145,7 +145,7 @@ public class HintsManager implements View.OnClickListener
             else
                 return;
 
-            HintsModel hintsModel = mICrosswordFragment.getHintsModel();
+            HintsModel hintsModel = mICrosswordsFragment.getHintsModel();
             if(hintsModel != null)
             {
                 hintsModel.changeHints(count, new IListenerVoid() {
