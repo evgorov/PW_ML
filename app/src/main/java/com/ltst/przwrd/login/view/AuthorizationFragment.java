@@ -17,12 +17,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.android.gms.maps.internal.m;
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.app.ModelUpdater;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
+import com.ltst.przwrd.login.model.IUserDataModel;
 import com.ltst.przwrd.login.model.LoadSessionKeyTask;
+import com.ltst.przwrd.login.model.UserDataModel;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationBackPress;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
@@ -64,6 +67,7 @@ public class AuthorizationFragment extends SherlockFragment
     private @Nonnull IFragmentsHolderActivity mFragmentHolder;
     private @Nonnull INavigationDrawerHolder mDrawerHolder;
     private @Nonnull IAutorization mAuthorization;
+    private @Nonnull IUserDataModel mUserDataModel;
 
     @Override
     public void onAttach(Activity activity)
@@ -143,7 +147,12 @@ public class AuthorizationFragment extends SherlockFragment
                     // скрываем клавиатуру;
                     hideKeyboard();
                     // Информируем наследников интерфейса IAutorization, что авторизация прошла успешно;
-                    mAuthorization.onAuthotized();
+                    mUserDataModel.clearDataBase(new IListenerVoid() {
+                        @Override
+                        public void handle() {
+                            mAuthorization.onAuthotized();
+                        }
+                    });
                 }
             }
         });
@@ -171,6 +180,19 @@ public class AuthorizationFragment extends SherlockFragment
         }
     }
 
+    @Override
+    public void onStart()
+    {
+        mUserDataModel = new UserDataModel(mContext, mBcConnector);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop()
+    {
+        mUserDataModel.close();
+        super.onStop();
+    }
 
     @Override
     public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
