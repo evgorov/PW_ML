@@ -589,6 +589,7 @@
 {
     NSBlockOperation * operation = [NSBlockOperation new];
     __block __weak NSBlockOperation * fetchOperation = operation;
+    NSLog(@"PRODUCT REQUEST: inilialize with products: %@", productIDs.description);
     
     [fetchOperation addExecutionBlock:^{
         __block NSMutableDictionary * prices = [NSMutableDictionary new];
@@ -604,9 +605,11 @@
                 [formatter setLocale:product.priceLocale];
                 NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
                 [prices setObject:localizedMoneyString forKey:productID];
+                NSLog(@"PRODUCT REQUEST: product found: %@", product.productIdentifier);
             }
             else
             {
+                NSLog(@"PRODUCT REQUEST: product unknown: %@", product.productIdentifier);
                 [unknownProducts addObject:productID];
             }
         }
@@ -628,6 +631,7 @@
         SKProductsRequestDelegateWithBlock * delegate = [[SKProductsRequestDelegateWithBlock alloc] initWithBlock:^(SKProductsRequestDelegateWithBlock * delegate, SKProductsResponse * response) {
             if (response != nil && response.products != nil)
             {
+                NSLog(@"PRODUCT REQUEST: products requested: %@", response.products.description);
                 for (SKProduct * product in response.products)
                 {
                     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -641,6 +645,10 @@
                 {
                     callback(prices, nil);
                 }
+            }
+            else
+            {
+                NSLog(@"PRODUCT REQUEST: request failed");
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [productRequests removeObject:delegate];
