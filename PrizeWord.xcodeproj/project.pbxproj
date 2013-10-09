@@ -39,6 +39,10 @@
 		6BD165E218053A5300F140AD /* HintsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165E118053A5300F140AD /* HintsCell.m */; };
 		6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E318053A9600F140AD /* HintsCell~ipad.xib */; };
 		6BD165E618053AA800F140AD /* HintsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E518053AA800F140AD /* HintsCell.xib */; };
+		6BD165E818055F3500F140AD /* ArchiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E718055F3500F140AD /* ArchiveCell.xib */; };
+		6BD165EA18055F5000F140AD /* ArchiveCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */; };
+		6BD165EC180564FB00F140AD /* LoadingCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */; };
+		6BD165EE1805651D00F140AD /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165ED1805651D00F140AD /* LoadingCell.xib */; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -677,6 +681,10 @@
 		6BD165E118053A5300F140AD /* HintsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintsCell.m; path = Views/HintsCell.m; sourceTree = "<group>"; };
 		6BD165E318053A9600F140AD /* HintsCell~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HintsCell~ipad.xib"; path = "Views/HintsCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165E518053AA800F140AD /* HintsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HintsCell.xib; path = Views/HintsCell.xib; sourceTree = "<group>"; };
+		6BD165E718055F3500F140AD /* ArchiveCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ArchiveCell.xib; path = Views/ArchiveCell.xib; sourceTree = "<group>"; };
+		6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ArchiveCell~ipad.xib"; path = "Views/ArchiveCell~ipad.xib"; sourceTree = "<group>"; };
+		6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoadingCell~ipad.xib"; path = "Views/LoadingCell~ipad.xib"; sourceTree = "<group>"; };
+		6BD165ED1805651D00F140AD /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadingCell.xib; path = Views/LoadingCell.xib; sourceTree = "<group>"; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1966,6 +1974,10 @@
 				6BD165E118053A5300F140AD /* HintsCell.m */,
 				6BD165E518053AA800F140AD /* HintsCell.xib */,
 				6BD165E318053A9600F140AD /* HintsCell~ipad.xib */,
+				6BD165E718055F3500F140AD /* ArchiveCell.xib */,
+				6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */,
+				6BD165ED1805651D00F140AD /* LoadingCell.xib */,
+				6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2551,6 +2563,7 @@
 				F286E3DD167E374000FF5E83 /* final_next_btn@2x.png in Resources */,
 				F286E3DE167E374000FF5E83 /* final_menu_btn_down@2x.png in Resources */,
 				F286E3DF167E374000FF5E83 /* final_menu_btn@2x.png in Resources */,
+				6BD165EC180564FB00F140AD /* LoadingCell~ipad.xib in Resources */,
 				F286E3E0167E374000FF5E83 /* final_vk_btn_down@2x.png in Resources */,
 				F286E3E1167E374000FF5E83 /* final_fb_btn_down@2x.png in Resources */,
 				F286E3E2167E374000FF5E83 /* final_fb_btn@2x.png in Resources */,
@@ -2572,6 +2585,7 @@
 				F286E42316859E3E00FF5E83 /* puzzles_badges_silver~ipad.png in Resources */,
 				F286E42416859E3E00FF5E83 /* puzzles_badges_gold~ipad.png in Resources */,
 				F286E42516859E3E00FF5E83 /* puzzles_badges_brilliant~ipad.png in Resources */,
+				6BD165EE1805651D00F140AD /* LoadingCell.xib in Resources */,
 				F286E42616859E3E00FF5E83 /* puzzles_badges_brilliant@2x~ipad.png in Resources */,
 				F286E42716859E3E00FF5E83 /* puzzles_badges_gold@2x~ipad.png in Resources */,
 				F286E42816859E3E00FF5E83 /* puzzles_badges_silver@2x~ipad.png in Resources */,
@@ -2827,6 +2841,7 @@
 				F2840C9A17158E180003F1F2 /* rules_page_6~ipad.png in Resources */,
 				6B6DE1AD180339F000D3DF52 /* PuzzleSetCell~ipad.xib in Resources */,
 				F2840C9B17158E180003F1F2 /* rules_page_5~ipad.png in Resources */,
+				6BD165E818055F3500F140AD /* ArchiveCell.xib in Resources */,
 				F2840C9C17158E180003F1F2 /* rules_page_4~ipad.png in Resources */,
 				F2840C9D17158E180003F1F2 /* rules_page_3~ipad.png in Resources */,
 				F2840C9E17158E180003F1F2 /* rules_page_2~ipad.png in Resources */,
@@ -2855,6 +2870,7 @@
 				F2840CB417158E190003F1F2 /* rules_page_4.png in Resources */,
 				F2840CB517158E190003F1F2 /* rules_page_3.png in Resources */,
 				F2840CB617158E190003F1F2 /* rules_page_2.png in Resources */,
+				6BD165EA18055F5000F140AD /* ArchiveCell~ipad.xib in Resources */,
 				F2840CB717158E190003F1F2 /* rules_page_1@2x.png in Resources */,
 				F2840CB817158E190003F1F2 /* rules_page_12@2x.png in Resources */,
 				F2840CB917158E190003F1F2 /* rules_page_5@2x.png in Resources */,

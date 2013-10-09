@@ -8,6 +8,7 @@
 
 #import "APIClient.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "AFHTTPRequestOperation.h"
 
 @implementation APIClient
 
@@ -31,6 +32,11 @@
     return self;
 }
 
-
+- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [AFHTTPRequestOperation addAcceptableStatusCodes:[NSIndexSet indexSetWithIndex:304]];
+    AFHTTPRequestOperation * operation = [super HTTPRequestOperationWithRequest:urlRequest success:success failure:failure];
+    return operation;
+}
 
 @end

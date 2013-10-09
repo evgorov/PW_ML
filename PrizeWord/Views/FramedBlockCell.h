@@ -10,6 +10,8 @@
 
 @interface FramedBlockCell : UITableViewCell
 
++ (float)height;
+
 - (void)setupBackgroundForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 
 @end

@@ -58,30 +58,32 @@
         [activityIndicator startAnimating];
         activityIndicator.hidden = NO;
         [[DataManager sharedManager] fetchNewsWithCompletion:^(NSArray *data, NSError *error) {
-            [activityIndicator stopAnimating];
-            activityIndicator.hidden = YES;
-            if (data != nil && data.count > 0)
-            {
-                newsPaginator.numberOfPages = data.count;
-                if (data.count >= 1)
-                {
-                    newsLbl1.text = [data objectAtIndex:0];
-                }
-                if (data.count >= 2)
-                {
-                    newsLbl2.text = [data objectAtIndex:1];
-                }
-                if (data.count >= 3)
-                {
-                    newsLbl3.text = [data objectAtIndex:2];
-                }
-                [newsScrollView setContentSize:CGSizeMake(newsPaginator.numberOfPages * newsScrollView.frame.size.width, newsScrollView.frame.size.height)];
-            }
-            else
-            {
-                [self.btnClose sendActionsForControlEvents:UIControlEventTouchUpInside];
-            }
             isInitialized = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [activityIndicator stopAnimating];
+                activityIndicator.hidden = YES;
+                if (data != nil && data.count > 0)
+                {
+                    newsPaginator.numberOfPages = data.count;
+                    if (data.count >= 1)
+                    {
+                        newsLbl1.text = [data objectAtIndex:0];
+                    }
+                    if (data.count >= 2)
+                    {
+                        newsLbl2.text = [data objectAtIndex:1];
+                    }
+                    if (data.count >= 3)
+                    {
+                        newsLbl3.text = [data objectAtIndex:2];
+                    }
+                    [newsScrollView setContentSize:CGSizeMake(newsPaginator.numberOfPages * newsScrollView.frame.size.width, newsScrollView.frame.size.height)];
+                }
+                else
+                {
+                    [self.btnClose sendActionsForControlEvents:UIControlEventTouchUpInside];
+                }
+            });
         }];
     }
 }

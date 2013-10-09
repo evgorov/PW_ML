@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="115"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view opaque="NO" autoresizesSubviews="NO" contentMode="scaleToFill" id="yIn-CI-btz">
+                    <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" id="yIn-CI-btz">
                         <rect key="frame" x="19" y="30" width="443" height="55"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

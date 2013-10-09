@@ -24,6 +24,11 @@
 
 @implementation FramedBlockCell
 
++ (float)height
+{
+    return [AppDelegate currentDelegate].isIPad ? 116 : 84;
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     return;
