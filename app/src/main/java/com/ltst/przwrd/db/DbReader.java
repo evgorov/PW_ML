@@ -3,14 +3,15 @@ package com.ltst.przwrd.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.przwrd.manadges.PurchasePrizeWord;
-import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
 import com.ltst.przwrd.crossword.model.PuzzleSet;
 import com.ltst.przwrd.login.model.UserData;
 import com.ltst.przwrd.login.model.UserImage;
 import com.ltst.przwrd.login.model.UserProvider;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
+import com.ltst.przwrd.news.News;
+import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.score.ScoreQueue;
 
 import org.omich.velo.db.DbHelper;
@@ -24,7 +25,26 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.ltst.przwrd.db.SQLiteHelper.*;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsCoefficients;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsImages;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsNews;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsProviders;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPurchases;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzleQuestions;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzleSets;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzles;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsScoreQueue;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsUsers;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_COEFFICIENTS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_IMAGES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_NEWS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_POST_SCORE_QUEUE;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PROVIDERS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PURCHASES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLE_QUESTIONS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLE_SETS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_USERS;
 
 public class DbReader implements IDbReader
 {
@@ -133,6 +153,16 @@ public class DbReader implements IDbReader
                     ColsPurchases.SERVER_PURCHASE,
                     ColsPurchases.RECEIPT_DATA,
                     ColsPurchases.SIGNATURE
+            };
+
+    private static final @Nonnull String[] FIELDS_P_NEWS =
+            {
+                    ColsNews.ID,
+                    ColsNews.MESSAGE_1,
+                    ColsNews.MESSAGE_2,
+                    ColsNews.MESSAGE_3,
+                    ColsNews.CLOSED,
+                    ColsNews.ETAG_HASH
             };
 
     public final @Nonnull SQLiteDatabase mDb;
@@ -469,6 +499,16 @@ public class DbReader implements IDbReader
         return purchase;
     }
 
+    @Nullable
+    @Override
+    public News getNews()
+    {
+        final Cursor cursor = DbHelper.queryBySingleColumn(mDb, TNAME_NEWS,
+                FIELDS_P_NEWS, ColsNews.ID, SQLiteHelper.ID_USER);
+        News news = createObjectByCursor(cursor, mNewsCreator);
+        return news;
+    }
+
     // ==== object creators =====================
 
     private ObjectCreatorByCursor<PuzzleSet> mPuzzleSetCreator = new ObjectCreatorByCursor<PuzzleSet>()
@@ -591,6 +631,22 @@ public class DbReader implements IDbReader
             String receipt_data = c.getString(6);
             String signature = c.getString(7);
             return new PurchasePrizeWord(id, clientId, googleId, price, googlePurchase, serverPurchase, receipt_data, signature);
+        }
+    };
+
+    private ObjectCreatorByCursor<News> mNewsCreator = new ObjectCreatorByCursor<News>()
+    {
+        @Override
+        public News createObject(Cursor c)
+        {
+            String message1 = c.getString(1);
+            String message2 = c.getString(2);
+            String message3 = c.getString(3);
+            boolean closed = c.getInt(4) == 1;
+            String hash = c.getString(5);
+            News news = new News(message1, message2, message3, hash);
+            news.closed = closed;
+            return news;
         }
     };
 

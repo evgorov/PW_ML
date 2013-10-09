@@ -38,12 +38,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
         ICrosswordFragment,
         ITouchInterface
 {
-
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
@@ -93,7 +94,17 @@ public class CrosswordsFragment extends SherlockFragment
             mMenuBackButton.setVisibility(View.GONE);
         }
 
-        mNewsHolder = new NewsHolder(mContext, this, inflater, v);
+        mNewsHolder = new NewsHolder(mContext, this, inflater, v, new IListenerVoid()
+        {
+            @Override
+            public void handle()
+            {
+                if (mNewsModel != null)
+                {
+                    mNewsModel.closeHolder();
+                }
+            }
+        });
         mCrosswordsFragmentHolder = new CrosswordsFragmentHolder(mContext, this, inflater, v);
         mHintsManager = new HintsManager(mContext, this, v);
 

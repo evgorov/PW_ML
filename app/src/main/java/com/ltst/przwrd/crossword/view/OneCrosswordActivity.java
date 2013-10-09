@@ -408,6 +408,7 @@ public class OneCrosswordActivity extends BillingV3Activity
                 Log.i("Activity", "Success!");
             }
         });
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void close() {

@@ -188,6 +188,12 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
                 mFbSession = new Session(mContext);
                 mFbSession.open(access_token, callback);
             }
+            if(mFbSession==null){
+                AccessToken access_token = AccessToken.createFromExistingAccessToken(token, null, null, AccessTokenSource.WEB_VIEW, null);
+                SharedPreferencesValues.setFacebookToken(mContext,access_token.getToken());
+                mFbSession = new Session(mContext);
+                mFbSession.open(access_token, callback);
+            }
             Bundle params = new Bundle();
             params.putString("message", mContext.getResources().getString(R.string.invite_message_fb_text));
             params.putString("title", "PrizeWord");

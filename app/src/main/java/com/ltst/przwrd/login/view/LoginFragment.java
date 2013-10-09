@@ -23,6 +23,7 @@ import com.ltst.przwrd.rest.RestParams;
 import com.ltst.przwrd.sounds.SoundsWork;
 
 import org.omich.velo.bcops.client.IBcConnector;
+import org.omich.velo.constants.Strings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,8 +32,8 @@ import static android.view.View.OnClickListener;
 
 public class LoginFragment extends SherlockFragment implements OnClickListener
 {
-    public static final int REQUEST_LOGIN_VK = 1;
-    public static final int REQUEST_LOGIN_FB = 2;
+    public static final int REQUEST_LOGIN_VK = 100;
+    public static final int REQUEST_LOGIN_FB = 101;
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.LoginFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = LoginFragment.class.getName();
 

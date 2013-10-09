@@ -3,8 +3,6 @@ package com.ltst.przwrd.db;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ltst.przwrd.manadges.PurchasePrizeWord;
-import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
 import com.ltst.przwrd.crossword.model.PuzzleSet;
@@ -12,6 +10,9 @@ import com.ltst.przwrd.crossword.model.PuzzleTotalSet;
 import com.ltst.przwrd.login.model.UserData;
 import com.ltst.przwrd.login.model.UserImage;
 import com.ltst.przwrd.login.model.UserProvider;
+import com.ltst.przwrd.manadges.PurchasePrizeWord;
+import com.ltst.przwrd.news.News;
+import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.score.ScoreQueue;
 
 import org.omich.velo.db.DbHelper;
@@ -25,7 +26,26 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.ltst.przwrd.db.SQLiteHelper.*;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsCoefficients;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsImages;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsProviders;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPurchases;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzleQuestions;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzleSets;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsPuzzles;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsScoreQueue;
+import static com.ltst.przwrd.db.SQLiteHelper.ColsUsers;
+import static com.ltst.przwrd.db.SQLiteHelper.ID_USER;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_COEFFICIENTS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_IMAGES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_NEWS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_POST_SCORE_QUEUE;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PROVIDERS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PURCHASES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLES;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLE_QUESTIONS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_PUZZLE_SETS;
+import static com.ltst.przwrd.db.SQLiteHelper.TNAME_USERS;
 
 public class DbWriter extends  DbReader implements IDbWriter
 {
@@ -464,6 +484,37 @@ public class DbWriter extends  DbReader implements IDbWriter
     }
 
     @Override
+    public void updateNews(@Nullable News news)
+    {
+        @Nullable News existingNews = getNews();
+        final ContentValues values = mNewsValuesCreator.createObjectContentValues(news);
+        if(existingNews == null)
+        {
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    long created_id = mDb.insert(TNAME_NEWS, null, values);
+                }
+            });
+        }
+        else
+        {
+            DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
+            {
+                @Override
+                public void handle()
+                {
+                    mDb.update(TNAME_NEWS, values, ColsPurchases.ID + "=" + SQLiteHelper.ID_USER,
+                            null);
+                }
+            });
+
+        }
+    }
+
+    @Override
     public void clearDb() {
         DbHelper.openTransactionAndFinish(mDb, new IListenerVoid()
         {
@@ -479,6 +530,7 @@ public class DbWriter extends  DbReader implements IDbWriter
                 mDb.delete(TNAME_COEFFICIENTS, null, null);
                 mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
                 mDb.delete(TNAME_PURCHASES, null, null);
+                mDb.delete(TNAME_NEWS, null, null);
             }
         });
     }
@@ -646,6 +698,22 @@ public class DbWriter extends  DbReader implements IDbWriter
             cv.put(ColsPurchases.SERVER_PURCHASE,   object.serverPurchase);
             cv.put(ColsPurchases.RECEIPT_DATA,      object.receipt_data);
             cv.put(ColsPurchases.SIGNATURE,         object.signature);
+            return cv;
+        }
+    };
+
+    private ContentValuesCreator<News> mNewsValuesCreator = new ContentValuesCreator<News>()
+    {
+        @Override
+        public ContentValues createObjectContentValues(@Nullable News object)
+        {
+            ContentValues cv  = new ContentValues();
+            cv.put(SQLiteHelper.ColsNews.ID, SQLiteHelper.ID_USER);
+            cv.put(SQLiteHelper.ColsNews.MESSAGE_1, object.message1);
+            cv.put(SQLiteHelper.ColsNews.MESSAGE_2, object.message2);
+            cv.put(SQLiteHelper.ColsNews.MESSAGE_3, object.message3);
+            cv.put(SQLiteHelper.ColsNews.CLOSED, object.closed);
+            cv.put(SQLiteHelper.ColsNews.ETAG_HASH, object.etagHash);
             return cv;
         }
     };

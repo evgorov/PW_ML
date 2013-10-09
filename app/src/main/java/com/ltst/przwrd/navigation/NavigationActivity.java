@@ -315,6 +315,7 @@ public class NavigationActivity extends BillingV3Activity
                     break;
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
