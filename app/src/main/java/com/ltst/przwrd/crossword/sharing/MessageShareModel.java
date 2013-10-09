@@ -10,6 +10,7 @@ import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.bcops.simple.BcService;
 import org.omich.velo.bcops.simple.IBcTask;
+import org.omich.velo.handlers.IListenerVoid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,12 +38,12 @@ public class MessageShareModel
         mIsDestroyed = true;
     }
 
-    public void shareMessageToVk(@Nonnull String message)
+    public void shareMessageToVk(@Nonnull String message, @Nullable IListenerVoid handler)
     {
         if(mIsDestroyed)
             return;
         mVkSharer.setIntent(VkShareTask.createIntent(mSessionKey, message));
-        mVkSharer.update(null);
+        mVkSharer.update(handler);
     }
 
     private class VkSharer extends ModelUpdater<IBcTask.BcTaskEnv>
