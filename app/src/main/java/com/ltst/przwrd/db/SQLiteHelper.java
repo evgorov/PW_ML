@@ -122,7 +122,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     private static final String CREATE_PURCHASES = "create table "
             + TNAME_PURCHASES + "("
             + ColsPurchases.ID                          + " integer not null primary key autoincrement, "
-            + ColsPurchases.CLIENT_ID                   + " text not null unique, "
+            + ColsPurchases.CLIENT_ID                   + " text not null, "
             + ColsPurchases.GOOGLE_ID                   + " text not null, "
             + ColsPurchases.PRICE                       + " text not null, "
             + ColsPurchases.GOOGLE_PURCHASE             + " boolean not null default false, "

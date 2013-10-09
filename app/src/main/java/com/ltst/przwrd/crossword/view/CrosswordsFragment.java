@@ -295,6 +295,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Override
         public void handle() {
             int hintsCount = mPuzzleSetModel.getHintsCount();
+            NavigationActivity.debug("HINTS = "+hintsCount);
             mHintsManager.setHintsCount(hintsCount);
         }
     };
