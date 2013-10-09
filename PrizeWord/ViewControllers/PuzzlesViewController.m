@@ -31,11 +31,9 @@
 #import "CurrentPuzzlesCell.h"
 #import "PuzzleSetCell.h"
 #import "DataContext.h"
+#import "HintsCell.h"
 
 NSString * PRODUCTID_PREFIX = @"ru.aipmedia.prizeword.";
-NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
-NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.prizeword.hints20";
-NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
 
 // default in IB
 const int TAG_STATIC_VIEWS = 0;
@@ -75,11 +73,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     IBOutlet UIView *archiveView;
     IBOutlet UIView *setToBuyView;
     
-    IBOutlet PrizeWordButton *btnBuyHint1;
-    IBOutlet PrizeWordButton *btnBuyHint2;
-    IBOutlet PrizeWordButton *btnBuyHint3;
-    IBOutlet UILabel *lblHintsLeft;
-    NSMutableArray * hintsProducts;
     SKProductsRequest * productsRequest;
     
     BOOL showNews;
@@ -105,7 +98,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
 -(void)updateArchive:(NSArray *)sets;
 //-(void)updateMonthSets:(NSArray *)monthSets;
 -(void)updateBaseScores;
--(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product;
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction;
 -(void)handleHintsBought:(int)count withTransaction:(SKPaymentTransaction *)transaction;
 
@@ -131,15 +123,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [tableView registerNib:[UINib nibWithNibName:@"NewsCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"newsCell"];
     [tableView registerNib:[UINib nibWithNibName:@"CurrentPuzzlesCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"currentPuzzlesCell"];
     [tableView registerNib:[UINib nibWithNibName:@"PuzzleSetCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"puzzleSetCell"];
+    [tableView registerNib:[UINib nibWithNibName:@"HintsCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"hintsCell"];
     
     showNews = YES;
     
     self.title = NSLocalizedString(@"TITLE_PUZZLES", @"Title of screen with puzzles");
-    
-    btnBuyHint1.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:15];
-    btnBuyHint2.titleLabel.font = btnBuyHint1.titleLabel.font;
-    btnBuyHint3.titleLabel.font = btnBuyHint1.titleLabel.font;
-    hintsProducts = [NSMutableArray arrayWithObjects:[NSNull null], [NSNull null], [NSNull null], nil];
     
     productsRequest = nil;
     
@@ -158,11 +146,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     currentPuzzleSetStates = nil;
     hintsView = nil;
     archiveView = nil;
-    btnBuyHint1 = nil;
-    btnBuyHint2 = nil;
-    btnBuyHint3 = nil;
     setToBuyView = nil;
-    lblHintsLeft = nil;
     
     [super viewDidUnload];
 }
@@ -185,8 +169,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [[GlobalData globalData] loadMonthSets];
     
     [self loadArchive];
-    
-    lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", [GlobalData globalData].loggedInUser.hints];
     
     NSLog(@"puzzles view controller: %f %f", self.view.bounds.size.width, self.view.bounds.size.height);
     
@@ -230,38 +212,50 @@ const int TAG_DYNAMIC_VIEWS = 101;
 //        [self hideActivityIndicator];
         
         SKPaymentTransaction * paymentTransaction = event.data;
-        NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
+        if (paymentTransaction.transactionState == SKPaymentTransactionStatePurchased)
+        {
+            NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
 
-        if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
-        {
-            [self handleHintsBought:10 withTransaction:paymentTransaction];
-        }
-        else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
-        {
-            [self handleHintsBought:20 withTransaction:paymentTransaction];
-        }
-        else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
-        {
-            [self handleHintsBought:30 withTransaction:paymentTransaction];
-        }
-        else
-        {
-            /*
-            for (UIView * subview in currentPuzzlesView.subviews)
+            
+            // TODO :: refactoring required! create StoreManager
+            
+            if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints10"] == NSOrderedSame)
             {
-                if ([subview isKindOfClass:[PuzzleSetView class]])
-                {
-                    PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
-//                    NSLog(@"check productIdentifier: %@ %@ %@", puzzleSetView.puzzleSetData.set_id, puzzleSetView.product.productIdentifier, paymentTransaction.payment.productIdentifier);
-                    if (puzzleSetView.product != nil && puzzleSetView.product.productIdentifier != nil && [puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
-                    {
-                        [self handleSetBoughtWithView:puzzleSetView withTransaction:paymentTransaction];
-                        break;
-                    }
-                }
+                [self handleHintsBought:10 withTransaction:paymentTransaction];
             }
-            */
+            else if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints20"] == NSOrderedSame)
+            {
+                [self handleHintsBought:20 withTransaction:paymentTransaction];
+            }
+            else if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints30"] == NSOrderedSame)
+            {
+                [self handleHintsBought:30 withTransaction:paymentTransaction];
+            }
+            else
+            {
+                // TODO :: reair puzzle set buying process
+                /*
+                 for (UIView * subview in currentPuzzlesView.subviews)
+                 {
+                 if ([subview isKindOfClass:[PuzzleSetView class]])
+                 {
+                 PuzzleSetView * puzzleSetView = (PuzzleSetView *)subview;
+                 //                    NSLog(@"check productIdentifier: %@ %@ %@", puzzleSetView.puzzleSetData.set_id, puzzleSetView.product.productIdentifier, paymentTransaction.payment.productIdentifier);
+                 if (puzzleSetView.product != nil && puzzleSetView.product.productIdentifier != nil && [puzzleSetView.product.productIdentifier compare:paymentTransaction.payment.productIdentifier] == NSOrderedSame)
+                 {
+                 [self handleSetBoughtWithView:puzzleSetView withTransaction:paymentTransaction];
+                 break;
+                 }
+                 }
+                 }
+                 */
+            }
         }
+        else if (paymentTransaction.error != nil)
+        {
+            NSLog(@"payment error: %@", paymentTransaction.error.localizedDescription);
+        }
+
     }
     else if (event.type == EVENT_PRODUCT_ERROR)
     {
@@ -367,11 +361,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     else if (event.type == EVENT_COEFFICIENTS_UPDATED)
     {
         [self updateBaseScores];
-    }
-    else if (event.type == EVENT_ME_UPDATED)
-    {
-        UserData * me = event.data;
-        lblHintsLeft.text = [NSString stringWithFormat:@"Осталось: %d", me.hints];
     }
 }
 
@@ -617,24 +606,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
     }
 }
 
--(void)updateHintButton:(PrizeWordButton*)button withProduct:(SKProduct*)product
-{
-    if (product != nil)
-    {
-        [hintsProducts replaceObjectAtIndex:button.tag withObject:product];
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setLocale:product.priceLocale];
-        NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-        
-        [button setTitle:localizedMoneyString forState:UIControlStateNormal];
-    }
-    else
-    {
-        [button setTitle:@"" forState:UIControlStateNormal];
-    }
-}
-
 -(void)handleSetBoughtWithView:(PuzzleSetView *)puzzleSetView withTransaction:(SKPaymentTransaction *)transaction
 {
 //    [self showActivityIndicator];
@@ -805,13 +776,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
 }
 
 
-- (IBAction)handleBuyHints:(id)sender
-{
-    UIButton * button = sender;
-//    [self showActivityIndicator];
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_PRODUCT andData:[hintsProducts objectAtIndex:button.tag]]];
-}
-
 #pragma mark helpers
 
 -(void)switchSetViewToBought:(PuzzleSetView *)puzzleSetView
@@ -918,7 +882,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -934,6 +898,10 @@ const int TAG_DYNAMIC_VIEWS = 101;
             return 1;
         }
         return [GlobalData globalData].monthSets.count + 1;
+    }
+    else if (section == 2)
+    {
+        return 1;
     }
     return 0;
 }
@@ -954,7 +922,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         {
             if ([GlobalData globalData].monthSets != nil && [GlobalData globalData].monthSets.count > 0)
             {
-                return [CurrentPuzzlesCell height] * 0.7f;
+                return [CurrentPuzzlesCell height] * 0.67f;
             }
             return  [CurrentPuzzlesCell height];
         }
@@ -968,6 +936,10 @@ const int TAG_DYNAMIC_VIEWS = 101;
             return height;
         }
         return [PuzzleSetCell minHeight];
+    }
+    else if (indexPath.section == 2)
+    {
+        return [HintsCell height];
     }
     return 0;
 }
@@ -1079,6 +1051,12 @@ const int TAG_DYNAMIC_VIEWS = 101;
             [tableView reloadData];
         }
         
+        return cell;
+    }
+    else if (indexPath.section == 2)
+    {
+        HintsCell * cell = [tableView dequeueReusableCellWithIdentifier:@"hintsCell"];
+        [cell setupForIndexPath:indexPath inTableView:tableView];
         return cell;
     }
     return nil;

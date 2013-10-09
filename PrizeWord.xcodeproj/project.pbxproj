@@ -36,6 +36,9 @@
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
 		6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B9227C81800534F004E1505 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6BD165DF1803DFC200F140AD /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165DE1803DFC200F140AD /* DataContext.m */; };
+		6BD165E218053A5300F140AD /* HintsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165E118053A5300F140AD /* HintsCell.m */; };
+		6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E318053A9600F140AD /* HintsCell~ipad.xib */; };
+		6BD165E618053AA800F140AD /* HintsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E518053AA800F140AD /* HintsCell.xib */; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -670,6 +673,10 @@
 		6B9227C81800534F004E1505 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6BD165DD1803DFC200F140AD /* DataContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataContext.h; path = DataLogic/DataContext.h; sourceTree = "<group>"; };
 		6BD165DE1803DFC200F140AD /* DataContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataContext.m; path = DataLogic/DataContext.m; sourceTree = "<group>"; };
+		6BD165E018053A5300F140AD /* HintsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintsCell.h; path = Views/HintsCell.h; sourceTree = "<group>"; };
+		6BD165E118053A5300F140AD /* HintsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HintsCell.m; path = Views/HintsCell.m; sourceTree = "<group>"; };
+		6BD165E318053A9600F140AD /* HintsCell~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file; name = "HintsCell~ipad.xib"; path = "Views/HintsCell~ipad.xib"; sourceTree = "<group>"; };
+		6BD165E518053AA800F140AD /* HintsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HintsCell.xib; path = Views/HintsCell.xib; sourceTree = "<group>"; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1955,6 +1962,10 @@
 				6B6DE1A41802EAB900D3DF52 /* NewsCell.m */,
 				6B6DE19E1802CCA400D3DF52 /* NewsCell.xib */,
 				6B6DE1A01802CDBA00D3DF52 /* NewsCell~ipad.xib */,
+				6BD165E018053A5300F140AD /* HintsCell.h */,
+				6BD165E118053A5300F140AD /* HintsCell.m */,
+				6BD165E518053AA800F140AD /* HintsCell.xib */,
+				6BD165E318053A9600F140AD /* HintsCell~ipad.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2547,6 +2558,7 @@
 				F286E3E4167E374000FF5E83 /* final_bg@2x.png in Resources */,
 				F286E3EC167E378700FF5E83 /* RatingViewController.xib in Resources */,
 				F286E3F51681745200FF5E83 /* puzzles_set_delimeter@2x.png in Resources */,
+				6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */,
 				F286E3F61681745200FF5E83 /* puzzles_set_timeleft_bg@2x.png in Resources */,
 				F286E3F71681745200FF5E83 /* puzzles_set_ag2@2x.png in Resources */,
 				F286E3F81681745200FF5E83 /* puzzles_set_fr@2x.png in Resources */,
@@ -2725,6 +2737,7 @@
 				F250910F16B5D9380045621E /* rating_footer@2x.png in Resources */,
 				F250911016B5D9380045621E /* rating_cell_border_last@2x.png in Resources */,
 				F250911116B5D9380045621E /* rating_cell_border@2x.png in Resources */,
+				6BD165E618053AA800F140AD /* HintsCell.xib in Resources */,
 				F250911216B5D9380045621E /* rating_cell_border_first@2x.png in Resources */,
 				F250911316B5D9380045621E /* rating_header@2x.png in Resources */,
 				F250911516B5E26A0045621E /* RatingCell~ipad.xib in Resources */,
@@ -2973,6 +2986,7 @@
 				6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */,
 				6B6DE1A81802EE8E00D3DF52 /* NewsData.m in Sources */,
 				6B6DE1BB1803AF9000D3DF52 /* PuzzleSetPackData.m in Sources */,
+				6BD165E218053A5300F140AD /* HintsCell.m in Sources */,
 				6B43157718029571007BE826 /* FramedBlockCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
