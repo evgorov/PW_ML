@@ -24,7 +24,6 @@ import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.app.ModelUpdater;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
-import com.ltst.przwrd.crossword.view.CrosswordsFragment;
 import com.ltst.przwrd.login.model.LoadSessionKeyTask;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationBackPress;
@@ -94,17 +93,33 @@ public class AuthorizationFragment extends SherlockFragment
         mBackPressButton.setOnClickListener(this);
         mEnterLoginButton.setOnClickListener(this);
         mForgetLoginButton.setOnClickListener(this);
-//        mEmailEditText.setOnKeyListener(this);
-//        mPasswdlEditText.setOnKeyListener(this);
+        mEmailEditText.setOnKeyListener(this);
+        mPasswdlEditText.setOnKeyListener(this);
 
         mEmailEditText.setText("vlad@ltst.ru");
         mPasswdlEditText.setText("vlad");
 
+        mEmailEditText.setSelectAllOnFocus(true);
+        mPasswdlEditText.setSelectAllOnFocus(true);
+        mEmailEditText.requestFocus();
+
 //        mEmailEditText.setText("hi@mail.ru");
 //        mPasswdlEditText.setText("hi");
 
-
         return v;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if(mEmailEditText.isFocused())
+        {
+            @Nullable FragmentActivity fragment = getActivity();
+            InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mEmailEditText, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     private  void authorizing(){
@@ -161,6 +176,7 @@ public class AuthorizationFragment extends SherlockFragment
                     {
                         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                         mEmailEditText.clearFocus();
+                        mPasswdlEditText.selectAll();
                     }
                 }
             }
