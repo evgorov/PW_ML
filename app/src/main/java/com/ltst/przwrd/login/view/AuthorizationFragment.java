@@ -45,7 +45,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AuthorizationFragment extends SherlockFragment
-        implements View.OnClickListener, View.OnKeyListener, INavigationBackPress
+        implements
+        View.OnClickListener,
+        INavigationBackPress,
+        EditText.OnKeyListener
 {
     private @Nonnull String LOG_TAG = "autorization";
 
@@ -148,18 +151,24 @@ public class AuthorizationFragment extends SherlockFragment
 
     @Override
     public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-        switch (view.getId()){
-            case R.id.login_email_etext:{
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if(mPasswdlEditText.requestFocus()) {
+        switch (view.getId())
+        {
+            case R.id.login_email_etext:
+            {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+                {
+                    if(mPasswdlEditText.requestFocus())
+                    {
                         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                         mEmailEditText.clearFocus();
                     }
                 }
             }
             break;
-            case R.id.login_passwd_etext:{
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            case R.id.login_passwd_etext:
+            {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+                {
                     authorizing();
                 }
             }

@@ -41,7 +41,9 @@ import javax.annotation.Nullable;
 public class CrosswordsFragment extends SherlockFragment
         implements View.OnClickListener,
         ICrosswordFragment,
-        ITouchInterface {
+        ITouchInterface
+{
+
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
 
@@ -60,7 +62,7 @@ public class CrosswordsFragment extends SherlockFragment
     private @Nonnull View mProgressBar;
     private @Nonnull Button mMenuBackButton;
     private @Nonnull NewsHolder mNewsHolder;
-    private @Nonnull CrosswordFragmentHolder mCrosswordFragmentHolder;
+    private @Nonnull CrosswordsFragmentHolder mCrosswordsFragmentHolder;
 
     private @Nonnull INewsModel mNewsModel;
     private @Nonnull HintsModel mHintsModel;
@@ -77,6 +79,7 @@ public class CrosswordsFragment extends SherlockFragment
         mINavigationDrawerHolder = (INavigationDrawerHolder) activity;
         mIFragmentActivity = (IFragmentsHolderActivity) activity;
         mIManadges = (IManadges) activity;
+        mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
         super.onAttach(activity);
     }
 
@@ -91,7 +94,7 @@ public class CrosswordsFragment extends SherlockFragment
         }
 
         mNewsHolder = new NewsHolder(mContext, this, inflater, v);
-        mCrosswordFragmentHolder = new CrosswordFragmentHolder(mContext, this, inflater, v);
+        mCrosswordsFragmentHolder = new CrosswordsFragmentHolder(mContext, this, inflater, v);
         mHintsManager = new HintsManager(mContext, this, v);
 
         mProgressBar = v.findViewById(R.id.archive_progressBar);
@@ -130,7 +133,6 @@ public class CrosswordsFragment extends SherlockFragment
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressbarSync.setVisibility(View.GONE);
         mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
-        mBcConnector = ((IBcConnectorOwner) getActivity()).getBcConnector();
 
         mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
         mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
@@ -143,7 +145,7 @@ public class CrosswordsFragment extends SherlockFragment
         {
             mNewsModel.updateFromInternet(mRefreshHandler);
             mCoefficientsModel.updateFromInternet(handlerUpdatePuzzleSet);
-            if(mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
+            if(mCrosswordsFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
             {
 //                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
                 mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
@@ -167,7 +169,6 @@ public class CrosswordsFragment extends SherlockFragment
                 skipProgressBar();
             }
         }
-
         super.onStart();
     }
 
@@ -239,7 +240,7 @@ public class CrosswordsFragment extends SherlockFragment
         @Nullable List<PuzzleSet> sets = mPuzzleSetModel.getPuzzleSets();
         @Nullable HashMap<String, List<Puzzle>> mapPuzzles = mPuzzleSetModel.getPuzzlesSet();
         if (sets != null && mapPuzzles != null) {
-            mCrosswordFragmentHolder.fillSet(sets, mapPuzzles);
+            mCrosswordsFragmentHolder.fillSet(sets, mapPuzzles);
         }
     }
 
@@ -248,11 +249,11 @@ public class CrosswordsFragment extends SherlockFragment
         public void handle() {
             createCrosswordPanel();
 
-            if (mCrosswordFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
+            if (mCrosswordsFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
             {
                 mPuzzleSetModel.updateTotalDataByInternet(handlerUpdateSetsFromServer);
             }
-            else if (mCrosswordFragmentHolder.isNeedUploadCurrentPuzzlrSetsFromInternet())
+            else if (mCrosswordsFragmentHolder.isNeedUploadCurrentPuzzlrSetsFromInternet())
             {
                 mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
             }
@@ -275,7 +276,7 @@ public class CrosswordsFragment extends SherlockFragment
     private IListenerVoid handlerUpdatePuzzleSet = new IListenerVoid() {
         @Override
         public void handle() {
-            mCrosswordFragmentHolder.setCoefficients(mCoefficientsModel.getCoefficients());
+            mCrosswordsFragmentHolder.setCoefficients(mCoefficientsModel.getCoefficients());
         }
     };
 
@@ -311,13 +312,56 @@ public class CrosswordsFragment extends SherlockFragment
 //            @Override
 //            public void handle() {
 //                @Nonnull PuzzleSet puzzleSet = mPuzzleSetModel.getOnePuzzleSet();
-                @Nonnull PuzzleSet puzzleSet = mCrosswordFragmentHolder.getPuzzleSet(setServerId);
+                @Nonnull PuzzleSet puzzleSet = mCrosswordsFragmentHolder.getPuzzleSet(setServerId);
                 @Nonnull Intent intent = OneCrosswordActivity.
                         createIntent(mContext, puzzleSet, puzzleServerId, mHintsManager.getHintsCount(),
                                 mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
                 startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
 //            }
 //        });
+    }
+
+    @Override
+    public void updateAllSets() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressbarSync.setVisibility(View.GONE);
+        mSessionKey = SharedPreferencesValues.getSessionKey(mContext);
+
+//        mCoefficientsModel = new CoefficientsModel(mSessionKey, mBcConnector);
+//        mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
+//        mNewsModel = new NewsModel(mSessionKey, mBcConnector);
+//        mHintsModel = new HintsModel(mBcConnector, mSessionKey);
+//
+//        mPuzzleSetModel.updateHints(handlerUpdateHints);
+//
+//        if (!flgOneUpload)
+//        {
+//            mNewsModel.updateFromInternet(mRefreshHandler);
+//            mCoefficientsModel.updateFromInternet(handlerUpdatePuzzleSet);
+//            if(mCrosswordsFragmentHolder.isNeedUploadAllPuzzlrSetsFromInternet())
+//            {
+//                mPuzzleSetModel.updateCurrentSets(handlerUpdateCurrentSets);
+                mPuzzleSetModel.updateTotalDataByDb(handlerUpdateSetsFromDB);
+//                flgOneUpload = true;
+//            }
+//            else
+//            {
+//                createCrosswordPanel();
+//                skipProgressBar();
+//            }
+//        }
+//        else
+//        {
+//            if (CrosswordSetUpdateMember.mNeedUpdate)
+//            {
+//                CrosswordSetUpdateMember.mNeedUpdate = false;
+//                updateOneSet(CrosswordSetUpdateMember.mPuzzleSetServerId);
+//            }
+//            else
+//            {
+//                skipProgressBar();
+//            }
+//        }
     }
 
     @Override

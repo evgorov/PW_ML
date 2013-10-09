@@ -342,11 +342,6 @@ public class RestClient implements IRestClient {
         urlVariables.put(RestParams.RECEIPT_DATA, param);
         urlVariables.put(RestParams.SIGNATURE, signature);
 
-//        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-//        messageConverters.add(new FormHttpMessageConverter());
-//        messageConverters.add(new StringHttpMessageConverter());
-//        restTemplate.setMessageConverters(messageConverters);
-
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders httpHeaders = new HttpHeaders();

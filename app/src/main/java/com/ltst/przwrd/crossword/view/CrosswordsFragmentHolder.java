@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 /**
  * Created by cosic on 12.08.13.
  */
-public class CrosswordFragmentHolder
+public class CrosswordsFragmentHolder
 {
 
     private static @Nonnull LayoutInflater mInflater;
@@ -41,8 +41,8 @@ public class CrosswordFragmentHolder
 
     @Nonnull Coefficients mCoefficients;
 
-    public CrosswordFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
-                                   @Nonnull LayoutInflater inflater, @Nonnull View view)
+    public CrosswordsFragmentHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
+                                    @Nonnull LayoutInflater inflater, @Nonnull View view)
     {
         this.mInflater = inflater;
         this.mICrosswordFragment = (ICrosswordFragment) fragment;

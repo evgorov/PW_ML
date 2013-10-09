@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 public interface ICrosswordFragment {
 
     public void choicePuzzle(@Nonnull String setServerId, @Nonnull String puzzleServerId);
+    public void updateAllSets();
     public void updateCurrentSet();
     public void updateOneSet(@Nonnull String puzzleSetServerId);
     public void purchaseResult(boolean result);

@@ -36,6 +36,7 @@ import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.model.HintsModel;
 import com.ltst.przwrd.crossword.model.IPuzzleSetModel;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
+import com.ltst.przwrd.crossword.view.ICrosswordFragment;
 import com.ltst.przwrd.login.model.IUserDataModel;
 import com.ltst.przwrd.login.model.UserProvider;
 import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
@@ -135,6 +136,8 @@ public class NavigationActivity extends BillingV3Activity
     private boolean mNeedMerge;
     private @Nonnull String mProvider;
     private @Nonnull String mSessionKey;
+
+    private @Nonnull List<PurchasePrizeWord> mRestoreproducts;
 
 
     @Override
@@ -775,15 +778,28 @@ public class NavigationActivity extends BillingV3Activity
     {
         @Override
         public void handle() {
-            @Nonnull List<PurchasePrizeWord> products = getManadgeHolder().getRestoreProducts();
-            for(PurchasePrizeWord product : products)
-            {
-                mPuzzleSetModel.buyCrosswordSet(product.googleId, product.receipt_data, product.signature, new IListenerVoid() {
-                    @Override
-                    public void handle() {
+            mRestoreproducts = getManadgeHolder().getRestoreProducts();
+            mTaskHandlerRestoreProducts2.handle();
+        }
+    };
 
-                    }
-                });
+    private IListenerVoid mTaskHandlerRestoreProducts2 = new IListenerVoid()
+    {
+        @Override
+        public void handle() {
+            if(mRestoreproducts.size()>0)
+            {
+                @Nonnull PurchasePrizeWord product = mRestoreproducts.get(0);
+                mRestoreproducts.remove(0);
+                mPuzzleSetModel.buyCrosswordSet(product.googleId, product.receipt_data, product.signature, mTaskHandlerRestoreProducts2);
+            }
+            else
+            {
+                Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                if (fr instanceof ICrosswordFragment)
+                {
+                    ((ICrosswordFragment) fr).updateAllSets();
+                }
             }
         }
     };
