@@ -96,6 +96,8 @@
     <string name="msg_password_empty">Пароль пустой</string>
     <string name="msg_password_token_not_found">Токен не найден или уже использован</string>
     <string name="msg_forget_password_error_email">Электронный адрес не зарегистрирован</string>
+    <string name="question_restore_purchases_title">Вопрос</string>
+    <string name="question_restore_purchases_msg">Восстановить покупки?</string>
 
     // ==== Rules messages ====
     <string name="rules_text_1">Разгадывайте и участвуйте в рейтинге! Каждый месяц лидеры рейтинга

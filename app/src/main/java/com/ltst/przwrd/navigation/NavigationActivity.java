@@ -1,6 +1,8 @@
 package com.ltst.przwrd.navigation;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -686,7 +688,28 @@ public class NavigationActivity extends BillingV3Activity
                 selectNavigationFragmentByClassname(ScoreDetailFragment.FRAGMENT_CLASSNAME);
                 break;
             case R.id.restore_buy:
-                getManadgeHolder().restoreProducts(mTaskHandlerRestoreProducts);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.question_restore_purchases_title);
+                builder.setMessage(R.string.question_restore_purchases_msg);
+                builder.setPositiveButton(R.string.ok_bnt_title, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                        if (fr instanceof ICrosswordsFragment)
+                        {
+                            ((ICrosswordsFragment) fr).waitLoader(true);
+                        }
+                        getManadgeHolder().restoreProducts(mTaskHandlerRestoreProducts);
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel_message_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setCancelable(true);
+                builder.create().show();
                 break;
             default:
                 break;
