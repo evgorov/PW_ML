@@ -186,7 +186,12 @@ NSRegularExpression * EMAIL_REGEXP;
     [request.params setObject:tfSurname.text forKey:@"surname"];
     [request.params setObject:tfPassword.text forKey:@"password"];
     [request.params setObject:[dateFormatter stringFromDate:datePicker.date] forKey:@"birthday"];
-    [request.params setObject:tfCity.text forKey:@"city"];
+    NSString * city = tfCity.text;
+    if (city == nil)
+    {
+        city = @"";
+    }
+    [request.params setObject:city forKey:@"city"];
     if (avatar != nil)
     {
         [request.params setObject:avatar forKey:@"userpic"];

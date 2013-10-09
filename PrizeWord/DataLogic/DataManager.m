@@ -609,7 +609,7 @@
             }
             else
             {
-                NSLog(@"PRODUCT REQUEST: product unknown: %@", product.productIdentifier);
+                NSLog(@"PRODUCT REQUEST: product unknown: %@", productID);
                 [unknownProducts addObject:productID];
             }
         }
@@ -631,7 +631,7 @@
         SKProductsRequestDelegateWithBlock * delegate = [[SKProductsRequestDelegateWithBlock alloc] initWithBlock:^(SKProductsRequestDelegateWithBlock * delegate, SKProductsResponse * response) {
             if (response != nil && response.products != nil)
             {
-                NSLog(@"PRODUCT REQUEST: products requested: %@", response.products.description);
+                NSMutableArray * productsIDs = [NSMutableArray new];
                 for (SKProduct * product in response.products)
                 {
                     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -640,7 +640,9 @@
                     NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
                     [prices setObject:localizedMoneyString forKey:product.productIdentifier];
                     [[GlobalData globalData].products setObject:product forKey:product.productIdentifier];
+                    [productsIDs addObject:product.productIdentifier];
                 }
+                NSLog(@"PRODUCT REQUEST: products requested: %@", productsIDs);
                 if (callback != nil && ![fetchOperation isCancelled])
                 {
                     callback(prices, nil);
