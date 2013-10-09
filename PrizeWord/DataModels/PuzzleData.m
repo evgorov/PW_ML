@@ -154,6 +154,10 @@
 
 -(void)synchronize
 {
+    if ([GlobalData globalData].sessionKey == nil)
+    {
+        return;
+    }
     APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         if (response.statusCode == 304)
         {

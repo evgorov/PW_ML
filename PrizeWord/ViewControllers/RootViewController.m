@@ -574,6 +574,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 {
     [self hideMenuAnimated:YES];
     [APIRequest clearCache];
+    [GlobalData globalData].monthSets = [NSMutableArray new];
     [SocialNetworks logout];
     
     [navController popToRootViewControllerAnimated:YES];
