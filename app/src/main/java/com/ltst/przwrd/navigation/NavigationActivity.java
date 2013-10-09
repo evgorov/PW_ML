@@ -133,7 +133,6 @@ public class NavigationActivity extends BillingV3Activity
 
     private @Nonnull List<PurchasePrizeWord> mRestoreproducts;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -792,6 +791,11 @@ public class NavigationActivity extends BillingV3Activity
             UserData data = mUserDataModel.getUserData();
             if (data != null)
             {
+                Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                if (fr instanceof ICrosswordFragment)
+                {
+                    ((ICrosswordFragment) fr).setHintCount(data.hints);
+                }
                 mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name + " " + data.surname : data.surname);
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));
