@@ -26,6 +26,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
     public static final @Nonnull String TNAME_COEFFICIENTS      = "coefficients";
     public static final @Nonnull String TNAME_POST_SCORE_QUEUE  = "score_queue";
     public static final @Nonnull String TNAME_PURCHASES  = "purchases";
+    public static final @Nonnull String TNAME_NEWS = "news";
 
     private static final String CREATE_PUZZLE_SETS_QUERY = "create table "
             + TNAME_PUZZLE_SETS + "("
@@ -129,6 +130,15 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
             + ColsPurchases.RECEIPT_DATA                + " text, "
             + ColsPurchases.SIGNATURE                   + " text "
             + ")";
+
+    private static final @Nonnull String CREATE_NEWS = "create table "
+            + TNAME_NEWS + "("
+            + ColsNews.ID                               + " integer not null primary key autoincrement, "
+            + ColsNews.MESSAGE_1                        + " text, "
+            + ColsNews.MESSAGE_2                        + " text, "
+            + ColsNews.MESSAGE_3                        + " text, "
+            + ColsNews.CLOSED                           + " boolean not null default false, "
+            + ColsNews.ETAG_HASH                        + " text)";
 
     public static final class ColsPuzzleSets
     {
@@ -245,6 +255,16 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         public static final @Nonnull String SIGNATURE               = "signature";
     }
 
+    public static final class ColsNews
+    {
+        public static final @Nonnull String ID                      = "_id";
+        public static final @Nonnull String MESSAGE_1               = "message1";
+        public static final @Nonnull String MESSAGE_2               = "message2";
+        public static final @Nonnull String MESSAGE_3               = "message3";
+        public static final @Nonnull String CLOSED                  = "closed";
+        public static final @Nonnull String ETAG_HASH               = "etag_hash";
+    }
+
     // ===============================================
 
     private final @Nonnull Context mContext;
@@ -343,6 +363,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements IDbCreator
         db.execSQL(CREATE_COEFFICIENTS_QUERY);
         db.execSQL(CREATE_SCORE_QUEUE_QUERY);
         db.execSQL(CREATE_PURCHASES);
+        db.execSQL(CREATE_NEWS);
     }
 
     @Override

@@ -374,18 +374,44 @@ public class RestClient implements IRestClient {
 
     @Nullable
     @Override
-    public RestNews getNews(@Nonnull String sessionKey) {
+    public RestNews getNews(@Nonnull String sessionKey, @Nullable String eTag)
+    {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put(RestParams.SESSION_KEY, sessionKey);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
         httpHeaders.set("Connection", "Close");
+        if (eTag != null)
+        {
+            httpHeaders.setIfNoneMatch(eTag);
+        }
         HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        ResponseEntity<RestNews> holder =
-                restTemplate.exchange(RestParams.URL_GET_NEWS, HttpMethod.GET, requestEntity, RestNews.class, urlVariables);
-        return holder.getBody();
+        ResponseEntity<RestNews> holder = null;
+        try
+        {
+            holder = restTemplate.exchange(RestParams.URL_GET_NEWS, HttpMethod.GET,
+                            requestEntity, RestNews.class, urlVariables);
+        } catch (HttpClientErrorException e)
+        {
+            Log.e(e.getMessage());
+        } catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
+        RestNews news = null;
+        if (holder != null)
+        {
+            HttpHeaders responseHeaders = holder.getHeaders();
+            if (!holder.getStatusCode().equals(HttpStatus.NOT_MODIFIED))
+            {
+                news = holder.getBody();
+                news.setEtagHash(responseHeaders.getETag());
+            }
+        }
+
+        return news;
     }
 
     @Nullable

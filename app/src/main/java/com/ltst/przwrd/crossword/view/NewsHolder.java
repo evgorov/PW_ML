@@ -18,6 +18,7 @@ import com.ltst.przwrd.swipe.ITouchInterface;
 import com.ltst.przwrd.swipe.TouchDetector;
 
 import org.omich.velo.bcops.BcTaskHelper;
+import org.omich.velo.handlers.IListenerVoid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,8 @@ public class NewsHolder {
     private int mIndicatorPosition;
 
     public NewsHolder(@Nonnull Context context, @Nonnull SherlockFragment fragment,
-                                   @Nonnull LayoutInflater inflater, @Nonnull View view)
+                                   @Nonnull LayoutInflater inflater, @Nonnull View view,
+                                   final @Nonnull IListenerVoid closeListener)
     {
         this.mInflater = inflater;
         this.mViewCrossword = view;
@@ -73,6 +75,7 @@ public class NewsHolder {
             @Override
             public void onClick(View v) {
                 mNewsLayout.setVisibility(View.GONE);
+                closeListener.handle();
             }
         });
 
@@ -134,7 +137,7 @@ public class NewsHolder {
     {
         if (news != null)
         {
-            if (news.message1 == null && news.message2 == null && news.message3 == null)
+            if (news.message1 == null || news.message2 == null || news.message3 == null || news.closed)
             {
                 mNewsLayout.setVisibility(View.GONE);
             } else
@@ -162,6 +165,7 @@ public class NewsHolder {
                 mSimpleImage = (ImageView) mRoot.findViewById(mIndicatorPosition);
                 mSimpleImage.setImageResource(R.drawable.puzzles_news_page_current);
                 mNewsSimpleText.setText(mNewsList.get(mIndicatorPosition));
+                mNewsLayout.setVisibility(View.VISIBLE);
             }
         }
     }

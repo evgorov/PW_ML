@@ -5,19 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.przwrd.R;
+import com.ltst.przwrd.db.DbService;
 import com.ltst.przwrd.rest.IRestClient;
 import com.ltst.przwrd.rest.RestClient;
 import com.ltst.przwrd.rest.RestNews;
 
 import org.omich.velo.bcops.BcTaskHelper;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.log.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LoadNewsFromInternetTask implements IBcTask
+public class LoadNewsFromInternetTask implements DbService.IDbTask
 {
     public static final @Nonnull String BF_SESSION_KEY = "LoadCoefficientsFromInternetTask.sessionKey";
     public static final @Nonnull String BF_NEWS = "LoadCoefficientsFromInternetTask.news";
@@ -29,7 +29,7 @@ public class LoadNewsFromInternetTask implements IBcTask
         return intent;
     }
 
-    @Override public Bundle execute(BcTaskEnv env)
+    @Override public Bundle execute(DbService.DbTaskEnv env)
     {
         if(!BcTaskHelper.isNetworkAvailable(env.context))
         {
@@ -47,34 +47,42 @@ public class LoadNewsFromInternetTask implements IBcTask
             @Nullable String sessionKey = extras.getString(BF_SESSION_KEY);
             if (sessionKey != null)
             {
-                @Nullable RestNews restNews = loadNews(env.context, sessionKey);
+                @Nullable News existingNews = env.dbw.getNews();
+                @Nullable String hash = null;
+                if(existingNews != null)
+                {
+                    hash = existingNews.etagHash;
+                }
+                @Nullable RestNews restNews = loadNews(env.context, sessionKey, hash);
                 if (restNews != null)
                 {
                     @Nonnull News news = parseNews(restNews);
+                    env.dbw.updateNews(news);
                     return packToBundle(news);
                 }
             }
         }
-        return null;
+        return getFromDatabase(env);
     }
 
-    private @Nullable RestNews loadNews(@Nonnull Context context, @Nonnull String sessionKey)
+    private @Nullable RestNews loadNews(@Nonnull Context context, @Nonnull String sessionKey,
+                                        @Nullable String etag)
     {
         try
         {
             IRestClient client = RestClient.create(context);
-            return client.getNews(sessionKey);
+            return client.getNews(sessionKey, etag);
         }
         catch (Throwable e)
         {
-            Log.i("Can't load coefficients from internet");
+            Log.i("Can't load news from internet");
         }
         return null;
     }
 
     private @Nonnull News parseNews(@Nonnull RestNews rest)
     {
-        return new News(rest.getMessage1(), rest.getMessage2(), rest.getMessage3());
+        return new News(rest.getMessage1(), rest.getMessage2(), rest.getMessage3(), rest.getEtagHash());
     }
 
     private static @Nonnull Bundle packToBundle(@Nonnull News news)
@@ -82,6 +90,16 @@ public class LoadNewsFromInternetTask implements IBcTask
         Bundle bundle = new Bundle();
         bundle.putParcelable(BF_NEWS, news);
         return bundle;
+    }
+
+    private static @Nullable Bundle getFromDatabase(DbService.DbTaskEnv env)
+    {
+        @Nullable News news = env.dbw.getNews();
+        if (news != null)
+        {
+            return packToBundle(news);
+        }
+        return null;
     }
 
 

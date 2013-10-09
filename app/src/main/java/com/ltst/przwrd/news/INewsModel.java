@@ -10,4 +10,5 @@ public interface INewsModel
     void updateFromInternet(@Nonnull IListenerVoid handler);
     @Nullable News getNews();
     void close();
+    void closeHolder();
 }

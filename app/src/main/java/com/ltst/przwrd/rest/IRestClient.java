@@ -41,7 +41,7 @@ public interface IRestClient
     @Nullable RestInviteFriend.RestInviteFriendHolder getFriendsScoreData(@Nonnull String sessionToken,@Nonnull String providerName);
     @Nullable RestPuzzleTotalSet.RestPuzzleOneSetHolder postBuySet(@Nonnull String sessionKey, @Nonnull String serverSetId, @Nonnull String receiptData, @Nonnull String signature);
 
-    @Nullable RestNews getNews(@Nonnull String sessionKey);
+    @Nullable RestNews getNews(@Nonnull String sessionKey, @Nullable String eTag);
 
     HttpStatus shareMessageToVk(@Nonnull String sessionKey, @Nonnull String message);
 

@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ltst.przwrd.app.ModelUpdater;
+import com.ltst.przwrd.db.DbService;
 
+import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.bcops.simple.BcService;
-import org.omich.velo.bcops.simple.IBcTask;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.log.Log;
 
@@ -42,6 +42,12 @@ public class NewsModel implements INewsModel
     }
 
     @Override
+    public void closeHolder()
+    {
+        mCloseNewsUpdater.update(null);
+    }
+
+    @Override
     public void close()
     {
         Log.i("NewsModel.destroy() begin"); //$NON-NLS-1$
@@ -51,12 +57,29 @@ public class NewsModel implements INewsModel
         }
 
         mInternetUpdater.close();
+        mCloseNewsUpdater.close();
 
         mIsDestroyed = true;
         Log.i("NewsModel.destroy() end"); //$NON-NLS-1$
 
     }
 
+    private Updater mCloseNewsUpdater=  new Updater()
+    {
+        @Nullable
+        @Override
+        protected Intent createIntent()
+        {
+            return CloseNewsTask.createIntent();
+        }
+
+        @Nonnull
+        @Override
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
+        {
+            return CloseNewsTask.class;
+        }
+    };
 
     private Updater mInternetUpdater = new Updater()
     {
@@ -69,13 +92,13 @@ public class NewsModel implements INewsModel
 
         @Nonnull
         @Override
-        protected Class<? extends IBcBaseTask<IBcTask.BcTaskEnv>> getTaskClass()
+        protected Class<? extends IBcBaseTask<DbService.DbTaskEnv>> getTaskClass()
         {
             return LoadNewsFromInternetTask.class;
         }
     };
 
-    private abstract class Updater extends ModelUpdater<IBcTask.BcTaskEnv>
+    private abstract class Updater extends ModelUpdater<DbService.DbTaskEnv>
     {
         @Nonnull
         @Override
@@ -84,12 +107,11 @@ public class NewsModel implements INewsModel
             return mBcConnector;
         }
 
-        @Override
-        protected
         @Nonnull
-        Class<BcService> getServiceClass()
+        @Override
+        protected Class<? extends BcBaseService<DbService.DbTaskEnv>> getServiceClass()
         {
-            return BcService.class;
+            return DbService.class;
         }
 
         @Override

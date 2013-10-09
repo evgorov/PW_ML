@@ -1,6 +1,7 @@
 package com.ltst.przwrd.db;
 
 import com.ltst.przwrd.manadges.Purchase;
+import com.ltst.przwrd.news.News;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.crossword.model.Puzzle;
 import com.ltst.przwrd.crossword.model.PuzzleQuestion;
@@ -55,4 +56,6 @@ public interface IDbReader
     @Nullable Coefficients getCoefficients();
 
     @Nullable ScoreQueue getScoreQueue();
+
+    @Nullable News getNews();
 }
