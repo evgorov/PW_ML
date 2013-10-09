@@ -99,8 +99,8 @@ public class AuthorizationFragment extends SherlockFragment
         mEmailEditText.setText("vlad@ltst.ru");
         mPasswdlEditText.setText("vlad");
 
-        mEmailEditText.setSelectAllOnFocus(true);
-        mPasswdlEditText.setSelectAllOnFocus(true);
+//        mEmailEditText.setSelectAllOnFocus(true);
+//        mPasswdlEditText.setSelectAllOnFocus(true);
         mEmailEditText.requestFocus();
 
 //        mEmailEditText.setText("hi@mail.ru");
@@ -176,7 +176,7 @@ public class AuthorizationFragment extends SherlockFragment
                     {
                         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                         mEmailEditText.clearFocus();
-                        mPasswdlEditText.selectAll();
+                        mPasswdlEditText.requestFocus();
                     }
                 }
             }
@@ -190,9 +190,9 @@ public class AuthorizationFragment extends SherlockFragment
             }
             break;
             default:
-                return view.onKeyUp(keyCode, keyEvent);
+                break;
         }
-        return true;
+        return view.onKeyUp(keyCode, keyEvent);
     }
 
     @Override
