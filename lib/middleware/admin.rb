@@ -184,5 +184,19 @@ module Middleware
       authorize_admin!
       User.storage(env['redis']).load(params['id']).user_data.to_hash.to_json
     end
+
+    get '/sets/:id/force_buy' do
+      authorize_admin!
+
+      puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
+
+      user = current_user
+      result = puzzle_set.to_hash.merge('bought' => true)
+      user['sets'] ||= []
+      user['sets'] = [result] | user['sets']
+      user.save
+
+      result.to_json
+    end
   end
 end
