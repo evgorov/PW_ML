@@ -10,6 +10,7 @@ import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
+import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.DeviceDetails;
 import com.ltst.przwrd.navigation.INavigationActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
@@ -296,6 +297,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 List<Purchase> purchases = inventory.getPurchasesList();
                 if(purchases.size()>0)
                 {
+                    for(Purchase purchase : purchases)
+                    {
+                        NavigationActivity.debug("CONSUME: "+purchase.getSku());
+                    }
                     mHelper.consumeAsync(purchases, mConsumeMyltyFinishedListener);
                 }
             }
@@ -372,6 +377,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             product.signature = responseSignature;
             mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
+            NavigationActivity.debug("RECEIPT_DATA:"+responseJson);
+            NavigationActivity.debug("SIGNATURE:"+responseSignature);
+
             verifyControllPurchases();
         }
     };
@@ -447,12 +455,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 //                        && purchase.serverPurchase == false
                     if (
                             sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                                    ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                                    ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                                    ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                            ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                            ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
                             )
                     {
                         // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
@@ -543,6 +551,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             case IabHelper.BILLING_RESPONSE_RESULT_ERROR:
                 break;
             case IabHelper.BILLING_RESPONSE_RESULT_ITEM_ALREADY_OWNED:
+                mINavigationActivity.sendMessage(mContext.getResources().getString(R.string.manage_purshase_already_owned));
                 break;
             case IabHelper.BILLING_RESPONSE_RESULT_ITEM_NOT_OWNED:
                 break;

@@ -99,6 +99,8 @@
     <string name="question_restore_purchases_title">Вопрос</string>
     <string name="question_restore_purchases_msg">Восстановить покупки?</string>
 
+    <string name="manage_purshase_already_owned">Покупка сета уже была совершена c данного устройства под другим пользователем</string>
+
     // ==== Rules messages ====
     <string name="rules_text_1">Разгадывайте и участвуйте в рейтинге! Каждый месяц лидеры рейтинга
     получают денежный приз! Все подробности на сайте www.prize-word.com</string>
