@@ -44,6 +44,9 @@
                                 <state key="highlighted" backgroundImage="puzzles_buy_hint_btn_down.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="handleBuyHintsClick:" destination="ZDN-Nq-Mrs" eventType="touchUpInside" id="K1h-gE-lDF"/>
+                                </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3h0-Th-F9X" customClass="PrizeWordButton">
                                 <rect key="frame" x="136" y="117" width="90" height="40"/>
@@ -57,6 +60,9 @@
                                 <state key="highlighted" backgroundImage="puzzles_buy_hint_btn_down.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="handleBuyHintsClick:" destination="ZDN-Nq-Mrs" eventType="touchUpInside" id="e6D-Xl-rf4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2rY-Cn-HTK" customClass="PrizeWordButton">
                                 <rect key="frame" x="250" y="117" width="90" height="40"/>
@@ -70,6 +76,9 @@
                                 <state key="highlighted" backgroundImage="puzzles_buy_hint_btn_down.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="handleBuyHintsClick:" destination="ZDN-Nq-Mrs" eventType="touchUpInside" id="ykA-PC-FUl"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

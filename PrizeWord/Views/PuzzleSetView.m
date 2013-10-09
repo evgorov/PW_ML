@@ -144,7 +144,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     {
         imgMonthBg.hidden = YES;
         lblMonth.hidden = YES;
-        imgDelimeter.frame = CGRectIntegral(CGRectMake(0, imgDelimeter.frame.origin.y, self.frame.size.width, imgDelimeter.frame.size.height));
+//        imgDelimeter.frame = CGRectIntegral(CGRectMake(0, imgDelimeter.frame.origin.y, imgDelimeter.frame.size.width, imgDelimeter.frame.size.height));
     }
     else
     {
@@ -165,7 +165,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         imgMonthBg.image = image;
         imgMonthBg.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x, imgMonthBg.frame.origin.y, image.size.width + [monthText sizeWithFont:lblMonth.font].width - [defaultMonthText sizeWithFont:lblMonth.font].width, imgMonthBg.frame.size.height));
         lblMonth.text = monthText;
-        imgDelimeter.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, imgDelimeter.frame.origin.y, self.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), imgDelimeter.frame.size.height));
+        imgDelimeter.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, imgDelimeter.frame.origin.y, imgDelimeter.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), imgDelimeter.frame.size.height));
     }
 }
 
