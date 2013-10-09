@@ -140,6 +140,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     if (event.type == EVENT_MONTH_SETS_UPDATED)
     {
+        for (int i = 0; i < [GlobalData globalData].monthSets.count; ++i)
+        {
+            PuzzleSetState * state = nil;
+            if (i < currentPuzzleSetStates.count)
+            {
+                state = [currentPuzzleSetStates objectAtIndex:i];
+            }
+            else
+            {
+                state = [PuzzleSetState new];
+                [currentPuzzleSetStates addObject:state];
+            }
+        }
         [tableView reloadData];
     }
 }
@@ -191,7 +204,6 @@ const int TAG_DYNAMIC_VIEWS = 101;
                         [archivePuzzleSets addObject:puzzleSet];
                         PuzzleSetState * state = [PuzzleSetState new];
                         state.isShownFull = NO;
-                        state.height = [PuzzleSetCell minHeight];
                         [archivePuzzleSetStates addObject:state];
                     }
                     [tableView reloadData];
@@ -266,16 +278,18 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }
             return  [CurrentPuzzlesCell height];
         }
-        if (currentPuzzleSetStates.count >= indexPath.row)
+        while (currentPuzzleSetStates.count < indexPath.row)
         {
-            float height = [(PuzzleSetState *)[currentPuzzleSetStates objectAtIndex:indexPath.row - 1] height];
-            if (indexPath.row == [GlobalData globalData].monthSets.count)
-            {
-                height += ([AppDelegate currentDelegate].isIPad ? 26 : 14);
-            }
-            return height;
+            [currentPuzzleSetStates addObject:[PuzzleSetState new]];
         }
-        return [PuzzleSetCell minHeight];
+        BOOL isFull = [(PuzzleSetState *)[currentPuzzleSetStates objectAtIndex:indexPath.row - 1] isShownFull];
+        PuzzleSetData * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
+        float height = isFull ? [PuzzleSetCell fullHeightForPuzzleSet:puzzleSet] : [PuzzleSetCell shortHeightForPuzzleSet:puzzleSet];
+        if (indexPath.row == [GlobalData globalData].monthSets.count)
+        {
+            height += ([AppDelegate currentDelegate].isIPad ? 26 : 14);
+        }
+        return height;
     }
     else if (indexPath.section == 2)
     {
@@ -297,7 +311,14 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         else
         {
-            float height = [(PuzzleSetState *)[archivePuzzleSetStates objectAtIndex:indexPath.row - 1] height];
+            while (archivePuzzleSets.count < indexPath.row)
+            {
+                PuzzleSetState * state = [PuzzleSetState new];
+                state.isShownFull = NO;
+            }
+            PuzzleSetState * state = [archivePuzzleSetStates objectAtIndex:indexPath.row - 1];
+            PuzzleSetData * puzzleSet = [archivePuzzleSets objectAtIndex:indexPath.row - 1];
+            float height = state.isShownFull ? [PuzzleSetCell fullHeightForPuzzleSet:puzzleSet] : [PuzzleSetCell shortHeightForPuzzleSet:puzzleSet];
             if (!archiveNeedLoading)
             {
                 height += ([AppDelegate currentDelegate].isIPad ? 26 : 14);
@@ -364,11 +385,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 frame.size = cell.puzzleSetView.shortSize;
                 cell.puzzleSetView.frame = frame;
             }
+            /*
             if (state.height != cell.actualHeight)
             {
                 state.height = cell.actualHeight;
                 [tableView reloadData];
             }
+            */
             return cell;
         }
         
@@ -381,12 +404,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
             frame.size = cell.puzzleSetView.shortSize;
             cell.puzzleSetView.frame = frame;
         }
+        /*
         if (state.height != cell.actualHeight)
         {
             state.height = cell.actualHeight;
             [tableView reloadData];
         }
-        
+        */
         return cell;
     }
     else if (indexPath.section == 2)
@@ -434,11 +458,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     frame.size = cell.puzzleSetView.shortSize;
                     cell.puzzleSetView.frame = frame;
                 }
+                /*
                 if (state.height != cell.actualHeight)
                 {
                     state.height = cell.actualHeight;
                     [tableView reloadData];
                 }
+                */
                 return cell;
             }
             
@@ -452,12 +478,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
                 frame.size = cell.puzzleSetView.shortSize;
                 cell.puzzleSetView.frame = frame;
             }
+            /*
             if (state.height != cell.actualHeight)
             {
                 state.height = cell.actualHeight;
                 [tableView reloadData];
             }
-            
+            */
             return cell;
         }
     }

@@ -15,7 +15,6 @@
 @interface PuzzleSetState : NSObject
 
 @property () BOOL isShownFull;
-@property () float height;
 
 @end
 
@@ -23,7 +22,8 @@
 
 @property (nonatomic, retain) PuzzleSetView * puzzleSetView;
 
-+ (float)minHeight;
++ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
++ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
 
 - (float)actualHeight;
 - (void)setupWithData:(PuzzleSetData *)puzzleSetData state:(PuzzleSetState *)state month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;

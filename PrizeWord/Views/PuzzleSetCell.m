@@ -25,7 +25,6 @@
 
 @interface PuzzleSetCell()
 {
-    NSBlockOperation * operation;
     __weak PuzzleSetState * state;
     __weak UITableView * tableView;
     __weak IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -45,7 +44,6 @@ static FISound * closeSetSound = nil;
 @implementation PuzzleSetState
 
 @synthesize isShownFull;
-@synthesize height;
 
 - (id)init
 {
@@ -53,7 +51,6 @@ static FISound * closeSetSound = nil;
     if (self != nil)
     {
         isShownFull = YES;
-        height = 0;
     }
     return self;
 }
@@ -64,21 +61,14 @@ static FISound * closeSetSound = nil;
 
 @synthesize puzzleSetView;
 
-static NSOperationQueue * backgroundOperationQueue = nil;
-
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
     {
         puzzleSetView = nil;
-        operation = nil;
         tableView = nil;
         state = nil;
-        if (backgroundOperationQueue == nil)
-        {
-            backgroundOperationQueue = [NSOperationQueue new];
-        }
         if (buySetSound == nil)
             buySetSound = [[FISoundEngine sharedEngine] soundNamed:@"buy_set.caf" error:nil];
         if (openSetSound == nil)
@@ -99,9 +89,14 @@ static NSOperationQueue * backgroundOperationQueue = nil;
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
 }
 
-+ (float)minHeight
++ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
 {
-    return [[AppDelegate currentDelegate] isIPad] ? 150 : 140;
+    return [PuzzleSetView fullHeightForPuzzleSet:puzzleSet];
+}
+
++ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
+{
+    return [PuzzleSetView shortHeightForPuzzleSet:puzzleSet];
 }
 
 - (float)actualHeight
@@ -123,61 +118,46 @@ static NSOperationQueue * backgroundOperationQueue = nil;
     {
         [puzzleSetView removeFromSuperview];
     }
-    if (operation != nil && ![operation isFinished])
-    {
-        [operation cancel];
-        operation = nil;
-    }
-    
-    puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
-    [self addSubview:puzzleSetView];
-    [puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self activateBadges];
-    
-    if (!puzzleSetView.puzzleSetData.bought.boolValue)
-    {
-        [puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
-        if (puzzleSetView.puzzleSetData.type.intValue == PUZZLESET_FREE)
-        {
-            [puzzleSetView.btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
-        }
-        else
-        {
-            [puzzleSetView.btnBuy setTitle:@"" forState:UIControlStateNormal];
-            __block NSString * setId = puzzleSetView.puzzleSetData.set_id;
-            [[StoreManager sharedManager] fetchPriceForSet:setId completion:^(NSString *data, NSError *error) {
-                if (data != nil && puzzleSetView != nil && [puzzleSetView.puzzleSetData.set_id compare:setId] == NSOrderedSame)
-                {
-                    NSString * price = data;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [puzzleSetView.btnBuy setTitle:price forState:UIControlStateNormal];
-                    });
-                }
-            }];
-        }
-    }
 
-    
-    /*
     [activityIndicator startAnimating];
-    operation = [NSBlockOperation new];
-    __block NSOperation * internalOperation = operation;
-    __block UIActivityIndicatorView * internalActivityIndicator = activityIndicator;
-    __block PuzzleSetCell * internalPuzzleSetCell = self;
-    [operation addExecutionBlock:^{
-        __block PuzzleSetView * internalView =
-        if (![internalOperation isCancelled])
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
+        self.puzzleSetView.btnShowMore.selected = state.isShownFull;
+        if (!state.isShownFull)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [internalActivityIndicator stopAnimating];
-                internalPuzzleSetCell.puzzleSetView = internalView;
-                [internalPuzzleSetCell addSubview:internalPuzzleSetCell.puzzleSetView];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"" object:internalView];
-            });
+            CGRect frame = self.puzzleSetView.frame;
+            frame.size = self.puzzleSetView.shortSize;
+            self.puzzleSetView.frame = frame;
         }
-    }];
-    [backgroundOperationQueue addOperation:operation];
-    */
+        
+        if (!self.puzzleSetView.puzzleSetData.bought.boolValue)
+        {
+            [self.puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
+            if (self.puzzleSetView.puzzleSetData.type.intValue == PUZZLESET_FREE)
+            {
+                [self.puzzleSetView.btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
+            }
+            else
+            {
+                [self.puzzleSetView.btnBuy setTitle:@"" forState:UIControlStateNormal];
+                __block NSString * setId = self.puzzleSetView.puzzleSetData.set_id;
+                [[StoreManager sharedManager] fetchPriceForSet:setId completion:^(NSString *data, NSError *error) {
+                    if (data != nil && self.puzzleSetView != nil && [self.puzzleSetView.puzzleSetData.set_id compare:setId] == NSOrderedSame)
+                    {
+                        NSString * price = data;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.puzzleSetView.btnBuy setTitle:price forState:UIControlStateNormal];
+                        });
+                    }
+                }];
+            }
+        }
+        [self.puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self activateBadges];
+        [activityIndicator stopAnimating];
+        [self addSubview:self.puzzleSetView];
+    });
 }
 
 - (void)activateBadges
@@ -227,7 +207,6 @@ static NSOperationQueue * backgroundOperationQueue = nil;
     {
         [closeSetSound play];
     }
-    state.height = newSize.height;
     state.isShownFull = btnShowMore.selected;
     [tableView beginUpdates];
     [tableView endUpdates];
@@ -254,7 +233,6 @@ static NSOperationQueue * backgroundOperationQueue = nil;
             [puzzleSetView switchToBought];
             [self activateBadges];
             state.isShownFull = YES;
-            state.height = puzzleSetView.fullSize.height;
             [tableView beginUpdates];
             [tableView endUpdates];
             

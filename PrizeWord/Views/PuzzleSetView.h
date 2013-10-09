@@ -18,7 +18,6 @@
     IBOutlet UILabel *lblMonth;
 }
 
-
 @property (strong, nonatomic) IBOutlet UIImageView *imgBar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgStar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgScoreBg;
@@ -37,6 +36,9 @@
 @property (nonatomic, readonly) CGSize shortSize;
 @property (nonatomic, readonly) CGSize fullSize;
 @property (readonly) int month;
+
++ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
++ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
 
 +(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 

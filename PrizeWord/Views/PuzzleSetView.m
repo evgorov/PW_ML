@@ -52,6 +52,44 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 @synthesize fullSize = _fullSize;
 @synthesize month = _month;
 
++ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
+{
+    if (puzzleSet.bought.boolValue)
+    {
+        if (puzzleSet.puzzles.count == 0)
+        {
+            return 105;
+        }
+        else
+        {
+            return [AppDelegate currentDelegate].isIPad ? (97 + 22 + (112 * 1.2) * ceil(puzzleSet.puzzles.count / 5.0)) : (88 + 19 + (94 * 1.2) * ceil(puzzleSet.puzzles.count / 4.0));
+        }
+    }
+    else
+    {
+        return [AppDelegate currentDelegate].isIPad ? 150 : 140;
+    }
+}
+
++ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
+{
+    if (puzzleSet.bought.boolValue)
+    {
+        if (puzzleSet.puzzles.count == 0)
+        {
+            return 105;
+        }
+        else
+        {
+            return 122;
+        }
+    }
+    else
+    {
+        return [AppDelegate currentDelegate].isIPad ? 150 - 45 : 140 - 38;
+    }
+}
+
 -(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     if (self)
