@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.facebook.UiLifecycleHelper;
@@ -269,9 +270,6 @@ public class OneCrosswordActivity extends BillingV3Activity
         mFinalMenuButton = (Button) findViewById(R.id.final_menu_btn);
         mFinalNextButton = (Button) findViewById(R.id.final_next_btn);
 
-        mFinalShareVkButton.setEnabled(mVKSharing);
-        mFinalShareFbButton.setEnabled(mFbSharing);
-
         mFlipNumberAnimator = new FlipNumberAnimator(this, mFinalFlipNumbersViewGroup);
 
         mPuzzleAdapter = new PuzzleResourcesAdapter(this, mBcConnector, mSessionKey, mPuzzleSet);
@@ -325,7 +323,7 @@ public class OneCrosswordActivity extends BillingV3Activity
             loadPuzzle();
         }
 
-        //showFinalDialog(true);
+//        showFinalDialog(true);
         //fillFlipNumbers(0);
         mResourcesDecoded = false;
         mStopPlayFlag = true;
@@ -458,8 +456,23 @@ public class OneCrosswordActivity extends BillingV3Activity
                 showPauseDialog(mStopPlayFlag);
                 break;
             case R.id.final_share_vk_btn:
-                if (mShareMessage != null) {
-                    mShareModel.shareMessageToVk(mShareMessage);
+                if (mShareMessage != null)
+                {
+                    if(mVKSharing)
+                    {
+                        mShareModel.shareMessageToVk(mShareMessage, new IListenerVoid()
+                        {
+                            @Override
+                            public void handle()
+                            {
+                                Toast.makeText(mContext, R.string.vk_app_ok, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Toast.makeText(mContext, R.string.vk_app_error, Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
             case R.id.final_share_fb_btn:
@@ -467,7 +480,9 @@ public class OneCrosswordActivity extends BillingV3Activity
                     if (FacebookDialog.canPresentShareDialog(getApplicationContext(),
                             FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
                         FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
-                                .setDescription(mShareMessage)
+                                .setLink("http://prize-word.com")
+                                .setName("PrizeWord")
+                                .setCaption(mShareMessage)
                                 .build();
                         uiHelper.trackPendingDialogCall(shareDialog.present());
                     } else {
