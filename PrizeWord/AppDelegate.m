@@ -24,6 +24,7 @@
 #import "NSData+Utils.h"
 #import "SocialNetworks.h"
 #import "DataContext.h"
+#import <Crashlytics/Crashlytics.h>
 
 #warning change FacebookDisplayName before release
 #warning change FacebookAppID before release
@@ -67,6 +68,7 @@ static NSRecursiveLock * dbLock = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     _isIPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+    [Crashlytics startWithAPIKey:@"41fbbeb2af9ef97717a85b18418a3cb2055ebcb9"];
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -43,6 +43,7 @@
 		6BD165EA18055F5000F140AD /* ArchiveCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */; };
 		6BD165EC180564FB00F140AD /* LoadingCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */; };
 		6BD165EE1805651D00F140AD /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165ED1805651D00F140AD /* LoadingCell.xib */; };
+		6BD165F1180575C500F140AD /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BD165F0180575C500F140AD /* Crashlytics.framework */; };
 		F20F0F0516E8C1B6009AEEE6 /* FIError.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EE916E8C1B6009AEEE6 /* FIError.m */; };
 		F20F0F0616E8C1B6009AEEE6 /* FISampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEB16E8C1B6009AEEE6 /* FISampleBuffer.m */; };
 		F20F0F0816E8C1B6009AEEE6 /* FISampleDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F20F0EEE16E8C1B6009AEEE6 /* FISampleDecoder.m */; };
@@ -685,6 +686,7 @@
 		6BD165E918055F5000F140AD /* ArchiveCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ArchiveCell~ipad.xib"; path = "Views/ArchiveCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165EB180564FB00F140AD /* LoadingCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "LoadingCell~ipad.xib"; path = "Views/LoadingCell~ipad.xib"; sourceTree = "<group>"; };
 		6BD165ED1805651D00F140AD /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadingCell.xib; path = Views/LoadingCell.xib; sourceTree = "<group>"; };
+		6BD165F0180575C500F140AD /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		F20F0EE816E8C1B6009AEEE6 /* FIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIError.h; sourceTree = "<group>"; };
 		F20F0EE916E8C1B6009AEEE6 /* FIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIError.m; sourceTree = "<group>"; };
 		F20F0EEA16E8C1B6009AEEE6 /* FISampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FISampleBuffer.h; sourceTree = "<group>"; };
@@ -1351,6 +1353,7 @@
 				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
 				F250913316B739BB0045621E /* Social.framework in Frameworks */,
 				F250913116B739B20045621E /* Accounts.framework in Frameworks */,
+				6BD165F1180575C500F140AD /* Crashlytics.framework in Frameworks */,
 				F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */,
 				F2D626FE165DF80900EF6E8A /* UIKit.framework in Frameworks */,
 				F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */,
@@ -2179,6 +2182,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6BD165F0180575C500F140AD /* Crashlytics.framework */,
 				6B9227C81800534F004E1505 /* SystemConfiguration.framework */,
 				6B3CC7991771FBEC003D57B6 /* Security.framework */,
 				6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */,
@@ -2314,8 +2318,9 @@
 				97BC1E6BD37741E9AC93928B /* Check Pods Manifest.lock */,
 				F2D626F5165DF80900EF6E8A /* Sources */,
 				F2D626F6165DF80900EF6E8A /* Frameworks */,
-				F2D626F7165DF80900EF6E8A /* Resources */,
 				BFDABC40C48D45619BB6F5F9 /* Copy Pods Resources */,
+				F2D626F7165DF80900EF6E8A /* Resources */,
+				6BD165EF1805755B00F140AD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2898,6 +2903,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6BD165EF1805755B00F140AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 41fbbeb2af9ef97717a85b18418a3cb2055ebcb9";
+		};
 		97BC1E6BD37741E9AC93928B /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3089,9 +3107,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/third-party\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SRCROOT)/third-party\\\"",
+					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
+					/Work/Projects/PrizeWord/source/PrizeWord,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -3116,9 +3135,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/third-party\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SRCROOT)/third-party\\\"",
+					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
+					/Work/Projects/PrizeWord/source/PrizeWord,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
