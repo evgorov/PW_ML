@@ -10,6 +10,14 @@
 #import "PuzzleSetView.h"
 #import "AppDelegate.h"
 
+@interface PuzzleSetCell()
+{
+    NSBlockOperation * operation;
+    __weak IBOutlet UIActivityIndicatorView *activityIndicator;
+}
+
+@end
+
 @implementation PuzzleSetCell
 
 @synthesize puzzleSetView;
@@ -22,6 +30,7 @@ static NSOperationQueue * backgroundOperationQueue = nil;
     if (self != nil)
     {
         puzzleSetView = nil;
+        operation = nil;
         if (backgroundOperationQueue == nil)
         {
             backgroundOperationQueue = [NSOperationQueue new];
@@ -51,9 +60,34 @@ static NSOperationQueue * backgroundOperationQueue = nil;
     {
         [puzzleSetView removeFromSuperview];
     }
+    if (operation != nil && ![operation isFinished])
+    {
+        [operation cancel];
+        operation = nil;
+    }
     
     puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
     [self addSubview:puzzleSetView];
+    /*
+    [activityIndicator startAnimating];
+    operation = [NSBlockOperation new];
+    __block NSOperation * internalOperation = operation;
+    __block UIActivityIndicatorView * internalActivityIndicator = activityIndicator;
+    __block PuzzleSetCell * internalPuzzleSetCell = self;
+    [operation addExecutionBlock:^{
+        __block PuzzleSetView * internalView =
+        if (![internalOperation isCancelled])
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [internalActivityIndicator stopAnimating];
+                internalPuzzleSetCell.puzzleSetView = internalView;
+                [internalPuzzleSetCell addSubview:internalPuzzleSetCell.puzzleSetView];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"" object:internalView];
+            });
+        }
+    }];
+    [backgroundOperationQueue addOperation:operation];
+    */
 }
 
 - (void)switchToBought

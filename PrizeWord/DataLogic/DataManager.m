@@ -23,12 +23,12 @@
 
 @interface SKProductsRequestDelegateWithBlock : NSObject<SKProductsRequestDelegate>
 {
-    void (^block)(SKProductsResponse *);
+    void (^block)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *);
 }
 
 @property (nonatomic, retain) SKProductsRequest * request;
 
-- (id)initWithBlock:(void(^)(SKProductsResponse *))block;
+- (id)initWithBlock:(void(^)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *))block;
 
 @end
 
@@ -36,7 +36,7 @@
 
 @synthesize request;
 
-- (id)initWithBlock:(void (^)(SKProductsResponse *))block_
+- (id)initWithBlock:(void (^)(SKProductsRequestDelegateWithBlock *, SKProductsResponse *))block_
 {
     self = [super init];
     if (self != nil)
@@ -46,11 +46,11 @@
     return self;
 }
 
-- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+- (void)productsRequest:(SKProductsRequest *)request_ didReceiveResponse:(SKProductsResponse *)response
 {
     if (block != nil)
     {
-        block(response);
+        block(self, response);
     }
 }
 
@@ -58,8 +58,8 @@
 {
     if (request != nil)
     {
-        [request cancel];
         request.delegate = nil;
+        [request cancel];
         request = nil;
     }
 }
@@ -69,6 +69,7 @@
 @interface DataManager()
 {
     NSOperationQueue * backgroundOperationQueue;
+    NSMutableSet * productRequests;
 }
 
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
@@ -94,6 +95,7 @@
     {
         backgroundOperationQueue = [NSOperationQueue new];
         [backgroundOperationQueue setMaxConcurrentOperationCount:4];
+        productRequests = [NSMutableSet new];
     }
     return self;
 }
@@ -102,6 +104,7 @@
 {
     [backgroundOperationQueue cancelAllOperations];
     backgroundOperationQueue = nil;
+    productRequests = nil;
 }
 
 - (void)cancelAll
@@ -596,7 +599,11 @@
             SKProduct * product = [[GlobalData globalData].products objectForKey:productID];
             if (product != nil)
             {
-                [prices setObject:[product.price descriptionWithLocale:product.priceLocale] forKey:productID];
+                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+                [formatter setLocale:product.priceLocale];
+                NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+                [prices setObject:localizedMoneyString forKey:productID];
             }
             else
             {
@@ -618,12 +625,16 @@
             return;
         }
         
-        SKProductsRequestDelegateWithBlock * delegate = [[SKProductsRequestDelegateWithBlock alloc] initWithBlock:^(SKProductsResponse * response) {
+        SKProductsRequestDelegateWithBlock * delegate = [[SKProductsRequestDelegateWithBlock alloc] initWithBlock:^(SKProductsRequestDelegateWithBlock * delegate, SKProductsResponse * response) {
             if (response != nil && response.products != nil)
             {
                 for (SKProduct * product in response.products)
                 {
-                    [prices setObject:product.productIdentifier forKey:[product.price descriptionWithLocale:product.priceLocale]];
+                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+                    [formatter setLocale:product.priceLocale];
+                    NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+                    [prices setObject:localizedMoneyString forKey:product.productIdentifier];
                     [[GlobalData globalData].products setObject:product forKey:product.productIdentifier];
                 }
                 if (callback != nil && ![fetchOperation isCancelled])
@@ -631,11 +642,15 @@
                     callback(prices, nil);
                 }
             }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [productRequests removeObject:delegate];
+            });
         }];
         SKProductsRequest * productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:unknownProducts];
         delegate.request = productsRequest;
         productsRequest.delegate = delegate;
         [productsRequest start];
+        [productRequests addObject:delegate];
     }];
     
     [operation setThreadPriority:0.3];

@@ -56,8 +56,10 @@
         handleScrollEvent = YES;
         self.clipsToBounds = YES;
         [activityIndicator startAnimating];
+        activityIndicator.hidden = NO;
         [[DataManager sharedManager] fetchNewsWithCompletion:^(NSArray *data, NSError *error) {
             [activityIndicator stopAnimating];
+            activityIndicator.hidden = YES;
             if (data != nil && data.count > 0)
             {
                 newsPaginator.numberOfPages = data.count;

@@ -131,9 +131,12 @@ static NSRecursiveLock * dbLock = nil;
     _backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:nil];
     _backgroundMusicPlayer.numberOfLoops = -1; //infinite
     
-    if (!musicMute)
+    if (!musicMute && _backgroundMusicPlayer != nil)
     {
-        [_backgroundMusicPlayer play];
+        if ([_backgroundMusicPlayer prepareToPlay])
+        {
+            [_backgroundMusicPlayer play];
+        }
     }
     
     NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];

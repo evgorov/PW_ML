@@ -775,6 +775,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
     PuzzleSetView * setView = (PuzzleSetView *)btnShowMore.superview;
     btnShowMore.selected = !btnShowMore.selected;
     CGSize newSize = btnShowMore.selected ? setView.fullSize : setView.shortSize;
+    CGRect frame = setView.frame;
+    frame.size = newSize;
+    [UIView animateWithDuration:0.2 animations:^{
+        setView.frame = frame;
+    }];
     if (btnShowMore.selected)
     {
         [openSetSound play];
@@ -787,11 +792,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
     if (idx < 0)
     {
         idx = -idx - 1;
+        // TODO :: archive
     }
     else
     {
         PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:idx];
         state.height = newSize.height;
+        state.isShownFull = btnShowMore.selected;
     }
     [tableView beginUpdates];
     [tableView endUpdates];
@@ -811,14 +818,30 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
 //    [self hideActivityIndicator];
     
-    UIView * blockView = puzzleSetView.superview;
-    CGSize oldSize = puzzleSetView.frame.size;
+//    UIView * blockView = puzzleSetView.superview;
+//    CGSize oldSize = puzzleSetView.frame.size;
     
-    [puzzleSetView switchToBought];
-    CGSize newSize = puzzleSetView.frame.size;
-    
-    [self resizeBlockView:blockView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
     [self activateBadges:puzzleSetView];
+    [puzzleSetView switchToBought];
+    int idx = 0;
+    for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets)
+    {
+        if ([puzzleSet.set_id compare:puzzleSetView.puzzleSetData.set_id] == NSOrderedSame) {
+            break;
+        }
+        ++idx;
+    }
+    if (idx < currentPuzzleSetStates.count)
+    {
+        PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:idx];
+        state.isShownFull = YES;
+        state.height = puzzleSetView.fullSize.height;
+    }
+    [tableView beginUpdates];
+    [tableView endUpdates];
+//    CGSize newSize = puzzleSetView.frame.size;
+    
+//    [self resizeBlockView:blockView withInnerView:puzzleSetView fromSize:oldSize toSize:newSize];
 }
 
 -(void)resizeBlockView:(UIView *)blockView withInnerView:(UIView *)innerView fromSize:(CGSize)oldSize toSize:(CGSize)newSize
@@ -931,14 +954,17 @@ const int TAG_DYNAMIC_VIEWS = 101;
         {
             if ([GlobalData globalData].monthSets != nil && [GlobalData globalData].monthSets.count > 0)
             {
-                return [CurrentPuzzlesCell height] * 0.6f;
+                return [CurrentPuzzlesCell height] * 0.7f;
             }
             return  [CurrentPuzzlesCell height];
         }
         if (currentPuzzleSetStates.count >= indexPath.row)
         {
             float height = [(PuzzleSetState *)[currentPuzzleSetStates objectAtIndex:indexPath.row - 1] height];
-            NSLog(@"row height: %0.0f", height);
+            if (indexPath.row == [GlobalData globalData].monthSets.count)
+            {
+                height += 16;
+            }
             return height;
         }
         return [PuzzleSetCell minHeight];
@@ -988,12 +1014,19 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         PuzzleSetData * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
         PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:indexPath.row - 1];
-        if (cell.puzzleSetView != nil && [puzzleSet.set_id compare:cell.puzzleSetView.puzzleSetData.set_id] == NSOrderedSame)
+        if (cell.puzzleSetView != nil && [puzzleSet.set_id compare:cell.puzzleSetView.puzzleSetData.set_id] == NSOrderedSame && [puzzleSet.user_id compare:cell.puzzleSetView.puzzleSetData.user_id])
         {
             NSLog(@"found set: %@", puzzleSet.set_id);
             if (puzzleSet.set_id == nil)
             {
                 NSLog(@"puzzle set id is nil");
+            }
+            if (!state.isShownFull)
+            {
+                [cell.puzzleSetView.btnShowMore setSelected:NO];
+                CGRect frame = cell.puzzleSetView.frame;
+                frame.size = cell.puzzleSetView.shortSize;
+                cell.puzzleSetView.frame = frame;
             }
             if (state.height != cell.actualHeight)
             {
@@ -1010,6 +1043,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         [self activateBadges:cell.puzzleSetView];
         if (!puzzleSet.bought.boolValue)
         {
+            cell.puzzleSetView.btnBuy.tag = indexPath.row - 1;
             [cell.puzzleSetView.btnBuy addTarget:self action:@selector(handleBuyClick:) forControlEvents:UIControlEventTouchUpInside];
             if (puzzleSet.type.intValue == PUZZLESET_FREE)
             {
@@ -1024,11 +1058,20 @@ const int TAG_DYNAMIC_VIEWS = 101;
                         NSString * price = [data objectForKey:[NSString stringWithFormat:@"%@%@", PRODUCTID_PREFIX, puzzleSet.set_id]];
                         if (price != nil)
                         {
-                            [cell.puzzleSetView.btnBuy setTitle:price forState:UIControlStateNormal];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [cell.puzzleSetView.btnBuy setTitle:price forState:UIControlStateNormal];
+                            });
                         }
                     }
                 }];
             }
+        }
+        if (!state.isShownFull)
+        {
+            [cell.puzzleSetView.btnShowMore setSelected:NO];
+            CGRect frame = cell.puzzleSetView.frame;
+            frame.size = cell.puzzleSetView.shortSize;
+            cell.puzzleSetView.frame = frame;
         }
         if (state.height != cell.actualHeight)
         {
