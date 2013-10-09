@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.przwrd.R;
@@ -40,7 +39,7 @@ import com.ltst.przwrd.crossword.view.ICrosswordFragment;
 import com.ltst.przwrd.login.model.IUserDataModel;
 import com.ltst.przwrd.login.model.UserProvider;
 import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
-import com.ltst.przwrd.login.view.RulesFragment;
+import com.ltst.przwrd.login.view.RulesActivity;
 import com.ltst.przwrd.login.view.IAutorization;
 import com.ltst.przwrd.login.model.UserData;
 import com.ltst.przwrd.login.view.AuthorizationFragment;
@@ -48,15 +47,10 @@ import com.ltst.przwrd.crossword.view.CrosswordsFragment;
 import com.ltst.przwrd.login.view.ForgetPassFragment;
 import com.ltst.przwrd.login.view.LoginFragment;
 import com.ltst.przwrd.login.view.RegisterFragment;
-import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.login.view.ResetPassFragment;
 import com.ltst.przwrd.login.model.UserDataModel;
 import com.ltst.przwrd.login.view.SocialLoginActivity;
 import com.ltst.przwrd.manadges.BillingV3Activity;
-import com.ltst.przwrd.manadges.IIabHelper;
-import com.ltst.przwrd.manadges.IManadges;
-import com.ltst.przwrd.manadges.IManageHolder;
-import com.ltst.przwrd.manadges.ManageHolder;
 import com.ltst.przwrd.manadges.PurchasePrizeWord;
 import com.ltst.przwrd.push.GcmHelper;
 import com.ltst.przwrd.rating.view.RatingFragment;
@@ -73,7 +67,6 @@ import com.ltst.przwrd.tools.IBitmapAsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.omich.velo.bcops.client.BcConnector;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
@@ -101,7 +94,6 @@ public class NavigationActivity extends BillingV3Activity
 
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
-    public final static int REQUEST_RULES = 5;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull Context mContext;
@@ -319,42 +311,10 @@ public class NavigationActivity extends BillingV3Activity
                 }
                 break;
 
-                case REQUEST_RULES:
-                {
-                    reloadUserData();
-                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-                }
-                break;
                 default:
                     break;
             }
         }
-        else
-        {
-            switch (requestCode)
-            {
-//                case REQUEST_LOGIN_VK:
-//                {
-//                    mDrawerMenu.mVkontakteSwitcher.setChecked(false);
-//                    mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
-//                }
-//                case REQUEST_LOGIN_FB:
-//                {
-//                    mDrawerMenu.mFacebookSwitcher.setChecked(false);
-//                    mDrawerMenu.mFacebookSwitcher.setEnabled(true);
-//                }
-                case REQUEST_RULES:
-                {
-                    reloadUserData();
-                    selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-                }
-                break;
-
-                default:
-                    break;
-            }
-        }
-
     }
 
     @Override
@@ -390,6 +350,20 @@ public class NavigationActivity extends BillingV3Activity
 
         reloadUserData();
         super.onResume();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        // Если запуск первый, то стартуем обучалку;
+        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
+        if (firstLaunch)
+        {
+            @Nonnull Intent intent = RulesActivity.createIntent(this);
+            this.startActivity(intent);
+            SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+        }
     }
 
     @Override
@@ -644,19 +618,19 @@ public class NavigationActivity extends BillingV3Activity
         }
 //        mGcmHelper.onAuthorized(null);
 
-        // Если запуск первый, то стартуем обучалку;
-        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
-        if (firstLaunch)
-        {
-            @Nonnull Intent intent = RulesFragment.createIntent(mContext);
-            this.startActivityForResult(intent, REQUEST_RULES);
-            SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
-        }
-        else
-        {
+//        // Если запуск первый, то стартуем обучалку;
+//        boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
+//        if (firstLaunch)
+//        {
+//            @Nonnull Intent intent = RulesActivity.createIntent(mContext);
+//            this.startActivityForResult(intent, REQUEST_RULES);
+//            SharedPreferencesValues.setFirstLaunchFlag(mContext,false);
+//        }
+//        else
+//        {
             reloadUserData();
             selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
-        }
+//        }
 
         if (mIsTablet)
             lockDrawerOpened();
@@ -674,7 +648,7 @@ public class NavigationActivity extends BillingV3Activity
                 selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
                 break;
             case R.id.menu_show_rules_btn:
-                @Nonnull Intent intent = RulesFragment.createIntent(this);
+                @Nonnull Intent intent = RulesActivity.createIntent(this);
                 this.startActivity(intent);
                 break;
             case R.id.header_listview_logout_btn:

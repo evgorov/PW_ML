@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 
 import static android.view.View.OnClickListener;
 
-public class RulesFragment extends SherlockActivity implements OnClickListener
+public class RulesActivity extends SherlockActivity implements OnClickListener
 {
     private @Nonnull int[] mImages;
     private @Nonnull int[] mTexts;
@@ -38,7 +38,7 @@ public class RulesFragment extends SherlockActivity implements OnClickListener
 
     public static @Nonnull android.content.Intent createIntent(@Nonnull Context context)
     {
-        Intent intent = new Intent(context, RulesFragment.class);
+        Intent intent = new Intent(context, RulesActivity.class);
         return intent;
     }
 
