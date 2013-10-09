@@ -556,6 +556,7 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    _puzzle.etag = @"";
     NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
     [question.managedObjectContext save:nil];
     [_puzzle synchronize];
