@@ -73,8 +73,7 @@ public class RegisterFragment extends SherlockFragment
     private int RESULT_LOAD_IMAGE = 1;
     private int REQUEST_MAKE_PHOTO = 2;
 
-    public static final @Nonnull
-    String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
+    public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RegisterFragment.class.getName();
 
     private @Nonnull Context mContext;
@@ -82,11 +81,7 @@ public class RegisterFragment extends SherlockFragment
 
     private @Nonnull Button mRegisterDateButton;
     private @Nonnull Button mNavBackButton;
-
-    private @Nonnull FrameLayout mDatePickerFrame;
-    private @Nonnull DatePicker mDatePicker;
-    SimpleDateFormat dateFormat;
-    Date date;
+    private @Nonnull SimpleDateFormat dateFormat;
 
     private @Nonnull ChoiceImageSourceHolder mDrawerChoiceDialog;
     private @Nonnull ImageView mIconImg;
@@ -111,7 +106,6 @@ public class RegisterFragment extends SherlockFragment
     private @Nonnull int curYear;
     private @Nonnull int curMonth;
     private @Nonnull int curDay;
-    private @Nonnull String pattern;
     private @Nonnull String fr;
 
     private @Nonnull UserDataModel mUserDataModel;
@@ -154,7 +148,6 @@ public class RegisterFragment extends SherlockFragment
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
         mIconImg.setOnClickListener(this);
-        pattern = "yyyy-MM-dd"; //iso 8061
         fr = "dd MMMM yyyy";
 
 
@@ -185,23 +178,26 @@ public class RegisterFragment extends SherlockFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
 //            // Получаем картинку из галереи;
-            Uri chosenImageUri = data.getData();
-            Bitmap photo = null;
-            try {
-                photo = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
+                Uri chosenImageUri = data.getData();
+                Bitmap photo = null;
+                try {
+                    photo = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Меняем аватарку на панеле;
+                setImage(photo);
             }
-            // Меняем аватарку на панеле;
-            setImage(photo);
-        }
-        if(requestCode == REQUEST_MAKE_PHOTO && resultCode == Activity.RESULT_OK){
-            // получаем фото с камеры;
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // Меняем аватарку на панеле;
-            setImage(photo);
+            if(requestCode == REQUEST_MAKE_PHOTO && resultCode == Activity.RESULT_OK){
+                // получаем фото с камеры;
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                // Меняем аватарку на панеле;
+                setImage(photo);
+            }
         }
     }
 

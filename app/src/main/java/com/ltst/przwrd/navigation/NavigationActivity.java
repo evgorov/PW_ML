@@ -91,8 +91,8 @@ public class NavigationActivity extends BillingV3Activity
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
-    private final int RESULT_LOAD_IMAGE = 1;
-    private final int REQUEST_MAKE_PHOTO = 2;
+    private final int RESULT_LOAD_IMAGE = 100001;
+    private final int REQUEST_MAKE_PHOTO = 200002;
 
     public final static int REQUEST_LOGIN_VK = 3;
     public final static int REQUEST_LOGIN_FB = 4;
@@ -803,7 +803,7 @@ public class NavigationActivity extends BillingV3Activity
         }
     };
 
-        private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
+    private IListenerVoid mTaskHandlerLoadUserData = new IListenerVoid()
     {
         @Override
         public void handle()
@@ -839,8 +839,17 @@ public class NavigationActivity extends BillingV3Activity
             }
             else
             {
-                mDrawerMenu.clean();
-                selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                if(!(fr instanceof ResetPassFragment)
+                        &&!(fr instanceof ForgetPassFragment)
+                        &&!(fr instanceof AuthorizationFragment)
+                        &&!(fr instanceof LoginFragment)
+                        &&!(fr instanceof RegisterFragment)
+                        )
+                        {
+                            mDrawerMenu.clean();
+                            selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                        }
             }
         }
     };
