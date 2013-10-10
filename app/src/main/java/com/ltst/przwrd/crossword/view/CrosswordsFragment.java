@@ -26,6 +26,7 @@ import com.ltst.przwrd.news.NewsModel;
 import com.ltst.przwrd.score.CoefficientsModel;
 import com.ltst.przwrd.sounds.SoundsWork;
 import com.ltst.przwrd.swipe.ITouchInterface;
+import com.ltst.przwrd.tools.RequestAnswerCodes;
 
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
@@ -46,8 +47,6 @@ public class CrosswordsFragment extends SherlockFragment
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.crossword.mRootView.CrosswordsFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = CrosswordsFragment.class.getName();
-
-    private static final int REQUEST_ANSWER_CROSSWORD_SET_ID = 500;
 
     private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
@@ -117,7 +116,7 @@ public class CrosswordsFragment extends SherlockFragment
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_ANSWER_CROSSWORD_SET_ID: {
+                case RequestAnswerCodes.REQUEST_ANSWER_CROSSWORD_SET_ID: {
                     if (data.hasExtra(OneCrosswordActivity.BF_PUZZLE_SET)) {
                         @Nonnull String puzzleSetServerId = data.getStringExtra(OneCrosswordActivity.BF_PUZZLE_SET);
                         if (puzzleSetServerId != null && puzzleSetServerId != Strings.EMPTY) {
@@ -321,7 +320,7 @@ public class CrosswordsFragment extends SherlockFragment
                 @Nonnull Intent intent = OneCrosswordActivity.
                         createIntent(mContext, puzzleSet, puzzleServerId, mHintsManager.getHintsCount(),
                                 mIFragmentActivity.getVkSwitch(), mIFragmentActivity.getFbSwitch());
-                startActivityForResult(intent, REQUEST_ANSWER_CROSSWORD_SET_ID);
+                startActivityForResult(intent, RequestAnswerCodes.REQUEST_ANSWER_CROSSWORD_SET_ID);
 //            }
 //        });
     }

@@ -20,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +29,6 @@ import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.app.ModelUpdater;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
-import com.ltst.przwrd.crossword.view.CrosswordsFragment;
 import com.ltst.przwrd.login.model.LoadSessionKeyTask;
 import com.ltst.przwrd.login.model.UserData;
 import com.ltst.przwrd.login.model.UserDataModel;
@@ -44,6 +42,7 @@ import com.ltst.przwrd.tools.ChoiceImageSourceHolder;
 import com.ltst.przwrd.tools.ErrorAlertDialog;
 import com.ltst.przwrd.tools.IBitmapAsyncTask;
 import com.ltst.przwrd.tools.BitmapAsyncTask;
+import com.ltst.przwrd.tools.RequestAnswerCodes;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -56,7 +55,6 @@ import org.omich.velo.handlers.IListenerVoid;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -70,9 +68,6 @@ public class RegisterFragment extends SherlockFragment
         IBitmapAsyncTask
 
 {
-    private int RESULT_LOAD_IMAGE = 1;
-    private int REQUEST_MAKE_PHOTO = 2;
-
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = RegisterFragment.class.getName();
 
@@ -180,7 +175,7 @@ public class RegisterFragment extends SherlockFragment
 
         if (resultCode == Activity.RESULT_OK)
         {
-            if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO && resultCode == Activity.RESULT_OK && null != data) {
 //            // Получаем картинку из галереи;
                 Uri chosenImageUri = data.getData();
                 Bitmap photo = null;
@@ -192,7 +187,7 @@ public class RegisterFragment extends SherlockFragment
                 // Меняем аватарку на панеле;
                 setImage(photo);
             }
-            if(requestCode == REQUEST_MAKE_PHOTO && resultCode == Activity.RESULT_OK){
+            if(requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY && resultCode == Activity.RESULT_OK){
                 // получаем фото с камеры;
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Меняем аватарку на панеле;
@@ -330,13 +325,13 @@ public class RegisterFragment extends SherlockFragment
                 mDrawerChoiceDialog.cancel();
                 // Вызываем камеру;
                 Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_MAKE_PHOTO);
+                startActivityForResult(cameraIntent, RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
                 // Вызываем галерею;
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                startActivityForResult(i, RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO);
                 break;
             default:
                 break;

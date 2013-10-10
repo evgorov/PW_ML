@@ -5,13 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +16,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenSource;
@@ -27,22 +23,18 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.WebDialog;
 import com.ltst.przwrd.R;
 import com.ltst.przwrd.app.IBcConnectorOwner;
-import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
-import com.ltst.przwrd.crossword.view.OneCrosswordActivity;
 import com.ltst.przwrd.invitefriends.model.InviteFriendsData;
 import com.ltst.przwrd.invitefriends.model.InviteFriendsDataModel;
-import com.ltst.przwrd.login.model.LoadSessionKeyTask;
-import com.ltst.przwrd.login.model.SocialParser;
 import com.ltst.przwrd.login.view.IInviteFriendsFragment;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
 import com.ltst.przwrd.rest.RestParams;
 import com.ltst.przwrd.sounds.SoundsWork;
+import com.ltst.przwrd.tools.RequestAnswerCodes;
 
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.bcops.client.IBcConnector;
@@ -50,12 +42,6 @@ import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
 import org.omich.velo.lists.ISlowSource;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,8 +72,6 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     private @Nullable ViewGroup mMessageView;
 
     private boolean mDataRequested = false;
-
-    private final int REQUEST_GET_FACEBOOK_TOKEN = 1;
 
     private @Nonnull Session mFbSession;
     private @Nonnull String mIds;
@@ -130,7 +114,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
     @Override
     public void getToken() {
         @Nonnull Intent intent = new Intent(mContext, LoginFacebook.class);
-        startActivityForResult(intent, REQUEST_GET_FACEBOOK_TOKEN);
+        startActivityForResult(intent, RequestAnswerCodes.REQUEST_INVITE_FRIENDS_FACEBOOK);
     }
 
     @Override
@@ -260,7 +244,7 @@ public class InviteFriendsFragment extends SherlockFragment implements View.OnCl
 
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_GET_FACEBOOK_TOKEN: {
+                case RequestAnswerCodes.REQUEST_INVITE_FRIENDS_FACEBOOK: {
                     if (data.hasExtra(LoginFacebook.BF_FACEBOOK_TOKEN)) {
                         if (FLAG_INVITE_ALL)
                             inviteAll();

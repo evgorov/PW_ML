@@ -77,6 +77,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
+import static com.ltst.przwrd.tools.RequestAnswerCodes.*;
 
 public class NavigationActivity extends BillingV3Activity
         implements
@@ -90,12 +91,6 @@ public class NavigationActivity extends BillingV3Activity
         INavigationActivity
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
-
-    private final int RESULT_LOAD_IMAGE = 100001;
-    private final int REQUEST_MAKE_PHOTO = 200002;
-
-    public final static int REQUEST_LOGIN_VK = 3;
-    public final static int REQUEST_LOGIN_FB = 4;
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
     private @Nonnull Context mContext;
@@ -252,7 +247,7 @@ public class NavigationActivity extends BillingV3Activity
         {
             switch (requestCode)
             {
-                case RESULT_LOAD_IMAGE:
+                case REQUEST_NAVIGATION_LOAD_GALARY:
                 {
                     // Получаем картинку из галереи;
                     Uri chosenImageUri = data.getData();
@@ -272,7 +267,7 @@ public class NavigationActivity extends BillingV3Activity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
-                case REQUEST_MAKE_PHOTO:
+                case REQUEST_NAVIGATION_LOAD_FOTO:
                 {
                     // получаем фото с камеры;
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -283,8 +278,8 @@ public class NavigationActivity extends BillingV3Activity
                     mBitmapAsyncTask.execute(photo);
                 }
                 break;
-                case REQUEST_LOGIN_VK:
-                case REQUEST_LOGIN_FB:
+                case REQUEST_NAVIGATION_VKONTAKTE:
+                case REQUEST_NAVIGATION_FACEBOOK:
                 {
                     if(data.hasExtra(SocialLoginActivity.BF_SESSION_KEY))
                     {
@@ -295,16 +290,16 @@ public class NavigationActivity extends BillingV3Activity
                         spref.commit();
 
                         mNeedMerge = true;
-                        mProvider = (requestCode == REQUEST_LOGIN_VK) ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER;
+                        mProvider = (requestCode == REQUEST_NAVIGATION_VKONTAKTE) ? RestParams.VK_PROVIDER : RestParams.FB_PROVIDER;
                     }
                     else
                     {
-                        if(requestCode == REQUEST_LOGIN_VK)
+                        if(requestCode == REQUEST_NAVIGATION_VKONTAKTE)
                         {
                             mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                             mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                         }
-                        else if(requestCode == REQUEST_LOGIN_FB)
+                        else if(requestCode == REQUEST_NAVIGATION_FACEBOOK)
                         {
                             mDrawerMenu.mFacebookSwitcher.setChecked(false);
                             mDrawerMenu.mFacebookSwitcher.setEnabled(true);
@@ -670,13 +665,13 @@ public class NavigationActivity extends BillingV3Activity
                 mDrawerChoiceDialog.cancel();
                 // Вызываем камеру;
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_MAKE_PHOTO);
+                startActivityForResult(cameraIntent, REQUEST_NAVIGATION_LOAD_FOTO);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
                 // Вызываем галерею;
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                startActivityForResult(i, REQUEST_NAVIGATION_LOAD_GALARY);
                 break;
             case R.id.menu_invite_friends_btn:
                 selectNavigationFragmentByClassname(InviteFriendsFragment.FRAGMENT_CLASSNAME);
@@ -994,7 +989,7 @@ public class NavigationActivity extends BillingV3Activity
                     {
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
-                        startActivityForResult(intent, REQUEST_LOGIN_VK);
+                        startActivityForResult(intent, REQUEST_NAVIGATION_VKONTAKTE);
                     }
                     break;
                 case R.id.menu_fb_switcher:
@@ -1002,7 +997,7 @@ public class NavigationActivity extends BillingV3Activity
                     {
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
-                        startActivityForResult(intent, REQUEST_LOGIN_FB);
+                        startActivityForResult(intent, REQUEST_NAVIGATION_FACEBOOK);
                     }
                     break;
                 case R.id.menu_notification_switcher:

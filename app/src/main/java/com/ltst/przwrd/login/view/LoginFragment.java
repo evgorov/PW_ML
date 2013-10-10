@@ -16,14 +16,13 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.ltst.przwrd.app.IBcConnectorOwner;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
-import com.ltst.przwrd.crossword.view.CrosswordsFragment;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
 import com.ltst.przwrd.rest.RestParams;
 import com.ltst.przwrd.sounds.SoundsWork;
+import com.ltst.przwrd.tools.RequestAnswerCodes;
 
 import org.omich.velo.bcops.client.IBcConnector;
-import org.omich.velo.constants.Strings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,8 +31,6 @@ import static android.view.View.OnClickListener;
 
 public class LoginFragment extends SherlockFragment implements OnClickListener
 {
-    public static final int REQUEST_LOGIN_VK = 100;
-    public static final int REQUEST_LOGIN_FB = 101;
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.LoginFragment";
     public static final @Nonnull String FRAGMENT_CLASSNAME = LoginFragment.class.getName();
 
@@ -94,13 +91,13 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
                 //??? facebook
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
-                startActivityForResult(intent, REQUEST_LOGIN_FB);
+                startActivityForResult(intent, RequestAnswerCodes.REQUEST_LOGIN_FACEBOOK);
                 break;
             case R.id.enter_with_vk_btn:
                 //??? ?????????
                 intent = new Intent(mContext, SocialLoginActivity.class);
                 intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
-                startActivityForResult(intent, REQUEST_LOGIN_VK);
+                startActivityForResult(intent, RequestAnswerCodes.REQUEST_LOGIN_VKONTAKTE);
                 break;
             case R.id.enter_to_authorization_btn:
                 mFragmentHolder.selectNavigationFragmentByClassname(AuthorizationFragment.FRAGMENT_CLASSNAME);
@@ -120,8 +117,8 @@ public class LoginFragment extends SherlockFragment implements OnClickListener
         {
             switch (requestCode)
             {
-                case REQUEST_LOGIN_FB:
-                case REQUEST_LOGIN_VK:
+                case RequestAnswerCodes.REQUEST_LOGIN_FACEBOOK:
+                case RequestAnswerCodes.REQUEST_LOGIN_VKONTAKTE:
                 {
                     //успешно авторизовались в facebook или vkontakte;
 
