@@ -556,6 +556,10 @@
         timeLeft = 0;
     }
     [_puzzle setTime_left:[NSNumber numberWithInt:timeLeft]];
+    if (timeLeft > _puzzle.time_given.intValue)
+    {
+        NSLog(@"WARNING: time left is bigger than given time 1");
+    }
     _puzzle.etag = @"";
     NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
     [question.managedObjectContext save:nil];

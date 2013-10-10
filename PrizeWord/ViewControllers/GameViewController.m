@@ -496,6 +496,11 @@ extern NSString * PRODUCTID_HINTS10;
         int gameTime = [GameLogic sharedLogic].gameTime;
         lblTime.text = [NSString stringWithFormat:@"%02d:%02d", gameTime / 60, gameTime % 60];
         gameField.puzzle.time_left = [NSNumber numberWithInt:gameField.puzzle.time_given.intValue - gameTime];
+        if (gameField.puzzle.time_left.intValue > gameField.puzzle.time_given.intValue)
+        {
+            NSLog(@"WARNING: time left is bigger than given time 2");
+        }
+        
     }
     else if (event.type == EVENT_GAME_REQUEST_PAUSE)
     {

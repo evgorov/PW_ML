@@ -67,6 +67,7 @@
     {
         puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
         [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
+        [puzzle setTime_given:time_given];
         [puzzle setTime_left:time_given];
         NSArray * questionsData = [dict objectForKey:@"questions"];
         for (NSDictionary * questionData in questionsData) {
@@ -83,6 +84,10 @@
     {
         puzzle = [puzzles objectAtIndex:0];
         [puzzle setTime_given:time_given];
+        if (puzzle.time_left.intValue > time_given.intValue)
+        {
+            [puzzle setTime_left:time_given];
+        }
     }
     
     id puzzleId = [dict objectForKey:@"id"];
@@ -213,6 +218,10 @@
             else if (solvedTimeLeft != nil && solvedTimeLeft.intValue < self.time_left.intValue)
             {
                 self.time_left = solvedTimeLeft;
+                if (self.time_left.intValue > self.time_given.intValue)
+                {
+                    NSLog(@"WARNING: time left is bigger than given time 3");
+                }
                 wasUpdatedLocal = YES;
             }
             

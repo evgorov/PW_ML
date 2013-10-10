@@ -394,7 +394,8 @@
             }
             [puzzles addObjectsFromArray:localPuzzles];
             NSIndexSet * indexSet = [ids indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                for (PuzzleData * puzzle in localPuzzles) {
+                for (PuzzleData * puzzle in localPuzzles)
+                {
                     if ([puzzle.puzzle_id compare:obj] == NSOrderedSame)
                     {
                         return NO;
