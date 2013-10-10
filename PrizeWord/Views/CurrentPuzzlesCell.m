@@ -57,6 +57,7 @@ NSString * CURRENT_PUZZLES_MONTHS[] = {@"январь", @"февраль", @"м�
     puzzlesTimeLeftCaption.text = [NSString stringWithFormat:@"Ост. %d %@", daysLeft, [NSString declesion:daysLeft oneString:@"день" twoString:@"дня" fiveString:@"дней"]];
     puzzlesTimeLeftCaption.hidden = daysLeft > 5;
     puzzlesTimeLeftBg.hidden = daysLeft > 5;
+    [activityIndicator stopAnimating];
 }
 
 @end

@@ -71,27 +71,27 @@
     if (isFirst && isLast)
     {
         UIImage * baseImage = [UIImage imageNamed:@"frame_border"];
-        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(baseImage.size.height / 2 - 1, baseImage.size.width / 2 - 1, baseImage.size.height / 2 - 1, baseImage.size.width / 2 - 1) resizingMode:UIImageResizingModeTile];
+        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(baseImage.size.height / 2 - 1, baseImage.size.width / 2 - 1, baseImage.size.height / 2 - 1, baseImage.size.width / 2 - 1)];
         sandBackgroundFrame = CGRectInset(self.bounds, [AppDelegate currentDelegate].isIPad ? 18 : 8, [AppDelegate currentDelegate].isIPad ? 22 : 10);
     }
     else if (isFirst)
     {
         UIImage * baseImage = [UIImage imageNamed:@"frame_border_top"];
-        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(baseImage.size.height - 1, baseImage.size.width / 2 - 1, 0, baseImage.size.width / 2 - 1) resizingMode:UIImageResizingModeTile];
+        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(baseImage.size.height - 1, baseImage.size.width / 2 - 1, 0, baseImage.size.width / 2 - 1)];
         sandBackgroundFrame = CGRectInset(self.bounds, [AppDelegate currentDelegate].isIPad ? 18 : 8, [AppDelegate currentDelegate].isIPad ? 11 : 5);
         sandBackgroundFrame.origin.y += [AppDelegate currentDelegate].isIPad ? 11 : 5;
     }
     else if (isLast)
     {
         UIImage * baseImage = [UIImage imageNamed:@"frame_border_bottom"];
-        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, baseImage.size.width / 2 - 1, baseImage.size.height - 1, baseImage.size.width / 2 - 1) resizingMode:UIImageResizingModeTile];
+        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, baseImage.size.width / 2 - 1, baseImage.size.height - 1, baseImage.size.width / 2 - 1)];
         sandBackgroundFrame = CGRectInset(self.bounds, [AppDelegate currentDelegate].isIPad ? 18 : 8, [AppDelegate currentDelegate].isIPad ? 11 : 5);
         sandBackgroundFrame.origin.y -= [AppDelegate currentDelegate].isIPad ? 11 : 5;
     }
     else
     {
         UIImage * baseImage = [UIImage imageNamed:@"frame_border_middle"];
-        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, baseImage.size.width / 2 - 1, 0, baseImage.size.width / 2 - 1) resizingMode:UIImageResizingModeTile];
+        frameView.image = [baseImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, baseImage.size.width / 2 - 1, 0, baseImage.size.width / 2 - 1)];
         sandBackgroundFrame = CGRectInset(self.bounds, [AppDelegate currentDelegate].isIPad ? 18 : 8, 0);
     }
     frameView.frame = self.bounds;

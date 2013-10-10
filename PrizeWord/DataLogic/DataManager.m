@@ -266,6 +266,11 @@
                     for (NSDictionary * setData in setsData)
                     {
                         PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                        if (puzzleSet == nil)
+                        {
+                            NSLog(@"WARNING: puzzle set is nil!");
+                            continue;
+                        }
                         if (puzzleSet.puzzleSetPack != nil)
                         {
                             NSLog(@"pack is not nil");

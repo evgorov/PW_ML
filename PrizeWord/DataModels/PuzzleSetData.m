@@ -89,6 +89,11 @@
         if ([puzzleData isKindOfClass:[NSDictionary class]])
         {
             PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId];
+            if (puzzle == nil)
+            {
+                NSLog(@"WARNING: puzzle is nil!");
+                continue;
+            }
             [puzzleSet addPuzzlesObject:puzzle];
             [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzle.puzzle_id];
         }

@@ -71,6 +71,11 @@
         NSArray * questionsData = [dict objectForKey:@"questions"];
         for (NSDictionary * questionData in questionsData) {
             QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
+            if (question == nil)
+            {
+                NSLog(@"WARNING: question is nil!");
+                continue;
+            }
             [puzzle addQuestionsObject:question];
         }
     }

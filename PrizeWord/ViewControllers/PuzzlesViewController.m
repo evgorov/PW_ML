@@ -68,6 +68,12 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     [super viewDidLoad];
     
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        tableView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
+        tableView.scrollIndicatorInsets = tableView.contentInset;
+    }
+    
     currentPuzzleSetStates = [NSMutableArray new];
     archivePuzzleSets = [NSMutableArray new];
     archivePuzzleSetStates = [NSMutableArray new];
@@ -364,7 +370,15 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }
             return cell;
         }
-        PuzzleSetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell" forIndexPath:indexPath];
+        PuzzleSetCell * cell = nil;
+        if ([tableView respondsToSelector:@selector(dequeueReusableCellWithIdentifier:forIndexPath:)])
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell" forIndexPath:indexPath];
+        }
+        else
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell"];
+        }
         while (currentPuzzleSetStates.count < indexPath.row)
         {
             [currentPuzzleSetStates addObject:[PuzzleSetState new]];
@@ -436,7 +450,15 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         else
         {
-            PuzzleSetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell" forIndexPath:indexPath];
+            PuzzleSetCell * cell = nil;
+            if ([tableView respondsToSelector:@selector(dequeueReusableCellWithIdentifier:forIndexPath:)])
+            {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell" forIndexPath:indexPath];
+            }
+            else
+            {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"puzzleSetCell"];
+            }
             while (archivePuzzleSets.count < indexPath.row)
             {
                 [archivePuzzleSetStates addObject:[PuzzleSetState new]];
