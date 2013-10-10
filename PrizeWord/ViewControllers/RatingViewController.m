@@ -40,6 +40,12 @@ int HEADER_HEIGHT = 24;
     ratingView.clipsToBounds = NO;
     ratingView.delegate = self;
     ratingView.dataSource = self;
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        ratingView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
+        ratingView.scrollIndicatorInsets = ratingView.contentInset;
+    }
+    
     [self.view addSubview:ratingView];
     
     users = [NSMutableArray new];

@@ -34,6 +34,14 @@ static int VERTICAL_SPACE = 23;
     scrollView.bounces = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+    
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        scrollView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
+        scrollView.scrollIndicatorInsets = scrollView.contentInset;
+    }
+    
+    
     [self.view addSubview:scrollView];
     
     contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.frame.size.width, 0)];
