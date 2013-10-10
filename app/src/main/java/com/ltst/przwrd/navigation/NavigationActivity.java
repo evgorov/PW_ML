@@ -122,6 +122,7 @@ public class NavigationActivity extends BillingV3Activity
     private boolean mIsDestroyed = false;
     private boolean mIsTablet = false;
     private boolean mNotificationsEnabled = true;
+    private boolean mPasswordReset = false;
 
     private @Nullable UploadScoreQueueModel mUploadScoreQueueModel;
     private @Nullable HintsModel mHintsModel;
@@ -196,8 +197,6 @@ public class NavigationActivity extends BillingV3Activity
         mDrawerChoiceDialog.mGalleryButton.setOnClickListener(this);
         mDrawerChoiceDialog.mCameraButton.setOnClickListener(this);
 
-        checkLauchingAppByLink();
-
         if (!mIsTablet)
         {
             mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
@@ -225,8 +224,11 @@ public class NavigationActivity extends BillingV3Activity
         SharedPreferencesValues.setNotifications(this, mNotificationsEnabled);
 
         initNavigationDrawerItems();
+        checkLauchingAppByLink();
+
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
+        if(!mPasswordReset)
+            selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
     }
 
     @Override protected void onSaveInstanceState(Bundle outState)
@@ -535,6 +537,7 @@ public class NavigationActivity extends BillingV3Activity
                 selectNavigationFragmentByClassname(ResetPassFragment.FRAGMENT_CLASSNAME);
                 ResetPassFragment fr = (ResetPassFragment) mFragments.get(mCurrentSelectedFragmentPosition);
                 fr.setPasswordToken(passwordToken);
+                mPasswordReset = true;
                 break;
             }
         }
@@ -841,11 +844,11 @@ public class NavigationActivity extends BillingV3Activity
             {
                 Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
                 if(!(fr instanceof ResetPassFragment)
-                        &&!(fr instanceof ForgetPassFragment)
-                        &&!(fr instanceof AuthorizationFragment)
-                        &&!(fr instanceof LoginFragment)
-                        &&!(fr instanceof RegisterFragment)
-                        )
+                        && !(fr instanceof ForgetPassFragment)
+                        && !(fr instanceof AuthorizationFragment)
+                        && !(fr instanceof LoginFragment)
+                        && !(fr instanceof RegisterFragment)
+                        || !mPasswordReset)
                         {
                             mDrawerMenu.clean();
                             selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
