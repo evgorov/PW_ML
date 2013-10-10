@@ -44,7 +44,9 @@
     [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
     
     NSError *error = nil;
+    [managedObjectContext lock];
     NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
+    [managedObjectContext unlock];
     
     NSNumber * time_given = nil;
     id time_givenData = [dict objectForKey:@"time_given"];
@@ -65,7 +67,9 @@
     
     if (puzzles == nil || puzzles.count == 0)
     {
+        [managedObjectContext lock];
         puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
+        [managedObjectContext unlock];
         [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
         [puzzle setTime_given:time_given];
         [puzzle setTime_left:time_given];
@@ -135,7 +139,9 @@
     [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", puzzleId, userId]];
     
     NSError *error = nil;
+    [managedObjectContext lock];
     NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
+    [managedObjectContext unlock];
     
     PuzzleData * puzzleData = nil;
     if (puzzles != nil && puzzles.count > 0)

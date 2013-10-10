@@ -120,7 +120,10 @@
 {
     NSString * question_id = [NSString stringWithFormat:@"%@_%d_%d", puzzle.puzzle_id, [(NSNumber *)[dict objectForKey:@"column"] intValue], [(NSNumber *)[dict objectForKey:@"row"] intValue]];
     
-    QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:[DataContext currentContext]];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    [managedObjectContext lock];
+    QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:managedObjectContext];
+    [managedObjectContext unlock];
     [question setQuestion_id:question_id];
     [question setUser_id:userId];
     NSString * answer = [dict objectForKey:@"answer"];

@@ -465,14 +465,18 @@
         __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
         NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
         NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestTemplateForName:@"NewsFetchRequest"];
+        [managedObjectContext lock];
         NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        [managedObjectContext unlock];
         if (results != nil && results.count > 0)
         {
             news = results.lastObject;
         }
         else
         {
+            [managedObjectContext lock];
             news = [NSEntityDescription insertNewObjectForEntityForName:@"News" inManagedObjectContext:managedObjectContext];
+            [managedObjectContext unlock];
         }
      
         if ([fetchOperation isCancelled])

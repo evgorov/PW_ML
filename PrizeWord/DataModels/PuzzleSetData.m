@@ -38,11 +38,15 @@
     [request setPredicate:[NSPredicate predicateWithFormat:@"(set_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
     
     NSError *error = nil;
+    [managedObjectContext lock];
     NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:&error];
+    [managedObjectContext unlock];
     
     if (puzzleSets == nil || puzzleSets.count == 0)
     {
+        [managedObjectContext lock];
         puzzleSet = (PuzzleSetData *)[NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSet" inManagedObjectContext:managedObjectContext];
+        [managedObjectContext unlock];
     }
     else
     {
@@ -113,7 +117,9 @@
     NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
     NSFetchRequest *request = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetByIdFetchRequest" substitutionVariables:@{@"USER_ID": userId, @"SET_ID": setId}];
     
+    [managedObjectContext lock];
     NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:nil];
+    [managedObjectContext unlock];
     if (puzzleSets == nil || puzzleSets.count == 0)
     {
         return nil;

@@ -69,9 +69,12 @@
     {
         return;
     }
-    NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
     NSError * error = nil;
-    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext lock];
+    NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext unlock];
     
     if (results != nil && results.count != 0)
     {
@@ -119,9 +122,12 @@
     {
         return;
     }
-    NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreUndoneFetchRequest" substitutionVariables:@{@"USER" : user.user_id}];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreUndoneFetchRequest" substitutionVariables:@{@"USER" : user.user_id}];
     NSError * error = nil;
-    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext lock];
+    NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext unlock];
     if (error != nil)
     {
         NSLog(@"error: %@", error.localizedDescription);
@@ -141,9 +147,12 @@
     {
         return;
     }
-    NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"HintsUndoneFetchRequest" substitutionVariables:@{ @"USER" : user.user_id }];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsUndoneFetchRequest" substitutionVariables:@{ @"USER" : user.user_id }];
     NSError * error = nil;
-    NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext lock];
+    NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [managedObjectContext unlock];
     if (error != nil)
     {
         NSLog(@"error: %@", error.localizedDescription);
@@ -170,9 +179,12 @@
         scoreQueriesInProgress--;
         NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         
-        NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+        NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
-        NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
+        [managedObjectContext lock];
+        NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        [managedObjectContext unlock];
         
         if (error == nil && results != nil && results.count != 0)
         {
@@ -216,9 +228,13 @@
     hintsQueriesInProgress++;
     APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         hintsQueriesInProgress--;
-        NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+        
+        NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
-        NSArray * results = [[DataContext currentContext] executeFetchRequest:fetchRequest error:&error];
+        [managedObjectContext lock];
+        NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        [managedObjectContext unlock];
         
         if (error == nil && results != nil && results.count != 0)
         {
