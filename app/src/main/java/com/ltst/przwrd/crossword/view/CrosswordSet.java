@@ -20,6 +20,7 @@ import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.manadges.IManadges;
 import com.ltst.przwrd.manadges.IManageHolder;
 import com.ltst.przwrd.manadges.ManageHolder;
+import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.sounds.SoundsWork;
 import com.ltst.przwrd.tools.AnimationTools;
 import com.ltst.przwrd.tools.CustomProgressBar;
@@ -234,6 +235,7 @@ public class CrosswordSet {
 
             if(!flgOneRegister)
             {
+                NavigationActivity.debug("Registers SetId="+mCrosswordSetData.mServerId);
                 mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
                 mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
                 flgOneRegister = true;

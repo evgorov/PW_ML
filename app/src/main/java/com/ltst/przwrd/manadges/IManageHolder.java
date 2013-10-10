@@ -24,6 +24,7 @@ public interface IManageHolder {
     void reloadInventory(@Nonnull IListenerVoid handler);
     void restoreProducts(@Nonnull IListenerVoid handler);
     List<PurchasePrizeWord> getRestoreProducts();
+    void unregisterHandlers();
 }
 
 

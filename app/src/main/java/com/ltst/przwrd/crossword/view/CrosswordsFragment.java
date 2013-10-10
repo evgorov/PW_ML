@@ -21,7 +21,6 @@ import com.ltst.przwrd.crossword.model.PuzzleSetModel;
 import com.ltst.przwrd.manadges.IManadges;
 import com.ltst.przwrd.navigation.IFragmentsHolderActivity;
 import com.ltst.przwrd.navigation.INavigationDrawerHolder;
-import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.news.INewsModel;
 import com.ltst.przwrd.news.NewsModel;
 import com.ltst.przwrd.score.CoefficientsModel;
@@ -185,6 +184,7 @@ public class CrosswordsFragment extends SherlockFragment
 
     @Override
     public void onDestroy() {
+        mIManadges.getManadgeHolder().unregisterHandlers();
         super.onDestroy();
     }
 
@@ -194,7 +194,6 @@ public class CrosswordsFragment extends SherlockFragment
         mPuzzleSetModel.close();
         mNewsModel.close();
         mHintsModel.close();
-        NavigationActivity.debug("stop");
         super.onStop();
     }
 
@@ -205,20 +204,16 @@ public class CrosswordsFragment extends SherlockFragment
 
     public void skipProgressBar()
     {
-        NavigationActivity.debug("skip");
         mProgressBar.setVisibility(View.GONE);
         if (!flgOneUpload) {
-            NavigationActivity.debug("request inventory");
             mIManadges.getManadgeHolder().reloadInventory(new IListenerVoid() {
                 @Override
                 public void handle() {
-                    NavigationActivity.debug("start sync");
                     mProgressbarSync.setVisibility(View.VISIBLE);
                     mPuzzleSetModel.updateSync(handlerSync);
                 }
             });
         } else {
-            NavigationActivity.debug("start sync");
             mProgressbarSync.setVisibility(View.VISIBLE);
             mPuzzleSetModel.updateSync(handlerSync);
         }
@@ -310,7 +305,6 @@ public class CrosswordsFragment extends SherlockFragment
     private IListenerVoid handlerSync = new IListenerVoid() {
         @Override
         public void handle() {
-            NavigationActivity.debug("end sync!");
             createCrosswordPanel();
             mProgressbarSync.setVisibility(View.GONE);
         }

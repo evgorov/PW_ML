@@ -790,6 +790,7 @@ public class NavigationActivity extends BillingV3Activity
                 @Nonnull PurchasePrizeWord product = mRestoreproducts.get(0);
                 mRestoreproducts.remove(0);
                 mPuzzleSetModel.buyCrosswordSet(product.googleId, product.receipt_data, product.signature, mTaskHandlerRestoreProducts2);
+                getManadgeHolder().productBuyOnServer(product.googleId);
             }
             else
             {

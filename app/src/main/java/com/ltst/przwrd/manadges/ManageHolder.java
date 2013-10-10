@@ -131,6 +131,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     }
 
     @Override
+    public void unregisterHandlers() {
+        mHandlerReloadPriceList.clear();
+        mHandlerBuyProductEventList.clear();
+    }
+
+    @Override
     public void buyProduct(@Nonnull String sku)
     {
         // Start popup window. Покупка;
