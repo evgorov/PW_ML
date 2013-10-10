@@ -177,7 +177,7 @@
     return [[self.puzzles allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         PuzzleData * puzzle1 = obj1;
         PuzzleData * puzzle2 = obj2;
-        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id options:NSLiteralSearch|NSCaseInsensitiveSearch];
+        return [puzzle1.puzzle_id compare:puzzle2.puzzle_id];
     }];
 }
 
