@@ -274,9 +274,9 @@ public class CrosswordsFragmentHolder
 
         if (!mListCrosswordSetMonth.containsKey(key))
         {
-            mListCrosswordSetMonth.put(key, crosswordSetMonth);
             if(crosswordSet.getCrosswordSetType() == CrosswordSet.CrosswordSetType.CURRENT)
             {
+                mListCrosswordSetMonth.put(key, crosswordSetMonth);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutGold);
                 mCrosswordPanelCurrent.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver);
@@ -287,6 +287,7 @@ public class CrosswordsFragmentHolder
             {
                 if(data.mBought)
                 {
+                    mListCrosswordSetMonth.put(key, crosswordSetMonth);
                     mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutBrilliant);
                     mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutGold);
                     mCrosswordPanelArchive.mCrosswordsContainerLL.addView(crosswordSetMonth.mLinearLayoutSilver);
