@@ -203,6 +203,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
                     for (NSManagedObjectID * objectID in objectIDs)
                     {
                         PuzzleSetData * puzzleSet = (PuzzleSetData *)[[DataContext currentContext] objectWithID:objectID];
+                        if (puzzleSet == nil)
+                        {
+                            NSLog(@"WARNING: cannot transfer object between threads");
+                            continue;
+                        }
                         if (!puzzleSet.bought.boolValue)
                         {
                             continue;
