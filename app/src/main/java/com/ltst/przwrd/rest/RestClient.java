@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -168,47 +169,101 @@ public class RestClient implements IRestClient {
                                                                  @Nonnull String password,
                                                                  @Nullable String birthdate,
                                                                  @Nullable String city,
-                                                                 @Nullable byte[] userpic) {
-        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put(RestParams.EMAIL, email);
-        urlVariables.put(RestParams.NAME, name);
-        urlVariables.put(RestParams.SURNAME, surname);
-        urlVariables.put(RestParams.PASSWORD, password);
-        @Nonnull String url = RestParams.URL_SIGN_UP;
-        if (birthdate != null) {
-            urlVariables.put(RestParams.BIRTHDATE, birthdate);
-            url += RestParams.addParam(RestParams.BIRTHDATE, false);
-        }
-        if (city != null) {
-            urlVariables.put(RestParams.CITY, city);
-            url += RestParams.addParam(RestParams.CITY, false);
-        }
-        if (userpic != null) {
-            urlVariables.put(RestParams.USERPIC, userpic);
-            url += RestParams.addParam(RestParams.USERPIC, false);
-        }
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
-        ResponseEntity<RestUserData.RestUserDataHolder> holder = null;
-        try {
-            holder = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
-        } catch (HttpClientErrorException e) {
-            Log.e(e.getMessage());
-        } finally {
-            if (holder == null) {
-                HttpStatus status = HttpStatus.valueOf(403);
-                RestUserData.RestUserDataHolder ret = new RestUserData.RestUserDataHolder();
-                ret.setStatusCode(status);
-                return ret;
-            }
-        }
+                                                                 @Nullable byte[] userpic)
+    {
+//        HashMap<String, Object> urlVariables = new HashMap<String, Object>();
+//        urlVariables.put(RestParams.EMAIL, email);
+//        urlVariables.put(RestParams.NAME, name);
+//        urlVariables.put(RestParams.SURNAME, surname);
+//        urlVariables.put(RestParams.PASSWORD, password);
+//        @Nonnull String url = RestParams.URL_SIGN_UP_WITH_PARAMS;
+//        if (birthdate != null) {
+//            urlVariables.put(RestParams.BIRTHDATE, birthdate);
+//            url += RestParams.addParam(RestParams.BIRTHDATE, false);
+//        }
+//        if (city != null) {
+//            urlVariables.put(RestParams.CITY, city);
+//            url += RestParams.addParam(RestParams.CITY, false);
+//        }
+//        if (userpic != null) {
+//            urlVariables.put(RestParams.USERPIC, userpic);
+//            url += RestParams.addParam(RestParams.USERPIC, false);
+//        }
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.setAccept(Collections.singletonList(MediaType.parseMediaType("application/json")));
+//        HttpEntity<Object> requestEntity = new HttpEntity<Object>(httpHeaders);
+//        ResponseEntity<RestUserData.RestUserDataHolder> holder = null;
+//        try {
+//            holder = restTemplate.exchange(url, HttpMethod.POST, requestEntity, RestUserData.RestUserDataHolder.class, urlVariables);
+//        } catch (HttpClientErrorException e) {
+//            Log.e(e.getMessage());
+//        } finally {
+//            if (holder == null) {
+//                HttpStatus status = HttpStatus.valueOf(403);
+//                RestUserData.RestUserDataHolder ret = new RestUserData.RestUserDataHolder();
+//                ret.setStatusCode(status);
+//                return ret;
+//            }
+//        }
+//
+//        if (holder != null) {
+//            holder.getBody().setStatusCode(holder.getStatusCode());
+//            return holder.getBody();
+//        } else
+//            return null;
 
-        if (holder != null) {
-            holder.getBody().setStatusCode(holder.getStatusCode());
-            return holder.getBody();
-        } else
-            return null;
+        RestUserData.RestUserDataHolder data = null;
+        HttpStatus status = null;
+        try
+        {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(RestParams.URL_SIGN_UP);
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart(RestParams.EMAIL, new StringBody(email));
+            reqEntity.addPart(RestParams.NAME, new StringBody(name));
+            reqEntity.addPart(RestParams.SURNAME, new StringBody(surname));
+            reqEntity.addPart(RestParams.PASSWORD, new StringBody(password));
+            if (birthdate != null)
+            {
+                reqEntity.addPart(RestParams.BIRTHDATE, new StringBody(birthdate));
+            }
+            if (city != null)
+            {
+                reqEntity.addPart(RestParams.CITY, new StringBody(city));
+            }
+            if (userpic != null)
+            {
+                reqEntity.addPart(RestParams.USERPIC, new ByteArrayBody(userpic, "userpic.png"));
+            }
+
+            httpPost.setEntity(reqEntity);
+            HttpResponse response = httpClient.execute(httpPost);
+            status = HttpStatus.valueOf(response.getStatusLine().getStatusCode());
+
+            String content = EntityUtils.toString(response.getEntity());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonFactory jsonFactory = new JsonFactory();
+            try {
+                JsonParser jsonParser = jsonFactory.createJsonParser(content);
+                data = objectMapper.readValue(jsonParser, RestUserData.RestUserDataHolder.class);
+            } catch (IOException e) {
+                Log.e(e.getMessage());
+            }
+
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            Log.w(e.getMessage());
+        }
+        catch (IOException e)
+        {
+            Log.w(e.getMessage());
+        }
+        if (data != null)
+        {
+            data.setStatusCode(status);
+        }
+        return data;
     }
 
     @Nullable

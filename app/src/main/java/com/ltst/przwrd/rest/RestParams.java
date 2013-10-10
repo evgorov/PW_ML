@@ -64,7 +64,8 @@ public class RestParams
     public static final @Nonnull String URL_API = "http://api.prize-word.com";
     public static final @Nonnull String URL_PROVIDER_LOGIN = URL_API + "/%s/login";
     public static final @Nonnull String URL_PROVIDER_AUTORITHE = URL_API + "/%s/authorize";
-    public static final @Nonnull String URL_SIGN_UP = URL_API + "/signup"
+    public static final @Nonnull String URL_SIGN_UP = URL_API + "/signup";
+    public static final @Nonnull String URL_SIGN_UP_WITH_PARAMS = URL_SIGN_UP
             + addParam(EMAIL, true)
             + addParam(NAME, false)
             + addParam(SURNAME, false)
