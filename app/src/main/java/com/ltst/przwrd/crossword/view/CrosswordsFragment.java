@@ -384,6 +384,11 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
+    @Override
+    public void setHintCount(int hints) {
+        mHintsManager.setHintsCount(hints);
+    }
+
     public void updateCurrentSet() {
 //        mProgressBar.setVisibility(View.VISIBLE);
         mPuzzleSetModel.updateTotalDataByDb(new IListenerVoid() {

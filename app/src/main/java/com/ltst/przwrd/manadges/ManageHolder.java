@@ -10,6 +10,7 @@ import com.android.billing.IabHelper;
 import com.android.billing.IabResult;
 import com.android.billing.Inventory;
 import com.android.billing.Purchase;
+import com.ltst.przwrd.app.DeviceDetails;
 import com.ltst.przwrd.navigation.INavigationActivity;
 import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.tools.UUIDTools;
@@ -45,6 +46,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     final static public @Nonnull String BF_SIGNATURE    = "ManageHolder.signature";
 
     private final @Nonnull String APP_GOOGLE_PLAY_ID = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmBgW7Hq94XrHcX0dpOfMrIykHyjNfDPSH3SbkKyYq5rFVdbqvvRiB0YOPaQWzJwwuUAo2QvDDddnL3LzVBo07SqwAtIXgnJ4EAzDCng5QX+bEOMjelOUcC0DkRt9hGvlPmIwFLVWfQTKgemT9iyO4LckkGBdjGGPmUXd7jlZv4EB7+4vnc5CunzcKOjsnRmGQyajK/kCmA3cD3Xruig6sUl5pejOTi55Peshgl0w3khgshCEdP+vVSHNuqYta9JwUttIIidXNO1ztJ/hctwy5CbdWYYv/sn3Q0IrTSturG8SeC7IEP8oCgpbtIhjXZshrIiMUOjI3eZ1W/C8fkbyawIDAQAB";
+    private final @Nonnull String DEVICE_ID;
 
     private @Nonnull IabHelper mHelper;
     private @Nonnull Activity mActivity;
@@ -70,6 +72,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         mHandlerBuyProductEventList = new ArrayList<IListener<Bundle>>();
         mSkuContainer = new ArrayList<String>();
         REQUERT_CODE_COUNTER = 0;
+        DEVICE_ID = DeviceDetails.getHashDevice(mContext);
     }
 
     @Override
@@ -133,15 +136,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
         if(sku != Strings.EMPTY){
             @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-            @Nonnull String token = (product.clientId==Strings.EMPTY || product.clientId==null)
-                    ? UUIDTools.generateStringUUID()
-                    : product.clientId;
-            product.clientId = token;
+            product.clientId = DEVICE_ID;
 
             try
             {
                 mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, token);
+                mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, DEVICE_ID);
                 mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
             catch (Exception e)
@@ -228,10 +228,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     for(Purchase purchase : purchases)
                     {
                         @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(purchase.getSku());
-                        @Nonnull String token = (product.clientId==Strings.EMPTY || product.clientId==null)
-                                ? UUIDTools.generateStringUUID()
-                                : product.clientId;
-                        product.clientId = token;
+                        product.clientId = DEVICE_ID;
                         product.receipt_data = purchase.getOriginalJson();
                         product.signature = purchase.getSignature();
                         product.serverPurchase = true;
@@ -337,8 +334,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     {
                         @Nullable PurchasePrizeWord purchase = mIPurchaseSetModel.getPurchase(googleId);
                         purchase.price = inventory.getSkuDetails(googleId).getPrice();
-                        purchase.clientId = (purchase.clientId == null || purchase.clientId == Strings.EMPTY)
-                                ? UUIDTools.generateStringUUID() : purchase.clientId;
+                        purchase.clientId = DEVICE_ID;
                         purchases.add(purchase);
                     }
                 }
@@ -358,7 +354,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             int resultCode = result.getResponse();
             if (result.isFailure())
             {
-                parseResultCode(result,purchase);
+                parseResultCode(result, purchase);
                 return;
             }
 

@@ -10,45 +10,40 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import com.crashlytics.android.Crashlytics;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ltst.przwrd.R;
+import com.ltst.przwrd.app.DeviceDetails;
 import com.ltst.przwrd.app.SharedPreferencesHelper;
 import com.ltst.przwrd.app.SharedPreferencesValues;
 import com.ltst.przwrd.crossword.model.HintsModel;
 import com.ltst.przwrd.crossword.model.IPuzzleSetModel;
 import com.ltst.przwrd.crossword.model.PuzzleSetModel;
-import com.ltst.przwrd.crossword.view.ICrosswordFragment;
-import com.ltst.przwrd.login.model.IUserDataModel;
-import com.ltst.przwrd.login.model.UserProvider;
-import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
-import com.ltst.przwrd.login.view.RulesActivity;
-import com.ltst.przwrd.login.view.IAutorization;
-import com.ltst.przwrd.login.model.UserData;
-import com.ltst.przwrd.login.view.AuthorizationFragment;
 import com.ltst.przwrd.crossword.view.CrosswordsFragment;
+import com.ltst.przwrd.crossword.view.ICrosswordFragment;
+import com.ltst.przwrd.invitefriends.view.InviteFriendsFragment;
+import com.ltst.przwrd.login.model.IUserDataModel;
+import com.ltst.przwrd.login.model.UserData;
+import com.ltst.przwrd.login.model.UserDataModel;
+import com.ltst.przwrd.login.model.UserProvider;
+import com.ltst.przwrd.login.view.AuthorizationFragment;
 import com.ltst.przwrd.login.view.ForgetPassFragment;
+import com.ltst.przwrd.login.view.IAutorization;
 import com.ltst.przwrd.login.view.LoginFragment;
 import com.ltst.przwrd.login.view.RegisterFragment;
 import com.ltst.przwrd.login.view.ResetPassFragment;
-import com.ltst.przwrd.login.model.UserDataModel;
+import com.ltst.przwrd.login.view.RulesActivity;
 import com.ltst.przwrd.login.view.SocialLoginActivity;
 import com.ltst.przwrd.manadges.BillingV3Activity;
 import com.ltst.przwrd.manadges.PurchasePrizeWord;
@@ -70,6 +65,13 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.omich.velo.bcops.client.IBcConnector;
 import org.omich.velo.constants.Strings;
 import org.omich.velo.handlers.IListenerVoid;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -131,7 +133,6 @@ public class NavigationActivity extends BillingV3Activity
 
     private @Nonnull List<PurchasePrizeWord> mRestoreproducts;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -178,7 +179,8 @@ public class NavigationActivity extends BillingV3Activity
                     SoundsWork.sidebarMusic(mContext);
                 }
             });
-        } else
+        }
+        else
         {
             mTabletMenuViewGroup = (ViewGroup) findViewById(R.id.navigation_slider);
         }
@@ -654,7 +656,7 @@ public class NavigationActivity extends BillingV3Activity
                 break;
             case R.id.header_listview_logout_btn:
                 SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(NavigationActivity.this);
-                spref.putString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
+                spref.erase(SharedPreferencesValues.SP_SESSION_KEY);
                 spref.commit();
                 SharedPreferencesValues.setFacebookToken(NavigationActivity.this, Strings.EMPTY);
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
@@ -789,6 +791,11 @@ public class NavigationActivity extends BillingV3Activity
             UserData data = mUserDataModel.getUserData();
             if (data != null)
             {
+                Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                if (fr instanceof ICrosswordFragment)
+                {
+                    ((ICrosswordFragment) fr).setHintCount(data.hints);
+                }
                 mDrawerMenu.mNickname.setText(data.name != Strings.EMPTY ? data.name + " " + data.surname : data.surname);
                 mDrawerMenu.mHightRecord.setText(String.valueOf(data.highScore));
                 mDrawerMenu.mScore.setText(String.valueOf(data.monthScore));

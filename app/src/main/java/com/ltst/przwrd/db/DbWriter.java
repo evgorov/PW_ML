@@ -534,16 +534,18 @@ public class DbWriter extends  DbReader implements IDbWriter
             @Override
             public void handle()
             {
-                mDb.delete(TNAME_PUZZLE_SETS, null, null);
-                mDb.delete(TNAME_PUZZLES, null, null);
-                mDb.delete(TNAME_PUZZLE_QUESTIONS, null, null);
-                mDb.delete(TNAME_IMAGES, null, null);
-                mDb.delete(TNAME_PROVIDERS, null, null);
-                mDb.delete(TNAME_USERS, null, null);
-                mDb.delete(TNAME_COEFFICIENTS, null, null);
-                mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
-                mDb.delete(TNAME_PURCHASES, null, null);
-                mDb.delete(TNAME_NEWS, null, null);
+                int count =0;
+                count = mDb.delete(TNAME_PUZZLE_SETS, null, null);
+                count = mDb.delete(TNAME_PUZZLES, null, null);
+                count = mDb.delete(TNAME_PUZZLE_QUESTIONS, null, null);
+                count = mDb.delete(TNAME_IMAGES, null, null);
+                count = mDb.delete(TNAME_PROVIDERS, null, null);
+                count = mDb.delete(TNAME_USERS, null, null);
+                count = mDb.delete(TNAME_COEFFICIENTS, null, null);
+                count = mDb.delete(TNAME_POST_SCORE_QUEUE, null, null);
+                count = mDb.delete(TNAME_PURCHASES, null, null);
+                count = mDb.delete(TNAME_NEWS, null, null);
+                count = 0;
             }
         });
     }
