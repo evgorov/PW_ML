@@ -583,7 +583,7 @@ public class PuzzleResourcesAdapter
                 int letterState = state.getLetterState();
                 if(letterState == PuzzleTileState.LetterState.LETTER_CORRECT)
                 {
-                    if(mCurrentInputBuffer.length() >= 1 || !mCurrentAnswerIterator.isFirst())
+                    if(mCurrentInputBuffer.length() >= 1 && !mCurrentAnswerIterator.isFirst())
                     {
                         last = mCurrentAnswerIterator.last();
                         mCurrentInputBuffer.deleteCharAt(mCurrentInputBuffer.length() - 1);
