@@ -63,7 +63,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         }
         else
         {
-            return [AppDelegate currentDelegate].isIPad ? (97 + 22 + (112 * 1.2) * ceil(puzzleSet.puzzles.count / 5.0)) : (88 + 19 + (94 * 1.2) * ceil(puzzleSet.puzzles.count / 4.0));
+            return floorf([AppDelegate currentDelegate].isIPad ? (97 + 22 + (112 * 1.2) * ceil(puzzleSet.puzzles.count / 5.0)) : (88 + 19 + (94 * 1.2) * ceil(puzzleSet.puzzles.count / 4.0)));
         }
     }
     else
