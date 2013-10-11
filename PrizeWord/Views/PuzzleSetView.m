@@ -33,6 +33,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 
 @implementation PuzzleSetView
 
+@synthesize imgDelimeter = _imgDelimeter;
 @synthesize imgBar = _imgBar;
 @synthesize imgStar = _imgStar;
 @synthesize imgScoreBg = _imgScoreBg;
@@ -142,6 +143,11 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
             self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, lastBadge.frame.origin.y + lastBadge.frame.size.height * 1.2));
             _fullSize = self.frame.size;
         }
+        else
+        {
+            self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 105));
+            _fullSize = self.frame.size;
+        }
     }
     return self;
 }
@@ -203,7 +209,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
         imgMonthBg.image = image;
         imgMonthBg.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x, imgMonthBg.frame.origin.y, image.size.width + [monthText sizeWithFont:lblMonth.font].width - [defaultMonthText sizeWithFont:lblMonth.font].width, imgMonthBg.frame.size.height));
         lblMonth.text = monthText;
-        imgDelimeter.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, imgDelimeter.frame.origin.y, imgDelimeter.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), imgDelimeter.frame.size.height));
+        _imgDelimeter.frame = CGRectIntegral(CGRectMake(imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width, _imgDelimeter.frame.origin.y, _imgDelimeter.frame.size.width - (imgMonthBg.frame.origin.x + imgMonthBg.frame.size.width), _imgDelimeter.frame.size.height));
     }
 }
 
@@ -393,7 +399,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
     else
     {
-        self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, 303, 105));
+        self.frame = CGRectIntegral(CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 105));
     }
 }
 

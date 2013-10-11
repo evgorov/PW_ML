@@ -36,15 +36,21 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     self.title = [NSString stringWithFormat:@"%d в %@", [GlobalData globalData].loggedInUser.month_score, MONTHS_IN[[GlobalData globalData].currentMonth - 1]];
 
     int yOffset = 0;
+    int idx = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
         if (puzzleSet.type.intValue == PUZZLESET_FREE)
         {
             continue;
         }
         PuzzleSetView * puzzleSetView = [PuzzleSetView puzzleSetCompleteViewWithData:puzzleSet];
-        puzzleSetView.frame = CGRectMake(0, yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
+        if (idx == 0)
+        {
+            puzzleSetView.imgDelimeter.hidden = YES;
+        }
+        puzzleSetView.frame = CGRectMake(floorf((puzzlesView.frame.size.width - puzzleSetView.frame.size.width) / 2), yOffset, puzzleSetView.frame.size.width, puzzleSetView.frame.size.height);
         yOffset += puzzleSetView.frame.size.height;
         [puzzlesView addSubview:puzzleSetView];
+        ++idx;
     }
     puzzlesView.frame = CGRectMake(0, 0, puzzlesView.frame.size.width, yOffset);
     

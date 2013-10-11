@@ -13,11 +13,11 @@
 
 @interface PuzzleSetView : UIView
 {
-    IBOutlet UIImageView *imgDelimeter;
     IBOutlet UIImageView *imgMonthBg;
     IBOutlet UILabel *lblMonth;
 }
 
+@property (strong, nonatomic) IBOutlet UIImageView *imgDelimeter;
 @property (strong, nonatomic) IBOutlet UIImageView *imgBar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgStar;
 @property (strong, nonatomic) IBOutlet UIImageView *imgScoreBg;
