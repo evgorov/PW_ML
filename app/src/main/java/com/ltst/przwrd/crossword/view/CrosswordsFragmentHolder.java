@@ -322,4 +322,10 @@ public class CrosswordsFragmentHolder
         }
     }
 
+    public void cleanPanels()
+    {
+        mCrosswordPanelCurrent.mCrosswordsContainerLL.removeAllViews();
+        mCrosswordPanelArchive.mCrosswordsContainerLL.removeAllViews();
+    }
+
 }

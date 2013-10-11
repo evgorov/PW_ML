@@ -208,8 +208,6 @@ public class NavigationActivity extends BillingV3Activity
         mDrawerMenu.mMyCrossword.setOnClickListener(this);
         mDrawerMenu.mShowRulesBtn.setOnClickListener(this);
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
-        mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
-        mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
@@ -360,6 +358,8 @@ public class NavigationActivity extends BillingV3Activity
         }
 
         reloadUserData();
+        mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
+        mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         super.onResume();
     }
@@ -671,6 +671,15 @@ public class NavigationActivity extends BillingV3Activity
                 SharedPreferencesValues.setFacebookToken(NavigationActivity.this, Strings.EMPTY);
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 mUserDataModel.clearDataBase(null);
+                @Nullable Fragment fr = null;
+                for(int i=0; i<mFragments.size(); i++)
+                {
+                    fr = mFragments.get(i);
+                    if (fr instanceof ICrosswordsFragment)
+                    {
+                        ((ICrosswordsFragment) fr).cleanViews();
+                    }
+                }
                 mVkSwitch = false;
                 mFbSwitch = false;
                 break;

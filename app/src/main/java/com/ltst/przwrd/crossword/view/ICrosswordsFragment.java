@@ -19,4 +19,5 @@ public interface ICrosswordsFragment {
     HintsModel getHintsModel();
     IPuzzleSetModel getPuzzleSetModel();
     void waitLoader(boolean wait);
+    void cleanViews();
 }

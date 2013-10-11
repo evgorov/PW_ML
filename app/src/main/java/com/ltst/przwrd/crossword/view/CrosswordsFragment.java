@@ -426,6 +426,12 @@ public class CrosswordsFragment extends SherlockFragment
         }
     }
 
+    @Override
+    public void cleanViews()
+    {
+        mCrosswordsFragmentHolder.cleanPanels();
+    }
+
     private final @Nonnull IListenerVoid mRefreshHandler = new IListenerVoid() {
         @Override
         public void handle() {
