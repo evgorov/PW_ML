@@ -671,6 +671,8 @@ public class NavigationActivity extends BillingV3Activity
                 SharedPreferencesValues.setFacebookToken(NavigationActivity.this, Strings.EMPTY);
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 mUserDataModel.clearDataBase(null);
+                mVkSwitch = false;
+                mFbSwitch = false;
                 break;
             case R.id.header_listview_photo_img:
                 // Вызываем окно выбора источника получения фото;
@@ -1001,7 +1003,7 @@ public class NavigationActivity extends BillingV3Activity
             {
                 case R.id.menu_vk_switcher:
                     NavigationActivity.debug("VK CHECK CHANGE, state = "+state);
-                    if (!mVkSwitch)
+                    if (state && !mVkSwitch)
                     {
                         NavigationActivity.debug("YES");
                         intent = new Intent(this, SocialLoginActivity.class);
@@ -1011,7 +1013,7 @@ public class NavigationActivity extends BillingV3Activity
                     break;
                 case R.id.menu_fb_switcher:
                     NavigationActivity.debug("FB CHECK CHANGE, state = "+state);
-                    if (!mFbSwitch)
+                    if (state && !mFbSwitch)
                     {
                         NavigationActivity.debug("YES");
                         intent = new Intent(this, SocialLoginActivity.class);
