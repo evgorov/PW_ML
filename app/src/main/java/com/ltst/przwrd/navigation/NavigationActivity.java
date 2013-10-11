@@ -985,7 +985,12 @@ public class NavigationActivity extends BillingV3Activity
                 {
                     mDrawerMenu.mFacebookSwitcher.setEnabled(false);
                 }
-            }
+
+                Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
+                if (fr instanceof ICrosswordsFragment)
+                {
+                    ((ICrosswordsFragment) fr).updateAllSets();
+                }            }
             else
             {
                 if (provider == RestParams.VK_PROVIDER)
