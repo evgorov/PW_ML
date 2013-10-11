@@ -138,14 +138,18 @@ public class PuzzleFieldDrawer
         {
             return;
         }
+        Log.i("TO SCALE: " + scaleWidth + " " + scaleHeight);
+        Log.i("NOT SCALED: " + mPuzzleRect.width() + " " + mPuzzleRect.height());
 
         int scaledWidth = (int)(mUnscaledPuzzleRect.width() * scaleWidth);
         int scaledHeight = (int)(mUnscaledPuzzleRect.height() * scaleHeight);
-        mDrawingOffsetX = scaledWidth/2 - mUnscaledPuzzleRect.width()/2;
-        mDrawingOffsetY = scaledHeight/2 - mUnscaledPuzzleRect.height()/2;
+        mDrawingOffsetX = 2 * (scaledWidth/2 - mUnscaledPuzzleRect.width()/2);
+        mDrawingOffsetY = 2 * (scaledHeight/2 - mUnscaledPuzzleRect.height()/2);
 
         mPuzzleRect.right = mUnscaledPuzzleRect.right + mDrawingOffsetX * 2;
         mPuzzleRect.bottom = mUnscaledPuzzleRect.bottom + mDrawingOffsetY * 2;
+
+        Log.i("SCALED: " + mPuzzleRect.width() + " " + mPuzzleRect.height());
     }
 
     public void disableScaling()
@@ -267,25 +271,41 @@ public class PuzzleFieldDrawer
 
         int halfWidth = viewRect.width()/2;
         int halfHeight = viewRect.height()/2;
+        if(viewRect.width() < mUnscaledPuzzleRect.width())
+        {
+            if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+            {
+                p.x = halfWidth + mDrawingOffsetX;
+                offBorder = true;
+            }
+            if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+            {
+                p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
+                offBorder = true;
+            }
+        }
+        else
+        {
+            p.x = mPuzzleRect.width()/2;
+            offBorder = true;
+        }
 
-        if(p.x - halfWidth < mPuzzleRect.left + mDrawingOffsetX)
+        if(viewRect.height() < mUnscaledPuzzleRect.height())
         {
-            p.x = halfWidth + mDrawingOffsetX;
-            offBorder = true;
+            if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
+            {
+                p.y = halfHeight + mDrawingOffsetY;
+                offBorder = true;
+            }
+            if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
+            {
+                p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
+                offBorder = true;
+            }
         }
-        if(p.x + halfWidth > mPuzzleRect.right - mDrawingOffsetX)
+        else
         {
-            p.x = mPuzzleRect.right - halfWidth - mDrawingOffsetX;
-            offBorder = true;
-        }
-        if(p.y - halfHeight < mPuzzleRect.top + mDrawingOffsetY)
-        {
-            p.y = halfHeight + mDrawingOffsetY;
-            offBorder = true;
-        }
-        if(p.y + halfHeight > mPuzzleRect.bottom - mDrawingOffsetY)
-        {
-            p.y = mPuzzleRect.bottom - halfHeight - mDrawingOffsetY;
+            p.y = mPuzzleRect.height()/2;
             offBorder = true;
         }
 

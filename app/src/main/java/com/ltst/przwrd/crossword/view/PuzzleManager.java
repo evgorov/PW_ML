@@ -30,6 +30,7 @@ public class PuzzleManager
     public static final @Nonnull String BF_FOCUS_PUZZLE_POINT = "PuzzleManager.focusPuzzlePoint";
     public static final @Nonnull String BF_FOCUS_POINT = "PuzzleManager.focusPoint";
     public static final @Nonnull String BF_VIEW_RECT = "PuzzleManager.viewRect";
+    public static final float MIN_SCALE_RATIO = 1.2f;
 
     private volatile @Nullable Point mFocusViewPoint;
     private @Nullable PointF mFocusPuzzlePoint;
@@ -290,7 +291,8 @@ public class PuzzleManager
         float scaleWidth = (float)mPuzzleViewRect.width()/(float)mFieldDrawer.getWidth();
         float scaleHeight = (float)mPuzzleViewRect.height()/(float)mFieldDrawer.getHeight();
         MIN_SCALE = Math.min(scaleHeight, scaleWidth);
-        mFieldDrawer.enableScaling(1/scaleHeight, 1/scaleWidth);
+        mFieldDrawer.enableScaling(Math.max(1/scaleHeight, MIN_SCALE_RATIO),
+                Math.max(1 / scaleWidth, MIN_SCALE_RATIO));
 
         mScaledViewRect = new Rect(0, 0,
                 mFieldDrawer.getActualWidth(),
@@ -331,7 +333,8 @@ public class PuzzleManager
         {
             return false;
         }
-        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
+        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect :
+                mScaledViewRect);
     }
 
     private void configureMatrix()
