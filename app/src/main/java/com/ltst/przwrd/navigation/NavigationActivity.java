@@ -852,16 +852,21 @@ public class NavigationActivity extends BillingV3Activity
             else
             {
                 Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
-                if(!(fr instanceof ResetPassFragment)
-                        && !(fr instanceof ForgetPassFragment)
-                        && !(fr instanceof AuthorizationFragment)
-                        && !(fr instanceof LoginFragment)
-                        && !(fr instanceof RegisterFragment)
-                        || !mPasswordReset)
-                        {
-                            mDrawerMenu.clean();
-                            selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
-                        }
+                if(
+                        (fr instanceof ResetPassFragment && !mPasswordReset)
+                                ||
+                                (
+                                !(fr instanceof ResetPassFragment)
+                                && !(fr instanceof ForgetPassFragment)
+                                && !(fr instanceof AuthorizationFragment)
+                                && !(fr instanceof LoginFragment)
+                                && !(fr instanceof RegisterFragment)
+                                )
+                        )
+                {
+                    mDrawerMenu.clean();
+                    selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
+                }
             }
         }
     };
