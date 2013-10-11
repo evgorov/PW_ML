@@ -138,14 +138,18 @@ public class PuzzleFieldDrawer
         {
             return;
         }
+        Log.i("TO SCALE: " + scaleWidth + " " + scaleHeight);
+        Log.i("NOT SCALED: " + mPuzzleRect.width() + " " + mPuzzleRect.height());
 
         int scaledWidth = (int)(mUnscaledPuzzleRect.width() * scaleWidth);
         int scaledHeight = (int)(mUnscaledPuzzleRect.height() * scaleHeight);
-        mDrawingOffsetX = scaledWidth/2 - mUnscaledPuzzleRect.width()/2;
-        mDrawingOffsetY = scaledHeight/2 - mUnscaledPuzzleRect.height()/2;
+        mDrawingOffsetX = 2 * (scaledWidth/2 - mUnscaledPuzzleRect.width()/2);
+        mDrawingOffsetY = 2 * (scaledHeight/2 - mUnscaledPuzzleRect.height()/2);
 
         mPuzzleRect.right = mUnscaledPuzzleRect.right + mDrawingOffsetX * 2;
         mPuzzleRect.bottom = mUnscaledPuzzleRect.bottom + mDrawingOffsetY * 2;
+
+        Log.i("SCALED: " + mPuzzleRect.width() + " " + mPuzzleRect.height());
     }
 
     public void disableScaling()
