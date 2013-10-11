@@ -532,16 +532,24 @@ public class OneCrosswordActivity extends BillingV3Activity
         mStopPlayFlag = !show;
     }
 
-    private void showFinalDialog(boolean show) {
-        if (show) {
-            mStopPlayFlag = false;
-            mFinalScreen.setVisibility(View.VISIBLE);
-            mAnimationSlideInTopForFinal.reset();
-            mFinalAlert.clearAnimation();
-            mFinalAlert.startAnimation(mAnimationSlideInTopForFinal);
-        } else {
-            mFinalScreen.setVisibility(View.GONE);
-        }
+    private void showFinalDialog(final boolean show)
+    {
+        this.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (show) {
+                    mStopPlayFlag = false;
+                    mFinalScreen.setVisibility(View.VISIBLE);
+                    mAnimationSlideInTopForFinal.reset();
+                    mFinalAlert.clearAnimation();
+                    mFinalAlert.startAnimation(mAnimationSlideInTopForFinal);
+                } else {
+                    mFinalScreen.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void useHint() {
