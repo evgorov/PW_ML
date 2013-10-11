@@ -333,7 +333,8 @@ public class PuzzleManager
         {
             return false;
         }
-        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect : mScaledViewRect);
+        return mFieldDrawer.checkFocusPoint(mFocusViewPoint, mScaled ? mPuzzleViewRect :
+                mScaledViewRect);
     }
 
     private void configureMatrix()
