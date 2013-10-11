@@ -93,6 +93,8 @@ public class NavigationActivity extends BillingV3Activity
     public static final @Nonnull String LOG_TAG = "prizeword";
 
     private final static @Nonnull String CURENT_POSITION = "currentPosition";
+    private final static @Nonnull String STATE_CHECK_VKONTAKE = "stateCheckVkontakte";
+    private final static @Nonnull String STATE_CHECK_FACEBOOK = "stateCheckFacebook";
     private @Nonnull Context mContext;
     private @Nonnull IBcConnector mBcConnector;
     private @Nonnull IPuzzleSetModel mPuzzleSetModel;
@@ -112,8 +114,8 @@ public class NavigationActivity extends BillingV3Activity
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
     private @Nonnull String mPositionText;
     private @Nonnull String mScoreText;
-    private boolean mVkSwitch;
-    private boolean mFbSwitch;
+    private boolean mVkSwitch = false;
+    private boolean mFbSwitch = false;
     private boolean mIsDestroyed = false;
     private boolean mIsTablet = false;
     private boolean mNotificationsEnabled = true;
@@ -208,7 +210,6 @@ public class NavigationActivity extends BillingV3Activity
         mDrawerMenu.mLogoutBtn.setOnClickListener(this);
         mDrawerMenu.mVkontakteSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mFacebookSwitcher.setOnCheckedChangeListener(this);
-        mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         mDrawerMenu.mInviteFriendsBtn.setOnClickListener(this);
         mDrawerMenu.mRatingBtn.setOnClickListener(this);
         mDrawerMenu.mScoreBtn.setOnClickListener(this);
@@ -229,11 +230,19 @@ public class NavigationActivity extends BillingV3Activity
     @Override protected void onSaveInstanceState(Bundle outState)
     {
         outState.putInt(CURENT_POSITION, mCurrentSelectedFragmentPosition);
+        outState.putBoolean(STATE_CHECK_VKONTAKE, mVkSwitch);
+        outState.putBoolean(STATE_CHECK_FACEBOOK, mFbSwitch);
         super.onSaveInstanceState(outState);
     }
 
     @Override protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
+        if (savedInstanceState != null)
+        {
+            mVkSwitch = savedInstanceState.getBoolean(STATE_CHECK_VKONTAKE);
+            mFbSwitch = savedInstanceState.getBoolean(STATE_CHECK_FACEBOOK);
+        }
+
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null)
             mCurrentSelectedFragmentPosition = savedInstanceState.getInt(CURENT_POSITION);
@@ -298,11 +307,13 @@ public class NavigationActivity extends BillingV3Activity
                     {
                         if(requestCode == REQUEST_NAVIGATION_VKONTAKTE)
                         {
+                            mVkSwitch = true;
                             mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                             mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                         }
                         else if(requestCode == REQUEST_NAVIGATION_FACEBOOK)
                         {
+                            mFbSwitch = true;
                             mDrawerMenu.mFacebookSwitcher.setChecked(false);
                             mDrawerMenu.mFacebookSwitcher.setEnabled(true);
                         }
@@ -349,6 +360,7 @@ public class NavigationActivity extends BillingV3Activity
         }
 
         reloadUserData();
+        mDrawerMenu.mNotificationSwitcher.setOnCheckedChangeListener(this);
         super.onResume();
     }
 
@@ -915,7 +927,8 @@ public class NavigationActivity extends BillingV3Activity
                     mVkSwitch = true;
                     mDrawerMenu.mVkontakteSwitcher.setEnabled(false);
                     mDrawerMenu.mVkontakteSwitcher.setChecked(true);
-                } else
+                }
+                else
                 {
                     mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                     mDrawerMenu.mVkontakteSwitcher.setChecked(false);
@@ -925,7 +938,8 @@ public class NavigationActivity extends BillingV3Activity
                     mFbSwitch = true;
                     mDrawerMenu.mFacebookSwitcher.setEnabled(false);
                     mDrawerMenu.mFacebookSwitcher.setChecked(true);
-                } else
+                }
+                else
                 {
                     mDrawerMenu.mFacebookSwitcher.setEnabled(true);
                     mDrawerMenu.mFacebookSwitcher.setChecked(false);
@@ -983,56 +997,45 @@ public class NavigationActivity extends BillingV3Activity
     {
 
         @Nonnull Intent intent;
-        if (state)
-        {
             switch (compoundButton.getId())
             {
                 case R.id.menu_vk_switcher:
-                    if (mDrawerMenu.mVkontakteSwitcher.isEnabled())
+                    NavigationActivity.debug("VK CHECK CHANGE, state = "+state);
+                    if (!mVkSwitch)
                     {
+                        NavigationActivity.debug("YES");
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
                         startActivityForResult(intent, REQUEST_NAVIGATION_VKONTAKTE);
                     }
                     break;
                 case R.id.menu_fb_switcher:
-                    if (mDrawerMenu.mFacebookSwitcher.isEnabled())
+                    NavigationActivity.debug("FB CHECK CHANGE, state = "+state);
+                    if (!mFbSwitch)
                     {
+                        NavigationActivity.debug("YES");
                         intent = new Intent(this, SocialLoginActivity.class);
                         intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
                         startActivityForResult(intent, REQUEST_NAVIGATION_FACEBOOK);
                     }
                     break;
                 case R.id.menu_notification_switcher:
-                    SharedPreferencesValues.setNotifications(this, !mNotificationsEnabled);
-                    mNotificationsEnabled = !mNotificationsEnabled;
-                    if(mNotificationsEnabled)
-                    {
-                        String sessionKey = SharedPreferencesValues.getSessionKey(this);
-                        mGcmHelper.onAuthorized(sessionKey);
-                    }
-                    else
-                    {
-                        mGcmHelper.unregister();
-                    }
+                    NavigationActivity.debug("PUSH CHECK CHANGE, state = "+state);
+                        SharedPreferencesValues.setNotifications(this, !mNotificationsEnabled);
+                        mNotificationsEnabled = !mNotificationsEnabled;
+                        if(mNotificationsEnabled)
+                        {
+                            String sessionKey = SharedPreferencesValues.getSessionKey(this);
+                            mGcmHelper.onAuthorized(sessionKey);
+                        }
+                        else
+                        {
+                            mGcmHelper.unregister();
+                        }
                     break;
                 default:
                     break;
             }
-        } else
-        {
-            switch (compoundButton.getId())
-            {
-                case R.id.menu_vk_switcher:
-                    break;
-                case R.id.menu_fb_switcher:
-                    break;
-                case R.id.menu_notification_switcher:
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     @Override
