@@ -34,8 +34,6 @@
 #import "HintsCell.h"
 #import "StoreManager.h"
 
-NSString * PRODUCTID_PREFIX2 = @"ru.aipmedia.prizeword.";
-
 // default in IB
 const int TAG_STATIC_VIEWS = 0;
 const int TAG_DYNAMIC_VIEWS = 101;

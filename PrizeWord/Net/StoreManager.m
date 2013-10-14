@@ -18,10 +18,10 @@
 #import "PuzzleData.h"
 #import "UserDataManager.h"
 
-NSString * PRODUCTID_PREFIX = @"ru.aipmedia.prizeword.";
-NSString * PRODUCTID_HINTS10 = @"ru.aipmedia.prizeword.hints10";
-NSString * PRODUCTID_HINTS20 = @"ru.aipmedia.prizeword.hints20";
-NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
+NSString * PRODUCTID_PREFIX = @"com.prizeword.";
+NSString * PRODUCTID_HINTS10 = @"com.prizeword.hints10";
+NSString * PRODUCTID_HINTS20 = @"com.prizeword.hints20";
+NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
 
 @interface SKProductsRequestDelegateWithBlock : NSObject<SKProductsRequestDelegate>
 {
@@ -205,15 +205,15 @@ NSString * PRODUCTID_HINTS30 = @"ru.aipmedia.prizeword.hints30";
         {
             NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
             
-            if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints10"] == NSOrderedSame)
+            if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
             {
                 [[UserDataManager sharedManager] addHints:10];
             }
-            else if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints20"] == NSOrderedSame)
+            else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
             {
                 [[UserDataManager sharedManager] addHints:20];
             }
-            else if ([paymentTransaction.payment.productIdentifier compare:@"ru.aipmedia.prizeword.hints30"] == NSOrderedSame)
+            else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
             {
                 [[UserDataManager sharedManager] addHints:30];
             }

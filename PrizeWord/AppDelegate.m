@@ -25,11 +25,8 @@
 #import "SocialNetworks.h"
 #import "DataContext.h"
 #import <Crashlytics/Crashlytics.h>
-
-#warning change FacebookDisplayName before release
-#warning change FacebookAppID before release
-#warning change URL scheme before release
-#warning change Bundle ID before release
+#import <Tapjoy/Tapjoy.h>
+#import <FlurrySDK/Flurry.h>
 
 @implementation AppDelegate
 
@@ -69,6 +66,10 @@ static NSRecursiveLock * dbLock = nil;
 {
     _isIPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
     [Crashlytics startWithAPIKey:@"41fbbeb2af9ef97717a85b18418a3cb2055ebcb9"];
+    
+    [Tapjoy requestTapjoyConnect:@"b77b17c3-ccd3-4aba-979d-5307edce0a8b" secretKey:@"ZspEG1Io8dB6ETzFNnbc"];
+    
+    [Flurry startSession:@""];
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

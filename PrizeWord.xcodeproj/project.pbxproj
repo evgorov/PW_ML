@@ -31,6 +31,7 @@
 		6B6DE1B618033B4B00D3DF52 /* CurrentPuzzlesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B518033B4B00D3DF52 /* CurrentPuzzlesCell.m */; };
 		6B6DE1B818033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */; };
 		6B6DE1BB1803AF9000D3DF52 /* PuzzleSetPackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */; };
+		6B852000180C0D5E002354B0 /* Tapjoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B851FFF180C0D5E002354B0 /* Tapjoy.framework */; };
 		6B9227C1180043A7004E1505 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C0180043A7004E1505 /* DataManager.m */; };
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
@@ -670,6 +671,7 @@
 		6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "CurrentPuzzlesCell~ipad.xib"; path = "Views/CurrentPuzzlesCell~ipad.xib"; sourceTree = "<group>"; };
 		6B6DE1B91803AF9000D3DF52 /* PuzzleSetPackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetPackData.h; path = PrizeWord/DataModels/PuzzleSetPackData.h; sourceTree = "<group>"; };
 		6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetPackData.m; path = PrizeWord/DataModels/PuzzleSetPackData.m; sourceTree = "<group>"; };
+		6B851FFF180C0D5E002354B0 /* Tapjoy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Tapjoy.framework; path = "third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework/Tapjoy.framework"; sourceTree = "<group>"; };
 		6B9227BC17FEA676004E1505 /* PrizeWord 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PrizeWord 2.xcdatamodel"; sourceTree = "<group>"; };
 		6B9227BF180043A7004E1505 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = DataLogic/DataManager.h; sourceTree = "<group>"; };
 		6B9227C0180043A7004E1505 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = DataLogic/DataManager.m; sourceTree = "<group>"; };
@@ -1357,6 +1359,7 @@
 				F2C52D5116D0EB8600871649 /* StoreKit.framework in Frameworks */,
 				F235D0A116BEC1510066664F /* MobileCoreServices.framework in Frameworks */,
 				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
+				6B852000180C0D5E002354B0 /* Tapjoy.framework in Frameworks */,
 				F250913316B739BB0045621E /* Social.framework in Frameworks */,
 				F250913116B739B20045621E /* Accounts.framework in Frameworks */,
 				6BD165F1180575C500F140AD /* Crashlytics.framework in Frameworks */,
@@ -2192,6 +2195,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B851FFF180C0D5E002354B0 /* Tapjoy.framework */,
 				6BD165F0180575C500F140AD /* Crashlytics.framework */,
 				6B9227C81800534F004E1505 /* SystemConfiguration.framework */,
 				6B3CC7991771FBEC003D57B6 /* Security.framework */,
@@ -2348,6 +2352,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0460;
+				TargetAttributes = {
+					F2D626F8165DF80900EF6E8A = {
+						DevelopmentTeam = 5E4RMNZBZG;
+					};
+				};
 			};
 			buildConfigurationList = F2D626F3165DF80800EF6E8A /* Build configuration list for PBXProject "PrizeWord" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3115,14 +3124,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 446EDF17F6BF42DA89FC1924 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/third-party\\\"",
+					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
 					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
 					/Work/Projects/PrizeWord/source/PrizeWord,
+					"/Work/Projects/PrizeWord/source/PrizeWord/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -3143,14 +3153,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 446EDF17F6BF42DA89FC1924 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/third-party\\\"",
+					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
 					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
 					/Work/Projects/PrizeWord/source/PrizeWord,
+					"/Work/Projects/PrizeWord/source/PrizeWord/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
