@@ -1,4 +1,5 @@
 #encoding: utf-8
+
 require 'time'
 require 'ext/hash'
 require 'sinatra/base'
@@ -151,7 +152,7 @@ module Middleware
       if puzzle_set['type'] != 'free' && self.class.settings.environment != :test
         if params['receipt_data'] || params['receipt-data']
           receipt_data = params['receipt_data'] || params['receipt-data']
-          ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id, "ru.aipmedia.prizeword.#{params['id']}")
+          ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id, "com.prizeword.#{params['id']}")
         else
           AndroidReceiptVerifier.verify!(ANDROID_PUBLIC_KEY, params['android_reciept'].gsub(/\\/,''), params['android_signature'])
         end
