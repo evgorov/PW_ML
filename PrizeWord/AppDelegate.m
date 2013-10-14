@@ -69,7 +69,7 @@ static NSRecursiveLock * dbLock = nil;
     
     [Tapjoy requestTapjoyConnect:@"b77b17c3-ccd3-4aba-979d-5307edce0a8b" secretKey:@"ZspEG1Io8dB6ETzFNnbc"];
     
-    [Flurry startSession:@""];
+//    [Flurry startSession:@""];
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
