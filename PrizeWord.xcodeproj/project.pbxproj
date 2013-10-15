@@ -31,8 +31,9 @@
 		6B6DE1B618033B4B00D3DF52 /* CurrentPuzzlesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B518033B4B00D3DF52 /* CurrentPuzzlesCell.m */; };
 		6B6DE1B818033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */; };
 		6B6DE1BB1803AF9000D3DF52 /* PuzzleSetPackData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */; };
-		6B852000180C0D5E002354B0 /* Tapjoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B851FFF180C0D5E002354B0 /* Tapjoy.framework */; };
 		6B852002180C3851002354B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B852001180C3851002354B0 /* Images.xcassets */; };
+		6B8E4D93180D27C900CD1AC5 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6B8E4D91180D27C900CD1AC5 /* TapjoyResources.bundle */; };
+		6B8E4D94180D27C900CD1AC5 /* Tapjoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B8E4D92180D27C900CD1AC5 /* Tapjoy.framework */; };
 		6B9227C1180043A7004E1505 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C0180043A7004E1505 /* DataManager.m */; };
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
@@ -667,8 +668,9 @@
 		6B6DE1B718033B6300D3DF52 /* CurrentPuzzlesCell~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "CurrentPuzzlesCell~ipad.xib"; path = "Views/CurrentPuzzlesCell~ipad.xib"; sourceTree = "<group>"; };
 		6B6DE1B91803AF9000D3DF52 /* PuzzleSetPackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetPackData.h; path = PrizeWord/DataModels/PuzzleSetPackData.h; sourceTree = "<group>"; };
 		6B6DE1BA1803AF9000D3DF52 /* PuzzleSetPackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetPackData.m; path = PrizeWord/DataModels/PuzzleSetPackData.m; sourceTree = "<group>"; };
-		6B851FFF180C0D5E002354B0 /* Tapjoy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Tapjoy.framework; path = "third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework/Tapjoy.framework"; sourceTree = "<group>"; };
 		6B852001180C3851002354B0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6B8E4D91180D27C900CD1AC5 /* TapjoyResources.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TapjoyResources.bundle; sourceTree = "<group>"; };
+		6B8E4D92180D27C900CD1AC5 /* Tapjoy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Tapjoy.framework; sourceTree = "<group>"; };
 		6B9227BC17FEA676004E1505 /* PrizeWord 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PrizeWord 2.xcdatamodel"; sourceTree = "<group>"; };
 		6B9227BF180043A7004E1505 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = DataLogic/DataManager.h; sourceTree = "<group>"; };
 		6B9227C0180043A7004E1505 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = DataLogic/DataManager.m; sourceTree = "<group>"; };
@@ -1347,6 +1349,7 @@
 				6BB98679180C3A9200FA371C /* CoreLocation.framework in Frameworks */,
 				6BB98677180C3A7700FA371C /* MediaPlayer.framework in Frameworks */,
 				6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */,
+				6B8E4D94180D27C900CD1AC5 /* Tapjoy.framework in Frameworks */,
 				6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */,
 				6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */,
 				F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */,
@@ -1357,7 +1360,6 @@
 				F2C52D5116D0EB8600871649 /* StoreKit.framework in Frameworks */,
 				F235D0A116BEC1510066664F /* MobileCoreServices.framework in Frameworks */,
 				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
-				6B852000180C0D5E002354B0 /* Tapjoy.framework in Frameworks */,
 				F250913316B739BB0045621E /* Social.framework in Frameworks */,
 				F250913116B739B20045621E /* Accounts.framework in Frameworks */,
 				6BD165F1180575C500F140AD /* Crashlytics.framework in Frameworks */,
@@ -1374,6 +1376,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B8E4D8F180D27C900CD1AC5 /* Tapjoy.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				6B8E4D90180D27C900CD1AC5 /* Resources */,
+				6B8E4D92180D27C900CD1AC5 /* Tapjoy.framework */,
+			);
+			name = Tapjoy.embeddedframework;
+			path = "third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework";
+			sourceTree = "<group>";
+		};
+		6B8E4D90180D27C900CD1AC5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6B8E4D91180D27C900CD1AC5 /* TapjoyResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		6B9227BE18004374004E1505 /* DataLogic */ = {
 			isa = PBXGroup;
 			children = (
@@ -2182,13 +2202,13 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B8E4D8F180D27C900CD1AC5 /* Tapjoy.embeddedframework */,
 				6BB98680180C3AE600FA371C /* EventKit.framework */,
 				6BB9867E180C3AD700FA371C /* MessageUI.framework */,
 				6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */,
 				6BB9867A180C3AA100FA371C /* CoreMotion.framework */,
 				6BB98678180C3A9200FA371C /* CoreLocation.framework */,
 				6BB98676180C3A7700FA371C /* MediaPlayer.framework */,
-				6B851FFF180C0D5E002354B0 /* Tapjoy.framework */,
 				6BD165F0180575C500F140AD /* Crashlytics.framework */,
 				6B9227C81800534F004E1505 /* SystemConfiguration.framework */,
 				6B3CC7991771FBEC003D57B6 /* Security.framework */,
@@ -2593,6 +2613,7 @@
 				F286E3F71681745200FF5E83 /* puzzles_set_ag2@2x.png in Resources */,
 				F286E3F81681745200FF5E83 /* puzzles_set_fr@2x.png in Resources */,
 				F286E3F91681745200FF5E83 /* puzzles_set_ag@2x.png in Resources */,
+				6B8E4D93180D27C900CD1AC5 /* TapjoyResources.bundle in Resources */,
 				F286E3FA1681745200FF5E83 /* puzzles_set_au@2x.png in Resources */,
 				F286E3FB1681745200FF5E83 /* puzzles_set_br@2x.png in Resources */,
 				F286E3FC1681745200FF5E83 /* puzzles_set_progressbar@2x.png in Resources */,

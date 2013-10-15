@@ -169,6 +169,11 @@ extern NSString * PRODUCTID_HINTS10;
     BOOL musicMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"music-mute"];
     [pauseSwtSound setOn:!soundMute animated:animated];
     [pauseSwtMusic setOn:!musicMute animated:animated];
+    
+    if (!musicMute && [AppDelegate currentDelegate].backgroundMusicPlayer != nil)
+    {
+        [[AppDelegate currentDelegate].backgroundMusicPlayer play];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -198,6 +203,8 @@ extern NSString * PRODUCTID_HINTS10;
     btnHint = nil;
     playPauseItem = nil;
     hintButtonItem = nil;
+
+    [[AppDelegate currentDelegate].backgroundMusicPlayer pause];
 }
 
 -(void)orientationChanged:(UIDeviceOrientation)orientation
@@ -309,6 +316,7 @@ extern NSString * PRODUCTID_HINTS10;
 {
     BOOL mute = !pauseSwtMusic.isOn;
     [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"music-mute"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     if (mute)
     {
         [[AppDelegate currentDelegate].backgroundMusicPlayer pause];
@@ -323,6 +331,7 @@ extern NSString * PRODUCTID_HINTS10;
 {
     BOOL mute = !pauseSwtSound.isOn;
     [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"sound-mute"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [[FISoundEngine sharedEngine] setMuted:mute];
 }
 
