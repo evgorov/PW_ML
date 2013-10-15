@@ -127,19 +127,10 @@ static NSRecursiveLock * dbLock = nil;
     }
     
     // initialize background music
-    BOOL musicMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"music-mute"];
     NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"background_music" ofType:@"mp3"];
     NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
     _backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:nil];
     _backgroundMusicPlayer.numberOfLoops = -1; //infinite
-    
-    if (!musicMute && _backgroundMusicPlayer != nil)
-    {
-        if ([_backgroundMusicPlayer prepareToPlay])
-        {
-            [_backgroundMusicPlayer play];
-        }
-    }
     
     NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
     if (url != nil && [url.scheme compare:@"prizeword" options:NSCaseInsensitiveSearch])
