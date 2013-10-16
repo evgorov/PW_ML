@@ -63,9 +63,9 @@ import javax.annotation.Nullable;
 import static android.app.DatePickerDialog.OnDateSetListener;
 
 public class RegisterFragment extends SherlockFragment
-        implements INavigationBackPress,
-        View.OnClickListener,
-        IBitmapAsyncTask
+    implements INavigationBackPress,
+    View.OnClickListener,
+    IBitmapAsyncTask
 
 {
     public static final @Nonnull String FRAGMENT_ID = "com.ltst.prizeword.login.view.RegisterFragment";
@@ -116,9 +116,9 @@ public class RegisterFragment extends SherlockFragment
         mAuthorization = (IAutorization) activity;
         mIReloadUserData = (IReloadUserData) activity;
         mBcConnector = ((IBcConnectorOwner) activity).getBcConnector();
-        mDrawerHolder = (INavigationDrawerHolder)activity;
+        mDrawerHolder = (INavigationDrawerHolder) activity;
         mDrawerHolder.lockDrawerClosed();
-        mUserDataModel = new UserDataModel(mContext,mBcConnector);
+        mUserDataModel = new UserDataModel(mContext, mBcConnector);
     }
 
 
@@ -155,39 +155,45 @@ public class RegisterFragment extends SherlockFragment
 
         mEmailLabel = (TextView) v.findViewById(R.id.register_label_email);
         mPassLabel = (TextView) v.findViewById(R.id.register_label_pass);
-        mRetryPassLabel= (TextView) v.findViewById(R.id.register_label_retry_pass);
+        mRetryPassLabel = (TextView) v.findViewById(R.id.register_label_retry_pass);
 
-        Locale ruLocale = new Locale("ru","RU");
+        Locale ruLocale = new Locale("ru", "RU");
         Locale.setDefault(ruLocale);
         cal = Calendar.getInstance();
         curDay = cal.get(Calendar.DAY_OF_MONTH);
         curMonth = cal.get(Calendar.MONTH);
-        curYear = (cal.get(Calendar.YEAR)-23);
-        cal.set(curYear,curMonth,curDay);
+        curYear = (cal.get(Calendar.YEAR) - 23);
+        cal.set(curYear, curMonth, curDay);
         dateFormat = new SimpleDateFormat(fr);
         mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
         return v;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK)
         {
-            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO && resultCode == Activity.RESULT_OK && null != data) {
+            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO && resultCode == Activity.RESULT_OK && null != data)
+            {
 //            // Получаем картинку из галереи;
                 Uri chosenImageUri = data.getData();
                 Bitmap photo = null;
-                try {
+                try
+                {
                     photo = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
                 // Меняем аватарку на панеле;
                 setImage(photo);
             }
-            if(requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY && resultCode == Activity.RESULT_OK){
+            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY && resultCode == Activity.RESULT_OK)
+            {
                 // получаем фото с камеры;
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 // Меняем аватарку на панеле;
@@ -206,35 +212,44 @@ public class RegisterFragment extends SherlockFragment
 
         @Nonnull final String city = mCityInput.getText().toString();
 
-        if(!name.equals(Strings.EMPTY) && !surname.equals(Strings.EMPTY) && !email.equals(Strings.EMPTY)
-                && password.equals(passwordConfirm) && !password.equals(Strings.EMPTY))
+        if (!name.equals(Strings.EMPTY) && !surname.equals(Strings.EMPTY) && !email.equals(Strings.EMPTY)
+            && !password.equals(Strings.EMPTY) && !passwordConfirm.equals(Strings.EMPTY))
         {
-            validateRegData(Color.WHITE);
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-            SignUpExecutor updater = new SignUpExecutor()
+            if (password.equals(passwordConfirm))
             {
-                @Nonnull
-                @Override
-                protected Intent createIntent()
-                {
-                    return LoadSessionKeyTask.createSignUpIntent(email, name, surname, password, null, null, null);
-                }
-            };
+                validateRegData(Color.WHITE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-            updater.update(new IListenerVoid()
+                SignUpExecutor updater = new SignUpExecutor()
+                {
+                    @Nonnull
+                    @Override
+                    protected Intent createIntent()
+                    {
+                        return LoadSessionKeyTask.createSignUpIntent(email, name, surname, password, null, null, null);
+                    }
+                };
+
+                updater.update(new IListenerVoid()
+                {
+                    @Override
+                    public void handle()
+                    {
+
+                    }
+                });
+            }
+            else
             {
-                @Override
-                public void handle()
-                {
-
-                }
-            });
+                validateRegData(Color.RED);
+                ErrorAlertDialog.showDialog(mContext, R.string.register_screen_error_pass_msg);
+            }
         }
-        else{
+        else
+        {
             validateRegData(Color.RED);
-            ErrorAlertDialog.showDialog(mContext, R.string.register_screen_error_msg);
+            ErrorAlertDialog.showDialog(mContext, R.string.register_screen_error_empty_msg);
         }
 
     }
@@ -245,48 +260,106 @@ public class RegisterFragment extends SherlockFragment
         mFragmentHolder.selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
     }
 
-    protected void showDatePickerDialog(){
-        DatePickerDialog dp = new DatePickerDialog(mContext,myCallBack,curYear,curMonth,curDay);
+    protected void showDatePickerDialog()
+    {
+        DatePickerDialog dp = new DatePickerDialog(mContext, myCallBack, curYear, curMonth, curDay);
 
         dp.setTitle(R.string.register_screen_date_pick_dialog_title);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB){
+        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB)
+        {
             cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-10);
+            cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 10);
             dp.getDatePicker().setMaxDate(cal.getTimeInMillis());
             dp.getDatePicker().setCalendarViewShown(false);
         }
         dp.show();
     }
+
     OnDateSetListener myCallBack = new OnDateSetListener()
     {
         @Override public void onDateSet(DatePicker datePicker, int Year, int Month, int Day)
         {
             curDay = Day;
-            curMonth=Month;
-            curYear= Year;
+            curMonth = Month;
+            curYear = Year;
             Calendar cl = Calendar.getInstance();
-            cl.set(Year,Month,Day);
+            cl.set(Year, Month, Day);
             mRegisterDateButton.setText(dateFormat.format(cl.getTime()));
         }
     };
 
 
+    protected void validateRegData(int color)
+    {
+        if (color == Color.RED)
+        {
+            mNameInput.setHintTextColor(Color.WHITE);
+            mSurnameInput.setHintTextColor(Color.WHITE);
+            mEmailLabel.setTextColor(Color.WHITE);
+            mPassLabel.setTextColor(Color.WHITE);
+            mRetryPassLabel.setTextColor(Color.WHITE);
 
-    protected void validateRegData(int color){
-        mNameInput.setHintTextColor(color);
-        mSurnameInput.setHintTextColor(color);
-        mEmailLabel.setTextColor(color);
-        mPassLabel.setTextColor(color);
-        mRetryPassLabel.setTextColor(color);
-        if(color==Color.RED){
-            mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
-            mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
-            mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
-            mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2_error);
-            mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+            if (mNameInput.getText().toString().equals(Strings.EMPTY))
+            {
+                mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+                mNameInput.setHintTextColor(color);
+            }
+            else
+            {
+                mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+                mNameInput.setHintTextColor(Color.WHITE);
+            }
+
+            if (mSurnameInput.getText().toString().equals(Strings.EMPTY))
+            {
+                mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+                mSurnameInput.setHintTextColor(color);
+            }
+            else
+            {
+                mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+                mSurnameInput.setHintTextColor(Color.WHITE);
+            }
+
+            if (mEmailInput.getText().toString().equals(Strings.EMPTY))
+            {
+                mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top_error);
+                mEmailLabel.setTextColor(color);
+            }
+            else
+            {
+                mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top);
+                mEmailLabel.setTextColor(Color.WHITE);
+            }
+
+            if (mPasswordInput.getText().toString().equals(Strings.EMPTY)
+                || mPasswordConfirmInput.getText().toString().equals(Strings.EMPTY) || !mPasswordInput.getText()
+                .toString().equals(mPasswordConfirmInput.getText().toString()))
+            {
+                mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2_error);
+                mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom_error);
+                mRetryPassLabel.setTextColor(color);
+                mPassLabel.setTextColor(color);
+                //mEmailLabel.setTextColor(Color.WHITE);
+            }
+            else
+            {
+                mPasswordInput.setBackgroundResource(R.drawable.login_register_textedit_2_2);
+                mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
+                mRetryPassLabel.setTextColor(Color.WHITE);
+                mPassLabel.setTextColor(Color.WHITE);
+                //mEmailLabel.setTextColor(Color.WHITE);
+            }
         }
-        else{
+        else
+        {
+            mNameInput.setHintTextColor(color);
+            mSurnameInput.setHintTextColor(color);
+            mEmailLabel.setTextColor(color);
+            mPassLabel.setTextColor(color);
+            mRetryPassLabel.setTextColor(color);
+
             mNameInput.setBackgroundResource(R.drawable.login_register_edittext_top);
             mSurnameInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
             mEmailInput.setBackgroundResource(R.drawable.login_register_edittext_top);
@@ -294,6 +367,7 @@ public class RegisterFragment extends SherlockFragment
             mPasswordConfirmInput.setBackgroundResource(R.drawable.login_register_edittext_bottom);
         }
     }
+
     @Override
     public void onClick(View v)
     {
@@ -307,12 +381,6 @@ public class RegisterFragment extends SherlockFragment
             case R.id.registration_finish_button:
                 hideKeyboard();
                 performRegistration();
-                mNameInput.setText(Strings.EMPTY);
-                mSurnameInput.setText(Strings.EMPTY);
-                mEmailInput.setText(Strings.EMPTY);
-                mPasswordInput.setText(Strings.EMPTY);
-                mPasswordConfirmInput.setText(Strings.EMPTY);
-                mCityInput.setText(Strings.EMPTY);
                 break;
             case R.id.register_date_born_btn:
                 hideKeyboard();
@@ -324,7 +392,7 @@ public class RegisterFragment extends SherlockFragment
             case R.id.choice_photo_dialog_camera_btn:
                 mDrawerChoiceDialog.cancel();
                 // Вызываем камеру;
-                Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
@@ -338,9 +406,10 @@ public class RegisterFragment extends SherlockFragment
         }
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard()
+    {
         @Nullable FragmentActivity fragment = getActivity();
-        if(fragment == null) return;
+        if (fragment == null) return;
         InputMethodManager imm = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
         @Nullable View focus = fragment.getCurrentFocus();
         if (focus == null)
@@ -372,6 +441,12 @@ public class RegisterFragment extends SherlockFragment
                     @Nullable String sessionKey = result.getString(LoadSessionKeyTask.BF_SESSION_KEY);
                     if (result != null)
                     {
+                        mNameInput.setText(Strings.EMPTY);
+                        mSurnameInput.setText(Strings.EMPTY);
+                        mEmailInput.setText(Strings.EMPTY);
+                        mPasswordInput.setText(Strings.EMPTY);
+                        mPasswordConfirmInput.setText(Strings.EMPTY);
+
                         SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(mContext);
                         spref.putString(SharedPreferencesValues.SP_SESSION_KEY, sessionKey);
                         spref.commit();
@@ -385,6 +460,7 @@ public class RegisterFragment extends SherlockFragment
                     break;
                 case RestParams.SC_FORBIDDEN:
                 {
+                    mEmailLabel.setTextColor(Color.RED);
                     ErrorAlertDialog.showDialog(mContext, R.string.msg_register_email_exists);
                     break;
                 }
@@ -418,19 +494,24 @@ public class RegisterFragment extends SherlockFragment
         }
     }
 
-    public void setImage(@Nullable Bitmap bitmap){
-        if(bitmap != null){
+    public void setImage(@Nullable Bitmap bitmap)
+    {
+        if (bitmap != null)
+        {
             int size = (int) getResources().getDimension(R.dimen.size_avatar);
 //            if(bitmap.hasAlpha())
 //                bitmap.setHasAlpha(false);
             mIconImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, size, size, false));
-        } else {
+        }
+        else
+        {
             mIconImg.setImageResource(R.drawable.login_register_ava_btn);
         }
 
     }
 
-    private void resetUserData(byte[] userPic){
+    private void resetUserData(byte[] userPic)
+    {
         // изменить аватарку;
         mUserDataModel.resetUserImage(userPic, mTaskHandlerResetUserPic);
 
@@ -443,9 +524,12 @@ public class RegisterFragment extends SherlockFragment
         {
             mIReloadUserData.reloadUserData();
             UserData data = mUserDataModel.getUserData();
-            if( data != null ){
+            if (data != null)
+            {
 //                loadAvatar(data.previewUrl);
-            } else {
+            }
+            else
+            {
 //                mDrawerHeader.setImage(null);
             }
 //            loadUserDataFromInternet();
@@ -453,7 +537,8 @@ public class RegisterFragment extends SherlockFragment
     };
 
     @Override
-    public void bitmapConvertToByte(@Nullable byte[] buffer) {
+    public void bitmapConvertToByte(@Nullable byte[] buffer)
+    {
         // Отправляем новую аватарку насервер;
         resetUserData(buffer);
     }

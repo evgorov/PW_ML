@@ -59,7 +59,9 @@
     <string name="register_screen_retry_pass">Повторите\nпароль</string>
     <string name="register_screen_date_born">Дата\nрождения</string>
     <string name="register_screen_city">Город</string>
-    <string name="register_screen_error_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще раз.</string>
+    <string name="register_screen_error_empty_msg">Регистрационные данные набраны неверно. Пожалуйста попробуйте еще
+        раз.</string>
+    <string name="register_screen_error_pass_msg">Пароли не совпадают. Пожалуйста проверьте введенные данные.</string>
     <string name="register_screen_date_pick_dialog_title">Дата рождения</string>
     <string name="buy_one_dollar">$0.99</string>
     <string name="buy_two_dollar">$1.99</string>
