@@ -260,31 +260,27 @@ public class NavigationActivity extends BillingV3Activity
                 {
                     // Получаем картинку из галереи;
                     Uri chosenImageUri = data.getData();
-                    Bitmap photo = null;
+                    Bitmap bitmap = null;
                     try
                     {
-                        photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
                     }
                     catch (IOException e)
                     {
                         e.printStackTrace();
                     }
-                    // Меняем аватарку на панеле;
-                    mDrawerMenu.setImage(photo);
                     // Отправляем новую аватарку насервер;
                     mBitmapAsyncTask = new BitmapAsyncTask(this);
-                    mBitmapAsyncTask.execute(photo);
+                    mBitmapAsyncTask.execute(bitmap);
                 }
                 break;
                 case REQUEST_NAVIGATION_LOAD_FOTO:
                 {
                     // получаем фото с камеры;
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-                    // Меняем аватарку на панеле;
-                    mDrawerMenu.setImage(photo);
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     // Отправляем новую аватарку насервер;
                     mBitmapAsyncTask = new BitmapAsyncTask(this);
-                    mBitmapAsyncTask.execute(photo);
+                    mBitmapAsyncTask.execute(bitmap);
                 }
                 break;
                 case REQUEST_NAVIGATION_VKONTAKTE:
@@ -1010,6 +1006,7 @@ public class NavigationActivity extends BillingV3Activity
     public void bitmapConvertToByte(@Nullable byte[] buffer)
     {
         // Отправляем новую аватарку насервер;
+        mDrawerMenu.setImage(Bitmap.createBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length)));
         resetUserImage(buffer);
     }
 

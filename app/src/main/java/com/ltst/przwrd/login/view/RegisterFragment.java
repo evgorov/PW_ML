@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -175,23 +176,27 @@ public class RegisterFragment extends SherlockFragment
 
         if (resultCode == Activity.RESULT_OK)
         {
-            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO && resultCode == Activity.RESULT_OK && null != data) {
-//            // Получаем картинку из галереи;
+            if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY && null != data)
+            {
+            // Получаем картинку из галереи;
                 Uri chosenImageUri = data.getData();
-                Bitmap photo = null;
+                Bitmap bitmap = null;
                 try {
-                    photo = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
+                    bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 // Меняем аватарку на панеле;
-                setImage(photo);
+                mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
+                mBitmapAsyncTask.execute(bitmap);
             }
-            if(requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY && resultCode == Activity.RESULT_OK){
+            else if (requestCode == RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO)
+            {
                 // получаем фото с камеры;
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 // Меняем аватарку на панеле;
-                setImage(photo);
+                mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
+                mBitmapAsyncTask.execute(bitmap);
             }
         }
     }
@@ -325,13 +330,13 @@ public class RegisterFragment extends SherlockFragment
                 mDrawerChoiceDialog.cancel();
                 // Вызываем камеру;
                 Intent cameraIntent=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY);
+                startActivityForResult(cameraIntent, RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO);
                 break;
             case R.id.choice_photo_dialog_gallery_btn:
                 mDrawerChoiceDialog.cancel();
                 // Вызываем галерею;
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RequestAnswerCodes.REQUEST_REGISTER_LOAD_FOTO);
+                startActivityForResult(i, RequestAnswerCodes.REQUEST_REGISTER_LOAD_GALARY);
                 break;
             default:
                 break;
@@ -378,8 +383,9 @@ public class RegisterFragment extends SherlockFragment
 
                         BitmapDrawable drawable = (BitmapDrawable) mIconImg.getDrawable();
                         Bitmap bitmap = drawable == null ? null : drawable.getBitmap();
-                        mBitmapAsyncTask = new BitmapAsyncTask(RegisterFragment.this);
-                        mBitmapAsyncTask.execute(bitmap);
+
+                        byte[] buffer = BitmapAsyncTask.convertBitmapToByte(bitmap);
+                        resetUserData(buffer);
                     }
                     mAuthorization.onAuthotized();
                     break;
@@ -455,7 +461,7 @@ public class RegisterFragment extends SherlockFragment
     @Override
     public void bitmapConvertToByte(@Nullable byte[] buffer) {
         // Отправляем новую аватарку насервер;
-        resetUserData(buffer);
+        setImage(Bitmap.createBitmap(BitmapFactory.decodeByteArray(buffer, 0, buffer.length)));
     }
 
 }
