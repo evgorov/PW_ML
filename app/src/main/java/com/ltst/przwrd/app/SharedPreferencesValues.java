@@ -32,7 +32,7 @@ public class SharedPreferencesValues {
 
     public static boolean getMusicSwitch(@Nonnull Context context) {
         SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(context);
-        return helper.getBoolean(SP_MUSIC_SWITCH, true);
+        return helper.getBoolean(SP_MUSIC_SWITCH, false);
     }
 
     public static boolean getSoundSwitch(@Nonnull Context context) {
