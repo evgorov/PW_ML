@@ -232,13 +232,19 @@ extern NSString * PRODUCTID_HINTS10;
 
 - (IBAction)handlePauseClick:(id)sender
 {
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+    if ([AppDelegate currentDelegate].rootViewController.currentOverlay == nil)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_FINISH_INPUT]];
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
+    }
 }
 
 - (IBAction)handlePlayClick:(id)sender
 {
-    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+    if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+    }
 }
 
 - (IBAction)handleHintClick:(id)sender
