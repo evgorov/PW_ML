@@ -1,5 +1,7 @@
 package com.ltst.przwrd.navigation;
 
+import com.tapjoy.TapjoyConnect;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -80,15 +82,15 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 import static com.ltst.przwrd.tools.RequestAnswerCodes.*;
 
 public class NavigationActivity extends BillingV3Activity
-        implements
-        IFragmentsHolderActivity,
-        INavigationDrawerHolder,
-        IAutorization,
-        View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener,
-        IReloadUserData,
-        IBitmapAsyncTask,
-        INavigationActivity
+    implements
+    IFragmentsHolderActivity,
+    INavigationDrawerHolder,
+    IAutorization,
+    View.OnClickListener,
+    CompoundButton.OnCheckedChangeListener,
+    IReloadUserData,
+    IBitmapAsyncTask,
+    INavigationActivity
 {
     public static final @Nonnull String LOG_TAG = "prizeword";
 
@@ -139,11 +141,13 @@ public class NavigationActivity extends BillingV3Activity
 
         Crashlytics.start(this);
 
+
         mBcConnector = getBcConnector();
         mIsTablet = DimenTools.isTablet(this);
         SoundsWork.ALL_SOUNDS_FLAG = SharedPreferencesValues.getSoundSwitch(this);
         // Устанавливаем соединение с Google Play для внутренних покупок;
         mContext = this.getBaseContext();
+        TapjoyConnect.requestTapjoyConnect(mContext, "b77b17c3-ccd3-4aba-979d-5307edce0a8b", "ZspEG1Io8dB6ETzFNnbc");
 
         mGcmHelper = new GcmHelper(this, mBcConnector);
 //        mGcmHelper.onCreate(savedInstanceState);
@@ -198,7 +202,8 @@ public class NavigationActivity extends BillingV3Activity
         {
             mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
             mSlidingMenu.setMenu(vfooter);
-        } else if (mTabletMenuViewGroup != null)
+        }
+        else if (mTabletMenuViewGroup != null)
         {
             mTabletMenuViewGroup.addView(vfooter);
         }
@@ -221,8 +226,10 @@ public class NavigationActivity extends BillingV3Activity
         checkLauchingAppByLink();
 
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        if(!mPasswordReset)
+        if (!mPasswordReset)
+        {
             selectNavigationFragmentByClassname(SplashScreenFragment.FRAGMENT_CLASSNAME);
+        }
     }
 
     @Override protected void onSaveInstanceState(Bundle outState)
@@ -243,14 +250,18 @@ public class NavigationActivity extends BillingV3Activity
 
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null)
+        {
             mCurrentSelectedFragmentPosition = savedInstanceState.getInt(CURENT_POSITION);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(this.onActivityResultBillingV3(requestCode, resultCode, data))
+        if (this.onActivityResultBillingV3(requestCode, resultCode, data))
+        {
             return;
+        }
 
         if (resultCode == RESULT_OK)
         {
@@ -286,7 +297,7 @@ public class NavigationActivity extends BillingV3Activity
                 case REQUEST_NAVIGATION_VKONTAKTE:
                 case REQUEST_NAVIGATION_FACEBOOK:
                 {
-                    if(data.hasExtra(SocialLoginActivity.BF_SESSION_KEY))
+                    if (data.hasExtra(SocialLoginActivity.BF_SESSION_KEY))
                     {
                         SharedPreferencesHelper spref = SharedPreferencesHelper.getInstance(this);
 //                        String sessionKey1 = spref.getString(SharedPreferencesValues.SP_SESSION_KEY, Strings.EMPTY);
@@ -299,13 +310,13 @@ public class NavigationActivity extends BillingV3Activity
                     }
                     else
                     {
-                        if(requestCode == REQUEST_NAVIGATION_VKONTAKTE)
+                        if (requestCode == REQUEST_NAVIGATION_VKONTAKTE)
                         {
                             mVkSwitch = true;
                             mDrawerMenu.mVkontakteSwitcher.setChecked(false);
                             mDrawerMenu.mVkontakteSwitcher.setEnabled(true);
                         }
-                        else if(requestCode == REQUEST_NAVIGATION_FACEBOOK)
+                        else if (requestCode == REQUEST_NAVIGATION_FACEBOOK)
                         {
                             mFbSwitch = true;
                             mDrawerMenu.mFacebookSwitcher.setChecked(false);
@@ -346,7 +357,7 @@ public class NavigationActivity extends BillingV3Activity
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
         mPuzzleSetModel = new PuzzleSetModel(mContext, mBcConnector, mSessionKey);
         mUserDataModel = new UserDataModel(this, mBcConnector);
-        if(mNeedMerge)
+        if (mNeedMerge)
         {
             mUserDataModel.setProvider(mProvider);
             mUserDataModel.mergeAccounts(mTaskHandlerMergeAccounts);
@@ -417,7 +428,9 @@ public class NavigationActivity extends BillingV3Activity
     public void selectNavigationFragmentByPosition(int position)
     {
         if (mIsDestroyed)
+        {
             return;
+        }
         unlockDrawer();
         if (!isFragmentInitialized(position))
         {
@@ -430,8 +443,8 @@ public class NavigationActivity extends BillingV3Activity
         Fragment fr = mFragments.get(position);
 
         mFragmentManager.beginTransaction()
-                .replace(R.id.navigation_content_frame, fr)
-                .commit();
+            .replace(R.id.navigation_content_frame, fr)
+            .commit();
 
         mSlidingMenu.showContent();
         setTitle(mDrawerItems.get(position).getTitle());
@@ -441,7 +454,9 @@ public class NavigationActivity extends BillingV3Activity
     public void selectNavigationFragmentByClassname(@Nonnull String fragmentClassname)
     {
         if (mIsDestroyed)
+        {
             return;
+        }
         int size = mDrawerItems.size();
         for (int i = 0; i < size; i++)
         {
@@ -487,25 +502,45 @@ public class NavigationActivity extends BillingV3Activity
         String title = Strings.EMPTY;
         Resources res = getResources();
         if (id.equals(LoginFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.login_fragment_title);
+        }
         else if (id.equals(AuthorizationFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.authorization_fragment_title);
+        }
         else if (id.equals(CrosswordsFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.crosswords_fragment_title);
+        }
         else if (id.equals(RegisterFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.registration_fragment_title);
+        }
         else if (id.equals(ResetPassFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.resetpass_fragment_title);
+        }
         else if (id.equals(ForgetPassFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.forgetpass_fragment_title);
+        }
         else if (id.equals(InviteFriendsFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.invite_fragment_title);
+        }
         else if (id.equals(RatingFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.rating_fragment_title);
+        }
         else if (id.equals(ScoreDetailFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.rating_fragment_title);
+        }
         else if (id.equals(SplashScreenFragment.FRAGMENT_ID))
+        {
             title = res.getString(R.string.splashscreen_fragment_title);
+        }
 
         if (!title.equals(Strings.EMPTY))
         {
@@ -523,13 +558,19 @@ public class NavigationActivity extends BillingV3Activity
     {
         @Nullable Intent intent = getIntent();
         if (intent == null)
+        {
             return;
+        }
         if (intent.getAction() != Intent.ACTION_VIEW)
+        {
             return;
+        }
 
         @Nullable String url = intent.getDataString();
         if (url == null)
+        {
             return;
+        }
         URI uri = URI.create(url);
         List<NameValuePair> values = URLEncodedUtils.parse(uri, "UTF-8");
         for (NameValuePair value : values)
@@ -557,7 +598,8 @@ public class NavigationActivity extends BillingV3Activity
             if (fr instanceof INavigationBackPress)
             {
                 ((INavigationBackPress) fr).onBackKeyPress();
-            } else
+            }
+            else
             {
                 return super.onKeyDown(keyCode, event);
             }
@@ -578,7 +620,8 @@ public class NavigationActivity extends BillingV3Activity
         {
             mSlidingMenu.showContent();
             mSlidingMenu.setSlidingEnabled(false);
-        } else if (mTabletMenuViewGroup != null)
+        }
+        else if (mTabletMenuViewGroup != null)
         {
             mTabletMenuViewGroup.setVisibility(View.GONE);
         }
@@ -602,16 +645,22 @@ public class NavigationActivity extends BillingV3Activity
     public void unlockDrawer()
     {
         if (!mIsTablet)
+        {
             mSlidingMenu.setSlidingEnabled(true);
+        }
     }
 
     @Override
     public void toogle()
     {
         if (!mIsTablet)
+        {
             mSlidingMenu.toggle();
+        }
         else
+        {
             lockDrawerOpened();
+        }
     }
 
 //==== IAutorization ==============================================
@@ -619,7 +668,7 @@ public class NavigationActivity extends BillingV3Activity
     @Override
     public void onAuthotized()
     {
-        if(mNotificationsEnabled)
+        if (mNotificationsEnabled)
         {
             mSessionKey = SharedPreferencesValues.getSessionKey(this);
             mGcmHelper.onAuthorized(mSessionKey);
@@ -637,12 +686,14 @@ public class NavigationActivity extends BillingV3Activity
 //        }
 //        else
 //        {
-            reloadUserData();
-            selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
+        reloadUserData();
+        selectNavigationFragmentByClassname(CrosswordsFragment.FRAGMENT_CLASSNAME);
 //        }
 
         if (mIsTablet)
+        {
             lockDrawerOpened();
+        }
     }
 
     //==== IOnClickListeber ========
@@ -668,7 +719,7 @@ public class NavigationActivity extends BillingV3Activity
                 selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
                 mUserDataModel.clearDataBase(null);
                 @Nullable Fragment fr = null;
-                for(int i=0; i<mFragments.size(); i++)
+                for (int i = 0; i < mFragments.size(); i++)
                 {
                     fr = mFragments.get(i);
                     if (fr instanceof ICrosswordsFragment)
@@ -708,9 +759,11 @@ public class NavigationActivity extends BillingV3Activity
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.question_restore_purchases_title);
                 builder.setMessage(R.string.question_restore_purchases_msg);
-                builder.setPositiveButton(R.string.ok_bnt_title, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.ok_bnt_title, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
                         if (fr instanceof ICrosswordsFragment)
                         {
@@ -719,9 +772,11 @@ public class NavigationActivity extends BillingV3Activity
                         getManadgeHolder().restoreProducts(mTaskHandlerRestoreProducts);
                     }
                 });
-                builder.setNegativeButton(R.string.cancel_message_button, new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.cancel_message_button, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         dialog.dismiss();
                     }
                 });
@@ -769,14 +824,16 @@ public class NavigationActivity extends BillingV3Activity
     {
         @Nullable String sessionKey = SharedPreferencesValues.getSessionKey(this);
         if (sessionKey == null)
+        {
             return;
+        }
 
         mUploadScoreQueueModel = new UploadScoreQueueModel(mBcConnector, sessionKey);
         mUploadScoreQueueModel.upload();
         mHintsModel = new HintsModel(mBcConnector, sessionKey);
         final SharedPreferencesHelper mHelper = SharedPreferencesHelper.getInstance(mContext);
         int currentHintsChangeCount = mHelper.getInt(SharedPreferencesValues.SP_HINTS_TO_CHANGE, 0);
-        if(currentHintsChangeCount != 0)
+        if (currentHintsChangeCount != 0)
         {
             mHintsModel.changeHints(currentHintsChangeCount, new IListenerVoid()
             {
@@ -792,7 +849,8 @@ public class NavigationActivity extends BillingV3Activity
     private IListenerVoid mTaskHandlerRestoreProducts = new IListenerVoid()
     {
         @Override
-        public void handle() {
+        public void handle()
+        {
             mRestoreproducts = getManadgeHolder().getRestoreProducts();
             mTaskHandlerRestoreProducts2.handle();
         }
@@ -801,8 +859,9 @@ public class NavigationActivity extends BillingV3Activity
     private IListenerVoid mTaskHandlerRestoreProducts2 = new IListenerVoid()
     {
         @Override
-        public void handle() {
-            if(mRestoreproducts.size()>0)
+        public void handle()
+        {
+            if (mRestoreproducts.size() > 0)
             {
                 @Nonnull PurchasePrizeWord product = mRestoreproducts.get(0);
                 mRestoreproducts.remove(0);
@@ -826,7 +885,9 @@ public class NavigationActivity extends BillingV3Activity
         public void handle()
         {
             if (mIsDestroyed)
+            {
                 return;
+            }
             UserData data = mUserDataModel.getUserData();
             if (data != null)
             {
@@ -845,9 +906,13 @@ public class NavigationActivity extends BillingV3Activity
                 reloadUserImageFromDB(data.id);
                 reloadUserImageFromServer(data.previewUrl);
                 if (mIsTablet)
+                {
                     lockDrawerOpened();
+                }
                 if (mCurrentSelectedFragmentPosition != 0)
+                {
                     selectNavigationFragmentByPosition(mCurrentSelectedFragmentPosition);
+                }
                 else
                 {
                     checkSyncData();
@@ -857,17 +922,17 @@ public class NavigationActivity extends BillingV3Activity
             else
             {
                 Fragment fr = mFragments.get(mCurrentSelectedFragmentPosition);
-                if(
-                        (fr instanceof ResetPassFragment && !mPasswordReset)
-                                ||
-                                (
-                                !(fr instanceof ResetPassFragment)
+                if (
+                    (fr instanceof ResetPassFragment && !mPasswordReset)
+                        ||
+                        (
+                            !(fr instanceof ResetPassFragment)
                                 && !(fr instanceof ForgetPassFragment)
                                 && !(fr instanceof AuthorizationFragment)
                                 && !(fr instanceof LoginFragment)
                                 && !(fr instanceof RegisterFragment)
-                                )
                         )
+                    )
                 {
                     mDrawerMenu.clean();
                     selectNavigationFragmentByClassname(LoginFragment.FRAGMENT_CLASSNAME);
@@ -882,7 +947,9 @@ public class NavigationActivity extends BillingV3Activity
         public void handle()
         {
             if (mIsDestroyed)
+            {
                 return;
+            }
 
             byte[] buffer = mUserDataModel.getUserPic();
             Bitmap bitmap = null;
@@ -891,7 +958,8 @@ public class NavigationActivity extends BillingV3Activity
                 try
                 {
                     bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
-                } catch (NullPointerException e)
+                }
+                catch (NullPointerException e)
                 {
                     throw new RuntimeException(e);
                 }
@@ -906,12 +974,15 @@ public class NavigationActivity extends BillingV3Activity
         public void handle()
         {
             if (mIsDestroyed)
+            {
                 return;
+            }
             UserData data = mUserDataModel.getUserData();
             if (data == null || data.previewUrl == null || data.previewUrl == Strings.EMPTY)
             {
                 mDrawerMenu.setImage(null);
-            } else
+            }
+            else
             {
                 reloadUserImageFromServer(data.previewUrl);
             }
@@ -924,7 +995,9 @@ public class NavigationActivity extends BillingV3Activity
         public void handle()
         {
             if (mIsDestroyed)
+            {
                 return;
+            }
             // Получили список провайдеров, выставляем значение свитчеров;
             @Nullable ArrayList<UserProvider> providers = mUserDataModel.getProviders();
             @Nonnull List<String> names = new ArrayList<String>();
@@ -966,7 +1039,9 @@ public class NavigationActivity extends BillingV3Activity
         public void handle()
         {
             if (mIsDestroyed)
+            {
                 return;
+            }
             int statusCode = mUserDataModel.getStatusCodeAnswer();
             @Nonnull String msg = mUserDataModel.getStatusMessageAnswer();
             msg = getResources().getString(R.string.error_merge_accounts);
@@ -986,7 +1061,8 @@ public class NavigationActivity extends BillingV3Activity
                 if (fr instanceof ICrosswordsFragment)
                 {
                     ((ICrosswordsFragment) fr).updateAllSets();
-                }            }
+                }
+            }
             else
             {
                 if (provider == RestParams.VK_PROVIDER)
@@ -1015,56 +1091,57 @@ public class NavigationActivity extends BillingV3Activity
     {
 
         @Nonnull Intent intent;
-            switch (compoundButton.getId())
-            {
-                case R.id.menu_vk_switcher:
-                    NavigationActivity.debug("VK CHECK CHANGE, state = "+state);
-                    if (state && !mVkSwitch)
-                    {
-                        NavigationActivity.debug("YES");
-                        intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
-                        startActivityForResult(intent, REQUEST_NAVIGATION_VKONTAKTE);
-                    }
-                    break;
-                case R.id.menu_fb_switcher:
-                    NavigationActivity.debug("FB CHECK CHANGE, state = "+state);
-                    if (state && !mFbSwitch)
-                    {
-                        NavigationActivity.debug("YES");
-                        intent = new Intent(this, SocialLoginActivity.class);
-                        intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
-                        startActivityForResult(intent, REQUEST_NAVIGATION_FACEBOOK);
-                    }
-                    break;
-                case R.id.menu_notification_switcher:
-                    NavigationActivity.debug("PUSH CHECK CHANGE, state = "+state);
-                        SharedPreferencesValues.setNotifications(this, !mNotificationsEnabled);
-                        mNotificationsEnabled = !mNotificationsEnabled;
-                        if(mNotificationsEnabled)
-                        {
-                            String sessionKey = SharedPreferencesValues.getSessionKey(this);
-                            mGcmHelper.onAuthorized(sessionKey);
-                        }
-                        else
-                        {
-                            mGcmHelper.unregister();
-                        }
-                    break;
-                default:
-                    break;
-            }
+        switch (compoundButton.getId())
+        {
+            case R.id.menu_vk_switcher:
+                NavigationActivity.debug("VK CHECK CHANGE, state = " + state);
+                if (state && !mVkSwitch)
+                {
+                    NavigationActivity.debug("YES");
+                    intent = new Intent(this, SocialLoginActivity.class);
+                    intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.VK_PROVIDER);
+                    startActivityForResult(intent, REQUEST_NAVIGATION_VKONTAKTE);
+                }
+                break;
+            case R.id.menu_fb_switcher:
+                NavigationActivity.debug("FB CHECK CHANGE, state = " + state);
+                if (state && !mFbSwitch)
+                {
+                    NavigationActivity.debug("YES");
+                    intent = new Intent(this, SocialLoginActivity.class);
+                    intent.putExtra(SocialLoginActivity.BF_PROVEDER_ID, RestParams.FB_PROVIDER);
+                    startActivityForResult(intent, REQUEST_NAVIGATION_FACEBOOK);
+                }
+                break;
+            case R.id.menu_notification_switcher:
+                NavigationActivity.debug("PUSH CHECK CHANGE, state = " + state);
+                SharedPreferencesValues.setNotifications(this, !mNotificationsEnabled);
+                mNotificationsEnabled = !mNotificationsEnabled;
+                if (mNotificationsEnabled)
+                {
+                    String sessionKey = SharedPreferencesValues.getSessionKey(this);
+                    mGcmHelper.onAuthorized(sessionKey);
+                }
+                else
+                {
+                    mGcmHelper.unregister();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
-    public void sendMessage(@Nonnull String msg) {
+    public void sendMessage(@Nonnull String msg)
+    {
         ErrorAlertDialog.showDialog(this, msg);
     }
 
     public static void debug(@Nonnull String msg)
     {
         Calendar cal = Calendar.getInstance();
-        Log.d(LOG_TAG, String.format("%02d:%02d:%02d",cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE),cal.get(Calendar.SECOND)) + ": " + msg);
+        Log.d(LOG_TAG, String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND)) + ": " + msg);
     }
 
 }
