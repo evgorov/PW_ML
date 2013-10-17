@@ -12,3 +12,7 @@ job 'update_positions' do
     user_data.save
   end
 end
+
+job 'generate_puzzle' do |args|
+  puts args.inspect
+end

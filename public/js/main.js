@@ -341,6 +341,7 @@ var FieldView = Backbone.View.extend({
   }
 });
 
+
 var PuzzleView = Backbone.View.extend({
 
   tagName: 'div',
@@ -1052,6 +1053,160 @@ var UsersView = Backbone.View.extend({
   }
 });
 
+/* Dictionaries */
+
+var DictionaryEditorView = Backbone.View.extend({
+
+  tagName: 'div',
+  template: _.template($('#dictionary-editor-template').html()),
+
+  events: {
+      'click [role="save"]': 'saveDictionary',
+      'click [role="cancel"]': 'hide',
+      'click [role="delete"]': 'delete',
+      'change [role="dict"]': 'uploadDict',
+      'change [role="title"]': 'changeTitle'
+
+  },
+
+  initialize: function(){
+    $('[role="dictionary-editor"]').empty().append(this.$el);
+    var data = _.extend({ isNew: this.model.isNew()}, this.model.toJSON());
+    this.$el.html(this.template(data));
+    this.render();
+  },
+
+  changeTitle: function(){
+    this.model.set('title', this.$el.find('[role="title"]').val());
+  },
+
+  uploadDict: function(){
+    $('[role="loading-spinner"]').show();
+    var file =  this.$el.find('[role="dict"]')[0].files[0];
+    var fr = new FileReader();
+    fr.onload = _.bind(this.uploaded, this);
+    fr.readAsText(file);
+  },
+
+  uploaded: function(e){
+    this.model.set('body', e.target.result);
+    $('[role="loading-spinner"]').hide();
+  },
+
+  saveDictionary: function(){
+    this.model.save();
+    this.hide();
+  },
+
+
+  delete: function(){
+    this.model.destroy();
+    this.hide();
+  },
+
+  render: function() {
+    return this;
+  },
+
+  hide: function(){
+    this.$el.parent().hide('fast', _.bind(this.remove, this));
+  },
+
+  show: function(){
+    var coord = this.$el.parent().offset();
+    coord.top = $(document).scrollTop();
+    this.$el.parent().offset(coord);
+    this.$el.parent().show('fast');
+  }
+
+});
+
+var Dictionary = Backbone.Model.extend({
+    initialize: function(){
+     if(!this.get('title')) this.set('title', '');
+    },
+    url: function(){
+      return this.isNew() ? '/dictionaries' : '/dictionaries/' + this.id;
+    }
+});
+
+var Dictionaries = Backbone.Collection.extend({
+  model: Dictionary,
+  url: '/dictionaries',
+  comparator: false,
+  parse: function(response) {
+    this.currentPage = response.current_page;
+    this.totalPages = response.total_pages;
+    return response.dictionaries;
+  }
+});
+
+var DictionariesView = Backbone.View.extend({
+  tagName: 'div',
+  rowTemplate: _.template('<tr><td><%= title %></td><td><%= words_count %></td><td>' +
+                          '<button class="btn btn-small" role="edit-dictionary" data-dictionary-id="<%= id %>">Редактировать</button></td></tr>'),
+  events: {
+    'click [role="pagination"] a': 'selectPage',
+    'click [role="edit-dictionary"]': 'editDictionary',
+    'click [role="add-dictionary"]':  'addDictionary'
+  },
+
+  initialize: function(){
+    this.collection.on('reset', this.render, this);
+    this.collection.fetch();
+  },
+
+  render: function(){
+    var $el = this.$el;
+    // Rendering row templates to view
+    var rows = this.collection.map(function(o){
+      return this.rowTemplate(o.toJSON());
+    }, this).join('');
+    $el.find('[role="rows"]').html(rows);
+    this.renderPaginator();
+    return this;
+  },
+
+  renderPaginator: function(){
+    var currentPage = this.collection.currentPage,
+        totalPages = this.collection.totalPages,
+        $result = $('<ul>');
+    if(totalPages < 2) return;
+    for(var i = 1; i <= totalPages; i++){
+      var $li = $('<li>');
+      $li.append($('<a>').attr('href', '#').text(i));
+      if(i == currentPage) $li.addClass('active');
+      $result.append($li);
+    }
+    this.$el.find('[role="pagination"]').empty().append($result);
+  },
+
+  selectPage: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var page = $(e.target).text();
+    this.collection.fetch({ data: { page: page }});
+  },
+
+  addDictionary: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var dictionary = new Dictionary();
+    dictionary.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
+    var dictionaryView = new DictionaryEditorView({ model: dictionary });
+    dictionaryView.show();
+  },
+
+  editDictionary: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var $el = $(e.target),
+        id = $el.attr('data-dictionary-id'),
+        dictionary = this.collection.get(id);
+    dictionary.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
+    var dictionaryView = new DictionaryEditorView({ model: dictionary });
+    dictionaryView.show();
+  }
+});
+
+
 /* Dashboard */
 
 var Counters = Backbone.Model.extend({
@@ -1095,6 +1250,7 @@ var DashboardView = Backbone.View.extend({
 
   render: function() {}
 });
+
 
 
 /* Service message */
@@ -1214,7 +1370,7 @@ var NotificationsView = Backbone.View.extend({
 
 /* Initializnig code */
 
-var puzzleView, formSigninView, logoutView, puzzleSets, puzzles, puzzlesView, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView, notificationsView;
+var puzzleView, formSigninView, logoutView, puzzleSets, puzzles, puzzlesView, puzzleSetsView, users, usersView, dashboardView, serviceMessage, serviceMessageView, coefficients, coefficientsView, notificationsView, dictionaries, dictionariesView;
 
 $(function(){
   currentUser = new CurrentUser();
@@ -1247,6 +1403,10 @@ $(function(){
   notificationsView = new NotificationsView({
                                             el: $('[role="notifications"]')[0]
                                           });
+
+  dictionaries = new Dictionaries();
+
+  dictionariesView = new DictionariesView({ el: $('[role="dictionaries"]')[0], collection: dictionaries });
 
   $('[role="loading-spinner"]').hide();
 });

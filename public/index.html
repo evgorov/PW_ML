@@ -23,7 +23,8 @@
         <li><a href="#tab_service_messages" data-toggle="tab">Объявления</a></li>
         <li><a href="#tab_coefficients" data-toggle="tab">Коэффициенты</a></li>
         <li><a href="#tab_notifications" data-toggle="tab">Нотификации</a></li>
-        <li class="pull-right logout" role="logout"><span class="muted">Пользователь: </span><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
+        <li><a href="#tab_dictionaries" data-toggle="tab">Словари</a></li>
+        <li class="pull-right logout" role="logout"><span class="" role="logout-username"></span> <button class="btn btn-mini" role="logout-button">Выйти</button></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab_main">
@@ -95,6 +96,27 @@
             <div class="pagination pagination-centered" role="pagination"></div>
           </div>
        </div>
+       <div class="tab-pane" id="tab_dictionaries" class="dictionaries" role="dictionaries">
+         <div class="row m-bottom-20px">
+           <div class="span12 va-middle">
+             <span class="pull-right h3-height va-middle">
+               <a href="#" class="btn btn-small" role="add-dictionary"><i class="icon-plus-sign"></i> Добавить словарь</a>
+             </span>
+           </div>
+         </div>
+         <table class="table">
+           <thead>
+             <tr>
+               <th>Название</th>
+               <th>количество слов</th>
+               <th></th>
+             </tr>
+           </thead>
+           <tbody role="rows">
+           </tbody>
+         </table>
+         <div class="pagination pagination-centered" role="pagination"></div>
+       </div>
        <div class="tab-pane" id="tab_service_messages" class="messages" role="service-message">
          <div class="row">
            <div class="span12">
@@ -150,6 +172,7 @@
       </div>
     </div>
     <div class="puzzle" role="puzzle-editor" style="display: none;"></div>
+    <div class="dictionary" role="dictionary-editor" style="display: none;"></div>
     <div class="form-signin-container" role="form-signin-container">
       <form class="form-signin">
         <h2 class="form-signin-heading ta-center">Prizeword</h2>
@@ -296,6 +319,30 @@
         </ul>
         <div class="pull-right">
           <button class="btn" role="edit-set"><i class="icon-edit"></i> Редактировать</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="dictionary-editor-template">
+      <div class="container">
+        <div class="row">
+          <div class="span12 puzzle-editor">
+            <div class="puzzle-title">
+              <h1 class="m-bottom-20px">редактор словаря</h1>
+              <form class="m-bottom-40px">
+                <input type="text" class="input-large" placeholder="Название для словаря" value="<%- title %>" role="title"><br>
+                <label for="puzzle-editor-dict">Файл со словарем:</label>
+                <input id="puzzle-editor-dict" type="file" class="input-large" placeholder="словарь" value="" role="dict"><br>
+                <span class="muted">UTF-8, по одному слову на каждую строчку</span>
+              </form>
+            </div>
+            <% if(!isNew){ %>
+            <button class="btn btn-danger" role="delete">Удалить</button>
+            <% }; %>
+            <div class="pull-right">
+              <a href="#" role="cancel">Отменить</a>&nbsp;
+              <button class="btn" role="save">Ок</button>
+            </div>
+          </div>
         </div>
       </div>
     </script>

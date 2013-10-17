@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'model/puzzle_set'
 require 'model/service_message'
+require 'model/dictionary'
 require 'model/coefficients'
 
 module Middleware
@@ -197,6 +198,44 @@ module Middleware
       user.save
 
       result.to_json
+    end
+
+    get '/dictionaries' do
+      authorize_editor!
+      dictionaries = Dictionary.storage(env['redis'])
+      page = params[:page].to_i
+      page = 1 if page == 0
+      {
+        dictionaries: dictionaries.all(page),
+        total_pages: (dictionaries.size.to_f / Dictionary::PER_PAGE).ceil,
+        current_page: page
+      }.to_json
+    end
+
+    post '/dictionaries' do
+      authorize_admin!
+      dictionary = Dictionary.storage(env['redis'])
+      dictionary['body'] = params['body']
+      dictionary['words_count'] =  params['body'].split("\n").size
+      dictionary['title'] = params['title']
+      dictionary.save
+      dictionary.to_json
+    end
+
+    put '/dictionaries/:id' do
+      authorize_admin!
+      dictionary = Dictionary.storage(env['redis']).load(params['id'])
+      dictionary['body'] = params['body'] if params['body']
+      dictionary['words_count'] =  params['body'].split("\n").size if params['body']
+      dictionary['title'] = params['title'] if params['title']
+      dictionary.save
+      dictionary.to_json
+    end
+
+    delete '/dictionaries/:id' do
+      authorize_admin!
+      dictionary = Dictionary.storage(env['redis']).load(params['id']).delete
+      { message: 'ok' }.to_json
     end
   end
 end

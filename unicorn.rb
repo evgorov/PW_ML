@@ -7,7 +7,12 @@ preload_app true
 
 timeout 30
 
-listen "/tmp/unicorn.sock", :backlog => 64
+if ENV['ENV'] == 'development'
+  listen 8080
+else
+  listen "/tmp/unicorn.sock", :backlog => 64
+end
+
 
 pid APP_ROOT + "/tmp/pids/unicorn.pid"
 

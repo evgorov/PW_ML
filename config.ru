@@ -35,7 +35,7 @@ use Etag
 
 use IndexPage
 use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.html"],
-                       :root => "public", :versioning => false
+                       :root => "public", :versioning => false, :duration => 0
 
 use Middleware::RedisMiddleware
 
