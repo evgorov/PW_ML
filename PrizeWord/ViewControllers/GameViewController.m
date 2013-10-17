@@ -166,7 +166,7 @@ extern NSString * PRODUCTID_HINTS10;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     BOOL soundMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"sound-mute"];
-    BOOL musicMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"music-mute"];
+    BOOL musicMute = ![[NSUserDefaults standardUserDefaults] boolForKey:@"music-unmute"];
     [pauseSwtSound setOn:!soundMute animated:animated];
     [pauseSwtMusic setOn:!musicMute animated:animated];
     
@@ -321,7 +321,7 @@ extern NSString * PRODUCTID_HINTS10;
 - (IBAction)handlePauseMusicSwitch:(id)sender
 {
     BOOL mute = !pauseSwtMusic.isOn;
-    [[NSUserDefaults standardUserDefaults] setBool:mute forKey:@"music-mute"];
+    [[NSUserDefaults standardUserDefaults] setBool:!mute forKey:@"music-unmute"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     if (mute)
     {
