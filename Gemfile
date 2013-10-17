@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
 group :app do
+  gem 'foreman'
+  gem 'stalker'
+  gem 'clockwork'
   gem 'rack'
   gem 'rack-contrib', require: 'rack/contrib'
   gem 'rack-cache', require: 'rack/cache'
