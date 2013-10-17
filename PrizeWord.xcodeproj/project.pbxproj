@@ -38,12 +38,6 @@
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
 		6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B9227C81800534F004E1505 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		6BB98677180C3A7700FA371C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98676180C3A7700FA371C /* MediaPlayer.framework */; };
-		6BB98679180C3A9200FA371C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98678180C3A9200FA371C /* CoreLocation.framework */; };
-		6BB9867B180C3AA100FA371C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867A180C3AA100FA371C /* CoreMotion.framework */; };
-		6BB9867D180C3ABE00FA371C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */; };
-		6BB9867F180C3AD700FA371C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867E180C3AD700FA371C /* MessageUI.framework */; };
-		6BB98681180C3AE600FA371C /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98680180C3AE600FA371C /* EventKit.framework */; };
 		6B95DEF5180FCEDD00A88F5A /* pause_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF3180FCEDD00A88F5A /* pause_bg.png */; };
 		6B95DEF6180FCEDD00A88F5A /* pause_bg~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */; };
 		6B95DF07180FCF1C00A88F5A /* switch_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */; };
@@ -62,6 +56,12 @@
 		6B95DF14180FCF1C00A88F5A /* switch_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DF04180FCF1C00A88F5A /* switch_slider@2x.png */; };
 		6B95DF15180FCF1C00A88F5A /* switch_slider@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DF05180FCF1C00A88F5A /* switch_slider@2x~ipad.png */; };
 		6B95DF16180FCF1C00A88F5A /* switch_slider~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DF06180FCF1C00A88F5A /* switch_slider~ipad.png */; };
+		6BB98677180C3A7700FA371C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98676180C3A7700FA371C /* MediaPlayer.framework */; };
+		6BB98679180C3A9200FA371C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98678180C3A9200FA371C /* CoreLocation.framework */; };
+		6BB9867B180C3AA100FA371C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867A180C3AA100FA371C /* CoreMotion.framework */; };
+		6BB9867D180C3ABE00FA371C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */; };
+		6BB9867F180C3AD700FA371C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867E180C3AD700FA371C /* MessageUI.framework */; };
+		6BB98681180C3AE600FA371C /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98680180C3AE600FA371C /* EventKit.framework */; };
 		6BD165DF1803DFC200F140AD /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165DE1803DFC200F140AD /* DataContext.m */; };
 		6BD165E218053A5300F140AD /* HintsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165E118053A5300F140AD /* HintsCell.m */; };
 		6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E318053A9600F140AD /* HintsCell~ipad.xib */; };
@@ -683,12 +683,6 @@
 		6B9227C5180052A1004E1505 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDataManager.h; path = DataLogic/UserDataManager.h; sourceTree = "<group>"; };
 		6B9227C6180052A1004E1505 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDataManager.m; path = DataLogic/UserDataManager.m; sourceTree = "<group>"; };
 		6B9227C81800534F004E1505 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		6BB98676180C3A7700FA371C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		6BB98678180C3A9200FA371C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		6BB9867A180C3AA100FA371C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		6BB9867E180C3AD700FA371C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		6BB98680180C3AE600FA371C /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		6B95DEF3180FCEDD00A88F5A /* pause_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause_bg.png; sourceTree = "<group>"; };
 		6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause_bg~ipad.png"; sourceTree = "<group>"; };
 		6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_disabled.png; sourceTree = "<group>"; };
@@ -707,6 +701,12 @@
 		6B95DF04180FCF1C00A88F5A /* switch_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_slider@2x.png"; sourceTree = "<group>"; };
 		6B95DF05180FCF1C00A88F5A /* switch_slider@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_slider@2x~ipad.png"; sourceTree = "<group>"; };
 		6B95DF06180FCF1C00A88F5A /* switch_slider~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_slider~ipad.png"; sourceTree = "<group>"; };
+		6BB98676180C3A7700FA371C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		6BB98678180C3A9200FA371C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6BB9867A180C3AA100FA371C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		6BB9867E180C3AD700FA371C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		6BB98680180C3AE600FA371C /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		6BD165DD1803DFC200F140AD /* DataContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataContext.h; path = DataLogic/DataContext.h; sourceTree = "<group>"; };
 		6BD165DE1803DFC200F140AD /* DataContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataContext.m; path = DataLogic/DataContext.m; sourceTree = "<group>"; };
 		6BD165E018053A5300F140AD /* HintsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintsCell.h; path = Views/HintsCell.h; sourceTree = "<group>"; };
@@ -2849,8 +2849,6 @@
 				F2C52D4F16CB70B100871649 /* tile_question_correct_gold@2x.png in Resources */,
 				F268D55116F0903900F0FA0F /* login_register_ava_frame@2x.png in Resources */,
 				F268D55216F0903900F0FA0F /* login_register_ava_frame@2x~ipad.png in Resources */,
-				F268D56916F6D9A900F0FA0F /* switch_disabled@2x~ipad.png in Resources */,
-				F268D56A16F6D9A900F0FA0F /* switch_disabled@2x.png in Resources */,
 				6B852002180C3851002354B0 /* Images.xcassets in Resources */,
 				F268D57B16F9AB0D00F0FA0F /* puzzles_news_page_current@2x.png in Resources */,
 				F268D57C16F9AB0D00F0FA0F /* puzzles_news_page@2x.png in Resources */,
