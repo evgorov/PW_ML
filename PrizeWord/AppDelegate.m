@@ -67,7 +67,7 @@ static NSRecursiveLock * dbLock = nil;
     _isIPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
     [Crashlytics startWithAPIKey:@"41fbbeb2af9ef97717a85b18418a3cb2055ebcb9"];
     
-    [Tapjoy requestTapjoyConnect:@"b77b17c3-ccd3-4aba-979d-5307edce0a8b" secretKey:@"ZspEG1Io8dB6ETzFNnbc" options:@{TJC_OPTION_ENABLE_LOGGING : @(YES)}];
+    [Tapjoy requestTapjoyConnect:@"2c75a972-e62b-4f17-93ef-b97457c6a8fb" secretKey:@"5n9Ey0ZBVvcH7nsTsr6Q" options:@{TJC_OPTION_ENABLE_LOGGING : @(YES)}];
     
     [Flurry startSession:@"DBWS85GPDMJWKCDDXH39"];
     
