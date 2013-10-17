@@ -17,6 +17,7 @@
     IBOutlet UIImageView *badgeImage;
     IBOutlet UILabel *lblPercent;
     IBOutlet UILabel *lblScore;
+    IBOutlet UIImageView *imgProgressBg;
     IBOutlet UIImageView *imgProgress;
     IBOutlet UIImageView *imgStar;
     IBOutlet UIView *imgOverlay;

@@ -39,8 +39,12 @@
                     <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puzzles_badge_progress_bg.png" id="2jJ-h5-Uh6">
+                    <rect key="frame" x="5" y="92" width="59" height="13"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_badge_progress.png" id="11">
-                    <rect key="frame" x="8" y="96" width="10" height="7"/>
+                    <rect key="frame" x="6" y="92" width="13" height="13"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_badge_star.png" id="24">
@@ -60,6 +64,7 @@
                 <outlet property="imgBg" destination="14" id="63"/>
                 <outlet property="imgOverlay" destination="59" id="62"/>
                 <outlet property="imgProgress" destination="11" id="17"/>
+                <outlet property="imgProgressBg" destination="2jJ-h5-Uh6" id="5hX-up-7LU"/>
                 <outlet property="imgStar" destination="24" id="46"/>
                 <outlet property="lblPercent" destination="12" id="16"/>
                 <outlet property="lblScore" destination="23" id="45"/>
@@ -68,7 +73,8 @@
     </objects>
     <resources>
         <image name="puzzles_badge_bg.png" width="58" height="94"/>
-        <image name="puzzles_badge_progress.png" width="8" height="7"/>
+        <image name="puzzles_badge_progress.png" width="11" height="11"/>
+        <image name="puzzles_badge_progress_bg.png" width="50" height="11"/>
         <image name="puzzles_badge_star.png" width="11" height="12"/>
     </resources>
 </document>

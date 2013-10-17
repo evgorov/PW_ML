@@ -67,7 +67,6 @@
             
             lblPercent.hidden = NO;
             imgProgress.hidden = NO;
-            imgBg.image = [UIImage imageNamed:@"puzzles_badge_bg.png"];
             lblPercent.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
             lblPercent.text = [NSString stringWithFormat:@"%d%%", (int)(_puzzle.progress * 100)];
             
@@ -81,6 +80,7 @@
             {
                 image = [image stretchableImageWithLeftCapWidth:(imageSize.width / 2) topCapHeight:(imageSize.height / 2)];
             }
+            imgProgressBg.hidden = NO;
             imgProgress.image = image;
             imgProgress.frame = CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height);
         }
@@ -96,7 +96,7 @@
             
             lblPercent.hidden = YES;
             imgProgress.hidden = YES;
-            imgBg.image = [UIImage imageNamed:@"puzzles_badge_done_bg.png"];
+            imgProgressBg.hidden = YES;
             int score = _puzzle.score.intValue;
             if (score < 1000)
             {

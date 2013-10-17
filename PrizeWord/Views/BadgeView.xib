@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="58" height="94"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_badge_bg.png" id="14">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_badge_done_bg.png" id="14">
                     <rect key="frame" x="0.0" y="0.0" width="58" height="94"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
@@ -29,8 +29,12 @@
                     <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puzzles_badge_progress_bg.png" id="D7O-Ox-tel">
+                    <rect key="frame" x="4" y="78" width="50" height="11"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="puzzles_badge_progress.png" id="11">
-                    <rect key="frame" x="6" y="80" width="8" height="7"/>
+                    <rect key="frame" x="6" y="78" width="8" height="11"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="23">
@@ -60,6 +64,7 @@
                 <outlet property="imgBg" destination="14" id="65"/>
                 <outlet property="imgOverlay" destination="59" id="64"/>
                 <outlet property="imgProgress" destination="11" id="17"/>
+                <outlet property="imgProgressBg" destination="D7O-Ox-tel" id="WOD-od-7Mq"/>
                 <outlet property="imgStar" destination="24" id="46"/>
                 <outlet property="lblPercent" destination="12" id="16"/>
                 <outlet property="lblScore" destination="23" id="45"/>
@@ -67,8 +72,9 @@
         </view>
     </objects>
     <resources>
-        <image name="puzzles_badge_bg.png" width="58" height="94"/>
-        <image name="puzzles_badge_progress.png" width="8" height="7"/>
+        <image name="puzzles_badge_done_bg.png" width="58" height="94"/>
+        <image name="puzzles_badge_progress.png" width="11" height="11"/>
+        <image name="puzzles_badge_progress_bg.png" width="50" height="11"/>
         <image name="puzzles_badge_star.png" width="11" height="12"/>
     </resources>
 </document>
