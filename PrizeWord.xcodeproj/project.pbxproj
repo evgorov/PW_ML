@@ -518,7 +518,6 @@
 		F2A22DEB1664853100CF7859 /* tile_question_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE21664853100CF7859 /* tile_question_new@2x.png */; };
 		F2A22DEC1664853100CF7859 /* tile_question_wrong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */; };
 		F2A22DF216648AAA00CF7859 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2A22DF116648AAA00CF7859 /* QuartzCore.framework */; };
-		F2B1FC2616FC980500DF3A13 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */; };
 		F2B83ADA166FDA00007C4596 /* LoginMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */; };
 		F2B83ADB166FDA00007C4596 /* LoginMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */; };
 		F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2B83AEF166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png */; };
@@ -1215,7 +1214,6 @@
 		F2A22DE21664853100CF7859 /* tile_question_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_new@2x.png"; sourceTree = "<group>"; };
 		F2A22DE31664853100CF7859 /* tile_question_wrong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile_question_wrong@2x.png"; sourceTree = "<group>"; };
 		F2A22DF116648AAA00CF7859 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../../../../../../Users/sko/Documents/FacebookSDK/FacebookSDK.framework; sourceTree = SDKROOT; };
 		F2B83AD7166FDA00007C4596 /* LoginMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginMainViewController.h; path = ViewControllers/LoginMainViewController.h; sourceTree = "<group>"; };
 		F2B83AD8166FDA00007C4596 /* LoginMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginMainViewController.m; path = ViewControllers/LoginMainViewController.m; sourceTree = "<group>"; };
 		F2B83AD9166FDA00007C4596 /* LoginMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginMainViewController.xib; path = ViewControllers/LoginMainViewController.xib; sourceTree = "<group>"; };
@@ -1376,7 +1374,6 @@
 				F2D62700165DF80900EF6E8A /* Foundation.framework in Frameworks */,
 				F2D62702165DF80900EF6E8A /* CoreGraphics.framework in Frameworks */,
 				F2D62704165DF80900EF6E8A /* CoreData.framework in Frameworks */,
-				F2B1FC2616FC980500DF3A13 /* FacebookSDK.framework in Frameworks */,
 				16FC34F61E1848FD853A8C39 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2225,7 +2222,6 @@
 				6B9227C81800534F004E1505 /* SystemConfiguration.framework */,
 				6B3CC7991771FBEC003D57B6 /* Security.framework */,
 				6B3CC7971771FBE6003D57B6 /* libsqlite3.dylib */,
-				F2B1FC2516FC980500DF3A13 /* FacebookSDK.framework */,
 				F268D52016E8C62C00F0FA0F /* AudioToolbox.framework */,
 				F20F0F1816E8C3C8009AEEE6 /* OpenAL.framework */,
 				F2FD010216E132FA005144A3 /* AVFoundation.framework */,

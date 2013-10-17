@@ -7,432 +7,993 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05C719CAF9EC4A94B3739812 /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D3887501478404D804708A1 /* SBJsonStreamParser.h */; };
-		05E2653E6D2E49A997C2320D /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = DE75AECFE9B947159F111AA4 /* AFURLConnectionOperation.h */; };
-		0824350418DF45F892ABF924 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E47E2A25D4CB495A92FB4711 /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		09170FA814404A9D9E4F9CF5 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E44475735A9249099BB8C88C /* AFNetworkActivityIndicatorManager.h */; };
-		0A7C4FE47C024742BF5DE7A1 /* libPods-AFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BF692A6BDE43BBB753811E /* libPods-AFNetworking.a */; };
-		124260C1A49F44679387461A /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = C9911B7911354066892D1339 /* SBJsonUTF8Stream.h */; };
-		1B1A7252F5A74FC5883028C3 /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AAB022C852E4273A868524F /* AFImageRequestOperation.h */; };
-		1C428F0A3D1947A6A67EE0BA /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C5AF907E5414A7083F2F959 /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		1D963F108CE647F59DED0273 /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA1A77894CD4CDAAD502148 /* SBJsonStreamParserAccumulator.h */; };
-		214F88DADF004F52BA1D5FE8 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D81DA341BE9E41DB92D7FF67 /* AFPropertyListRequestOperation.h */; };
-		237372B554E54A3D9E791DF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1E4B644CAC4E59B0A4533C /* CoreGraphics.framework */; };
-		2E53BF6B725144FDAF15A3DE /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = CDE6D215BA53466ABF2480C4 /* SBJsonStreamWriter.h */; };
-		34AF10EAB05D4E989D86C881 /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C8E5326719E43F19E5008E9 /* SBJsonTokeniser.h */; };
-		3A9FC43833E7446BB54BB5B0 /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = AD5AD6AF53C64199BA74CA15 /* AFJSONRequestOperation.h */; };
-		40F2DB5673F744C7B4471935 /* Flurry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E8F3E0B6A59409FAE08B4DE /* Flurry.h */; };
-		43336259967B4A2DA5B0DAA9 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BB8B004BFF04F548252DBB2 /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		4DAEA82C79A647EAA19FDC61 /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 787CA549CA5E4C35896B2B58 /* SBJsonStreamParserAdapter.h */; };
-		4ECAAA58FEFB4E7A8D8B49CC /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DF67A16089F4BA2864F5D72 /* SBJsonWriter.h */; };
-		52D7A614EA894596B76DCE7E /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FC87CDB30BF54BBC8E66C6FF /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		540514D70CA9442A8E1DF526 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FED8BA1CF8D4069AFEDB16B /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		5E158A28083145929C3E6CE2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B670E34E984DC38CDA5A70 /* UIKit.framework */; };
-		5FB6B99B78854DA4B98C852E /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = CD1959D7AB904CFAA61C53E1 /* AFHTTPClient.h */; };
-		6094A8E8C32C4E15B2718BA7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C8A510F9FA47DF9FE06054 /* MobileCoreServices.framework */; };
-		6E1067CDDFB741F9BC14CEE8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393647CC46D54A028515FE94 /* Security.framework */; };
-		6F0634F9C1DF4D2BBC23321D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8BA9C4542DB4710AF0CF22E /* Foundation.framework */; };
-		7128129EEAE1463390065AFA /* Pods-SBJson-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 15130767525D4A63B7A3FDF2 /* Pods-SBJson-dummy.m */; };
-		7386B746A0DD449F9E90AAF9 /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = 2565D5BA9D0944CBB08F2232 /* SBJson.h */; };
-		74860302C612470C9DDDDFA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8BA9C4542DB4710AF0CF22E /* Foundation.framework */; };
-		8036E91A422C41379DF9AD10 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C117A3A38664DEB8144F618 /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		86A486A449384349A45DD5F7 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C687EDB6C0C45EFBF3B30AA /* SBJsonParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		8748D9E0DD8E4A99BC832452 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE340F0B15D4651B56483DD /* SystemConfiguration.framework */; };
-		88243951D729489D92D6FE27 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = A01B3ECE9AA84C33A634935F /* AFNetworking.h */; };
-		8B4DE639C055482D8C2ABE1F /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC10FB09A344927925C2A34 /* SBJsonStreamParserAdapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		8FFC5A2E1273403DBB5FE74D /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 559FEA6B49BF42E093935A13 /* SBJsonWriter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		90DE01C279284D578C9A28E2 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 332AA0DAC8964A64AAD9E0C3 /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		93DCFF9603C242268CBAD9A2 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4276A6063C0D482F8F57A6A9 /* SBJsonStreamParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		943A7F54B77D4831BDF1A194 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BF0CA4EC23640D7B9BEED5C /* SBJsonStreamWriterState.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		94B542022F434E6CA17DF31E /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = ECB55A58F2764D59908AEF43 /* AFXMLRequestOperation.h */; };
-		97E317CE74BD402887639C72 /* libPods-FlurrySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E1972C5F5F4E298BAD6E80 /* libPods-FlurrySDK.a */; };
-		985DB340C6534CEFAAF22B4C /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F3620F6426884920B53022FA /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		9EB742FC22EE4074852FBFAD /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA33D6AF01F48E59CC4C69A /* SBJsonUTF8Stream.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		A49E62FF342448DC8325B0FC /* Pods-FlurrySDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F36465060B04B7380E4EB39 /* Pods-FlurrySDK-dummy.m */; };
-		A70C5507C05B45D18910CFCE /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FB68C32140455A96FECDA0 /* Pods-dummy.m */; };
-		A747B1D5D668443FB51E423A /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = F549AFCA07D24E77B57BC15B /* SBJsonStreamParserState.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		A7D653DBF3B64C33B6FB6694 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A43988665E64F7D9CDE0EA4 /* SBJsonStreamWriterAccumulator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		ACD548DC6DE74A81B488819D /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = C27CF38A7CE8498F901017DE /* NSObject+SBJson.h */; };
-		B2030E6344724186BDAC858E /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = E1D7CECA5F2A496699C7C084 /* SBJsonStreamParserState.h */; };
-		B676B974547648569CA21F0C /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = B7167EE6920F494392B8A6DD /* SBJsonTokeniser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		BA912DBBB9C148DBB6A84262 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1E4B644CAC4E59B0A4533C /* CoreGraphics.framework */; };
-		C18701D481F34EE18F0B5A85 /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B78D51B76CDC4C479ADA5C93 /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		C945D385CF6449E5B4192826 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C0A95C1E0D94566A726DE83 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		CB29E7A3E2F347B885CD0E3C /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A2E99BF3FDF4050A66AE784 /* SBJsonStreamWriterState.h */; };
-		D15E887F8C0E4A678E158996 /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A12DD05B059465B84775B2F /* SBJsonParser.h */; };
-		D8D264E4EE7147798738D5F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393647CC46D54A028515FE94 /* Security.framework */; };
-		DA7589FE88314DCAB109B0B8 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 65EF28D64F90463DAE3CC489 /* AFHTTPRequestOperation.h */; };
-		DB3B970FC35546BA88A2D561 /* Pods-AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B6E5FC59A44C3B04361B3 /* Pods-AFNetworking-dummy.m */; };
-		E069E9A1E9C4455594FFFECB /* libPods-SBJson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1964F25973D74D48A414EC6C /* libPods-SBJson.a */; };
-		E4794E1B5C3F44329EFD6038 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B51EFA76D6E348088EA0CD8C /* SBJsonStreamWriter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		EC96686FF6304B8785E337E2 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 1423569D2F5C416BA5A15E56 /* UIImageView+AFNetworking.h */; };
-		EE353784802A47CAA3188649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8BA9C4542DB4710AF0CF22E /* Foundation.framework */; };
-		EE48BBB644DB4752AF866666 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE340F0B15D4651B56483DD /* SystemConfiguration.framework */; };
-		F32FEC6C37274AE6923D1FB7 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E19A52F444413FA48C4978 /* SBJsonStreamParserAccumulator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
-		F3666D3A0AA942F588344769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8BA9C4542DB4710AF0CF22E /* Foundation.framework */; };
-		F761364D23434142A847D93D /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F10A71004524F279249F44E /* SBJsonStreamWriterAccumulator.h */; };
+		0031EFDAE61543F5863CEC2F /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6573B889A0364AADA3703105 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		00498536ACEA4E04B1BC34A6 /* FBDialogsParams.m in Sources */ = {isa = PBXBuildFile; fileRef = D896F7CC954C489A9B5AC7A7 /* FBDialogsParams.m */; };
+		00CE76F93D24424593EAA0D7 /* FBAppCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBE593E1184B21B3B52391 /* FBAppCall.m */; };
+		019D207FE0544DB5A71D8E4E /* FBPlacePickerCacheDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6943D0A099C54170B6930488 /* FBPlacePickerCacheDescriptor.m */; };
+		01D9C6B5415544189353E1E1 /* FBLoginViewButtonPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = 19C3334B06E3417086449E8F /* FBLoginViewButtonPNG.m */; };
+		0270294D00094F2B819AA147 /* FBUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BCB975BCD14613B332B8EC /* FBUserSettingsViewController.m */; };
+		02DE7851357741A8833462D4 /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = 708053992F4D403097D1E3E7 /* SBJsonStreamParserState.h */; };
+		0362433B2DDD4C87BE181963 /* FBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AED7BA6DE8A489FAD7CEC68 /* FBBase64.m */; };
+		0436BD12B15F4D4EB83F4163 /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = DAD2F3EAF96A4141A4F42CB4 /* AFXMLRequestOperation.h */; };
+		04AF97E70E9E445E9714C965 /* NSError+FBError.h in Headers */ = {isa = PBXBuildFile; fileRef = B7506972FB30417CBA813041 /* NSError+FBError.h */; };
+		0833D27EA24042E99249B0A1 /* FBSession+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = AACE065567704A4BB1E50764 /* FBSession+Protected.h */; };
+		092E4B257C974A429C711D64 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = BE65AED0A05B4490ADD822FD /* FBDialog.m */; };
+		0954C23459AB4B889780AF26 /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = 877A7AF71FF941419844A09D /* SBJsonStreamWriterState.h */; };
+		0B9A15B69ECF4802B941E928 /* FBProfilePictureViewBlankProfileSquarePNG.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D3E7BAF1B2426F9B61E731 /* FBProfilePictureViewBlankProfileSquarePNG.h */; };
+		0B9BCBB67F364AF2AB50B524 /* FBAppLinkData.h in Headers */ = {isa = PBXBuildFile; fileRef = 87B55B1D279645A0A0CF594C /* FBAppLinkData.h */; };
+		0D06443272C846DBA3464634 /* FBLoginViewButtonPressedPNG.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC63F64924B46D18E282FE9 /* FBLoginViewButtonPressedPNG.h */; };
+		10039F2AB448460181DDEACF /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DE3BE015EA4AE4BBA919CE /* SBJsonStreamWriterState.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		12CF3DC30CD24918AB3CE522 /* FBOpenGraphAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A573D0626FB4897BEC4649D /* FBOpenGraphAction.h */; };
+		12E1D704E4DB469B9045D59B /* FBAppLinkData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C101C1ED1414A3DB8A8FB13 /* FBAppLinkData.m */; };
+		13B5FC7144C24FC99C0A9F45 /* FBGraphObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 569C555EDEF34EB7A96044D5 /* FBGraphObject.m */; };
+		14502F7970AA48AF862B3BA1 /* FBCacheDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 406D275657AA460D8404880C /* FBCacheDescriptor.m */; };
+		1500BE2E8C8E46D9AC339EB5 /* FBGraphUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 26BCDFBD1FBA4D0C976E628F /* FBGraphUser.h */; };
+		17C0C26025594F5490FB2206 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 597808E34E624B6EB31D1822 /* SBJsonStreamWriterAccumulator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		188B5D9C1A8340CE9450E28F /* FBDialogs+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A597B4BB009D4A1387D23A61 /* FBDialogs+Internal.h */; };
+		197A2D4A51A044F6B36CC323 /* FBGraphObjectTableDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 43AAE3D0D0304A339AB53042 /* FBGraphObjectTableDataSource.h */; };
+		1981E0D1936A4CA39B75D0AE /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = D47240303D6F49C78B8A8F02 /* SBJsonStreamParserState.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		1A09735A624447F0BB30B60C /* FBFriendPickerCacheDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 79316B007E494FF5AC132980 /* FBFriendPickerCacheDescriptor.m */; };
+		1A5486DA1A714AD5A3EE1088 /* FBOpenGraphObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 147C1F0D8A6245A18862622B /* FBOpenGraphObject.h */; };
+		1BA2006CEE8F42D8ABE8E70E /* FBAccessTokenData+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 91CA95188CBD4E7682074ABF /* FBAccessTokenData+Internal.h */; };
+		1C0E2B8883B54547BBD0C4C4 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D07DF9A2A2D4C9AA2D32858 /* AFHTTPRequestOperation.h */; };
+		1C83B895859143449B90A4D4 /* FBAppEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C127294979449C5B3ADCCE6 /* FBAppEvents.m */; };
+		1DA2B2AB7DDB4B6E95227415 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE47E6F87B424F9C9769AADF /* CoreGraphics.framework */; };
+		1E9D61AB57584415A069DE9C /* FBProfilePictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = E002E2A32AFE4C87A0DB4962 /* FBProfilePictureView.m */; };
+		1EB363DB61AD4E48B4EC2781 /* Flurry.h in Headers */ = {isa = PBXBuildFile; fileRef = F84323BC2A754937A3D8C550 /* Flurry.h */; };
+		20BB914EEB694B09B30C7E16 /* FBLoginView.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A1F8D9CA2044D3871281ED /* FBLoginView.h */; };
+		2108A125FB5B4AFB9444A87E /* Pods-AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09BE9D869C49C581F7B303 /* Pods-AFNetworking-dummy.m */; };
+		2118B82439524ABAB4F7FA4A /* FBRequestBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 193B31D67C844C5FB00E052A /* FBRequestBody.h */; };
+		2129700E07B543BF853DFD75 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5841FF58F040B1A6D0BDA4 /* SBJsonStreamParserAdapter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		21CB09BACD1C448FBF53D2CC /* libPods-SBJson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A15EBBB7AF4DD2A0BF11BC /* libPods-SBJson.a */; };
+		22B0838910D749BD9F1FD69D /* FBPlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F51632F3B0724C5F93A3573B /* FBPlacePickerViewController.m */; };
+		22C499DFE8054A70A58E9535 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3301F84409BD4C9AA9AC8A21 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		262B95EBDFAA4B23836A4E61 /* FBSessionAuthLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 4630B9CA11E948BFB5386083 /* FBSessionAuthLogger.h */; };
+		26FE5704EB5A4AD3AB64FA53 /* FBLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 97B13B9242A74FA89A66CF81 /* FBLogger.h */; };
+		286379A172174581850AD290 /* FBDialogs.h in Headers */ = {isa = PBXBuildFile; fileRef = F0454CA18B634F89ACB1C63A /* FBDialogs.h */; };
+		28B61D0BE1814D25BD30DFA8 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D8005203DF40C1B653F00F /* SBJsonWriter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		29A356510C1D4172B5F91317 /* FBCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE21A1F3A1E4779B90C5539 /* FBCrypto.m */; };
+		29D8F0EED8174FF7B18A6807 /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F7F7314AF91496E829B03DC /* AFJSONRequestOperation.h */; };
+		2C3781E6F4324BB2B422DD2C /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C1DDB82CDD4348A5ABB640 /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		2CF7C4B8A2164A60AB7A8B22 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AEB3AD71F1455FA45A857B /* Foundation.framework */; };
+		2E410403BDC04F46AECCAC53 /* FBDataDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FF27DEEA7FB44491AF55E2EE /* FBDataDiskCache.m */; };
+		306F3225EE784C45BFB441C1 /* FBLoginViewButtonPNG.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A82A75545F7454BB90C66C0 /* FBLoginViewButtonPNG.h */; };
+		315C5F170090400E84CB7A19 /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D768DA9209644C7F82281D14 /* AFImageRequestOperation.h */; };
+		323ECDD0688549AEB38F19CD /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AEFB05EF0E64AB8AD9D4D55 /* SBJsonStreamParserAdapter.h */; };
+		326F7602CF0F48D5BE9DFC42 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 591F4740F0E241B09A6CFB1D /* Facebook.m */; };
+		32A156E8D9B4455D91F09324 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A92C6F459D1646569582AC58 /* Pods-dummy.m */; };
+		32D64FD4449944A59B6DC350 /* FBFetchedAppSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = DFF30D12D67D4B92BD3CC40F /* FBFetchedAppSettings.h */; };
+		330D91EF7B3147068A59798B /* FBGraphLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 774841329AE640E390D820B5 /* FBGraphLocation.h */; };
+		33E7D038C532441CBAB5C63D /* FBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EAAFF19C2E4B19805D4A08 /* FBSettings.m */; };
+		354778DB9254444AA5BBBFD2 /* FBFrictionlessRequestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F35CF8274543D6AD7FFE9D /* FBFrictionlessRequestSettings.m */; };
+		35CA3C24F6774CAA89DC0B05 /* FBCacheIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 012D0FADF99E49EA9FEAB21B /* FBCacheIndex.m */; };
+		36D38443C39F4F7A9DC658C2 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA526732A614D0A8568AD09 /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		3730E7F4BDEF4A6E8471117D /* FBShareDialogParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 818D16D8B37D4BE48248D0D5 /* FBShareDialogParams.h */; };
+		39FA0953BCD243549BCE536D /* FBFriendPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D88763675426881A2495E /* FBFriendPickerViewController.m */; };
+		3B84F7BC70134519B4426BF6 /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D7EED55FFCC1495A97C8BF43 /* AFURLConnectionOperation.h */; };
+		3C4EB1A54F3A4223A5ADFFD6 /* libPods-Facebook-iOS-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278D9603018744C58C273126 /* libPods-Facebook-iOS-SDK.a */; };
+		3DEFE3EBF3CD4792B4140CF3 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = E11B17A7F7A64426A00F64F2 /* SBJsonStreamParserAccumulator.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		412551F51EEE4FCCB242E5BA /* FBFrictionlessRecipientCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDADC56719784FFA9716CB0E /* FBFrictionlessRecipientCache.m */; };
+		4237ACB66EE64E38AF6AD197 /* Pods-Facebook-iOS-SDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DDE1026DE1A4E308C408FB4 /* Pods-Facebook-iOS-SDK-dummy.m */; };
+		4250A5F5E90C46A484707749 /* FBSDKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 509D528D519C4E1F982DCF0E /* FBSDKVersion.h */; };
+		4250D82AFC3547DBB24E9A45 /* libPods-FlurrySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2E8FDEB8D174EF2A6BD0D19 /* libPods-FlurrySDK.a */; };
+		426C9820A70D44AC9551CDB3 /* FBRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FAE7651CAA1747928386CC35 /* FBRequest.h */; };
+		4304BAA7F5CB45B1817A2474 /* FBDialogsData+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 89E4101407554EB3A57E497D /* FBDialogsData+Internal.h */; };
+		44076CB22E3E4262AD7CD548 /* FBDialogsParams.h in Headers */ = {isa = PBXBuildFile; fileRef = FFCD549065F0402CBD94BE79 /* FBDialogsParams.h */; };
+		443A8886455D47989A528625 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 9736B85C90434EABA9267C1C /* AFNetworking.h */; };
+		4444491945C345CEB1036F2C /* FBImageResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6542C21ABA9B4148AAFEFDC7 /* FBImageResourceLoader.m */; };
+		44F5C163C4A64FB28D1B3608 /* FBRequestMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 24CB77959CF4422C8A8122D2 /* FBRequestMetadata.m */; };
+		48B3B85330E340A2BA432F8D /* FBPlacePickerViewController+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D68C669C347407EA9C897A1 /* FBPlacePickerViewController+Internal.h */; };
+		4975B3F58DA04FDFB02B44A5 /* FBProfilePictureViewBlankProfileSquarePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = 97648A54D42F42219E2E967A /* FBProfilePictureViewBlankProfileSquarePNG.m */; };
+		49786335A3C04448861A6BB4 /* FBFriendPickerViewController+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = D12928D0C77748948F8B6A51 /* FBFriendPickerViewController+Internal.h */; };
+		4A71D3BD86C1466E9E29EB6E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E343130801A246CE890A3482 /* UIKit.framework */; };
+		4BC327D820A4462292B0B20E /* FBLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E7881FE873E546CEA04DE1B0 /* FBLogger.m */; };
+		4C4919268E7949E888F134E3 /* FBDialogClosePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5E426F649E494C956FCA23 /* FBDialogClosePNG.m */; };
+		4CD94BE2BC2444E2A00313C0 /* FBLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8D63C912F24925AD027E37 /* FBLoginView.m */; };
+		506301C3C24B4E6F97A6EF2F /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC50E1142674F5686A0430B /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		50AC0CEB42884C29A2850943 /* FBFrictionlessRequestSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 56CEB0341FED4128B23D44CB /* FBFrictionlessRequestSettings.h */; };
+		51B3EB3C693C47A58D8A006A /* FBFriendPickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 488DB77CBC7741AEA6FCAD4B /* FBFriendPickerViewController.h */; };
+		52B5AAA414C8407894076F9D /* FBImageResourceLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A3DEE1C65B64AFC89D3D9D6 /* FBImageResourceLoader.h */; };
+		55D0E831FD40487699ADE551 /* FBCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C104E7039EF4275BDD08E34 /* FBCrypto.h */; };
+		561B884CEE0448D2AF971A43 /* FBDialogsData.h in Headers */ = {isa = PBXBuildFile; fileRef = 216BEA1F0AF04C9CBBC0A3BA /* FBDialogsData.h */; };
+		57E177ADAD9B4175AE3731A3 /* Facebook.h in Headers */ = {isa = PBXBuildFile; fileRef = F114A2C3D44F4B43A47F992E /* Facebook.h */; };
+		57FC33A73FCC49A08882B6D6 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 744DF1A7A92642E7B8FD95C5 /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		57FFA08203A643B2BF8D7352 /* FBURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB9CE44A46C482C85B4A4C1 /* FBURLConnection.m */; };
+		5A74CA8421CE47D6B763DDE7 /* FBGraphObjectPagingLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 349021B281FA4FE1B0A66DD7 /* FBGraphObjectPagingLoader.m */; };
+		5F04FC40EDC048538A0FA5BA /* FBRequestMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C35A823B9FE4A0280C1E7DC /* FBRequestMetadata.h */; };
+		60D1A6078C234A03B6946F29 /* FBCacheIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B99E462CFCE49DA879C5AAC /* FBCacheIndex.h */; };
+		61E667B39DCC41228768B1C3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AEB3AD71F1455FA45A857B /* Foundation.framework */; };
+		6283A3CCF52E49EF973E42B6 /* FBDialogs.m in Sources */ = {isa = PBXBuildFile; fileRef = B2393D66BD7F445E8782ECF4 /* FBDialogs.m */; };
+		6570353689D14E72B5EBC654 /* FBRequestConnectionRetryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A9ADF2F493430C94843AED /* FBRequestConnectionRetryManager.m */; };
+		65AAC7C1F9354BDFB2E0773A /* FBAppBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B89782429BE49FEB36FBF3B /* FBAppBridge.h */; };
+		6697F25207AC4EBE9BB9393C /* FBRequestConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E7D1C46F9E4D5CAF82AE51 /* FBRequestConnection.m */; };
+		67BBC2FA07FE4DCCA4C40BED /* FBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B93683325D47CC8E311D9B /* FBRequest.m */; };
+		698D40356FD84B4897CBADD2 /* FBDynamicFrameworkLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 531E42A316E243B0BC917609 /* FBDynamicFrameworkLoader.m */; };
+		69F5D042649042FCB40CE724 /* FBOpenGraphActionShareDialogParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 84C5CE0EB010425E84FB6521 /* FBOpenGraphActionShareDialogParams.h */; };
+		6A91282317A74AD7B5D7D678 /* FBFriendPickerViewDefaultPNG.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F615D93DB2E421894550C6E /* FBFriendPickerViewDefaultPNG.h */; };
+		6B4BE22370E743D9A5A37DE1 /* FBUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = D79984205C73468D925041DE /* FBUtility.m */; };
+		6D63F4A8749C4CD09BF54220 /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = E91B4E5B38014C71A7B0A3A4 /* SBJsonStreamParser.h */; };
+		6ED068348ACB41A09F7C3033 /* FBSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 35B78FF266FF4856A9988D95 /* FBSettings.h */; };
+		6ED109AEB8F849C4B9EE2D8B /* FBLoginDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF03E3F9AA74C1AA675E6E0 /* FBLoginDialog.m */; };
+		6F4FD77392B846BCBC05C536 /* FBInsights.m in Sources */ = {isa = PBXBuildFile; fileRef = C03D4EC082734D9B947BCBF1 /* FBInsights.m */; };
+		704418172B2C496EBE209C3F /* FBFrictionlessDialogSupportDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E855D195C4C4105B9221ABB /* FBFrictionlessDialogSupportDelegate.h */; };
+		7487A4A9B4A9472A88BED936 /* FBRequestConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 62C8956F78084E44BF71B67D /* FBRequestConnection.h */; };
+		74E4DFCE07454B75A0567EF4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCDBDA836FC4C04954326B8 /* SystemConfiguration.framework */; };
+		74FC69AA3ACB4481BFE79194 /* FBRequestBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809C73FF8DB4B56A80A3473 /* FBRequestBody.m */; };
+		7550D25885004C03B044D06C /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 67E080BF304148FE8E681768 /* SBJsonStreamWriter.h */; };
+		7668EDFCAC2449D5B6866526 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AEB3AD71F1455FA45A857B /* Foundation.framework */; };
+		769AF01739224075BDCBDA07 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 035E4FBB1E8D46E7AE153367 /* SBJsonParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		78BBD8F341DE430887AE1491 /* FBRequest+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 85B8EEE3D04842FB92632D7A /* FBRequest+Internal.h */; };
+		7B4B2C812BEA477BACB55F4B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C67A0EB9A5D4C83870B1378 /* CoreLocation.framework */; };
+		7D68AE5F98D8479D957DAB00 /* FBDynamicFrameworkLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = EB68A106BF88443694E4811B /* FBDynamicFrameworkLoader.h */; };
+		7DD4CB21C797408A8570F327 /* FBError.h in Headers */ = {isa = PBXBuildFile; fileRef = EC4640FE5B314E9687E50C85 /* FBError.h */; };
+		7F41211ECA0040638B17D2CE /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AD9E3AFD431468AB2DA6A2D /* SBJson.h */; };
+		7F8EB80F32C74411ACA99C72 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 24317DD496554B60B024F036 /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		7FF53F3060E746F986B864FA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AEB3AD71F1455FA45A857B /* Foundation.framework */; };
+		8101D8183CE84EA1A0173A46 /* libPods-AFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A2F721FA8A425E8AF22D55 /* libPods-AFNetworking.a */; };
+		82494C6CC29B462EAFB3F6DB /* FBLoginDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FC22439DF84875ABDA4518 /* FBLoginDialog.h */; };
+		841601A9F7D5470B9C38D886 /* FBSystemAccountStoreAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 218006FE903946D392BC0D87 /* FBSystemAccountStoreAdapter.m */; };
+		85A32F32C27147D1BA358DED /* FacebookSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 70A9A52F032B46AD896A3B4D /* FacebookSDK.h */; };
+		87B179796BA5409FBE1D1B3E /* FBAppBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EE172C937E44C39FDB0C6B /* FBAppBridge.m */; };
+		87DA00DB479F426D9210E54A /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C03435CECA684F4E8501D772 /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		87DABEC5E91146ADBA8362A4 /* FBTestSession+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = FBD399B8CFE14D2EA8B4B908 /* FBTestSession+Internal.h */; };
+		8802CE6AE6F84251B2138D64 /* FBDialogsParams+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F318F70464B4704B4410910 /* FBDialogsParams+Internal.h */; };
+		8A76B63BC5734553BE480103 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 704C7466E477401395832F75 /* SBJsonStreamParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		8B9D2507DADD44F3B9DD2901 /* FBAppBridgeTypeToJSONConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 077EF6CFE6ED41B5B4DE4DEA /* FBAppBridgeTypeToJSONConverter.h */; };
+		8BEDEDC1A7B94E98AF4D64A2 /* FBSessionTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DFFAF2DD3E4A42ADFE150A /* FBSessionTokenCachingStrategy.m */; };
+		8CDE24D6F3274264BC7BA7E1 /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = B6EAAF9028D1493CBD781A9A /* SBJsonTokeniser.h */; };
+		8D88D228E7E542F991D54C8E /* FBSessionAppEventsState.h in Headers */ = {isa = PBXBuildFile; fileRef = 09D9EF3D18A947998BB66428 /* FBSessionAppEventsState.h */; };
+		8DEC2E3D4A104F778068302C /* FBFriendPickerViewDefaultPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = 835C0DEFD5B049D5AD1BA8F3 /* FBFriendPickerViewDefaultPNG.m */; };
+		8E76E866B5AB47D288F26FF7 /* FBAppEvents+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BC87AB1970439689D62858 /* FBAppEvents+Internal.h */; };
+		8FDC2373363A4D3AA1BD8D8A /* FBDialogsData.m in Sources */ = {isa = PBXBuildFile; fileRef = AC912CEA8C1D43E8B9CB66DE /* FBDialogsData.m */; };
+		91955E65380C4B0D8667A538 /* FBRequestHandlerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D61E34A5A3264326A79EEFDD /* FBRequestHandlerFactory.h */; };
+		944F795B95A94504902CFCEE /* FBURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BAF087B5964D7E9D3066F8 /* FBURLConnection.h */; };
+		97010BE922F841E49B0B0BB9 /* FBAppLinkData+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BCDC04C77014536BF813747 /* FBAppLinkData+Internal.h */; };
+		9791D7F732D94D4CA14511D6 /* FBCacheDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 016E5626BBB44C61B4B9209C /* FBCacheDescriptor.h */; };
+		9BB7C24194C64117A535DD22 /* FBConnect.h in Headers */ = {isa = PBXBuildFile; fileRef = 57160377D9D34D229D6B155A /* FBConnect.h */; };
+		9D9D7E121F484C9C9A06BC46 /* FBSessionManualTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C956A5CB7E04E329036051B /* FBSessionManualTokenCachingStrategy.m */; };
+		9DE825B8C1434D6BAA725E31 /* FBSession+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F37439C8FF940F9B4CC5378 /* FBSession+Internal.h */; };
+		9F2DA18D82A346A7A66667DB /* FBNativeDialogs.m in Sources */ = {isa = PBXBuildFile; fileRef = 697B4DDC77344C31BF1DF55F /* FBNativeDialogs.m */; };
+		A00872DC4720499ABE598877 /* FBWebDialogs.h in Headers */ = {isa = PBXBuildFile; fileRef = 08FC25DF5FBD46EF8C597085 /* FBWebDialogs.h */; };
+		A02D1124FCD14A7D8E45351C /* FBAppCall.h in Headers */ = {isa = PBXBuildFile; fileRef = 235EA03901E24304B46229E6 /* FBAppCall.h */; };
+		A12EB4EAA1044E33903808F9 /* FBErrorUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D5396B19CB24A8798FFDEF8 /* FBErrorUtility.h */; };
+		A191E56C8A6740D6BC2688F0 /* FBGraphObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 35DE098F149D4014B33EAD54 /* FBGraphObject.h */; };
+		A4607349ABBA4740BF34E0D9 /* NSError+FBError.m in Sources */ = {isa = PBXBuildFile; fileRef = 7434F0FD79714123B736E0D5 /* NSError+FBError.m */; };
+		A6A5AC4FBF38490EAB55789A /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 260F509232414C12881D0B3A /* SBJsonTokeniser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		A808BD625C2140E29ADBBB3A /* FBAccessTokenData.m in Sources */ = {isa = PBXBuildFile; fileRef = F84D20932DD443AE8D36E8AE /* FBAccessTokenData.m */; };
+		A91740F3206A445593AB3C9E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6492822664994840B377317B /* Security.framework */; };
+		A9E703564ED34B2F99BE8FDD /* FBFetchedAppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4320B070730449DDBD001260 /* FBFetchedAppSettings.m */; };
+		AA536014BA6D446B88C437FC /* FBLoginDialogParams.h in Headers */ = {isa = PBXBuildFile; fileRef = A55D769373704C0EB6613496 /* FBLoginDialogParams.h */; };
+		AAFA2186BBD3421DB7480FB2 /* FBProfilePictureView.h in Headers */ = {isa = PBXBuildFile; fileRef = A06D750476F24CA38C4D7AF5 /* FBProfilePictureView.h */; };
+		AB0CA654CDFD42C8A90FF3BE /* FBBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BB06C450814493F82CF660B /* FBBase64.h */; };
+		ACF1844044334162A4AF9F87 /* FBRequestConnectionRetryManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FC30D1E0E6D24D548F9B2276 /* FBRequestConnectionRetryManager.h */; };
+		ADFE9A6B42B642C68A727C92 /* FBOpenGraphActionShareDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = CC87AE3CFF764CA8A076D0A3 /* FBOpenGraphActionShareDialogParams.m */; };
+		ADFF56EA077C4CB6AAFF533F /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FED262AFEF463887DB2477 /* AFHTTPClient.h */; };
+		AEB9C6B559D842E8A86A6464 /* FBDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 3955B6D4B59B43BD82BAB99E /* FBDialog.h */; };
+		AF2E27506A8F443680842D36 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DED3D9705872426386AB520F /* AFNetworkActivityIndicatorManager.h */; };
+		AF64E44329C545D597CB3D71 /* FBRequestHandlerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EEC86A7114CC5B93AC03B /* FBRequestHandlerFactory.m */; };
+		B0F4B6FCBEAE40A598FEB3F5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6492822664994840B377317B /* Security.framework */; };
+		B343FBF0C25045AA83D7EFA0 /* FBAppBridgeTypeToJSONConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C2AA6280B4F31BFC27284 /* FBAppBridgeTypeToJSONConverter.m */; };
+		B9A2145BA8754CEBB38DF25E /* FBGraphObjectTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E05391094A5949E0998D46F5 /* FBGraphObjectTableDataSource.m */; };
+		BA0607C7F676476E8139FD6B /* FBSessionManualTokenCachingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 38AECDF267BD4146877D4E20 /* FBSessionManualTokenCachingStrategy.h */; };
+		BAAF7237383B4207839D98C5 /* FBUserSettingsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 83471EDD7F78471BBA51CA7F /* FBUserSettingsViewController.h */; };
+		BC3AFBFD898A41E9A643FAB4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA790F920D314AD5B69EA993 /* MobileCoreServices.framework */; };
+		BCF2877AD8B84BC7AF6E9521 /* FBGraphObjectTableSelection.h in Headers */ = {isa = PBXBuildFile; fileRef = F40DC59F8897460D93D00E9D /* FBGraphObjectTableSelection.h */; };
+		C084387FE2284F139F434EE0 /* FBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C438D448A4920945E50EC /* FBViewController.m */; };
+		C09ADF6D2F894101AAF8E1D5 /* FBUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = E7FEFE1C9C9A40BDBE6A1218 /* FBUtility.h */; };
+		C18FC405A6504E1698B31E88 /* FBFriendPickerCacheDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 65E517733F724CFCB0196CF6 /* FBFriendPickerCacheDescriptor.h */; };
+		C213BC219BBC492F9AF15AD5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCDBDA836FC4C04954326B8 /* SystemConfiguration.framework */; };
+		C3444B886E2F45A88CAC42C6 /* FBDataDiskCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 86B47418EF7B4B61966326DB /* FBDataDiskCache.h */; };
+		C4F4E021569D4D56A9B39FA4 /* Pods-SBJson-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B80017981A4E54AA203D3F /* Pods-SBJson-dummy.m */; };
+		C66FD9775FF043C2934DE7D4 /* FBSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F968E374A94156AEF28197 /* FBSession.h */; };
+		C6740F163E3B4282813E2BBC /* FBGraphObjectPagingLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F1EAF34D5844A2EAADE5C5B /* FBGraphObjectPagingLoader.h */; };
+		C7C22B2F2B044171AC50B439 /* FBSessionAuthLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 15EDAB0415A5463AB44FEFF7 /* FBSessionAuthLogger.m */; };
+		C9D77EB469FC46EFA52285EE /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = EA3DF4EC7A584C3596515F78 /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		CA7891E0C91E4B8BBCCCF838 /* FBGraphObjectTableSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = AC34B1154CC44FDA9EACB202 /* FBGraphObjectTableSelection.m */; };
+		CADEB683DC8B422D8ACBA459 /* FBGraphObjectTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6397867193441B8C7C12F5 /* FBGraphObjectTableCell.m */; };
+		CC23530C96404CC8B3A95A9F /* FBError.m in Sources */ = {isa = PBXBuildFile; fileRef = E26C1A3C23BC49BDAC45669F /* FBError.m */; };
+		CC7489B59EE544468B0E3CCD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE47E6F87B424F9C9769AADF /* CoreGraphics.framework */; };
+		CC8B27D75E4D4420AFA5CEFC /* FBFrictionlessRecipientCache.h in Headers */ = {isa = PBXBuildFile; fileRef = D08450E4043347E4B9970966 /* FBFrictionlessRecipientCache.h */; };
+		CD0FCAB86F8E42118B43A3FA /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = EF948CF3BF9A40E182D70765 /* SBJsonWriter.h */; };
+		CD5E5BA971174EAF87CFE5B3 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 79F50D6047B34154AD6AC360 /* UIImageView+AFNetworking.h */; };
+		CE3A2F6251CA40799EC10750 /* FBSettings+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC357EEC6CA4AD08E4BD4F3 /* FBSettings+Internal.h */; };
+		CF5EADE6437B48CDA39B8427 /* FBGraphObjectTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD25330DA3947F5948D3AD4 /* FBGraphObjectTableCell.h */; };
+		D26F69B948E64F92ACE0A9B4 /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8909010B08624ED6AEE08B61 /* SBJsonStreamWriterAccumulator.h */; };
+		D3CC78DC24724801B47F35D4 /* Pods-FlurrySDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D60126F02467EAC483891 /* Pods-FlurrySDK-dummy.m */; };
+		D5DEC0DB431748AA913745B7 /* FBAppCall+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = EC75EFC1499B4DC9AD610EC0 /* FBAppCall+Internal.h */; };
+		D5F631CC1B9C4AD6964A6D07 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 934910C31BD6440DBCDDBC71 /* AFPropertyListRequestOperation.h */; };
+		D63DCA73C902499AB8DF492B /* FBViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = ACB11B338C8141FA984C8141 /* FBViewController.h */; };
+		D715AE738D614CFE8EB12AAD /* FBAppEvents.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A547606E33B40B5831D07C5 /* FBAppEvents.h */; };
+		D87A331748134F3E83A3933E /* FBProfilePictureViewBlankProfilePortraitPNG.h in Headers */ = {isa = PBXBuildFile; fileRef = D5DEA98B1294454F87883862 /* FBProfilePictureViewBlankProfilePortraitPNG.h */; };
+		D8B5F2F8F4274D7A9CF360C9 /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 786D165114514AC68C3EDBED /* FBSession.m */; };
+		DBA5B105C7EA4592B3065FE0 /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AC4D1BD5795452F86F82B9E /* NSObject+SBJson.h */; };
+		DD09F93D1CBA4A8CA0F1C29E /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 267A7C0511AC46EEA17E231B /* SBJsonStreamWriter.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		DD36018F0D974BA086F688E0 /* FBShareDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 6479CBFDE56040469DD5008C /* FBShareDialogParams.m */; };
+		DD48133C763F44C5AE794911 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AEB3AD71F1455FA45A857B /* Foundation.framework */; };
+		DE0FC014B1ED4D7AA98AB044 /* FBSessionAppEventsState.m in Sources */ = {isa = PBXBuildFile; fileRef = 3242C9C91F024A0E9D343DE7 /* FBSessionAppEventsState.m */; };
+		DE97E5349B854F3EA08F0898 /* FBTestSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5BDE1315B14CA4B5F0DF13 /* FBTestSession.h */; };
+		DECC63968C2F4F90A7809A8C /* FBSessionTokenCachingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CD4E7E9B8B48C7A3CE24AA /* FBSessionTokenCachingStrategy.h */; };
+		E012C54764CD4949AC8E76D8 /* FBSystemAccountStoreAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C802AEAEB8A41AC9619D91C /* FBSystemAccountStoreAdapter.h */; };
+		E199219B4F7346378398DACB /* FBInsights.h in Headers */ = {isa = PBXBuildFile; fileRef = 386D74E82FE54DB29B7692DC /* FBInsights.h */; };
+		E4EFBE1DD67B4599B974023D /* FBGraphPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = 64A0C903418849DCAD9ED468 /* FBGraphPlace.h */; };
+		E9B3718CDAA34A4BA56808DC /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = DA90FAA1C8264AF8BAF4E289 /* SBJsonStreamParserAccumulator.h */; };
+		EC3286D96ECF45488B3EE6BE /* FBErrorUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = BF730DC8098343EEA56F2E4C /* FBErrorUtility.m */; };
+		EE9507B869524C069BDFCFEC /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BFB25AD5F364AC2A795EC0B /* SBJsonParser.h */; };
+		F000BE54ADF7456CB813866C /* FBLoginDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = F81052FDF7A2456DB3FC31E7 /* FBLoginDialogParams.m */; };
+		F06BF9BB8C5943BC82858F2D /* FBRequestConnection+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = C15594762C61424D848896D8 /* FBRequestConnection+Internal.h */; };
+		F0B00D00D2614F1280CFA4FF /* FBPlacePickerViewGenericPlacePNG.h in Headers */ = {isa = PBXBuildFile; fileRef = DBB90479488A4A4798C7B187 /* FBPlacePickerViewGenericPlacePNG.h */; };
+		F1940FB4B6104EFDBFA737D4 /* FBAccessTokenData.h in Headers */ = {isa = PBXBuildFile; fileRef = 04483BDE8FED47ECAC9FE3DC /* FBAccessTokenData.h */; };
+		F1D6AE32095749349C8B6A6A /* FBPlacePickerCacheDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = BD3007D00BB64C3E8B389CE3 /* FBPlacePickerCacheDescriptor.h */; };
+		F218478381A94A70ACBA0C19 /* FBDialogClosePNG.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C60CCEF55F84C9B8F43928A /* FBDialogClosePNG.h */; };
+		F2763FC996464BA9B29700F7 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = B43BAAC8F9E44ACCA61BE554 /* SBJsonUTF8Stream.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		F280DF1B3438422EB000A18E /* FBNativeDialogs.h in Headers */ = {isa = PBXBuildFile; fileRef = 703CE4500C2D4665B80EFF74 /* FBNativeDialogs.h */; };
+		F510E23DBE564899A341E557 /* FBPlacePickerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 84ECB0ECFD5445D2B1551D89 /* FBPlacePickerViewController.h */; };
+		F5AC8E3CABDF4DE7A7C7A0D8 /* FBWebDialogs.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A6E512C914241A681164DE7 /* FBWebDialogs.m */; };
+		F5C2C603318741E68BE54E83 /* FBProfilePictureViewBlankProfilePortraitPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD29222D2C04EE591159874 /* FBProfilePictureViewBlankProfilePortraitPNG.m */; };
+		F6A0020D6BB646D3A3724EA1 /* FBErrorUtility+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A4B6605ABF8496FB6196585 /* FBErrorUtility+Internal.h */; };
+		F71D335CA0D84033873C3D2B /* FBLoginViewButtonPressedPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = BB141D539E1B49119259916A /* FBLoginViewButtonPressedPNG.m */; };
+		F98F07E4913041C59B5DF07D /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FD903C2A75A4F69A6AB094B /* SBJsonUTF8Stream.h */; };
+		FACC5E9C274A48EE8FE10274 /* FBViewController+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 682489812EB64367A2ADC7DD /* FBViewController+Internal.h */; };
+		FC7238AD6DD4454489374A37 /* FBPlacePickerViewGenericPlacePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = 26CB369476AF4036B97D174C /* FBPlacePickerViewGenericPlacePNG.m */; };
+		FE040989966145E4BB54B43D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F691948C459841BCA81892C9 /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		FE8EB14990C840D881C5D186 /* FBTestSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689ADE58FB84B1BBDBEE76D /* FBTestSession.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0B715720477743BB95ECDAA1 /* PBXContainerItemProxy */ = {
+		3BC4D65239BE43E9830EDFF9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11CADA32853C4AB08909FBBE /* Project object */;
+			containerPortal = E6FFFC57B9DA4665943E035C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = A06DED1D0E844D099471313E;
-			remoteInfo = "Pods-FlurrySDK";
+			remoteGlobalIDString = 6B03435F78194E3DABE044DF;
+			remoteInfo = "Pods-SBJson";
 		};
-		43EF020017184C9F9FE6279B /* PBXContainerItemProxy */ = {
+		4F4C83B73C354ED2BD6D412D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11CADA32853C4AB08909FBBE /* Project object */;
+			containerPortal = E6FFFC57B9DA4665943E035C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F6C2FAD9AEC9436ABB6BDFD6;
+			remoteGlobalIDString = 75742D27BA3D41B5957D27FC;
+			remoteInfo = "Pods-Facebook-iOS-SDK";
+		};
+		B581E02595DB4D47AD85A621 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6FFFC57B9DA4665943E035C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4138D915D34F491381972D01;
 			remoteInfo = "Pods-AFNetworking";
 		};
-		D8F1E4CE814B4E91B16EA97D /* PBXContainerItemProxy */ = {
+		CA4EC266CAC048508E466E3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11CADA32853C4AB08909FBBE /* Project object */;
+			containerPortal = E6FFFC57B9DA4665943E035C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8C4AC146383C4EC48C55A37C;
-			remoteInfo = "Pods-SBJson";
+			remoteGlobalIDString = D60D70E903FD4523A4768D33;
+			remoteInfo = "Pods-FlurrySDK";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0BB8B004BFF04F548252DBB2 /* NSObject+SBJson.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+SBJson.m"; path = "Classes/NSObject+SBJson.m"; sourceTree = "<group>"; };
-		0FE340F0B15D4651B56483DD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		138F24D4361C47469507698C /* Pods-AFNetworking-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking-Private.xcconfig"; sourceTree = "<group>"; };
-		1423569D2F5C416BA5A15E56 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
-		15130767525D4A63B7A3FDF2 /* Pods-SBJson-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBJson-dummy.m"; sourceTree = "<group>"; };
-		1964F25973D74D48A414EC6C /* libPods-SBJson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBJson.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A43988665E64F7D9CDE0EA4 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriterAccumulator.m; path = Classes/SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
-		1A4B6E5FC59A44C3B04361B3 /* Pods-AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AFNetworking-dummy.m"; sourceTree = "<group>"; };
-		1AE77C202BB84D5287C9910E /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
-		1DA1A77894CD4CDAAD502148 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserAccumulator.h; path = Classes/SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
-		23C8A510F9FA47DF9FE06054 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		2565D5BA9D0944CBB08F2232 /* SBJson.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJson.h; path = Classes/SBJson.h; sourceTree = "<group>"; };
-		2BE6D34E5BAC4A6199C5F892 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		2FA33D6AF01F48E59CC4C69A /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonUTF8Stream.m; path = Classes/SBJsonUTF8Stream.m; sourceTree = "<group>"; };
-		30FB68C32140455A96FECDA0 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		332AA0DAC8964A64AAD9E0C3 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
-		393647CC46D54A028515FE94 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		4276A6063C0D482F8F57A6A9 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParser.m; path = Classes/SBJsonStreamParser.m; sourceTree = "<group>"; };
-		4C0A95C1E0D94566A726DE83 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
-		4CABA98DAD634745858FA06F /* Pods-AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking.xcconfig"; sourceTree = "<group>"; };
-		4F10A71004524F279249F44E /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriterAccumulator.h; path = Classes/SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
-		559FEA6B49BF42E093935A13 /* SBJsonWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonWriter.m; path = Classes/SBJsonWriter.m; sourceTree = "<group>"; };
-		58AEFBD604674A46BB815411 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		59E267D21EEE462598FAE6F0 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
-		5C8E5326719E43F19E5008E9 /* SBJsonTokeniser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonTokeniser.h; path = Classes/SBJsonTokeniser.h; sourceTree = "<group>"; };
-		5DF67A16089F4BA2864F5D72 /* SBJsonWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonWriter.h; path = Classes/SBJsonWriter.h; sourceTree = "<group>"; };
-		5E8A2E0225934C5DBE6CBC7D /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		5F36465060B04B7380E4EB39 /* Pods-FlurrySDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-FlurrySDK-dummy.m"; sourceTree = "<group>"; };
-		65EF28D64F90463DAE3CC489 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		6BF0CA4EC23640D7B9BEED5C /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriterState.m; path = Classes/SBJsonStreamWriterState.m; sourceTree = "<group>"; };
-		6C5AF907E5414A7083F2F959 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
-		6D3887501478404D804708A1 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParser.h; path = Classes/SBJsonStreamParser.h; sourceTree = "<group>"; };
-		787CA549CA5E4C35896B2B58 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserAdapter.h; path = Classes/SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
-		79E19A52F444413FA48C4978 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserAccumulator.m; path = Classes/SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
-		7A2E99BF3FDF4050A66AE784 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriterState.h; path = Classes/SBJsonStreamWriterState.h; sourceTree = "<group>"; };
-		8E8F3E0B6A59409FAE08B4DE /* Flurry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = Flurry/Flurry.h; sourceTree = "<group>"; };
-		95134235FE0A45CB87A4EC33 /* Pods-SBJson-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBJson-Private.xcconfig"; sourceTree = "<group>"; };
-		97E1972C5F5F4E298BAD6E80 /* libPods-FlurrySDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlurrySDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A12DD05B059465B84775B2F /* SBJsonParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonParser.h; path = Classes/SBJsonParser.h; sourceTree = "<group>"; };
-		9A372CCD75D24174B2289B79 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		9AAB022C852E4273A868524F /* AFImageRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFImageRequestOperation.h; sourceTree = "<group>"; };
-		9B1E4B644CAC4E59B0A4533C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		9C117A3A38664DEB8144F618 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
-		9C687EDB6C0C45EFBF3B30AA /* SBJsonParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonParser.m; path = Classes/SBJsonParser.m; sourceTree = "<group>"; };
-		9EC10FB09A344927925C2A34 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserAdapter.m; path = Classes/SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
-		9FED8BA1CF8D4069AFEDB16B /* AFImageRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFImageRequestOperation.m; sourceTree = "<group>"; };
-		A01B3ECE9AA84C33A634935F /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
-		A0B670E34E984DC38CDA5A70 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		A49010B0481647468E93D0CA /* Pods-FlurrySDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-FlurrySDK-prefix.pch"; sourceTree = "<group>"; };
-		AB4DAA7A17F6472A98811D2F /* Pods-FlurrySDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FlurrySDK.xcconfig"; sourceTree = "<group>"; };
-		AD5AD6AF53C64199BA74CA15 /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFJSONRequestOperation.h; sourceTree = "<group>"; };
-		B38848B7E0D14B21A684D0C0 /* Pods-SBJson.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBJson.xcconfig"; sourceTree = "<group>"; };
-		B3BF692A6BDE43BBB753811E /* libPods-AFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFNetworking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B51EFA76D6E348088EA0CD8C /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriter.m; path = Classes/SBJsonStreamWriter.m; sourceTree = "<group>"; };
-		B7167EE6920F494392B8A6DD /* SBJsonTokeniser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonTokeniser.m; path = Classes/SBJsonTokeniser.m; sourceTree = "<group>"; };
-		B78D51B76CDC4C479ADA5C93 /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFJSONRequestOperation.m; sourceTree = "<group>"; };
-		B8BA9C4542DB4710AF0CF22E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C27CF38A7CE8498F901017DE /* NSObject+SBJson.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+SBJson.h"; path = "Classes/NSObject+SBJson.h"; sourceTree = "<group>"; };
-		C5CEA93BB5064D918DE0DFD4 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		C947DDBDB4874533AC33F15C /* Pods-SBJson-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBJson-prefix.pch"; sourceTree = "<group>"; };
-		C9911B7911354066892D1339 /* SBJsonUTF8Stream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonUTF8Stream.h; path = Classes/SBJsonUTF8Stream.h; sourceTree = "<group>"; };
-		CD1959D7AB904CFAA61C53E1 /* AFHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
-		CDE6D215BA53466ABF2480C4 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriter.h; path = Classes/SBJsonStreamWriter.h; sourceTree = "<group>"; };
-		D81DA341BE9E41DB92D7FF67 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
-		DA5D104C6F9E49DDA5C31E73 /* Pods-AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AFNetworking-prefix.pch"; sourceTree = "<group>"; };
-		DE75AECFE9B947159F111AA4 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
-		E1D7CECA5F2A496699C7C084 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserState.h; path = Classes/SBJsonStreamParserState.h; sourceTree = "<group>"; };
-		E44475735A9249099BB8C88C /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
-		E47E2A25D4CB495A92FB4711 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
-		E736DC6D21C14F818EE1B4DA /* Pods-FlurrySDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FlurrySDK-Private.xcconfig"; sourceTree = "<group>"; };
-		ECB55A58F2764D59908AEF43 /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFXMLRequestOperation.h; sourceTree = "<group>"; };
-		F3620F6426884920B53022FA /* AFHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
-		F549AFCA07D24E77B57BC15B /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserState.m; path = Classes/SBJsonStreamParserState.m; sourceTree = "<group>"; };
-		FC87CDB30BF54BBC8E66C6FF /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		012D0FADF99E49EA9FEAB21B /* FBCacheIndex.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBCacheIndex.m; path = src/FBCacheIndex.m; sourceTree = "<group>"; };
+		016E5626BBB44C61B4B9209C /* FBCacheDescriptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBCacheDescriptor.h; path = src/FBCacheDescriptor.h; sourceTree = "<group>"; };
+		0208829B48C54BC39B55A692 /* Pods-Facebook-iOS-SDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Facebook-iOS-SDK-prefix.pch"; sourceTree = "<group>"; };
+		035E4FBB1E8D46E7AE153367 /* SBJsonParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonParser.m; path = Classes/SBJsonParser.m; sourceTree = "<group>"; };
+		04483BDE8FED47ECAC9FE3DC /* FBAccessTokenData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAccessTokenData.h; path = src/FBAccessTokenData.h; sourceTree = "<group>"; };
+		048089F3659542A6B134C92D /* Pods-Facebook-iOS-SDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Facebook-iOS-SDK-Private.xcconfig"; sourceTree = "<group>"; };
+		077EF6CFE6ED41B5B4DE4DEA /* FBAppBridgeTypeToJSONConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAppBridgeTypeToJSONConverter.h; path = src/FBAppBridgeTypeToJSONConverter.h; sourceTree = "<group>"; };
+		08FC25DF5FBD46EF8C597085 /* FBWebDialogs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBWebDialogs.h; path = src/FBWebDialogs.h; sourceTree = "<group>"; };
+		09D9EF3D18A947998BB66428 /* FBSessionAppEventsState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSessionAppEventsState.h; path = src/FBSessionAppEventsState.h; sourceTree = "<group>"; };
+		0BDBD0642B7B4145A098F590 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		0CCDBDA836FC4C04954326B8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0D5396B19CB24A8798FFDEF8 /* FBErrorUtility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBErrorUtility.h; path = src/FBErrorUtility.h; sourceTree = "<group>"; };
+		0D5841FF58F040B1A6D0BDA4 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserAdapter.m; path = Classes/SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
+		0F37439C8FF940F9B4CC5378 /* FBSession+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBSession+Internal.h"; path = "src/FBSession+Internal.h"; sourceTree = "<group>"; };
+		115A5383D4C1491DAC5F485B /* Pods-SBJson.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBJson.xcconfig"; sourceTree = "<group>"; };
+		12AEB3AD71F1455FA45A857B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		147C1F0D8A6245A18862622B /* FBOpenGraphObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBOpenGraphObject.h; path = src/FBOpenGraphObject.h; sourceTree = "<group>"; };
+		15EDAB0415A5463AB44FEFF7 /* FBSessionAuthLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSessionAuthLogger.m; path = src/FBSessionAuthLogger.m; sourceTree = "<group>"; };
+		15F968E374A94156AEF28197 /* FBSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSession.h; path = src/FBSession.h; sourceTree = "<group>"; };
+		193B31D67C844C5FB00E052A /* FBRequestBody.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequestBody.h; path = src/FBRequestBody.h; sourceTree = "<group>"; };
+		19C3334B06E3417086449E8F /* FBLoginViewButtonPNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLoginViewButtonPNG.m; path = src/FBLoginViewButtonPNG.m; sourceTree = "<group>"; };
+		1AC4D1BD5795452F86F82B9E /* NSObject+SBJson.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+SBJson.h"; path = "Classes/NSObject+SBJson.h"; sourceTree = "<group>"; };
+		1C09BE9D869C49C581F7B303 /* Pods-AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AFNetworking-dummy.m"; sourceTree = "<group>"; };
+		1C35A823B9FE4A0280C1E7DC /* FBRequestMetadata.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequestMetadata.h; path = src/FBRequestMetadata.h; sourceTree = "<group>"; };
+		1C956A5CB7E04E329036051B /* FBSessionManualTokenCachingStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSessionManualTokenCachingStrategy.m; path = src/FBSessionManualTokenCachingStrategy.m; sourceTree = "<group>"; };
+		1DC63F64924B46D18E282FE9 /* FBLoginViewButtonPressedPNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLoginViewButtonPressedPNG.h; path = src/FBLoginViewButtonPressedPNG.h; sourceTree = "<group>"; };
+		1E450BE4908F487B8588D862 /* Pods-SBJson-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SBJson-Private.xcconfig"; sourceTree = "<group>"; };
+		1F1EAF34D5844A2EAADE5C5B /* FBGraphObjectPagingLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphObjectPagingLoader.h; path = src/FBGraphObjectPagingLoader.h; sourceTree = "<group>"; };
+		216BEA1F0AF04C9CBBC0A3BA /* FBDialogsData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDialogsData.h; path = src/FBDialogsData.h; sourceTree = "<group>"; };
+		218006FE903946D392BC0D87 /* FBSystemAccountStoreAdapter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSystemAccountStoreAdapter.m; path = src/FBSystemAccountStoreAdapter.m; sourceTree = "<group>"; };
+		235EA03901E24304B46229E6 /* FBAppCall.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAppCall.h; path = src/FBAppCall.h; sourceTree = "<group>"; };
+		23B93683325D47CC8E311D9B /* FBRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequest.m; path = src/FBRequest.m; sourceTree = "<group>"; };
+		24317DD496554B60B024F036 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFImageRequestOperation.m; sourceTree = "<group>"; };
+		24CB77959CF4422C8A8122D2 /* FBRequestMetadata.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequestMetadata.m; path = src/FBRequestMetadata.m; sourceTree = "<group>"; };
+		25DE3BE015EA4AE4BBA919CE /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriterState.m; path = Classes/SBJsonStreamWriterState.m; sourceTree = "<group>"; };
+		260F509232414C12881D0B3A /* SBJsonTokeniser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonTokeniser.m; path = Classes/SBJsonTokeniser.m; sourceTree = "<group>"; };
+		267A7C0511AC46EEA17E231B /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriter.m; path = Classes/SBJsonStreamWriter.m; sourceTree = "<group>"; };
+		26BCDFBD1FBA4D0C976E628F /* FBGraphUser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphUser.h; path = src/FBGraphUser.h; sourceTree = "<group>"; };
+		26CB369476AF4036B97D174C /* FBPlacePickerViewGenericPlacePNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBPlacePickerViewGenericPlacePNG.m; path = src/FBPlacePickerViewGenericPlacePNG.m; sourceTree = "<group>"; };
+		275C438D448A4920945E50EC /* FBViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBViewController.m; path = src/FBViewController.m; sourceTree = "<group>"; };
+		278D9603018744C58C273126 /* libPods-Facebook-iOS-SDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Facebook-iOS-SDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A573D0626FB4897BEC4649D /* FBOpenGraphAction.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBOpenGraphAction.h; path = src/FBOpenGraphAction.h; sourceTree = "<group>"; };
+		2A82A75545F7454BB90C66C0 /* FBLoginViewButtonPNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLoginViewButtonPNG.h; path = src/FBLoginViewButtonPNG.h; sourceTree = "<group>"; };
+		2C60CCEF55F84C9B8F43928A /* FBDialogClosePNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDialogClosePNG.h; path = src/FBDialogClosePNG.h; sourceTree = "<group>"; };
+		2DF03E3F9AA74C1AA675E6E0 /* FBLoginDialog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLoginDialog.m; path = src/FBLoginDialog.m; sourceTree = "<group>"; };
+		3242C9C91F024A0E9D343DE7 /* FBSessionAppEventsState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSessionAppEventsState.m; path = src/FBSessionAppEventsState.m; sourceTree = "<group>"; };
+		3301F84409BD4C9AA9AC8A21 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		349021B281FA4FE1B0A66DD7 /* FBGraphObjectPagingLoader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBGraphObjectPagingLoader.m; path = src/FBGraphObjectPagingLoader.m; sourceTree = "<group>"; };
+		35A15EBBB7AF4DD2A0BF11BC /* libPods-SBJson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBJson.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B78FF266FF4856A9988D95 /* FBSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSettings.h; path = src/FBSettings.h; sourceTree = "<group>"; };
+		35DE098F149D4014B33EAD54 /* FBGraphObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphObject.h; path = src/FBGraphObject.h; sourceTree = "<group>"; };
+		37BCB975BCD14613B332B8EC /* FBUserSettingsViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBUserSettingsViewController.m; path = src/FBUserSettingsViewController.m; sourceTree = "<group>"; };
+		386D74E82FE54DB29B7692DC /* FBInsights.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBInsights.h; path = src/FBInsights.h; sourceTree = "<group>"; };
+		38AECDF267BD4146877D4E20 /* FBSessionManualTokenCachingStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSessionManualTokenCachingStrategy.h; path = src/FBSessionManualTokenCachingStrategy.h; sourceTree = "<group>"; };
+		3955B6D4B59B43BD82BAB99E /* FBDialog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDialog.h; path = src/FBDialog.h; sourceTree = "<group>"; };
+		3AEFB05EF0E64AB8AD9D4D55 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserAdapter.h; path = Classes/SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
+		3C5E426F649E494C956FCA23 /* FBDialogClosePNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDialogClosePNG.m; path = src/FBDialogClosePNG.m; sourceTree = "<group>"; };
+		3FD903C2A75A4F69A6AB094B /* SBJsonUTF8Stream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonUTF8Stream.h; path = Classes/SBJsonUTF8Stream.h; sourceTree = "<group>"; };
+		406D275657AA460D8404880C /* FBCacheDescriptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBCacheDescriptor.m; path = src/FBCacheDescriptor.m; sourceTree = "<group>"; };
+		42F35CF8274543D6AD7FFE9D /* FBFrictionlessRequestSettings.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFrictionlessRequestSettings.m; path = src/FBFrictionlessRequestSettings.m; sourceTree = "<group>"; };
+		4320B070730449DDBD001260 /* FBFetchedAppSettings.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFetchedAppSettings.m; path = src/FBFetchedAppSettings.m; sourceTree = "<group>"; };
+		43AAE3D0D0304A339AB53042 /* FBGraphObjectTableDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphObjectTableDataSource.h; path = src/FBGraphObjectTableDataSource.h; sourceTree = "<group>"; };
+		44D8005203DF40C1B653F00F /* SBJsonWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonWriter.m; path = Classes/SBJsonWriter.m; sourceTree = "<group>"; };
+		45EE172C937E44C39FDB0C6B /* FBAppBridge.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAppBridge.m; path = src/FBAppBridge.m; sourceTree = "<group>"; };
+		4630B9CA11E948BFB5386083 /* FBSessionAuthLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSessionAuthLogger.h; path = src/FBSessionAuthLogger.h; sourceTree = "<group>"; };
+		488DB77CBC7741AEA6FCAD4B /* FBFriendPickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFriendPickerViewController.h; path = src/FBFriendPickerViewController.h; sourceTree = "<group>"; };
+		49D3E7BAF1B2426F9B61E731 /* FBProfilePictureViewBlankProfileSquarePNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBProfilePictureViewBlankProfileSquarePNG.h; path = src/FBProfilePictureViewBlankProfileSquarePNG.h; sourceTree = "<group>"; };
+		4A3DEE1C65B64AFC89D3D9D6 /* FBImageResourceLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBImageResourceLoader.h; path = src/FBImageResourceLoader.h; sourceTree = "<group>"; };
+		4B89782429BE49FEB36FBF3B /* FBAppBridge.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAppBridge.h; path = src/FBAppBridge.h; sourceTree = "<group>"; };
+		4BD25330DA3947F5948D3AD4 /* FBGraphObjectTableCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphObjectTableCell.h; path = src/FBGraphObjectTableCell.h; sourceTree = "<group>"; };
+		4BFB25AD5F364AC2A795EC0B /* SBJsonParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonParser.h; path = Classes/SBJsonParser.h; sourceTree = "<group>"; };
+		4E855D195C4C4105B9221ABB /* FBFrictionlessDialogSupportDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFrictionlessDialogSupportDelegate.h; path = src/FBFrictionlessDialogSupportDelegate.h; sourceTree = "<group>"; };
+		4F7F7314AF91496E829B03DC /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		509D528D519C4E1F982DCF0E /* FBSDKVersion.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKVersion.h; path = src/FBSDKVersion.h; sourceTree = "<group>"; };
+		531E42A316E243B0BC917609 /* FBDynamicFrameworkLoader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDynamicFrameworkLoader.m; path = src/FBDynamicFrameworkLoader.m; sourceTree = "<group>"; };
+		538D45226E884F039A237444 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		5689ADE58FB84B1BBDBEE76D /* FBTestSession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBTestSession.m; path = src/FBTestSession.m; sourceTree = "<group>"; };
+		569C555EDEF34EB7A96044D5 /* FBGraphObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBGraphObject.m; path = src/FBGraphObject.m; sourceTree = "<group>"; };
+		56CEB0341FED4128B23D44CB /* FBFrictionlessRequestSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFrictionlessRequestSettings.h; path = src/FBFrictionlessRequestSettings.h; sourceTree = "<group>"; };
+		57160377D9D34D229D6B155A /* FBConnect.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = src/FBConnect.h; sourceTree = "<group>"; };
+		5809C73FF8DB4B56A80A3473 /* FBRequestBody.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequestBody.m; path = src/FBRequestBody.m; sourceTree = "<group>"; };
+		591F4740F0E241B09A6CFB1D /* Facebook.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Facebook.m; path = src/Facebook.m; sourceTree = "<group>"; };
+		597808E34E624B6EB31D1822 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamWriterAccumulator.m; path = Classes/SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
+		59CD4E7E9B8B48C7A3CE24AA /* FBSessionTokenCachingStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSessionTokenCachingStrategy.h; path = src/FBSessionTokenCachingStrategy.h; sourceTree = "<group>"; };
+		5AD9E3AFD431468AB2DA6A2D /* SBJson.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJson.h; path = Classes/SBJson.h; sourceTree = "<group>"; };
+		5BB06C450814493F82CF660B /* FBBase64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBBase64.h; path = src/Base64/FBBase64.h; sourceTree = "<group>"; };
+		5CA370D24B9F48D6BF186ABB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
+		62C8956F78084E44BF71B67D /* FBRequestConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequestConnection.h; path = src/FBRequestConnection.h; sourceTree = "<group>"; };
+		6479CBFDE56040469DD5008C /* FBShareDialogParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBShareDialogParams.m; path = src/FBShareDialogParams.m; sourceTree = "<group>"; };
+		6492822664994840B377317B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		64A0C903418849DCAD9ED468 /* FBGraphPlace.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphPlace.h; path = src/FBGraphPlace.h; sourceTree = "<group>"; };
+		6542C21ABA9B4148AAFEFDC7 /* FBImageResourceLoader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBImageResourceLoader.m; path = src/FBImageResourceLoader.m; sourceTree = "<group>"; };
+		6573B889A0364AADA3703105 /* AFHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
+		65E517733F724CFCB0196CF6 /* FBFriendPickerCacheDescriptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFriendPickerCacheDescriptor.h; path = src/FBFriendPickerCacheDescriptor.h; sourceTree = "<group>"; };
+		66C1DDB82CDD4348A5ABB640 /* NSObject+SBJson.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+SBJson.m"; path = "Classes/NSObject+SBJson.m"; sourceTree = "<group>"; };
+		66E7D1C46F9E4D5CAF82AE51 /* FBRequestConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequestConnection.m; path = src/FBRequestConnection.m; sourceTree = "<group>"; };
+		67E080BF304148FE8E681768 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriter.h; path = Classes/SBJsonStreamWriter.h; sourceTree = "<group>"; };
+		682489812EB64367A2ADC7DD /* FBViewController+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBViewController+Internal.h"; path = "src/FBViewController+Internal.h"; sourceTree = "<group>"; };
+		6943D0A099C54170B6930488 /* FBPlacePickerCacheDescriptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBPlacePickerCacheDescriptor.m; path = src/FBPlacePickerCacheDescriptor.m; sourceTree = "<group>"; };
+		697B4DDC77344C31BF1DF55F /* FBNativeDialogs.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBNativeDialogs.m; path = src/FBNativeDialogs.m; sourceTree = "<group>"; };
+		6A051319CC5247E9B4263415 /* Pods-FlurrySDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-FlurrySDK-prefix.pch"; sourceTree = "<group>"; };
+		6A4B6605ABF8496FB6196585 /* FBErrorUtility+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBErrorUtility+Internal.h"; path = "src/FBErrorUtility+Internal.h"; sourceTree = "<group>"; };
+		6B8DA2E8406742EABFDB189F /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		6C101C1ED1414A3DB8A8FB13 /* FBAppLinkData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAppLinkData.m; path = src/FBAppLinkData.m; sourceTree = "<group>"; };
+		6C802AEAEB8A41AC9619D91C /* FBSystemAccountStoreAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSystemAccountStoreAdapter.h; path = src/FBSystemAccountStoreAdapter.h; sourceTree = "<group>"; };
+		6D07DF9A2A2D4C9AA2D32858 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		6F318F70464B4704B4410910 /* FBDialogsParams+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBDialogsParams+Internal.h"; path = "src/FBDialogsParams+Internal.h"; sourceTree = "<group>"; };
+		6FC20F9D42EE447387E3607E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		703CE4500C2D4665B80EFF74 /* FBNativeDialogs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBNativeDialogs.h; path = src/FBNativeDialogs.h; sourceTree = "<group>"; };
+		704C7466E477401395832F75 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParser.m; path = Classes/SBJsonStreamParser.m; sourceTree = "<group>"; };
+		708053992F4D403097D1E3E7 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserState.h; path = Classes/SBJsonStreamParserState.h; sourceTree = "<group>"; };
+		70A9A52F032B46AD896A3B4D /* FacebookSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FacebookSDK.h; path = src/FacebookSDK.h; sourceTree = "<group>"; };
+		7434F0FD79714123B736E0D5 /* NSError+FBError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+FBError.m"; path = "src/NSError+FBError.m"; sourceTree = "<group>"; };
+		744DF1A7A92642E7B8FD95C5 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		76B80017981A4E54AA203D3F /* Pods-SBJson-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SBJson-dummy.m"; sourceTree = "<group>"; };
+		774841329AE640E390D820B5 /* FBGraphLocation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphLocation.h; path = src/FBGraphLocation.h; sourceTree = "<group>"; };
+		786D165114514AC68C3EDBED /* FBSession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSession.m; path = src/FBSession.m; sourceTree = "<group>"; };
+		78DFFAF2DD3E4A42ADFE150A /* FBSessionTokenCachingStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSessionTokenCachingStrategy.m; path = src/FBSessionTokenCachingStrategy.m; sourceTree = "<group>"; };
+		79316B007E494FF5AC132980 /* FBFriendPickerCacheDescriptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFriendPickerCacheDescriptor.m; path = src/FBFriendPickerCacheDescriptor.m; sourceTree = "<group>"; };
+		79F50D6047B34154AD6AC360 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		7A4C2AA6280B4F31BFC27284 /* FBAppBridgeTypeToJSONConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAppBridgeTypeToJSONConverter.m; path = src/FBAppBridgeTypeToJSONConverter.m; sourceTree = "<group>"; };
+		7BA526732A614D0A8568AD09 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		7BCDC04C77014536BF813747 /* FBAppLinkData+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBAppLinkData+Internal.h"; path = "src/FBAppLinkData+Internal.h"; sourceTree = "<group>"; };
+		7C104E7039EF4275BDD08E34 /* FBCrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBCrypto.h; path = src/Cryptography/FBCrypto.h; sourceTree = "<group>"; };
+		7D68C669C347407EA9C897A1 /* FBPlacePickerViewController+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBPlacePickerViewController+Internal.h"; path = "src/FBPlacePickerViewController+Internal.h"; sourceTree = "<group>"; };
+		7DEBE593E1184B21B3B52391 /* FBAppCall.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAppCall.m; path = src/FBAppCall.m; sourceTree = "<group>"; };
+		7F615D93DB2E421894550C6E /* FBFriendPickerViewDefaultPNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFriendPickerViewDefaultPNG.h; path = src/FBFriendPickerViewDefaultPNG.h; sourceTree = "<group>"; };
+		80FED262AFEF463887DB2477 /* AFHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
+		81134E04D6AD4E6BA3F89661 /* Pods-FlurrySDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FlurrySDK-Private.xcconfig"; sourceTree = "<group>"; };
+		818D16D8B37D4BE48248D0D5 /* FBShareDialogParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBShareDialogParams.h; path = src/FBShareDialogParams.h; sourceTree = "<group>"; };
+		83471EDD7F78471BBA51CA7F /* FBUserSettingsViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBUserSettingsViewController.h; path = src/FBUserSettingsViewController.h; sourceTree = "<group>"; };
+		835C0DEFD5B049D5AD1BA8F3 /* FBFriendPickerViewDefaultPNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFriendPickerViewDefaultPNG.m; path = src/FBFriendPickerViewDefaultPNG.m; sourceTree = "<group>"; };
+		84BAF087B5964D7E9D3066F8 /* FBURLConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBURLConnection.h; path = src/FBURLConnection.h; sourceTree = "<group>"; };
+		84C5CE0EB010425E84FB6521 /* FBOpenGraphActionShareDialogParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBOpenGraphActionShareDialogParams.h; path = src/FBOpenGraphActionShareDialogParams.h; sourceTree = "<group>"; };
+		84ECB0ECFD5445D2B1551D89 /* FBPlacePickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBPlacePickerViewController.h; path = src/FBPlacePickerViewController.h; sourceTree = "<group>"; };
+		85B8EEE3D04842FB92632D7A /* FBRequest+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBRequest+Internal.h"; path = "src/FBRequest+Internal.h"; sourceTree = "<group>"; };
+		86B47418EF7B4B61966326DB /* FBDataDiskCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDataDiskCache.h; path = src/FBDataDiskCache.h; sourceTree = "<group>"; };
+		877A7AF71FF941419844A09D /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriterState.h; path = Classes/SBJsonStreamWriterState.h; sourceTree = "<group>"; };
+		87B55B1D279645A0A0CF594C /* FBAppLinkData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAppLinkData.h; path = src/FBAppLinkData.h; sourceTree = "<group>"; };
+		87D0EA7AB4F74123861B904F /* Pods-AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AFNetworking-prefix.pch"; sourceTree = "<group>"; };
+		88A1E410F6014357B79346CD /* Pods-AFNetworking-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking-Private.xcconfig"; sourceTree = "<group>"; };
+		8909010B08624ED6AEE08B61 /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamWriterAccumulator.h; path = Classes/SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
+		89E4101407554EB3A57E497D /* FBDialogsData+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBDialogsData+Internal.h"; path = "src/FBDialogsData+Internal.h"; sourceTree = "<group>"; };
+		8A547606E33B40B5831D07C5 /* FBAppEvents.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBAppEvents.h; path = src/FBAppEvents.h; sourceTree = "<group>"; };
+		8AC357EEC6CA4AD08E4BD4F3 /* FBSettings+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBSettings+Internal.h"; path = "src/FBSettings+Internal.h"; sourceTree = "<group>"; };
+		8C127294979449C5B3ADCCE6 /* FBAppEvents.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAppEvents.m; path = src/FBAppEvents.m; sourceTree = "<group>"; };
+		8CE21A1F3A1E4779B90C5539 /* FBCrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBCrypto.m; path = src/Cryptography/FBCrypto.m; sourceTree = "<group>"; };
+		91CA95188CBD4E7682074ABF /* FBAccessTokenData+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBAccessTokenData+Internal.h"; path = "src/FBAccessTokenData+Internal.h"; sourceTree = "<group>"; };
+		928D60126F02467EAC483891 /* Pods-FlurrySDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-FlurrySDK-dummy.m"; sourceTree = "<group>"; };
+		92FC22439DF84875ABDA4518 /* FBLoginDialog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLoginDialog.h; path = src/FBLoginDialog.h; sourceTree = "<group>"; };
+		934910C31BD6440DBCDDBC71 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		965D88763675426881A2495E /* FBFriendPickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFriendPickerViewController.m; path = src/FBFriendPickerViewController.m; sourceTree = "<group>"; };
+		96A1F8D9CA2044D3871281ED /* FBLoginView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLoginView.h; path = src/FBLoginView.h; sourceTree = "<group>"; };
+		9736B85C90434EABA9267C1C /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
+		97648A54D42F42219E2E967A /* FBProfilePictureViewBlankProfileSquarePNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBProfilePictureViewBlankProfileSquarePNG.m; path = src/FBProfilePictureViewBlankProfileSquarePNG.m; sourceTree = "<group>"; };
+		97B13B9242A74FA89A66CF81 /* FBLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLogger.h; path = src/FBLogger.h; sourceTree = "<group>"; };
+		9A6E512C914241A681164DE7 /* FBWebDialogs.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBWebDialogs.m; path = src/FBWebDialogs.m; sourceTree = "<group>"; };
+		9AED7BA6DE8A489FAD7CEC68 /* FBBase64.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBBase64.m; path = src/Base64/FBBase64.m; sourceTree = "<group>"; };
+		9B99E462CFCE49DA879C5AAC /* FBCacheIndex.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBCacheIndex.h; path = src/FBCacheIndex.h; sourceTree = "<group>"; };
+		9C67A0EB9A5D4C83870B1378 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9D9CBE6092164BE88880B10D /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		9DDE1026DE1A4E308C408FB4 /* Pods-Facebook-iOS-SDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Facebook-iOS-SDK-dummy.m"; sourceTree = "<group>"; };
+		A06D750476F24CA38C4D7AF5 /* FBProfilePictureView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBProfilePictureView.h; path = src/FBProfilePictureView.h; sourceTree = "<group>"; };
+		A55D769373704C0EB6613496 /* FBLoginDialogParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLoginDialogParams.h; path = src/FBLoginDialogParams.h; sourceTree = "<group>"; };
+		A597B4BB009D4A1387D23A61 /* FBDialogs+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBDialogs+Internal.h"; path = "src/FBDialogs+Internal.h"; sourceTree = "<group>"; };
+		A92C6F459D1646569582AC58 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		AAB9CE44A46C482C85B4A4C1 /* FBURLConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBURLConnection.m; path = src/FBURLConnection.m; sourceTree = "<group>"; };
+		AACE065567704A4BB1E50764 /* FBSession+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBSession+Protected.h"; path = "src/FBSession+Protected.h"; sourceTree = "<group>"; };
+		AC34B1154CC44FDA9EACB202 /* FBGraphObjectTableSelection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBGraphObjectTableSelection.m; path = src/FBGraphObjectTableSelection.m; sourceTree = "<group>"; };
+		AC912CEA8C1D43E8B9CB66DE /* FBDialogsData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDialogsData.m; path = src/FBDialogsData.m; sourceTree = "<group>"; };
+		ACB11B338C8141FA984C8141 /* FBViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBViewController.h; path = src/FBViewController.h; sourceTree = "<group>"; };
+		AFC50E1142674F5686A0430B /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		B012EB6722F64A9586BA78F5 /* Pods-FlurrySDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FlurrySDK.xcconfig"; sourceTree = "<group>"; };
+		B2393D66BD7F445E8782ECF4 /* FBDialogs.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDialogs.m; path = src/FBDialogs.m; sourceTree = "<group>"; };
+		B43BAAC8F9E44ACCA61BE554 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonUTF8Stream.m; path = Classes/SBJsonUTF8Stream.m; sourceTree = "<group>"; };
+		B6EAAF9028D1493CBD781A9A /* SBJsonTokeniser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonTokeniser.h; path = Classes/SBJsonTokeniser.h; sourceTree = "<group>"; };
+		B7506972FB30417CBA813041 /* NSError+FBError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSError+FBError.h"; path = "src/NSError+FBError.h"; sourceTree = "<group>"; };
+		BB141D539E1B49119259916A /* FBLoginViewButtonPressedPNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLoginViewButtonPressedPNG.m; path = src/FBLoginViewButtonPressedPNG.m; sourceTree = "<group>"; };
+		BC2F936B508F4C5B9C2001FD /* Pods-Facebook-iOS-SDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Facebook-iOS-SDK.xcconfig"; sourceTree = "<group>"; };
+		BD3007D00BB64C3E8B389CE3 /* FBPlacePickerCacheDescriptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBPlacePickerCacheDescriptor.h; path = src/FBPlacePickerCacheDescriptor.h; sourceTree = "<group>"; };
+		BE65AED0A05B4490ADD822FD /* FBDialog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDialog.m; path = src/FBDialog.m; sourceTree = "<group>"; };
+		BF730DC8098343EEA56F2E4C /* FBErrorUtility.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBErrorUtility.m; path = src/FBErrorUtility.m; sourceTree = "<group>"; };
+		C03435CECA684F4E8501D772 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		C03D4EC082734D9B947BCBF1 /* FBInsights.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBInsights.m; path = src/FBInsights.m; sourceTree = "<group>"; };
+		C15594762C61424D848896D8 /* FBRequestConnection+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBRequestConnection+Internal.h"; path = "src/FBRequestConnection+Internal.h"; sourceTree = "<group>"; };
+		C2E8FDEB8D174EF2A6BD0D19 /* libPods-FlurrySDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlurrySDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5A9ADF2F493430C94843AED /* FBRequestConnectionRetryManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequestConnectionRetryManager.m; path = src/FBRequestConnectionRetryManager.m; sourceTree = "<group>"; };
+		CA790F920D314AD5B69EA993 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		CB5BDE1315B14CA4B5F0DF13 /* FBTestSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBTestSession.h; path = src/FBTestSession.h; sourceTree = "<group>"; };
+		CC87AE3CFF764CA8A076D0A3 /* FBOpenGraphActionShareDialogParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBOpenGraphActionShareDialogParams.m; path = src/FBOpenGraphActionShareDialogParams.m; sourceTree = "<group>"; };
+		D08450E4043347E4B9970966 /* FBFrictionlessRecipientCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFrictionlessRecipientCache.h; path = src/FBFrictionlessRecipientCache.h; sourceTree = "<group>"; };
+		D12928D0C77748948F8B6A51 /* FBFriendPickerViewController+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBFriendPickerViewController+Internal.h"; path = "src/FBFriendPickerViewController+Internal.h"; sourceTree = "<group>"; };
+		D47240303D6F49C78B8A8F02 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserState.m; path = Classes/SBJsonStreamParserState.m; sourceTree = "<group>"; };
+		D5DEA98B1294454F87883862 /* FBProfilePictureViewBlankProfilePortraitPNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBProfilePictureViewBlankProfilePortraitPNG.h; path = src/FBProfilePictureViewBlankProfilePortraitPNG.h; sourceTree = "<group>"; };
+		D61E34A5A3264326A79EEFDD /* FBRequestHandlerFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequestHandlerFactory.h; path = src/FBRequestHandlerFactory.h; sourceTree = "<group>"; };
+		D638A89D0AEB4545B8E1E60E /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		D768DA9209644C7F82281D14 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFImageRequestOperation.h; sourceTree = "<group>"; };
+		D79984205C73468D925041DE /* FBUtility.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBUtility.m; path = src/FBUtility.m; sourceTree = "<group>"; };
+		D7EED55FFCC1495A97C8BF43 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		D896F7CC954C489A9B5AC7A7 /* FBDialogsParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDialogsParams.m; path = src/FBDialogsParams.m; sourceTree = "<group>"; };
+		DA90FAA1C8264AF8BAF4E289 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParserAccumulator.h; path = Classes/SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
+		DAD2F3EAF96A4141A4F42CB4 /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		DBB90479488A4A4798C7B187 /* FBPlacePickerViewGenericPlacePNG.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBPlacePickerViewGenericPlacePNG.h; path = src/FBPlacePickerViewGenericPlacePNG.h; sourceTree = "<group>"; };
+		DC9EEC86A7114CC5B93AC03B /* FBRequestHandlerFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBRequestHandlerFactory.m; path = src/FBRequestHandlerFactory.m; sourceTree = "<group>"; };
+		DDADC56719784FFA9716CB0E /* FBFrictionlessRecipientCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBFrictionlessRecipientCache.m; path = src/FBFrictionlessRecipientCache.m; sourceTree = "<group>"; };
+		DE5DEA88BC0F44D3B03359CD /* Pods-SBJson-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SBJson-prefix.pch"; sourceTree = "<group>"; };
+		DED3D9705872426386AB520F /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		DFF30D12D67D4B92BD3CC40F /* FBFetchedAppSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBFetchedAppSettings.h; path = src/FBFetchedAppSettings.h; sourceTree = "<group>"; };
+		E002E2A32AFE4C87A0DB4962 /* FBProfilePictureView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBProfilePictureView.m; path = src/FBProfilePictureView.m; sourceTree = "<group>"; };
+		E05391094A5949E0998D46F5 /* FBGraphObjectTableDataSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBGraphObjectTableDataSource.m; path = src/FBGraphObjectTableDataSource.m; sourceTree = "<group>"; };
+		E0BC87AB1970439689D62858 /* FBAppEvents+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBAppEvents+Internal.h"; path = "src/FBAppEvents+Internal.h"; sourceTree = "<group>"; };
+		E11B17A7F7A64426A00F64F2 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SBJsonStreamParserAccumulator.m; path = Classes/SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
+		E26C1A3C23BC49BDAC45669F /* FBError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBError.m; path = src/FBError.m; sourceTree = "<group>"; };
+		E2D7889C3A2D491A8B5F4C87 /* Pods-AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking.xcconfig"; sourceTree = "<group>"; };
+		E343130801A246CE890A3482 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E7881FE873E546CEA04DE1B0 /* FBLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLogger.m; path = src/FBLogger.m; sourceTree = "<group>"; };
+		E7FEFE1C9C9A40BDBE6A1218 /* FBUtility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBUtility.h; path = src/FBUtility.h; sourceTree = "<group>"; };
+		E91B4E5B38014C71A7B0A3A4 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonStreamParser.h; path = Classes/SBJsonStreamParser.h; sourceTree = "<group>"; };
+		EA3DF4EC7A584C3596515F78 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		EB68A106BF88443694E4811B /* FBDynamicFrameworkLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDynamicFrameworkLoader.h; path = src/FBDynamicFrameworkLoader.h; sourceTree = "<group>"; };
+		EC4640FE5B314E9687E50C85 /* FBError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBError.h; path = src/FBError.h; sourceTree = "<group>"; };
+		EC75EFC1499B4DC9AD610EC0 /* FBAppCall+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBAppCall+Internal.h"; path = "src/FBAppCall+Internal.h"; sourceTree = "<group>"; };
+		EE47E6F87B424F9C9769AADF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EF948CF3BF9A40E182D70765 /* SBJsonWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SBJsonWriter.h; path = Classes/SBJsonWriter.h; sourceTree = "<group>"; };
+		F0454CA18B634F89ACB1C63A /* FBDialogs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDialogs.h; path = src/FBDialogs.h; sourceTree = "<group>"; };
+		F114A2C3D44F4B43A47F992E /* Facebook.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Facebook.h; path = src/Facebook.h; sourceTree = "<group>"; };
+		F1A2F721FA8A425E8AF22D55 /* libPods-AFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFNetworking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3EAAFF19C2E4B19805D4A08 /* FBSettings.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSettings.m; path = src/FBSettings.m; sourceTree = "<group>"; };
+		F40DC59F8897460D93D00E9D /* FBGraphObjectTableSelection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBGraphObjectTableSelection.h; path = src/FBGraphObjectTableSelection.h; sourceTree = "<group>"; };
+		F51632F3B0724C5F93A3573B /* FBPlacePickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBPlacePickerViewController.m; path = src/FBPlacePickerViewController.m; sourceTree = "<group>"; };
+		F5E7E0512DDB4BCA97F219F6 /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = FBUserSettingsViewResources.bundle; path = src/FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
+		F691948C459841BCA81892C9 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		F81052FDF7A2456DB3FC31E7 /* FBLoginDialogParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLoginDialogParams.m; path = src/FBLoginDialogParams.m; sourceTree = "<group>"; };
+		F84323BC2A754937A3D8C550 /* Flurry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = Flurry/Flurry.h; sourceTree = "<group>"; };
+		F84D20932DD443AE8D36E8AE /* FBAccessTokenData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBAccessTokenData.m; path = src/FBAccessTokenData.m; sourceTree = "<group>"; };
+		FAE7651CAA1747928386CC35 /* FBRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequest.h; path = src/FBRequest.h; sourceTree = "<group>"; };
+		FB6397867193441B8C7C12F5 /* FBGraphObjectTableCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBGraphObjectTableCell.m; path = src/FBGraphObjectTableCell.m; sourceTree = "<group>"; };
+		FBD29222D2C04EE591159874 /* FBProfilePictureViewBlankProfilePortraitPNG.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBProfilePictureViewBlankProfilePortraitPNG.m; path = src/FBProfilePictureViewBlankProfilePortraitPNG.m; sourceTree = "<group>"; };
+		FBD399B8CFE14D2EA8B4B908 /* FBTestSession+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBTestSession+Internal.h"; path = "src/FBTestSession+Internal.h"; sourceTree = "<group>"; };
+		FC30D1E0E6D24D548F9B2276 /* FBRequestConnectionRetryManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBRequestConnectionRetryManager.h; path = src/FBRequestConnectionRetryManager.h; sourceTree = "<group>"; };
+		FF27DEEA7FB44491AF55E2EE /* FBDataDiskCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBDataDiskCache.m; path = src/FBDataDiskCache.m; sourceTree = "<group>"; };
+		FF8D63C912F24925AD027E37 /* FBLoginView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLoginView.m; path = src/FBLoginView.m; sourceTree = "<group>"; };
+		FFCD549065F0402CBD94BE79 /* FBDialogsParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBDialogsParams.h; path = src/FBDialogsParams.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		057B71A2E64041839188A518 /* Frameworks */ = {
+		39F9440EBF6848379D55E034 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA912DBBB9C148DBB6A84262 /* CoreGraphics.framework in Frameworks */,
-				F3666D3A0AA942F588344769 /* Foundation.framework in Frameworks */,
-				6094A8E8C32C4E15B2718BA7 /* MobileCoreServices.framework in Frameworks */,
-				D8D264E4EE7147798738D5F7 /* Security.framework in Frameworks */,
-				EE48BBB644DB4752AF866666 /* SystemConfiguration.framework in Frameworks */,
+				DD48133C763F44C5AE794911 /* Foundation.framework in Frameworks */,
+				8101D8183CE84EA1A0173A46 /* libPods-AFNetworking.a in Frameworks */,
+				3C4EB1A54F3A4223A5ADFFD6 /* libPods-Facebook-iOS-SDK.a in Frameworks */,
+				4250D82AFC3547DBB24E9A45 /* libPods-FlurrySDK.a in Frameworks */,
+				21CB09BACD1C448FBF53D2CC /* libPods-SBJson.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		21FF1FA346E14BB4AF17EAC3 /* Frameworks */ = {
+		419461C9AADA4F098D33670C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				237372B554E54A3D9E791DF9 /* CoreGraphics.framework in Frameworks */,
-				6F0634F9C1DF4D2BBC23321D /* Foundation.framework in Frameworks */,
-				6E1067CDDFB741F9BC14CEE8 /* Security.framework in Frameworks */,
-				8748D9E0DD8E4A99BC832452 /* SystemConfiguration.framework in Frameworks */,
-				5E158A28083145929C3E6CE2 /* UIKit.framework in Frameworks */,
+				CC7489B59EE544468B0E3CCD /* CoreGraphics.framework in Frameworks */,
+				7668EDFCAC2449D5B6866526 /* Foundation.framework in Frameworks */,
+				BC3AFBFD898A41E9A643FAB4 /* MobileCoreServices.framework in Frameworks */,
+				A91740F3206A445593AB3C9E /* Security.framework in Frameworks */,
+				C213BC219BBC492F9AF15AD5 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		55ACF1CE884C4D909548C252 /* Frameworks */ = {
+		557AAFE0DD5848D28DF58F34 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE353784802A47CAA3188649 /* Foundation.framework in Frameworks */,
-				0A7C4FE47C024742BF5DE7A1 /* libPods-AFNetworking.a in Frameworks */,
-				97E317CE74BD402887639C72 /* libPods-FlurrySDK.a in Frameworks */,
-				E069E9A1E9C4455594FFFECB /* libPods-SBJson.a in Frameworks */,
+				2CF7C4B8A2164A60AB7A8B22 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BF813E16894E4223A9ED2E96 /* Frameworks */ = {
+		58287657C8C14DDD93DDDD49 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74860302C612470C9DDDDFA8 /* Foundation.framework in Frameworks */,
+				7B4B2C812BEA477BACB55F4B /* CoreLocation.framework in Frameworks */,
+				7FF53F3060E746F986B864FA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B07416D94BA04FA78AB0285B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DA2B2AB7DDB4B6E95227415 /* CoreGraphics.framework in Frameworks */,
+				61E667B39DCC41228768B1C3 /* Foundation.framework in Frameworks */,
+				B0F4B6FCBEAE40A598FEB3F5 /* Security.framework in Frameworks */,
+				74E4DFCE07454B75A0567EF4 /* SystemConfiguration.framework in Frameworks */,
+				4A71D3BD86C1466E9E29EB6E /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		231B660BC11A41E7A3A449CD /* Source Files */ = {
+		066ACF1ABC53434B89B31605 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD1959D7AB904CFAA61C53E1 /* AFHTTPClient.h */,
-				65EF28D64F90463DAE3CC489 /* AFHTTPRequestOperation.h */,
-				9AAB022C852E4273A868524F /* AFImageRequestOperation.h */,
-				AD5AD6AF53C64199BA74CA15 /* AFJSONRequestOperation.h */,
-				E44475735A9249099BB8C88C /* AFNetworkActivityIndicatorManager.h */,
-				A01B3ECE9AA84C33A634935F /* AFNetworking.h */,
-				D81DA341BE9E41DB92D7FF67 /* AFPropertyListRequestOperation.h */,
-				DE75AECFE9B947159F111AA4 /* AFURLConnectionOperation.h */,
-				ECB55A58F2764D59908AEF43 /* AFXMLRequestOperation.h */,
-				1423569D2F5C416BA5A15E56 /* UIImageView+AFNetworking.h */,
-				F3620F6426884920B53022FA /* AFHTTPClient.m */,
-				6C5AF907E5414A7083F2F959 /* AFHTTPRequestOperation.m */,
-				9FED8BA1CF8D4069AFEDB16B /* AFImageRequestOperation.m */,
-				B78D51B76CDC4C479ADA5C93 /* AFJSONRequestOperation.m */,
-				332AA0DAC8964A64AAD9E0C3 /* AFNetworkActivityIndicatorManager.m */,
-				9C117A3A38664DEB8144F618 /* AFPropertyListRequestOperation.m */,
-				E47E2A25D4CB495A92FB4711 /* AFURLConnectionOperation.m */,
-				FC87CDB30BF54BBC8E66C6FF /* AFXMLRequestOperation.m */,
-				4C0A95C1E0D94566A726DE83 /* UIImageView+AFNetworking.m */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		264E1035314546078296F125 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D8EC3470205A4A208766A60F /* AFNetworking */,
-				88985D23DB42490BA184B5AE /* FlurrySDK */,
-				89402877BA2F497B9BA85E92 /* SBJson */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		2D7658A8E75444EBBA36E98C /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				5F36465060B04B7380E4EB39 /* Pods-FlurrySDK-dummy.m */,
-				A49010B0481647468E93D0CA /* Pods-FlurrySDK-prefix.pch */,
-				AB4DAA7A17F6472A98811D2F /* Pods-FlurrySDK.xcconfig */,
-				E736DC6D21C14F818EE1B4DA /* Pods-FlurrySDK-Private.xcconfig */,
-			);
-			name = "Support Files";
-			sourceTree = SOURCE_ROOT;
-		};
-		3AA130E73148415A89BC5FD1 = {
-			isa = PBXGroup;
-			children = (
-				958979006D4040A29FCDF73C /* Frameworks */,
-				264E1035314546078296F125 /* Pods */,
-				7E74F51F62E34B8DB8682AF2 /* Products */,
-				E89F4E363B1C495CB099D520 /* Targets Support Files */,
-				2BE6D34E5BAC4A6199C5F892 /* Podfile */,
-			);
-			sourceTree = "<group>";
-		};
-		3C972AC69CF341DF9FE5437B /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				15130767525D4A63B7A3FDF2 /* Pods-SBJson-dummy.m */,
-				C947DDBDB4874533AC33F15C /* Pods-SBJson-prefix.pch */,
-				B38848B7E0D14B21A684D0C0 /* Pods-SBJson.xcconfig */,
-				95134235FE0A45CB87A4EC33 /* Pods-SBJson-Private.xcconfig */,
-			);
-			name = "Support Files";
-			sourceTree = SOURCE_ROOT;
-		};
-		3FA9EA85990E40448FC7A321 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				97E1972C5F5F4E298BAD6E80 /* libPods-FlurrySDK.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		435A04DF0F6B4072BC7EE42B /* Source Files */ = {
-			isa = PBXGroup;
-			children = (
-				8E8F3E0B6A59409FAE08B4DE /* Flurry.h */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		55DF89607142468DA40FF75A /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B6E5FC59A44C3B04361B3 /* Pods-AFNetworking-dummy.m */,
-				DA5D104C6F9E49DDA5C31E73 /* Pods-AFNetworking-prefix.pch */,
-				4CABA98DAD634745858FA06F /* Pods-AFNetworking.xcconfig */,
-				138F24D4361C47469507698C /* Pods-AFNetworking-Private.xcconfig */,
-			);
-			name = "Support Files";
-			sourceTree = SOURCE_ROOT;
-		};
-		7E74F51F62E34B8DB8682AF2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				58AEFBD604674A46BB815411 /* libPods.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		88985D23DB42490BA184B5AE /* FlurrySDK */ = {
-			isa = PBXGroup;
-			children = (
-				3FA9EA85990E40448FC7A321 /* Products */,
-				435A04DF0F6B4072BC7EE42B /* Source Files */,
-				2D7658A8E75444EBBA36E98C /* Support Files */,
-			);
-			path = FlurrySDK;
-			sourceTree = "<group>";
-		};
-		89402877BA2F497B9BA85E92 /* SBJson */ = {
-			isa = PBXGroup;
-			children = (
-				CA512B9AC57947179842ED1B /* Products */,
-				C00004C2E4C14A32907139DA /* Source Files */,
-				3C972AC69CF341DF9FE5437B /* Support Files */,
-			);
-			path = SBJson;
-			sourceTree = "<group>";
-		};
-		958979006D4040A29FCDF73C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9B1E4B644CAC4E59B0A4533C /* CoreGraphics.framework */,
-				B8BA9C4542DB4710AF0CF22E /* Foundation.framework */,
-				23C8A510F9FA47DF9FE06054 /* MobileCoreServices.framework */,
-				393647CC46D54A028515FE94 /* Security.framework */,
-				0FE340F0B15D4651B56483DD /* SystemConfiguration.framework */,
-				A0B670E34E984DC38CDA5A70 /* UIKit.framework */,
+				EE47E6F87B424F9C9769AADF /* CoreGraphics.framework */,
+				9C67A0EB9A5D4C83870B1378 /* CoreLocation.framework */,
+				12AEB3AD71F1455FA45A857B /* Foundation.framework */,
+				CA790F920D314AD5B69EA993 /* MobileCoreServices.framework */,
+				6492822664994840B377317B /* Security.framework */,
+				0CCDBDA836FC4C04954326B8 /* SystemConfiguration.framework */,
+				E343130801A246CE890A3482 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C00004C2E4C14A32907139DA /* Source Files */ = {
+		0F05CBCD8D4B4627AAE35347 = {
 			isa = PBXGroup;
 			children = (
-				C27CF38A7CE8498F901017DE /* NSObject+SBJson.h */,
-				2565D5BA9D0944CBB08F2232 /* SBJson.h */,
-				9A12DD05B059465B84775B2F /* SBJsonParser.h */,
-				6D3887501478404D804708A1 /* SBJsonStreamParser.h */,
-				1DA1A77894CD4CDAAD502148 /* SBJsonStreamParserAccumulator.h */,
-				787CA549CA5E4C35896B2B58 /* SBJsonStreamParserAdapter.h */,
-				E1D7CECA5F2A496699C7C084 /* SBJsonStreamParserState.h */,
-				CDE6D215BA53466ABF2480C4 /* SBJsonStreamWriter.h */,
-				4F10A71004524F279249F44E /* SBJsonStreamWriterAccumulator.h */,
-				7A2E99BF3FDF4050A66AE784 /* SBJsonStreamWriterState.h */,
-				5C8E5326719E43F19E5008E9 /* SBJsonTokeniser.h */,
-				C9911B7911354066892D1339 /* SBJsonUTF8Stream.h */,
-				5DF67A16089F4BA2864F5D72 /* SBJsonWriter.h */,
-				0BB8B004BFF04F548252DBB2 /* NSObject+SBJson.m */,
-				9C687EDB6C0C45EFBF3B30AA /* SBJsonParser.m */,
-				4276A6063C0D482F8F57A6A9 /* SBJsonStreamParser.m */,
-				79E19A52F444413FA48C4978 /* SBJsonStreamParserAccumulator.m */,
-				9EC10FB09A344927925C2A34 /* SBJsonStreamParserAdapter.m */,
-				F549AFCA07D24E77B57BC15B /* SBJsonStreamParserState.m */,
-				B51EFA76D6E348088EA0CD8C /* SBJsonStreamWriter.m */,
-				1A43988665E64F7D9CDE0EA4 /* SBJsonStreamWriterAccumulator.m */,
-				6BF0CA4EC23640D7B9BEED5C /* SBJsonStreamWriterState.m */,
-				B7167EE6920F494392B8A6DD /* SBJsonTokeniser.m */,
-				2FA33D6AF01F48E59CC4C69A /* SBJsonUTF8Stream.m */,
-				559FEA6B49BF42E093935A13 /* SBJsonWriter.m */,
+				066ACF1ABC53434B89B31605 /* Frameworks */,
+				3F4636BC3AB84236876EBB01 /* Pods */,
+				D6589B1A3ABC4DDD84383918 /* Products */,
+				0F72C74FC51D4C63ACB793D6 /* Targets Support Files */,
+				0BDBD0642B7B4145A098F590 /* Podfile */,
 			);
-			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		CA512B9AC57947179842ED1B /* Products */ = {
+		0F72C74FC51D4C63ACB793D6 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				1964F25973D74D48A414EC6C /* libPods-SBJson.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		D8EC3470205A4A208766A60F /* AFNetworking */ = {
-			isa = PBXGroup;
-			children = (
-				F33B5E20B03D4376BC6F0B39 /* Products */,
-				231B660BC11A41E7A3A449CD /* Source Files */,
-				55DF89607142468DA40FF75A /* Support Files */,
-			);
-			path = AFNetworking;
-			sourceTree = "<group>";
-		};
-		E89F4E363B1C495CB099D520 /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				ED8DD5C030EA4C82BEBEA65D /* Pods */,
+				41DD1A1C252B4CA9BF3DF261 /* Pods */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		ED8DD5C030EA4C82BEBEA65D /* Pods */ = {
+		1E5E8384DF5B44E9B63EE897 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1AE77C202BB84D5287C9910E /* Pods-environment.h */,
-				30FB68C32140455A96FECDA0 /* Pods-dummy.m */,
-				9A372CCD75D24174B2289B79 /* Pods-acknowledgements.markdown */,
-				C5CEA93BB5064D918DE0DFD4 /* Pods-acknowledgements.plist */,
-				5E8A2E0225934C5DBE6CBC7D /* Pods-resources.sh */,
-				59E267D21EEE462598FAE6F0 /* Pods.xcconfig */,
+				35A15EBBB7AF4DD2A0BF11BC /* libPods-SBJson.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		21F44ED874F64781A6B616CC /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				928D60126F02467EAC483891 /* Pods-FlurrySDK-dummy.m */,
+				6A051319CC5247E9B4263415 /* Pods-FlurrySDK-prefix.pch */,
+				B012EB6722F64A9586BA78F5 /* Pods-FlurrySDK.xcconfig */,
+				81134E04D6AD4E6BA3F89661 /* Pods-FlurrySDK-Private.xcconfig */,
+			);
+			name = "Support Files";
+			sourceTree = SOURCE_ROOT;
+		};
+		2C16DE6FB9AD4475A29447FC /* SBJson */ = {
+			isa = PBXGroup;
+			children = (
+				1E5E8384DF5B44E9B63EE897 /* Products */,
+				760C4185354041339A65EF0A /* Source Files */,
+				467E75288AC54295B5F48C47 /* Support Files */,
+			);
+			path = SBJson;
+			sourceTree = "<group>";
+		};
+		2FDFF835FE3043A6A88B08CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				278D9603018744C58C273126 /* libPods-Facebook-iOS-SDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3CDE3EFA4F2C4F87AADA3CA0 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				F84323BC2A754937A3D8C550 /* Flurry.h */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		3F4636BC3AB84236876EBB01 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E96C959E9D4B4DE9AD8E552C /* AFNetworking */,
+				ABCE7859911441D0815D073C /* Facebook-iOS-SDK */,
+				A329E9CE0E9A4D7D8869809A /* FlurrySDK */,
+				2C16DE6FB9AD4475A29447FC /* SBJson */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F33B5E20B03D4376BC6F0B39 /* Products */ = {
+		41DD1A1C252B4CA9BF3DF261 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B3BF692A6BDE43BBB753811E /* libPods-AFNetworking.a */,
+				D638A89D0AEB4545B8E1E60E /* Pods-environment.h */,
+				A92C6F459D1646569582AC58 /* Pods-dummy.m */,
+				538D45226E884F039A237444 /* Pods-acknowledgements.markdown */,
+				9D9CBE6092164BE88880B10D /* Pods-acknowledgements.plist */,
+				6B8DA2E8406742EABFDB189F /* Pods-resources.sh */,
+				5CA370D24B9F48D6BF186ABB /* Pods.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		467E75288AC54295B5F48C47 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				76B80017981A4E54AA203D3F /* Pods-SBJson-dummy.m */,
+				DE5DEA88BC0F44D3B03359CD /* Pods-SBJson-prefix.pch */,
+				115A5383D4C1491DAC5F485B /* Pods-SBJson.xcconfig */,
+				1E450BE4908F487B8588D862 /* Pods-SBJson-Private.xcconfig */,
+			);
+			name = "Support Files";
+			sourceTree = SOURCE_ROOT;
+		};
+		760C4185354041339A65EF0A /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				1AC4D1BD5795452F86F82B9E /* NSObject+SBJson.h */,
+				5AD9E3AFD431468AB2DA6A2D /* SBJson.h */,
+				4BFB25AD5F364AC2A795EC0B /* SBJsonParser.h */,
+				E91B4E5B38014C71A7B0A3A4 /* SBJsonStreamParser.h */,
+				DA90FAA1C8264AF8BAF4E289 /* SBJsonStreamParserAccumulator.h */,
+				3AEFB05EF0E64AB8AD9D4D55 /* SBJsonStreamParserAdapter.h */,
+				708053992F4D403097D1E3E7 /* SBJsonStreamParserState.h */,
+				67E080BF304148FE8E681768 /* SBJsonStreamWriter.h */,
+				8909010B08624ED6AEE08B61 /* SBJsonStreamWriterAccumulator.h */,
+				877A7AF71FF941419844A09D /* SBJsonStreamWriterState.h */,
+				B6EAAF9028D1493CBD781A9A /* SBJsonTokeniser.h */,
+				3FD903C2A75A4F69A6AB094B /* SBJsonUTF8Stream.h */,
+				EF948CF3BF9A40E182D70765 /* SBJsonWriter.h */,
+				66C1DDB82CDD4348A5ABB640 /* NSObject+SBJson.m */,
+				035E4FBB1E8D46E7AE153367 /* SBJsonParser.m */,
+				704C7466E477401395832F75 /* SBJsonStreamParser.m */,
+				E11B17A7F7A64426A00F64F2 /* SBJsonStreamParserAccumulator.m */,
+				0D5841FF58F040B1A6D0BDA4 /* SBJsonStreamParserAdapter.m */,
+				D47240303D6F49C78B8A8F02 /* SBJsonStreamParserState.m */,
+				267A7C0511AC46EEA17E231B /* SBJsonStreamWriter.m */,
+				597808E34E624B6EB31D1822 /* SBJsonStreamWriterAccumulator.m */,
+				25DE3BE015EA4AE4BBA919CE /* SBJsonStreamWriterState.m */,
+				260F509232414C12881D0B3A /* SBJsonTokeniser.m */,
+				B43BAAC8F9E44ACCA61BE554 /* SBJsonUTF8Stream.m */,
+				44D8005203DF40C1B653F00F /* SBJsonWriter.m */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		852CBA55089D4B6BA208B41E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9DDE1026DE1A4E308C408FB4 /* Pods-Facebook-iOS-SDK-dummy.m */,
+				0208829B48C54BC39B55A692 /* Pods-Facebook-iOS-SDK-prefix.pch */,
+				BC2F936B508F4C5B9C2001FD /* Pods-Facebook-iOS-SDK.xcconfig */,
+				048089F3659542A6B134C92D /* Pods-Facebook-iOS-SDK-Private.xcconfig */,
+			);
+			name = "Support Files";
+			sourceTree = SOURCE_ROOT;
+		};
+		A329E9CE0E9A4D7D8869809A /* FlurrySDK */ = {
+			isa = PBXGroup;
+			children = (
+				FC7886E479094C28A977E742 /* Products */,
+				3CDE3EFA4F2C4F87AADA3CA0 /* Source Files */,
+				21F44ED874F64781A6B616CC /* Support Files */,
+			);
+			path = FlurrySDK;
+			sourceTree = "<group>";
+		};
+		ABCE7859911441D0815D073C /* Facebook-iOS-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				2FDFF835FE3043A6A88B08CE /* Products */,
+				EDAB67DC6B324DD092241F20 /* Resources */,
+				B305CB5E23AB439B93900CBB /* Source Files */,
+				852CBA55089D4B6BA208B41E /* Support Files */,
+			);
+			path = "Facebook-iOS-SDK";
+			sourceTree = "<group>";
+		};
+		B0BB4DEB9BEB416D97A843F2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F1A2F721FA8A425E8AF22D55 /* libPods-AFNetworking.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B305CB5E23AB439B93900CBB /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				04483BDE8FED47ECAC9FE3DC /* FBAccessTokenData.h */,
+				91CA95188CBD4E7682074ABF /* FBAccessTokenData+Internal.h */,
+				4B89782429BE49FEB36FBF3B /* FBAppBridge.h */,
+				077EF6CFE6ED41B5B4DE4DEA /* FBAppBridgeTypeToJSONConverter.h */,
+				235EA03901E24304B46229E6 /* FBAppCall.h */,
+				EC75EFC1499B4DC9AD610EC0 /* FBAppCall+Internal.h */,
+				8A547606E33B40B5831D07C5 /* FBAppEvents.h */,
+				E0BC87AB1970439689D62858 /* FBAppEvents+Internal.h */,
+				87B55B1D279645A0A0CF594C /* FBAppLinkData.h */,
+				7BCDC04C77014536BF813747 /* FBAppLinkData+Internal.h */,
+				5BB06C450814493F82CF660B /* FBBase64.h */,
+				016E5626BBB44C61B4B9209C /* FBCacheDescriptor.h */,
+				9B99E462CFCE49DA879C5AAC /* FBCacheIndex.h */,
+				57160377D9D34D229D6B155A /* FBConnect.h */,
+				7C104E7039EF4275BDD08E34 /* FBCrypto.h */,
+				86B47418EF7B4B61966326DB /* FBDataDiskCache.h */,
+				3955B6D4B59B43BD82BAB99E /* FBDialog.h */,
+				2C60CCEF55F84C9B8F43928A /* FBDialogClosePNG.h */,
+				F0454CA18B634F89ACB1C63A /* FBDialogs.h */,
+				A597B4BB009D4A1387D23A61 /* FBDialogs+Internal.h */,
+				216BEA1F0AF04C9CBBC0A3BA /* FBDialogsData.h */,
+				89E4101407554EB3A57E497D /* FBDialogsData+Internal.h */,
+				FFCD549065F0402CBD94BE79 /* FBDialogsParams.h */,
+				6F318F70464B4704B4410910 /* FBDialogsParams+Internal.h */,
+				EB68A106BF88443694E4811B /* FBDynamicFrameworkLoader.h */,
+				EC4640FE5B314E9687E50C85 /* FBError.h */,
+				0D5396B19CB24A8798FFDEF8 /* FBErrorUtility.h */,
+				6A4B6605ABF8496FB6196585 /* FBErrorUtility+Internal.h */,
+				DFF30D12D67D4B92BD3CC40F /* FBFetchedAppSettings.h */,
+				4E855D195C4C4105B9221ABB /* FBFrictionlessDialogSupportDelegate.h */,
+				D08450E4043347E4B9970966 /* FBFrictionlessRecipientCache.h */,
+				56CEB0341FED4128B23D44CB /* FBFrictionlessRequestSettings.h */,
+				65E517733F724CFCB0196CF6 /* FBFriendPickerCacheDescriptor.h */,
+				488DB77CBC7741AEA6FCAD4B /* FBFriendPickerViewController.h */,
+				D12928D0C77748948F8B6A51 /* FBFriendPickerViewController+Internal.h */,
+				7F615D93DB2E421894550C6E /* FBFriendPickerViewDefaultPNG.h */,
+				774841329AE640E390D820B5 /* FBGraphLocation.h */,
+				35DE098F149D4014B33EAD54 /* FBGraphObject.h */,
+				1F1EAF34D5844A2EAADE5C5B /* FBGraphObjectPagingLoader.h */,
+				4BD25330DA3947F5948D3AD4 /* FBGraphObjectTableCell.h */,
+				43AAE3D0D0304A339AB53042 /* FBGraphObjectTableDataSource.h */,
+				F40DC59F8897460D93D00E9D /* FBGraphObjectTableSelection.h */,
+				64A0C903418849DCAD9ED468 /* FBGraphPlace.h */,
+				26BCDFBD1FBA4D0C976E628F /* FBGraphUser.h */,
+				4A3DEE1C65B64AFC89D3D9D6 /* FBImageResourceLoader.h */,
+				386D74E82FE54DB29B7692DC /* FBInsights.h */,
+				97B13B9242A74FA89A66CF81 /* FBLogger.h */,
+				92FC22439DF84875ABDA4518 /* FBLoginDialog.h */,
+				A55D769373704C0EB6613496 /* FBLoginDialogParams.h */,
+				96A1F8D9CA2044D3871281ED /* FBLoginView.h */,
+				2A82A75545F7454BB90C66C0 /* FBLoginViewButtonPNG.h */,
+				1DC63F64924B46D18E282FE9 /* FBLoginViewButtonPressedPNG.h */,
+				703CE4500C2D4665B80EFF74 /* FBNativeDialogs.h */,
+				2A573D0626FB4897BEC4649D /* FBOpenGraphAction.h */,
+				84C5CE0EB010425E84FB6521 /* FBOpenGraphActionShareDialogParams.h */,
+				147C1F0D8A6245A18862622B /* FBOpenGraphObject.h */,
+				BD3007D00BB64C3E8B389CE3 /* FBPlacePickerCacheDescriptor.h */,
+				84ECB0ECFD5445D2B1551D89 /* FBPlacePickerViewController.h */,
+				7D68C669C347407EA9C897A1 /* FBPlacePickerViewController+Internal.h */,
+				DBB90479488A4A4798C7B187 /* FBPlacePickerViewGenericPlacePNG.h */,
+				A06D750476F24CA38C4D7AF5 /* FBProfilePictureView.h */,
+				D5DEA98B1294454F87883862 /* FBProfilePictureViewBlankProfilePortraitPNG.h */,
+				49D3E7BAF1B2426F9B61E731 /* FBProfilePictureViewBlankProfileSquarePNG.h */,
+				FAE7651CAA1747928386CC35 /* FBRequest.h */,
+				85B8EEE3D04842FB92632D7A /* FBRequest+Internal.h */,
+				193B31D67C844C5FB00E052A /* FBRequestBody.h */,
+				62C8956F78084E44BF71B67D /* FBRequestConnection.h */,
+				C15594762C61424D848896D8 /* FBRequestConnection+Internal.h */,
+				FC30D1E0E6D24D548F9B2276 /* FBRequestConnectionRetryManager.h */,
+				D61E34A5A3264326A79EEFDD /* FBRequestHandlerFactory.h */,
+				1C35A823B9FE4A0280C1E7DC /* FBRequestMetadata.h */,
+				509D528D519C4E1F982DCF0E /* FBSDKVersion.h */,
+				15F968E374A94156AEF28197 /* FBSession.h */,
+				0F37439C8FF940F9B4CC5378 /* FBSession+Internal.h */,
+				AACE065567704A4BB1E50764 /* FBSession+Protected.h */,
+				09D9EF3D18A947998BB66428 /* FBSessionAppEventsState.h */,
+				4630B9CA11E948BFB5386083 /* FBSessionAuthLogger.h */,
+				38AECDF267BD4146877D4E20 /* FBSessionManualTokenCachingStrategy.h */,
+				59CD4E7E9B8B48C7A3CE24AA /* FBSessionTokenCachingStrategy.h */,
+				35B78FF266FF4856A9988D95 /* FBSettings.h */,
+				8AC357EEC6CA4AD08E4BD4F3 /* FBSettings+Internal.h */,
+				818D16D8B37D4BE48248D0D5 /* FBShareDialogParams.h */,
+				6C802AEAEB8A41AC9619D91C /* FBSystemAccountStoreAdapter.h */,
+				CB5BDE1315B14CA4B5F0DF13 /* FBTestSession.h */,
+				FBD399B8CFE14D2EA8B4B908 /* FBTestSession+Internal.h */,
+				84BAF087B5964D7E9D3066F8 /* FBURLConnection.h */,
+				83471EDD7F78471BBA51CA7F /* FBUserSettingsViewController.h */,
+				E7FEFE1C9C9A40BDBE6A1218 /* FBUtility.h */,
+				ACB11B338C8141FA984C8141 /* FBViewController.h */,
+				682489812EB64367A2ADC7DD /* FBViewController+Internal.h */,
+				08FC25DF5FBD46EF8C597085 /* FBWebDialogs.h */,
+				F114A2C3D44F4B43A47F992E /* Facebook.h */,
+				70A9A52F032B46AD896A3B4D /* FacebookSDK.h */,
+				B7506972FB30417CBA813041 /* NSError+FBError.h */,
+				F84D20932DD443AE8D36E8AE /* FBAccessTokenData.m */,
+				45EE172C937E44C39FDB0C6B /* FBAppBridge.m */,
+				7A4C2AA6280B4F31BFC27284 /* FBAppBridgeTypeToJSONConverter.m */,
+				7DEBE593E1184B21B3B52391 /* FBAppCall.m */,
+				8C127294979449C5B3ADCCE6 /* FBAppEvents.m */,
+				6C101C1ED1414A3DB8A8FB13 /* FBAppLinkData.m */,
+				9AED7BA6DE8A489FAD7CEC68 /* FBBase64.m */,
+				406D275657AA460D8404880C /* FBCacheDescriptor.m */,
+				012D0FADF99E49EA9FEAB21B /* FBCacheIndex.m */,
+				8CE21A1F3A1E4779B90C5539 /* FBCrypto.m */,
+				FF27DEEA7FB44491AF55E2EE /* FBDataDiskCache.m */,
+				BE65AED0A05B4490ADD822FD /* FBDialog.m */,
+				3C5E426F649E494C956FCA23 /* FBDialogClosePNG.m */,
+				B2393D66BD7F445E8782ECF4 /* FBDialogs.m */,
+				AC912CEA8C1D43E8B9CB66DE /* FBDialogsData.m */,
+				D896F7CC954C489A9B5AC7A7 /* FBDialogsParams.m */,
+				531E42A316E243B0BC917609 /* FBDynamicFrameworkLoader.m */,
+				E26C1A3C23BC49BDAC45669F /* FBError.m */,
+				BF730DC8098343EEA56F2E4C /* FBErrorUtility.m */,
+				4320B070730449DDBD001260 /* FBFetchedAppSettings.m */,
+				DDADC56719784FFA9716CB0E /* FBFrictionlessRecipientCache.m */,
+				42F35CF8274543D6AD7FFE9D /* FBFrictionlessRequestSettings.m */,
+				79316B007E494FF5AC132980 /* FBFriendPickerCacheDescriptor.m */,
+				965D88763675426881A2495E /* FBFriendPickerViewController.m */,
+				835C0DEFD5B049D5AD1BA8F3 /* FBFriendPickerViewDefaultPNG.m */,
+				569C555EDEF34EB7A96044D5 /* FBGraphObject.m */,
+				349021B281FA4FE1B0A66DD7 /* FBGraphObjectPagingLoader.m */,
+				FB6397867193441B8C7C12F5 /* FBGraphObjectTableCell.m */,
+				E05391094A5949E0998D46F5 /* FBGraphObjectTableDataSource.m */,
+				AC34B1154CC44FDA9EACB202 /* FBGraphObjectTableSelection.m */,
+				6542C21ABA9B4148AAFEFDC7 /* FBImageResourceLoader.m */,
+				C03D4EC082734D9B947BCBF1 /* FBInsights.m */,
+				E7881FE873E546CEA04DE1B0 /* FBLogger.m */,
+				2DF03E3F9AA74C1AA675E6E0 /* FBLoginDialog.m */,
+				F81052FDF7A2456DB3FC31E7 /* FBLoginDialogParams.m */,
+				FF8D63C912F24925AD027E37 /* FBLoginView.m */,
+				19C3334B06E3417086449E8F /* FBLoginViewButtonPNG.m */,
+				BB141D539E1B49119259916A /* FBLoginViewButtonPressedPNG.m */,
+				697B4DDC77344C31BF1DF55F /* FBNativeDialogs.m */,
+				CC87AE3CFF764CA8A076D0A3 /* FBOpenGraphActionShareDialogParams.m */,
+				6943D0A099C54170B6930488 /* FBPlacePickerCacheDescriptor.m */,
+				F51632F3B0724C5F93A3573B /* FBPlacePickerViewController.m */,
+				26CB369476AF4036B97D174C /* FBPlacePickerViewGenericPlacePNG.m */,
+				E002E2A32AFE4C87A0DB4962 /* FBProfilePictureView.m */,
+				FBD29222D2C04EE591159874 /* FBProfilePictureViewBlankProfilePortraitPNG.m */,
+				97648A54D42F42219E2E967A /* FBProfilePictureViewBlankProfileSquarePNG.m */,
+				23B93683325D47CC8E311D9B /* FBRequest.m */,
+				5809C73FF8DB4B56A80A3473 /* FBRequestBody.m */,
+				66E7D1C46F9E4D5CAF82AE51 /* FBRequestConnection.m */,
+				C5A9ADF2F493430C94843AED /* FBRequestConnectionRetryManager.m */,
+				DC9EEC86A7114CC5B93AC03B /* FBRequestHandlerFactory.m */,
+				24CB77959CF4422C8A8122D2 /* FBRequestMetadata.m */,
+				786D165114514AC68C3EDBED /* FBSession.m */,
+				3242C9C91F024A0E9D343DE7 /* FBSessionAppEventsState.m */,
+				15EDAB0415A5463AB44FEFF7 /* FBSessionAuthLogger.m */,
+				1C956A5CB7E04E329036051B /* FBSessionManualTokenCachingStrategy.m */,
+				78DFFAF2DD3E4A42ADFE150A /* FBSessionTokenCachingStrategy.m */,
+				F3EAAFF19C2E4B19805D4A08 /* FBSettings.m */,
+				6479CBFDE56040469DD5008C /* FBShareDialogParams.m */,
+				218006FE903946D392BC0D87 /* FBSystemAccountStoreAdapter.m */,
+				5689ADE58FB84B1BBDBEE76D /* FBTestSession.m */,
+				AAB9CE44A46C482C85B4A4C1 /* FBURLConnection.m */,
+				37BCB975BCD14613B332B8EC /* FBUserSettingsViewController.m */,
+				D79984205C73468D925041DE /* FBUtility.m */,
+				275C438D448A4920945E50EC /* FBViewController.m */,
+				9A6E512C914241A681164DE7 /* FBWebDialogs.m */,
+				591F4740F0E241B09A6CFB1D /* Facebook.m */,
+				7434F0FD79714123B736E0D5 /* NSError+FBError.m */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		B3BD6B2A016847FA86148F94 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				80FED262AFEF463887DB2477 /* AFHTTPClient.h */,
+				6D07DF9A2A2D4C9AA2D32858 /* AFHTTPRequestOperation.h */,
+				D768DA9209644C7F82281D14 /* AFImageRequestOperation.h */,
+				4F7F7314AF91496E829B03DC /* AFJSONRequestOperation.h */,
+				DED3D9705872426386AB520F /* AFNetworkActivityIndicatorManager.h */,
+				9736B85C90434EABA9267C1C /* AFNetworking.h */,
+				934910C31BD6440DBCDDBC71 /* AFPropertyListRequestOperation.h */,
+				D7EED55FFCC1495A97C8BF43 /* AFURLConnectionOperation.h */,
+				DAD2F3EAF96A4141A4F42CB4 /* AFXMLRequestOperation.h */,
+				79F50D6047B34154AD6AC360 /* UIImageView+AFNetworking.h */,
+				6573B889A0364AADA3703105 /* AFHTTPClient.m */,
+				F691948C459841BCA81892C9 /* AFHTTPRequestOperation.m */,
+				24317DD496554B60B024F036 /* AFImageRequestOperation.m */,
+				AFC50E1142674F5686A0430B /* AFJSONRequestOperation.m */,
+				744DF1A7A92642E7B8FD95C5 /* AFNetworkActivityIndicatorManager.m */,
+				C03435CECA684F4E8501D772 /* AFPropertyListRequestOperation.m */,
+				7BA526732A614D0A8568AD09 /* AFURLConnectionOperation.m */,
+				EA3DF4EC7A584C3596515F78 /* AFXMLRequestOperation.m */,
+				3301F84409BD4C9AA9AC8A21 /* UIImageView+AFNetworking.m */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		D41A1F9F9D7E4AB7932BD2F6 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1C09BE9D869C49C581F7B303 /* Pods-AFNetworking-dummy.m */,
+				87D0EA7AB4F74123861B904F /* Pods-AFNetworking-prefix.pch */,
+				E2D7889C3A2D491A8B5F4C87 /* Pods-AFNetworking.xcconfig */,
+				88A1E410F6014357B79346CD /* Pods-AFNetworking-Private.xcconfig */,
+			);
+			name = "Support Files";
+			sourceTree = SOURCE_ROOT;
+		};
+		D6589B1A3ABC4DDD84383918 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6FC20F9D42EE447387E3607E /* libPods.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E96C959E9D4B4DE9AD8E552C /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				B0BB4DEB9BEB416D97A843F2 /* Products */,
+				B3BD6B2A016847FA86148F94 /* Source Files */,
+				D41A1F9F9D7E4AB7932BD2F6 /* Support Files */,
+			);
+			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		EDAB67DC6B324DD092241F20 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F5E7E0512DDB4BCA97F219F6 /* FBUserSettingsViewResources.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		FC7886E479094C28A977E742 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2E8FDEB8D174EF2A6BD0D19 /* libPods-FlurrySDK.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -440,114 +1001,162 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2F6642B647A44FD6A8384D2E /* Headers */ = {
+		05EC255B42184D79B317A85D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FB6B99B78854DA4B98C852E /* AFHTTPClient.h in Headers */,
-				DA7589FE88314DCAB109B0B8 /* AFHTTPRequestOperation.h in Headers */,
-				1B1A7252F5A74FC5883028C3 /* AFImageRequestOperation.h in Headers */,
-				3A9FC43833E7446BB54BB5B0 /* AFJSONRequestOperation.h in Headers */,
-				09170FA814404A9D9E4F9CF5 /* AFNetworkActivityIndicatorManager.h in Headers */,
-				88243951D729489D92D6FE27 /* AFNetworking.h in Headers */,
-				214F88DADF004F52BA1D5FE8 /* AFPropertyListRequestOperation.h in Headers */,
-				05E2653E6D2E49A997C2320D /* AFURLConnectionOperation.h in Headers */,
-				94B542022F434E6CA17DF31E /* AFXMLRequestOperation.h in Headers */,
-				EC96686FF6304B8785E337E2 /* UIImageView+AFNetworking.h in Headers */,
+				DBA5B105C7EA4592B3065FE0 /* NSObject+SBJson.h in Headers */,
+				7F41211ECA0040638B17D2CE /* SBJson.h in Headers */,
+				EE9507B869524C069BDFCFEC /* SBJsonParser.h in Headers */,
+				6D63F4A8749C4CD09BF54220 /* SBJsonStreamParser.h in Headers */,
+				E9B3718CDAA34A4BA56808DC /* SBJsonStreamParserAccumulator.h in Headers */,
+				323ECDD0688549AEB38F19CD /* SBJsonStreamParserAdapter.h in Headers */,
+				02DE7851357741A8833462D4 /* SBJsonStreamParserState.h in Headers */,
+				7550D25885004C03B044D06C /* SBJsonStreamWriter.h in Headers */,
+				D26F69B948E64F92ACE0A9B4 /* SBJsonStreamWriterAccumulator.h in Headers */,
+				0954C23459AB4B889780AF26 /* SBJsonStreamWriterState.h in Headers */,
+				8CDE24D6F3274264BC7BA7E1 /* SBJsonTokeniser.h in Headers */,
+				F98F07E4913041C59B5DF07D /* SBJsonUTF8Stream.h in Headers */,
+				CD0FCAB86F8E42118B43A3FA /* SBJsonWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B4C2809C18124744A2ED1BA3 /* Headers */ = {
+		06CCFC9411C341D5BDA52BC3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACD548DC6DE74A81B488819D /* NSObject+SBJson.h in Headers */,
-				7386B746A0DD449F9E90AAF9 /* SBJson.h in Headers */,
-				D15E887F8C0E4A678E158996 /* SBJsonParser.h in Headers */,
-				05C719CAF9EC4A94B3739812 /* SBJsonStreamParser.h in Headers */,
-				1D963F108CE647F59DED0273 /* SBJsonStreamParserAccumulator.h in Headers */,
-				4DAEA82C79A647EAA19FDC61 /* SBJsonStreamParserAdapter.h in Headers */,
-				B2030E6344724186BDAC858E /* SBJsonStreamParserState.h in Headers */,
-				2E53BF6B725144FDAF15A3DE /* SBJsonStreamWriter.h in Headers */,
-				F761364D23434142A847D93D /* SBJsonStreamWriterAccumulator.h in Headers */,
-				CB29E7A3E2F347B885CD0E3C /* SBJsonStreamWriterState.h in Headers */,
-				34AF10EAB05D4E989D86C881 /* SBJsonTokeniser.h in Headers */,
-				124260C1A49F44679387461A /* SBJsonUTF8Stream.h in Headers */,
-				4ECAAA58FEFB4E7A8D8B49CC /* SBJsonWriter.h in Headers */,
+				1EB363DB61AD4E48B4EC2781 /* Flurry.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FBD74265808B4D8E8FD452F5 /* Headers */ = {
+		084D1C9AD3114924AD0B41A1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40F2DB5673F744C7B4471935 /* Flurry.h in Headers */,
+				ADFF56EA077C4CB6AAFF533F /* AFHTTPClient.h in Headers */,
+				1C0E2B8883B54547BBD0C4C4 /* AFHTTPRequestOperation.h in Headers */,
+				315C5F170090400E84CB7A19 /* AFImageRequestOperation.h in Headers */,
+				29D8F0EED8174FF7B18A6807 /* AFJSONRequestOperation.h in Headers */,
+				AF2E27506A8F443680842D36 /* AFNetworkActivityIndicatorManager.h in Headers */,
+				443A8886455D47989A528625 /* AFNetworking.h in Headers */,
+				D5F631CC1B9C4AD6964A6D07 /* AFPropertyListRequestOperation.h in Headers */,
+				3B84F7BC70134519B4426BF6 /* AFURLConnectionOperation.h in Headers */,
+				0436BD12B15F4D4EB83F4163 /* AFXMLRequestOperation.h in Headers */,
+				CD5E5BA971174EAF87CFE5B3 /* UIImageView+AFNetworking.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A5EFCDA933B42A1A3524922 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BA2006CEE8F42D8ABE8E70E /* FBAccessTokenData+Internal.h in Headers */,
+				F1940FB4B6104EFDBFA737D4 /* FBAccessTokenData.h in Headers */,
+				65AAC7C1F9354BDFB2E0773A /* FBAppBridge.h in Headers */,
+				8B9D2507DADD44F3B9DD2901 /* FBAppBridgeTypeToJSONConverter.h in Headers */,
+				D5DEC0DB431748AA913745B7 /* FBAppCall+Internal.h in Headers */,
+				A02D1124FCD14A7D8E45351C /* FBAppCall.h in Headers */,
+				8E76E866B5AB47D288F26FF7 /* FBAppEvents+Internal.h in Headers */,
+				D715AE738D614CFE8EB12AAD /* FBAppEvents.h in Headers */,
+				97010BE922F841E49B0B0BB9 /* FBAppLinkData+Internal.h in Headers */,
+				0B9BCBB67F364AF2AB50B524 /* FBAppLinkData.h in Headers */,
+				AB0CA654CDFD42C8A90FF3BE /* FBBase64.h in Headers */,
+				9791D7F732D94D4CA14511D6 /* FBCacheDescriptor.h in Headers */,
+				60D1A6078C234A03B6946F29 /* FBCacheIndex.h in Headers */,
+				9BB7C24194C64117A535DD22 /* FBConnect.h in Headers */,
+				55D0E831FD40487699ADE551 /* FBCrypto.h in Headers */,
+				C3444B886E2F45A88CAC42C6 /* FBDataDiskCache.h in Headers */,
+				AEB9C6B559D842E8A86A6464 /* FBDialog.h in Headers */,
+				F218478381A94A70ACBA0C19 /* FBDialogClosePNG.h in Headers */,
+				188B5D9C1A8340CE9450E28F /* FBDialogs+Internal.h in Headers */,
+				286379A172174581850AD290 /* FBDialogs.h in Headers */,
+				4304BAA7F5CB45B1817A2474 /* FBDialogsData+Internal.h in Headers */,
+				561B884CEE0448D2AF971A43 /* FBDialogsData.h in Headers */,
+				8802CE6AE6F84251B2138D64 /* FBDialogsParams+Internal.h in Headers */,
+				44076CB22E3E4262AD7CD548 /* FBDialogsParams.h in Headers */,
+				7D68AE5F98D8479D957DAB00 /* FBDynamicFrameworkLoader.h in Headers */,
+				7DD4CB21C797408A8570F327 /* FBError.h in Headers */,
+				F6A0020D6BB646D3A3724EA1 /* FBErrorUtility+Internal.h in Headers */,
+				A12EB4EAA1044E33903808F9 /* FBErrorUtility.h in Headers */,
+				32D64FD4449944A59B6DC350 /* FBFetchedAppSettings.h in Headers */,
+				704418172B2C496EBE209C3F /* FBFrictionlessDialogSupportDelegate.h in Headers */,
+				CC8B27D75E4D4420AFA5CEFC /* FBFrictionlessRecipientCache.h in Headers */,
+				50AC0CEB42884C29A2850943 /* FBFrictionlessRequestSettings.h in Headers */,
+				C18FC405A6504E1698B31E88 /* FBFriendPickerCacheDescriptor.h in Headers */,
+				49786335A3C04448861A6BB4 /* FBFriendPickerViewController+Internal.h in Headers */,
+				51B3EB3C693C47A58D8A006A /* FBFriendPickerViewController.h in Headers */,
+				6A91282317A74AD7B5D7D678 /* FBFriendPickerViewDefaultPNG.h in Headers */,
+				330D91EF7B3147068A59798B /* FBGraphLocation.h in Headers */,
+				A191E56C8A6740D6BC2688F0 /* FBGraphObject.h in Headers */,
+				C6740F163E3B4282813E2BBC /* FBGraphObjectPagingLoader.h in Headers */,
+				CF5EADE6437B48CDA39B8427 /* FBGraphObjectTableCell.h in Headers */,
+				197A2D4A51A044F6B36CC323 /* FBGraphObjectTableDataSource.h in Headers */,
+				BCF2877AD8B84BC7AF6E9521 /* FBGraphObjectTableSelection.h in Headers */,
+				E4EFBE1DD67B4599B974023D /* FBGraphPlace.h in Headers */,
+				1500BE2E8C8E46D9AC339EB5 /* FBGraphUser.h in Headers */,
+				52B5AAA414C8407894076F9D /* FBImageResourceLoader.h in Headers */,
+				E199219B4F7346378398DACB /* FBInsights.h in Headers */,
+				26FE5704EB5A4AD3AB64FA53 /* FBLogger.h in Headers */,
+				82494C6CC29B462EAFB3F6DB /* FBLoginDialog.h in Headers */,
+				AA536014BA6D446B88C437FC /* FBLoginDialogParams.h in Headers */,
+				20BB914EEB694B09B30C7E16 /* FBLoginView.h in Headers */,
+				306F3225EE784C45BFB441C1 /* FBLoginViewButtonPNG.h in Headers */,
+				0D06443272C846DBA3464634 /* FBLoginViewButtonPressedPNG.h in Headers */,
+				F280DF1B3438422EB000A18E /* FBNativeDialogs.h in Headers */,
+				12CF3DC30CD24918AB3CE522 /* FBOpenGraphAction.h in Headers */,
+				69F5D042649042FCB40CE724 /* FBOpenGraphActionShareDialogParams.h in Headers */,
+				1A5486DA1A714AD5A3EE1088 /* FBOpenGraphObject.h in Headers */,
+				F1D6AE32095749349C8B6A6A /* FBPlacePickerCacheDescriptor.h in Headers */,
+				48B3B85330E340A2BA432F8D /* FBPlacePickerViewController+Internal.h in Headers */,
+				F510E23DBE564899A341E557 /* FBPlacePickerViewController.h in Headers */,
+				F0B00D00D2614F1280CFA4FF /* FBPlacePickerViewGenericPlacePNG.h in Headers */,
+				AAFA2186BBD3421DB7480FB2 /* FBProfilePictureView.h in Headers */,
+				D87A331748134F3E83A3933E /* FBProfilePictureViewBlankProfilePortraitPNG.h in Headers */,
+				0B9A15B69ECF4802B941E928 /* FBProfilePictureViewBlankProfileSquarePNG.h in Headers */,
+				78BBD8F341DE430887AE1491 /* FBRequest+Internal.h in Headers */,
+				426C9820A70D44AC9551CDB3 /* FBRequest.h in Headers */,
+				2118B82439524ABAB4F7FA4A /* FBRequestBody.h in Headers */,
+				F06BF9BB8C5943BC82858F2D /* FBRequestConnection+Internal.h in Headers */,
+				7487A4A9B4A9472A88BED936 /* FBRequestConnection.h in Headers */,
+				ACF1844044334162A4AF9F87 /* FBRequestConnectionRetryManager.h in Headers */,
+				91955E65380C4B0D8667A538 /* FBRequestHandlerFactory.h in Headers */,
+				5F04FC40EDC048538A0FA5BA /* FBRequestMetadata.h in Headers */,
+				4250A5F5E90C46A484707749 /* FBSDKVersion.h in Headers */,
+				9DE825B8C1434D6BAA725E31 /* FBSession+Internal.h in Headers */,
+				0833D27EA24042E99249B0A1 /* FBSession+Protected.h in Headers */,
+				C66FD9775FF043C2934DE7D4 /* FBSession.h in Headers */,
+				8D88D228E7E542F991D54C8E /* FBSessionAppEventsState.h in Headers */,
+				262B95EBDFAA4B23836A4E61 /* FBSessionAuthLogger.h in Headers */,
+				BA0607C7F676476E8139FD6B /* FBSessionManualTokenCachingStrategy.h in Headers */,
+				DECC63968C2F4F90A7809A8C /* FBSessionTokenCachingStrategy.h in Headers */,
+				CE3A2F6251CA40799EC10750 /* FBSettings+Internal.h in Headers */,
+				6ED068348ACB41A09F7C3033 /* FBSettings.h in Headers */,
+				3730E7F4BDEF4A6E8471117D /* FBShareDialogParams.h in Headers */,
+				E012C54764CD4949AC8E76D8 /* FBSystemAccountStoreAdapter.h in Headers */,
+				87DABEC5E91146ADBA8362A4 /* FBTestSession+Internal.h in Headers */,
+				DE97E5349B854F3EA08F0898 /* FBTestSession.h in Headers */,
+				944F795B95A94504902CFCEE /* FBURLConnection.h in Headers */,
+				BAAF7237383B4207839D98C5 /* FBUserSettingsViewController.h in Headers */,
+				C09ADF6D2F894101AAF8E1D5 /* FBUtility.h in Headers */,
+				FACC5E9C274A48EE8FE10274 /* FBViewController+Internal.h in Headers */,
+				D63DCA73C902499AB8DF492B /* FBViewController.h in Headers */,
+				A00872DC4720499ABE598877 /* FBWebDialogs.h in Headers */,
+				57E177ADAD9B4175AE3731A3 /* Facebook.h in Headers */,
+				85A32F32C27147D1BA358DED /* FacebookSDK.h in Headers */,
+				04AF97E70E9E445E9714C965 /* NSError+FBError.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8C4AC146383C4EC48C55A37C /* Pods-SBJson */ = {
+		4138D915D34F491381972D01 /* Pods-AFNetworking */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 89D77FDB95254D3BBB8F80D1 /* Build configuration list for PBXNativeTarget "Pods-SBJson" */;
+			buildConfigurationList = DDFDEDB811F0451E903F91C2 /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */;
 			buildPhases = (
-				6132B4A818AE406595F08ED9 /* Sources */,
-				BF813E16894E4223A9ED2E96 /* Frameworks */,
-				B4C2809C18124744A2ED1BA3 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-SBJson";
-			productName = "Pods-SBJson";
-			productReference = 1964F25973D74D48A414EC6C /* libPods-SBJson.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		A06DED1D0E844D099471313E /* Pods-FlurrySDK */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F9895C84AFB14BF983048892 /* Build configuration list for PBXNativeTarget "Pods-FlurrySDK" */;
-			buildPhases = (
-				99858427BF68447DBA4B1607 /* Sources */,
-				21FF1FA346E14BB4AF17EAC3 /* Frameworks */,
-				FBD74265808B4D8E8FD452F5 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-FlurrySDK";
-			productName = "Pods-FlurrySDK";
-			productReference = 97E1972C5F5F4E298BAD6E80 /* libPods-FlurrySDK.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		A44C5ED53C354609B41D6CB1 /* Pods */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 306B381C1D5D406DA3E07349 /* Build configuration list for PBXNativeTarget "Pods" */;
-			buildPhases = (
-				B008298A2F4545BFAFF3C053 /* Sources */,
-				55ACF1CE884C4D909548C252 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0FBDD3DB058F4EE9894FA578 /* PBXTargetDependency */,
-				6F569F752BA04DB2A5901CE3 /* PBXTargetDependency */,
-				03F389EA2BE84009A925D1AD /* PBXTargetDependency */,
-			);
-			name = Pods;
-			productName = Pods;
-			productReference = 58AEFBD604674A46BB815411 /* libPods.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		F6C2FAD9AEC9436ABB6BDFD6 /* Pods-AFNetworking */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 74D4300FE07A4717B0CB1508 /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */;
-			buildPhases = (
-				90D84FA72A8841D28543D9FD /* Sources */,
-				057B71A2E64041839188A518 /* Frameworks */,
-				2F6642B647A44FD6A8384D2E /* Headers */,
+				724C393FF7AC4302B493AF78 /* Sources */,
+				419461C9AADA4F098D33670C /* Frameworks */,
+				084D1C9AD3114924AD0B41A1 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -555,121 +1164,275 @@
 			);
 			name = "Pods-AFNetworking";
 			productName = "Pods-AFNetworking";
-			productReference = B3BF692A6BDE43BBB753811E /* libPods-AFNetworking.a */;
+			productReference = F1A2F721FA8A425E8AF22D55 /* libPods-AFNetworking.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		6B03435F78194E3DABE044DF /* Pods-SBJson */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC0A3BFDE3584DD5A9AD5F83 /* Build configuration list for PBXNativeTarget "Pods-SBJson" */;
+			buildPhases = (
+				A88D0CEEF00C495CA3C952A9 /* Sources */,
+				557AAFE0DD5848D28DF58F34 /* Frameworks */,
+				05EC255B42184D79B317A85D /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SBJson";
+			productName = "Pods-SBJson";
+			productReference = 35A15EBBB7AF4DD2A0BF11BC /* libPods-SBJson.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		732C61F7AED44FABB15A007B /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDD5ED15352A42CBB4B75468 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				84761F2726554D6F99EEFDEA /* Sources */,
+				39F9440EBF6848379D55E034 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				10D3A7F362DF4C0FA8BE7C51 /* PBXTargetDependency */,
+				111F65234C874640926EA402 /* PBXTargetDependency */,
+				8F170B2B5B31477F9280F2E4 /* PBXTargetDependency */,
+				F39425D77D354DA18D5E4522 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = 6FC20F9D42EE447387E3607E /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		75742D27BA3D41B5957D27FC /* Pods-Facebook-iOS-SDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89AEB8EA75D541748CBDD281 /* Build configuration list for PBXNativeTarget "Pods-Facebook-iOS-SDK" */;
+			buildPhases = (
+				36EB1B09C24C445787846B43 /* Sources */,
+				58287657C8C14DDD93DDDD49 /* Frameworks */,
+				5A5EFCDA933B42A1A3524922 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Facebook-iOS-SDK";
+			productName = "Pods-Facebook-iOS-SDK";
+			productReference = 278D9603018744C58C273126 /* libPods-Facebook-iOS-SDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D60D70E903FD4523A4768D33 /* Pods-FlurrySDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4D73CBD9F4D4E3C86AD4A20 /* Build configuration list for PBXNativeTarget "Pods-FlurrySDK" */;
+			buildPhases = (
+				21EA40B68F914C0DB3A5F022 /* Sources */,
+				B07416D94BA04FA78AB0285B /* Frameworks */,
+				06CCFC9411C341D5BDA52BC3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-FlurrySDK";
+			productName = "Pods-FlurrySDK";
+			productReference = C2E8FDEB8D174EF2A6BD0D19 /* libPods-FlurrySDK.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		11CADA32853C4AB08909FBBE /* Project object */ = {
+		E6FFFC57B9DA4665943E035C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
 			};
-			buildConfigurationList = 0D4CEC2854FE47F187BE2852 /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = 72C884C2B64A4EA589CB8C83 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 3AA130E73148415A89BC5FD1;
-			productRefGroup = 7E74F51F62E34B8DB8682AF2 /* Products */;
+			mainGroup = 0F05CBCD8D4B4627AAE35347;
+			productRefGroup = D6589B1A3ABC4DDD84383918 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A44C5ED53C354609B41D6CB1 /* Pods */,
-				F6C2FAD9AEC9436ABB6BDFD6 /* Pods-AFNetworking */,
-				A06DED1D0E844D099471313E /* Pods-FlurrySDK */,
-				8C4AC146383C4EC48C55A37C /* Pods-SBJson */,
+				732C61F7AED44FABB15A007B /* Pods */,
+				4138D915D34F491381972D01 /* Pods-AFNetworking */,
+				75742D27BA3D41B5957D27FC /* Pods-Facebook-iOS-SDK */,
+				D60D70E903FD4523A4768D33 /* Pods-FlurrySDK */,
+				6B03435F78194E3DABE044DF /* Pods-SBJson */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6132B4A818AE406595F08ED9 /* Sources */ = {
+		21EA40B68F914C0DB3A5F022 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43336259967B4A2DA5B0DAA9 /* NSObject+SBJson.m in Sources */,
-				7128129EEAE1463390065AFA /* Pods-SBJson-dummy.m in Sources */,
-				86A486A449384349A45DD5F7 /* SBJsonParser.m in Sources */,
-				93DCFF9603C242268CBAD9A2 /* SBJsonStreamParser.m in Sources */,
-				F32FEC6C37274AE6923D1FB7 /* SBJsonStreamParserAccumulator.m in Sources */,
-				8B4DE639C055482D8C2ABE1F /* SBJsonStreamParserAdapter.m in Sources */,
-				A747B1D5D668443FB51E423A /* SBJsonStreamParserState.m in Sources */,
-				E4794E1B5C3F44329EFD6038 /* SBJsonStreamWriter.m in Sources */,
-				A7D653DBF3B64C33B6FB6694 /* SBJsonStreamWriterAccumulator.m in Sources */,
-				943A7F54B77D4831BDF1A194 /* SBJsonStreamWriterState.m in Sources */,
-				B676B974547648569CA21F0C /* SBJsonTokeniser.m in Sources */,
-				9EB742FC22EE4074852FBFAD /* SBJsonUTF8Stream.m in Sources */,
-				8FFC5A2E1273403DBB5FE74D /* SBJsonWriter.m in Sources */,
+				D3CC78DC24724801B47F35D4 /* Pods-FlurrySDK-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		90D84FA72A8841D28543D9FD /* Sources */ = {
+		36EB1B09C24C445787846B43 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				985DB340C6534CEFAAF22B4C /* AFHTTPClient.m in Sources */,
-				1C428F0A3D1947A6A67EE0BA /* AFHTTPRequestOperation.m in Sources */,
-				540514D70CA9442A8E1DF526 /* AFImageRequestOperation.m in Sources */,
-				C18701D481F34EE18F0B5A85 /* AFJSONRequestOperation.m in Sources */,
-				90DE01C279284D578C9A28E2 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				8036E91A422C41379DF9AD10 /* AFPropertyListRequestOperation.m in Sources */,
-				0824350418DF45F892ABF924 /* AFURLConnectionOperation.m in Sources */,
-				52D7A614EA894596B76DCE7E /* AFXMLRequestOperation.m in Sources */,
-				DB3B970FC35546BA88A2D561 /* Pods-AFNetworking-dummy.m in Sources */,
-				C945D385CF6449E5B4192826 /* UIImageView+AFNetworking.m in Sources */,
+				A808BD625C2140E29ADBBB3A /* FBAccessTokenData.m in Sources */,
+				87B179796BA5409FBE1D1B3E /* FBAppBridge.m in Sources */,
+				B343FBF0C25045AA83D7EFA0 /* FBAppBridgeTypeToJSONConverter.m in Sources */,
+				00CE76F93D24424593EAA0D7 /* FBAppCall.m in Sources */,
+				1C83B895859143449B90A4D4 /* FBAppEvents.m in Sources */,
+				12E1D704E4DB469B9045D59B /* FBAppLinkData.m in Sources */,
+				0362433B2DDD4C87BE181963 /* FBBase64.m in Sources */,
+				14502F7970AA48AF862B3BA1 /* FBCacheDescriptor.m in Sources */,
+				35CA3C24F6774CAA89DC0B05 /* FBCacheIndex.m in Sources */,
+				29A356510C1D4172B5F91317 /* FBCrypto.m in Sources */,
+				2E410403BDC04F46AECCAC53 /* FBDataDiskCache.m in Sources */,
+				092E4B257C974A429C711D64 /* FBDialog.m in Sources */,
+				4C4919268E7949E888F134E3 /* FBDialogClosePNG.m in Sources */,
+				6283A3CCF52E49EF973E42B6 /* FBDialogs.m in Sources */,
+				8FDC2373363A4D3AA1BD8D8A /* FBDialogsData.m in Sources */,
+				00498536ACEA4E04B1BC34A6 /* FBDialogsParams.m in Sources */,
+				698D40356FD84B4897CBADD2 /* FBDynamicFrameworkLoader.m in Sources */,
+				CC23530C96404CC8B3A95A9F /* FBError.m in Sources */,
+				EC3286D96ECF45488B3EE6BE /* FBErrorUtility.m in Sources */,
+				A9E703564ED34B2F99BE8FDD /* FBFetchedAppSettings.m in Sources */,
+				412551F51EEE4FCCB242E5BA /* FBFrictionlessRecipientCache.m in Sources */,
+				354778DB9254444AA5BBBFD2 /* FBFrictionlessRequestSettings.m in Sources */,
+				1A09735A624447F0BB30B60C /* FBFriendPickerCacheDescriptor.m in Sources */,
+				39FA0953BCD243549BCE536D /* FBFriendPickerViewController.m in Sources */,
+				8DEC2E3D4A104F778068302C /* FBFriendPickerViewDefaultPNG.m in Sources */,
+				13B5FC7144C24FC99C0A9F45 /* FBGraphObject.m in Sources */,
+				5A74CA8421CE47D6B763DDE7 /* FBGraphObjectPagingLoader.m in Sources */,
+				CADEB683DC8B422D8ACBA459 /* FBGraphObjectTableCell.m in Sources */,
+				B9A2145BA8754CEBB38DF25E /* FBGraphObjectTableDataSource.m in Sources */,
+				CA7891E0C91E4B8BBCCCF838 /* FBGraphObjectTableSelection.m in Sources */,
+				4444491945C345CEB1036F2C /* FBImageResourceLoader.m in Sources */,
+				6F4FD77392B846BCBC05C536 /* FBInsights.m in Sources */,
+				4BC327D820A4462292B0B20E /* FBLogger.m in Sources */,
+				6ED109AEB8F849C4B9EE2D8B /* FBLoginDialog.m in Sources */,
+				F000BE54ADF7456CB813866C /* FBLoginDialogParams.m in Sources */,
+				4CD94BE2BC2444E2A00313C0 /* FBLoginView.m in Sources */,
+				01D9C6B5415544189353E1E1 /* FBLoginViewButtonPNG.m in Sources */,
+				F71D335CA0D84033873C3D2B /* FBLoginViewButtonPressedPNG.m in Sources */,
+				9F2DA18D82A346A7A66667DB /* FBNativeDialogs.m in Sources */,
+				ADFE9A6B42B642C68A727C92 /* FBOpenGraphActionShareDialogParams.m in Sources */,
+				019D207FE0544DB5A71D8E4E /* FBPlacePickerCacheDescriptor.m in Sources */,
+				22B0838910D749BD9F1FD69D /* FBPlacePickerViewController.m in Sources */,
+				FC7238AD6DD4454489374A37 /* FBPlacePickerViewGenericPlacePNG.m in Sources */,
+				1E9D61AB57584415A069DE9C /* FBProfilePictureView.m in Sources */,
+				F5C2C603318741E68BE54E83 /* FBProfilePictureViewBlankProfilePortraitPNG.m in Sources */,
+				4975B3F58DA04FDFB02B44A5 /* FBProfilePictureViewBlankProfileSquarePNG.m in Sources */,
+				67BBC2FA07FE4DCCA4C40BED /* FBRequest.m in Sources */,
+				74FC69AA3ACB4481BFE79194 /* FBRequestBody.m in Sources */,
+				6697F25207AC4EBE9BB9393C /* FBRequestConnection.m in Sources */,
+				6570353689D14E72B5EBC654 /* FBRequestConnectionRetryManager.m in Sources */,
+				AF64E44329C545D597CB3D71 /* FBRequestHandlerFactory.m in Sources */,
+				44F5C163C4A64FB28D1B3608 /* FBRequestMetadata.m in Sources */,
+				D8B5F2F8F4274D7A9CF360C9 /* FBSession.m in Sources */,
+				DE0FC014B1ED4D7AA98AB044 /* FBSessionAppEventsState.m in Sources */,
+				C7C22B2F2B044171AC50B439 /* FBSessionAuthLogger.m in Sources */,
+				9D9D7E121F484C9C9A06BC46 /* FBSessionManualTokenCachingStrategy.m in Sources */,
+				8BEDEDC1A7B94E98AF4D64A2 /* FBSessionTokenCachingStrategy.m in Sources */,
+				33E7D038C532441CBAB5C63D /* FBSettings.m in Sources */,
+				DD36018F0D974BA086F688E0 /* FBShareDialogParams.m in Sources */,
+				841601A9F7D5470B9C38D886 /* FBSystemAccountStoreAdapter.m in Sources */,
+				FE8EB14990C840D881C5D186 /* FBTestSession.m in Sources */,
+				57FFA08203A643B2BF8D7352 /* FBURLConnection.m in Sources */,
+				0270294D00094F2B819AA147 /* FBUserSettingsViewController.m in Sources */,
+				6B4BE22370E743D9A5A37DE1 /* FBUtility.m in Sources */,
+				C084387FE2284F139F434EE0 /* FBViewController.m in Sources */,
+				F5AC8E3CABDF4DE7A7C7A0D8 /* FBWebDialogs.m in Sources */,
+				326F7602CF0F48D5BE9DFC42 /* Facebook.m in Sources */,
+				A4607349ABBA4740BF34E0D9 /* NSError+FBError.m in Sources */,
+				4237ACB66EE64E38AF6AD197 /* Pods-Facebook-iOS-SDK-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		99858427BF68447DBA4B1607 /* Sources */ = {
+		724C393FF7AC4302B493AF78 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A49E62FF342448DC8325B0FC /* Pods-FlurrySDK-dummy.m in Sources */,
+				0031EFDAE61543F5863CEC2F /* AFHTTPClient.m in Sources */,
+				FE040989966145E4BB54B43D /* AFHTTPRequestOperation.m in Sources */,
+				7F8EB80F32C74411ACA99C72 /* AFImageRequestOperation.m in Sources */,
+				506301C3C24B4E6F97A6EF2F /* AFJSONRequestOperation.m in Sources */,
+				57FC33A73FCC49A08882B6D6 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				87DA00DB479F426D9210E54A /* AFPropertyListRequestOperation.m in Sources */,
+				36D38443C39F4F7A9DC658C2 /* AFURLConnectionOperation.m in Sources */,
+				C9D77EB469FC46EFA52285EE /* AFXMLRequestOperation.m in Sources */,
+				2108A125FB5B4AFB9444A87E /* Pods-AFNetworking-dummy.m in Sources */,
+				22C499DFE8054A70A58E9535 /* UIImageView+AFNetworking.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B008298A2F4545BFAFF3C053 /* Sources */ = {
+		84761F2726554D6F99EEFDEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A70C5507C05B45D18910CFCE /* Pods-dummy.m in Sources */,
+				32A156E8D9B4455D91F09324 /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A88D0CEEF00C495CA3C952A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C3781E6F4324BB2B422DD2C /* NSObject+SBJson.m in Sources */,
+				C4F4E021569D4D56A9B39FA4 /* Pods-SBJson-dummy.m in Sources */,
+				769AF01739224075BDCBDA07 /* SBJsonParser.m in Sources */,
+				8A76B63BC5734553BE480103 /* SBJsonStreamParser.m in Sources */,
+				3DEFE3EBF3CD4792B4140CF3 /* SBJsonStreamParserAccumulator.m in Sources */,
+				2129700E07B543BF853DFD75 /* SBJsonStreamParserAdapter.m in Sources */,
+				1981E0D1936A4CA39B75D0AE /* SBJsonStreamParserState.m in Sources */,
+				DD09F93D1CBA4A8CA0F1C29E /* SBJsonStreamWriter.m in Sources */,
+				17C0C26025594F5490FB2206 /* SBJsonStreamWriterAccumulator.m in Sources */,
+				10039F2AB448460181DDEACF /* SBJsonStreamWriterState.m in Sources */,
+				A6A5AC4FBF38490EAB55789A /* SBJsonTokeniser.m in Sources */,
+				F2763FC996464BA9B29700F7 /* SBJsonUTF8Stream.m in Sources */,
+				28B61D0BE1814D25BD30DFA8 /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		03F389EA2BE84009A925D1AD /* PBXTargetDependency */ = {
+		10D3A7F362DF4C0FA8BE7C51 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8C4AC146383C4EC48C55A37C /* Pods-SBJson */;
-			targetProxy = D8F1E4CE814B4E91B16EA97D /* PBXContainerItemProxy */;
+			target = 4138D915D34F491381972D01 /* Pods-AFNetworking */;
+			targetProxy = B581E02595DB4D47AD85A621 /* PBXContainerItemProxy */;
 		};
-		0FBDD3DB058F4EE9894FA578 /* PBXTargetDependency */ = {
+		111F65234C874640926EA402 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F6C2FAD9AEC9436ABB6BDFD6 /* Pods-AFNetworking */;
-			targetProxy = 43EF020017184C9F9FE6279B /* PBXContainerItemProxy */;
+			target = 75742D27BA3D41B5957D27FC /* Pods-Facebook-iOS-SDK */;
+			targetProxy = 4F4C83B73C354ED2BD6D412D /* PBXContainerItemProxy */;
 		};
-		6F569F752BA04DB2A5901CE3 /* PBXTargetDependency */ = {
+		8F170B2B5B31477F9280F2E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A06DED1D0E844D099471313E /* Pods-FlurrySDK */;
-			targetProxy = 0B715720477743BB95ECDAA1 /* PBXContainerItemProxy */;
+			target = D60D70E903FD4523A4768D33 /* Pods-FlurrySDK */;
+			targetProxy = CA4EC266CAC048508E466E3D /* PBXContainerItemProxy */;
+		};
+		F39425D77D354DA18D5E4522 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6B03435F78194E3DABE044DF /* Pods-SBJson */;
+			targetProxy = 3BC4D65239BE43E9830EDFF9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		19E2EF13D58E42B98423AE26 /* Release */ = {
+		162B2EB42527488F8DCAD49F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59E267D21EEE462598FAE6F0 /* Pods.xcconfig */;
+			baseConfigurationReference = 1E450BE4908F487B8588D862 /* Pods-SBJson-Private.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-SBJson-prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -690,16 +1453,44 @@
 			};
 			name = Release;
 		};
-		4E09B857649E427C8EFE5469 /* Release */ = {
+		36A71CAABE01422CB85D1AC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 138F24D4361C47469507698C /* Pods-AFNetworking-Private.xcconfig */;
+			baseConfigurationReference = 88A1E410F6014357B79346CD /* Pods-AFNetworking-Private.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pods-AFNetworking-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4DFE7227CCAD437EB35E276B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 048089F3659542A6B134C92D /* Pods-Facebook-iOS-SDK-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-Facebook-iOS-SDK-prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -720,9 +1511,38 @@
 			};
 			name = Release;
 		};
-		53105902736C4E489EDC2604 /* Debug */ = {
+		737D8D490D084D9699B13540 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59E267D21EEE462598FAE6F0 /* Pods.xcconfig */;
+			baseConfigurationReference = 5CA370D24B9F48D6BF186ABB /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A183578CB9474BD0B68339FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CA370D24B9F48D6BF186ABB /* Pods.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
@@ -747,33 +1567,54 @@
 			};
 			name = Debug;
 		};
-		5F6267EB08AB464D920278E4 /* Release */ = {
+		A9F2D7B1E89A48789B0D6F6D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 048089F3659542A6B134C92D /* Pods-Facebook-iOS-SDK-Private.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-Facebook-iOS-SDK-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				STRIP_INSTALLED_PRODUCT = NO;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
-		614A3D2E8CF14EF7944F7164 /* Debug */ = {
+		AD62F3FCC0464749B5FFD1A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos6.1;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
 		};
-		649CAA66BB7D451FAA9DFAF6 /* Release */ = {
+		C00B70BAD2EC46DDA9BDA112 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95134235FE0A45CB87A4EC33 /* Pods-SBJson-Private.xcconfig */;
+			baseConfigurationReference = 81134E04D6AD4E6BA3F89661 /* Pods-FlurrySDK-Private.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-SBJson-prefix.pch";
+				GCC_PREFIX_HEADER = "Pods-FlurrySDK-prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -794,9 +1635,9 @@
 			};
 			name = Release;
 		};
-		70D30E7F28D84B32B979B03B /* Debug */ = {
+		C8AB3996A2704A449B395F63 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 138F24D4361C47469507698C /* Pods-AFNetworking-Private.xcconfig */;
+			baseConfigurationReference = 1E450BE4908F487B8588D862 /* Pods-SBJson-Private.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
@@ -804,34 +1645,71 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-SBJson-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CCB48E5976444617B90CEF3B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81134E04D6AD4E6BA3F89661 /* Pods-FlurrySDK-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-FlurrySDK-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		ECB3FE448043435995A49006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos6.1;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Release;
+		};
+		F7FAD5CECDD24D38A35DD787 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88A1E410F6014357B79346CD /* Pods-AFNetworking-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Pods-AFNetworking-prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
-				SDKROOT = iphoneos6.1;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		99791A9FA10947FF8188BFBF /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E736DC6D21C14F818EE1B4DA /* Pods-FlurrySDK-Private.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-FlurrySDK-prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -851,112 +1729,65 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		EA72FC09FC344D768529184C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95134235FE0A45CB87A4EC33 /* Pods-SBJson-Private.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-SBJson-prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
-				SDKROOT = iphoneos6.1;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		EB17F503AE9E44B3914556B6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E736DC6D21C14F818EE1B4DA /* Pods-FlurrySDK-Private.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/xcodeproj.dst;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Pods-FlurrySDK-prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
-				SDKROOT = iphoneos6.1;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0D4CEC2854FE47F187BE2852 /* Build configuration list for PBXProject "Pods" */ = {
+		72C884C2B64A4EA589CB8C83 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				614A3D2E8CF14EF7944F7164 /* Debug */,
-				5F6267EB08AB464D920278E4 /* Release */,
+				AD62F3FCC0464749B5FFD1A2 /* Debug */,
+				ECB3FE448043435995A49006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		306B381C1D5D406DA3E07349 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+		89AEB8EA75D541748CBDD281 /* Build configuration list for PBXNativeTarget "Pods-Facebook-iOS-SDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				53105902736C4E489EDC2604 /* Debug */,
-				19E2EF13D58E42B98423AE26 /* Release */,
+				A9F2D7B1E89A48789B0D6F6D /* Debug */,
+				4DFE7227CCAD437EB35E276B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		74D4300FE07A4717B0CB1508 /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */ = {
+		BC0A3BFDE3584DD5A9AD5F83 /* Build configuration list for PBXNativeTarget "Pods-SBJson" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				70D30E7F28D84B32B979B03B /* Debug */,
-				4E09B857649E427C8EFE5469 /* Release */,
+				C8AB3996A2704A449B395F63 /* Debug */,
+				162B2EB42527488F8DCAD49F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		89D77FDB95254D3BBB8F80D1 /* Build configuration list for PBXNativeTarget "Pods-SBJson" */ = {
+		D4D73CBD9F4D4E3C86AD4A20 /* Build configuration list for PBXNativeTarget "Pods-FlurrySDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EA72FC09FC344D768529184C /* Debug */,
-				649CAA66BB7D451FAA9DFAF6 /* Release */,
+				CCB48E5976444617B90CEF3B /* Debug */,
+				C00B70BAD2EC46DDA9BDA112 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9895C84AFB14BF983048892 /* Build configuration list for PBXNativeTarget "Pods-FlurrySDK" */ = {
+		DDD5ED15352A42CBB4B75468 /* Build configuration list for PBXNativeTarget "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EB17F503AE9E44B3914556B6 /* Debug */,
-				99791A9FA10947FF8188BFBF /* Release */,
+				A183578CB9474BD0B68339FD /* Debug */,
+				737D8D490D084D9699B13540 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDFDEDB811F0451E903F91C2 /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36A71CAABE01422CB85D1AC5 /* Debug */,
+				F7FAD5CECDD24D38A35DD787 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 11CADA32853C4AB08909FBBE /* Project object */;
+	rootObject = E6FFFC57B9DA4665943E035C /* Project object */;
 }
