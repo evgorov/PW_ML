@@ -13,6 +13,7 @@
 #import "SBJson.h"
 #import "GlobalData.h"
 #import "UserData.h"
+#import "AppDelegate.h"
 
 @interface LoginEnterViewController (private)
 
@@ -32,6 +33,14 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"TITLE_ENTER", nil);
+    scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+    /*
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        scrollView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 68 : 57, 0, 0, 0);
+        scrollView.scrollIndicatorInsets = scrollView.contentInset;
+    }
+    */
     scrollView.autoresizesSubviews = NO;
     scrollView.bounces = NO;
     scrollView.contentSize = self.view.frame.size;

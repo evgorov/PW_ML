@@ -404,10 +404,10 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [overlayContainer addSubview:_currentOverlay];
     _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 1;
-    }];
+    } completion:nil];
 }
 
 -(void)showFullscreenOverlay:(UIView *)overlayView
@@ -432,10 +432,10 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [fullscreenOverlayContainer addSubview:_currentOverlay];
     
     _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2 - fullscreenOverlayContainer.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         fullscreenOverlayContainer.alpha = 1;
-    }];
+    } completion:nil];
     
 }
 
@@ -457,7 +457,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
         currentTitleView = nil;
     }
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 0;
         fullscreenOverlayContainer.alpha = 0;

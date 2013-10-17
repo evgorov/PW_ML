@@ -87,7 +87,7 @@
         imgSlider.alpha = targetAlpha;
         offView.alpha = targetAlpha;
         onView.alpha = targetAlpha;
-        imgDisabled.alpha = 1 - targetAlpha;
+        imgDisabled.alpha = targetAlpha == 0 ? 0.3 : 0;
     } completion:nil];
 }
 
@@ -98,7 +98,7 @@
         return;
     }
     isOn = YES;
-    float sliderX = [AppDelegate currentDelegate].isIPad ? 56 : 47;
+    float sliderX = self.frame.size.width - imgSlider.frame.size.width;
     if (animated)
     {
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
@@ -127,14 +127,14 @@
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveLinear animations:^{
             onView.frame = CGRectIntegral(CGRectMake(0, 0, 0, self.frame.size.height));
             offView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
-            imgSlider.frame = CGRectIntegral(CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
+            imgSlider.frame = CGRectIntegral(CGRectMake(0, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
         } completion:nil];
     }
     else
     {
         onView.frame = CGRectIntegral(CGRectMake(0, 0, 0, self.frame.size.height));
         offView.frame = CGRectIntegral(CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
-        imgSlider.frame = CGRectIntegral(CGRectMake(-imgSlider.frame.size.width / 4, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
+        imgSlider.frame = CGRectIntegral(CGRectMake(0, imgSlider.frame.origin.y, imgSlider.frame.size.width, imgSlider.frame.size.height));
     }
 }
 

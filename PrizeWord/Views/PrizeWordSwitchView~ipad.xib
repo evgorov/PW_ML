@@ -8,24 +8,24 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="1" customClass="PrizeWordSwitchView">
-            <rect key="frame" x="0.0" y="0.0" width="93" height="33"/>
+            <rect key="frame" x="0.0" y="0.0" width="116" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="TopLeft" image="switch_disabled.png" id="29">
-                    <rect key="frame" x="0.0" y="-1" width="96" height="40"/>
+                    <rect key="frame" x="0.0" y="0.0" width="116" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" id="8">
-                    <rect key="frame" x="0.0" y="0.0" width="93" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="116" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" image="switch_on_bg.png" id="4">
-                            <rect key="frame" x="0.0" y="0.0" width="93" height="33"/>
+                            <rect key="frame" x="0.0" y="0.0" width="116" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ON" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6">
-                            <rect key="frame" x="9" y="8" width="42" height="21"/>
+                            <rect key="frame" x="16" y="10" width="42" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -36,16 +36,16 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" id="9">
-                    <rect key="frame" x="93" y="0.0" width="0.0" height="33"/>
+                    <rect key="frame" x="116" y="0.0" width="0.0" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" image="switch_off_bg.png" id="3">
-                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="33"/>
+                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" text="OFF" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7">
-                            <rect key="frame" x="30" y="6" width="42" height="21"/>
+                            <rect key="frame" x="44" y="10" width="42" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -57,7 +57,7 @@
                     <gestureRecognizers/>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" image="switch_slider.png" id="5">
-                    <rect key="frame" x="56" y="-2" width="40" height="40"/>
+                    <rect key="frame" x="70" y="0.0" width="46" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </imageView>
@@ -74,9 +74,9 @@
         </view>
     </objects>
     <resources>
-        <image name="switch_disabled.png" width="81" height="34"/>
-        <image name="switch_off_bg.png" width="77" height="27"/>
-        <image name="switch_on_bg.png" width="77" height="27"/>
-        <image name="switch_slider.png" width="34" height="34"/>
+        <image name="switch_disabled.png" width="85" height="32"/>
+        <image name="switch_off_bg.png" width="85" height="32"/>
+        <image name="switch_on_bg.png" width="85" height="32"/>
+        <image name="switch_slider.png" width="34" height="32"/>
     </resources>
 </document>

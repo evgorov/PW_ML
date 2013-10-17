@@ -42,7 +42,7 @@ int HEADER_HEIGHT = 24;
     ratingView.dataSource = self;
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
-        ratingView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
+        ratingView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 68 : 57, 0, 0, 0);
         ratingView.scrollIndicatorInsets = ratingView.contentInset;
     }
     
@@ -126,6 +126,10 @@ int HEADER_HEIGHT = 24;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (users == nil || users.count == 0)
+    {
+        return 0;
+    }
     return users.count + 2;
 }
 
