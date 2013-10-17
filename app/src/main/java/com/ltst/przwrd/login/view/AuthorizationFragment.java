@@ -103,13 +103,13 @@ public class AuthorizationFragment extends SherlockFragment
 //        mEmailEditText.setSelectAllOnFocus(true);
 //        mPasswdlEditText.setSelectAllOnFocus(true);
 
-        mEmailEditText.setText("vlad@ltst.ru");
-        mPasswdlEditText.setText("vlad");
+//        mEmailEditText.setText("vlad@ltst.ru");
+//        mPasswdlEditText.setText("vlad");
 
         mEmailEditText.requestFocus();
 
-//        mEmailEditText.setText("hi@mail.ru");
-//        mPasswdlEditText.setText("hi");
+        mEmailEditText.setText("mmm@mail.ru");
+        mPasswdlEditText.setText("mmm");
 
         return v;
     }

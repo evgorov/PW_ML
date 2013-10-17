@@ -498,6 +498,16 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                             @Nonnull List<String> list = new ArrayList<String>(1);
                             list.add(sku);
                             mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
+
+//                            @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//                            product.googlePurchase = false;
+//                            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+//                            @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//                            product.googlePurchase = false;
+//                            product.serverPurchase = false;
+//                            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
                         }
                         catch (IllegalStateException e)
                         {
@@ -513,6 +523,12 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
                         product.googlePurchase = false;
                         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+//                        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//                        product.googlePurchase = false;
+//                        product.serverPurchase = false;
+//                        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
                     }
                 }
                 if(purchase.serverPurchase == true)
@@ -524,6 +540,16 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     @Nonnull Bundle bundle = packToBundle(sku,json,signature);
                     mHandlerBuyProductEvent.handle(bundle);
                     NavigationActivity.debug("NOTIFY BUY INAPP: "+purchase.googleId);
+
+//                    @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//                    product.serverPurchase = false;
+//                    mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
+//                    @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//                    product.googlePurchase = false;
+//                    product.serverPurchase = false;
+//                    mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+
                 }
             }
         }

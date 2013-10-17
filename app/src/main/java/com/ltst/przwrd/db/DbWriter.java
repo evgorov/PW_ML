@@ -11,6 +11,7 @@ import com.ltst.przwrd.login.model.UserData;
 import com.ltst.przwrd.login.model.UserImage;
 import com.ltst.przwrd.login.model.UserProvider;
 import com.ltst.przwrd.manadges.PurchasePrizeWord;
+import com.ltst.przwrd.navigation.NavigationActivity;
 import com.ltst.przwrd.news.News;
 import com.ltst.przwrd.score.Coefficients;
 import com.ltst.przwrd.score.ScoreQueue;
@@ -454,6 +455,8 @@ public class DbWriter extends  DbReader implements IDbWriter
     @Override
     public void putPurchase(@Nullable PurchasePrizeWord purchase) {
         if(purchase == null) return;
+
+        NavigationActivity.debug("DB put product: " + purchase.googleId + " state: " + purchase.googlePurchase + " " + purchase.serverPurchase);
 
         final @Nonnull ContentValues values = mPurchaseValuesCreator.createObjectContentValues(purchase);
         final @Nullable PurchasePrizeWord existsPurchase = getPurchaseByGoogleId(purchase.googleId);
