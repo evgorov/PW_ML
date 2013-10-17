@@ -126,12 +126,14 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
     @Override
     @Nonnull
-    public List<PurchasePrizeWord> getRestoreProducts() {
+    public List<PurchasePrizeWord> getRestoreProducts()
+    {
         return mRestoreProducts;
     }
 
     @Override
-    public void unregisterHandlers() {
+    public void unregisterHandlers()
+    {
         mHandlerReloadPriceList.clear();
         mHandlerBuyProductEventList.clear();
     }
@@ -141,15 +143,16 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         // Start popup window. Покупка;
 
-        if(sku != Strings.EMPTY){
-            @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-            product.clientId = DEVICE_ID;
+        if(sku != Strings.EMPTY)
+        {
+//            @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+//            product.clientId = DEVICE_ID;
 
             try
             {
                 mHelper.flagEndAsync();
                 mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, DEVICE_ID);
-                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
+//                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
             catch (Exception e)
             {
@@ -164,9 +167,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
         // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
         @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
         product.googlePurchase = false;
-        product.serverPurchase = true;
-        product.receipt_data = "";
-        product.signature = "";
+//        product.serverPurchase = true;
+//        product.receipt_data = "";
+//        product.signature = "";
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
         verifyControllPurchases();
@@ -300,14 +303,32 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             }
             else
             {
+                @Nonnull String sku;
                 List<Purchase> purchases = inventory.getPurchasesList();
+                List<Purchase> consumable = new ArrayList<Purchase>();
                 if(purchases.size()>0)
                 {
                     for(Purchase purchase : purchases)
                     {
-                        NavigationActivity.debug("CONSUME: "+purchase.getSku());
+                        sku = purchase.getSku();
+                        if( sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                                )
+                        {
+                            consumable.add(purchase);
+                            NavigationActivity.debug("CONSUME: "+sku);
+                        }
+                        else
+                        {
+                            NavigationActivity.debug("SKIP CONSUME: "+sku);
+                        }
                     }
-                    mHelper.consumeAsync(purchases, mConsumeMyltyFinishedListener);
+                    mHelper.consumeAsync(consumable, mConsumeMyltyFinishedListener);
                 }
             }
         }
@@ -502,6 +523,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     @Nonnull String signature = purchase.signature;
                     @Nonnull Bundle bundle = packToBundle(sku,json,signature);
                     mHandlerBuyProductEvent.handle(bundle);
+                    NavigationActivity.debug("NOTIFY BUY INAPP: "+purchase.googleId);
                 }
             }
         }

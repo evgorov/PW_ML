@@ -85,6 +85,17 @@ public class PurchaseSetModel implements IPurchaseSetModel
         if (mIsDestroyed)
             return;
 
+        for(int i=0; i<mPurchases.size(); i++)
+        {
+            PurchasePrizeWord product = mPurchases.get(i);
+            if (product.googleId.equals(purchase.googleId))
+            {
+                mPurchases.remove(i);
+                mPurchases.add(purchase);
+                break;
+            }
+        }
+
         @Nonnull Intent intent = LoadPurchaseTask.createUpdateOnePurchseToDataBase(purchase);
         mReloadFromGooglePlaySession.setIntent(intent);
         mReloadFromGooglePlaySession.update(handler);

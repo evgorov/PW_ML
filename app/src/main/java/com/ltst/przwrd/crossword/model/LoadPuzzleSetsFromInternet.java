@@ -154,7 +154,6 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             {
                 return null;
             }
-
             if (volumePuzzle.equals(VOLUME_SHORT))
             {
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);

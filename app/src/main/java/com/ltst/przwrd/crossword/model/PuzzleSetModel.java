@@ -436,11 +436,11 @@ public class PuzzleSetModel implements IPuzzleSetModel
         FREE
     }
 
-    public static final @Nonnull String BRILLIANT = "brilliant";
-    public static final @Nonnull String GOLD = "gold";
-    public static final @Nonnull String SILVER = "silver";
-    public static final @Nonnull String SILVER2 = "silver2";
-    public static final @Nonnull String FREE = "free";
+    public static final @Nonnull String BRILLIANT   = "brilliant";
+    public static final @Nonnull String GOLD        = "gold";
+    public static final @Nonnull String SILVER      = "silver";
+    public static final @Nonnull String SILVER2     = "silver2";
+    public static final @Nonnull String FREE        = "free";
 
     public static @Nullable PuzzleSetType getPuzzleTypeByString(@Nonnull String type)
     {

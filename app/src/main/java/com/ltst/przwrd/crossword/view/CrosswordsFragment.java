@@ -378,7 +378,8 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public void setHintCount(int hints) {
+    public void setHintCount(int hints)
+    {
         mHintsManager.setHintsCount(hints);
     }
 
@@ -408,20 +409,24 @@ public class CrosswordsFragment extends SherlockFragment
     }
 
     @Override
-    public HintsModel getHintsModel() {
+    public HintsModel getHintsModel()
+    {
         return mHintsModel;
     }
 
     @Override
-    public IPuzzleSetModel getPuzzleSetModel() {
+    public IPuzzleSetModel getPuzzleSetModel()
+    {
         return mPuzzleSetModel;
     }
 
     @Override
     public void waitLoader(boolean wait) {
-        if (wait) {
+        if (wait)
+        {
             mProgressBar.setVisibility(View.VISIBLE);
-        } else {
+        } else
+        {
             skipProgressBar();
         }
     }
@@ -440,11 +445,13 @@ public class CrosswordsFragment extends SherlockFragment
     };
 
     @Override
-    public void notifySwipe(SwipeMethod swipe) {
+    public void notifySwipe(SwipeMethod swipe)
+    {
         mNewsHolder.notifySwipe(swipe);
     }
 
-    private static class CrosswordSetUpdateMember {
+    private static class CrosswordSetUpdateMember
+    {
         static @Nonnull String mPuzzleSetServerId;
         static boolean mNeedUpdate;
     }

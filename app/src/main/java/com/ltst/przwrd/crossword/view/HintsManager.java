@@ -148,12 +148,13 @@ public class HintsManager implements View.OnClickListener
             HintsModel hintsModel = mICrosswordsFragment.getHintsModel();
             if(hintsModel != null)
             {
+                NavigationActivity.debug("CHANGE HINTS: "+count);
                 hintsModel.changeHints(count, new IListenerVoid() {
                     @Override
                     public void handle() {
 
 //                        // Меняем состояние товара;
-//                        mIManageHolder.productBuyOnServer(googleId);
+                        mIManageHolder.productBuyOnServer(googleId);
                     }
                 });
 
