@@ -4,6 +4,7 @@ include Stalker
 
 require 'storage'
 require 'model/user_data'
+require 'model/dictionary'
 
 job 'update_positions' do
   UserData.storage(Redis.new).all_in_batches do |user_data|
@@ -13,6 +14,7 @@ job 'update_positions' do
   end
 end
 
-job 'generate_puzzle' do |args|
-  puts args.inspect
+job 'generate_puzzle' do |params|
+  dictionary = Dictionary.storage(Redis.new).load(params['dictionary'])
+  puts dictionary.inspect
 end

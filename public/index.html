@@ -76,6 +76,7 @@
             <div class="row m-bottom-20px">
               <div class="span12 va-middle">
                 <span class="pull-right h3-height va-middle">
+                  <a href="#" class="btn btn-small" role="new-generate-puzzle"><i class="icon-plus-sign"></i> Сгенерировать сканворд</a>
                   <a href="#" class="btn btn-small" role="add-puzzle"><i class="icon-plus-sign"></i> Добавить скарворд</a>
                 </span>
               </div>
@@ -173,6 +174,7 @@
     </div>
     <div class="puzzle" role="puzzle-editor" style="display: none;"></div>
     <div class="dictionary" role="dictionary-editor" style="display: none;"></div>
+    <div class="generate-puzzle" role="generate-puzzle" style="display: none;"></div>
     <div class="form-signin-container" role="form-signin-container">
       <form class="form-signin">
         <h2 class="form-signin-heading ta-center">Prizeword</h2>
@@ -319,6 +321,31 @@
         </ul>
         <div class="pull-right">
           <button class="btn" role="edit-set"><i class="icon-edit"></i> Редактировать</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="generate-puzzle-template">
+      <div class="container">
+        <div class="row">
+          <div class="span12 puzzle-editor">
+            <div class="puzzle-title">
+              <h1 class="m-bottom-20px">Генерация сканворда</h1>
+            </div>
+            <form class="m-bottom-40px">
+              <input type="number" class="input-large" placeholder="количество сканвордов" value="" role="number"><br>
+              <select class="input-large" role="select-dictionary">
+                <option value=""></option>
+              </select>
+            </form>
+              <p class="muted m-bottom-40px">Сканворд будет поставлен в очередь
+                на генерацю, после того как он будет готов он
+                автоматически добавится к списку сканвордов.</p>
+
+            <div class="pull-right">
+              <a href="#" role="cancel">Отменить</a>&nbsp;
+              <button class="btn" role="generate">Создать</button>
+            </div>
+          </div>
         </div>
       </div>
     </script>

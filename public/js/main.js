@@ -44,6 +44,60 @@ Backbone.ajax = function(options){
   return $.ajax.call($, options);
 };
 
+/* Generate puzzle */
+var GeneratePuzzleView = Backbone.View.extend({
+
+  tagName: 'div',
+  template: _.template($('#generate-puzzle-template').html()),
+
+  events: {
+    'click [role="generate"]': 'generate',
+    'click [role="cancel"]': 'hide',
+  },
+
+  initialize: function(){
+    $('[role="generate-puzzle"]').empty().append(this.$el);
+    this.$el.html(this.template());
+    this.appendDictionaries();
+    this.render();
+  },
+
+  appendDictionaries: function(){
+    GeneratePuzzleView.dictionaries.each(function(o){
+        var $option = $('<option>').attr('value', o.id).text(o.get('title'));
+        this.$el.find('[role="select-dictionary"]').append($option);
+    }, this);
+  },
+
+  generate: function(){
+    Backbone.ajax({
+        url: '/generate_puzzle',
+        type: 'POST',
+        data: {
+            count: this.$el.find('[role="number"]').val(),
+            dictionary: this.$el.find('[role="select-dictionary"]').val()
+        }
+    });
+    this.hide();
+  },
+
+  render: function() {
+    return this;
+  },
+
+  hide: function(){
+    this.$el.parent().hide('fast', _.bind(this.remove, this));
+  },
+
+  show: function(){
+    var coord = this.$el.parent().offset();
+    coord.top = $(document).scrollTop();
+    this.$el.parent().offset(coord);
+    this.$el.parent().show('fast');
+  }
+
+});
+
 /* Puzzle editor */
 
 var Field = Backbone.Model.extend({
@@ -574,6 +628,7 @@ var PuzzlesView = Backbone.View.extend({
   })(),
   events: {
     'click [role="add-puzzle"]': 'addNewPuzzle',
+    'click [role="new-generate-puzzle"]': 'generatePuzzle',
     'click [role="edit-puzzle"]': 'editPuzzle',
     'click [role="pagination"] a': 'selectPage'
   },
@@ -594,11 +649,18 @@ var PuzzlesView = Backbone.View.extend({
     return this;
   },
 
-  addNewPuzzle: function(){
+  addNewPuzzle: function(e){
+      e && e.preventDefault();
       var puzzle = new Puzzle();
       puzzle.on('sync', _.bind(function(){ this.collection.fetch(); }, this));
       var puzzleView = new PuzzleView({ model: puzzle });
       puzzleView.show();
+  },
+
+  generatePuzzle: function(e){
+      e && e.preventDefault();
+      var generatePuzzleView = new GeneratePuzzleView();
+      generatePuzzleView.show();
   },
 
   editPuzzle: function(e){
@@ -1066,7 +1128,6 @@ var DictionaryEditorView = Backbone.View.extend({
       'click [role="delete"]': 'delete',
       'change [role="dict"]': 'uploadDict',
       'change [role="title"]': 'changeTitle'
-
   },
 
   initialize: function(){
@@ -1405,6 +1466,7 @@ $(function(){
                                           });
 
   dictionaries = new Dictionaries();
+  GeneratePuzzleView.dictionaries = dictionaries;
 
   dictionariesView = new DictionariesView({ el: $('[role="dictionaries"]')[0], collection: dictionaries });
 

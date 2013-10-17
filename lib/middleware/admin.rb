@@ -3,6 +3,7 @@ require 'model/puzzle_set'
 require 'model/service_message'
 require 'model/dictionary'
 require 'model/coefficients'
+require 'stalker'
 
 module Middleware
   class Admin < Sinatra::Base
@@ -235,6 +236,14 @@ module Middleware
     delete '/dictionaries/:id' do
       authorize_admin!
       dictionary = Dictionary.storage(env['redis']).load(params['id']).delete
+      { message: 'ok' }.to_json
+    end
+
+    post '/generate_puzzle' do
+      authorize_editor!
+      params['count'].to_i.times do
+        Stalker.enqueue('generate_puzzle', dictionary: params['dictionary'])
+      end
       { message: 'ok' }.to_json
     end
   end
