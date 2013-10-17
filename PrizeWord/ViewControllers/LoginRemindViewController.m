@@ -33,6 +33,14 @@
     tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
     scrollViewDefaultHeight = scrollView.frame.size.height;
+    scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+    /*
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        scrollView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 68 : 57, 0, 0, 0);
+        scrollView.scrollIndicatorInsets = scrollView.contentInset;
+    }
+    */
 }
 
 -(void)viewWillAppear:(BOOL)animated

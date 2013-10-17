@@ -163,7 +163,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" id="49" customClass="PrizeWordSwitchView">
-                    <rect key="frame" x="455" y="165" width="93" height="33"/>
+                    <rect key="frame" x="450" y="162" width="116" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <connections>
@@ -171,7 +171,7 @@
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="50" customClass="PrizeWordSwitchView">
-                    <rect key="frame" x="455" y="229" width="93" height="33"/>
+                    <rect key="frame" x="450" y="226" width="116" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <connections>
