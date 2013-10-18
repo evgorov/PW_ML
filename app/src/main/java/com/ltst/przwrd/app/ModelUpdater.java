@@ -50,7 +50,10 @@ abstract public class ModelUpdater<TaskEnv> implements IListener<Bundle>, Closea
         }
 
         if(mTaskId != null)
-            return;
+        {
+            connector.unsubscribeTask(mTaskId);
+            mTaskId = null;
+        }
         @Nullable Intent intent = createIntent();
 
         if(intent == null)
