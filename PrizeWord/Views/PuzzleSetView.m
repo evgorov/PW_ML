@@ -348,7 +348,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblCount.text = countString;
     
     UIImageView * progressbarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"puzzles_set_progressbar_bg"]];
-    progressbarView.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y + 4, progressbarView.frame.size.width, progressbarView.frame.size.height));
+    progressbarView.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y + 2, progressbarView.frame.size.width, progressbarView.frame.size.height));
     [self addSubview:progressbarView];
     
     UIImage * imgProgress = [UIImage imageNamed:@"puzzles_set_progressbar"];

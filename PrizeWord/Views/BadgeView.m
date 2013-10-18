@@ -82,7 +82,7 @@
             }
             imgProgressBg.hidden = NO;
             imgProgress.image = image;
-            imgProgress.frame = CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 56 : 46), imgProgress.frame.size.height);
+            imgProgress.frame = CGRectMake(imgProgress.frame.origin.x, imgProgress.frame.origin.y, _puzzle.progress * ([AppDelegate currentDelegate].isIPad ? 57 : 47), imgProgress.frame.size.height);
         }
         else
         {
