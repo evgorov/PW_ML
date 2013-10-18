@@ -328,7 +328,10 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                             NavigationActivity.debug("SKIP CONSUME: "+sku);
                         }
                     }
-                    mHelper.consumeAsync(consumable, mConsumeMyltyFinishedListener);
+                    if (consumable.size()>0)
+                    {
+                        mHelper.consumeAsync(consumable, mConsumeMyltyFinishedListener);
+                    }
                 }
             }
         }
@@ -343,6 +346,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 @Nonnull PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(purchase.getSku());
                 product.googlePurchase = false;
+//                product.serverPurchase = false;
                 mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
         }
@@ -392,7 +396,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
 
             int responseState = purchase.getPurchaseState();
             String responseSku = purchase.getSku();
-            String responseClientId = purchase.getDeveloperPayload();
+            String responseDeviceId = purchase.getDeveloperPayload();
             String responseSignature = purchase.getSignature();
             @Nonnull String responseJson = purchase.getOriginalJson();
 
@@ -479,7 +483,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 if(purchase.googlePurchase == true)
                 {
-//                        && purchase.serverPurchase == false
                     if (
                             sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
                             ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
@@ -488,7 +491,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                             ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
                             ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
                             ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                            )
+                        )
                     {
                         // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
                         // Восстанавливаем покупаемость товара;
@@ -498,16 +501,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                             @Nonnull List<String> list = new ArrayList<String>(1);
                             list.add(sku);
                             mHelper.queryInventoryAsync(true, list, mResetConsumableListener);
-
-//                            @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-//                            product.googlePurchase = false;
-//                            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
-//                            @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-//                            product.googlePurchase = false;
-//                            product.serverPurchase = false;
-//                            mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
                         }
                         catch (IllegalStateException e)
                         {
@@ -523,12 +516,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                         @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
                         product.googlePurchase = false;
                         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
-//                        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-//                        product.googlePurchase = false;
-//                        product.serverPurchase = false;
-//                        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
                     }
                 }
                 if(purchase.serverPurchase == true)
@@ -540,16 +527,6 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     @Nonnull Bundle bundle = packToBundle(sku,json,signature);
                     mHandlerBuyProductEvent.handle(bundle);
                     NavigationActivity.debug("NOTIFY BUY INAPP: "+purchase.googleId);
-
-//                    @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-//                    product.serverPurchase = false;
-//                    mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
-//                    @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
-//                    product.googlePurchase = false;
-//                    product.serverPurchase = false;
-//                    mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
-
                 }
             }
         }

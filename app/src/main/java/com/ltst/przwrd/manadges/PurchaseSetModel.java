@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.ltst.przwrd.app.ModelUpdater;
 import com.ltst.przwrd.db.DbService;
+import com.ltst.przwrd.navigation.NavigationActivity;
 
 import org.omich.velo.bcops.BcBaseService;
 import org.omich.velo.bcops.IBcBaseTask;
@@ -95,6 +96,8 @@ public class PurchaseSetModel implements IPurchaseSetModel
                 break;
             }
         }
+
+        NavigationActivity.debug("PUT PRODUCT: " + purchase.googleId + " state: " + purchase.googlePurchase + " " + purchase.serverPurchase);
 
         @Nonnull Intent intent = LoadPurchaseTask.createUpdateOnePurchseToDataBase(purchase);
         mReloadFromGooglePlaySession.setIntent(intent);
