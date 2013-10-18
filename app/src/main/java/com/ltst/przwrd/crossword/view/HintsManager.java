@@ -76,7 +76,7 @@ public class HintsManager implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.crossword_fragment_current_rest_buy_10_btn:
-              mIManageHolder.buyProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
+                mIManageHolder.buyProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10);
                 break;
             case R.id.crossword_fragment_current_rest_buy_20_btn:
                 mIManageHolder.buyProduct(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_20);
@@ -116,49 +116,56 @@ public class HintsManager implements View.OnClickListener
     }
 
     @Nonnull
-    IListenerVoid mReloadPriceProductHandler = new IListenerVoid() {
+    IListenerVoid mReloadPriceProductHandler = new IListenerVoid()
+    {
         @Override
-        public void handle() {
+        public void handle()
+        {
             setPrice();
         }
     };
 
     @Nonnull
-    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>() {
+    IListener<Bundle> mManadgeBuyProductIListener = new IListener<Bundle>()
+    {
         @Override
-        public void handle(@Nullable Bundle bundle) {
+        public void handle(@Nullable Bundle bundle)
+        {
 
             int count = 0;
             final @Nonnull String googleId = ManageHolder.extractFromBundleSKU(bundle);
-            if(googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
+            if (googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_10))
             {
                 count = 10;
             }
-            else if(googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
+            else if (googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_20))
             {
                 count = 20;
             }
-            else if(googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
+            else if (googleId.equals(ManageHolder.GOOGLE_PLAY_PRODUCT_ID_HINTS_30))
             {
                 count = 30;
             }
             else
+            {
                 return;
+            }
 
             HintsModel hintsModel = mICrosswordsFragment.getHintsModel();
-            if(hintsModel != null)
+            if (hintsModel != null)
             {
-                NavigationActivity.debug("CHANGE HINTS: "+count);
-                hintsModel.changeHints(count, new IListenerVoid() {
+                NavigationActivity.debug("CHANGE HINTS: " + count);
+                hintsModel.changeHints(count, new IListenerVoid()
+                {
                     @Override
-                    public void handle() {
-
+                    public void handle()
+                    {
 //                        // Меняем состояние товара;
                         mIManageHolder.productBuyOnServer(googleId);
                     }
                 });
 
-                setHintsCount(getHintsCount()+count);
+                setHintsCount(getHintsCount() + count);
             }
         }
     };

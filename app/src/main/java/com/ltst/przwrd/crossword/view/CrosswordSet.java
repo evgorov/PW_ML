@@ -173,7 +173,6 @@ public class CrosswordSet {
     {
 //        mRootView.setVisibility(View.VISIBLE);
         mCrosswordSetData = data;
-        mIManageHolder.registerProduct(mCrosswordSetData.mServerId);
         mManadgePriceListener.handle();
 
         if (data.mType == PuzzleSetModel.PuzzleSetType.BRILLIANT)
@@ -236,6 +235,7 @@ public class CrosswordSet {
             if(!flgOneRegister)
             {
                 NavigationActivity.debug("Registers SetId="+mCrosswordSetData.mServerId);
+                mIManageHolder.registerProduct(mCrosswordSetData.mServerId);
                 mIManageHolder.registerHandlerBuyProductEvent(mManadgeBuyProductIListener);
                 mIManageHolder.registerHandlerPriceProductsChange(mManadgePriceListener);
                 flgOneRegister = true;

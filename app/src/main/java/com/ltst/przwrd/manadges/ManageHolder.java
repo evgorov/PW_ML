@@ -33,9 +33,10 @@ import javax.annotation.Nullable;
  */
 public class ManageHolder implements IManageHolder, IIabHelper {
 
-    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "prizeword.ltst.hints10";
-    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "prizeword.ltst.hints20";
-    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "prizeword.ltst.hints30";
+    static public final @Nonnull String GOOGLE_PLAY_PREFIX                        = "com.prizeword.";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_10           = "hints10";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_20           = "hints20";
+    static public final @Nonnull String GOOGLE_PLAY_PRODUCT_ID_HINTS_30           = "hints30";
     static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_SUCCESS          = "android.test.purchased";
     static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_CANCEL           = "android.test.canceled";
     static public final @Nonnull String GOOGLE_PLAY_TEST_PRODUCT_REFUNDED         = "android.test.refunded";
@@ -151,7 +152,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             try
             {
                 mHelper.flagEndAsync();
-                mHelper.launchPurchaseFlow(mActivity, sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, DEVICE_ID);
+                mHelper.launchPurchaseFlow(mActivity, GOOGLE_PLAY_PREFIX+sku, ++REQUERT_CODE_COUNTER, mBuyFinishedListener, DEVICE_ID);
 //                mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
             }
             catch (Exception e)
@@ -165,11 +166,8 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void uploadProduct(@Nonnull String sku) {
         // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
-        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(GOOGLE_PLAY_PREFIX+sku);
         product.googlePurchase = false;
-//        product.serverPurchase = true;
-//        product.receipt_data = "";
-//        product.signature = "";
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
         verifyControllPurchases();
@@ -190,9 +188,9 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public void registerProduct(@Nonnull String sku)
     {
-        if(sku == Strings.EMPTY || mSkuContainer.contains(sku))
+        if(sku == Strings.EMPTY || mSkuContainer.contains(GOOGLE_PLAY_PREFIX+sku))
             return;
-        mSkuContainer.add(sku);
+        mSkuContainer.add(GOOGLE_PLAY_PREFIX+sku);
     }
 
     public void reloadInventoryFromDataBase()
@@ -256,7 +254,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     @Override
     public String getPriceProduct(@Nonnull String sku)
     {
-        PurchasePrizeWord purchase = mIPurchaseSetModel.getPurchase(sku);
+        PurchasePrizeWord purchase = mIPurchaseSetModel.getPurchase(GOOGLE_PLAY_PREFIX+sku);
         if(purchase==null)
             return null;
         return purchase.price;
@@ -276,18 +274,16 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                 for(Purchase purchase : purchases)
                 {
                     @Nonnull String sku = purchase.getSku();
-                    if( sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                        ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                        ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                        ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                        )
+                    if(isStaticInApp(sku))
                     {
-                        productBuyOnServer(sku);
+//                        productBuyOnServer(sku);
+                        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+                        product.googlePurchase = true;
+                        product.serverPurchase = false;
+                        mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
                     }
                 }
+                verifyControllPurchases();
             }
         }
     };
@@ -311,14 +307,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     for(Purchase purchase : purchases)
                     {
                         sku = purchase.getSku();
-                        if( sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                                ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                                ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                                )
+                        if(isStaticInApp(sku))
                         {
                             consumable.add(purchase);
                             NavigationActivity.debug("CONSUME: "+sku);
@@ -419,7 +408,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     public void productBuyOnServer(@Nonnull String sku)
     {
         // Меняем состояние товара;
-        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(sku);
+        @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(GOOGLE_PLAY_PREFIX+sku);
         product.serverPurchase = false;
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 
@@ -483,15 +472,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
             {
                 if(purchase.googlePurchase == true)
                 {
-                    if (
-                            sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
-                            ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
-                            ||sku.equals(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
-                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
-                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
-                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
-                            ||sku.equals(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
-                        )
+                    if (isStaticInApp(sku))
                     {
                         // Состояние продукта: быд куплен на Google Play, но не восстановлен как продукт готовый к повторной покупке;
                         // Восстанавливаем покупаемость товара;
@@ -524,7 +505,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
                     // Рассылаем уведомления подписчикам, что продукт был успешно куплен на GooglePlay;
                     @Nonnull String json = purchase.receipt_data;
                     @Nonnull String signature = purchase.signature;
-                    @Nonnull Bundle bundle = packToBundle(sku,json,signature);
+                    @Nonnull Bundle bundle = packToBundle(sku.replace(GOOGLE_PLAY_PREFIX,""),json,signature);
                     mHandlerBuyProductEvent.handle(bundle);
                     NavigationActivity.debug("NOTIFY BUY INAPP: "+purchase.googleId);
                 }
@@ -619,6 +600,23 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     {
         @Nonnull String googleId = bundle.getString(BF_SIGNATURE);
         return googleId;
+    }
+
+    private boolean isStaticInApp(@Nonnull String sku)
+    {
+        // Статическая покупки это те, которые не должны восстанавливаться;
+        if(sku.contains(GOOGLE_PLAY_PRODUCT_ID_HINTS_10)
+                ||sku.contains(GOOGLE_PLAY_PRODUCT_ID_HINTS_20)
+                ||sku.contains(GOOGLE_PLAY_PRODUCT_ID_HINTS_30)
+                ||sku.contains(GOOGLE_PLAY_TEST_PRODUCT_SUCCESS)
+                ||sku.contains(GOOGLE_PLAY_TEST_PRODUCT_CANCEL)
+                ||sku.contains(GOOGLE_PLAY_TEST_PRODUCT_REFUNDED)
+                ||sku.contains(GOOGLE_PLAY_TEST_PRODUCT_UNAVAILABLE)
+                )
+        {
+            return true;
+        }
+        return false;
     }
 
 }
