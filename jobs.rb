@@ -66,7 +66,7 @@ end
 
 def parse_result(_input)
   input = _input.lines.to_a.map(&:chomp)
-  height, width = input.shift.split(',').map(&:to_i)
+  width, height = input.shift.split(',').map(&:to_i)
   number_of_questions = input.shift.to_i
   questions = input[0..(number_of_questions-1)].map do |l|
     parse_question_line(l)
