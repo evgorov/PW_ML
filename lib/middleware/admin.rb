@@ -242,7 +242,9 @@ module Middleware
     post '/generate_puzzle' do
       authorize_editor!
       params['count'].to_i.times do
-        Stalker.enqueue('generate_puzzle', dictionary: params['dictionary'])
+        Stalker.enqueue('generate_puzzle',
+                        { dictionary: params['dictionary'] },
+                        { ttr: 1800 })
       end
       { message: 'ok' }.to_json
     end
