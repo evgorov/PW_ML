@@ -92,7 +92,7 @@ public class RestParams
     public static final @Nonnull String URL_FB_LOGIN = String.format(URL_PROVIDER_LOGIN, FB_PROVIDER);
     public static final @Nonnull String URL_VK_LOGIN = String.format(URL_PROVIDER_LOGIN, VK_PROVIDER);
     public static final @Nonnull String URL_VK_TOKEN = "https://oauth.vk.com/blank.html";
-    public static final @Nonnull String URL_FB_TOKEN = "http://api.prize-word.com/facebook/authorize#";
+    public static final @Nonnull String URL_FB_TOKEN = "http://api.prize-word.com/facebook/authorize";
     public static final @Nonnull String URL_VK_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE, VK_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_FB_AUTORITHE = String.format(URL_PROVIDER_AUTORITHE, FB_PROVIDER) + addParam(ACCESS_TOKEN, true);
     public static final @Nonnull String URL_GET_FRIEND_DATA = URL_API + "/%s/friends";
