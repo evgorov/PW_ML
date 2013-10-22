@@ -519,8 +519,27 @@ var PuzzleView = Backbone.View.extend({
   initialize: function(){
     this.$el.html(this.template());
     this.puzzleSets = new PuzzleSets();
-    puzzleSets.on('reset', _.bind(this.render, this));
-    puzzleSets.fetch();
+    puzzleSets.on('add', _.bind(this.render, this));
+    var date = new Date();
+    puzzleSets.fetch({
+        update: true,
+        add: true,
+        remove: false,
+        data: {
+            year: date.getFullYear(),
+            month: (date.getMonth() + 1)
+        }
+    });
+    puzzleSets.fetch({
+        update: true,
+        add: true,
+        remove: false,
+        data: {
+            year: date.getFullYear(),
+            month: (date.getMonth() + 2)
+        }
+    });
+
     $('[role="puzzle-editor"]').empty().append(this.$el);
     this.fieldView = new FieldView({ model: this.model.field, el: this.$el.find('[role="field"]')[0] });
     this.fieldView.on('tokenClick', function(e){

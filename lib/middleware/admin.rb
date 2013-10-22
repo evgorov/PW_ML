@@ -46,6 +46,7 @@ module Middleware
         o['issuedAt'] = params['issuedAt']
         o['name'] = params['name']
         o['set_id'] = params['set_id']
+        o['set_name'] = ''
         if params['questions']
           o['questions'] =  JSON.parse(params['questions'])
         end
