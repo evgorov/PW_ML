@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,12 +107,16 @@ public class RegisterFragment extends SherlockFragment
 
     private @Nonnull UserDataModel mUserDataModel;
     private @Nonnull BitmapAsyncTask mBitmapAsyncTask;
+    private @Nonnull View mForMargin;
+    private View mBar;
+    private Activity mActivity;
 
 
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        mActivity = activity;
         mContext = (Context) activity;
         mFragmentHolder = (IFragmentsHolderActivity) activity;
         mAuthorization = (IAutorization) activity;
@@ -130,6 +135,9 @@ public class RegisterFragment extends SherlockFragment
         mNavBackButton = (Button) v.findViewById(R.id.registration_nav_back_button);
 
         mRegisterDateButton = (Button) v.findViewById(R.id.register_date_born_btn);
+
+        mForMargin = v.findViewById(R.id.for_margin);
+        mBar = v.findViewById(R.id.bar);
 
         mRegisterFinishButton = (Button) v.findViewById(R.id.registration_finish_button);
         mNavBackButton.setOnClickListener(this);
@@ -167,7 +175,27 @@ public class RegisterFragment extends SherlockFragment
         cal.set(curYear, curMonth, curDay);
         dateFormat = new SimpleDateFormat(fr);
         mRegisterDateButton.setText(dateFormat.format(cal.getTime()));
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+
+        mForMargin.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int height2 = mForMargin.getMeasuredHeight();
+        mBar.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int heightBar = mBar.getMeasuredHeight();
+
+        int pad = (height - heightBar) / 2 - (height2 / 2);
+        mForMargin.setPadding(0, pad, 0, 0);
+
+
         return v;
+    }
+
+    @Override public void onResume()
+    {
+        super.onResume();
+
     }
 
     @Override
@@ -182,9 +210,12 @@ public class RegisterFragment extends SherlockFragment
                 // Получаем картинку из галереи;
                 Uri chosenImageUri = data.getData();
                 Bitmap bitmap = null;
-                try {
+                try
+                {
                     bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), chosenImageUri);
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
                 // Меняем аватарку на панеле;
