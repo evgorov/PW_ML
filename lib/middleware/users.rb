@@ -74,7 +74,14 @@ module Middleware
       env['token_auth'].authorize!
       halt(403, { 'message' => 'missing source'}.to_json) unless params['source']
       score, solved, source = params['score'].to_i, params['solved'].to_i, params['source']
+
       user = current_user
+
+      begin
+        UserScore.storage(Redis.new).score_for(user.id, source)
+      rescue BasicModel::NotFound
+      end
+
       user['month_score'] += score
       user['solved'] += solved
       user.save

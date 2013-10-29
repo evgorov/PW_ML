@@ -10,6 +10,10 @@ class UserScore < BasicModel
     model.save
   end
 
+  def score_for(user_id, source)
+    self.load("#{user_id}##{source}")
+  end
+
   def scores_for(user_id)
     collection_for_key(user_id)
   end
