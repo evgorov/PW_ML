@@ -252,6 +252,11 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
 
 - (void)buySet:(NSString *)setID withTransaction:(SKPaymentTransaction *)transaction
 {
+    if (setID == nil)
+    {
+        NSLog(@"WARNING: try to purchase nil set");
+        return;
+    }
     NSLog(@"buy set: %@", setID);
     APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", setID] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         
