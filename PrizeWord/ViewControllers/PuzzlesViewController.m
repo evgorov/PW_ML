@@ -110,6 +110,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     [super viewWillAppear:animated];
     
     [[EventManager sharedManager] registerListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
+    [[EventManager sharedManager] registerListener:self forEventType:EVENT_USER_LOGGED_IN];
     
 //    [self showActivityIndicator];
     [[GlobalData globalData] loadMe];
@@ -129,6 +130,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
     NSLog(@"puzzles viewWillDisappear");
 
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_USER_LOGGED_IN];
 //    scrollView.delegate = nil;
 }
 
@@ -158,6 +160,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
             }
         }
         [tableView reloadData];
+    }
+    else if (event.type == EVENT_USER_LOGGED_IN)
+    {
+        [[GlobalData globalData] loadCoefficients];
+        [[GlobalData globalData] loadMonthSets];
     }
 }
 

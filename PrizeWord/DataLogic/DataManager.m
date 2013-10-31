@@ -77,6 +77,14 @@
         __block PuzzleSetPackData * localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
         NSLog(@"local pack count: %d", localPack.puzzleSets.count);
         
+        if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
+        {
+            if (callback != nil)
+            {
+                callback(nil, nil);
+            }
+            return;
+        }
         NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
                                       , @"month": localPack.month
                                       , @"year": localPack.year
@@ -228,6 +236,15 @@
         __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
         __block NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
         [managedObjectContext.undoManager beginUndoGrouping];
+        
+        if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
+        {
+            if (callback != nil)
+            {
+                callback(nil, nil);
+            }
+            return;
+        }
         
         __block PuzzleSetPackData * archivePack = [self localGetSetsForMonth:month year:year];
         if (archivePack != nil && archivePack.puzzleSets.count > 0)

@@ -85,6 +85,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)setSessionKey:(NSString *)sessionKey
 {
+    NSString * prevSessionKey = _sessionKey;
     _sessionKey = sessionKey;
     [[NSUserDefaults standardUserDefaults] setObject:sessionKey forKey:@"session-key"];
     if (_deviceToken != nil && _sessionKey != nil)
@@ -96,12 +97,21 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     {
         [puzzleIdToSet removeAllObjects];
     }
+    if (prevSessionKey == nil && _sessionKey != nil && _loggedInUser != nil)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_USER_LOGGED_IN]];
+    }
 }
 
 -(void)setLoggedInUser:(UserData *)loggedInUser
 {
+    UserData * prevLoggedInUser = _loggedInUser;
     _loggedInUser = loggedInUser;
     [[NSUserDefaults standardUserDefaults] setObject:[loggedInUser dictionaryRepresentation] forKey:@"user-data"];
+    if (prevLoggedInUser == nil && _sessionKey != nil && _loggedInUser != nil)
+    {
+        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_USER_LOGGED_IN]];
+    }
 }
 
 #pragma mark getters
@@ -164,6 +174,12 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)loadMonthSets
 {
+    if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil || [GlobalData globalData].loggedInUser.user_id == nil)
+    {
+        NSLog(@"WARNING: try to load month sets when user is not logged in");
+        return;
+    }
+        
     [[DataManager sharedManager] fetchCurrentMonthSetsWithCompletion:^(NSArray *data, NSError *error) {
         if (data != nil)
         {
@@ -236,6 +252,11 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)loadCoefficients
 {
+    if (_sessionKey == nil)
+    {
+        NSLog(@"WARNING: try to load coefficients with session_key == nil");
+        return;
+    }
     APIRequest * request = [APIRequest getRequest:@"coefficients" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self parseDateFromResponse:response];
         SBJsonParser * parser = [SBJsonParser new];

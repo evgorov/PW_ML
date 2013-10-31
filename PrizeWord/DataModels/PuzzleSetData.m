@@ -40,18 +40,16 @@
     NSError *error = nil;
     [managedObjectContext lock];
     NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:&error];
-    [managedObjectContext unlock];
     
     if (puzzleSets == nil || puzzleSets.count == 0)
     {
-        [managedObjectContext lock];
         puzzleSet = (PuzzleSetData *)[NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSet" inManagedObjectContext:managedObjectContext];
-        [managedObjectContext unlock];
     }
     else
     {
         puzzleSet = (PuzzleSetData *)[puzzleSets objectAtIndex:0];
     }
+    [managedObjectContext unlock];
 
     [puzzleSet setSet_id:[dict objectForKey:@"id"]];
     [puzzleSet setName:[dict objectForKey:@"name"]];
