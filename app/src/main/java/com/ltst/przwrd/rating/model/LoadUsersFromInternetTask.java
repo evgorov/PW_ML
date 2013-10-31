@@ -114,12 +114,14 @@ public class LoadUsersFromInternetTask implements IBcTask
     {
         RestUserData meRest = restUsers.getMe();
         UsersList.User me = new UsersList.User(meRest.getId(), meRest.getName(), meRest.getSurname(), meRest.getCity(),
-                meRest.getSolved(), meRest.getPosition(), meRest.getHighScore(), meRest.getHighScore(), meRest.getDynamics(), meRest.getUserpicUrl(), null);
+                meRest.getSolved(), meRest.getPosition(), meRest.getMonthScore(), meRest.getHighScore(), meRest.getDynamics(),
+            meRest.getUserpicUrl(), null);
         List<UsersList.User> users = new ArrayList<UsersList.User>();
         for (RestUserData rest : restUsers.getUsers())
         {
             UsersList.User user = new UsersList.User(rest.getId(), rest.getName(), rest.getSurname(), rest.getCity(),
-                    rest.getSolved(), rest.getPosition(), rest.getHighScore(), rest.getHighScore(), rest.getDynamics(), rest.getUserpicUrl(), null);
+                    rest.getSolved(), rest.getPosition(), rest.getMonthScore(), rest.getHighScore(), rest.getDynamics(),
+                rest.getUserpicUrl(), null);
             users.add(user);
         }
         return new UsersList(me, users);
