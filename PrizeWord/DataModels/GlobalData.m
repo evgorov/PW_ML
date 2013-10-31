@@ -204,6 +204,11 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 -(void)loadMe
 {
+    if (_sessionKey == nil)
+    {
+        NSLog(@"WARNING: try to load ME with session_key == nil");
+        return;
+    }
     APIRequest * request = [APIRequest getRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self parseDateFromResponse:response];
         SBJsonParser * parser = [SBJsonParser new];
