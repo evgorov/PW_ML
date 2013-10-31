@@ -156,8 +156,21 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
             float height = headerView.frame.size.height;
             SBJsonParser * parser = [SBJsonParser new];
             NSArray * friendsData = [parser objectWithData:receivedData];
-            for (NSDictionary * friendData in friendsData)
+            for (NSDictionary * friendDataInmutable in friendsData)
             {
+                NSMutableDictionary * friendData = [friendDataInmutable mutableCopy];
+                if ([friendData objectForKey:@"first_name"] == nil || [friendData objectForKey:@"first_name"] == [NSNull null])
+                {
+                    [friendData setObject:@"" forKey:@"first_name"];
+                }
+                if ([friendData objectForKey:@"last_name"] == nil || [friendData objectForKey:@"last_name"] == [NSNull null])
+                {
+                    [friendData setObject:@"" forKey:@"last_name"];
+                }
+                if ([friendData objectForKey:@"status"] == nil || [friendData objectForKey:@"status"] == [NSNull null])
+                {
+                    [friendData setObject:@"uninvited" forKey:@"status"];
+                }
                 //UserData * user = [UserData userDataWithDictionary:friendData];
                 if (views.count == 0)
                 {
