@@ -354,6 +354,8 @@ public class NavigationActivity extends BillingV3Activity
     @Override
     protected void onResume()
     {
+        TapjoyConnect.getTapjoyConnectInstance().appResume();
+
         mGcmHelper.onResume();
 
         mSessionKey = SharedPreferencesValues.getSessionKey(this);
@@ -390,6 +392,8 @@ public class NavigationActivity extends BillingV3Activity
     @Override
     protected void onPause()
     {
+        TapjoyConnect.getTapjoyConnectInstance().appPause();
+
         mGcmHelper.onPause();
         mUserDataModel.close();
         mPuzzleSetModel.close();
