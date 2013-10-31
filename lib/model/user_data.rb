@@ -180,11 +180,13 @@ class UserData < BasicModel
 
   def load_external_attributes
     self['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
+    self['solved'] = @storage.get("#{self['id']}#solved##{current_period}").to_i
     self['position'] = @storage.zrevrank('rating', self['id']).to_i + 1
   end
 
   def save_external_attributes
     @storage.set("#{self['id']}#score##{current_period}", self['month_score'])
+    @storage.set("#{self['id']}#solved##{current_period}", self['solved'])
   end
 
   def current_period
