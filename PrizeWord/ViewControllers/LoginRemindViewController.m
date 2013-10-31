@@ -67,6 +67,11 @@
 - (IBAction)handleSendClick:(id)sender
 {
     [txtEmail resignFirstResponder];
+    if (txtEmail.text == nil || txtEmail.text.length == 0)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Вы не ввели e-mail. Введите и попробуйте еще раз." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"forgot_password" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
         [self hideActivityIndicator];

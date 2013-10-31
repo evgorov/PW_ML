@@ -339,27 +339,27 @@ NSRegularExpression * EMAIL_REGEXP;
     
     BOOL hasInvalid = NO;
     
-    int numberOfMatches = [EMAIL_REGEXP numberOfMatchesInString:tfEmail.text options:0 range:NSMakeRange(0, tfEmail.text.length)];
+    int numberOfMatches = tfEmail.text == nil ? 0 : [EMAIL_REGEXP numberOfMatchesInString:tfEmail.text options:0 range:NSMakeRange(0, tfEmail.text.length)];
     if (numberOfMatches == 0)
     {
         lblEmail.textColor = COLOR_ERROR;
         hasInvalid = YES;
     }
     
-    if ([tfPassword.text compare:tfPasswordRepeat.text] != NSOrderedSame || tfPassword.text.length == 0)
+    if (tfPassword.text == nil || tfPasswordRepeat.text == nil || [tfPassword.text compare:tfPasswordRepeat.text] != NSOrderedSame || tfPassword.text.length == 0)
     {
         lblPassword.textColor = COLOR_ERROR;
         lblPasswordRepeat.textColor = COLOR_ERROR;
         hasInvalid = YES;
     }
     
-    if (tfName.text.length == 0)
+    if (tfName.text == nil || tfName.text.length == 0)
     {
         [tfName setValue:COLOR_ERROR forKeyPath:@"_placeholderLabel.textColor"];
         hasInvalid = YES;
     }
     
-    if (tfSurname.text.length == 0)
+    if (tfSurname.text == nil || tfSurname.text.length == 0)
     {
         [tfSurname setValue:COLOR_ERROR forKeyPath:@"_placeholderLabel.textColor"];
         hasInvalid = YES;

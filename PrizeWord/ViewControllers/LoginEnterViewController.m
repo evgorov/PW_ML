@@ -84,6 +84,18 @@
 
 - (IBAction)handleEnterClick:(id)sender
 {
+    if (txtEmail.text == nil || txtEmail.text.length == 0)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Вы не ввели e-mail. Введите и попробуйте еще раз." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+    if (txtPassword.text == nil || txtPassword.text.length == 0)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Ошибка" message:@"Вы не ввели пароль. Введите и попробуйте еще раз." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+
+    
     [self showActivityIndicator];
     APIRequest * request = [APIRequest postRequest:@"login" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
         [self handleEnterComplete:response receivedData:receivedData];
