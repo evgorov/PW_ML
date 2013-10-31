@@ -167,6 +167,7 @@ public class ManageHolder implements IManageHolder, IIabHelper {
     public void uploadProduct(@Nonnull String sku) {
         // Меняем состояние продукта, что он был куплен в Google PLay и следует совершить покупку на сервере и восстановить покупаемость, если надо;
         @Nullable PurchasePrizeWord product = mIPurchaseSetModel.getPurchase(GOOGLE_PLAY_PREFIX+sku);
+        product.serverPurchase = true;
         product.googlePurchase = false;
         mIPurchaseSetModel.putOnePurchase(product, mSaveOnePurchaseToDataBase);
 

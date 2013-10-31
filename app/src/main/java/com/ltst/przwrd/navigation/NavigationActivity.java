@@ -141,6 +141,8 @@ public class NavigationActivity extends BillingV3Activity
 
         Crashlytics.start(this);
 
+        boolean isTabjoy = TapjoyConnect.requestTapjoyConnect(this, "b77b17c3-ccd3-4aba-979d-5307edce0a8b", "ZspEG1Io8dB6ETzFNnbc");
+        debug("IsTabjoy: " + isTabjoy);
 
         mBcConnector = getBcConnector();
         mIsTablet = DimenTools.isTablet(this);
