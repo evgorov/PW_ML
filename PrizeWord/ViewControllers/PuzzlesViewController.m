@@ -38,6 +38,14 @@
 const int TAG_STATIC_VIEWS = 0;
 const int TAG_DYNAMIC_VIEWS = 101;
 
+enum PuzzlesSections
+{
+    kPuzzlesSectionsNews = 0,
+    kPuzzlesSectionsCurrentMonth = 1,
+    kPuzzlesSectionsHints = 2,
+    kPuzzlesSectionsArchive = 3
+};
+
 @interface PuzzlesViewController ()
 {
     __weak IBOutlet UITableView *tableView;
@@ -146,20 +154,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 {
     if (event.type == EVENT_MONTH_SETS_UPDATED)
     {
-        for (int i = 0; i < [GlobalData globalData].monthSets.count; ++i)
-        {
-            PuzzleSetState * state = nil;
-            if (i < currentPuzzleSetStates.count)
-            {
-                state = [currentPuzzleSetStates objectAtIndex:i];
-            }
-            else
-            {
-                state = [PuzzleSetState new];
-                [currentPuzzleSetStates addObject:state];
-            }
-        }
-        [tableView reloadData];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPuzzlesSectionsCurrentMonth] withRowAnimation:UITableViewRowAnimationFade];
     }
     else if (event.type == EVENT_USER_LOGGED_IN)
     {
@@ -222,12 +217,12 @@ const int TAG_DYNAMIC_VIEWS = 101;
                         state.isShownFull = NO;
                         [archivePuzzleSetStates addObject:state];
                     }
-                    [tableView reloadData];
+                    [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPuzzlesSectionsArchive] withRowAnimation:UITableViewRowAnimationFade];
                 });
             }
             else
             {
-                [tableView reloadData];
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPuzzlesSectionsArchive] withRowAnimation:UITableViewRowAnimationFade];
             }
         }];
     }
@@ -251,11 +246,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == kPuzzlesSectionsNews)
     {
         return 1;
     }
-    else if (section == 1)
+    else if (section == kPuzzlesSectionsCurrentMonth)
     {
         if ([GlobalData globalData].monthSets == nil)
         {
@@ -263,11 +258,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         return [GlobalData globalData].monthSets.count + 1;
     }
-    else if (section == 2)
+    else if (section == kPuzzlesSectionsHints)
     {
         return 1;
     }
-    else if (section == 3)
+    else if (section == kPuzzlesSectionsArchive)
     {
         return 1 + archivePuzzleSets.count + (archiveNeedLoading ? 1 : 0);
     }
@@ -276,7 +271,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0)
+    if (indexPath.section == kPuzzlesSectionsNews)
     {
         if (!showNews)
         {
@@ -284,7 +279,7 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         return [NewsCell height];
     }
-    else if (indexPath.section == 1)
+    else if (indexPath.section == kPuzzlesSectionsCurrentMonth)
     {
         if (indexPath.row == 0)
         {
@@ -307,11 +302,11 @@ const int TAG_DYNAMIC_VIEWS = 101;
         }
         return height;
     }
-    else if (indexPath.section == 2)
+    else if (indexPath.section == kPuzzlesSectionsHints)
     {
         return [HintsCell height];
     }
-    else if (indexPath.section == 3)
+    else if (indexPath.section == kPuzzlesSectionsArchive)
     {
         if (indexPath.row == 0)
         {
@@ -347,14 +342,14 @@ const int TAG_DYNAMIC_VIEWS = 101;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0)
+    if (indexPath.section == kPuzzlesSectionsNews)
     {
         NewsCell * cell = [tableView dequeueReusableCellWithIdentifier:@"newsCell"];
         [cell.btnClose addTarget:self action:@selector(handleNewsCloseClick:) forControlEvents:UIControlEventTouchUpInside];
         [cell setup];
         return cell;
     }
-    else if (indexPath.section == 1)
+    else if (indexPath.section == kPuzzlesSectionsCurrentMonth)
     {
         if (indexPath.row == 0)
         {
@@ -437,13 +432,13 @@ const int TAG_DYNAMIC_VIEWS = 101;
         */
         return cell;
     }
-    else if (indexPath.section == 2)
+    else if (indexPath.section == kPuzzlesSectionsHints)
     {
         HintsCell * cell = [tableView dequeueReusableCellWithIdentifier:@"hintsCell"];
         [cell setupForIndexPath:indexPath inTableView:tableView];
         return cell;
     }
-    else if (indexPath.section == 3)
+    else if (indexPath.section == kPuzzlesSectionsArchive)
     {
         if (indexPath.row == 0)
         {

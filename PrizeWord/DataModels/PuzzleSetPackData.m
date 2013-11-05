@@ -26,17 +26,15 @@
     NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetPackFetchRequest" substitutionVariables:@{@"YEAR": [NSNumber numberWithInt:year], @"MONTH": [NSNumber numberWithInt:month], @"USER_ID": userId}];
     [managedObjectContext lock];
     NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    [managedObjectContext unlock];
     if (results != nil && results.count > 0)
     {
         pack = results.lastObject;
     }
     else
     {
-        [managedObjectContext lock];
         pack = [NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSetPack" inManagedObjectContext:managedObjectContext];
-        [managedObjectContext unlock];
     }
+    [managedObjectContext unlock];
     pack.user_id = userId;
     pack.year = [NSNumber numberWithInt:year];
     pack.month = [NSNumber numberWithInt:month];

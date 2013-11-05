@@ -72,11 +72,7 @@
     [fetchOperation addExecutionBlock:^{
         __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
         __block NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        [managedObjectContext.undoManager beginUndoGrouping];
 
-        __block PuzzleSetPackData * localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
-        NSLog(@"local pack count: %d", localPack.puzzleSets.count);
-        
         if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
         {
             if (callback != nil)
@@ -85,6 +81,11 @@
             }
             return;
         }
+
+        [managedObjectContext.undoManager beginUndoGrouping];
+        __block PuzzleSetPackData * localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
+        NSLog(@"local pack count: %d", localPack.puzzleSets.count);
+        
         NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
                                       , @"month": localPack.month
                                       , @"year": localPack.year
@@ -235,7 +236,6 @@
     [fetchOperation addExecutionBlock:^{
         __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
         __block NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        [managedObjectContext.undoManager beginUndoGrouping];
         
         if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
         {
@@ -246,6 +246,7 @@
             return;
         }
         
+        [managedObjectContext.undoManager beginUndoGrouping];
         __block PuzzleSetPackData * archivePack = [self localGetSetsForMonth:month year:year];
         if (archivePack != nil && archivePack.puzzleSets.count > 0)
         {
@@ -484,22 +485,20 @@
         NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestTemplateForName:@"NewsFetchRequest"];
         [managedObjectContext lock];
         NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
-        [managedObjectContext unlock];
         if (results != nil && results.count > 0)
         {
             news = results.lastObject;
         }
         else
         {
-            [managedObjectContext lock];
             news = [NSEntityDescription insertNewObjectForEntityForName:@"News" inManagedObjectContext:managedObjectContext];
-            [managedObjectContext unlock];
         }
      
         if ([fetchOperation isCancelled])
         {
             return;
         }
+        [managedObjectContext unlock];
         
         NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey};
         NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"service_messages" parameters:parameters];
