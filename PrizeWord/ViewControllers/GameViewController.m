@@ -599,7 +599,10 @@ extern NSString * PRODUCTID_HINTS10;
         {
             letter = @"е";
         }
-        [(FISound *)[typeSounds objectAtIndex:(rand() % 3)] play];
+        if (typeSounds.count > 0)
+        {
+            [(FISound *)[typeSounds objectAtIndex:(rand() % typeSounds.count)] play];
+        }
         
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUSH_LETTER andData:letter]];
     }
