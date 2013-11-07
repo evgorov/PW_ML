@@ -79,6 +79,7 @@ module Middleware
 
       begin
         UserScore.storage(Redis.new).score_for(user.id, source)
+        return { me: user }.to_json
       rescue BasicModel::NotFound
       end
 
