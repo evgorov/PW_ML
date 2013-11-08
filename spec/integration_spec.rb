@@ -223,6 +223,7 @@ describe 'Integration spec' do
     response_data = JSON.parse(last_response.body)
     session_key = response_data['session_key']
     post '/score', session_key: session_key, score: 100, solved: 10, source: 'some_reason'
+    post '/score', session_key: session_key, score: 100, solved: 10, source: 'some_reason'
     last_response.status.should == 200
     post '/score', session_key: session_key, score: 100, source: 'another_some_reason'
     last_response.status.should == 200
@@ -721,7 +722,7 @@ describe 'Integration spec' do
       last_response.status.should == 200
       last_response_should_be_json
 
-      post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason1'
+      post '/score', session_key: session_key1, score: 150, solved: 10, source: 'reason4'
 
       get '/me', { session_key: session_key1 }
       last_response.status.should == 200

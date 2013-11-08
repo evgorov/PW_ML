@@ -42,8 +42,12 @@ describe UserData do
     UserScore.stub(scores_for: [])
     storage.should_receive(:get).with('1').and_return(user_data1_json.to_json)
     storage.should_receive(:get).with('2').and_return(user_data2_json.to_json)
-    storage.should_receive(:get).with('1#score#2013#10').and_return(0)
-    storage.should_receive(:get).with('2#score#2013#10').and_return(0)
+
+    year, month = Time.now.year, Time.now.month
+    storage.should_receive(:get).with("1#score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#solved##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#solved##{year}##{month}").and_return(0)
 
     user_data1 = UserData.storage(storage).load('1')
     user_data2 = UserData.storage(storage).load('2')
