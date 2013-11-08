@@ -11,7 +11,15 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-                        %w[role id position month_score high_score dynamics hints created_at providers]
+    %w[role id position month_score high_score dynamics hints created_at providers]
+
+
+  def []=(key, value)
+    case(key)
+    when 'month_score'; raise "You cannot modify month_score directly, user inc_month_score instead"
+    else; super(key, value)
+    end
+  end
 
   def before_save
     super
@@ -24,15 +32,16 @@ class UserData < BasicModel
     }.compact
     self['position'] = self['position'].to_i
     self['solved'] = self['solved'].to_i
-    self['month_score'] = self['month_score'].to_i
     self['high_score'] = self['high_score'].to_i
     self['dynamics'] = self['dynamics'].to_i
     self['hints'] = self['hints'].to_i
-    self['high_score'] = self['month_score'] if self['month_score'] > self['high_score']
+    self['high_score'] = self['month_score'].to_i if self['month_score'].to_i > self['high_score'].to_i
+    @tmp_month_score = @hash.delete('month_score')
   end
 
   def after_save
     super
+    @hash['month_score'] = @tmp_month_score
     @storage.zadd('rating', self['month_score'].to_i, self.id)
     save_external_attributes
     load_external_attributes # get real position after object creation
@@ -64,7 +73,8 @@ class UserData < BasicModel
           [solved + u2['solved'], score + u2['score']]
         end
       end
-      result['solved'], result['month_score'] = solved, score
+      result['solved'] = solved
+      result['month_score'] = @storage.set("#{self['id']}#score##{current_period}", score)
 
       self.merge!(result.to_hash)
     when Hash
@@ -139,7 +149,7 @@ class UserData < BasicModel
     score = Coefficients.storage(@storage).coefficients['friend-bonus']
     InvitedUser.storage(@storage).load(invited_user_id)['invited_by'].each do |id|
       u = self.class.storage(@storage).load(id)
-      u['month_score'] += score
+      u.inc_month_score(score)
       u["#{provider}_friends"].values.find{ |o| o['id'] == friend_id }['invited_at'] = Time.now.to_s
       u.save
       UserScore.storage(@storage).create(id, score, 0, "invite##{provider}##{friend_id}")
@@ -147,6 +157,10 @@ class UserData < BasicModel
     true
   rescue BasicModel::NotFound
     false
+  end
+
+  def inc_month_score(amount)
+    @hash['month_score'] = @storage.incrby("#{self['id']}#score##{current_period}", amount.to_i)
   end
 
   private
@@ -179,13 +193,12 @@ class UserData < BasicModel
   end
 
   def load_external_attributes
-    self['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
+    @hash['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
     self['solved'] = @storage.get("#{self['id']}#solved##{current_period}").to_i
     self['position'] = @storage.zrevrank('rating', self['id']).to_i + 1
   end
 
   def save_external_attributes
-    @storage.set("#{self['id']}#score##{current_period}", self['month_score'])
     @storage.set("#{self['id']}#solved##{current_period}", self['solved'])
   end
 

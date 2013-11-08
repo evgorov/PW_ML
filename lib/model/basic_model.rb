@@ -8,6 +8,7 @@ class BasicModel
 
   class NotFound < Exception; end
   class InvalidState < Exception; end
+  class AlreadyExist < Exception; end
 
   class << self
     def storage(storage)
@@ -16,6 +17,8 @@ class BasicModel
 
     def use_guuid!; @use_guuid = true; end
     def guuid?; !!@use_guuid; end
+    def uniq!; @uniq = true; end
+    def uniq?; !!@uniq; end
   end
 
   def dup
@@ -111,7 +114,12 @@ class BasicModel
 
     validate! unless skip_validation
 
-    @storage.set(id, {}.merge(self).to_json)
+    if self.class.uniq?
+      raise AlreadyExist.new unless @storage.setnx(id, {}.merge(self).to_json)
+    else
+      @storage.set(id, {}.merge(self).to_json)
+    end
+
     @storage.zadd("all", Time.now.to_i, id)
     @saved = true
 

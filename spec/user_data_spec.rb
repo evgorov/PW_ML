@@ -48,6 +48,7 @@ describe UserData do
     storage.should_receive(:get).with("2#score##{year}##{month}").and_return(0)
     storage.should_receive(:get).with("1#solved##{year}##{month}").and_return(0)
     storage.should_receive(:get).with("2#solved##{year}##{month}").and_return(0)
+    storage.should_receive(:set).with("1#score#2013#11", 0)
 
     user_data1 = UserData.storage(storage).load('1')
     user_data2 = UserData.storage(storage).load('2')

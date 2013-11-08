@@ -1,6 +1,11 @@
 require 'model/basic_model'
 
 class UserScore < BasicModel
+
+  uniq!
+
+  PER_PAGE = 10000
+
   def create(user_id, score, solved, source)
     model = self.class.new.storage(@storage)
     model['user_id'] = user_id
@@ -19,6 +24,7 @@ class UserScore < BasicModel
   end
 
   def after_save
+    super
     @storage.zadd(self['user_id'], Time.now.to_i, id)
   end
 

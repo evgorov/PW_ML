@@ -78,16 +78,15 @@ module Middleware
       user = current_user
 
       begin
-        UserScore.storage(Redis.new).score_for(user.id, source)
+        UserScore.storage(env['redis']).create(user.id, score, solved, source)
+      rescue BasicModel::AlreadyExist
         return { me: user }.to_json
-      rescue BasicModel::NotFound
       end
 
-      user['month_score'] += score
+      user.inc_month_score(score)
       user['solved'] += solved
       user.save
 
-      UserScore.storage(env['redis']).create(user.id, score, solved, source)
       { me: user }.to_json
     end
 
