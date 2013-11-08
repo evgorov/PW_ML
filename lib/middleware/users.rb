@@ -245,7 +245,7 @@ module Middleware
 
     post '/vkontakte/share' do
       env['token_auth'].authorize!
-      message = 'Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!'
+      message = params['message'] || 'Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!'
       WallPublisher.post(current_user['vkontakte_access_token'], message, params['attachmments']).to_json
     end
 
