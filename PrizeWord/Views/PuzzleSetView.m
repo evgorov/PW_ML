@@ -222,7 +222,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblCount.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x, _lblCount.frame.origin.y, countSize.width, countSize.height));
     _lblCount.text = countString;
     
-    NSString * text = [NSString stringWithFormat:((puzzleSetData.type.intValue == PUZZLESET_FREE) ? @" %@ " : @" %@, минимум "), [NSString declesion:count oneString:@"сканворд" twoString:@"сканворда" fiveString:@"сканвордов"]];
+    NSString * text = [NSString stringWithFormat:((minScore == 0) ? @" %@ " : @" %@, минимум "), [NSString declesion:count oneString:@"сканворд" twoString:@"сканворда" fiveString:@"сканвордов"]];
     CGSize textSize = [text sizeWithFont:_lblText1.font];
     _lblText1.frame = CGRectIntegral(CGRectMake(_lblCount.frame.origin.x + _lblCount.frame.size.width, _lblCount.frame.origin.y, textSize.width, _lblCount.frame.size.height));
     _lblText1.text = text;
@@ -235,11 +235,14 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblScore.text = scoreString;
     
     _btnBuy.titleLabel.font = [UIFont fontWithName:@"DINPro-Bold" size:([AppDelegate currentDelegate].isIPad ? 17 : 15)];
+    if (minScore == 0)
+    {
+        _lblScore.hidden = YES;
+        _imgStar.hidden = YES;
+    }
     if (puzzleSetData.type.intValue == PUZZLESET_FREE)
     {
         [_btnBuy setTitle:@"Скачать" forState:UIControlStateNormal];
-        _lblScore.hidden = YES;
-        _imgStar.hidden = YES;
     }
     else
     {

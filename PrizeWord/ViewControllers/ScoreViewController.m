@@ -38,7 +38,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     int yOffset = 0;
     int idx = 0;
     for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
-        if (puzzleSet.type.intValue == PUZZLESET_FREE)
+        if (puzzleSet.type.intValue == PUZZLESET_FREE && puzzleSet.score == 0 && puzzleSet.minScore == 0)
         {
             continue;
         }
@@ -119,7 +119,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
             {
                 ScoreInviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
                 userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
-                userView.lblScore = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend];
+                userView.lblScore.text = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend];
                 [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
                 userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
                 [invitesView insertSubview:userView atIndex:0];

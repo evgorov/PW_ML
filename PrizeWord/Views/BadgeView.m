@@ -88,16 +88,16 @@
         {
             lblScore.hidden = NO;
             imgStar.hidden = NO;
-            if (puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
-            {
-                lblScore.hidden = YES;
-                imgStar.hidden = YES;
-            }
             
             lblPercent.hidden = YES;
             imgProgress.hidden = YES;
             imgProgressBg.hidden = YES;
             int score = _puzzle.score.intValue;
+            if (score == 0)
+            {
+                lblScore.hidden = YES;
+                imgStar.hidden = YES;
+            }
             if (score < 1000)
             {
                 lblScore.text = [NSString stringWithFormat:@"%d", score];
