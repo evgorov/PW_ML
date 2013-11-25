@@ -109,8 +109,14 @@ enum PuzzlesSections
     currentPuzzleSetStates = nil;
     archivePuzzleSets = nil;
     archivePuzzleSetStates = nil;
-    
+
     [super viewDidUnload];
+}
+
+- (void)dealloc
+{
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_MONTH_SETS_UPDATED];
+    [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_USER_LOGGED_IN];
 }
 
 -(void)viewWillAppear:(BOOL)animated
