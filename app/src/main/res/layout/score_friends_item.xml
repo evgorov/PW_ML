@@ -42,7 +42,7 @@
                     android:maxLines="1"
                     android:maxWidth="250dp"
                     style="@style/InviteItemNameText"
-                    android:text="Павел Петрович"
+                    android:text=""
                     />
 
             <LinearLayout
@@ -63,7 +63,7 @@
                         android:id="@+id/score_score_item"
                         android:layout_marginLeft="5dp"
                         style="@style/ScoreTopPanelText"
-                        android:text="21212"
+                        android:text=""
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"/>

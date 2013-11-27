@@ -13,6 +13,7 @@ import com.ltst.przwrd.scoredetail.model.IScoreDataModel;
 import com.ltst.przwrd.scoredetail.model.ScoreFriendsData;
 
 import org.omich.velo.handlers.IListenerVoid;
+import org.omich.velo.lists.ISlowSource;
 import org.omich.velo.lists.SlowSourceAdapter;
 import org.omich.velo.log.Log;
 
@@ -50,8 +51,12 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
         {
             public void handle()
             {
+                ISlowSource<ScoreFriendsData, Bitmap> ds = mFriendsModel.getSource();
+                mCountFriends = ds.getLenght();
                 if (mRefreshHandler != null)
+                {
                     mRefreshHandler.handle();
+                }
                 setSlowSource(mFriendsModel.getSource());
             }
         });
@@ -79,7 +84,9 @@ public class ScoreDetailAdapter extends SlowSourceAdapter<ScoreDetailAdapter.Vie
     {
         viewHolder.mNameView.setText(data.firstName + " " + data.lastName);
         if (mCoef != null)
+        {
             viewHolder.mScoreTextView.setText(Integer.toString(mCoef.friendBonus));
+        }
     }
 
     @Override
