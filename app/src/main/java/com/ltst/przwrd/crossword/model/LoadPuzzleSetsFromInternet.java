@@ -16,6 +16,7 @@ import com.ltst.przwrd.rest.RestPuzzleQuestion;
 import com.ltst.przwrd.rest.RestPuzzleSet;
 import com.ltst.przwrd.rest.RestPuzzleTotalSet;
 import com.ltst.przwrd.rest.RestPuzzleUserData;
+
 import org.omich.velo.bcops.BcTaskHelper;
 import org.omich.velo.cast.NonnullableCasts;
 import org.omich.velo.constants.Strings;
@@ -33,28 +34,27 @@ import javax.annotation.Nullable;
 
 public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 {
-    public static final @Nonnull String BF_SESSION_KEY              = "LoadPuzzleSetsFromInternet.sessionKey";
-    public static final @Nonnull String BF_PUZZLE_SETS              = "LoadPuzzleSetsFromInternet.puzzleSets";
+    public static final @Nonnull String BF_SESSION_KEY = "LoadPuzzleSetsFromInternet.sessionKey";
+    public static final @Nonnull String BF_PUZZLE_SETS = "LoadPuzzleSetsFromInternet.puzzleSets";
     public static final @Nonnull String BF_ONE_PUZZLE_SET_SERVER_ID = "LoadPuzzleSetsFromInternet.onePuzzleSetServerId";
-    public static final @Nonnull String BF_PUZZLES_AT_SET           = "LoadPuzzleSetsFromInternet.puzzles";
-    public static final @Nonnull String BF_STATUS_CODE              = "LoadPuzzleSetsFromInternet.statusCode";
-    public static final @Nonnull String BF_VOLUME_PUZZLE            = "LoadPuzzleSetsFromInternet.volumePuzzle";
+    public static final @Nonnull String BF_PUZZLES_AT_SET = "LoadPuzzleSetsFromInternet.puzzles";
+    public static final @Nonnull String BF_STATUS_CODE = "LoadPuzzleSetsFromInternet.statusCode";
+    public static final @Nonnull String BF_VOLUME_PUZZLE = "LoadPuzzleSetsFromInternet.volumePuzzle";
 
-    private static final @Nonnull String BF_SET_SERVER_ID           = "LoadPuzzleSetsFromInternet.setServerId";
-    private static final @Nonnull String BF_RECEIPT_DATA            = "LoadPuzzleSetsFromInternet.receiptData";
-    private static final @Nonnull String BF_SIGNATURE               = "LoadPuzzleSetsFromInternet.signature";
+    private static final @Nonnull String BF_SET_SERVER_ID = "LoadPuzzleSetsFromInternet.setServerId";
+    private static final @Nonnull String BF_RECEIPT_DATA = "LoadPuzzleSetsFromInternet.receiptData";
+    private static final @Nonnull String BF_SIGNATURE = "LoadPuzzleSetsFromInternet.signature";
 
-    private static final @Nonnull String VOLUME_SHORT    = "short";
-    private static final @Nonnull String VOLUME_LONG     = "long";
-    private static final @Nonnull String VOLUME_SORT     = "sort";
-    private static final @Nonnull String VOLUME_CURR     = "current";
-    private static final @Nonnull String VOLUME_BUY      = "buy";
-    private static final @Nonnull String VOLUME_ONE      = "one";
-    private static final @Nonnull String VOLUME_SYNC     = "sync";
+    private static final @Nonnull String VOLUME_SHORT = "short";
+    private static final @Nonnull String VOLUME_LONG = "long";
+    private static final @Nonnull String VOLUME_SORT = "sort";
+    private static final @Nonnull String VOLUME_CURR = "current";
+    private static final @Nonnull String VOLUME_BUY = "buy";
+    private static final @Nonnull String VOLUME_ONE = "one";
+    private static final @Nonnull String VOLUME_SYNC = "sync";
 
     public static final
-    @Nonnull
-    Intent createShortIntent(@Nonnull String sessionKey)
+    @Nonnull Intent createShortIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -63,17 +63,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
-    @Nonnull
-    Intent createLongIntent(@Nonnull String sessionKey)
+    @Nonnull Intent createLongIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_VOLUME_PUZZLE, VOLUME_LONG);
         return intent;
     }
+
     public static final
-    @Nonnull
-    Intent createSortIntent(@Nonnull String sessionKey)
+    @Nonnull Intent createSortIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -82,8 +81,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
-    @Nonnull
-    Intent createCurrentSetsIntent(@Nonnull String sessionKey)
+    @Nonnull Intent createCurrentSetsIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -92,8 +90,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
-    @Nonnull
-    Intent createOneSetIntent(@Nonnull String sessionKey, @Nonnull String puzzleSetServerId)
+    @Nonnull Intent createOneSetIntent(@Nonnull String sessionKey, @Nonnull String puzzleSetServerId)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -103,9 +100,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final @Nonnull Intent createBuyCrosswordSetIntent(@Nonnull String sessionKey,
-                                                                    @Nonnull String setServerId,
-                                                                    @Nonnull String receiptData,
-                                                                    @Nonnull String signature){
+        @Nonnull String setServerId,
+        @Nonnull String receiptData,
+        @Nonnull String signature)
+    {
         @Nonnull Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
         intent.putExtra(BF_SET_SERVER_ID, setServerId);
@@ -116,8 +114,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
-    @Nonnull
-    Intent createSyncIntent(@Nonnull String sessionKey)
+    @Nonnull Intent createSyncIntent(@Nonnull String sessionKey)
     {
         Intent intent = new Intent();
         intent.putExtra(BF_SESSION_KEY, sessionKey);
@@ -126,8 +123,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static final
-    @Nullable
-    List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
+    @Nullable List<PuzzleSet> extractFromBundle(@Nullable Bundle bundle)
     {
         if (bundle == null)
         {
@@ -143,8 +139,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         if (!BcTaskHelper.isNetworkAvailable(env.context))
         {
             env.bcToaster.showToast(
-                    NonnullableCasts.getStringOrEmpty(
-                            env.context.getString(R.string.msg_no_internet)));
+                NonnullableCasts.getStringOrEmpty(
+                    env.context.getString(R.string.msg_no_internet)));
         }
         else
         {
@@ -159,7 +155,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,1);
+                calnow.add(Calendar.MONTH, 1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -168,14 +164,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
+                while (calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
                 {
-                    if(env.ci.isCancelled())
+                    if (env.ci.isCancelled())
+                    {
                         return null;
+                    }
                     int year = calnow.get(Calendar.YEAR);
                     int month = calnow.get(Calendar.MONTH);
                     getFromServerShortSet(sessionKey, year, month, env);
-                    calnow.add(Calendar.MONTH,-1);
+                    calnow.add(Calendar.MONTH, -1);
                 }
                 return getFromDatabase(env);
             }
@@ -184,7 +182,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,1);
+                calnow.add(Calendar.MONTH, 1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -193,14 +191,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
+                while (calnow.after(cal))
                 {
-                    if(env.ci.isCancelled())
+                    if (env.ci.isCancelled())
+                    {
                         return null;
+                    }
                     int year = calnow.get(Calendar.YEAR);
                     int month = calnow.get(Calendar.MONTH);
                     getFromServerLongSet(sessionKey, year, month, env);
-                    calnow.add(Calendar.MONTH,-1);
+                    calnow.add(Calendar.MONTH, -1);
                 }
                 return getFromDatabase(env);
             }
@@ -223,14 +223,14 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             else if (volumePuzzle.equals(VOLUME_ONE))
             {
                 @Nonnull String puzzleOneSetServerId = env.extras.getString(BF_ONE_PUZZLE_SET_SERVER_ID);
-                return getFromDatabase(puzzleOneSetServerId,env);
+                return getFromDatabase(puzzleOneSetServerId, env);
             }
             else if (volumePuzzle.equals(VOLUME_SYNC))
             {
                 long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
                 Calendar calnow = Calendar.getInstance();
                 calnow.setTimeInMillis(currentTime);
-                calnow.add(Calendar.MONTH,1);
+                calnow.add(Calendar.MONTH, 1);
 
                 int app_release_year = Integer.valueOf(env.context.getResources().getString(R.string.app_release_year));
                 int app_release_month = Integer.valueOf(env.context.getResources().getString(R.string.app_release_month));
@@ -239,14 +239,16 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
                 cal.set(Calendar.MONTH, app_release_month);
                 cal.set(Calendar.YEAR, app_release_year);
 
-                while(calnow.get(Calendar.YEAR) >= cal.get(Calendar.YEAR) && calnow.get(Calendar.MONTH) >= cal.get(Calendar.MONTH))
+                while (calnow.after(cal))
                 {
-                    if(env.ci.isCancelled())
+                    if (env.ci.isCancelled())
+                    {
                         return null;
+                    }
                     int year = calnow.get(Calendar.YEAR);
                     int month = calnow.get(Calendar.MONTH);
                     getFromServerLongSet(sessionKey, year, month, env);
-                    calnow.add(Calendar.MONTH,-1);
+                    calnow.add(Calendar.MONTH, -1);
                 }
                 return getFromDatabase(env);
 //                long currentTime = SharedPreferencesHelper.getInstance(env.context).getLong(SharedPreferencesValues.SP_CURRENT_DATE, 0);
@@ -305,32 +307,32 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
 //                }
 //                return getFromDatabase(year, month, env);
             }
-            else if(volumePuzzle.equals(VOLUME_BUY))
+            else if (volumePuzzle.equals(VOLUME_BUY))
             {
-                @Nullable String setServerId =  env.extras.getString(BF_SET_SERVER_ID);
-                @Nullable String receiptData =  env.extras.getString(BF_RECEIPT_DATA);
-                @Nullable String signature =    env.extras.getString(BF_SIGNATURE);
+                @Nullable String setServerId = env.extras.getString(BF_SET_SERVER_ID);
+                @Nullable String receiptData = env.extras.getString(BF_RECEIPT_DATA);
+                @Nullable String signature = env.extras.getString(BF_SIGNATURE);
                 if (setServerId == Strings.EMPTY || receiptData == Strings.EMPTY || signature == Strings.EMPTY)
                 {
                     return null;
                 }
 
                 RestPuzzleTotalSet.RestPuzzleOneSetHolder data = buyRestPuzzleSetFromInternet(env.context, sessionKey, setServerId, receiptData, signature);
-                if(data != null)
+                if (data != null)
                 {
-                    if(data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
+                    if (data.getHttpStatus() == HttpStatus.valueOf(RestParams.SC_SUCCESS))
                     {
                         RestPuzzleTotalSet set = data.getPuzzleSet();
-                        if(set != null)
+                        if (set != null)
                         {
                             RestPuzzleTotalSet.RestPuzzleSetsHolder dataset = new RestPuzzleTotalSet.RestPuzzleSetsHolder();
                             dataset.setPuzzleSets(new ArrayList<RestPuzzleTotalSet>());
                             dataset.addPuzzleSet(set);
                             dataset.setHttpStatus(data.getHttpStatus());
 
-                                @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, dataset);
-                                env.dbw.putPuzzleTotalSetList(sets);
-                                return getFromDatabase(env);
+                            @Nonnull List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, dataset);
+                            env.dbw.putPuzzleTotalSetList(sets);
+                            return getFromDatabase(env);
                         }
                     }
                     else
@@ -355,7 +357,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         {
             IRestClient client = RestClient.create(context);
             return client.getPublishedSets(sessionKey, year, month);
-        } catch (Throwable e)
+        }
+        catch (Throwable e)
         {
             Log.e(e.getMessage());
             Log.i("Can't load data from internet"); //$NON-NLS-1$
@@ -371,7 +374,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         {
             IRestClient client = RestClient.create(context);
             return client.getTotalPublishedSets(sessionKey, year, month);
-        } catch (Throwable e)
+        }
+        catch (Throwable e)
         {
             Log.e(e.getMessage());
             Log.i("Can't load data from internet"); //$NON-NLS-1$
@@ -387,7 +391,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             IRestClient client = RestClient.create(context);
             return client.postBuySet(sessionKey, setServerId, receiptData, signature);
         }
-        catch(Throwable e)
+        catch (Throwable e)
         {
             Log.i("Can't load data from internet"); //$NON-NLS-1$
             return null;
@@ -401,8 +405,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         for (RestPuzzleSet restPuzzleSet : data.getPuzzleSets())
         {
             PuzzleSet set = new PuzzleSet(0, restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
-                    restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
-                    restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), restPuzzleSet.getPuzzles());
+                restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
+                restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), restPuzzleSet.getPuzzles());
             sets.add(set);
         }
         return sets;
@@ -421,7 +425,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             @Nonnull List<RestPuzzle> listRestPuzzles = restPuzzleSet.getPuzzles();
             for (RestPuzzle restPuzzle : listRestPuzzles)
             {
-                if(env.ci.isCancelled()) return null;
+                if (env.ci.isCancelled()) return null;
                 @Nonnull String puzzleServerId = restPuzzle.getPuzzleId();
                 @Nullable RestPuzzleUserData.RestPuzzleUserDataHolder restPuzzleUserDataHolder = LoadOnePuzzleFromInternet.loadPuzzleUserData(context, sessionKey, puzzleServerId);
                 @Nonnull Puzzle puzzle = parsePuzzle(restPuzzle, restPuzzleUserDataHolder);
@@ -429,8 +433,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             }
 
             @Nonnull PuzzleTotalSet set = new PuzzleTotalSet(0, restPuzzleSet.getId(), restPuzzleSet.getName(), restPuzzleSet.isBought(),
-                    restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
-                    restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), puzzles);
+                restPuzzleSet.getType(), restPuzzleSet.getMonth(), restPuzzleSet.getYear(),
+                restPuzzleSet.getCreatedAt(), restPuzzleSet.isPublished(), puzzles);
 
             sets.add(set);
         }
@@ -449,8 +453,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static
-    @Nullable
-    Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
+    @Nullable Bundle getFromDatabase(@Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSets();
         List<Puzzle> puzzles = null;
@@ -464,8 +467,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static
-    @Nullable
-    Bundle getFromDatabase(@Nonnull String puzzleOneSetServerId, @Nonnull DbService.DbTaskEnv env)
+    @Nullable Bundle getFromDatabase(@Nonnull String puzzleOneSetServerId, @Nonnull DbService.DbTaskEnv env)
     {
         PuzzleSet set = env.dbw.getPuzzleSetByServerId(puzzleOneSetServerId);
         List<Puzzle> puzzles = null;
@@ -478,8 +480,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
     }
 
     public static
-    @Nullable
-    Bundle getFromDatabase(int year, int month, @Nonnull DbService.DbTaskEnv env)
+    @Nullable Bundle getFromDatabase(int year, int month, @Nonnull DbService.DbTaskEnv env)
     {
         List<PuzzleSet> sets = env.dbw.getPuzzleSetsByDate(year, month);
         List<Puzzle> puzzles = null;
@@ -531,8 +532,10 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         if (data != null)
         {
             @Nullable List<PuzzleTotalSet> sets = extractFromTotalRest(env, sessionKey, data);
-            if(sets == null)
+            if (sets == null)
+            {
                 return;
+            }
             env.dbw.putPuzzleTotalSetList(sets);
         }
     }
@@ -562,7 +565,7 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
         for (RestPuzzleQuestion restQ : questionList)
         {
             PuzzleQuestion q = new PuzzleQuestion(0, 0, restQ.getColumn(), restQ.getRow(), restQ.getQuestionText(),
-                    restQ.getAnswer(), restQ.getAnswerPosition(), false);
+                restQ.getAnswer(), restQ.getAnswerPosition(), false);
             RestPuzzleUserData.checkQuestionOnAnswered(q, solvedQuestionsIdSet);
             questions.add(q);
         }
@@ -574,8 +577,8 @@ public class LoadPuzzleSetsFromInternet implements DbService.IDbTask
             score = restPuzzleUserData.getScore();
         }
         return new Puzzle(0, 0, restPuzzle.getPuzzleId(), restPuzzle.getName(), restPuzzle.getIssuedAt(),
-                restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
-                timeLeft, score,
-                false, questions);
+            restPuzzle.getBaseScore(), restPuzzle.getTimeGiven(),
+            timeLeft, score,
+            false, questions);
     }
 }
