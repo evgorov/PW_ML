@@ -42,7 +42,7 @@ class UserData < BasicModel
   def after_save
     super
     @hash['month_score'] = @tmp_month_score
-    @storage.zadd('rating', self['month_score'].to_i, self.id)
+    @storage.zadd("rating##{current_period}", self['month_score'].to_i, self.id)
     save_external_attributes
     load_external_attributes # get real position after object creation
   end
@@ -91,12 +91,12 @@ class UserData < BasicModel
   end
 
   def users_by_rating(page=1)
-    self.collection_for_key('rating', page)
+    self.collection_for_key("rating##{current_period}", page)
   end
 
   def delete(*a)
     # TODO: delete custom columns
-    @storage.zrem('rating', self.id)
+    @storage.zrem("rating##{current_period}", self.id)
     super(*a)
   end
 
@@ -195,7 +195,7 @@ class UserData < BasicModel
   def load_external_attributes
     @hash['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
     self['solved'] = @storage.get("#{self['id']}#solved##{current_period}").to_i
-    self['position'] = @storage.zrevrank('rating', self['id']).to_i + 1
+    self['position'] = @storage.zrevrank("rating##{current_period}", self['id']).to_i + 1
   end
 
   def save_external_attributes
