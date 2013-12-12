@@ -3167,9 +3167,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
+					"$(SRCROOT)/third-party",
 					"$(SRCROOT)",
-					"$(HOME)/Documents/FacebookSDK",
 					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3197,9 +3196,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
+					"$(SRCROOT)/third-party",
 					"$(SRCROOT)",
-					"$(HOME)/Documents/FacebookSDK",
 					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
