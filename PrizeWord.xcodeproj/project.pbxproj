@@ -3170,8 +3170,7 @@
 					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
 					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
-					/Work/Projects/PrizeWord/source/PrizeWord,
-					"/Work/Projects/PrizeWord/source/PrizeWord/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
+					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -3182,7 +3181,7 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3201,8 +3200,7 @@
 					"\\\\\\\"$(SRCROOT)/third-party\\\\\\\"",
 					"$(SRCROOT)",
 					"$(HOME)/Documents/FacebookSDK",
-					/Work/Projects/PrizeWord/source/PrizeWord,
-					"/Work/Projects/PrizeWord/source/PrizeWord/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
+					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -3213,7 +3211,7 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
