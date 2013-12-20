@@ -1,64 +1,64 @@
---- 
-http_interactions: 
-- request: 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://sandbox.itunes.apple.com/verifyReceipt
-    body: 
+    uri: https://buy.itunes.apple.com/verifyReceipt
+    body:
       encoding: UTF-8
       string: "{\"receipt-data\":\"random shit\"}"
     headers: {}
 
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: Apple WebObjects
-    headers: 
-      X-Apple-Jingle-Correlation-Key: 
+    headers:
+      X-Apple-Jingle-Correlation-Key:
       - RCA3XPE5HAYT4
-      Pod: 
+      Pod:
       - "100"
-      X-Apple-Orig-Url-Path: 
+      X-Apple-Orig-Url-Path:
       - /WebObjects/MZFinance.woa/wa/verifyReceipt
-      X-Apple-Translated-Wo-Url: 
+      X-Apple-Translated-Wo-Url:
       - /WebObjects/MZFinance.woa/wa/verifyReceipt
-      X-Apple-Application-Site: 
+      X-Apple-Application-Site:
       - SB
-      Edge-Control: 
+      Edge-Control:
       - cache-maxage=0
       - no-store
-      Set-Cookie: 
+      Set-Cookie:
       - Pod=100; version="1"; expires=Sat, 23-Mar-2013 19:44:34 GMT; path=/; domain=.apple.com
       - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects; domain=.apple.com
       - mzf_in=990104; version="1"; path=/WebObjects; domain=.apple.com; secure
       - mzf_odc=NK1; version="1"; expires=Sat, 23-Feb-2013 21:14:34 GMT; path=/WebObjects; domain=.apple.com
-      Apple-Timing-App: 
+      Apple-Timing-App:
       - 305 ms
-      Cache-Control: 
+      Cache-Control:
       - max-age=0
       - must-revalidate
       - no-cache
       - no-store
       - no-transform
       - private
-      Expires: 
+      Expires:
       - Sat, 23 Feb 2013 20:44:34 GMT
-      X-Apple-Lokamai-No-Cache: 
+      X-Apple-Lokamai-No-Cache:
       - "true"
-      X-Apple-Application-Instance: 
+      X-Apple-Application-Instance:
       - "990104"
-      Pragma: 
+      Pragma:
       - no-cache
-      X-Webobjects-Loadaverage: 
+      X-Webobjects-Loadaverage:
       - "1"
-      Connection: 
+      Connection:
       - keep-alive
-      Content-Length: 
+      Content-Length:
       - "16"
-      Date: 
+      Date:
       - Sat, 23 Feb 2013 20:44:34 GMT
-    body: 
+    body:
       encoding: US-ASCII
       string: "{\"status\":21002}"
-    http_version: 
+    http_version:
   recorded_at: Sat, 23 Feb 2013 20:44:35 GMT
 recorded_with: VCR 2.3.0

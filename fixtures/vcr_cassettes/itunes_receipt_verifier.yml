@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://sandbox.itunes.apple.com/verifyReceipt
+    uri: https://buy.itunes.apple.com/verifyReceipt
     body:
       encoding: UTF-8
       string: "{\"receipt-data\":\"good_receipt_data\"}"
@@ -65,7 +65,7 @@ http_interactions:
   recorded_at: Sat, 23 Feb 2013 20:43:01 GMT
 - request:
     method: post
-    uri: https://sandbox.itunes.apple.com/verifyReceipt
+    uri: https://buy.itunes.apple.com/verifyReceipt
     body:
       encoding: UTF-8
       string: "{\"receipt-data\":\"good_receipt_data\"}"

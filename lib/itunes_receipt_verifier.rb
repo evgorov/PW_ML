@@ -9,18 +9,25 @@ module ItunesReceiptVerifier
 
   class << self
     def verify!(redis, receipt_data, user_id, product_id)
-      response = HTTParty.post('https://sandbox.itunes.apple.com/verifyReceipt',
+      response = HTTParty.post('https://buy.itunes.apple.com/verifyReceipt',
                                body: { 'receipt-data' => receipt_data }.to_json,
                                timeout: 10)
 
       raise ItunesReceiptError unless response.code == 200
       json = JSON.parse(response.body)
+
+      if json['status'] == 21007
+        response = HTTParty.post('https://sandbox.itunes.apple.com/verifyReceipt',
+                                 body: { 'receipt-data' => receipt_data }.to_json,
+                                 timeout: 10)
+        raise ItunesReceiptError unless response.code == 200
+        json = JSON.parse(response.body)
+      end
+
       raise ItunesReceiptError unless json['status'] == 0
       raise ItunesReceiptError unless json['receipt']['product_id'] == product_id
       verify_user!(redis, json['receipt']['original_transaction_id'], user_id)
     end
-
-    private
 
     def verify_user!(redis, original_transaction_id, user_id)
       redis = redis.namespace('itunes_receipt_verifier')
