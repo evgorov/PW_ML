@@ -287,7 +287,9 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
                         
                         [puzzleSet setBought:[NSNumber numberWithBool:YES]];
                         NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                        [puzzleSet.managedObjectContext lock];
                         [puzzleSet.managedObjectContext save:nil];
+                        [puzzleSet.managedObjectContext unlock];
                         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SET_BOUGHT andData:puzzleSet.set_id]];
                         NSLog(@"view for puzzles created!");
                     });

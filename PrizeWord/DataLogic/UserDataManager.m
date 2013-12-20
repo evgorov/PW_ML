@@ -80,13 +80,14 @@
     {
         return;
     }
-    NSManagedObjectContext * context = [DataContext currentContext];
-    ScoreQuery * scoreQuery = [[ScoreQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"ScoreQuery" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    ScoreQuery * scoreQuery = [[ScoreQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"ScoreQuery" inManagedObjectContext:managedObjectContext] insertIntoManagedObjectContext:managedObjectContext];
     scoreQuery.score = [NSNumber numberWithInt:score];
     scoreQuery.user = user.user_id;
     scoreQuery.key = key;
     scoreQuery.done = [NSNumber numberWithBool:NO];
-    [context save:nil];
+    [managedObjectContext lock];
+    [managedObjectContext save:nil];
+    [managedObjectContext unlock];
     [self sendScore:score forKey:key];
     
     user.month_score += score;
@@ -101,13 +102,15 @@
     {
         return;
     }
-    NSManagedObjectContext * context = [DataContext currentContext];
-    HintsQuery * hintsQuery = [[HintsQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"HintsQuery" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+    HintsQuery * hintsQuery = [[HintsQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"HintsQuery" inManagedObjectContext:managedObjectContext] insertIntoManagedObjectContext:managedObjectContext];
     hintsQuery.hints = [NSNumber numberWithInt:hints];
     hintsQuery.user = user.user_id;
     hintsQuery.key = [NSString stringWithFormat:@"%lld%04d", (long long)[[NSDate date] timeIntervalSince1970], rand() % 1000];
     hintsQuery.done = [NSNumber numberWithBool:NO];
-    [context save:nil];
+    [managedObjectContext lock];
+    [managedObjectContext save:nil];
+    [managedObjectContext unlock];
     [self sendHints:hints forKey:hintsQuery.key];
     
     user.hints += hints;
@@ -190,7 +193,9 @@
         {
             ScoreQuery * scoreQuery = [results lastObject];
             scoreQuery.done = [NSNumber numberWithBool:YES];
-            [[DataContext currentContext] save:nil];
+            [managedObjectContext lock];
+            [managedObjectContext save:nil];
+            [managedObjectContext unlock];
         }
         if (error != nil)
         {
@@ -240,7 +245,9 @@
         {
             HintsQuery * hintsQuery = [results lastObject];
             hintsQuery.done = [NSNumber numberWithBool:YES];
-            [[DataContext currentContext] save:nil];
+            [managedObjectContext lock];
+            [managedObjectContext save:nil];
+            [managedObjectContext unlock];
         }
         if (error != nil)
         {

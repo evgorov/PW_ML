@@ -562,7 +562,9 @@
     }
     _puzzle.etag = @"";
     NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
+    [question.managedObjectContext lock];
     [question.managedObjectContext save:nil];
+    [question.managedObjectContext unlock];
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
@@ -591,7 +593,9 @@
     }
 
     NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
+    [question.managedObjectContext lock];
     [question.managedObjectContext save:nil];
+    [question.managedObjectContext unlock];
 }
 
 @end

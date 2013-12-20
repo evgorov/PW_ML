@@ -198,7 +198,9 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
                 {
                     PuzzleSetData * puzzleSet = [_monthSets lastObject];
                     NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                    [puzzleSet.managedObjectContext lock];
                     [puzzleSet.managedObjectContext save:nil];
+                    [puzzleSet.managedObjectContext unlock];
                 }
                 for (PuzzleSetData * puzzleSet in _monthSets)
                 {

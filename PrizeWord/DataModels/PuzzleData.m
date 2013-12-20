@@ -259,7 +259,9 @@
                         NSLog(@"ERROR: managed objects contexts are not equal");
                     }
                     NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
+                    [self.managedObjectContext lock];
                     [self.managedObjectContext save:nil];
+                    [self.managedObjectContext unlock];
                     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self.puzzle_id]];
                 });
             }

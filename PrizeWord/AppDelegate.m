@@ -181,9 +181,11 @@ static NSRecursiveLock * dbLock = nil;
     NSError *error = nil;
     NSManagedObjectContext * context = [DataContext currentContext];
     if (context != nil) {
+        [context lock];
         if ([context hasChanges] && ![context save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
+        [context unlock];
     }
     [TileImageHelper uninitHelper];
     [SocialNetworks logout];

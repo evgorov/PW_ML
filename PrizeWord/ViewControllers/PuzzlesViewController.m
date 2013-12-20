@@ -197,7 +197,9 @@ enum PuzzlesSections
             {
                 PuzzleSetData * puzzleSet = [data lastObject];
                 NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                [puzzleSet.managedObjectContext lock];
                 [puzzleSet.managedObjectContext save:nil];
+                [puzzleSet.managedObjectContext unlock];
             }
             archiveLoading = NO;
             if (data != nil) {

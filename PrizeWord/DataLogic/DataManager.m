@@ -82,15 +82,16 @@
             return;
         }
 
+        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
+                                      , @"month": [NSNumber numberWithInt:[GlobalData globalData].currentMonth]
+                                      , @"year": [NSNumber numberWithInt:[GlobalData globalData].currentYear]
+                                      , @"mode": @"short"
+                                      };
+        
         [managedObjectContext.undoManager beginUndoGrouping];
         __block PuzzleSetPackData * localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
         NSLog(@"local pack count: %d", localPack.puzzleSets.count);
         
-        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
-                                      , @"month": localPack.month
-                                      , @"year": localPack.year
-                                      , @"mode": @"short"
-                                      };
         NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
         [request setValue:localPack.etag forHTTPHeaderField:@"If-None-Match"];
         
@@ -162,7 +163,9 @@
                                 }
                             }
                             [managedObjectContext.undoManager endUndoGrouping];
+                            [managedObjectContext lock];
                             [managedObjectContext save:nil];
+                            [managedObjectContext unlock];
                             if (callback != nil && ![parentFetchOperation isCancelled])
                             {
                                 callback(archiveSets, nil);
@@ -182,7 +185,9 @@
                 else
                 {
                     [managedObjectContext.undoManager endUndoGrouping];
+                    [managedObjectContext lock];
                     [managedObjectContext save:nil];
+                    [managedObjectContext unlock];
                     if (callback != nil && ![fetchOperation isCancelled])
                     {
                         NSArray * sortedSets = [[localPack.puzzleSets allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -203,7 +208,9 @@
                 {
                     if (localPack != nil && localPack.puzzleSets.count > 0)
                     {
+                        [managedObjectContext lock];
                         [managedObjectContext save:nil];
+                        [managedObjectContext unlock];
                         NSArray * sortedSets = [[localPack.puzzleSets allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                             PuzzleSetData * set1 = obj1;
                             PuzzleSetData * set2 = obj2;
@@ -251,7 +258,9 @@
         if (archivePack != nil && archivePack.puzzleSets.count > 0)
         {
             [managedObjectContext.undoManager endUndoGrouping];
+            [managedObjectContext lock];
             [managedObjectContext save:nil];
+            [managedObjectContext unlock];
             if (callback != nil && ![fetchOperation isCancelled])
             {
                 NSArray * sortedSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -342,7 +351,9 @@
                                     }
                                 }
                                 [managedObjectContext.undoManager endUndoGrouping];
+                                [managedObjectContext lock];
                                 [managedObjectContext save:nil];
+                                [managedObjectContext unlock];
                                 if (callback != nil && ![parentFetchOperation isCancelled])
                                 {
                                     callback(archiveSets, nil);
@@ -527,7 +538,9 @@
                     {
                         news.news3 = [messages objectForKey:@"message3"];
                     }
+                    [news.managedObjectContext lock];
                     [news.managedObjectContext save:nil];
+                    [news.managedObjectContext unlock];
                 }
                 
                 if (callback != nil && ![fetchOperation isCancelled])

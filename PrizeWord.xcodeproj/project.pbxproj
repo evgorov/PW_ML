@@ -3163,8 +3163,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/third-party",
@@ -3180,8 +3180,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "EBC1DE5B-54BF-4F31-953C-2CA855DFC2A9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EBC1DE5B-54BF-4F31-953C-2CA855DFC2A9";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3192,8 +3192,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Evgeni Grigoriev (GJP454J9L6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/third-party",
@@ -3209,8 +3209,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "EBC1DE5B-54BF-4F31-953C-2CA855DFC2A9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EBC1DE5B-54BF-4F31-953C-2CA855DFC2A9";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
