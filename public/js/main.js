@@ -762,7 +762,10 @@ var PuzzlesView = Backbone.View.extend({
   selectPage: function(e){
     if(e && e.preventDefault) e.preventDefault();
     var page = $(e.target).text();
-    this.collection.fetch({ data: { page: page }});
+    var data = { page: page };
+    if(this.filter) data.filter = this.filter;
+    this.filter = val;
+    this.collection.fetch({ reset: true, data: data });
   }
 });
 
