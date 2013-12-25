@@ -1183,8 +1183,9 @@ var UsersView = Backbone.View.extend({
   showScore: function(e){
     if(e && e.preventDefault) e.preventDefault();
     var user = this.collection.get($(e.target).attr('data-id'));
-    var scores = _(user.get('scores')).map(function(o){ [o.source, o.score].join(':') }).join('|');
-    alert('scores');
+    var scores = _(user.get('scores')).map(function(o){ o = JSON.parse(o); return [o.source, o.score].join(':') }).join("\n");
+    $('[role="modal-body"]').text(scores);
+    $('[role="scores-modal"]').modal();
   },
 
   changeUserRole: function(e){
