@@ -9,7 +9,6 @@
 #import "SocialNetworks.h"
 #import "GlobalData.h"
 #import "PrizeWordViewController.h"
-#import "APIRequest.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SBJsonParser.h"
 #import "UserData.h"
@@ -97,7 +96,7 @@
     
     UIWebView * vkWebView = [[UIWebView alloc] initWithFrame:viewController.view.frame];
     [viewController.view addSubview:vkWebView];
-    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@vkontakte/login", SERVER_ENDPOINT]] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+    NSURLRequest * request = [NSURLRequest requestWithURL:[[APIClient sharedClient].baseURL URLByAppendingPathComponent:@"vkontakte/login"] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
     NSLog(@"request: %@", request.URL.path);
     vkWebView.delegate = self;
     vkWebView.hidden = YES;
@@ -147,12 +146,15 @@
     [viewController showActivityIndicator];
     lastAccessToken = accessToken;
     lastProvider = provider;
-    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/authorize", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSDictionary * params = @{@"access_token": accessToken};
+    
+    [[APIClient sharedClient] getPath:[NSString stringWithFormat:@"%@/authorize", provider] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [viewController hideActivityIndicator];
-        [[GlobalData globalData] parseDateFromResponse:response];
-        NSLog(@"%@/authorize: %@", provider, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        [[GlobalData globalData] parseDateFromResponse:operation.response];
+        NSLog(@"%@/authorize: %@", provider, operation.responseString);
         SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
+        NSDictionary * data = [parser objectWithData:operation.responseData];
         if ([GlobalData globalData].sessionKey == nil)
         {
             [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
@@ -162,24 +164,22 @@
         else
         {
             [viewController showActivityIndicator];
-            APIRequest * linkRequest = [APIRequest postRequest:@"link_accounts" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                NSLog(@"link account success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            
+            NSDictionary * params = @{@"session_key1": [GlobalData globalData].sessionKey
+                                      , @"session_key2": [data objectForKey:@"session_key"]};
+            [[APIClient sharedClient] postPath:@"link_accounts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"link account success: %d %@", operation.response.statusCode, operation.responseString);
                 [viewController hideActivityIndicator];
                 successCallback();
-            } failCallback:^(NSError *error) {
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [viewController hideActivityIndicator];
-                NSLog(@"link accounts failed: %@", error.description);
+                NSLog(@"link accounts failed: %@", error.localizedDescription);
                 [[GlobalData globalData] loadMe];
             }];
-            [linkRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key1"];
-            [linkRequest.params setObject:[data objectForKey:@"session_key"] forKey:@"session_key2"];
-            [linkRequest runUsingCache:NO silentMode:NO];
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [viewController hideActivityIndicator];
     }];
-    [request.params setObject:accessToken forKey:@"access_token"];
-    [request runUsingCache:NO silentMode:NO];
 }
 
 #pragma mark UIAlertViewDelegate
@@ -234,24 +234,25 @@
         NSLog(@"url: %@", request.URL.query);
         
         [lastViewController showActivityIndicator];
-        APIRequest * apiRequest = [APIRequest getRequest:@"vkontakte/authorize" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        
+        NSDictionary * params = @{@"provider_name": @"vkontakte"
+                                  , @"code": [request.URL.query substringFromIndex:[request.URL.query rangeOfString:@"="].location + 1]};
+        
+        [[APIClient sharedClient] getPath:@"vkontakte/authorize" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [lastViewController hideActivityIndicator];
-            NSLog(@"vkontakte/authorize: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            if (response.statusCode == 200)
+            NSLog(@"vkontakte/authorize: %@", operation.responseString);
+            if (operation.response.statusCode == 200)
             {
                 SBJsonParser * parser = [SBJsonParser new];
-                NSDictionary * data = [parser objectWithData:receivedData];
+                NSDictionary * data = [parser objectWithData:operation.responseData];
                 [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
                 [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
                 successCallback();
             }
-        } failCallback:^(NSError *error) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [lastViewController hideActivityIndicator];
             NSLog(@"vk error: %@", error.description);
         }];
-        [apiRequest.params setObject:@"vkontakte" forKey:@"provider_name"];
-        [apiRequest.params setObject:[request.URL.query substringFromIndex:[request.URL.query rangeOfString:@"="].location + 1] forKey:@"code"];
-        [apiRequest runUsingCache:NO silentMode:YES];
         
         return NO;
     }

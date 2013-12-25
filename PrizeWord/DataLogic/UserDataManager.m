@@ -13,7 +13,6 @@
 #import "ScoreQuery.h"
 #import "HintsQuery.h"
 #import "EventManager.h"
-#import "APIRequest.h"
 #import "SBJsonParser.h"
 #import "DataContext.h"
 
@@ -70,7 +69,7 @@
         return;
     }
     NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
     NSError * error = nil;
     [managedObjectContext lock];
     NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -126,7 +125,7 @@
         return;
     }
     NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreUndoneFetchRequest" substitutionVariables:@{@"USER" : user.user_id}];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreUndoneFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id}];
     NSError * error = nil;
     [managedObjectContext lock];
     NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -151,7 +150,7 @@
         return;
     }
     NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsUndoneFetchRequest" substitutionVariables:@{ @"USER" : user.user_id }];
+    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsUndoneFetchRequest" substitutionVariables:@{ @"USER_ID" : user.user_id }];
     NSError * error = nil;
     [managedObjectContext lock];
     NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -178,12 +177,19 @@
     }
     
     scoreQueriesInProgress++;
-    APIRequest * request = [APIRequest postRequest:@"score" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSMutableDictionary * params = [NSMutableDictionary new];
+    [params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+    [params setObject:[NSString stringWithFormat:@"%d", score] forKey:@"score"];
+    [params setObject:@"1" forKey:@"solved"];
+    [params setObject:key forKey:@"source"];
+    
+    [[APIClient sharedClient] postPath:@"score" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         scoreQueriesInProgress--;
-        NSLog(@"score success! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"score success! %@", operation.responseString);
         
         NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"ScoreFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
         [managedObjectContext lock];
         NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -203,23 +209,17 @@
         }
         
         SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
+        NSDictionary * data = [parser objectWithData:operation.responseData];
         UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         if (userData != nil)
         {
             [GlobalData globalData].loggedInUser = userData;
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         scoreQueriesInProgress--;
         NSLog(@"send score error: %@", error.description);
     }];
-    
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:[NSString stringWithFormat:@"%d", score] forKey:@"score"];
-    [request.params setObject:@"1" forKey:@"solved"];
-    [request.params setObject:key forKey:@"source"];
-    [request runUsingCache:NO silentMode:YES];
 }
 
 - (void)sendHints:(int)hints forKey:(NSString *)key
@@ -231,11 +231,15 @@
     }
     
     hintsQueriesInProgress++;
-    APIRequest * request = [APIRequest postRequest:@"hints" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"hints_change": [NSString stringWithFormat:@"%d", hints]};
+    
+    [[APIClient sharedClient] postPath:@"hints" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         hintsQueriesInProgress--;
         
         NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER" : user.user_id, @"KEY" : key}];
+        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
         NSError * error = nil;
         [managedObjectContext lock];
         NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -255,21 +259,18 @@
         }
         
         SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
+        NSDictionary * data = [parser objectWithData:operation.responseData];
         UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         if (userData != nil)
         {
             [GlobalData globalData].loggedInUser = userData;
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
         }
-        
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"hints request: %@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         hintsQueriesInProgress--;
         NSLog(@"send hints error: %@", error.description);
     }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:[NSString stringWithFormat:@"%d", hints] forKey:@"hints_change"];
-    [request runUsingCache:NO silentMode:YES];
 }
 
 @end

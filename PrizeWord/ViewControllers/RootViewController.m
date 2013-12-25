@@ -19,7 +19,6 @@
 #import "UserData.h"
 #import "EventManager.h"
 #import "SocialNetworks.h"
-#import "APIRequest.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "SBJsonParser.h"
 #import "FISoundEngine.h"
@@ -573,7 +572,6 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 - (IBAction)handleSwitchUserClick:(id)sender
 {
     [self hideMenuAnimated:YES];
-    [APIRequest clearCache];
     [GlobalData globalData].monthSets = [NSMutableArray new];
     [SocialNetworks logout];
     
@@ -923,12 +921,14 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 //    [self showActivityIndicator];
     [mainMenuAvatarActivityIndicator startAnimating];
     
-    APIRequest * saveAvatarRequest = [APIRequest postRequest:@"me" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"update me result: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        if (response.statusCode == 200)
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"userpic": image};
+    [[APIClient sharedClient] postPath:@"me" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"update me result: %d %@", operation.response.statusCode, operation.responseString);
+        if (operation.response.statusCode == 200)
         {
             SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
+            NSDictionary * data = [parser objectWithData:operation.responseData];
             UserData * newUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
             if (newUser != nil)
             {
@@ -937,13 +937,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
             [self updateUserInfo];
             [mainMenuAvatarActivityIndicator stopAnimating];
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"update me error: %@", error.description);
         [mainMenuAvatarActivityIndicator stopAnimating];
     }];
-    [saveAvatarRequest.params setObject:image forKey:@"userpic"];
-    [saveAvatarRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [saveAvatarRequest runUsingCache:NO silentMode:NO];
+    
     [self imagePickerControllerDidCancel:picker];
 }
 

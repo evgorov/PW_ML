@@ -19,25 +19,24 @@
 @dynamic etag;
 @dynamic puzzleSets;
 
-+ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId
++ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
     PuzzleSetPackData * pack = nil;
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetPackFetchRequest" substitutionVariables:@{@"YEAR": [NSNumber numberWithInt:year], @"MONTH": [NSNumber numberWithInt:month], @"USER_ID": userId}];
-    [managedObjectContext lock];
-    NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    NSFetchRequest * fetchRequest = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetPackFetchRequest" substitutionVariables:@{@"YEAR": [NSNumber numberWithInt:year], @"MONTH": [NSNumber numberWithInt:month], @"USER_ID": userId}];
+    NSArray * results = [moc executeFetchRequest:fetchRequest error:nil];
     if (results != nil && results.count > 0)
     {
         pack = results.lastObject;
     }
     else
     {
-        pack = [NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSetPack" inManagedObjectContext:managedObjectContext];
+        pack = [NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSetPack" inManagedObjectContext:moc];
     }
-    [managedObjectContext unlock];
-    pack.user_id = userId;
-    pack.year = [NSNumber numberWithInt:year];
-    pack.month = [NSNumber numberWithInt:month];
+    [moc performBlockAndWait:^{
+        pack.user_id = userId;
+        pack.year = [NSNumber numberWithInt:year];
+        pack.month = [NSNumber numberWithInt:month];
+    }];
     return pack;
 }
 

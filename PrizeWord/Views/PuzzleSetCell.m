@@ -15,7 +15,6 @@
 #import "PuzzleSetData.h"
 #import "DataManager.h"
 #import "StoreManager.h"
-#import "APIRequest.h"
 #import "SBJsonParser.h"
 #import "GlobalData.h"
 #import "PrizewordStoreObserver.h"
@@ -258,7 +257,7 @@ static FISound * closeSetSound = nil;
             if ([badge.puzzle.puzzle_id compare:puzzleId] == NSOrderedSame)
             {
                 NSLog(@"handle puzzle %@ synchronization", puzzleId);
-                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
+                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
                 [badge updateWithPuzzle:puzzle];
                 break;
             }

@@ -9,7 +9,6 @@
 #import "PrizeWordNavigationController.h"
 #import "PrizeWordNavigationBar.h"
 #import "AppDelegate.h"
-#import "APIRequest.h"
 #import "DataManager.h"
 
 @interface PrizeWordNavigationController ()
@@ -53,7 +52,7 @@
 
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [APIRequest cancelAll];
+    [[APIClient sharedClient].operationQueue cancelAllOperations];
     [[DataManager sharedManager] cancelAll];
     
     [super pushViewController:viewController animated:animated];
@@ -64,7 +63,7 @@
 
 -(UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
-    [APIRequest cancelAll];
+    [[APIClient sharedClient].operationQueue cancelAllOperations];
     [[DataManager sharedManager] cancelAll];
     if (UIDeviceOrientationIsLandscape([AppDelegate currentDelegate].viewOrientation))
     {
@@ -75,7 +74,7 @@
 
 -(NSArray *)popToRootViewControllerAnimated:(BOOL)animated
 {
-    [APIRequest cancelAll];
+    [[APIClient sharedClient].operationQueue cancelAllOperations];
     [[DataManager sharedManager] cancelAll];
     NSArray * popped = [super popToRootViewControllerAnimated:animated];
     

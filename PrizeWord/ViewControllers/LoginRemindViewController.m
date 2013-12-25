@@ -9,7 +9,6 @@
 #import "LoginRemindViewController.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
-#import "APIRequest.h"
 #import "SBJsonParser.h"
 
 @interface LoginRemindViewController (private)
@@ -73,34 +72,36 @@
         return;
     }
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"forgot_password" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSDictionary * params = @{@"email": txtEmail.text};
+    
+    [[APIClient sharedClient] postPath:@"forgot_password" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideActivityIndicator];
-        if (response.statusCode == 200)
+        if (operation.response.statusCode == 200)
         {
             [self handleSent:sender];
         }
         else
         {
-            NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+            NSDictionary * data = [[SBJsonParser new] objectWithData:operation.responseData];
             NSString * message = [data objectForKey:@"message"];
-            if (response.statusCode == 404)
+            if (operation.response.statusCode == 404)
             {
                 message = NSLocalizedString(@"No user with this e-mail.", @"No user with this e-mail!");
             }
             else if (message == nil)
             {
-                message = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+                message = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
             }
-                            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                            [alertView show];
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hideActivityIndicator];
         UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }];
-    [request.params setObject:txtEmail.text forKey:@"email"];
-    [request runUsingCache:NO silentMode:YES];
+    
 }
 
 -(void)handleSent:(id)sender

@@ -116,25 +116,24 @@
     self.answer_positionAsUint = position;
 }
 
-+(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
     NSString * question_id = [NSString stringWithFormat:@"%@_%d_%d", puzzle.puzzle_id, [(NSNumber *)[dict objectForKey:@"column"] intValue], [(NSNumber *)[dict objectForKey:@"row"] intValue]];
-    
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    [managedObjectContext lock];
-    QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:managedObjectContext];
-    [managedObjectContext unlock];
-    [question setQuestion_id:question_id];
-    [question setUser_id:userId];
     NSString * answer = [dict objectForKey:@"answer"];
-    [question setAnswer:[answer stringByReplacingOccurrencesOfString:@"ё" withString:@"е"]];
     
-    [question setAnswer_positionAsString:[dict objectForKey:@"answer_position"]];
-    [question setColumn:[dict objectForKey:@"column"]];
-    [question setQuestion_text:[dict objectForKey:@"question_text"]];
-    [question setRow:[dict objectForKey:@"row"]];
-    [question setColumnAsUint:(question.columnAsUint - 1)];
-    [question setRowAsUint:(question.rowAsUint - 1)];
+    __block QuestionData * question = (QuestionData *)[NSEntityDescription insertNewObjectForEntityForName:@"Question" inManagedObjectContext:moc];
+    [moc performBlockAndWait:^{
+        [question setQuestion_id:question_id];
+        [question setUser_id:userId];
+        [question setAnswer:[answer stringByReplacingOccurrencesOfString:@"ё" withString:@"е"]];
+        
+        [question setAnswer_positionAsString:[dict objectForKey:@"answer_position"]];
+        [question setColumn:[dict objectForKey:@"column"]];
+        [question setQuestion_text:[dict objectForKey:@"question_text"]];
+        [question setRow:[dict objectForKey:@"row"]];
+        [question setColumnAsUint:(question.columnAsUint - 1)];
+        [question setRowAsUint:(question.rowAsUint - 1)];
+    }];
     
     return question;
 }

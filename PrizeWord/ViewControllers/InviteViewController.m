@@ -8,7 +8,6 @@
 
 #import "InviteViewController.h"
 #import "PrizeWordNavigationBar.h"
-#import "APIRequest.h"
 #import "UserData.h"
 #import "GlobalData.h"
 #import "SBJsonParser.h"
@@ -150,12 +149,14 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
         }
         [self resizeView:container newHeight:headerView.frame.size.height animated:YES];
         
-        APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/friends", provider] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+        NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey};
+        
+        [[APIClient sharedClient] getPath:[NSString stringWithFormat:@"%@/friends", provider] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self hideActivityIndicator];
             [updateInProgress removeObjectForKey:provider];
             float height = headerView.frame.size.height;
             SBJsonParser * parser = [SBJsonParser new];
-            NSArray * friendsData = [parser objectWithData:receivedData];
+            NSArray * friendsData = [parser objectWithData:operation.responseData];
             for (NSDictionary * friendDataInmutable in friendsData)
             {
                 NSMutableDictionary * friendData = [friendDataInmutable mutableCopy];
@@ -196,20 +197,21 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
             }
             [self resizeView:container newHeight:height animated:YES];
             [self updateContainer:container withViews:views andData:data];
-
-        } failCallback:^(NSError *error) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self hideActivityIndicator];
         }];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request runUsingCache:YES silentMode:NO];
     }
 }
 
 -(void)inviteVKUser:(int)idx
 {
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+    NSDictionary * userData = [vkFriends objectAtIndex:idx];
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"ids": [userData objectForKey:@"id"]};
+    
+    [[APIClient sharedClient] postPath:@"vkontakte/invite" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"invite success: %@", operation.responseString);
         [self hideActivityIndicator];
         for (UIView * subview in vkView.subviews) {
             if ([subview isKindOfClass:[InviteCellView class]])
@@ -221,15 +223,10 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
                 }
             }
         }
-        
-    } failCallback:^(NSError *error) {
-        NSLog(@"invite failed: %@", error.description);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"invite failed: %@", error.localizedDescription);
         [self hideActivityIndicator];
     }];
-    NSDictionary * userData = [vkFriends objectAtIndex:idx];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:[userData objectForKey:@"id"] forKey:@"ids"];
-    [request runUsingCache:NO silentMode:YES];
 }
 
 -(void)inviteFBUser:(int)idx
@@ -267,9 +264,11 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
                 [ids appendFormat:(ids.length > 0 ? @",%@" : @"%@"), [friendData objectForKey:@"id"]];
             }
         }
-        APIRequest * request = [APIRequest postRequest:@"vkontakte/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-            NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-            // TODO :: add score
+        NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                  , @"ids": ids};
+        
+        [[APIClient sharedClient] postPath:@"vkontakte/invite" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"invite success: %@", operation.responseString);
             [self hideActivityIndicator];
             for (UIView * subview in vkView.subviews) {
                 if ([subview isKindOfClass:[InviteCellView class]])
@@ -278,13 +277,10 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
                     inviteView.btnAdd.enabled = NO;
                 }
             }
-        } failCallback:^(NSError *error) {
-            NSLog(@"invite failed: %@", error.description);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"invite failed: %@", error.localizedDescription);
             [self hideActivityIndicator];
         }];
-        [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-        [request.params setObject:ids forKey:@"ids"];
-        [request runUsingCache:NO silentMode:YES];
     }
 }
 
@@ -477,8 +473,11 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
                     }
                 }];
                 NSLog(@"userIds: %@", userIds);
-                APIRequest * request = [APIRequest postRequest:@"facebook/invite" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-                    NSLog(@"invite success: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+                NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                          , @"ids": userIds};
+                
+                [[APIClient sharedClient] postPath:@"facebook/invite" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"invite success: %@", operation.responseString);
                     [self hideActivityIndicator];
                     for (UIView * subview in fbView.subviews) {
                         if ([subview isKindOfClass:[InviteCellView class]])
@@ -490,13 +489,10 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
                             }
                         }
                     }
-                } failCallback:^(NSError *error) {
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"invite failed: %@", error.description);
                     [self hideActivityIndicator];
                 }];
-                [request.params setObject:userIds forKey:@"ids"];
-                [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [request runUsingCache:NO silentMode:YES];
             }
         }
     }

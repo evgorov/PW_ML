@@ -7,7 +7,6 @@
 //
 
 #import "RatingViewController.h"
-#import "APIRequest.h"
 #import "UserData.h"
 #import "GlobalData.h"
 #import "SBJson.h"
@@ -65,12 +64,16 @@ int HEADER_HEIGHT = 24;
     [[GlobalData globalData] loadMe];
 
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest getRequest:@"users" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData)
-    {
+    
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"from": @"0"
+                              , @"limit": @"100"};
+    
+    [[APIClient sharedClient] getPath:@"users" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [users removeAllObjects];
-//        NSLog(@"rating: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        //        NSLog(@"rating: %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
         SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:receivedData];
+        NSDictionary * data = [parser objectWithData:operation.responseData];
         NSArray * usersData = [data objectForKey:@"users"];
         for (NSDictionary * userData in usersData)
         {
@@ -91,15 +94,10 @@ int HEADER_HEIGHT = 24;
             [ratingView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[GlobalData globalData].loggedInUser.position inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
         [self hideActivityIndicator];
-    } failCallback:^(NSError *error)
-    {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"users error: %@", error.description);
         [self hideActivityIndicator];
     }];
-    [request.params setValue:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setValue:@"0" forKey:@"from"];
-    [request.params setValue:@"100" forKey:@"limit"];
-    [request runUsingCache:YES silentMode:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated

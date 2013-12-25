@@ -278,7 +278,6 @@
 		F2840CC217158E190003F1F2 /* rules_page_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840C9217158E180003F1F2 /* rules_page_2@2x.png */; };
 		F2840CDA171C2A700003F1F2 /* puzzles_news_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840CD8171C2A700003F1F2 /* puzzles_news_bg.png */; };
 		F2840CDB171C2A700003F1F2 /* puzzles_news_bg~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2840CD9171C2A700003F1F2 /* puzzles_news_bg~ipad.png */; };
-		F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E0216A5E62C0041C1D5 /* APIRequest.m */; };
 		F2848E3616AA76740041C1D5 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E3516AA76740041C1D5 /* GlobalData.m */; };
 		F2848E3916AA77980041C1D5 /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = F2848E3816AA77980041C1D5 /* UserData.m */; };
 		F2848E4316AE62230041C1D5 /* final_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F2848E3A16AE62230041C1D5 /* final_bg@2x~ipad.png */; };
@@ -951,8 +950,6 @@
 		F2840C9217158E180003F1F2 /* rules_page_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules_page_2@2x.png"; sourceTree = "<group>"; };
 		F2840CD8171C2A700003F1F2 /* puzzles_news_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzles_news_bg.png; sourceTree = "<group>"; };
 		F2840CD9171C2A700003F1F2 /* puzzles_news_bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "puzzles_news_bg~ipad.png"; sourceTree = "<group>"; };
-		F2848E0116A5E62C0041C1D5 /* APIRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = APIRequest.h; path = Net/APIRequest.h; sourceTree = "<group>"; };
-		F2848E0216A5E62C0041C1D5 /* APIRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = APIRequest.m; path = Net/APIRequest.m; sourceTree = "<group>"; };
 		F2848E3416AA76740041C1D5 /* GlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalData.h; path = PrizeWord/DataModels/GlobalData.h; sourceTree = "<group>"; };
 		F2848E3516AA76740041C1D5 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlobalData.m; path = PrizeWord/DataModels/GlobalData.m; sourceTree = "<group>"; };
 		F2848E3716AA77980041C1D5 /* UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserData.h; path = PrizeWord/DataModels/UserData.h; sourceTree = "<group>"; };
@@ -1480,8 +1477,6 @@
 		F2848E0016A5E61E0041C1D5 /* Net */ = {
 			isa = PBXGroup;
 			children = (
-				F2848E0116A5E62C0041C1D5 /* APIRequest.h */,
-				F2848E0216A5E62C0041C1D5 /* APIRequest.m */,
 				F2C52D5216D1066000871649 /* PrizewordStoreObserver.h */,
 				F2C52D5316D1066000871649 /* PrizewordStoreObserver.m */,
 				F2C52D5916D8D3FA00871649 /* SocialNetworks.h */,
@@ -3009,7 +3004,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2848E0316A5E9EC0041C1D5 /* APIRequest.m in Sources */,
 				F2D6270C165DF80900EF6E8A /* main.m in Sources */,
 				F2D62710165DF80900EF6E8A /* AppDelegate.m in Sources */,
 				F2D62713165DF80900EF6E8A /* PrizeWord.xcdatamodeld in Sources */,
@@ -3124,7 +3118,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "B3365220-EB88-4C8B-BCDC-FE258BAA466E";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3150,7 +3144,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "B3365220-EB88-4C8B-BCDC-FE258BAA466E";
 				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3180,8 +3174,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3209,8 +3203,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

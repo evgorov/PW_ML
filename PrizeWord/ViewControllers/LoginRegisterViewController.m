@@ -8,7 +8,6 @@
 
 #import "LoginRegisterViewController.h"
 #import "PuzzlesViewController.h"
-#import "APIRequest.h"
 #import "GlobalData.h"
 #import "SBJson.h"
 #import "UserData.h"
@@ -179,31 +178,33 @@ NSRegularExpression * EMAIL_REGEXP;
     }
     
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"signup" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
-        [self handleSignupComplete:response receivedData:receivedData];
-    } failCallback:^(NSError *error) {
-        [self hideActivityIndicator];
-    }];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    [request.params setObject:tfEmail.text forKey:@"email"];
-    [request.params setObject:tfName.text forKey:@"name"];
-    [request.params setObject:tfSurname.text forKey:@"surname"];
-    [request.params setObject:tfPassword.text forKey:@"password"];
-    [request.params setObject:[dateFormatter stringFromDate:datePicker.date] forKey:@"birthday"];
+
     NSString * city = tfCity.text;
     if (city == nil)
     {
         city = @"";
     }
-    [request.params setObject:city forKey:@"city"];
+
+    NSMutableDictionary * params = @{@"email": tfEmail.text
+                              , @"name": tfName.text
+                              , @"surname": tfSurname.text
+                              , @"password": tfPassword.text
+                              , @"birthday": [dateFormatter stringFromDate:datePicker.date]
+                              , @"city": city
+                              }.mutableCopy;
     if (avatar != nil)
     {
-        [request.params setObject:avatar forKey:@"userpic"];
+        [params setObject:avatar forKey:@"userpic"];
     }
-    [request runUsingCache:NO silentMode:NO];
+    
+    [[APIClient sharedClient] postPath:@"signup" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self handleSignupComplete:operation.response receivedData:operation.responseData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self hideActivityIndicator];
+    }];
 }
 
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData

@@ -9,7 +9,6 @@
 #import "PuzzleData.h"
 #import "QuestionData.h"
 #import "AppDelegate.h"
-#import "APIRequest.h"
 #import "GlobalData.h"
 #import "SBJsonParser.h"
 #import "SBJson.h"
@@ -31,22 +30,13 @@
 @dynamic puzzleSet;
 @dynamic etag;
 
-+(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
     PuzzleData * puzzle;
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
-    
-    [request setEntity:puzzleEntity];
-    [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
-    
+    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": [dict objectForKey:@"id"], @"USER_ID": userId}];
+
     NSError *error = nil;
-    [managedObjectContext lock];
-    NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
-    [managedObjectContext unlock];
+    NSArray *puzzles = [moc executeFetchRequest:request error:&error];
     
     NSNumber * time_given = nil;
     id time_givenData = [dict objectForKey:@"time_given"];
@@ -67,55 +57,45 @@
     
     if (puzzles == nil || puzzles.count == 0)
     {
-        [managedObjectContext lock];
-        puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
-        [managedObjectContext unlock];
-        [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
-        [puzzle setTime_given:time_given];
-        [puzzle setTime_left:time_given];
-        NSArray * questionsData = [dict objectForKey:@"questions"];
-        for (NSDictionary * questionData in questionsData) {
-            QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
-            if (question == nil)
+        puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:moc];
+        [moc performBlockAndWait:^{
+            [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
+            [puzzle setTime_given:time_given];
+            [puzzle setTime_left:time_given];
+            [puzzle setName:[dict objectForKey:@"name"]];
+            [puzzle setUser_id:userId];
+            NSString * dateString = [dict objectForKey:@"issuedAt"];
+            if (dateString != nil)
             {
-                NSLog(@"WARNING: question is nil!");
-                continue;
+                NSDateFormatter * dateFormatter = [NSDateFormatter new];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
             }
-            [puzzle addQuestionsObject:question];
-        }
+            [puzzle setHeight:[dict objectForKey:@"height"]];
+            [puzzle setWidth:[dict objectForKey:@"width"]];
+            [puzzle setScore:[NSNumber numberWithInt:0]];
+            NSArray * questionsData = [dict objectForKey:@"questions"];
+            for (NSDictionary * questionData in questionsData) {
+                QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId inMOC:moc];
+                if (question == nil)
+                {
+                    NSLog(@"WARNING: question is nil!");
+                    continue;
+                }
+                [puzzle addQuestionsObject:question];
+            }
+        }];
     }
     else
     {
         puzzle = [puzzles objectAtIndex:0];
-        [puzzle setTime_given:time_given];
-        if (puzzle.time_left.intValue > time_given.intValue)
-        {
-            [puzzle setTime_left:time_given];
-        }
-    }
-    
-    id puzzleId = [dict objectForKey:@"id"];
-    if (puzzleId == nil || puzzleId == [NSNull null])
-    {
-        NSLog(@"ERROR: puzzle id is null");
-    }
-    [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
-    [puzzle setName:[dict objectForKey:@"name"]];
-    [puzzle setUser_id:userId];
-    NSString * dateString = [dict objectForKey:@"issuedAt"];
-    if (dateString != nil)
-    {
-        NSDateFormatter * dateFormatter = [NSDateFormatter new];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
-    }
-//    [puzzle setSolved:[dict objectForKey:@"solved"]];
-//    [puzzle setScore:[dict objectForKey:@"score"]];
-    [puzzle setHeight:[dict objectForKey:@"height"]];
-    [puzzle setWidth:[dict objectForKey:@"width"]];
-    if (puzzle.score == nil)
-    {
-        [puzzle setScore:[NSNumber numberWithInt:0]];
+        [moc performBlockAndWait:^{
+            [puzzle setTime_given:time_given];
+            if (puzzle.time_left.intValue > time_given.intValue)
+            {
+                [puzzle setTime_left:time_given];
+            }
+        }];
     }
     
 /*
@@ -127,28 +107,18 @@
     return puzzle;
 }
 
-+(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId
++(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *puzzleEntity = [NSEntityDescription entityForName:@"Puzzle" inManagedObjectContext:managedObjectContext];
-    
-    [request setEntity:puzzleEntity];
-    [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(puzzle_id = %@) AND (user_id = %@)", puzzleId, userId]];
+    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": puzzleId, @"USER_ID": userId}];
     
     NSError *error = nil;
-    [managedObjectContext lock];
-    NSArray *puzzles = [managedObjectContext executeFetchRequest:request error:&error];
-    [managedObjectContext unlock];
+    NSArray *puzzles = [moc executeFetchRequest:request error:&error];
     
     PuzzleData * puzzleData = nil;
     if (puzzles != nil && puzzles.count > 0)
     {
         puzzleData = [puzzles objectAtIndex:0];
     }
-    NSLog(@"loaded puzzle: %@ %@ %d", puzzleData.name, puzzleData.score, puzzleData.solved);
     return puzzleData;
 }
 
@@ -174,7 +144,15 @@
     {
         return;
     }
-    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"id": self.puzzle_id};
+    NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] parameters:params];
+    [request setValue:self.etag forHTTPHeaderField:@"If-None-Match"];
+    
+    AFHTTPRequestOperation * requestOperation = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id      responseObject) {
+        NSHTTPURLResponse * response = operation.response;
+        NSLog(@"status: %d", operation.response.statusCode);
         if (response.statusCode == 304)
         {
             if (self.puzzle_id == nil)
@@ -185,125 +163,114 @@
         }
         else if (response.statusCode != 200)
         {
-            NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+            NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding]);
         }
         else
         {
-            NSString * etag = [[response allHeaderFields] objectForKey:@"Etag"];
-            self.etag = etag;
-            
-            NSString * receivedString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
-            receivedString = [receivedString substringWithRange:NSMakeRange(1, receivedString.length - 2)];
-            receivedString = [receivedString stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
-            NSLog(@"puzzle %@ synchronization success", self.puzzle_id);
-            SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithString:receivedString];
-            NSArray * solvedData = [data objectForKey:@"solved_questions"];
-            NSNumber * solvedScore = [data objectForKey:@"score"];
-            NSNumber * solvedTimeLeft = [data objectForKey:@"time_left"];
-            NSMutableSet * solvedQuestions = [NSMutableSet new];
-            for (NSDictionary * questionData in solvedData)
-            {
-                NSNumber * column = [questionData objectForKey:@"column"];
-                NSNumber * row = [questionData objectForKey:@"row"];
-                [solvedQuestions addObject:[NSNumber numberWithInt:(column.intValue + row.intValue * self.width.intValue)]];
-            }
-            BOOL needUpdateServer = NO;
-            BOOL wasUpdatedLocal = NO;
-            
-            if (solvedScore != nil && solvedScore.intValue > self.score.intValue)
-            {
-                self.score = solvedScore;
-                wasUpdatedLocal = YES;
-            }
-            
-            if (solvedTimeLeft == nil || solvedTimeLeft.intValue > self.time_left.intValue)
-            {
-                needUpdateServer = YES;
-            }
-            else if (solvedTimeLeft != nil && solvedTimeLeft.intValue < self.time_left.intValue)
-            {
-                self.time_left = solvedTimeLeft;
-                if (self.time_left.intValue > self.time_given.intValue)
+            [self.managedObjectContext performBlock:^{
+                self.etag = [[response allHeaderFields] objectForKey:@"Etag"];
+                
+                NSString * receivedString = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+                receivedString = [receivedString substringWithRange:NSMakeRange(1, receivedString.length - 2)];
+                receivedString = [receivedString stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
+                NSLog(@"puzzle %@ synchronization success", self.puzzle_id);
+                SBJsonParser * parser = [SBJsonParser new];
+                NSDictionary * data = [parser objectWithString:receivedString];
+                NSArray * solvedData = [data objectForKey:@"solved_questions"];
+                NSNumber * solvedScore = [data objectForKey:@"score"];
+                NSNumber * solvedTimeLeft = [data objectForKey:@"time_left"];
+                NSMutableSet * solvedQuestions = [NSMutableSet new];
+                for (NSDictionary * questionData in solvedData)
                 {
-                    NSLog(@"WARNING: time left is bigger than given time 3");
+                    NSNumber * column = [questionData objectForKey:@"column"];
+                    NSNumber * row = [questionData objectForKey:@"row"];
+                    [solvedQuestions addObject:[NSNumber numberWithInt:(column.intValue + row.intValue * self.width.intValue)]];
                 }
-                wasUpdatedLocal = YES;
-            }
-            
-            for (QuestionData * question in self.questions)
-            {
-                NSNumber * position = [NSNumber numberWithInt:(question.columnAsUint + question.rowAsUint * self.width.intValue)];
-                if (question.solved.boolValue)
+                BOOL needUpdateServer = NO;
+                BOOL wasUpdatedLocal = NO;
+                
+                if (solvedScore != nil && solvedScore.intValue > self.score.intValue)
                 {
-                    if (![solvedQuestions containsObject:position])
+                    self.score = solvedScore;
+                    wasUpdatedLocal = YES;
+                }
+                
+                if (solvedTimeLeft == nil || solvedTimeLeft.intValue > self.time_left.intValue)
+                {
+                    needUpdateServer = YES;
+                }
+                else if (solvedTimeLeft != nil && solvedTimeLeft.intValue < self.time_left.intValue)
+                {
+                    self.time_left = solvedTimeLeft;
+                    if (self.time_left.intValue > self.time_given.intValue)
                     {
-                        needUpdateServer = YES;
+                        NSLog(@"WARNING: time left is bigger than given time 3");
+                    }
+                    wasUpdatedLocal = YES;
+                }
+                
+                for (QuestionData * question in self.questions)
+                {
+                    NSNumber * position = [NSNumber numberWithInt:(question.columnAsUint + question.rowAsUint * self.width.intValue)];
+                    if (question.solved.boolValue)
+                    {
+                        if (![solvedQuestions containsObject:position])
+                        {
+                            needUpdateServer = YES;
+                        }
+                    }
+                    else
+                    {
+                        if ([solvedQuestions containsObject:position])
+                        {
+                            wasUpdatedLocal = YES;
+                            [question setSolved:[NSNumber numberWithBool:YES]];
+                        }
                     }
                 }
-                else
+                
+                if (wasUpdatedLocal)
                 {
-                    if ([solvedQuestions containsObject:position])
-                    {
-                        wasUpdatedLocal = YES;
-                        [question setSolved:[NSNumber numberWithBool:YES]];
-                    }
-                }
-            }
-            
-            if (wasUpdatedLocal)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.managedObjectContext != [DataContext currentContext])
                     {
                         NSLog(@"ERROR: managed objects contexts are not equal");
                     }
-                    NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
-                    [self.managedObjectContext lock];
-                    [self.managedObjectContext save:nil];
-                    [self.managedObjectContext unlock];
-                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self.puzzle_id]];
-                });
-            }
-            
-            if (needUpdateServer)
-            {
-                self.etag = @"";
-                NSMutableArray * solvedQuestions = [NSMutableArray new];
-                for (QuestionData * question in self.questions)
-                {
-                    if (question.solved.boolValue)
+                    else
                     {
-                        [solvedQuestions addObject:[NSDictionary dictionaryWithObjectsAndKeys:question.question_id, @"id", question.column, @"column", question.row, @"row", nil]];
+                        NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
+                        [self.managedObjectContext save:nil];
+                        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_PUZZLE_SYNCHRONIZED andData:self.puzzle_id]];
                     }
                 }
                 
-                NSString * dataString = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
-                
-                APIRequest * putRequest = [APIRequest putRequest:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id]  successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-//                    NSLog(@"put puzzle %@: %@", self.puzzle_id, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-                } failCallback:^(NSError *error) {
-                    NSLog(@"puz puzzle %@ failed: %@", self.puzzle_id, error.description);
-                }];
-                [putRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [putRequest.params setObject:dataString forKey:@"puzzle_data"];
-                [putRequest runUsingCache:NO silentMode:YES];
-            }
-            
+                if (needUpdateServer)
+                {
+                    self.etag = @"";
+                    NSMutableArray * solvedQuestions = [NSMutableArray new];
+                    for (QuestionData * question in self.questions)
+                    {
+                        if (question.solved.boolValue)
+                        {
+                            [solvedQuestions addObject:[NSDictionary dictionaryWithObjectsAndKeys:question.question_id, @"id", question.column, @"column", question.row, @"row", nil]];
+                        }
+                    }
+                    
+                    NSString * dataString = [[SBJsonWriter new] stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:solvedQuestions, @"solved_questions", self.score, @"score", self.time_left, @"time_left", nil]];
+                    
+                    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                              , @"puzzle_data": dataString};
+                    [[APIClient sharedClient] putPath:[NSString stringWithFormat:@"puzzles/%@", self.puzzle_id] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSLog(@"puz puzzle %@ completed", self.puzzle_id);
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"puz puzzle %@ failed: %@", self.puzzle_id, error.description);
+                    }];
+                }
+            }];
         }
-    } failCallback:^(NSError *error) {
-        NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, error.description);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"puzzle %@ synchronization failed: %@", self.puzzle_id, error.localizedDescription);
     }];
-    if (self.etag != nil) {
-        [request.headers setObject:self.etag forKey:@"If-None-Match"];
-    }
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    if (self.puzzle_id == nil)
-    {
-        NSLog(@"ERROR: puzzle id is nil");
-    }
-    [request.params setObject:self.puzzle_id forKey:@"id"];
-    [request runUsingCache:NO silentMode:YES];
+    [[APIClient sharedClient] enqueueHTTPRequestOperation:requestOperation];
 }
 
 

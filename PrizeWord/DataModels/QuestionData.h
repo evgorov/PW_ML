@@ -37,6 +37,6 @@
 @property (nonatomic) uint answer_positionAsUint;
 @property (nonatomic, retain) NSString * answer_positionAsString;
 
-+(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId;
++(QuestionData *)questionDataFromDictionary:(NSDictionary *)dict forPuzzle:(PuzzleData *)puzzle andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
 
 @end

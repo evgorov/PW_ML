@@ -16,7 +16,6 @@
 #import "PuzzleSetData.h"
 #import "GlobalData.h"
 #import "UserData.h"
-#import "APIRequest.h"
 #import "SBJsonParser.h"
 #import "ScoreInviteCellView.h"
 
@@ -106,15 +105,18 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     }
     [self showActivityIndicator];
     [updateInProgress setObject:[NSNumber numberWithBool:YES] forKey:providerName];
-    APIRequest * request = [APIRequest getRequest:[NSString stringWithFormat:@"%@/invited_friends_this_month", providerName] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                              , @"provider_name": providerName};
+    [[APIClient sharedClient] getPath:@"%@/invited_friends_this_month" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideActivityIndicator];
         [updateInProgress removeObjectForKey:providerName];
-        NSLog(@"updateInvited %@ complete: %@", providerName, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-        if (response.statusCode == 200)
+        NSLog(@"updateInvited %@ complete: %@", providerName, [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding]);
+        if (operation.response.statusCode == 200)
         {
             float yOffset = invitesView.frame.size.height - ([AppDelegate currentDelegate].isIPad ? 110 : 75);
             SBJsonParser * parser = [SBJsonParser new];
-            NSArray * friendsData = [parser objectWithData:receivedData];
+            NSArray * friendsData = [parser objectWithData:operation.responseData];
             for (NSDictionary * friendData in friendsData)
             {
                 ScoreInviteCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
@@ -139,18 +141,15 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         else
         {
             SBJsonParser * parser = [SBJsonParser new];
-            NSDictionary * data = [parser objectWithData:receivedData];
-            NSString * message = data == nil ? ([[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]) : [data objectForKey:@"message"];
+            NSDictionary * data = [parser objectWithData:operation.responseData];
+            NSString * message = data == nil ? operation.responseString : [data objectForKey:@"message"];
             NSLog(@"score for friends error: %@", message);
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hideActivityIndicator];
         [updateInProgress removeObjectForKey:providerName];
         NSLog(@"error: %@", error.description);
     }];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [request.params setObject:providerName forKey:@"provider_name"];
-    [request runUsingCache:YES silentMode:YES];
 }
 
 @end

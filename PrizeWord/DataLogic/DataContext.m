@@ -29,7 +29,7 @@ static DataContext *gMainSharedInstance;
 
 +(DataContext *)dcInstance
 {
-    DataContext *context = [[DataContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+    DataContext *context = [[DataContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [context setParentContext:gMainSharedInstance];
     return context;
 }

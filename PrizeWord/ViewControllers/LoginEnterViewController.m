@@ -9,7 +9,6 @@
 #import "LoginEnterViewController.h"
 #import "PuzzlesViewController.h"
 #import "LoginRemindViewController.h"
-#import "APIRequest.h"
 #import "SBJson.h"
 #import "GlobalData.h"
 #import "UserData.h"
@@ -97,18 +96,14 @@
 
     
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"login" successCallback:^(NSHTTPURLResponse *response, NSData * receivedData) {
-        [self handleEnterComplete:response receivedData:receivedData];
-    } failCallback:^(NSError *error) {
+
+    NSDictionary * params = @{@"email": txtEmail.text
+                              , @"password": txtPassword.text};
+    [[APIClient sharedClient] postPath:@"login" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self handleEnterComplete:operation.response receivedData:operation.responseData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hideActivityIndicator];
     }];
-    
-    NSDateFormatter * dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    [request.params setObject:txtEmail.text forKey:@"email"];
-    [request.params setObject:txtPassword.text forKey:@"password"];
-    [request runUsingCache:NO silentMode:NO];
 }
 
 

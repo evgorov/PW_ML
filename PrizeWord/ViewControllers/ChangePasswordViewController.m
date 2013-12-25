@@ -7,7 +7,6 @@
 //
 
 #import "ChangePasswordViewController.h"
-#import "APIRequest.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
 
@@ -104,18 +103,19 @@
     }
 
     [self showActivityIndicator];
-    APIRequest * request = [APIRequest postRequest:@"password_reset" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+    
+    NSDictionary * params = @{@"password": tfPassword.text
+                              , @"token": token};
+    
+    [[APIClient sharedClient] postPath:@"password_reset" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideActivityIndicator];
-        NSLog(@"password_reset success: %d %@", response.statusCode, [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSLog(@"password_reset success: %d %@", operation.response.statusCode, operation.responseString);
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Смена пароля" message:@"Новый пароль успешно установлен! Теперь вы можете войти с помощью своего e-mail и нового пароля." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hideActivityIndicator];
-        NSLog(@"password_reset fail: %@", error.description);
+        NSLog(@"password_reset fail: %@", error.localizedDescription);
     }];
-    [request.params setObject:tfPassword.text forKey:@"password"];
-    [request.params setObject:token forKey:@"token"];
-    [request runUsingCache:NO silentMode:NO];
 }
 
 -(void)handleBackgroundTap:(id)sender

@@ -20,7 +20,6 @@
 #import "GameViewController.h"
 #import "FISoundEngine.h"
 #import <AVFoundation/AVFoundation.h>
-#import "APIRequest.h"
 #import "NSData+Utils.h"
 #import "SocialNetworks.h"
 #import "DataContext.h"
@@ -194,7 +193,6 @@ static NSRecursiveLock * dbLock = nil;
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [ExternalImage clearCache];
-    [APIRequest clearCache];
 }
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken

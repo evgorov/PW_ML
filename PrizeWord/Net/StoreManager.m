@@ -10,13 +10,13 @@
 #import <StoreKit/StoreKit.h>
 #import "GlobalData.h"
 #import "EventManager.h"
-#import "APIRequest.h"
 #import "SBJsonParser.h"
 #import "PrizewordStoreObserver.h"
 #import "AppDelegate.h"
 #import "UserData.h"
 #import "PuzzleData.h"
 #import "UserDataManager.h"
+#import "DataContext.h"
 
 NSString * PRODUCTID_PREFIX = @"com.prizeword.";
 NSString * PRODUCTID_HINTS10 = @"com.prizeword.hints10";
@@ -258,11 +258,19 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
         return;
     }
     NSLog(@"buy set: %@", setID);
-    APIRequest * request = [APIRequest postRequest:[NSString stringWithFormat:@"sets/%@/buy", setID] successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
-        
+
+    NSMutableDictionary * params = @{@"id": setID
+                                     , @"session_key": [GlobalData globalData].sessionKey}.mutableCopy;
+    // transaction == nil for free sets
+    if (transaction != nil)
+    {
+        [params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
+    }
+    
+    [[APIClient sharedClient] postPath:@"sets/%@/buy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"set bought! %@", setID);
         //        [self hideActivityIndicator];
-        if (response.statusCode == 200)
+        if (operation.response.statusCode == 200)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 __block PuzzleSetData * puzzleSet = [[DataManager sharedManager] localGetSet:setID];
@@ -271,14 +279,17 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
                     NSLog(@"ERROR: cannot get local puzzle set");
                     return;
                 }
+                
+                NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                          , @"ids": puzzleSet.puzzle_ids};
                 //            [self showActivityIndicator];
-                APIRequest * puzzlesRequest = [APIRequest getRequest:@"user_puzzles" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+                [[APIClient sharedClient] getPath:@"user_puzzles" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSLog(@"puzzles loaded!");
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        NSArray * puzzlesData = [[SBJsonParser new] objectWithData:receivedData];
+                        NSArray * puzzlesData = [[SBJsonParser new] objectWithData:operation.responseData];
                         for (NSDictionary * puzzleData in puzzlesData)
                         {
-                            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
                             if (puzzle != nil)
                             {
                                 [puzzleSet addPuzzlesObject:puzzle];
@@ -287,29 +298,22 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
                         
                         [puzzleSet setBought:[NSNumber numberWithBool:YES]];
                         NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
-                        [puzzleSet.managedObjectContext lock];
                         [puzzleSet.managedObjectContext save:nil];
-                        [puzzleSet.managedObjectContext unlock];
                         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SET_BOUGHT andData:puzzleSet.set_id]];
                         NSLog(@"view for puzzles created!");
                     });
-                } failCallback:^(NSError *error) {
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
                     NSLog(@"puzzles error: %@", error.description);
-                    //                [self hideActivityIndicator];
                 }];
-                
-                [puzzlesRequest.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-                [puzzlesRequest.params setObject:puzzleSet.puzzle_ids forKey:@"ids"];
-                [puzzlesRequest runUsingCache:NO silentMode:NO];
             });
         }
         else if (![(PrizewordStoreObserver *)[AppDelegate storeObserver] shouldIgnoreWarnings])
         {
-            if (response.statusCode >= 400 && response.statusCode < 500)
+            if (operation.response.statusCode >= 400 && operation.response.statusCode < 500)
             {
                 [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
-                NSDictionary * data = [[SBJsonParser new] objectWithData:receivedData];
+                NSDictionary * data = [[SBJsonParser new] objectWithData:operation.responseData];
                 NSString * message = [data objectForKey:@"message"];
                 if (message == nil)
                 {
@@ -321,18 +325,9 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
             }
             
         }
-    } failCallback:^(NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"set error: %@", error.description);
-        //        [self hideActivityIndicator];
     }];
-    [request.params setObject:setID forKey:@"id"];
-    [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    // transaction == nil for free sets
-    if (transaction != nil)
-    {
-        [request.params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
-    }
-    [request runUsingCache:NO silentMode:YES];
 }
 
 - (void)fetchPricesForProductIDs:(NSArray *)productIDs completion:(DictionaryDataFetchCallback)callback

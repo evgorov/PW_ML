@@ -13,7 +13,6 @@
 #import "ReleaseNotesViewController.h"
 #import "SocialNetworks.h"
 #import "FISoundEngine.h"
-#import "APIRequest.h"
 #import "GlobalData.h"
 #import "UserData.h"
 #import "EventManager.h"

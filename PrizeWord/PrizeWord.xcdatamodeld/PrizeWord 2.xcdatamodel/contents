@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F37" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="HintsQuery" representedClassName="HintsQuery" syncable="YES">
         <attribute name="done" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="hints" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -73,16 +73,16 @@
         <attribute name="score" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="user" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
-    <fetchRequest name="HintsFetchRequest" entity="HintsQuery" predicateString="user == $USER AND key == $KEY"/>
-    <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER AND done == 0"/>
+    <fetchRequest name="HintsFetchRequest" entity="HintsQuery" predicateString="user == $USER_ID AND key == $KEY"/>
+    <fetchRequest name="HintsUndoneFetchRequest" entity="HintsQuery" predicateString="user == $USER_ID AND done == 0"/>
     <fetchRequest name="NewsFetchRequest" entity="News"/>
-    <fetchRequest name="PuzzlesByIdFetchRequest" entity="Puzzle" predicateString="puzzle_id == $PUZZLE_ID AND user_id == $user_id"/>
-    <fetchRequest name="PuzzleSetByIdFetchRequest" entity="PuzzleSet" predicateString="user_id == $USER_ID AND set_id == $SET_ID"/>
-    <fetchRequest name="PuzzleSetPackFetchRequest" entity="PuzzleSetPack" predicateString="user_id == $USER_ID AND year == $YEAR AND month == $MONTH"/>
+    <fetchRequest name="PuzzlesByIdFetchRequest" entity="Puzzle" predicateString="puzzle_id == $PUZZLE_ID AND user_id == $USER_ID" fetchLimit="1"/>
+    <fetchRequest name="PuzzleSetByIdFetchRequest" entity="PuzzleSet" predicateString="user_id == $USER_ID AND set_id == $SET_ID" fetchLimit="1"/>
+    <fetchRequest name="PuzzleSetPackFetchRequest" entity="PuzzleSetPack" predicateString="user_id == $USER_ID AND year == $YEAR AND month == $MONTH" fetchLimit="1"/>
     <fetchRequest name="PuzzleSetsFetchRequest" entity="PuzzleSet" predicateString="month == $MONTH AND year == $YEAR AND user_id == $USER_ID"/>
-    <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID"/>
-    <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND key == $KEY"/>
-    <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER AND done == 0"/>
+    <fetchRequest name="QuestionFetchRequest" entity="Question" predicateString="question_id == $QUESTION_ID" fetchLimit="1"/>
+    <fetchRequest name="ScoreFetchRequest" entity="ScoreQuery" predicateString="user == $USER_ID AND key == $KEY"/>
+    <fetchRequest name="ScoreUndoneFetchRequest" entity="ScoreQuery" predicateString="user == $USER_ID AND done == 0"/>
     <elements>
         <element name="HintsQuery" positionX="0" positionY="0" width="0" height="0"/>
         <element name="News" positionX="0" positionY="0" width="0" height="0"/>

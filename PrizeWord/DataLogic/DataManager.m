@@ -105,7 +105,7 @@
                     NSMutableArray * puzzleIdsToLoad = [NSMutableArray new];
                     for (NSDictionary * setData in setsData)
                     {
-                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:localPack.managedObjectContext];
                         if (puzzleSet == nil)
                         {
                             NSLog(@"puzzle set is nil");
@@ -292,7 +292,7 @@
                     NSMutableArray * puzzleIdsToLoad = [NSMutableArray new];
                     for (NSDictionary * setData in setsData)
                     {
-                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:managedObjectContext];
                         if (puzzleSet == nil)
                         {
                             NSLog(@"WARNING: puzzle set is nil!");
@@ -453,7 +453,7 @@
                 NSArray * puzzlesData = [[SBJsonParser new] objectWithData:responseObject];
                 for (NSDictionary * puzzleData in puzzlesData)
                 {
-                    PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
+                    PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
                     if (puzzle != nil)
                     {
                         [puzzles addObject:puzzle];
@@ -596,7 +596,7 @@
 
 - (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year
 {
-    PuzzleSetPackData * result = [PuzzleSetPackData puzzleSetPackWithYear:year andMonth:month andUserId:[GlobalData globalData].loggedInUser.user_id];
+    PuzzleSetPackData * result = [PuzzleSetPackData puzzleSetPackWithYear:year andMonth:month andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
     return result;
 }
 
@@ -605,7 +605,7 @@
     NSMutableArray * puzzles = [NSMutableArray arrayWithCapacity:ids.count];
     for (NSString * puzzleId in ids)
     {
-        PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
+        PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
         if (puzzle != nil)
         {
             [puzzles addObject:puzzle];
@@ -616,7 +616,7 @@
 
 - (PuzzleSetData *)localGetSet:(NSString *)setID
 {
-    return [PuzzleSetData puzzleSetWithId:setID andUserId:[GlobalData globalData].loggedInUser.user_id];
+    return [PuzzleSetData puzzleSetWithId:setID andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
 }
 
 @end

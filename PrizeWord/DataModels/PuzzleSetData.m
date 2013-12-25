@@ -25,99 +25,93 @@
 @dynamic puzzles;
 @dynamic puzzleSetPack;
 
-+(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
++(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
     PuzzleSetData * puzzleSet = nil;
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *puzzleSetEntity = [NSEntityDescription entityForName:@"PuzzleSet" inManagedObjectContext:managedObjectContext];
-    
-    [request setEntity:puzzleSetEntity];
-    [request setFetchLimit:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(set_id = %@) AND (user_id = %@)", [dict objectForKey:@"id"], userId]];
-    
-    NSError *error = nil;
-    [managedObjectContext lock];
-    NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:&error];
+    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetByIdFetchRequest" substitutionVariables:@{@"SET_ID": [dict objectForKey:@"id"], @"USER_ID": userId}];
+
+    NSError * error = nil;
+    NSArray *puzzleSets = [moc executeFetchRequest:request error:&error];
+    if (error != nil)
+    {
+        NSLog(@"error: %@", error.localizedDescription);
+    }
     
     if (puzzleSets == nil || puzzleSets.count == 0)
     {
-        puzzleSet = (PuzzleSetData *)[NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSet" inManagedObjectContext:managedObjectContext];
+        puzzleSet = (PuzzleSetData *)[NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSet" inManagedObjectContext:moc];
     }
     else
     {
         puzzleSet = (PuzzleSetData *)[puzzleSets objectAtIndex:0];
     }
-    [managedObjectContext unlock];
 
-    [puzzleSet setSet_id:[dict objectForKey:@"id"]];
-    [puzzleSet setName:[dict objectForKey:@"name"]];
-    [puzzleSet setUser_id:userId];
-    NSString * type = [dict objectForKey:@"type"];
-    if (type == nil || [type compare:@"free" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_FREE]];
-    }
-    else if ([type compare:@"brilliant" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_BRILLIANT]];
-    }
-    else if ([type compare:@"silver2" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER2]];
-    }
-    else if ([type compare:@"silver" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER]];
-    }
-    else if ([type compare:@"gold" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_GOLD]];
-    }
-    else {
-        NSLog(@"unknown set's type: %@", type);
-    }
-    if ([dict objectForKey:@"bought"] != nil && [(NSNumber *)[dict objectForKey:@"bought"] boolValue])
-    {
-        [puzzleSet setBought:[NSNumber numberWithBool:YES]];
-    }
-    /*
-    NSArray * idParts = [(NSString *)[dict objectForKey:@"id"] componentsSeparatedByString:@"_"];
-    [puzzleSet setYear:[NSNumber numberWithInt:[(NSString *)idParts[0] intValue]]];
-    [puzzleSet setMonth:[NSNumber numberWithInt:[(NSString *)idParts[1] intValue]]];
-    */
-    NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
-    NSMutableString * puzzleIds = [NSMutableString new];
-    int puzzlesCount = 0;
-    for (id puzzleData in puzzlesData)
-    {
-        ++puzzlesCount;
-        if ([puzzleData isKindOfClass:[NSDictionary class]])
+    [moc performBlockAndWait:^{
+        [puzzleSet setSet_id:[dict objectForKey:@"id"]];
+        [puzzleSet setName:[dict objectForKey:@"name"]];
+        [puzzleSet setUser_id:userId];
+        NSString * type = [dict objectForKey:@"type"];
+        if (type == nil || [type compare:@"free" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_FREE]];
+        }
+        else if ([type compare:@"brilliant" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_BRILLIANT]];
+        }
+        else if ([type compare:@"silver2" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER2]];
+        }
+        else if ([type compare:@"silver" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_SILVER]];
+        }
+        else if ([type compare:@"gold" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            [puzzleSet setType:[NSNumber numberWithInt:PUZZLESET_GOLD]];
+        }
+        else {
+            NSLog(@"unknown set's type: %@", type);
+        }
+        if ([dict objectForKey:@"bought"] != nil && [(NSNumber *)[dict objectForKey:@"bought"] boolValue])
         {
-            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId];
-            if (puzzle == nil)
+            [puzzleSet setBought:[NSNumber numberWithBool:YES]];
+        }
+        /*
+         NSArray * idParts = [(NSString *)[dict objectForKey:@"id"] componentsSeparatedByString:@"_"];
+         [puzzleSet setYear:[NSNumber numberWithInt:[(NSString *)idParts[0] intValue]]];
+         [puzzleSet setMonth:[NSNumber numberWithInt:[(NSString *)idParts[1] intValue]]];
+         */
+        NSArray * puzzlesData = [dict objectForKey:@"puzzles"];
+        NSMutableString * puzzleIds = [NSMutableString new];
+        int puzzlesCount = 0;
+        for (id puzzleData in puzzlesData)
+        {
+            ++puzzlesCount;
+            if ([puzzleData isKindOfClass:[NSDictionary class]])
             {
-                NSLog(@"WARNING: puzzle is nil!");
-                continue;
+                PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:userId inMOC:moc];
+                if (puzzle == nil)
+                {
+                    NSLog(@"WARNING: puzzle is nil!");
+                    continue;
+                }
+                [puzzleSet addPuzzlesObject:puzzle];
+                [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzle.puzzle_id];
             }
-            [puzzleSet addPuzzlesObject:puzzle];
-            [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzle.puzzle_id];
+            else if ([puzzleData isKindOfClass:[NSString class]])
+            {
+                [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzleData];
+            }
         }
-        else if ([puzzleData isKindOfClass:[NSString class]])
-        {
-            [puzzleIds appendFormat:@"%@%@", puzzleIds.length == 0 ? @"" : @",", puzzleData];
-        }
-    }
-    [puzzleSet setPuzzles_count:[NSNumber numberWithInt:puzzlesCount]];
-    [puzzleSet setPuzzle_ids:puzzleIds];
+        [puzzleSet setPuzzles_count:[NSNumber numberWithInt:puzzlesCount]];
+        [puzzleSet setPuzzle_ids:puzzleIds];
+    }];
     
     return puzzleSet;
 }
 
-+(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId
++(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-    NSFetchRequest *request = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetByIdFetchRequest" substitutionVariables:@{@"USER_ID": userId, @"SET_ID": setId}];
+    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetByIdFetchRequest" substitutionVariables:@{@"USER_ID": userId, @"SET_ID": setId}];
     
-    [managedObjectContext lock];
-    NSArray *puzzleSets = [managedObjectContext executeFetchRequest:request error:nil];
-    [managedObjectContext unlock];
+    NSArray *puzzleSets = [moc executeFetchRequest:request error:nil];
     if (puzzleSets == nil || puzzleSets.count == 0)
     {
         return nil;

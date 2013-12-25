@@ -16,7 +16,6 @@
 #import "AppDelegate.h"
 #import "GlobalData.h"
 #import "UserData.h"
-#import "APIRequest.h"
 #import "SBJson.h"
 #import "PuzzleData.h"
 #import "PuzzleSetData.h"
@@ -434,13 +433,12 @@ extern NSString * PRODUCTID_HINTS10;
     {
         if ([GlobalData globalData].loggedInUser.vkProvider != nil)
         {
-            APIRequest * request = [APIRequest postRequest:@"vkontakte/share" successCallback:^(NSHTTPURLResponse *response, NSData *receivedData) {
+            NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                      , @"message": message};
+            [[APIClient sharedClient] postPath:@"vkontakte/share" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
-            } failCallback:nil];
-            [request.params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-            [request.params setObject:message forKey:@"message"];
-            [request runUsingCache:NO silentMode:NO];
+            } failure:nil];
         }
         else
         {

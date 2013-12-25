@@ -17,7 +17,6 @@
 #import "PuzzleData.h"
 #import "GlobalData.h"
 #import "UserData.h"
-#import "APIRequest.h"
 #import "SBJson.h"
 #import "AppDelegate.h"
 #import <StoreKit/StoreKit.h>
