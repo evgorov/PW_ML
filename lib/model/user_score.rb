@@ -23,6 +23,10 @@ class UserScore < BasicModel
     collection_for_key(user_id)
   end
 
+  def as_json(*a)
+    self.to_hash.to_json(*a)
+  end
+
   def after_save
     super
     @storage.zadd(self['user_id'], Time.now.to_i, id)
