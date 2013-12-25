@@ -24,6 +24,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## ChartboostSDK
+
+Copyright (c) 2012 Chartboost. All rights reserved.
+
+
 ## Facebook-iOS-SDK
 
                                  Apache License

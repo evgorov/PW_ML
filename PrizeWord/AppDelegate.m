@@ -26,6 +26,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import <Tapjoy/Tapjoy.h>
 #import <FlurrySDK/Flurry.h>
+#import <Chartboost.h>
 
 @implementation AppDelegate
 
@@ -172,6 +173,15 @@ static NSRecursiveLock * dbLock = nil;
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSession.activeSession handleDidBecomeActive];
+
+    Chartboost *cb = [Chartboost sharedChartboost];
+    
+    cb.appId = @"5284f1ab16ba47d37400001c";
+    cb.appSignature = @"942b48528daa67da927eac7664e418d1149b2bd6";
+    
+    // Begin a user session. Must not be dependent on user actions or any prior network requests.
+    // Must be called every time your app becomes active.
+    [cb startSession];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
