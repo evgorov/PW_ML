@@ -292,7 +292,7 @@
                     NSMutableArray * puzzleIdsToLoad = [NSMutableArray new];
                     for (NSDictionary * setData in setsData)
                     {
-                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:managedObjectContext];
+                        PuzzleSetData * puzzleSet = [PuzzleSetData puzzleSetWithDictionary:setData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:archivePack.managedObjectContext];
                         if (puzzleSet == nil)
                         {
                             NSLog(@"WARNING: puzzle set is nil!");

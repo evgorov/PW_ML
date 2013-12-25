@@ -267,7 +267,7 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
         [params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
     }
     
-    [[APIClient sharedClient] postPath:@"sets/%@/buy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[APIClient sharedClient] postPath:[NSString stringWithFormat:@"sets/%@/buy", setID] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"set bought! %@", setID);
         //        [self hideActivityIndicator];
         if (operation.response.statusCode == 200)
