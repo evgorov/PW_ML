@@ -188,23 +188,27 @@ NSRegularExpression * EMAIL_REGEXP;
         city = @"";
     }
 
-    NSMutableDictionary * params = @{@"email": tfEmail.text
+    NSDictionary * params = @{@"email": tfEmail.text
                               , @"name": tfName.text
                               , @"surname": tfSurname.text
                               , @"password": tfPassword.text
                               , @"birthday": [dateFormatter stringFromDate:datePicker.date]
                               , @"city": city
-                              }.mutableCopy;
-    if (avatar != nil)
-    {
-        [params setObject:avatar forKey:@"userpic"];
-    }
-    
-    [[APIClient sharedClient] postPath:@"signup" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              };
+
+    NSMutableURLRequest * request = [[APIClient sharedClient] multipartFormRequestWithMethod:@"POST" path:@"signup" parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if (avatar != nil)
+        {
+            NSData * imageData = UIImageJPEGRepresentation(avatar, 1.0);
+            [formData appendPartWithFileData:imageData name:@"userpic" fileName:@"image1.jpg" mimeType:@"image/jpeg"];
+        }
+    }];
+    AFHTTPRequestOperation * requestOperation = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self handleSignupComplete:operation.response receivedData:operation.responseData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hideActivityIndicator];
     }];
+    [[APIClient sharedClient] enqueueHTTPRequestOperation:requestOperation];
 }
 
 -(void)handleSignupComplete:(NSHTTPURLResponse *)response receivedData:(NSData *)receivedData

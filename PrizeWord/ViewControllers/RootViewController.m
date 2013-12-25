@@ -921,9 +921,12 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 //    [self showActivityIndicator];
     [mainMenuAvatarActivityIndicator startAnimating];
     
-    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
-                              , @"userpic": image};
-    [[APIClient sharedClient] postPath:@"me" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey};
+    NSMutableURLRequest * request = [[APIClient sharedClient] multipartFormRequestWithMethod:@"POST" path:@"me" parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSData * imageData = UIImageJPEGRepresentation(image, 1.0);
+        [formData appendPartWithFileData:imageData name:@"userpic" fileName:@"image1.jpg" mimeType:@"image/jpeg"];
+    }];
+    AFHTTPRequestOperation * requestOperation = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"update me result: %d %@", operation.response.statusCode, operation.responseString);
         if (operation.response.statusCode == 200)
         {
@@ -941,6 +944,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
         NSLog(@"update me error: %@", error.description);
         [mainMenuAvatarActivityIndicator stopAnimating];
     }];
+    [[APIClient sharedClient] enqueueHTTPRequestOperation:requestOperation];
     
     [self imagePickerControllerDidCancel:picker];
 }
