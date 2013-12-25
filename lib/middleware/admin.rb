@@ -72,6 +72,23 @@ module Middleware
       coefficients.to_json
     end
 
+    get '/users/top' do
+      authorize_admin!
+      current_year, current_month = Time.now.year, Time.now.month
+      users = UserData.storage(env['redis']).
+        users_by_rating(0).
+        take(5).
+        map{ |o|
+          o.as_json.merge(is_cheater: o.cheater?, scores: UserScore.storage(env['redis']).scores_for(o.id).select { |o| t = Time.parse(o['created_at']); t.year == current_year && t.month == current_month }.map(&:as_json))
+        }
+
+      {
+        users: users,
+        total_pages: 1,
+        current_page: 1
+      }.to_json
+    end
+
     get '/users/paginate' do
       authorize_editor!
       users = UserData.storage(env['redis'])
@@ -134,10 +151,22 @@ module Middleware
       puzzles = Puzzle.storage(env['redis'])
       page = params[:page].to_i
       page = 1 if page == 0
+
+      case params[:filter]
+      when nil, ''
+        size = puzzles.size
+        puzzles = puzzles.all(page)
+      when 'free'
+        size = puzzles.collection_size_for_key('free')
+        puzzles = puzzles.collection_for_key('free', page)
+      else
+        puzzles = PuzzleSet.storage(env['redis']).load(params[:filter])['puzzles']
+        size = puzzles.size
+      end
+
       {
-        users: puzzles.all(page),
-        total_pages: (puzzles.size.to_f / Puzzle::PER_PAGE).ceil,
-        'puzzles' => puzzles.all(page)
+        total_pages: (size.to_f / Puzzle::PER_PAGE).ceil,
+        puzzles: puzzles
       }.to_json
     end
 

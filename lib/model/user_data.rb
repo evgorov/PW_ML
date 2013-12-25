@@ -166,6 +166,47 @@ class UserData < BasicModel
     @hash['month_score'] = @storage.incrby("#{self['id']}#score##{current_period}", amount.to_i)
   end
 
+  def cheater?
+    current_year, current_month = Time.now.year, Time.now.month
+    coefficients = Coefficients.storage(@storage).coefficients
+
+    scores = UserScore.storage(@storage).scores_for(self.id).select { |o| t = Time.parse(o['created_at']); t.year == current_year && t.month == current_month }
+
+    # check that user has correct score
+    score = scores.map {|o| o['score'] }.inject(&:+).to_i
+
+    return true if score != self['month_score']
+
+    # check that score is calculated correctly
+    scores.each do |score|
+      next if score['score'].to_i == 0
+
+      if score['source'].match(/invite/)
+        return true if coefficients['friend-bonus'] != score['score']
+        return false
+      end
+
+      puzzle_data = JSON.parse(self["puzzle-data.#{score['source']}"])
+      return "Score in PuzzleData do not match UserScore for #{score.id}" if puzzle_data['score'].to_i != score['score'].to_i
+      puzzle = Puzzle.storage(@storage).load(score['source'])
+      set_type = PuzzleSet.storage(@storage).load(puzzle['set_id'])['type']
+      set_type = "silver1" if set_type == "silver"
+      base_score = coefficients["#{set_type}-base-score"]
+      time_bonus =  coefficients["time-bonus"]
+      time_left = puzzle_data['time_left']
+      time_given = puzzle['time_given']
+      return "Solved too fast #{score.id}" if time_given - time_left < 60
+      if time_given != 0 && time_left.to_i * time_bonus.to_i / time_given > 0
+        puzzle_score = base_score.to_i + time_left.to_i * time_bonus.to_i / time_given
+      else
+        puzzle_score = base_score.to_i
+      end
+      return "Score do not match formula #{score['score']} != #{puzzle_score} for #{score.id}" if score['score'] != puzzle_score
+    end
+
+    false
+  end
+
   private
 
   def invited_user_id(provider, friend_id)

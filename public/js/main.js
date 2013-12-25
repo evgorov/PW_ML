@@ -521,6 +521,13 @@ var PuzzleView = Backbone.View.extend({
     this.puzzleSets = new PuzzleSets();
     puzzleSets.on('add', _.bind(this.render, this));
     var date = new Date();
+    var nextMonth = new Date();
+    if(nextMonth.getMonth() === 11){
+        nextMonth.setYear(nextMonth.getFullYear() + 1);
+        nextMonth.setMonth(0);
+    } else {
+        nextMonth.setMonth(nextMonth.Month() + 1);
+    }
     puzzleSets.fetch({
         update: true,
         add: true,
@@ -535,8 +542,8 @@ var PuzzleView = Backbone.View.extend({
         add: true,
         remove: false,
         data: {
-            year: date.getFullYear(),
-            month: (date.getMonth() + 2)
+            year: nextMonth.getFullYear(),
+            month: (nextMonth.getMonth() + 1)
         }
     });
 
@@ -649,13 +656,42 @@ var PuzzlesView = Backbone.View.extend({
     'click [role="add-puzzle"]': 'addNewPuzzle',
     'click [role="new-generate-puzzle"]': 'generatePuzzle',
     'click [role="edit-puzzle"]': 'editPuzzle',
-    'click [role="pagination"] a': 'selectPage'
+    'click [role="pagination"] a': 'selectPage',
+    'change [role="filter"]': 'changeFilter'
   },
 
   initialize: function(options){
-    this.collection.on('reset', this.render, this);
+    var date = new Date(), nextMonth = new Date();
+    if(nextMonth.getMonth() === 11){
+        nextMonth.setYear(nextMonth.getFullYear() + 1);
+        nextMonth.setMonth(0);
+    } else {
+        nextMonth.setMonth(nextMonth.Month() + 1);
+    }
     this.dependentCollection = options.dependentCollection;
+    this.puzzleSets = new PuzzleSets();
     this.collection.fetch();
+    this.puzzleSets.fetch({
+        update: true,
+        add: true,
+        remove: false,
+        data: {
+            year: date.getFullYear(),
+            month: (date.getMonth() + 1)
+        }
+    });
+    this.puzzleSets.fetch({
+        update: true,
+        add: true,
+        remove: false,
+        data: {
+            year: nextMonth.getFullYear(),
+            month: (nextMonth.getMonth() + 1)
+        }
+    });
+    this.collection.on('sync', this.render, this);
+    this.puzzleSets.on('sync', this.render, this);
+
   },
 
   render: function(){
@@ -665,7 +701,26 @@ var PuzzlesView = Backbone.View.extend({
 
     this.$el.find('[role="rows"]').html(rows);
     this.renderPaginator();
+
+    var $set = this.$el.find('[role="filter"]');
+    $set.empty();
+    $set.append($('<option>'));
+    $set.append($('<option>').val('free').text('Непривязанные'));
+    this.puzzleSets.each(function(o){
+        $option = $('<option>').val(o.get('id')).text(o.get('name'))
+        $set.append($option);
+    });
+    if(this.filter) $set.val(this.filter);
+
     return this;
+  },
+
+  changeFilter: function(e){
+      e && e.preventDefault();
+      var val = $(e.target).val(), data = {};
+      if(val && val !== '') data.filter = val;
+      this.filter = val;
+      this.collection.fetch({reset: true, data: data });
   },
 
   addNewPuzzle: function(e){
@@ -1060,7 +1115,7 @@ var User = Backbone.Model.extend({
 
 var Users = Backbone.Collection.extend({
   model: User,
-  url: '/users/paginate',
+  url: '/users/top',
   comparator: false,
   parse: function(response) {
     this.currentPage = response.current_page;
@@ -1071,12 +1126,11 @@ var Users = Backbone.Collection.extend({
 
 var UsersView = Backbone.View.extend({
   tagName: 'div',
-  rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td><td>' +
-                          '<select role="user-role" data-user-id="<%= id %>"><option value="user">Пользователь</option>' +
-                          '<option value="editor">Редактор</option><option value="admin">Администратор</option></select>' +
-                          '</td><td><%= solved %></td><td><%= month_score %></td><td><%= high_score %></td><td><%= hints %></td></tr>'),
+  rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td>' +
+                          '<td><%= solved %></td><td><%= month_score %></td><td><%= is_cheater ? is_cheater : "не читер"  %></td><td><button class="btn" role="scores" data-id="<%= id %>">начисления</button></td></tr>'),
   events: {
     'click [role="pagination"] a': 'selectPage',
+    'click [role="scores"]': 'showScore',
     'change [role="user-role"]': 'changeUserRole'
   },
 
@@ -1122,6 +1176,13 @@ var UsersView = Backbone.View.extend({
     if(e && e.preventDefault) e.preventDefault();
     var page = $(e.target).text();
     this.collection.fetch({ data: { page: page }});
+  },
+
+  showScore: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var user = this.collection.get($(e.target).attr('data-id'));
+    var scores = _(user.get('scores')).map(function(o){ [o.source, o.score].join(':') }).join('|');
+    alert('scores');
   },
 
   changeUserRole: function(e){
