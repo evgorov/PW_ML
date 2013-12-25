@@ -78,6 +78,7 @@
 		6BB9867D180C3ABE00FA371C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */; };
 		6BB9867F180C3AD700FA371C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB9867E180C3AD700FA371C /* MessageUI.framework */; };
 		6BB98681180C3AE600FA371C /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB98680180C3AE600FA371C /* EventKit.framework */; };
+		6BBF050A186B29E500177C19 /* ApplifierImpact.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BBF0509186B29E500177C19 /* ApplifierImpact.framework */; };
 		6BD165DF1803DFC200F140AD /* DataContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165DE1803DFC200F140AD /* DataContext.m */; };
 		6BD165E218053A5300F140AD /* HintsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BD165E118053A5300F140AD /* HintsCell.m */; };
 		6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD165E318053A9600F140AD /* HintsCell~ipad.xib */; };
@@ -726,6 +727,7 @@
 		6BB9867C180C3ABE00FA371C /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		6BB9867E180C3AD700FA371C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		6BB98680180C3AE600FA371C /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		6BBF0509186B29E500177C19 /* ApplifierImpact.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplifierImpact.framework; path = "third-party/ApplifierImpact.framework"; sourceTree = "<group>"; };
 		6BD165DD1803DFC200F140AD /* DataContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataContext.h; path = DataLogic/DataContext.h; sourceTree = "<group>"; };
 		6BD165DE1803DFC200F140AD /* DataContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataContext.m; path = DataLogic/DataContext.m; sourceTree = "<group>"; };
 		6BD165E018053A5300F140AD /* HintsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HintsCell.h; path = Views/HintsCell.h; sourceTree = "<group>"; };
@@ -1366,6 +1368,7 @@
 				6B3CC79A1771FBEC003D57B6 /* Security.framework in Frameworks */,
 				6B3CC7981771FBE6003D57B6 /* libsqlite3.dylib in Frameworks */,
 				F268D52116E8C62D00F0FA0F /* AudioToolbox.framework in Frameworks */,
+				6BBF050A186B29E500177C19 /* ApplifierImpact.framework in Frameworks */,
 				F20F0F1916E8C3C8009AEEE6 /* OpenAL.framework in Frameworks */,
 				F2FD010316E132FA005144A3 /* AVFoundation.framework in Frameworks */,
 				F2FD010116E132D9005144A3 /* CoreMedia.framework in Frameworks */,
@@ -2221,6 +2224,7 @@
 		F2D626FC165DF80900EF6E8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6BBF0509186B29E500177C19 /* ApplifierImpact.framework */,
 				6B8E4D8F180D27C900CD1AC5 /* Tapjoy.embeddedframework */,
 				6BB98680180C3AE600FA371C /* EventKit.framework */,
 				6BB9867E180C3AD700FA371C /* MessageUI.framework */,
@@ -3164,6 +3168,7 @@
 					"$(SRCROOT)/third-party",
 					"$(SRCROOT)",
 					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
+					"/Work/Projects/PrizeWord/source/PrizeWord/third-party",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
@@ -3193,6 +3198,7 @@
 					"$(SRCROOT)/third-party",
 					"$(SRCROOT)",
 					"$(SRCROOT)/third-party/TapjoySDK/Libraries/Tapjoy.embeddedframework",
+					"/Work/Projects/PrizeWord/source/PrizeWord/third-party",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";

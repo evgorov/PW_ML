@@ -27,6 +27,7 @@
 #import <Tapjoy/Tapjoy.h>
 #import <FlurrySDK/Flurry.h>
 #import <Chartboost.h>
+#import <ApplifierImpact/ApplifierImpact.h>
 
 @implementation AppDelegate
 
@@ -70,6 +71,8 @@ static NSRecursiveLock * dbLock = nil;
     [Tapjoy requestTapjoyConnect:@"2c75a972-e62b-4f17-93ef-b97457c6a8fb" secretKey:@"5n9Ey0ZBVvcH7nsTsr6Q" options:@{TJC_OPTION_ENABLE_LOGGING : @(YES)}];
     
     [Flurry startSession:@"DBWS85GPDMJWKCDDXH39"];
+    
+    [[ApplifierImpact sharedInstance] startWithGameId:@"12125"];
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
