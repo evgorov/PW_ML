@@ -28,6 +28,7 @@
 #import <FlurrySDK/Flurry.h>
 #import <Chartboost.h>
 #import <ApplifierImpact/ApplifierImpact.h>
+#import "SponsorPaySDK.h"
 
 @implementation AppDelegate
 
@@ -73,6 +74,11 @@ static NSRecursiveLock * dbLock = nil;
     [Flurry startSession:@"DBWS85GPDMJWKCDDXH39"];
     
     [[ApplifierImpact sharedInstance] startWithGameId:@"12125"];
+    
+    [SponsorPaySDK startForAppId:@"55bf3cfc523b08e23b2efabe03deec21"
+                          userId:nil
+                   securityToken:nil];
+
     
     [application setStatusBarHidden:YES];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
