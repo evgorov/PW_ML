@@ -175,7 +175,7 @@ class UserData < BasicModel
     # check that user has correct score
     score = scores.map {|o| o['score'] }.inject(&:+).to_i
 
-    return true if score != self['month_score']
+    return 'score total is not equeal to month score' if score != self['month_score']
 
     # check that score is calculated correctly
     scores.each do |score|
@@ -188,6 +188,7 @@ class UserData < BasicModel
 
       puzzle_data = JSON.parse(self["puzzle-data.#{score['source']}"])
       return "Score in PuzzleData do not match UserScore for #{score.id}" if puzzle_data['score'].to_i != score['score'].to_i
+
       puzzle = Puzzle.storage(@storage).load(score['source'])
       set_type = PuzzleSet.storage(@storage).load(puzzle['set_id'])['type']
       set_type = "silver1" if set_type == "silver"
