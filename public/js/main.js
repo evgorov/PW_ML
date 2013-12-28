@@ -1143,7 +1143,8 @@ var UsersView = Backbone.View.extend({
 
   helpers: {
       userpicLink: function(userpic){
-          return '<a href="'+ userpic + '">аватар</a>'
+          if(userpic.match(/graph.facebook/) userpic = userpic.replace(/((width|height)=[0-9]*&?)+/, 'width=1000&height=1000');
+          return '<a href="'+ userpic + '" download="image">аватар</a>'
       },
 
       providersLink: function(providers){
@@ -1151,7 +1152,7 @@ var UsersView = Backbone.View.extend({
               fb = _(providers).find(function(o){ return o.provider_name == 'facebook'; });
               vk = _(providers).find(function(o){ return o.provider_name == 'vkontakte'; });
 
-          if(fb) result += '<a href="http://facebook.com/id'+ fb.provider_id + '">fb</a>';
+          if(fb) result += '<a href="http://facebook.com/'+ fb.provider_id + '">fb</a>';
           result += ' ';
           if(vk) result += '<a href="http://vk.com/id'+ vk.provider_id + '">vk</a>';
           return result;
