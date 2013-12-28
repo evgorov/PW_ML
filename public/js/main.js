@@ -1143,7 +1143,7 @@ var UsersView = Backbone.View.extend({
 
   helpers: {
       userpicLink: function(userpic){
-          if(userpic.match(/graph.facebook/) userpic = userpic.replace(/((width|height)=[0-9]*&?)+/, 'width=1000&height=1000');
+          if(userpic.match(/graph.facebook/)) userpic = userpic.replace(/((width|height)=[0-9]*&?)+/, 'width=1000&height=1000');
           return '<a href="'+ userpic + '" download="image">аватар</a>'
       },
 
