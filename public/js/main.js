@@ -1105,7 +1105,11 @@ var PuzzleSetsView = Backbone.View.extend({
 /* Users tab */
 
 var User = Backbone.Model.extend({
-  updateRole: function(role){
+    initialize: function(){
+
+    },
+
+    updateRole: function(role){
       this.set('role', role);
       Backbone.ajax({
           url: '/users/' + this.id + '/change_role',
@@ -1128,12 +1132,34 @@ var Users = Backbone.Collection.extend({
 
 var UsersView = Backbone.View.extend({
   tagName: 'div',
-  rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td>' +
-                          '<td><%= solved %></td><td><%= month_score %></td><td><%= is_cheater ? is_cheater : "не читер"  %></td><td><button class="btn" role="scores" data-id="<%= id %>">начисления</button></td></tr>'),
+  rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td><td><a href="mailto:<%= email %>"><%= email %></a></td><td><%= providersLink(providers) %></td>' +
+                          '<td><%= typeof(userpic) !== "undefined" ? userpicLink(userpic) : "нет фото" %></td>' +
+                          '<td><%= solved %></td><td><%= month_score %></td><td><%= showIsCheater(is_cheater)  %></td><td><button class="btn" role="scores" data-id="<%= id %>">начисления</button></td></tr>'),
   events: {
     'click [role="pagination"] a': 'selectPage',
     'click [role="scores"]': 'showScore',
     'change [role="user-role"]': 'changeUserRole'
+  },
+
+  helpers: {
+      userpicLink: function(userpic){
+          return '<a href="'+ userpic + '">аватар</a>'
+      },
+
+      providersLink: function(providers){
+          var result = '',
+              fb = _(providers).find(function(o){ return o.provider_name == 'facebook'; });
+              vk = _(providers).find(function(o){ return o.provider_name == 'vkontakte'; });
+
+          if(fb) result += '<a href="http://facebook.com/id'+ fb.provider_id + '">fb</a>';
+          result += ' ';
+          if(vk) result += '<a href="http://vk.com/id'+ vk.provider_id + '">vk</a>';
+          return result;
+      },
+
+      showIsCheater: function(is_cheater){
+          return is_cheater ? is_cheater : "не читер";
+      }
   },
 
   initialize: function(){
@@ -1146,7 +1172,7 @@ var UsersView = Backbone.View.extend({
     var $el = this.$el;
     // Rendering row templates to view
     var rows = this.collection.map(function(o){
-      return this.rowTemplate(o.toJSON());
+      return this.rowTemplate(_.extend({}, this.helpers, o.toJSON()));
     }, this).join('');
     $el.find('[role="rows"]').html(rows);
     // Setting correct role for users
