@@ -32,6 +32,11 @@ class UserScore < BasicModel
     @storage.zadd(self['user_id'], Time.now.to_i, id)
   end
 
+  def delete(*a)
+    super(*a)
+    @storage.zrem(self['user_id'], id)
+  end
+
   def id
     "#{self['user_id']}##{self['source']}"
   end
