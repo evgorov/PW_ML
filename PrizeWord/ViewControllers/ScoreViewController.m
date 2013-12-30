@@ -108,7 +108,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     
     NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
                               , @"provider_name": providerName};
-    [[APIClient sharedClient] getPath:@"%@/invited_friends_this_month" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[APIClient sharedClient] getPath:[NSString stringWithFormat:@"%@/invited_friends_this_month", providerName] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideActivityIndicator];
         [updateInProgress removeObjectForKey:providerName];
         NSLog(@"updateInvited %@ complete: %@", providerName, [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding]);

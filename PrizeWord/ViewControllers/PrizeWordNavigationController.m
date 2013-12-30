@@ -112,7 +112,6 @@
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return [self.topViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-
 }
 
 -(BOOL)shouldAutorotate
