@@ -666,7 +666,7 @@ var PuzzlesView = Backbone.View.extend({
         nextMonth.setYear(nextMonth.getFullYear() + 1);
         nextMonth.setMonth(0);
     } else {
-        nextMonth.setMonth(nextMonth.Month() + 1);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
     }
     this.dependentCollection = options.dependentCollection;
     this.puzzleSets = new PuzzleSets();
