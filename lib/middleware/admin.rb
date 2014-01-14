@@ -146,6 +146,14 @@ module Middleware
       }.save.to_json
     end
 
+    delete '/questions/:id' do
+      authorize_editor!
+      puzzle = Puzzle.storage(env['redis']).load(params['id'])
+      halt(403, { message: 'Cannot delete puzzle with set' }.to_json) if puzzle['set_id']
+      puzzle.delete
+      { message: 'ok' }.to_json
+    end
+
     get '/questions' do
       authorize_editor!
       puzzles = Puzzle.storage(env['redis'])

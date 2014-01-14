@@ -395,7 +395,6 @@ var FieldView = Backbone.View.extend({
   }
 });
 
-
 var PuzzleView = Backbone.View.extend({
 
   tagName: 'div',
@@ -409,6 +408,7 @@ var PuzzleView = Backbone.View.extend({
     'keyup .question *': 'changeQuestion',
     'change .question *': 'changeQuestion',
     'click [role="save-puzzle"]': 'savePuzzle',
+    'click [role="delete-puzzle"]': 'deletePuzzle',
     'change [role^="puzzle"]': 'updatePuzzleAtribute',
     'click [role="cancel-puzzle"]': 'cancelPuzzle',
     'focus input, textarea': 'setCurrent',
@@ -579,6 +579,14 @@ var PuzzleView = Backbone.View.extend({
     }
   },
 
+  deletePuzzle: function(){
+      if(this.model.get('set_id'))
+          return alert('Вы можете удалять только не привязанные сканворды');
+
+      this.model.destroy();
+      this.hide();
+  },
+
   render: function() {
     var $questions = this.$el.find('.questions'),
         $set = this.$el.find('[role="puzzle-set"]'),
@@ -740,7 +748,7 @@ var PuzzlesView = Backbone.View.extend({
   editPuzzle: function(e){
       var id = $(e.target).attr('data-id'),
           puzzle = this.collection.get(id);
-      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); this.dependentCollection.fetch(); }, this));
+      puzzle.on('sync', _.bind(function(){ this.collection.fetch(); this.dependentCollection && this.dependentCollection.fetch(); }, this));
       var puzzleView = new PuzzleView({ model: puzzle });
       puzzleView.show();
   },
