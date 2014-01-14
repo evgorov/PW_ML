@@ -36,11 +36,22 @@
     self = [super init];
     if (self)
     {
-        _first_name = [dict objectForKey:@"name"];
-        _last_name = [dict objectForKey:@"surname"];
-        _email = [dict objectForKey:@"email"];
-        _user_id = [dict objectForKey:@"id"];
-        _city = [dict objectForKey:@"city"];
+        _first_name = @"";
+        _last_name = @"";
+        _email = @"";
+        _user_id = @"";
+        _city = @"";
+        
+        if ([dict objectForKey:@"name"] != nil && [dict objectForKey:@"name"] != [NSNull null])
+            _first_name = [dict objectForKey:@"name"];
+        if ([dict objectForKey:@"surname"] != nil && [dict objectForKey:@"surname"] != [NSNull null])
+            _last_name = [dict objectForKey:@"surname"];
+        if ([dict objectForKey:@"email"] != nil && [dict objectForKey:@"email"] != [NSNull null])
+            _email = [dict objectForKey:@"email"];
+        if ([dict objectForKey:@"id"] != nil && [dict objectForKey:@"id"] != [NSNull null])
+            _user_id = [dict objectForKey:@"id"];
+        if ([dict objectForKey:@"city"] != nil && [dict objectForKey:@"city"] != [NSNull null])
+            _city = [dict objectForKey:@"city"];
         _userpic = nil;
         _userpic_url = nil;
         id userpicObject = [dict objectForKey:@"userpic"];
@@ -136,12 +147,6 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  _first_name, @"name",
-                                  _last_name, @"surname",
-                                  _email, @"email",
-                                  _user_id, @"id",
-                                  _city, @"city",
-                                  providers, @"providers",
                                   [NSNumber numberWithInt:_position], @"position",
                                   [NSNumber numberWithInt:_solved], @"solved",
                                   [NSNumber numberWithInt:_month_score], @"month_score",
@@ -150,7 +155,24 @@
                                   [NSNumber numberWithInt:_hints], @"hints",
                                   [NSNumber numberWithBool:_invited], @"invite_sent",
                                   nil];
-    
+    if (_first_name != nil) {
+        [dict setObject:_first_name forKey:@"name"];
+    }
+    if (_last_name != nil) {
+        [dict setObject:_last_name forKey:@"surname"];
+    }
+    if (_email != nil) {
+        [dict setObject:_email forKey:@"email"];
+    }
+    if (_user_id != nil) {
+        [dict setObject:_user_id forKey:@"id"];
+    }
+    if (_city != nil) {
+        [dict setObject:_city forKey:@"city"];
+    }
+    if (providers != nil) {
+        [dict setObject:providers forKey:@"providers"];
+    }
     if (_userpic != nil)
     {
         [dict setObject:[UIImageJPEGRepresentation(_userpic, 1) base64EncodedString] forKey:@"userpic"];

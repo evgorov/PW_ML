@@ -107,6 +107,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     UserData * prevLoggedInUser = _loggedInUser;
     _loggedInUser = loggedInUser;
     [[NSUserDefaults standardUserDefaults] setObject:[loggedInUser dictionaryRepresentation] forKey:@"user-data"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     if (prevLoggedInUser == nil && _sessionKey != nil && _loggedInUser != nil)
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_USER_LOGGED_IN]];
