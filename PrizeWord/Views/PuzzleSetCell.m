@@ -40,6 +40,8 @@ static FISound * buySetSound = nil;
 static FISound * openSetSound = nil;
 static FISound * closeSetSound = nil;
 
+const int TAG_PUZZLESET_VIEW = 2;
+
 @implementation PuzzleSetState
 
 @synthesize isShownFull;
@@ -123,6 +125,7 @@ static FISound * closeSetSound = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
         self.puzzleSetView.btnShowMore.selected = state.isShownFull;
+        self.puzzleSetView.tag = TAG_PUZZLESET_VIEW;
         if (!state.isShownFull)
         {
             CGRect frame = self.puzzleSetView.frame;
@@ -155,6 +158,13 @@ static FISound * closeSetSound = nil;
         [self.puzzleSetView.btnShowMore addTarget:self action:@selector(handleShowMoreClick:) forControlEvents:UIControlEventTouchUpInside];
         [self activateBadges];
         [activityIndicator stopAnimating];
+
+        UIView * subview = nil;
+        while ((subview = [self viewWithTag:TAG_PUZZLESET_VIEW]) != nil)
+        {
+            [subview removeFromSuperview];
+        }
+
         [self addSubview:self.puzzleSetView];
     });
 }

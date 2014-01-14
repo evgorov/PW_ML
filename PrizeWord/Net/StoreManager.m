@@ -17,6 +17,7 @@
 #import "PuzzleData.h"
 #import "UserDataManager.h"
 #import "DataContext.h"
+#import "NSData+Base64.h"
 
 NSString * PRODUCTID_PREFIX = @"com.prizeword.";
 NSString * PRODUCTID_HINTS10 = @"com.prizeword.hints10";
@@ -264,7 +265,7 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
     // transaction == nil for free sets
     if (transaction != nil)
     {
-        [params setObject:transaction.transactionReceipt forKey:@"receipt-data"];
+        [params setObject:[transaction.transactionReceipt base64EncodedString] forKey:@"receipt-data"];
     }
     
     [[APIClient sharedClient] postPath:[NSString stringWithFormat:@"sets/%@/buy", setID] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

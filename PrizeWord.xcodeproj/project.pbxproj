@@ -3535,8 +3535,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/third-party",
@@ -3553,8 +3553,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				PROVISIONING_PROFILE = "85527DC3-1C46-45A4-A26C-F006049E24AB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "85527DC3-1C46-45A4-A26C-F006049E24AB";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3565,8 +3565,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/third-party",
@@ -3583,8 +3583,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				PROVISIONING_PROFILE = "85527DC3-1C46-45A4-A26C-F006049E24AB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "85527DC3-1C46-45A4-A26C-F006049E24AB";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

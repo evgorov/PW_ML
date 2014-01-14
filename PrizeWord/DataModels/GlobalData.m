@@ -233,7 +233,7 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
         [self parseDateFromResponse:operation.response];
         SBJsonParser * parser = [SBJsonParser new];
         NSDictionary * data = [parser objectWithData:operation.responseData];
-        NSLog(@"me: %d %@", operation.response.statusCode, operation.responseString);
+//        NSLog(@"me: %d %@", operation.response.statusCode, operation.responseString);
         UserData * newMe = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
         if (newMe != nil)
         {
