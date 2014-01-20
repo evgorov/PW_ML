@@ -1141,7 +1141,7 @@ var Users = Backbone.Collection.extend({
 var UsersView = Backbone.View.extend({
   tagName: 'div',
   rowTemplate: _.template('<tr><td><%= name %></td><td><%= surname %></td><td><a href="mailto:<%= email %>"><%= email %></a></td><td><%= providersLink(providers) %></td>' +
-                          '<td><%= typeof(userpic) !== "undefined" ? userpicLink(userpic) : "нет фото" %></td>' +
+                          '<td><%= userpic ? userpicLink(userpic) : "нет фото" %></td>' +
                           '<td><%= solved %></td><td><%= month_score %></td><td><%= showIsCheater(is_cheater)  %></td><td><button class="btn" role="scores" data-id="<%= id %>">начисления</button></td></tr>'),
   events: {
     'click [role="pagination"] a': 'selectPage',
