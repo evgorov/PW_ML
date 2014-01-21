@@ -27,8 +27,8 @@
 @property (nonatomic, retain) NSString *etag;
 @property (nonatomic, retain) PuzzleSetData *puzzleSet;
 
-+(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
-+(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
++(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId;
 
 -(int)solved;
 -(float)progress;

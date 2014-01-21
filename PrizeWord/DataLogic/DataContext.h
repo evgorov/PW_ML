@@ -10,6 +10,8 @@
 
 @interface DataContext : NSManagedObjectContext
 
-+ (DataContext *)currentContext;
++ (NSManagedObjectContext *)currentContext;
++ (void)performAsyncInDataQueue:(void(^)())block;
++ (void)performSyncInDataQueue:(void(^)())block;
 
 @end

@@ -19,9 +19,11 @@
 @dynamic etag;
 @dynamic puzzleSets;
 
-+ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
++ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId
 {
-    PuzzleSetPackData * pack = nil;
+    __block PuzzleSetPackData * pack = nil;
+    [DataContext performSyncInDataQueue:^{
+        NSManagedObjectContext * moc = [DataContext currentContext];
     NSFetchRequest * fetchRequest = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzleSetPackFetchRequest" substitutionVariables:@{@"YEAR": [NSNumber numberWithInt:year], @"MONTH": [NSNumber numberWithInt:month], @"USER_ID": userId}];
     NSArray * results = [moc executeFetchRequest:fetchRequest error:nil];
     if (results != nil && results.count > 0)
@@ -32,7 +34,6 @@
     {
         pack = [NSEntityDescription insertNewObjectForEntityForName:@"PuzzleSetPack" inManagedObjectContext:moc];
     }
-    [moc performBlockAndWait:^{
         pack.user_id = userId;
         pack.year = [NSNumber numberWithInt:year];
         pack.month = [NSNumber numberWithInt:month];

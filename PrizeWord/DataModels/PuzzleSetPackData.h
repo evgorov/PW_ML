@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSString * etag;
 @property (nonatomic, retain) NSSet *puzzleSets;
 
-+ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
++ (PuzzleSetPackData *)puzzleSetPackWithYear:(int)year andMonth:(int)month andUserId:(NSString *)userId;
 
 @end
 

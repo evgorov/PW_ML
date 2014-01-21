@@ -30,95 +30,92 @@
 @dynamic puzzleSet;
 @dynamic etag;
 
-+(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
++(PuzzleData *)puzzleWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId
 {
-    PuzzleData * puzzle;
-    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": [dict objectForKey:@"id"], @"USER_ID": userId}];
-
-    NSError *error = nil;
-    NSArray *puzzles = [moc executeFetchRequest:request error:&error];
+    __block PuzzleData * puzzle;
     
-    NSNumber * time_given = nil;
-    id time_givenData = [dict objectForKey:@"time_given"];
-    if ([time_givenData isKindOfClass:[NSString class]])
-    {
-        NSString * time_givenString = time_givenData;
-        time_given = [NSNumber numberWithInt:[time_givenString intValue]];
-    }
-    else
-    {
-        time_given = [dict objectForKey:@"time_given"];
-    }
-    if (time_given == nil)
-    {
-        // 15 minutes
-        time_given = [NSNumber numberWithInt:900];
-    }
-    
-    if (puzzles == nil || puzzles.count == 0)
-    {
-        puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:moc];
-        [moc performBlockAndWait:^{
-            [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
-            [puzzle setTime_given:time_given];
-            [puzzle setTime_left:time_given];
-            [puzzle setName:[dict objectForKey:@"name"]];
-            [puzzle setUser_id:userId];
-            NSString * dateString = [dict objectForKey:@"issuedAt"];
-            if (dateString != nil)
-            {
-                NSDateFormatter * dateFormatter = [NSDateFormatter new];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-                [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
-            }
-            [puzzle setHeight:[dict objectForKey:@"height"]];
-            [puzzle setWidth:[dict objectForKey:@"width"]];
-            [puzzle setScore:[NSNumber numberWithInt:0]];
-            NSArray * questionsData = [dict objectForKey:@"questions"];
-            for (NSDictionary * questionData in questionsData) {
-                QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId inMOC:moc];
-                if (question == nil)
-                {
-                    NSLog(@"WARNING: question is nil!");
-                    continue;
-                }
-                [puzzle addQuestionsObject:question];
-            }
-        }];
-    }
-    else
-    {
-        puzzle = [puzzles objectAtIndex:0];
-        [moc performBlockAndWait:^{
-            [puzzle setTime_given:time_given];
-            if (puzzle.time_left.intValue > time_given.intValue)
-            {
+    [DataContext performSyncInDataQueue:^{
+        NSManagedObjectContext * moc = [DataContext currentContext];
+        NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": [dict objectForKey:@"id"], @"USER_ID": userId}];
+        
+        NSError *error = nil;
+        NSArray *puzzles = [moc executeFetchRequest:request error:&error];
+        
+        NSNumber * time_given = nil;
+        id time_givenData = [dict objectForKey:@"time_given"];
+        if ([time_givenData isKindOfClass:[NSString class]])
+        {
+            NSString * time_givenString = time_givenData;
+            time_given = [NSNumber numberWithInt:[time_givenString intValue]];
+        }
+        else
+        {
+            time_given = [dict objectForKey:@"time_given"];
+        }
+        if (time_given == nil)
+        {
+            // 15 minutes
+            time_given = [NSNumber numberWithInt:900];
+        }
+        
+        if (puzzles == nil || puzzles.count == 0)
+        {
+            puzzle = (PuzzleData *)[NSEntityDescription insertNewObjectForEntityForName:@"Puzzle" inManagedObjectContext:moc];
+                [puzzle setPuzzle_id:[dict objectForKey:@"id"]];
+                [puzzle setTime_given:time_given];
                 [puzzle setTime_left:time_given];
-            }
-        }];
-    }
-    
-/*
-    [managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"DB error: %@", error.description);
-    }
-*/    
+                [puzzle setName:[dict objectForKey:@"name"]];
+                [puzzle setUser_id:userId];
+                NSString * dateString = [dict objectForKey:@"issuedAt"];
+                if (dateString != nil)
+                {
+                    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+                    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                    [puzzle setIssuedAt:[dateFormatter dateFromString:dateString]];
+                }
+                [puzzle setHeight:[dict objectForKey:@"height"]];
+                [puzzle setWidth:[dict objectForKey:@"width"]];
+                [puzzle setScore:[NSNumber numberWithInt:0]];
+                NSArray * questionsData = [dict objectForKey:@"questions"];
+                for (NSDictionary * questionData in questionsData) {
+                    QuestionData * question = [QuestionData questionDataFromDictionary:questionData forPuzzle:puzzle andUserId:userId];
+                    if (question == nil)
+                    {
+                        NSLog(@"WARNING: question is nil!");
+                        continue;
+                    }
+                    [puzzle addQuestionsObject:question];
+                }
+        }
+        else
+        {
+            puzzle = [puzzles objectAtIndex:0];
+                [puzzle setTime_given:time_given];
+                if (puzzle.time_left.intValue > time_given.intValue)
+                {
+                    [puzzle setTime_left:time_given];
+                }
+        }
+    }];
+
     return puzzle;
 }
 
-+(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc
++(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId
 {
-    NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": puzzleId, @"USER_ID": userId}];
-    
-    NSError *error = nil;
-    NSArray *puzzles = [moc executeFetchRequest:request error:&error];
-    
-    PuzzleData * puzzleData = nil;
-    if (puzzles != nil && puzzles.count > 0)
-    {
-        puzzleData = [puzzles objectAtIndex:0];
-    }
+    __block PuzzleData * puzzleData = nil;
+    [DataContext performSyncInDataQueue:^{
+        NSManagedObjectContext * moc = [DataContext currentContext];
+        NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": puzzleId, @"USER_ID": userId}];
+        
+        NSError *error = nil;
+        NSArray *puzzles = [moc executeFetchRequest:request error:&error];
+        
+        if (puzzles != nil && puzzles.count > 0)
+        {
+            puzzleData = [puzzles objectAtIndex:0];
+        }
+    }];
     return puzzleData;
 }
 
@@ -231,11 +228,13 @@
                 
                 if (wasUpdatedLocal)
                 {
+                    /*
                     if (self.managedObjectContext != [DataContext currentContext])
                     {
                         NSLog(@"ERROR: managed objects contexts are not equal");
                     }
                     else
+                    */
                     {
                         NSAssert(self.managedObjectContext != nil, @"managed object context of managed object in nil");
                         [self.managedObjectContext save:nil];

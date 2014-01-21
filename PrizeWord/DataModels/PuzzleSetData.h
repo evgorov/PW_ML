@@ -34,8 +34,8 @@ PuzzleSetType;
 @property (nonatomic, retain) NSSet *puzzles;
 @property (nonatomic, retain) PuzzleSetPackData *puzzleSetPack;
 
-+(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
-+(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId inMOC:(NSManagedObjectContext *)moc;
++(PuzzleSetData *)puzzleSetWithDictionary:(NSDictionary *)dict andUserId:(NSString *)userId;
++(PuzzleSetData *)puzzleSetWithId:(NSString *)setId andUserId:(NSString *)userId;
 
 -(int)solved;
 -(int)total;

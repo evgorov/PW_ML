@@ -13,12 +13,14 @@
 
 static NSMutableDictionary * contexts = nil;
 static DataContext *gMainSharedInstance;
+static dispatch_queue_t dataQueue;
 
 +(void) initialize {
     if (self == [DataContext class])
     {
         gMainSharedInstance = [[DataContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         contexts = [NSMutableDictionary new];
+        dataQueue = dispatch_queue_create("DataQueue", DISPATCH_QUEUE_SERIAL);
     }
 }
 
@@ -34,7 +36,7 @@ static DataContext *gMainSharedInstance;
     return context;
 }
 
-+(DataContext *)currentContext
++(NSManagedObjectContext *)currentContext
 {
     if(dispatch_get_main_queue() == dispatch_get_current_queue())
         return [self mainContext];
@@ -50,6 +52,23 @@ static DataContext *gMainSharedInstance;
         [contexts setObject:context forKey:identifier];
     }
     return context;
+}
+
++ (void)performAsyncInDataQueue:(void (^)())block
+{
+    dispatch_async(dataQueue, block);
+}
+
++ (void)performSyncInDataQueue:(void (^)())block
+{
+    if (dispatch_get_current_queue() == dataQueue)
+    {
+        block();
+    }
+    else
+    {
+        dispatch_sync(dataQueue, block);
+    }
 }
 
 -(id)initWithConcurrencyType:(NSManagedObjectContextConcurrencyType)ct

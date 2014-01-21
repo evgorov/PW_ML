@@ -267,7 +267,7 @@ const int TAG_PUZZLESET_VIEW = 2;
             if ([badge.puzzle.puzzle_id compare:puzzleId] == NSOrderedSame)
             {
                 NSLog(@"handle puzzle %@ synchronization", puzzleId);
-                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
+                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
                 [badge updateWithPuzzle:puzzle];
                 break;
             }

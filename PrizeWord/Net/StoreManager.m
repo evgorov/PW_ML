@@ -290,7 +290,7 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
                         NSArray * puzzlesData = [[SBJsonParser new] objectWithData:operation.responseData];
                         for (NSDictionary * puzzleData in puzzlesData)
                         {
-                            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id inMOC:[DataContext currentContext]];
+                            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
                             if (puzzle != nil)
                             {
                                 [puzzleSet addPuzzlesObject:puzzle];
