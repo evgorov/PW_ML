@@ -12,7 +12,7 @@
 #import "FISoundEngine.h"
 #import "BadgeView.h"
 #import "EventManager.h"
-#import "PuzzleSetData.h"
+#import "PuzzleSetProxy.h"
 #import "DataManager.h"
 #import "StoreManager.h"
 #import "SBJsonParser.h"
@@ -90,12 +90,12 @@ const int TAG_PUZZLESET_VIEW = 2;
     [[EventManager sharedManager] unregisterListener:self forEventType:EVENT_COEFFICIENTS_UPDATED];
 }
 
-+ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
++ (float)fullHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet
 {
     return [PuzzleSetView fullHeightForPuzzleSet:puzzleSet];
 }
 
-+ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
++ (float)shortHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet
 {
     return [PuzzleSetView shortHeightForPuzzleSet:puzzleSet];
 }
@@ -105,7 +105,7 @@ const int TAG_PUZZLESET_VIEW = 2;
     return puzzleSetView.frame.size.height;
 }
 
-- (void)setupWithData:(PuzzleSetData *)puzzleSetData state:(PuzzleSetState *)state_ month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView_
+- (void)setupWithData:(PuzzleSetProxy *)puzzleSetData state:(PuzzleSetState *)state_ month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView_
 {
     if (puzzleSetData == nil)
     {
@@ -224,7 +224,7 @@ const int TAG_PUZZLESET_VIEW = 2;
 -(void)handleBadgeClick:(id)sender
 {
     BadgeView * badge = (BadgeView *)sender;
-    PuzzleData * puzzle = badge.puzzle;
+    PuzzleProxy * puzzle = badge.puzzle;
     
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_START andData:puzzle]];
 }
@@ -266,9 +266,10 @@ const int TAG_PUZZLESET_VIEW = 2;
         {
             if ([badge.puzzle.puzzle_id compare:puzzleId] == NSOrderedSame)
             {
+                [badge.puzzle updateObject];
                 NSLog(@"handle puzzle %@ synchronization", puzzleId);
-                PuzzleData * puzzle = [PuzzleData puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
-                [badge updateWithPuzzle:puzzle];
+//                PuzzleProxy * puzzle = [PuzzleProxy puzzleWithId:puzzleId andUserId:[GlobalData globalData].loggedInUser.user_id];
+                [badge updateWithPuzzle:badge.puzzle];
                 break;
             }
         }

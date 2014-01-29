@@ -915,7 +915,9 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     int minDimension = width < height ? width : height;
     CGRect subrect = CGRectMake((width - minDimension) / 2, (height - minDimension) / 2, minDimension, minDimension);
     [mainMenuAvatar cancelLoading];
-    UIImage * image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    CGImageRef cgImage = CGImageCreateWithImageInRect(imageToSave.CGImage, subrect);
+    UIImage * image = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
     mainMenuAvatar.image = image;
     
 //    [self showActivityIndicator];

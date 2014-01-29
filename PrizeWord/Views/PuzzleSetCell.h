@@ -10,7 +10,7 @@
 #import "EventListenerDelegate.h"
 
 @class PuzzleSetView;
-@class PuzzleSetData;
+@class PuzzleSetProxy;
 
 @interface PuzzleSetState : NSObject
 
@@ -22,10 +22,10 @@
 
 @property (nonatomic, retain) PuzzleSetView * puzzleSetView;
 
-+ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
-+ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
++ (float)fullHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet;
++ (float)shortHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet;
 
 - (float)actualHeight;
-- (void)setupWithData:(PuzzleSetData *)puzzleSetData state:(PuzzleSetState *)state month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
+- (void)setupWithData:(PuzzleSetProxy *)puzzleSetData state:(PuzzleSetState *)state month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved indexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 
 @end

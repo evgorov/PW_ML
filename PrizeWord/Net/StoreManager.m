@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "UserData.h"
 #import "PuzzleData.h"
+#import "PuzzleProxy.h"
 #import "UserDataManager.h"
 #import "DataContext.h"
 #import "NSData+Base64.h"
@@ -273,41 +274,33 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
         //        [self hideActivityIndicator];
         if (operation.response.statusCode == 200)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            [DataContext performSyncInDataQueue:^{
                 __block PuzzleSetData * puzzleSet = [[DataManager sharedManager] localGetSet:setID];
                 if (puzzleSet == nil)
                 {
                     NSLog(@"ERROR: cannot get local puzzle set");
                     return;
                 }
-                
-                NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
-                                          , @"ids": puzzleSet.puzzle_ids};
-                //            [self showActivityIndicator];
-                [[APIClient sharedClient] getPath:@"user_puzzles" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"puzzles loaded!");
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSArray * puzzlesData = [[SBJsonParser new] objectWithData:operation.responseData];
-                        for (NSDictionary * puzzleData in puzzlesData)
-                        {
-                            PuzzleData * puzzle = [PuzzleData puzzleWithDictionary:puzzleData andUserId:[GlobalData globalData].loggedInUser.user_id];
-                            if (puzzle != nil)
-                            {
-                                [puzzleSet addPuzzlesObject:puzzle];
-                            }
-                        }
-                        
-                        [puzzleSet setBought:[NSNumber numberWithBool:YES]];
-                        NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
-                        [puzzleSet.managedObjectContext save:nil];
-                        [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SET_BOUGHT andData:puzzleSet.set_id]];
-                        NSLog(@"view for puzzles created!");
-                    });
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
-                    NSLog(@"puzzles error: %@", error.description);
+                NSArray * ids = [puzzleSet.puzzle_ids componentsSeparatedByString:@","];
+                [[DataManager sharedManager] fetchPuzzles:ids completion:^(NSArray *data, NSError *error) {
+                    if (data != nil)
+                    {
+                    for (PuzzleProxy * puzzle in data) {
+                        [puzzle prepareManagedObject];
+                        [puzzleSet addPuzzlesObject:(PuzzleData *)puzzle.managedObject];
+                    }
+                    [puzzleSet setBought:[NSNumber numberWithBool:YES]];
+                    NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
+                    [puzzleSet.managedObjectContext save:nil];
+                    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_SET_BOUGHT andData:puzzleSet.set_id]];
+                    }
+                    else
+                    {
+                        NSLog(@"puzzles error: %@", error.description);
+                        [(PrizewordStoreObserver *)[AppDelegate storeObserver] setShouldIgnoreWarnings:YES];
+                    }
                 }];
-            });
+            }];
         }
         else if (![(PrizewordStoreObserver *)[AppDelegate storeObserver] shouldIgnoreWarnings])
         {

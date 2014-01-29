@@ -20,6 +20,11 @@
 #import "DataContext.h"
 #import <StoreKit/SKProduct.h>
 #import <StoreKit/SKProductsRequest.h>
+#import "DataProxy.h"
+#import "PuzzleProxy.h"
+#import "PuzzleSetProxy.h"
+#import "PuzzleSetPackProxy.h"
+#import "QuestionProxy.h"
 
 @interface DataManager()
 {
@@ -27,6 +32,12 @@
 }
 
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
+- (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year;
+- (NSArray *)localGetPuzzles:(NSArray *)ids;
+
+- (NSArray *)proxyArray:(NSArray *)originArray;
+- (NSSet *)proxySet:(NSSet *)originSet;
+- (DataProxy *)proxyObject:(NSManagedObject *)originObject;
 
 @end
 
@@ -70,8 +81,10 @@
     __block __weak NSBlockOperation * fetchOperation = operation;
     
     [fetchOperation addExecutionBlock:^{
+        __block NSMutableURLRequest * request = nil;
+        __block PuzzleSetPackData * localPack;
         __block NSManagedObjectContext * managedObjectContext = nil;
-
+        
         if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
         {
             if (callback != nil)
@@ -81,22 +94,26 @@
             return;
         }
 
-        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
-                                      , @"month": [NSNumber numberWithInt:[GlobalData globalData].currentMonth]
-                                      , @"year": [NSNumber numberWithInt:[GlobalData globalData].currentYear]
-                                      , @"mode": @"short"
-                                      };
-        
         [DataContext performSyncInDataQueue:^{
+            NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
+                                          , @"month": [NSNumber numberWithInt:[GlobalData globalData].currentMonth]
+                                          , @"year": [NSNumber numberWithInt:[GlobalData globalData].currentYear]
+                                          , @"mode": @"short"
+                                          };
+            
             managedObjectContext = [DataContext currentContext];
             [managedObjectContext.undoManager beginUndoGrouping];
+            
+            localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
+            NSLog(@"local pack count: %d", localPack.puzzleSets.count);
+            
+            request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
+            [request setValue:localPack.etag forHTTPHeaderField:@"If-None-Match"];
         }];
         
-        __block PuzzleSetPackData * localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
-        NSLog(@"local pack count: %d", localPack.puzzleSets.count);
-        
-        NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
-        [request setValue:localPack.etag forHTTPHeaderField:@"If-None-Match"];
+        if (request == nil) {
+            return;
+        }
         
         AFHTTPRequestOperation * requestOperation = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [DataContext performSyncInDataQueue:^{
@@ -112,10 +129,6 @@
                         if (puzzleSet == nil)
                         {
                             NSLog(@"puzzle set is nil");
-                        }
-                        if (localPack.managedObjectContext != puzzleSet.managedObjectContext)
-                        {
-                            NSLog(@"managed object contexts are not equal");
                         }
                         [localPack addPuzzleSetsObject:puzzleSet];
                         if (!puzzleSet.bought.boolValue)
@@ -150,13 +163,14 @@
                                 return [set1.type compare:set2.type];
                             }];
                             
-                            for (PuzzleData * puzzle in puzzles)
+                            for (PuzzleProxy * puzzle in puzzles)
                             {
+                                [puzzle prepareManagedObject];
                                 for (PuzzleSetData * puzzleSet in archiveSets)
                                 {
                                     if ([puzzleSet.puzzle_ids rangeOfString:puzzle.puzzle_id].location != NSNotFound)
                                     {
-                                        [puzzleSet addPuzzlesObject:puzzle];
+                                        [puzzleSet addPuzzlesObject:(PuzzleData *)puzzle.managedObject];
                                         break;
                                     }
                                 }
@@ -167,7 +181,7 @@
                             [managedObjectContext unlock];
                             if (callback != nil && ![parentFetchOperation isCancelled])
                             {
-                                callback(archiveSets, nil);
+                                callback([self proxyArray:archiveSets], nil);
                             }
                         }
                         else
@@ -195,7 +209,7 @@
                             
                             return [set1.type compare:set2.type];
                         }];
-                        callback(sortedSets, nil);
+                        callback([self proxyArray:sortedSets], nil);
                     }
                 }
             }];
@@ -216,7 +230,7 @@
                             
                             return [set1.type compare:set2.type];
                         }];
-                        callback(sortedSets, nil);
+                        callback([self proxyArray:sortedSets], nil);
                     }
                     else
                     {
@@ -241,6 +255,8 @@
     
     [fetchOperation addExecutionBlock:^{
         __block NSManagedObjectContext * managedObjectContext = nil;
+        __block PuzzleSetPackData * archivePack;
+        __block NSMutableURLRequest * request = nil;
         
         if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
         {
@@ -251,36 +267,40 @@
             return;
         }
 
-        
-        __block PuzzleSetPackData * archivePack = [self localGetSetsForMonth:month year:year];
-        if (archivePack != nil && archivePack.puzzleSets.count > 0)
-        {
-            if (callback != nil && ![fetchOperation isCancelled])
-            {
-                NSArray * sortedSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                    PuzzleSetData * set1 = obj1;
-                    PuzzleSetData * set2 = obj2;
-                    
-                    return [set1.type compare:set2.type];
-                }];
-                callback(sortedSets, nil);
-            }
-            return;
-        }
-
         [DataContext performSyncInDataQueue:^{
+            archivePack = [self localGetSetsForMonth:month year:year];
+            if (archivePack != nil && archivePack.puzzleSets.count > 0)
+            {
+                if (callback != nil && ![fetchOperation isCancelled])
+                {
+                    NSArray * sortedSets = [archivePack.puzzleSets.allObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                        PuzzleSetData * set1 = obj1;
+                        PuzzleSetData * set2 = obj2;
+                        
+                        return [set1.type compare:set2.type];
+                    }];
+                    callback([self proxyArray:sortedSets], nil);
+                }
+                return;
+            }
+            
             managedObjectContext = [DataContext currentContext];
             [managedObjectContext.undoManager beginUndoGrouping];
+            
+            NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
+                                          , @"month": [NSNumber numberWithInt:month]
+                                          , @"year": [NSNumber numberWithInt:year]
+                                          , @"mode": @"short"
+                                          };
+            
+            request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
+            [request setValue:archivePack.etag forHTTPHeaderField:@"If-None-Match"];
         }];
         
-        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey
-                                      , @"month": [NSNumber numberWithInt:month]
-                                      , @"year": [NSNumber numberWithInt:year]
-                                      , @"mode": @"short"
-                                      };
-        
-        NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
-        [request setValue:archivePack.etag forHTTPHeaderField:@"If-None-Match"];
+        if (request == nil)
+        {
+            return;
+        }
         
         AFHTTPRequestOperation * requestOperation = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [DataContext performSyncInDataQueue:^{
@@ -338,13 +358,14 @@
                                     return [set1.type compare:set2.type];
                                 }];
                                 
-                                for (PuzzleData * puzzle in puzzles)
+                                for (PuzzleProxy * puzzle in puzzles)
                                 {
+                                    [puzzle prepareManagedObject];
                                     for (PuzzleSetData * puzzleSet in archiveSets)
                                     {
                                         if ([puzzleSet.puzzle_ids rangeOfString:puzzle.puzzle_id].location != NSNotFound)
                                         {
-                                            [puzzleSet addPuzzlesObject:puzzle];
+                                            [puzzleSet addPuzzlesObject:(PuzzleData *)puzzle.managedObject];
                                             break;
                                         }
                                     }
@@ -355,7 +376,7 @@
                                 [managedObjectContext unlock];
                                 if (callback != nil && ![parentFetchOperation isCancelled])
                                 {
-                                    callback(archiveSets, nil);
+                                    callback([self proxyArray:archiveSets], nil);
                                 }
                             }
                             else
@@ -407,43 +428,48 @@
     __block NSArray * ids = ids_;
     
     [fetchOperation addExecutionBlock:^{
-        NSArray * localPuzzles = [self localGetPuzzles:ids];
-        __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
-        __block NSMutableArray * puzzles = [[NSMutableArray alloc] initWithCapacity:ids.count];
-        if (localPuzzles != nil)
-        {
-            if (localPuzzles.count == ids.count)
+        __block NSDictionary * parameters;
+        __block NSMutableArray * puzzles;
+        [DataContext performSyncInDataQueue:^{
+            NSArray * localPuzzles = [self localGetPuzzles:ids];
+            puzzles = [[NSMutableArray alloc] initWithCapacity:ids.count];
+            if (localPuzzles != nil)
             {
-                if (callback != nil && ![fetchOperation isCancelled])
+                if (localPuzzles.count == ids.count)
                 {
-                    callback(localPuzzles, nil);
-                }
-                return;
-            }
-            [puzzles addObjectsFromArray:localPuzzles];
-            NSIndexSet * indexSet = [ids indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                for (PuzzleData * puzzle in localPuzzles)
-                {
-                    if ([puzzle.puzzle_id compare:obj] == NSOrderedSame)
+                    if (callback != nil && ![fetchOperation isCancelled])
                     {
-                        return NO;
+                        callback([self proxyArray:localPuzzles], nil);
                     }
+                    return;
                 }
-                return YES;
-            }];
-            ids = [ids objectsAtIndexes:indexSet];
-        }
-        
-        if ([fetchOperation isCancelled])
+                [puzzles addObjectsFromArray:localPuzzles];
+                NSIndexSet * indexSet = [ids indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                    for (PuzzleData * puzzle in localPuzzles)
+                    {
+                        if ([puzzle.puzzle_id compare:obj] == NSOrderedSame)
+                        {
+                            return NO;
+                        }
+                    }
+                    return YES;
+                }];
+                ids = [ids objectsAtIndexes:indexSet];
+            }
+            
+            NSLog(@"puzzles to load: %@", [ids componentsJoinedByString:@","]);
+            parameters = @{@"ids": [ids componentsJoinedByString:@","]
+                                          , @"session_key": [GlobalData globalData].sessionKey
+                                          };
+        }];
+        if ([fetchOperation isCancelled] || parameters == nil)
         {
             return;
         }
-        NSLog(@"puzzles to load: %@", [ids componentsJoinedByString:@","]);
-        NSDictionary * parameters = @{@"ids": [ids componentsJoinedByString:@","]
-                                      , @"session_key": [GlobalData globalData].sessionKey
-                                      };
+        NSLog(@"user_puzzles parameters: %@", parameters);
+
         [[APIClient sharedClient] getPath:@"user_puzzles" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            dispatch_async(current_dispatch_queue, ^{
+            [DataContext performSyncInDataQueue:^{
                 NSLog(@"user_puzzles loaded");
                 if ([fetchOperation isCancelled])
                 {
@@ -459,6 +485,8 @@
                     }
                 }
                 
+                [[DataContext currentContext] save:nil];
+                
                 if (puzzles.count != ids_.count)
                 {
                     NSLog(@"ERROR: count of fetched puzzles %d is not equal to count of requested ids %d", puzzles.count, ids.count);
@@ -466,9 +494,9 @@
                 
                 if (callback != nil && ![fetchOperation isCancelled])
                 {
-                    callback(puzzles, nil);
+                    callback([self proxyArray:puzzles], nil);
                 }
-            });
+            }];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             if (callback && ![fetchOperation isCancelled])
@@ -490,33 +518,40 @@
     
     [fetchOperation addExecutionBlock:^{
         __block NewsData * news = nil;
-        __block dispatch_queue_t current_dispatch_queue = dispatch_get_current_queue();
-        NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestTemplateForName:@"NewsFetchRequest"];
-        [managedObjectContext lock];
-        NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
-        if (results != nil && results.count > 0)
-        {
-            news = results.lastObject;
-        }
-        else
-        {
-            news = [NSEntityDescription insertNewObjectForEntityForName:@"News" inManagedObjectContext:managedObjectContext];
-        }
-     
-        if ([fetchOperation isCancelled])
+        __block NSMutableURLRequest * request = nil;
+        [DataContext performSyncInDataQueue:^{
+            NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+            NSFetchRequest * fetchRequest = [[AppDelegate currentDelegate].managedObjectModel fetchRequestTemplateForName:@"NewsFetchRequest"];
+            [managedObjectContext lock];
+            NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
+            if (results != nil && results.count > 0)
+            {
+                news = results.lastObject;
+            }
+            else
+            {
+                news = [NSEntityDescription insertNewObjectForEntityForName:@"News" inManagedObjectContext:managedObjectContext];
+            }
+            
+            if ([fetchOperation isCancelled])
+            {
+                return;
+            }
+            [managedObjectContext unlock];
+            
+            NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey};
+            request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"service_messages" parameters:parameters];
+            NSLog(@"news etag: %@", news.etag);
+            [request setValue:news.etag forHTTPHeaderField:@"If-None-Match"];
+        }];
+        
+        if (request == nil)
         {
             return;
         }
-        [managedObjectContext unlock];
-        
-        NSDictionary * parameters = @{@"session_key": [GlobalData globalData].sessionKey};
-        NSMutableURLRequest * request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"service_messages" parameters:parameters];
-        NSLog(@"news etag: %@", news.etag);
-        [request setValue:news.etag forHTTPHeaderField:@"If-None-Match"];
         
         AFHTTPRequestOperation * op = [[APIClient sharedClient] HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            dispatch_async(current_dispatch_queue, ^{
+            [DataContext performSyncInDataQueue:^{
                 if (operation.response.statusCode == 200)
                 {
                     NSDictionary * messages = [[SBJsonParser new] objectWithData:responseObject];
@@ -559,12 +594,12 @@
                     }
                     callback(messagesArray, nil);
                 }
-            });
+            }];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             if (callback != nil && ![fetchOperation isCancelled])
             {
-                dispatch_async(current_dispatch_queue, ^{
+                [DataContext performSyncInDataQueue:^{
                     NSMutableArray * messagesArray = [NSMutableArray new];
                     if (news.news1 != nil)
                     {
@@ -579,7 +614,7 @@
                         [messagesArray addObject:news.news3];
                     }
                     callback(messagesArray, nil);
-                });
+                }];
             }
         }];
         
@@ -616,6 +651,42 @@
 - (PuzzleSetData *)localGetSet:(NSString *)setID
 {
     return [PuzzleSetData puzzleSetWithId:setID andUserId:[GlobalData globalData].loggedInUser.user_id];
+}
+
+- (NSArray *)proxyArray:(NSArray *)originArray
+{
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:originArray.count];
+    for (NSManagedObject * object in originArray) {
+        [array addObject:[self proxyObject:object]];
+    }
+    return array;
+}
+
+- (NSSet *)proxySet:(NSSet *)originSet
+{
+    NSMutableSet * set = [NSMutableSet setWithCapacity:originSet.count];
+    for (NSManagedObject * object in originSet) {
+        [set addObject:[self proxyObject:object]];
+    }
+    return set;
+}
+
+- (DataProxy *)proxyObject:(NSManagedObject *)originObject
+{
+    if ([originObject isKindOfClass:[PuzzleData class]]) {
+        return [[PuzzleProxy alloc] initWithObjectID:originObject.objectID];
+    }
+    else if ([originObject isKindOfClass:[PuzzleSetData class]]) {
+        return [[PuzzleSetProxy alloc] initWithObjectID:originObject.objectID];
+    }
+    else if ([originObject isKindOfClass:[PuzzleSetPackData class]]) {
+        return [[PuzzleSetPackProxy alloc] initWithObjectID:originObject.objectID];
+    }
+    else if ([originObject isKindOfClass:[QuestionData class]]) {
+        return [[QuestionProxy alloc] initWithObjectID:originObject.objectID];
+    }
+    NSLog(@"cannot proxy instance of the class %@", originObject.class);
+    return nil;
 }
 
 @end

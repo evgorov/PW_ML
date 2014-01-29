@@ -104,7 +104,13 @@
 +(PuzzleData *)puzzleWithId:(NSString *)puzzleId andUserId:(NSString *)userId
 {
     __block PuzzleData * puzzleData = nil;
+    if (userId == nil) {
+        NSLog(@"userId is nil!");
+    }
     [DataContext performSyncInDataQueue:^{
+        if (userId == nil) {
+            NSLog(@"userId is nil!");
+        }
         NSManagedObjectContext * moc = [DataContext currentContext];
         NSFetchRequest *request = [moc.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"PuzzlesByIdFetchRequest" substitutionVariables:@{@"PUZZLE_ID": puzzleId, @"USER_ID": userId}];
         

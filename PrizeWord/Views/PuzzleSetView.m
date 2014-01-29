@@ -9,7 +9,7 @@
 #import "PuzzleSetView.h"
 #import "BadgeView.h"
 #import "AppDelegate.h"
-#import "PuzzleSetData.h"
+#import "PuzzleSetProxy.h"
 #import "NSString+Utils.h"
 
 NSString * MONTHS[] = {@"январь", @"февраль", @"март", @"апрель", @"май", @"июнь", @"июль", @"август", @"сентябрь", @"октябрь", @"ноябрь", @"декабрь"};
@@ -18,15 +18,15 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 @interface PuzzleSetView (private)
 
 -(id)initWithType:(PuzzleSetType)type puzzlesCount:(int)count minScore:(int)score price:(float)price;
--(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
--(id)initCompleteWithData:(PuzzleSetData *)puzzleSetData;
+-(id)initWithData:(PuzzleSetProxy *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
+-(id)initCompleteWithData:(PuzzleSetProxy *)puzzleSetData;
 
 
 -(void)initHeaderWithType:(PuzzleSetType)type month:(int)month;
--(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData;
--(void)initBougtSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
--(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData;
--(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
+-(void)initBuySubtitlesWithData:(PuzzleSetProxy *)puzzleSetData;
+-(void)initBougtSubtitlesWithData:(PuzzleSetProxy *)puzzleSetData;
+-(void)initSolvedSubtitlesWithData:(PuzzleSetProxy *)puzzleSetData;
+-(void)initElementsWithData:(PuzzleSetProxy *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 -(void)initProgressWithPuzzlesCount:(int)count puzzlesSolved:(int)solved andPercent:(float)percent;
 
 @end
@@ -53,17 +53,17 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
 @synthesize fullSize = _fullSize;
 @synthesize month = _month;
 
-+ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
++ (float)fullHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet
 {
     if (puzzleSet.bought.boolValue)
     {
-        if (puzzleSet.puzzles.count == 0)
+        if (puzzleSet.orderedPuzzles.count == 0)
         {
             return 105;
         }
         else
         {
-            return floorf([AppDelegate currentDelegate].isIPad ? (97 + 22 + (112 * 1.2) * ceil(puzzleSet.puzzles.count / 5.0)) : (88 + 19 + (94 * 1.2) * ceil(puzzleSet.puzzles.count / 4.0)));
+            return floorf([AppDelegate currentDelegate].isIPad ? (97 + 22 + (112 * 1.2) * ceil(puzzleSet.orderedPuzzles.count / 5.0)) : (88 + 19 + (94 * 1.2) * ceil(puzzleSet.orderedPuzzles.count / 4.0)));
         }
     }
     else
@@ -72,11 +72,11 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
 }
 
-+ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet
++ (float)shortHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet
 {
     if (puzzleSet.bought.boolValue)
     {
-        if (puzzleSet.puzzles.count == 0)
+        if (puzzleSet.orderedPuzzles.count == 0)
         {
             return 105;
         }
@@ -91,7 +91,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
 }
 
--(id)initWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
+-(id)initWithData:(PuzzleSetProxy *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     if (self)
     {
@@ -123,7 +123,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     return self;
 }
 
--(id)initCompleteWithData:(PuzzleSetData *)puzzleSetData
+-(id)initCompleteWithData:(PuzzleSetProxy *)puzzleSetData
 {
     if (self)
     {
@@ -213,7 +213,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     }
 }
 
--(void)initBuySubtitlesWithData:(PuzzleSetData *)puzzleSetData
+-(void)initBuySubtitlesWithData:(PuzzleSetProxy *)puzzleSetData
 {
     int count = puzzleSetData.total;
     int minScore = puzzleSetData.minScore;
@@ -252,7 +252,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _fullSize = self.frame.size;
 }
 
--(void)initBougtSubtitlesWithData:(PuzzleSetData *)puzzleSetData
+-(void)initBougtSubtitlesWithData:(PuzzleSetProxy *)puzzleSetData
 {
     _btnBuy.hidden = YES;
     _lblText2.hidden = NO;
@@ -281,7 +281,7 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblScore.text = scoreString;
 }
 
--(void)initSolvedSubtitlesWithData:(PuzzleSetData *)puzzleSetData
+-(void)initSolvedSubtitlesWithData:(PuzzleSetProxy *)puzzleSetData
 {
     _btnBuy.hidden = YES;
     _lblText2.hidden = YES;
@@ -301,13 +301,13 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblScore.shadowColor = [UIColor blackColor];
 }
 
--(void)initElementsWithData:(PuzzleSetData *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
+-(void)initElementsWithData:(PuzzleSetProxy *)puzzleSetData showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     int badgesPerRow = [AppDelegate currentDelegate].isIPad ? 5 : 4;
     _badges = [NSMutableArray arrayWithCapacity:puzzleSetData.total];
     int badgeIdx = 0;
     NSArray * orderedPuzzles = puzzleSetData.orderedPuzzles;
-    for (PuzzleData * puzzleData in orderedPuzzles)
+    for (PuzzleProxy * puzzleData in orderedPuzzles)
     {
         ++badgeIdx;
         if (puzzleData.progress == 1 && !showSolved)
@@ -374,13 +374,13 @@ float PRICES[] = {3.99f, 2.99f, 1.99f, 0, 1.99f};
     _lblPercent.text = percentString;
 }
 
-+(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
++(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetProxy *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved
 {
     PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
     return [setView initWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
 }
 
-+(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetData *)puzzleSetData
++(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetProxy *)puzzleSetData
 {
     PuzzleSetView * setView = (PuzzleSetView *)[[[NSBundle mainBundle] loadNibNamed:@"PuzzleSetView" owner:self options:nil] objectAtIndex:0];
     return [setView initCompleteWithData:puzzleSetData];

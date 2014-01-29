@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import "PuzzleSetData.h"
+#import "PuzzleSetProxy.h"
 
 @class UserData;
 

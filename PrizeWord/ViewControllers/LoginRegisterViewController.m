@@ -445,7 +445,9 @@ NSRegularExpression * EMAIL_REGEXP;
     int height = imageToSave.size.height;
     int minDimension = width < height ? width : height;
     CGRect subrect = CGRectMake((width - minDimension) / 2, (height - minDimension) / 2, minDimension, minDimension);
-    avatar = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(imageToSave.CGImage, subrect)];
+    CGImageRef cgImage = CGImageCreateWithImageInRect(imageToSave.CGImage, subrect);
+    avatar = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
     // Save the new image (original or edited) to the Camera Roll
     [btnAvatar setBackgroundImage:avatar forState:UIControlStateNormal];
     [btnAvatar setBackgroundImage:nil forState:UIControlStateHighlighted];

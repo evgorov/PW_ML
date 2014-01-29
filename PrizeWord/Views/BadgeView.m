@@ -8,11 +8,11 @@
 
 #import "BadgeView.h"
 #import "AppDelegate.h"
-#import "PuzzleSetData.h"
+#import "PuzzleSetProxy.h"
 
 @interface BadgeView (private)
 
--(void)initWithPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
+-(void)initWithPuzzle:(PuzzleProxy *)puzzle andNumber:(int)number;
 
 @end
 
@@ -20,7 +20,7 @@
 
 @synthesize puzzle = _puzzle;
 
--(void)initWithPuzzle:(PuzzleData *)puzzle andNumber:(int)number
+-(void)initWithPuzzle:(PuzzleProxy *)puzzle andNumber:(int)number
 {
     if (self)
     {
@@ -136,14 +136,14 @@
     [super touchesEnded:touches withEvent:event];
 }
 
-+(BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number
++(BadgeView *)badgeForPuzzle:(PuzzleProxy *)puzzle andNumber:(int)number
 {
     BadgeView * badgeView = (BadgeView *)[[[NSBundle mainBundle] loadNibNamed:@"BadgeView" owner:self options:nil] objectAtIndex:0];
     [badgeView initWithPuzzle:puzzle andNumber:number];
     return badgeView;
 }
 
--(void)updateWithPuzzle:(PuzzleData *)puzzle
+-(void)updateWithPuzzle:(PuzzleProxy *)puzzle
 {
     [self initWithPuzzle:puzzle andNumber:badgeNumber];
 }

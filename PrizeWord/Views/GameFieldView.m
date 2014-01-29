@@ -12,7 +12,7 @@
 #import "EventManager.h"
 #import "TileImageHelper.h"
 #import "AppDelegate.h"
-#import "QuestionData.h"
+#import "QuestionProxy.h"
 
 #define kTileOffset 20
 

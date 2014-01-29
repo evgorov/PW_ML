@@ -8,10 +8,10 @@
 
 #import "GameField.h"
 #import "TileData.h"
-#import "PuzzleData.h"
+#import "PuzzleProxy.h"
 #import "EventManager.h"
-#import "QuestionData.h"
-#import "PuzzleSetData.h"
+#import "QuestionProxy.h"
+#import "PuzzleSetProxy.h"
 #import "GameLogic.h"
 #import "AppDelegate.h"
 #import "GlobalData.h"
@@ -79,7 +79,7 @@
     return self;
 }
 
--(id)initWithData:(PuzzleData *)puzzleData
+-(id)initWithData:(PuzzleProxy *)puzzleData
 {
     LetterType type = LETTER_FREE;
     switch ([puzzleData.puzzleSet.type intValue])
@@ -109,8 +109,8 @@
         _questionsTotal = puzzleData.questions.count;
         _questionsComplete = 0;
         questions = [[NSMutableSet alloc] initWithCapacity:_questionsTotal];
-        for (QuestionData * question in puzzleData.questions) {
-            TileData * tile = [tiles objectAtIndex:([question.column unsignedIntValue] + [question.row unsignedIntValue] * _tilesPerRow)];
+        for (QuestionProxy * question in puzzleData.questions) {
+            TileData * tile = [tiles objectAtIndex:(question.columnAsUint + question.rowAsUint * _tilesPerRow)];
             tile.question = question.question_text;
             tile.answer = question.answer;
             tile.answerPosition = question.answer_positionAsUint;
@@ -536,8 +536,8 @@
 
 -(void)saveSolvedQuestion:(TileData *)questionTile
 {
-    QuestionData * question = nil;
-    for (QuestionData * data in _puzzle.questions) {
+    QuestionProxy * question = nil;
+    for (QuestionProxy * data in _puzzle.questions) {
         if (data.rowAsUint == questionTile.y && data.columnAsUint == questionTile.x)
         {
             question = data;
@@ -560,10 +560,7 @@
         NSLog(@"WARNING: time left is bigger than given time 1");
     }
     _puzzle.etag = @"";
-    NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
-    [question.managedObjectContext lock];
-    [question.managedObjectContext save:nil];
-    [question.managedObjectContext unlock];
+    [question commitChanges];
     [_puzzle synchronize];
 
     if (_questionsComplete == _questionsTotal)
@@ -575,7 +572,7 @@
         }
         
         BOOL isArchivePuzzle = YES;
-        for (PuzzleSetData * puzzleSetData in [GlobalData globalData].monthSets) {
+        for (PuzzleSetProxy * puzzleSetData in [GlobalData globalData].monthSets) {
             if ([_puzzle.puzzleSet.set_id compare:puzzleSetData.set_id] == NSOrderedSame)
             {
                 isArchivePuzzle = NO;
@@ -591,10 +588,7 @@
         [[UserDataManager sharedManager] addScore:scoreForPuzzle forKey:_puzzle.puzzle_id];
     }
 
-    NSAssert(question.managedObjectContext != nil, @"managed object context of managed object is nil");
-    [question.managedObjectContext lock];
-    [question.managedObjectContext save:nil];
-    [question.managedObjectContext unlock];
+    [question commitChanges];
 }
 
 @end

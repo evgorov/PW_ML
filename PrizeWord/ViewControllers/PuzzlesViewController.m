@@ -12,9 +12,9 @@
 #import "PrizeWordNavigationBar.h"
 #import "RootViewController.h"
 #import "PuzzleSetView.h"
-#import "PuzzleSetPackData.h"
-#import "PuzzleSetData.h"
-#import "PuzzleData.h"
+#import "PuzzleSetPackProxy.h"
+#import "PuzzleSetProxy.h"
+#import "PuzzleProxy.h"
 #import "GlobalData.h"
 #import "UserData.h"
 #import "SBJson.h"
@@ -194,22 +194,14 @@ enum PuzzlesSections
             NSLog(@"fetch result");
             if (data != nil && data.count > 0)
             {
-                PuzzleSetData * puzzleSet = [data lastObject];
-                NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
-                [puzzleSet.managedObjectContext lock];
-                [puzzleSet.managedObjectContext save:nil];
-                [puzzleSet.managedObjectContext unlock];
+                PuzzleSetProxy * puzzleSet = [data lastObject];
+                [puzzleSet commitChanges];
             }
             archiveLoading = NO;
             if (data != nil) {
-                __block NSMutableArray * objectIDs = [NSMutableArray arrayWithCapacity:data.count];
-                for (NSManagedObject * object in data) {
-                    [objectIDs addObject:object.objectID];
-                }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    for (NSManagedObjectID * objectID in objectIDs)
+                    for (PuzzleSetProxy * puzzleSet in data)
                     {
-                        PuzzleSetData * puzzleSet = (PuzzleSetData *)[[DataContext currentContext] objectWithID:objectID];
                         if (puzzleSet == nil)
                         {
                             NSLog(@"WARNING: cannot transfer object between threads");
@@ -229,7 +221,9 @@ enum PuzzlesSections
             }
             else
             {
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPuzzlesSectionsArchive] withRowAnimation:UITableViewRowAnimationFade];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPuzzlesSectionsArchive] withRowAnimation:UITableViewRowAnimationFade];
+                });
             }
         }];
     }
@@ -301,7 +295,7 @@ enum PuzzlesSections
             [currentPuzzleSetStates addObject:[PuzzleSetState new]];
         }
         BOOL isFull = [(PuzzleSetState *)[currentPuzzleSetStates objectAtIndex:indexPath.row - 1] isShownFull];
-        PuzzleSetData * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
+        PuzzleSetProxy * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
         float height = isFull ? [PuzzleSetCell fullHeightForPuzzleSet:puzzleSet] : [PuzzleSetCell shortHeightForPuzzleSet:puzzleSet];
         if (indexPath.row == [GlobalData globalData].monthSets.count)
         {
@@ -335,7 +329,7 @@ enum PuzzlesSections
                 state.isShownFull = NO;
             }
             PuzzleSetState * state = [archivePuzzleSetStates objectAtIndex:indexPath.row - 1];
-            PuzzleSetData * puzzleSet = [archivePuzzleSets objectAtIndex:indexPath.row - 1];
+            PuzzleSetProxy * puzzleSet = [archivePuzzleSets objectAtIndex:indexPath.row - 1];
             float height = state.isShownFull ? [PuzzleSetCell fullHeightForPuzzleSet:puzzleSet] : [PuzzleSetCell shortHeightForPuzzleSet:puzzleSet];
             if (!archiveNeedLoading)
             {
@@ -395,7 +389,7 @@ enum PuzzlesSections
         {
             [currentPuzzleSetStates addObject:[PuzzleSetState new]];
         }
-        PuzzleSetData * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
+        PuzzleSetProxy * puzzleSet = [[GlobalData globalData].monthSets objectAtIndex:indexPath.row - 1];
         PuzzleSetState * state = [currentPuzzleSetStates objectAtIndex:indexPath.row - 1];
         if (cell.puzzleSetView != nil && [puzzleSet.set_id compare:cell.puzzleSetView.puzzleSetData.set_id] == NSOrderedSame && [puzzleSet.user_id compare:cell.puzzleSetView.puzzleSetData.user_id])
         {
@@ -475,8 +469,8 @@ enum PuzzlesSections
             {
                 [archivePuzzleSetStates addObject:[PuzzleSetState new]];
             }
-            PuzzleSetData * puzzleSet = [archivePuzzleSets objectAtIndex:indexPath.row - 1];
-            PuzzleSetData * prevPuzzleSet = indexPath.row > 1 ? ([archivePuzzleSets objectAtIndex:indexPath.row - 2]) : nil;
+            PuzzleSetProxy * puzzleSet = [archivePuzzleSets objectAtIndex:indexPath.row - 1];
+            PuzzleSetProxy * prevPuzzleSet = indexPath.row > 1 ? ([archivePuzzleSets objectAtIndex:indexPath.row - 2]) : nil;
             PuzzleSetState * state = [archivePuzzleSetStates objectAtIndex:indexPath.row - 1];
             if (cell.puzzleSetView != nil && [puzzleSet.set_id compare:cell.puzzleSetView.puzzleSetData.set_id] == NSOrderedSame && [puzzleSet.user_id compare:cell.puzzleSetView.puzzleSetData.user_id])
             {

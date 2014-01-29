@@ -14,13 +14,16 @@
 static NSMutableDictionary * contexts = nil;
 static DataContext *gMainSharedInstance;
 static dispatch_queue_t dataQueue;
+static NSMutableDictionary *requests;
 
 +(void) initialize {
     if (self == [DataContext class])
     {
         gMainSharedInstance = [[DataContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         contexts = [NSMutableDictionary new];
-        dataQueue = dispatch_queue_create("DataQueue", DISPATCH_QUEUE_SERIAL);
+//        dataQueue = dispatch_queue_create("ru.aipmedia.prizeword.DataQueue", DISPATCH_QUEUE_SERIAL);
+        dataQueue = dispatch_get_main_queue();
+        requests = [NSMutableDictionary new];
     }
 }
 
@@ -42,6 +45,10 @@ static dispatch_queue_t dataQueue;
         return [self mainContext];
 
     dispatch_queue_t current_queue = dispatch_get_current_queue();
+    if (current_queue != dataQueue)
+    {
+        NSLog(@"unknown queue: %@", current_queue);
+    }
     NSNumber * identifier = [NSNumber numberWithLongLong:(long long)current_queue];
     
     DataContext *context = [contexts objectForKey:identifier];
@@ -56,19 +63,50 @@ static dispatch_queue_t dataQueue;
 
 + (void)performAsyncInDataQueue:(void (^)())block
 {
+//    NSLog(@"performAsyncInDataQueue %@", [NSThread callStackSymbols]);
+//    [DataContext performSyncInDataQueue:block];
     dispatch_async(dataQueue, block);
 }
 
 + (void)performSyncInDataQueue:(void (^)())block
 {
+    /*
+    NSString * callstack = [NSThread callStackSymbols].description;
+    NSNumber * number = [requests objectForKey:callstack];
+    if (number == nil)
+    {
+        number = [NSNumber numberWithInt:1];
+    }
+    else
+    {
+        number = [NSNumber numberWithInt:number.intValue + 1];
+    }
+    [requests setObject:number forKey:callstack];
+    NSLog(@"start performSyncInDataQueue %d %@", requests.count, callstack);
+    */
     if (dispatch_get_current_queue() == dataQueue)
     {
+//        NSLog(@"dispatch from current dataQueue");
         block();
     }
     else
     {
+//        NSLog(@"dispatch sync from dataQueue");
         dispatch_sync(dataQueue, block);
     }
+    /*
+    number = [requests objectForKey:callstack];
+    if (number == nil || number.intValue == 1)
+    {
+        [requests removeObjectForKey:callstack];
+    }
+    else
+    {
+        number = [NSNumber numberWithInt:number.intValue - 1];
+        [requests setObject:number forKey:callstack];
+    }
+    NSLog(@"finish performSyncInDataQueue %d %@", requests.count, callstack);
+    */
 }
 
 -(id)initWithConcurrencyType:(NSManagedObjectContextConcurrencyType)ct

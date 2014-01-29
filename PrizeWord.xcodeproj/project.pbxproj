@@ -54,6 +54,11 @@
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
 		6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B9227C81800534F004E1505 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6B93CCB018963D1700DACE98 /* QuestionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCAF18963D1700DACE98 /* QuestionProxy.m */; };
+		6B93CCB318963F2B00DACE98 /* DataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB218963F2B00DACE98 /* DataProxy.m */; };
+		6B93CCB618968A6D00DACE98 /* PuzzleProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB518968A6D00DACE98 /* PuzzleProxy.m */; };
+		6B93CCB9189696D000DACE98 /* PuzzleSetProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB8189696D000DACE98 /* PuzzleSetProxy.m */; };
+		6B93CCBC1896CC2E00DACE98 /* PuzzleSetPackProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCBB1896CC2E00DACE98 /* PuzzleSetPackProxy.m */; };
 		6B95DEF5180FCEDD00A88F5A /* pause_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF3180FCEDD00A88F5A /* pause_bg.png */; };
 		6B95DEF6180FCEDD00A88F5A /* pause_bg~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */; };
 		6B95DF07180FCF1C00A88F5A /* switch_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */; };
@@ -749,6 +754,16 @@
 		6B9227C5180052A1004E1505 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDataManager.h; path = DataLogic/UserDataManager.h; sourceTree = "<group>"; };
 		6B9227C6180052A1004E1505 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDataManager.m; path = DataLogic/UserDataManager.m; sourceTree = "<group>"; };
 		6B9227C81800534F004E1505 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6B93CCAE18963D1700DACE98 /* QuestionProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionProxy.h; path = DataLogic/QuestionProxy.h; sourceTree = "<group>"; };
+		6B93CCAF18963D1700DACE98 /* QuestionProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QuestionProxy.m; path = DataLogic/QuestionProxy.m; sourceTree = "<group>"; };
+		6B93CCB118963F2B00DACE98 /* DataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataProxy.h; path = DataLogic/DataProxy.h; sourceTree = "<group>"; };
+		6B93CCB218963F2B00DACE98 /* DataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataProxy.m; path = DataLogic/DataProxy.m; sourceTree = "<group>"; };
+		6B93CCB418968A6D00DACE98 /* PuzzleProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleProxy.h; path = DataLogic/PuzzleProxy.h; sourceTree = "<group>"; };
+		6B93CCB518968A6D00DACE98 /* PuzzleProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleProxy.m; path = DataLogic/PuzzleProxy.m; sourceTree = "<group>"; };
+		6B93CCB7189696D000DACE98 /* PuzzleSetProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetProxy.h; path = DataLogic/PuzzleSetProxy.h; sourceTree = "<group>"; };
+		6B93CCB8189696D000DACE98 /* PuzzleSetProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetProxy.m; path = DataLogic/PuzzleSetProxy.m; sourceTree = "<group>"; };
+		6B93CCBA1896CC2E00DACE98 /* PuzzleSetPackProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetPackProxy.h; path = DataLogic/PuzzleSetPackProxy.h; sourceTree = "<group>"; };
+		6B93CCBB1896CC2E00DACE98 /* PuzzleSetPackProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetPackProxy.m; path = DataLogic/PuzzleSetPackProxy.m; sourceTree = "<group>"; };
 		6B95DEF3180FCEDD00A88F5A /* pause_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause_bg.png; sourceTree = "<group>"; };
 		6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause_bg~ipad.png"; sourceTree = "<group>"; };
 		6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_disabled.png; sourceTree = "<group>"; };
@@ -1565,6 +1580,16 @@
 				6B9227C6180052A1004E1505 /* UserDataManager.m */,
 				6BD165DD1803DFC200F140AD /* DataContext.h */,
 				6BD165DE1803DFC200F140AD /* DataContext.m */,
+				6B93CCB118963F2B00DACE98 /* DataProxy.h */,
+				6B93CCB218963F2B00DACE98 /* DataProxy.m */,
+				6B93CCAE18963D1700DACE98 /* QuestionProxy.h */,
+				6B93CCAF18963D1700DACE98 /* QuestionProxy.m */,
+				6B93CCB418968A6D00DACE98 /* PuzzleProxy.h */,
+				6B93CCB518968A6D00DACE98 /* PuzzleProxy.m */,
+				6B93CCB7189696D000DACE98 /* PuzzleSetProxy.h */,
+				6B93CCB8189696D000DACE98 /* PuzzleSetProxy.m */,
+				6B93CCBA1896CC2E00DACE98 /* PuzzleSetPackProxy.h */,
+				6B93CCBB1896CC2E00DACE98 /* PuzzleSetPackProxy.m */,
 			);
 			name = DataLogic;
 			sourceTree = "<group>";
@@ -3352,6 +3377,7 @@
 				F2950238165E016400DACFBA /* EventManager.m in Sources */,
 				6BBF0593186B2C7900177C19 /* SponsorPaySDK.m in Sources */,
 				F295023B165E036800DACFBA /* Event.m in Sources */,
+				6B93CCB318963F2B00DACE98 /* DataProxy.m in Sources */,
 				6BBF059B186B2C7900177C19 /* SPJailbreakStatusProvider.m in Sources */,
 				F2950241165EADC500DACFBA /* GameLogic.m in Sources */,
 				F295024F16620B5700DACFBA /* GameField.m in Sources */,
@@ -3367,6 +3393,7 @@
 				6BBF057D186B2C7900177C19 /* SPApplifierAdapter.m in Sources */,
 				F2868CC5166C9CE0003F0686 /* PuzzleSetData.m in Sources */,
 				F2868CC9166CB15B003F0686 /* ReleaseNotesViewController.m in Sources */,
+				6B93CCBC1896CC2E00DACE98 /* PuzzleSetPackProxy.m in Sources */,
 				6BD165F7180594D500F140AD /* LoadingCell.m in Sources */,
 				F2868CDD166EF7C7003F0686 /* PrizeWordNavigationBar.m in Sources */,
 				F2868CE2166F047C003F0686 /* PrizeWordNavigationController.m in Sources */,
@@ -3394,6 +3421,7 @@
 				F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */,
 				F286E3EB167E378700FF5E83 /* RatingViewController.m in Sources */,
 				6BBF0580186B2C7900177C19 /* SPMockTPNAdapter.m in Sources */,
+				6B93CCB618968A6D00DACE98 /* PuzzleProxy.m in Sources */,
 				6BBF058A186B2C7900177C19 /* SPAdvertiserManager.m in Sources */,
 				F286E3FF1681760300FF5E83 /* PuzzleSetView.m in Sources */,
 				F279AE5116894E2F00424267 /* PrizeWordSwitchView.m in Sources */,
@@ -3429,6 +3457,8 @@
 				6BBF0598186B2C7900177C19 /* SPTargetedNotificationFilter.m in Sources */,
 				F20F0F0C16E8C1B6009AEEE6 /* FISoundContext.m in Sources */,
 				F20F0F0E16E8C1B6009AEEE6 /* FISoundDevice.m in Sources */,
+				6B93CCB9189696D000DACE98 /* PuzzleSetProxy.m in Sources */,
+				6B93CCB018963D1700DACE98 /* QuestionProxy.m in Sources */,
 				6BBF0595186B2C7900177C19 /* SPResourceLoader.m in Sources */,
 				F20F0F1016E8C1B6009AEEE6 /* FISoundEngine.m in Sources */,
 				F20F0F1116E8C1B6009AEEE6 /* FISoundSource.m in Sources */,

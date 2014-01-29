@@ -15,7 +15,7 @@
 @class GameFieldView;
 @class GameField;
 @class FlipNumberView;
-@class PuzzleData;
+@class PuzzleProxy;
 @class FISound;
 
 @interface GameViewController : PrizeWordViewController<EventListenerDelegate, UITextFieldDelegate, UIAlertViewDelegate, SKProductsRequestDelegate>

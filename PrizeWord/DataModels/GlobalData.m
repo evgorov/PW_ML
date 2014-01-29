@@ -7,8 +7,8 @@
 //
 
 #import "GlobalData.h"
-#import "PuzzleSetData.h"
-#import "PuzzleData.h"
+#import "PuzzleSetProxy.h"
+#import "PuzzleProxy.h"
 #import "SBJson.h"
 #import "UserData.h"
 #import "EventManager.h"
@@ -183,39 +183,24 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     [[DataManager sharedManager] fetchCurrentMonthSetsWithCompletion:^(NSArray *data, NSError *error) {
         if (data != nil)
         {
-            __block NSMutableArray * objectIDs = [NSMutableArray arrayWithCapacity:data.count];
-            for (NSManagedObject * object in data) {
-                [objectIDs addObject:object.objectID];
+            _monthSets = data;
+            if (_monthSets.count > 0)
+            {
+                PuzzleSetProxy * puzzleSet = [_monthSets lastObject];
+                [puzzleSet commitChanges];
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableArray * objects = [NSMutableArray arrayWithCapacity:objectIDs.count];
-                for (NSManagedObjectID * objectID in objectIDs)
+            for (PuzzleSetProxy * puzzleSet in _monthSets)
+            {
+                if (puzzleSet.set_id == nil)
                 {
-                    [objects addObject:[[DataContext currentContext] objectWithID:objectID]];
+                    NSLog(@"puzzle set id is nil");
                 }
-                _monthSets = objects;
-                if (_monthSets.count > 0)
+                for (PuzzleProxy * puzzle in puzzleSet.orderedPuzzles)
                 {
-                    PuzzleSetData * puzzleSet = [_monthSets lastObject];
-                    NSAssert(puzzleSet.managedObjectContext != nil, @"managed object context of managed object in nil");
-                    [puzzleSet.managedObjectContext lock];
-                    [puzzleSet.managedObjectContext save:nil];
-                    [puzzleSet.managedObjectContext unlock];
+                    NSLog(@"puzzle id: %@", puzzle.puzzle_id);
                 }
-                for (PuzzleSetData * puzzleSet in _monthSets)
-                {
-                    if (puzzleSet.set_id == nil)
-                    {
-                        NSLog(@"puzzle set id is nil");
-                    }
-                    for (PuzzleData * puzzle in puzzleSet.puzzles)
-                    {
-                        NSLog(@"puzzle id: %@", puzzle.puzzle_id);
-                    }
-                }
-                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
-            });
-
+            }
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_MONTH_SETS_UPDATED andData:_monthSets]];
         }
     }];
 }

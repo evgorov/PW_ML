@@ -17,8 +17,8 @@
 #import "GlobalData.h"
 #import "UserData.h"
 #import "SBJson.h"
-#import "PuzzleData.h"
-#import "PuzzleSetData.h"
+#import "PuzzleProxy.h"
+#import "PuzzleSetProxy.h"
 #import "FlipNumberView.h"
 #import "SocialNetworks.h"
 #import "PrizeWordButton.h"
@@ -272,12 +272,12 @@ extern NSString * PRODUCTID_HINTS10;
 {
     [[AppDelegate currentDelegate].rootViewController hideOverlay];
     [gameField.puzzle synchronize];
-    PuzzleData * puzzle = gameField.puzzle;
-    PuzzleSetData * puzzleSet = puzzle.puzzleSet;
+    PuzzleProxy * puzzle = gameField.puzzle;
+    PuzzleSetProxy * puzzleSet = puzzle.puzzleSet;
     BOOL selectNext = NO;
-    PuzzleData * nextPuzzle = nil;
+    PuzzleProxy * nextPuzzle = nil;
     NSArray * orderedPuzzles = puzzleSet.orderedPuzzles;
-    for (PuzzleData * otherPuzzle in orderedPuzzles)
+    for (PuzzleProxy * otherPuzzle in orderedPuzzles)
     {
         if (selectNext && otherPuzzle.progress != 1)
         {
@@ -291,7 +291,7 @@ extern NSString * PRODUCTID_HINTS10;
     }
     if (nextPuzzle == nil)
     {
-        for (PuzzleData * otherPuzzle in orderedPuzzles) {
+        for (PuzzleProxy * otherPuzzle in orderedPuzzles) {
             if (otherPuzzle.progress != 1)
             {
                 nextPuzzle = otherPuzzle;
@@ -637,7 +637,7 @@ extern NSString * PRODUCTID_HINTS10;
 -(void)animateFinalScreenAppears:(id)sender
 {
     NSTimer * timer = sender;
-    PuzzleData * puzzleData = timer.userInfo;
+    PuzzleProxy * puzzleData = timer.userInfo;
     
     CGRect shareFrame = finalShareView.frame;
     shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;

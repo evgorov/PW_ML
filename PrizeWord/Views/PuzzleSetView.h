@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class PuzzleSetData;
+@class PuzzleSetProxy;
 @class SKProduct;
 
 @interface PuzzleSetView : UIView
@@ -32,17 +32,17 @@
 @property (nonatomic, readonly) NSMutableArray * badges;
 @property (strong, nonatomic) SKProduct * product;
 
-@property (nonatomic, readonly) PuzzleSetData * puzzleSetData;
+@property (nonatomic, readonly) PuzzleSetProxy * puzzleSetData;
 @property (nonatomic, readonly) CGSize shortSize;
 @property (nonatomic, readonly) CGSize fullSize;
 @property (readonly) int month;
 
-+ (float)fullHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
-+ (float)shortHeightForPuzzleSet:(PuzzleSetData *)puzzleSet;
++ (float)fullHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet;
++ (float)shortHeightForPuzzleSet:(PuzzleSetProxy *)puzzleSet;
 
-+(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetData *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
++(PuzzleSetView *)puzzleSetViewWithData:(PuzzleSetProxy *)puzzleSetData month:(int)month showSolved:(BOOL)showSolved showUnsolved:(BOOL)showUnsolved;
 
-+(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetData *)puzzleSetData;
++(PuzzleSetView *)puzzleSetCompleteViewWithData:(PuzzleSetProxy *)puzzleSetData;
 
 
 -(void)switchToBought;

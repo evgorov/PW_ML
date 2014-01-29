@@ -13,7 +13,7 @@
 #import "RootViewController.h"
 #import "InviteViewController.h"
 #import "PuzzleSetView.h"
-#import "PuzzleSetData.h"
+#import "PuzzleSetProxy.h"
 #import "GlobalData.h"
 #import "UserData.h"
 #import "SBJsonParser.h"
@@ -36,7 +36,7 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
     int yOffset = 0;
     int idx = 0;
-    for (PuzzleSetData * puzzleSet in [GlobalData globalData].monthSets) {
+    for (PuzzleSetProxy * puzzleSet in [GlobalData globalData].monthSets) {
         if (puzzleSet.type.intValue == PUZZLESET_FREE && puzzleSet.score == 0 && puzzleSet.minScore == 0)
         {
             continue;

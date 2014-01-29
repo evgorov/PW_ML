@@ -11,9 +11,8 @@
 #import "GameViewController.h"
 #import "EventManager.h"
 #import "GameField.h"
-#import "PuzzleData.h"
-#import "QuestionData.h"
-#import "PuzzleSetData.h"
+#import "PuzzleProxy.h"
+#import "PuzzleSetProxy.h"
 #import "PrizeWordNavigationController.h"
 #import "RootViewController.h"
 
@@ -76,7 +75,7 @@
     {
         case EVENT_GAME_REQUEST_START:
         {
-            PuzzleData * puzzle = (PuzzleData *)event.data;
+            PuzzleProxy * puzzle = (PuzzleProxy *)event.data;
             currentGameField = [[GameField alloc] initWithData:puzzle];
             [[AppDelegate currentDelegate].rootViewController hideMenuAnimated:YES];
             if ([[AppDelegate currentDelegate].navController.topViewController isKindOfClass:[GameViewController class]])

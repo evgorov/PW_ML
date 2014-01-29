@@ -26,8 +26,6 @@ typedef void(^StringDataFetchCallback)(NSString * data, NSError * error);
 - (void)fetchPuzzles:(NSArray *)ids completion:(ArrayDataFetchCallback)callback;
 - (void)fetchNewsWithCompletion:(ArrayDataFetchCallback)callback;
 
-- (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year;
-- (NSArray *)localGetPuzzles:(NSArray *)ids;
 - (PuzzleSetData *)localGetSet:(NSString *)setID;
 
 @end

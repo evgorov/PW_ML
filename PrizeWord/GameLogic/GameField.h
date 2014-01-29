@@ -10,7 +10,7 @@
 #import "EventListenerDelegate.h"
 #import "TileData.h"
 
-@class PuzzleData;
+@class PuzzleProxy;
 
 @interface GameField : NSObject<EventListenerDelegate>
 {
@@ -23,13 +23,13 @@
     FISound * questionSound;
 }
 
-@property (readonly) PuzzleData * puzzle;
+@property (readonly) PuzzleProxy * puzzle;
 @property (readonly) uint tilesPerRow;
 @property (readonly) uint tilesPerCol;
 @property (readonly) uint questionsTotal;
 @property (readonly) uint questionsComplete;
 
--(id)initWithData:(PuzzleData *)puzzleData;
+-(id)initWithData:(PuzzleProxy *)puzzleData;
 -(id)initWithTilesPerRow:(uint)width tilesPerCol:(uint)height andType:(LetterType)type;
 -(TileData *)dataForPositionX:(uint)x y:(uint)y;
 

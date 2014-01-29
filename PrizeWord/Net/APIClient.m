@@ -45,6 +45,7 @@
         
     } failure:^(AFHTTPRequestOperation * operation, NSError * error) {
         NSLog(@"failure status code: %d", operation.response.statusCode);
+        NSLog(@"failure request: %@ %@", operation.request, [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         if (operation.response.statusCode == 401)
         {
             NSString * message = NSLocalizedString(@"Session has ended. Please log in again.", @"Not-authorized HTTP status code");

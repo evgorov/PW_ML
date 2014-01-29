@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PuzzleData.h"
+#import "PuzzleProxy.h"
 #import "PrizeWordButton.h"
 
 @interface BadgeView : PrizeWordButton
@@ -23,9 +23,9 @@
     IBOutlet UIView *imgOverlay;
 }
 
-+(BadgeView *)badgeForPuzzle:(PuzzleData *)puzzle andNumber:(int)number;
--(void)updateWithPuzzle:(PuzzleData *)puzzle;
++(BadgeView *)badgeForPuzzle:(PuzzleProxy *)puzzle andNumber:(int)number;
+-(void)updateWithPuzzle:(PuzzleProxy *)puzzle;
 
-@property (readonly) PuzzleData * puzzle;
+@property (readonly) PuzzleProxy * puzzle;
 
 @end
