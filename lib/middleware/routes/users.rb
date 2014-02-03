@@ -7,11 +7,6 @@ require 'user_factory'
 require 'model/user'
 require 'model/user_data'
 require 'model/user_score'
-require 'model/service_message'
-require 'model/coefficients'
-require 'model/device'
-require 'model/android_device'
-
 require 'wall_publisher'
 
 module Middleware
@@ -94,26 +89,6 @@ module Middleware
       else
         user_sets.to_json
       end
-    end
-
-
-    # TODO: Legacy route, duplicates +POST /ios/register_device+
-    post '/register_device' do
-      env['token_auth'].authorize!
-      Device.new.storage(env['redis']).tap{ |o| o['id'] = params['id'] }.save
-      { 'message' => 'ok' }.to_json
-    end
-
-    post '/ios/register_device' do
-      env['token_auth'].authorize!
-      Device.new.storage(env['redis']).tap{ |o| o['id'] = params['id'] }.save
-      { 'message' => 'ok' }.to_json
-    end
-
-    post '/android/register_device' do
-      env['token_auth'].authorize!
-      AndroidDevice.new.storage(env['redis']).tap{ |o| o['id'] = params['id'] }.save
-      { 'message' => 'ok' }.to_json
     end
 
     get '/puzzles/:id' do
