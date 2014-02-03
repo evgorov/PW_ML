@@ -12,10 +12,9 @@ require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
 require 'middleware/password_reset'
-require 'middleware/routes/users'
-require 'middleware/routes/admin'
 require 'middleware/counter'
 require 'middleware/uploader'
+require 'middleware/routes/cascade'
 require 'middleware/etag'
 
 class IndexPage
@@ -90,6 +89,4 @@ use Middleware::APNPusher, pusher_params
 use Middleware::BasicRegistration
 use Middleware::PasswordReset
 
-use Middleware::Users
-
-run Middleware::Admin
+run Middleware::Cascade

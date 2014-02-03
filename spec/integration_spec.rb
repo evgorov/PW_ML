@@ -6,8 +6,7 @@ require 'middleware/uploader'
 require 'middleware/basic_registration'
 require 'middleware/token_auth_strategy'
 require 'middleware/oauth_provider_authorization'
-require 'middleware/routes/users'
-require 'middleware/routes/admin'
+require 'middleware/routes/cascade'
 require 'middleware/etag'
 
 require 'rack/test'
@@ -111,10 +110,10 @@ describe 'Integration spec' do
       use Middleware::PasswordReset
 
       Middleware::Users.settings.environment = :test
-      use Middleware::Users
-
       Middleware::Admin.settings.environment = :test
-      run Middleware::Admin
+      Middleware::Store.settings.environment = :test
+
+      run Middleware::Cascade.new
     end
   end
 
