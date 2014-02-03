@@ -2,3 +2,4 @@ dump.rdb
 public/img/uploads/*
 .#*
 tmp/*
+log/*
