@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.vk.com/method/wall.post?access_token=c1f2927a659696535a2f63658c7eed8ec9712bf1cfdcf5395b08d64e969c6e43c18c447383c39e5903f96&attachmments=http://imgs.xkcd.com/comics/tar.png&message=test%20message
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.2.4
+      Date:
+      - Sat, 02 Feb 2013 20:04:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '477'
+      Connection:
+      - keep-alive
+      Vary:
+      - Host
+      X-Powered-By:
+      - PHP/5.3.3-7+squeeze3
+      Set-Cookie:
+      - remixlang=0; expires=Wed, 12-Feb-2014 18:39:29 GMT; path=/; domain=.vk.com
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+    body:
+      encoding: US-ASCII
+      string: ! '{"result": "ok"}'
+    http_version: !!null
+  recorded_at: Sat, 02 Feb 2013 20:04:45 GMT
+recorded_with: VCR 2.3.0
