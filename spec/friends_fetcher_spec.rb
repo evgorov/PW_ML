@@ -3,7 +3,6 @@ require 'rack/test'
 require 'vcr'
 require 'json'
 
-
 describe FriendsFetcher do
 
   before(:all) do

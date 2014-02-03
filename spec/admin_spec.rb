@@ -1,6 +1,6 @@
 require 'model/user'
 require 'model/user_data'
-require 'middleware/admin'
+require 'middleware/routes/admin'
 require 'rack/test'
 require 'json'
 require './spec/fixtures'
