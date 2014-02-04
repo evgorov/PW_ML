@@ -91,25 +91,6 @@ module Middleware
       end
     end
 
-    get '/puzzles/:id' do
-      env['token_auth'].authorize!
-      current_user["puzzle-data.#{params[:id]}"].to_json
-    end
-
-    put '/puzzles/:id' do
-      begin
-        JSON.parse(params['puzzle_data'])
-      rescue JSON::ParserError
-        halt(403, { 'message' => 'invalid json data'}.to_json)
-      end
-
-      env['token_auth'].authorize!
-      current_user["puzzle-data.#{params[:id]}"] = params['puzzle_data']
-      current_user.save
-
-      { "message" => "ok" }.to_json
-    end
-
     get '/:provider/friends' do
       env['token_auth'].authorize!
       current_user.fetch_friends(params['provider'])
