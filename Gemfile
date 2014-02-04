@@ -17,6 +17,7 @@ group :app do
   gem 'grocer'
   gem 'pushmeup'
   gem 'unicorn'
+  gem 'dalli'
 end
 
 group :test do
