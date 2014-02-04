@@ -756,4 +756,44 @@ describe 'Integration spec' do
     post '/android/register_device', session_key: session_key, id: 'device1'
     last_response.status.should == 200
   end
+
+  context 'puzzle_data' do
+
+    it 'puzzle_data succesfull scenario' do
+      post '/signup', valid_user_data
+      post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+
+      put '/puzzles/123', { session_key: session_key, puzzle_data: '[1,2,3]' }
+      last_response.status.should == 200
+      last_response_should_be_json
+
+      get '/puzzles/123', session_key: session_key
+      last_response.status.should == 200
+      last_response.body.should == '"[1,2,3]"'
+    end
+
+    it 'puzzle_data not found' do
+      post '/signup', valid_user_data
+      post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+
+      get '/puzzles/123', session_key: session_key
+      last_response.status.should == 200
+      last_response.body.should == "null"
+    end
+
+    it 'do not store invalid json' do
+      post '/signup', valid_user_data
+      post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+      response_data = JSON.parse(last_response.body)
+      session_key = response_data['session_key']
+
+      put '/puzzles/123', { session_key: session_key, puzzle_data: '[1,2,3' }
+      last_response.status.should == 403
+    end
+
+  end
 end
