@@ -30,8 +30,8 @@ module UserFactory
         user_data['surname'] = fb_data['last_name']
         user_data['email'] = fb_data['email']
         month, day, year = fb_data['birthday'] && fb_data['birthday'].split('/')
-        user_data['birthdate'] = [year, month, day].join('-')
-        user_data['city'] = fb_data['hometown'] && fb_data['hometown']['name']
+        user_data['birthdate'] = (year && [year, month, day].join('-')) || ''
+        user_data['city'] = (fb_data['hometown'] && fb_data['hometown']['name']) || ''
         user_data['userpic'] = "http://graph.facebook.com/#{fb_data['id']}/picture?width=85&height=85"
         user_data.storage(storage).save
         u['user_data_id'] = user_data.id
@@ -58,6 +58,8 @@ module UserFactory
         user_data['vkontakte_access_token'] = access_token.to_s
         user_data['surname'] = vk_data['last_name']
         user_data['userpic'] = vk_data['photo_medium']
+        user_data['city'] = ''
+        user_data['birthdate'] = ''
         user_data.storage(storage).save
         u['user_data_id'] = user_data.id
         u.storage(storage).save
