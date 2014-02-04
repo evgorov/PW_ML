@@ -38,7 +38,6 @@ use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.
 
 use Middleware::RedisMiddleware
 
-
 use Middleware::Uploader, serve_from: '/img/uploads'
 
 use Middleware::Counter, counter_mappings: {
@@ -53,6 +52,7 @@ Middleware::TokenAuthStrategy.deserialize_user_proc = lambda do |env, key|
   klass, id = key.split('#', 2)
   Kernel.const_get(klass).storage(env['redis']).load(id)
 end
+
 use Middleware::TokenAuthStrategy
 
 facebook_options = {
@@ -89,4 +89,8 @@ use Middleware::APNPusher, pusher_params
 use Middleware::BasicRegistration
 use Middleware::PasswordReset
 
-run Middleware::Cascade
+use Middleware::Cascade
+use Rack::ContentLength
+use Rack::ContentType, "application/json"
+
+run lambda { |env|  [404, {} ,['{"message":"not found"}']] }

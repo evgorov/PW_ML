@@ -14,12 +14,12 @@ module Middleware
                  Middleware::Store.new,
                  Middleware::Admin.new,
                  Middleware::Sets.new,
-                 Middleware::ConfigurationData.new,
                  Middleware::DeviceTracking.new,
                  Middleware::StorePuzzleData.new,
+                 Middleware::ConfigurationData.new,
                  Middleware::Users.new
                 ]
-      cascade.unshift(app) if app
+      cascade.push(app) if app
       @app = Rack::Cascade.new(cascade)
     end
 
