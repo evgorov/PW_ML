@@ -16,6 +16,10 @@ require 'middleware/counter'
 require 'middleware/uploader'
 require 'middleware/routes/cascade'
 require 'middleware/etag'
+require 'newrelic_rpm'
+require 'new_relic/rack/agent_hooks'
+require 'new_relic/rack/error_collector'
+
 
 class IndexPage
 
@@ -28,6 +32,9 @@ class IndexPage
     @app.call(env)
   end
 end
+
+use NewRelic::Rack::AgentHooks
+use NewRelic::Rack::ErrorCollector
 
 use Rack::Cache
 use Etag

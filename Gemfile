@@ -18,6 +18,7 @@ group :app do
   gem 'pushmeup'
   gem 'unicorn'
   gem 'dalli'
+  gem 'newrelic_rpm'
 end
 
 group :test do
