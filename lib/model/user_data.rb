@@ -3,6 +3,7 @@ require 'ext/hash'
 require 'model/basic_model'
 require 'model/invited_user'
 require 'friends_fetcher'
+require 'digest/sha2'
 
 class UserData < BasicModel
 
@@ -164,6 +165,19 @@ class UserData < BasicModel
 
   def inc_month_score(amount)
     @hash['month_score'] = @storage.incrby("#{self['id']}#score##{current_period}", amount.to_i)
+  end
+
+  def sets
+    (self['sets-versions'] || {}).values.map { |k| JSON.parse(@storage.get(k)) }
+  end
+
+  def add_set!(set_data)
+    digest = "set:#{Digest::SHA256.hexdigest(set_data.to_json)}"
+    @storage.set(digest, set_data.to_json) unless @storage.exists(digest)
+    self['sets'] = (self['sets'] || []) | [set_data['id']]
+    self['sets-versions'] ||= {}
+    self['sets-versions'][set_data['id']] = digest
+    self.save
   end
 
   def cheater?

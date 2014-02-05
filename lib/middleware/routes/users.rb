@@ -77,20 +77,6 @@ module Middleware
       { me: user }.to_json
     end
 
-    get '/user_puzzles' do
-      env['token_auth'].authorize!
-      user_sets = (current_user['sets'] || [])
-        .map { |o| o['puzzles'] }
-        .flatten
-
-      if params['ids']
-        ids = params['ids'].split(',')
-        user_sets.select{ |o| ids.include?(o['id']) }.to_json
-      else
-        user_sets.to_json
-      end
-    end
-
     get '/:provider/friends' do
       env['token_auth'].authorize!
       current_user.fetch_friends(params['provider'])

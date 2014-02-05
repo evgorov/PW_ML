@@ -4,6 +4,7 @@ require 'securerandom'
 require 'ext/hash'
 require 'model/basic_model'
 require 'model/puzzle'
+require 'digest/sha2'
 
 class PuzzleSet < BasicModel
 

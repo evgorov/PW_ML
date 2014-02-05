@@ -24,6 +24,21 @@ module Middleware
 
     ANDROID_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtspobFVSi6fZ6L3q5l64JVVcJaK19gVWllXQi5FxaN1V0Yti84O+Xzuw7fWWnrgleKLRNSMPrOd/rQrDAHhEm9kk7gq0PUzLwOzpqgnvWa9fsvQVc5jOi69O7B2Vn+KftNQ+VXReFXpEp4IA6DKIu3f0gNqha/szA2eq1uDyO+MXtU9Kpz2XeAedpVNSMn9OEDR2U4rN39GUqumg0NwidbpCkfhbmSGYoJOPAUOIXf5J1YIeR75pBV2GCUiT4d8fCGCv/UMunTbNkI+BjDov/hmzU4njk1sIlSSpz0a9pM4v6Q2dIrrKIrOsjSI7r+c/C2U2dqviAUZ96tYDS+bp7wIDAQAB'.freeze
 
+    get '/user_puzzles' do
+      env['token_auth'].authorize!
+      user_sets = current_user
+        .sets
+        .map { |o| o['puzzles'] }
+        .flatten
+
+      if params['ids']
+        ids = params['ids'].split(',')
+        user_sets.select{ |o| ids.include?(o['id']) }.to_json
+      else
+        user_sets.to_json
+      end
+    end
+
     post '/hints/buy' do
       # need this to allow counters include hints_bought,
       { "message" => "ok" }.to_json
@@ -43,12 +58,8 @@ module Middleware
         end
       end
 
-      user = current_user
       result = puzzle_set.to_hash.merge('bought' => true)
-      user['sets'] ||= []
-      user['sets'] = [result] | user['sets']
-      user.save
-
+      current_user.add_set!(result)
       result.to_json
     end
   end

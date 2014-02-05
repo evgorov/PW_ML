@@ -2,6 +2,7 @@ require 'model/user'
 require 'model/user_data'
 require 'model/user_score'
 require 'fake_redis_middleware'
+require 'digest/sha2'
 require 'fixtures'
 
 class ScreamingProxy
@@ -19,6 +20,37 @@ end
 describe UserData do
   include_context 'fake_redis_middleware'
   include_context 'fixtures'
+
+  it '#add_set!' do
+    redis = fake_redis_middleware.new(nil)
+    ud = UserData.storage(redis)
+    ud.merge(user_in_storage)
+    ud.save
+    puzzle_data = {'id' => '1', 'data' => 'HABA' }
+    digest = "set:#{Digest::SHA256.hexdigest(puzzle_data.to_json)}"
+    ud.add_set!(puzzle_data)
+    JSON.parse(redis.get(ud.id))['sets'].should == ['1']
+    JSON.parse(redis.get(ud.id))['sets-versions'].should == { '1' => digest }
+    redis.get(digest).should == puzzle_data.to_json
+  end
+
+  it '#sets empty' do
+    redis = fake_redis_middleware.new(nil)
+    ud = UserData.storage(redis)
+    ud.merge(user_in_storage)
+    ud.save
+    ud.sets.should == []
+  end
+
+  it '#sets' do
+    redis = fake_redis_middleware.new(nil)
+    ud = UserData.storage(redis)
+    ud.merge(user_in_storage)
+    ud.save
+    puzzle_data = {'id' => '1', 'data' => 'HABA' }
+    ud.add_set!(puzzle_data)
+    ud.sets.should == [{'id' => '1', 'data' => 'HABA' }]
+  end
 
   it '#merge!' do
 

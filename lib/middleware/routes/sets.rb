@@ -19,11 +19,6 @@ module Middleware
     get '/published_sets' do
       env['token_auth'].authorize!
       mode = (['short', 'full'] & [params['mode'], 'full']).first
-      user_sets = if current_user['sets']
-                    Hash[current_user['sets'].map{ |o| [o['id'], o]}]
-                  else
-                    {}
-                  end
 
       args = []
       if params['year'] && params['month']
@@ -31,9 +26,10 @@ module Middleware
         args << params['month'].to_i
       end
 
+      user_sets = Hash[current_user.sets.map{ |o| [o['id'], o] }]
       sets = PuzzleSet.storage(env['redis']).published_for(*args)
         .map(&:to_hash)
-        .map{ |o| user_sets[o['id']] || o}
+        .map{ |o| user_sets[o['id']] || o }
         .map{ |o| o['bought'] = !!user_sets[o['id']]; o }
 
       sets.each do |set|

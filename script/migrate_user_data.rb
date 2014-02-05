@@ -12,6 +12,8 @@ require 'model/user_score'
 require 'model/puzzle_data'
 
 redis = Redis.new
+
+# Migrate puzzle data
 UserData.storage(redis).all_in_batches do |ud|
   keys = ud.to_hash.keys.grep(/puzzle-data./).map{ |o| o.gsub(/^puzzle-data./, '' ) }
   keys.each do |key|
@@ -22,5 +24,14 @@ UserData.storage(redis).all_in_batches do |ud|
     puzzle_data['puzzle_id'] = key
     puzzle_data['data'] = data
     puzzle_data.save
+  end
+end
+
+# Migrate sets
+UserData.storage(redis).all_in_batches do |ud|
+  sets = ud['sets']
+  ud['sets'] = []
+  sets.each do |set|
+    ud.add_set(set)
   end
 end

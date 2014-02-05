@@ -153,7 +153,7 @@ class BasicModel
   end
 
   def to_hash
-    @hash
+    @hash.dup
   end
 
   def to_json(*a)

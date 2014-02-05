@@ -13,6 +13,10 @@ shared_context "fake_redis_middleware" do
           @hash = {}
         end
 
+        def exists(k)
+          !!@hash[k]
+        end
+
         def call(env)
           env['redis'] = self
           @app.call(env)

@@ -95,5 +95,4 @@ describe BasicModel do
     subject.merge!(data)
     subject.storage(storage).delete
   end
-
 end
