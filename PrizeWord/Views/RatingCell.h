@@ -10,6 +10,7 @@
 #import "ExternalImage.h"
 
 @interface RatingCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIView *imgSandBackground;
 @property (strong, nonatomic) IBOutlet UIImageView *imgBackground;
 @property (strong, nonatomic) IBOutlet UIImageView *imgPlaceBg;
 @property (strong, nonatomic) IBOutlet UIImageView *imgMoveNone;

@@ -35,6 +35,9 @@
     maskLayer.frame = CGRectMake(0, 0, _imgPhoto.frame.size.width, _imgPhoto.frame.size.height);
     maskLayer.contents = (__bridge id)[[UIImage imageNamed:@"rating_cell_photo_mask.png"] CGImage];
     _imgPhoto.layer.mask = maskLayer;
+    
+    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile"]];
+    self.imgSandBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
 }
 
 @end

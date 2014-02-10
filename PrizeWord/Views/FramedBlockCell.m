@@ -55,6 +55,7 @@
 
 - (void)updateBackground
 {
+    self.backgroundColor = [UIColor clearColor];
     if (sandBackgroundView == nil)
     {
         sandBackgroundView = [UIView new];

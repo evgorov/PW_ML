@@ -45,11 +45,13 @@ NSRegularExpression * EMAIL_REGEXP;
     scrollView.contentSize = imgBackground.frame.size;
 
     scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+    /*
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
         scrollView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 68 : 57, 0, 0, 0);
         scrollView.scrollIndicatorInsets = scrollView.contentInset;
     }
+    */ 
     [datePicker addTarget:self action:@selector(handleDateChanged:) forControlEvents:UIControlEventValueChanged];
     datePicker.date = [NSDate new];
     [self handleDateChanged:self];

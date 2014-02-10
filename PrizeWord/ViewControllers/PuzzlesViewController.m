@@ -72,12 +72,13 @@ enum PuzzlesSections
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    /*
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
         tableView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
         tableView.scrollIndicatorInsets = tableView.contentInset;
     }
+    */
     
     currentPuzzleSetStates = [NSMutableArray new];
     archivePuzzleSets = [NSMutableArray new];

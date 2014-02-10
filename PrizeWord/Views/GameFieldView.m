@@ -72,11 +72,13 @@ int tileHeight = 63;
         [self addSubview:scrollView];
         self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
         scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+        /*
         if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
         {
             scrollView.contentInset = UIEdgeInsetsMake([AppDelegate currentDelegate].isIPad ? 72 : 60, 0, 0, 0);
             scrollView.scrollIndicatorInsets = scrollView.contentInset;
         }
+        */
         fieldView = [GameFieldContentView new];
         [scrollView addSubview:fieldView];
         scrollView.delegate = self;
@@ -151,11 +153,13 @@ int tileHeight = 63;
     [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     float dx = scrollView.frame.size.width - scrollView.contentSize.width;
     float dy = scrollView.frame.size.height - scrollView.contentSize.height;
+    /*
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
         scrollView.contentInset = UIEdgeInsetsMake(([AppDelegate currentDelegate].isIPad ? 72 : 60) + (dy > 0 ? dy / 2 : 0), dx > 0 ? dx / 2 : 0, dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0);
     }
     else
+    */
     {
         scrollView.contentInset = UIEdgeInsetsMake(dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0, dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0);
     }

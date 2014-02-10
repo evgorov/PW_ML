@@ -35,7 +35,7 @@ int HEADER_HEIGHT = 24;
     }
 
     ratingView.frame = CGRectMake((self.view.frame.size.width - ratingView.frame.size.width) / 2, 0, ratingView.frame.size.width, 0);
-    ratingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_sand_tile.jpg"]];
+    ratingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile"]];
     ratingView.clipsToBounds = NO;
     ratingView.delegate = self;
     ratingView.dataSource = self;
@@ -149,6 +149,7 @@ int HEADER_HEIGHT = 24;
     if (indexPath.row == 0 || indexPath.row > users.count)
     {
         UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"hfrc"];
+        cell.backgroundColor = [UIColor clearColor];
         UIImageView * bg = nil;
         if (indexPath.row == 0)
         {

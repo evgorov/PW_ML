@@ -94,6 +94,23 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
     }
 }
 
+- (void)dealloc
+{
+    vkView = nil;
+    fbView = nil;
+    headerView = nil;
+    viewsForReuse = nil;
+    updateInProgress = nil;
+    vkFriends = nil;
+    fbFriends = nil;
+    vkFriendsViews = nil;
+    fbFriendsViews = nil;
+    
+    placeholderView = nil;
+    lblPlaceholder = nil;
+    scrollView.delegate = nil;
+}
+
 - (void)viewDidUnload
 {
     vkView = nil;
@@ -108,6 +125,7 @@ NSString * INVITE_MESSAGE = @"Приглашаю тебя поиграть в Pr
     
     placeholderView = nil;
     lblPlaceholder = nil;
+    scrollView.delegate = nil;
     [super viewDidUnload];
 }
 

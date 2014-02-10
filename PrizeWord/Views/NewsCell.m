@@ -53,6 +53,7 @@
 {
     if (!isInitialized)
     {
+        self.backgroundColor = [UIColor clearColor];
         handleScrollEvent = YES;
         self.clipsToBounds = YES;
         [activityIndicator startAnimating];
