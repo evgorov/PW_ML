@@ -951,5 +951,9 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [self imagePickerControllerDidCancel:picker];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 @end
