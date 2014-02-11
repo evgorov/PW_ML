@@ -146,6 +146,12 @@ extern NSString * PRODUCTID_HINTS10;
                                        [PrizeWordNavigationBar containerWithView:playPauseView]];
     [self.navigationItem setLeftBarButtonItem:playPauseItem animated:animated];
     hintButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[PrizeWordNavigationBar containerWithView:btnHint]];
+    if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
+    {
+        CGRect frame = btnHint.frame;
+        frame.origin = CGPointMake(frame.origin.x + 10, frame.origin.y);
+        btnHint.frame = frame;
+    }
     [self.navigationItem setRightBarButtonItem:hintButtonItem animated:animated];
     
     [btnHint setTitle:[NSString stringWithFormat:@"%d", [GlobalData globalData].loggedInUser.hints] forState:UIControlStateNormal];

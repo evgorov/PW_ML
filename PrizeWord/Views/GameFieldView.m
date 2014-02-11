@@ -102,6 +102,12 @@ int tileHeight = 63;
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_TILE_INVALIDATE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_PAUSE];
         [[EventManager sharedManager] registerListener:self forEventType:EVENT_GAME_REQUEST_RESUME];
+        
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self setFrame:self.frame];
+        });
     }
     return self;
 }
@@ -150,16 +156,15 @@ int tileHeight = 63;
 -(void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
+    NSLog(@"game field frame: %@ %@", NSStringFromCGRect(frame), scrollView);
     [scrollView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     float dx = scrollView.frame.size.width - scrollView.contentSize.width;
     float dy = scrollView.frame.size.height - scrollView.contentSize.height;
-    /*
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
         scrollView.contentInset = UIEdgeInsetsMake(([AppDelegate currentDelegate].isIPad ? 72 : 60) + (dy > 0 ? dy / 2 : 0), dx > 0 ? dx / 2 : 0, dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0);
     }
     else
-    */
     {
         scrollView.contentInset = UIEdgeInsetsMake(dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0, dy > 0 ? dy / 2 : 0, dx > 0 ? dx / 2 : 0);
     }

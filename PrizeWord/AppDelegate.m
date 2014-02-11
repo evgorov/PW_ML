@@ -124,17 +124,10 @@ static NSRecursiveLock * dbLock = nil;
     BOOL soundMute = [[NSUserDefaults standardUserDefaults] boolForKey:@"sound-mute"];
     [[FISoundEngine sharedEngine] setMuted:soundMute];
     
-    if ([[UIDevice currentDevice].systemVersion compare:@"6.0" options:NSNumericSearch] != NSOrderedAscending)
-    {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleAudioSessionInterruption:)
                                                      name:AVAudioSessionInterruptionNotification
                                                    object:[AVAudioSession sharedInstance]];
-    }
-    else
-    {
-        [(AVAudioSession *)[AVAudioSession sharedInstance] setDelegate:self];
-    }
     
     // initialize background music
     NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"background_music" ofType:@"mp3"];

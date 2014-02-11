@@ -184,6 +184,7 @@ int HEADER_HEIGHT = 24;
     {
         cell.imgBorder.image = [UIImage imageNamed:@"rating_cell_border.png"];
     }
+    cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
     
     UserData * user = [users objectAtIndex:indexPath.row - 1];
     cell.lblName.text = user.first_name;
