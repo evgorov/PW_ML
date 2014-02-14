@@ -125,6 +125,7 @@ const int TAG_PUZZLESET_VIEW = 2;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.puzzleSetView = [PuzzleSetView puzzleSetViewWithData:puzzleSetData month:month showSolved:showSolved showUnsolved:showUnsolved];
         self.puzzleSetView.btnShowMore.selected = state.isShownFull;
+        self.puzzleSetView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         self.puzzleSetView.tag = TAG_PUZZLESET_VIEW;
         if (!state.isShownFull)
         {
