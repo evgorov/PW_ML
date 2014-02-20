@@ -28,8 +28,4 @@ class Hash
     end
     self
   end
-  
-  # def key_to_sym
-  #   Hash[self.map{ |k, v| [k.to_sym, v] }]
-  # end
 end

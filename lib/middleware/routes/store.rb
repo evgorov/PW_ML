@@ -7,7 +7,6 @@ require 'android_receipt_verifier'
 
 module Middleware
   class Store < Sinatra::Base
-    AppConfig.load!("config/app.yml", :env => ENV['RACK_ENV'])
     helpers do
       def current_user
         @current_user ||= env['token_auth'].user.user_data
@@ -22,7 +21,6 @@ module Middleware
     error(ItunesReceiptVerifier::ItunesReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
     error(AndroidReceiptVerifier::AndroidReceiptError) { halt(403, { message: 'Ошибка валидации чека Play store' }.to_json) }
     
-    ANDROID_PUBLIC_KEY = AppConfig.android[:public_key].freeze
     get '/user_puzzles' do
       env['token_auth'].authorize!
       user_sets = current_user
@@ -47,19 +45,23 @@ module Middleware
       env['token_auth'].authorize!
 
       puzzle_set = PuzzleSet.storage(env['redis']).load(params['id'])
-
       if puzzle_set['type'] != 'free' && self.class.settings.environment != :test
         if params['receipt_data'] || params['receipt-data']
           receipt_data = params['receipt_data'] || params['receipt-data']
           ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id, "com.prizeword.#{params['id']}")
         else
-          AndroidReceiptVerifier.verify!(ANDROID_PUBLIC_KEY, params['android_reciept'].gsub(/\\/,''), params['android_signature'])
+          AndroidReceiptVerifier.verify!(android_public_key, params['android_reciept'].gsub(/\\/,''), params['android_signature'])
         end
       end
 
       result = puzzle_set.to_hash.merge('bought' => true)
       current_user.add_set!(result)
       result.to_json
+    end
+    
+  private
+    def android_public_key
+      AppConfig.android[:public_key]
     end
   end
 end
