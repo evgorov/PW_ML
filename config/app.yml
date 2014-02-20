@@ -1,0 +1,51 @@
+common: &default_settings
+  providers:
+    facebook:
+      client_id: 'FACEBOOK_CLIENT_ID'
+      client_secret: 'FACEBOOK_CLIENT_SECRET'
+      login_dialog_uri: 'https://facebook.com/dialog/oauth'
+      access_token_uri: 'https://graph.facebook.com/oauth/access_token'
+      scope: 'email,user_birthday,user_about_me,publish_stream'
+    
+    vkontakte:
+      client_id: 'VKONTAKTE_CLIENT_ID'
+      client_secret: 'VKONTAKTE_CLIENT_SECRET'
+      redirect_uri: 'http://oauth.vk.com/blank.html'
+      login_dialog_uri: 'https://vkontakte.com/dialog/oauth'
+      access_token_uri: 'https://graph.vkontakte.com/oauth/access_token'
+      scope: 'offline,email,user_birthday,user_about_me,wall'
+
+  ios:
+    pusher:
+      certificate: "/path/to/cert.pem"
+      passphrase:  ""
+      gateway:     "gateway.push.apple.com"
+      port:        2195
+      retries:     3
+  
+  android:
+    public_key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtspobFVSi6fZ6L3q5l64JVVcJaK19gVWllXQi5FxaN1V0Yti84O+Xzuw7fWWnrgleKLRNSMPrOd/rQrDAHhEm9kk7gq0PUzLwOzpqgnvWa9fsvQVc5jOi69O7B2Vn+KftNQ+VXReFXpEp4IA6DKIu3f0gNqha/szA2eq1uDyO+MXtU9Kpz2XeAedpVNSMn9OEDR2U4rN39GUqumg0NwidbpCkfhbmSGYoJOPAUOIXf5J1YIeR75pBV2GCUiT4d8fCGCv/UMunTbNkI+BjDov/hmzU4njk1sIlSSpz0a9pM4v6Q2dIrrKIrOsjSI7r+c/C2U2dqviAUZ96tYDS+bp7wIDAQAB'
+
+development:
+  <<: *default_settings
+
+test:
+  <<: *default_settings
+  providers:
+    facebook:
+      client_id: '390010757745933'
+      client_secret: '650d73bdb360c1e06719468b8e5eeddd'
+      login_dialog_uri: 'https://facebook.com/dialog/oauth'
+      access_token_uri: 'https://graph.facebook.com/oauth/access_token'
+      scope: 'email,user_birthday,user_about_me,publish_stream'
+    
+    vkontakte:
+      redirect_uri: 'http://oauth.vk.com/blank.html'
+      scope: 'email,user_birthday,user_about_me,wall'
+      client_id: '3392295'
+      client_secret: '9hQhk0pKNEHOt0WikSZz'
+      login_dialog_uri: 'https://oauth.vk.com/authorize'
+      access_token_uri: 'https://oauth.vk.com/access_token'
+  
+production:
+  <<: *default_settings
