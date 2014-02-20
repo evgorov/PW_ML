@@ -28,6 +28,7 @@ module Middleware
     end
 
     get '/users' do
+      expires 120, :public, :must_revalidate
       result = {}
       users = UserData.storage(env['redis']).users_by_rating(params['page'].to_i).map(&:as_json).map{ |o| o.except('providers', 'email', 'hints', 'birthdate')}
       result['users'] = users
