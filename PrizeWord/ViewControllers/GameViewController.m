@@ -547,7 +547,7 @@ extern NSString * PRODUCTID_HINTS10;
     {
         [puzzleSolvedSound play];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             if (gameField.puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
             {
                 [self.navigationController popViewControllerAnimated:YES];

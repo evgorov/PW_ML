@@ -234,7 +234,6 @@
 		F250911F16B5F2240045621E /* rating_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250911A16B5F2230045621E /* rating_header@2x~ipad.png */; };
 		F250913116B739B20045621E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913016B739B10045621E /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F250913316B739BB0045621E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913216B739BB0045621E /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		F250913516B739D10045621E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F250913416B739D10045621E /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F250913C16BA1F160045621E /* invite_cell_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913616BA1F160045621E /* invite_cell_bg@2x~ipad.png */; };
 		F250913D16BA1F160045621E /* invite_fb_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913716BA1F160045621E /* invite_fb_header@2x~ipad.png */; };
 		F250913E16BA1F160045621E /* invite_vk_header@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F250913816BA1F160045621E /* invite_vk_header@2x~ipad.png */; };
@@ -1519,7 +1518,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F250913516B739D10045621E /* AdSupport.framework in Frameworks */,
 				6BB9867D180C3ABE00FA371C /* CoreTelephony.framework in Frameworks */,
 				6BB98681180C3AE600FA371C /* EventKit.framework in Frameworks */,
 				6BB9867F180C3AD700FA371C /* MessageUI.framework in Frameworks */,
@@ -3583,8 +3581,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				PROVISIONING_PROFILE = "85527DC3-1C46-45A4-A26C-F006049E24AB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "85527DC3-1C46-45A4-A26C-F006049E24AB";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3614,8 +3612,8 @@
 					"-lsqlite3.0",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "67D20EC6-B953-4173-852C-06E8940CF0D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67D20EC6-B953-4173-852C-06E8940CF0D1";
+				PROVISIONING_PROFILE = "85527DC3-1C46-45A4-A26C-F006049E24AB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "85527DC3-1C46-45A4-A26C-F006049E24AB";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};

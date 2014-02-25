@@ -26,9 +26,9 @@
 
 - (id)init
 {
-    self = [super initWithBaseURL:[NSURL URLWithString:@"http://api.prize-word.com/"]];
+    self = [super initWithBaseURL:[NSURL URLWithString:@"https://api.prize-word.com/"]];
     if (self) {
-        [self setAllowsInvalidSSLCertificate:YES];
+        [self setAllowsInvalidSSLCertificate:NO];
         [AFHTTPRequestOperation addAcceptableStatusCodes:[NSIndexSet indexSetWithIndex:304]];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     }
