@@ -14,7 +14,7 @@
 + (UserDataManager *)sharedManager;
 
 - (void)addScore:(int)score forKey:(NSString *)key;
-- (void)addHints:(int)hints;
+- (void)addHints:(int)hints withKey:(NSString *)key;
 - (void)restoreUnfinishedScoreQueries;
 - (void)restoreUnfinishedHintsQueries;
 

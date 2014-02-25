@@ -209,15 +209,15 @@ NSString * PRODUCTID_HINTS30 = @"com.prizeword.hints30";
             
             if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
             {
-                [[UserDataManager sharedManager] addHints:10];
+                [[UserDataManager sharedManager] addHints:10 withKey:paymentTransaction.transactionReceipt.base64Encoding];
             }
             else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS20] == NSOrderedSame)
             {
-                [[UserDataManager sharedManager] addHints:20];
+                [[UserDataManager sharedManager] addHints:20 withKey:paymentTransaction.transactionReceipt.base64Encoding];
             }
             else if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS30] == NSOrderedSame)
             {
-                [[UserDataManager sharedManager] addHints:30];
+                [[UserDataManager sharedManager] addHints:30 withKey:paymentTransaction.transactionReceipt.base64Encoding];
             }
             else
             {

@@ -577,7 +577,7 @@ extern NSString * PRODUCTID_HINTS10;
         
         if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
         {
-            [[UserDataManager sharedManager] addHints:10];
+            [[UserDataManager sharedManager] addHints:10 withKey:paymentTransaction.transactionReceipt.base64Encoding];
         }
     }
     else if (event.type == EVENT_ME_UPDATED)
@@ -628,7 +628,7 @@ extern NSString * PRODUCTID_HINTS10;
     }
     if (alertView.tag == TAG_USEHINT)
     {
-        [[UserDataManager sharedManager] addHints:-1];
+        [[UserDataManager sharedManager] addHints:-1 withKey:[NSString stringWithFormat:@"%lld%04d", (long long)[[NSDate date] timeIntervalSince1970], rand() % 1000]];
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_REQUEST_APPLY_HINT]];
     }
     else if (alertView.tag == TAG_BUYHINTS)

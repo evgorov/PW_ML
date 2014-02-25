@@ -94,7 +94,7 @@
     [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:user]];
 }
 
-- (void)addHints:(int)hints
+- (void)addHints:(int)hints withKey:(NSString *)key
 {
     UserData * user = [GlobalData globalData].loggedInUser;
     if (user == nil || user.user_id == nil)
@@ -105,7 +105,7 @@
     HintsQuery * hintsQuery = [[HintsQuery alloc] initWithEntity:[NSEntityDescription entityForName:@"HintsQuery" inManagedObjectContext:managedObjectContext] insertIntoManagedObjectContext:managedObjectContext];
     hintsQuery.hints = [NSNumber numberWithInt:hints];
     hintsQuery.user = user.user_id;
-    hintsQuery.key = [NSString stringWithFormat:@"%lld%04d", (long long)[[NSDate date] timeIntervalSince1970], rand() % 1000];
+    hintsQuery.key = key;
     hintsQuery.done = [NSNumber numberWithBool:NO];
     [managedObjectContext lock];
     [managedObjectContext save:nil];
@@ -232,45 +232,83 @@
     
     hintsQueriesInProgress++;
     
-    NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
-                              , @"hints_change": [NSString stringWithFormat:@"%d", hints]};
-    
-    [[APIClient sharedClient] postPath:@"hints" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        hintsQueriesInProgress--;
+    if (hints > 0)
+    {
+        NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                  , @"receipt_data": key};
         
-        NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
-        NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
-        NSError * error = nil;
-        [managedObjectContext lock];
-        NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        [managedObjectContext unlock];
-        
-        if (error == nil && results != nil && results.count != 0)
-        {
-            HintsQuery * hintsQuery = [results lastObject];
-            hintsQuery.done = [NSNumber numberWithBool:YES];
+        [[APIClient sharedClient] postPath:@"hints/buy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            hintsQueriesInProgress--;
+            
+            NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+            NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
+            NSError * error = nil;
             [managedObjectContext lock];
-            [managedObjectContext save:nil];
+            NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
             [managedObjectContext unlock];
-        }
-        if (error != nil)
-        {
-            NSLog(@"error: %@", error.localizedDescription);
-        }
+            
+            if (error == nil && results != nil && results.count != 0)
+            {
+                HintsQuery * hintsQuery = [results lastObject];
+                hintsQuery.done = [NSNumber numberWithBool:YES];
+                [managedObjectContext lock];
+                [managedObjectContext save:nil];
+                [managedObjectContext unlock];
+            }
+            if (error != nil)
+            {
+                NSLog(@"error: %@", error.localizedDescription);
+            }
+            
+            [[GlobalData globalData] loadMe];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"hints request: %@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
+            hintsQueriesInProgress--;
+            NSLog(@"send hints error: %@", error.description);
+        }];
+    }
+    else
+    {
+        NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                  , @"hints_change": [NSString stringWithFormat:@"%d", hints]};
         
-        SBJsonParser * parser = [SBJsonParser new];
-        NSDictionary * data = [parser objectWithData:operation.responseData];
-        UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-        if (userData != nil)
-        {
-            [GlobalData globalData].loggedInUser = userData;
-            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"hints request: %@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
-        hintsQueriesInProgress--;
-        NSLog(@"send hints error: %@", error.description);
-    }];
+        [[APIClient sharedClient] postPath:@"hints" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            hintsQueriesInProgress--;
+            
+            NSManagedObjectContext * managedObjectContext = [DataContext currentContext];
+            NSFetchRequest * fetchRequest = [managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"HintsFetchRequest" substitutionVariables:@{@"USER_ID" : user.user_id, @"KEY" : key}];
+            NSError * error = nil;
+            [managedObjectContext lock];
+            NSArray * results = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            [managedObjectContext unlock];
+            
+            if (error == nil && results != nil && results.count != 0)
+            {
+                HintsQuery * hintsQuery = [results lastObject];
+                hintsQuery.done = [NSNumber numberWithBool:YES];
+                [managedObjectContext lock];
+                [managedObjectContext save:nil];
+                [managedObjectContext unlock];
+            }
+            if (error != nil)
+            {
+                NSLog(@"error: %@", error.localizedDescription);
+            }
+            
+            SBJsonParser * parser = [SBJsonParser new];
+            NSDictionary * data = [parser objectWithData:operation.responseData];
+            UserData * userData = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
+            if (userData != nil)
+            {
+                [GlobalData globalData].loggedInUser = userData;
+                [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"hints request: %@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
+            hintsQueriesInProgress--;
+            NSLog(@"send hints error: %@", error.description);
+        }];
+    }
 }
 
 @end
