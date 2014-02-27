@@ -34,3 +34,6 @@
 "Unknown error" = "Неизвестная ошибка на сервере.";
 "No user with this e-mail." = "Пользователь с таким email не найден.";
 "Session has ended. Please log in again." = "Сессия завершена. Пожалуйста, войдите ещё раз.";
+
+"OK" = "OK";
+"Cannot open AppStore. Please try again later." = "Не получается открыть AppStore. Пожалуйста, попробуйте позже.";

@@ -33,6 +33,7 @@
 -(int)baseScoreForType:(PuzzleSetType)type;
 -(int)scoreForFriend;
 -(int)scoreForTime;
+-(int)scoreForRate;
 
 -(void)loadMonthSets;
 -(void)loadMe;

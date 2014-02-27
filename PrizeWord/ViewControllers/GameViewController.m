@@ -32,11 +32,28 @@ const int TAG_USEHINT = 100;
 const int TAG_BUYHINTS = 101;
 extern NSString * PRODUCTID_HINTS10;
 
+const int TAG_FINAL_BASE_SCORE = 103;
+const int TAG_FINAL_TIME_BONUS = 104;
+const int TAG_FINAL_RATE_BONUS = 105;
+const int TAG_FINAL_FLIPNUMBER0 = 106;
+const int TAG_FINAL_FLIPNUMBER1 = 107;
+const int TAG_FINAL_FLIPNUMBER2 = 108;
+const int TAG_FINAL_FLIPNUMBER3 = 109;
+const int TAG_FINAL_FLIPNUMBER4 = 110;
+
+const int FINAL_OVERVIEW_TYPE_ORDINARY = 1;
+const int FINAL_OVERVIEW_TYPE_RATE = 2;
+const int FINAL_OVERVIEW_TYPE_RATE_DONE = 3;
+
+NSString *reviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=725511947";
+NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
+
 @interface GameViewController (private)
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
 -(void)animateFinalScreenAppears:(id)sender;
+-(void)showFinalScreenAnimated:(BOOL)animated;
 
 -(NSDictionary*)parseURLParams:(NSString *)query;
 
@@ -92,7 +109,6 @@ extern NSString * PRODUCTID_HINTS10;
     pauseImgProgressbar.image = imgProgress;
     pauseImgProgressbar.frame = CGRectMake(pauseImgProgressbar.frame.origin.x, pauseImgProgressbar.frame.origin.y, pauseMaxProgress, pauseImgProgressbar.frame.size.height);
     [pauseTxtProgress setText:@"100%"];
-    finalFlipNumbers = [NSArray arrayWithObjects:finalFlipNumber0, finalFlipNumber1, finalFlipNumber2, finalFlipNumber3, finalFlipNumber4, nil];
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
 
@@ -111,13 +127,7 @@ extern NSString * PRODUCTID_HINTS10;
     pauseSwtSound = nil;
     lblFinalBaseScore = nil;
     lblFinalTimeBonus = nil;
-    finalFlipNumber4 = nil;
-    finalFlipNumber3 = nil;
-    finalFlipNumber2 = nil;
-    finalFlipNumber1 = nil;
-    finalFlipNumber0 = nil;
     finalFlipNumbers = nil;
-    finalShareView = nil;
     
     [super viewDidUnload];
 }
@@ -462,6 +472,31 @@ extern NSString * PRODUCTID_HINTS10;
     }
 }
 
+- (IBAction)handleRateClick:(id)sender
+{
+    BOOL isIOS7 = [[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending;
+    if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:isIOS7 ? reviewURLiOS7 : reviewURL]])
+    {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Cannot open AppStore. Please try again later.", @"") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil] show];
+        return;
+    }
+    
+    NSString * rateKey = [NSString stringWithFormat:@"rated%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:rateKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
+        
+        [self prepareFinalOverlayWithType:FINAL_OVERVIEW_TYPE_RATE_DONE];
+        [self showFinalScreenAnimated:NO];
+        [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
+    });
+    NSLog(@"TODO: add score");
+}
+
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
 {
     NSDictionary * userInfo = aNotification.userInfo;
@@ -548,18 +583,33 @@ extern NSString * PRODUCTID_HINTS10;
         [puzzleSolvedSound play];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            if (gameField.puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-                return;
+            BOOL onlyFree = YES;
+            NSArray * monthSets = [GlobalData globalData].monthSets;
+            for (PuzzleSetProxy * puzzleSet in monthSets) {
+                if (puzzleSet.bought.boolValue && puzzleSet.type.intValue != PUZZLESET_FREE)
+                {
+                    onlyFree = NO;
+                    break;
+                }
             }
-            for (int i = 0; i < 5; ++i)
+            
+            NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+            PuzzleProxy * puzzle = event.data;
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzle.puzzleSet.type.intValue != PUZZLESET_FREE && puzzle.time_left.intValue > 0) || (puzzle.puzzleSet.percent >= 0.999999 && onlyFree)))
             {
-                [[finalFlipNumbers objectAtIndex:i] reset];
+                [self prepareFinalOverlayWithType:FINAL_OVERVIEW_TYPE_RATE];
             }
-            finalShareView.frame = CGRectMake(finalShareView.frame.origin.x, [AppDelegate currentDelegate].isIPad ? 242 : 190, finalShareView.frame.size.width, finalShareView.frame.size.height);
-            lblFinalBaseScore.text = @"0";
-            lblFinalTimeBonus.text = @"0";
+            else
+            {
+                if (gameField.puzzle.puzzleSet.type.intValue == PUZZLESET_FREE)
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                    return;
+                }
+                [self prepareFinalOverlayWithType:FINAL_OVERVIEW_TYPE_ORDINARY];
+            }
+
+            
             [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(animateFinalScreenAppears:) userInfo:event.data repeats:NO];
             
             [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay];
@@ -640,29 +690,78 @@ extern NSString * PRODUCTID_HINTS10;
     }
 }
 
+- (void)prepareFinalOverlayWithType:(int)type
+{
+    switch (type) {
+        case FINAL_OVERVIEW_TYPE_ORDINARY:
+            finalOverlay = finalOverlayOrdinary;
+            break;
+            
+        case FINAL_OVERVIEW_TYPE_RATE:
+            finalOverlay = finalOverlayRate;
+            break;
+            
+        case FINAL_OVERVIEW_TYPE_RATE_DONE:
+            finalOverlay = finalOverlayRateDone;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (type != FINAL_OVERVIEW_TYPE_ORDINARY)
+    {
+        NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:showRateKey];
+    }
+
+    lblFinalBaseScore = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_BASE_SCORE];
+    lblFinalTimeBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_TIME_BONUS];
+    lblFinalRateBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_RATE_BONUS];
+    finalFlipNumbers = [NSMutableArray new];
+    for (int i = 0; i < 5; ++i)
+    {
+        [finalFlipNumbers addObject:[finalOverlay viewWithTag:TAG_FINAL_FLIPNUMBER0 + i]];
+        [[finalFlipNumbers objectAtIndex:i] reset];
+    }
+
+    lblFinalBaseScore.text = @"0";
+    lblFinalTimeBonus.text = @"0";
+    lblFinalRateBonus.text = @"0";
+}
+
 -(void)animateFinalScreenAppears:(id)sender
 {
     NSTimer * timer = sender;
-    PuzzleProxy * puzzleData = timer.userInfo;
-    
-    CGRect shareFrame = finalShareView.frame;
-    shareFrame.origin.y = [AppDelegate currentDelegate].isIPad ? 402 : 308;
-    
+    if (timer != nil && timer.userInfo != nil) {
+        puzzleData = timer.userInfo;
+    }
+    [self showFinalScreenAnimated:YES];
+}
+
+- (void)showFinalScreenAnimated:(BOOL)animated
+{
     int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
     lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? 0 : baseScore];
     lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? [puzzleData.score unsignedIntValue] : ([puzzleData.score unsignedIntValue] - baseScore)];
+    lblFinalRateBonus.text = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate];
     lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
-    lblFinalBaseScore.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
-    lblFinalBaseScore.hidden = YES;
-    lblFinalTimeBonus.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
-    lblFinalTimeBonus.hidden = YES;
-    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        finalShareView.frame = shareFrame;
-    } completion:^(BOOL finished) {
-        
+    if (animated)
+    {
+        lblFinalBaseScore.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+        lblFinalBaseScore.hidden = YES;
+        lblFinalTimeBonus.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+        lblFinalTimeBonus.hidden = YES;
         lblFinalBaseScore.hidden = NO;
+        lblFinalRateBonus.hidden = YES;
+        if (finalOverlay == finalOverlayRate)
+        {
+            lblFinalRateBonus.hidden = NO;
+        }
+        
+        
         [secondaryDingSound play];
         [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
             lblFinalBaseScore.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
@@ -672,7 +771,7 @@ extern NSString * PRODUCTID_HINTS10;
                 lblFinalBaseScore.transform = CGAffineTransformMakeScale(1, 1);
             } completion:nil];
         }];
-
+        
         [UIView animateWithDuration:0.25f delay:0.5f options:UIViewAnimationOptionCurveEaseIn animations:^{
             lblFinalTimeBonus.hidden = NO;
             lblFinalTimeBonus.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
@@ -681,7 +780,7 @@ extern NSString * PRODUCTID_HINTS10;
                 lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
             } completion:^(BOOL finished) {
                 uint score = [puzzleData.score unsignedIntValue];
-                // TODO :: loop counting
+                // TODO :: loop counting sound
                 [countingSound play];
                 int lastI = 0;
                 for (int i = 0; i < 5; ++i)
@@ -699,7 +798,46 @@ extern NSString * PRODUCTID_HINTS10;
                 }
             }];
         }];
-    }];
+        
+        if (finalOverlay != finalOverlayRate)
+        {
+            [UIView animateWithDuration:0.25f delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                lblFinalRateBonus.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
+            } completion:^(BOOL finished) {
+                [secondaryDingSound play];
+                [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    lblFinalRateBonus.transform = CGAffineTransformMakeScale(1, 1);
+                } completion:nil];
+            }];
+        }
+    }
+    else
+    {
+        lblFinalTimeBonus.hidden = NO;
+        lblFinalBaseScore.hidden = NO;
+        lblFinalRateBonus.hidden = NO;
+        lblFinalBaseScore.transform = CGAffineTransformMakeScale(1, 1);
+        lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
+        lblFinalRateBonus.transform = CGAffineTransformMakeScale(1, 1);
+        
+        uint score = [puzzleData.score unsignedIntValue];
+        // TODO :: loop counting sound
+        [countingSound play];
+        int lastI = 0;
+        for (int i = 0; i < 5; ++i)
+        {
+            if (score > 0)
+            {
+                [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * i + score % 10)];
+                lastI = i;
+                score /= 10;
+            }
+            else
+            {
+                [[finalFlipNumbers objectAtIndex:i] flipNTimes:(10 + 10 * lastI)];
+            }
+        }
+    }
 }
 
 #pragma mark helpers

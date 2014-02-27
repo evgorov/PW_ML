@@ -57,6 +57,9 @@
 -(void)showOverlay:(UIView *)overlayView;
 -(void)showFullscreenOverlay:(UIView *)overlayView;
 -(void)hideOverlay;
+-(void)showOverlay:(UIView *)overlayView animated:(BOOL)animated;
+-(void)showFullscreenOverlay:(UIView *)overlayView animated:(BOOL)animated;
+-(void)hideOverlayAnimated:(BOOL)animated;
 -(void)showRules;
 
 @end

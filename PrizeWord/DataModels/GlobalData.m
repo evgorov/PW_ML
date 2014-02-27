@@ -170,6 +170,16 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     return value.intValue;
 }
 
+- (int)scoreForRate
+{
+    NSNumber * value = [coefficients objectForKey:@"rate-bonus"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
 #pragma mark public methods
 
 -(void)loadMonthSets

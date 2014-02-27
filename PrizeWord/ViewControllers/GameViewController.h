@@ -35,16 +35,16 @@
     IBOutlet UILabel *pauseTxtProgress;
     float pauseMaxProgress;
 
-    IBOutlet UIView *finalOverlay;
-    IBOutlet UIView *finalShareView;
-    IBOutlet UILabel *lblFinalBaseScore;
-    IBOutlet UILabel *lblFinalTimeBonus;
-    IBOutlet FlipNumberView *finalFlipNumber4;
-    IBOutlet FlipNumberView *finalFlipNumber3;
-    IBOutlet FlipNumberView *finalFlipNumber2;
-    IBOutlet FlipNumberView *finalFlipNumber1;
-    IBOutlet FlipNumberView *finalFlipNumber0;
-    NSArray * finalFlipNumbers;
+    UIView *finalOverlay;
+    PuzzleProxy *puzzleData;
+    IBOutlet UIView *finalOverlayOrdinary;
+    IBOutlet UIView *finalOverlayRate;
+    IBOutlet UIView *finalOverlayRateDone;
+    
+    UILabel *lblFinalBaseScore;
+    UILabel *lblFinalTimeBonus;
+    UILabel *lblFinalRateBonus;
+    NSMutableArray * finalFlipNumbers;
 
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;

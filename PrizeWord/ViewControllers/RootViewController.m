@@ -369,6 +369,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 
 -(void)showOverlay:(UIView *)overlayView
 {
+    [self showOverlay:overlayView animated:YES];
+}
+
+-(void)showOverlay:(UIView *)overlayView animated:(BOOL)animated
+{
     if (_currentOverlay != nil)
     {
         return;
@@ -403,13 +408,18 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [overlayContainer addSubview:_currentOverlay];
     _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [UIView animateWithDuration:animated ? 0.5 : 0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, 0, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 1;
     } completion:nil];
 }
 
 -(void)showFullscreenOverlay:(UIView *)overlayView
+{
+    [self showFullscreenOverlay:overlayView animated:YES];
+}
+
+-(void)showFullscreenOverlay:(UIView *)overlayView animated:(BOOL)animated
 {
     if (_currentOverlay != nil)
     {
@@ -431,7 +441,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
     [fullscreenOverlayContainer addSubview:_currentOverlay];
     
     _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2 - fullscreenOverlayContainer.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
-    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [UIView animateWithDuration:animated ? 0.5 : 0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _currentOverlay.frame = CGRectMake((fullscreenOverlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, (fullscreenOverlayContainer.frame.size.height - _currentOverlay.frame.size.height) / 2, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         fullscreenOverlayContainer.alpha = 1;
     } completion:nil];
@@ -439,6 +449,11 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 }
 
 -(void)hideOverlay
+{
+    [self hideOverlayAnimated:YES];
+}
+
+-(void)hideOverlayAnimated:(BOOL)animated
 {
     if (_currentOverlay == nil)
     {
@@ -456,16 +471,29 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
         currentTitleView = nil;
     }
     
-    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    if (animated)
+    {
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
+            overlayContainer.alpha = 0;
+            fullscreenOverlayContainer.alpha = 0;
+        } completion:^(BOOL finished) {
+            [_currentOverlay removeFromSuperview];
+            [overlayContainer removeFromSuperview];
+            [fullscreenOverlayContainer removeFromSuperview];
+            _currentOverlay = nil;
+        }];
+    }
+    else
+    {
         _currentOverlay.frame = CGRectMake((overlayContainer.frame.size.width - _currentOverlay.frame.size.width) / 2, -_currentOverlay.frame.size.height, _currentOverlay.frame.size.width, _currentOverlay.frame.size.height);
         overlayContainer.alpha = 0;
         fullscreenOverlayContainer.alpha = 0;
-    } completion:^(BOOL finished) {
         [_currentOverlay removeFromSuperview];
         [overlayContainer removeFromSuperview];
         [fullscreenOverlayContainer removeFromSuperview];
         _currentOverlay = nil;
-    }];
+    }
 }
 
 -(void)showRules
