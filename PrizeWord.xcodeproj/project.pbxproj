@@ -53,6 +53,9 @@
 		6B895EEB18BF24EF0019E2EA /* final_rate_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B895EEA18BF24EF0019E2EA /* final_rate_bg@2x.png */; };
 		6B8E4D93180D27C900CD1AC5 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6B8E4D91180D27C900CD1AC5 /* TapjoyResources.bundle */; };
 		6B8E4D94180D27C900CD1AC5 /* Tapjoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B8E4D92180D27C900CD1AC5 /* Tapjoy.framework */; };
+		6B8ED63418C06679008C9D62 /* rate_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8ED63118C06679008C9D62 /* rate_btn@2x~ipad.png */; };
+		6B8ED63618C06679008C9D62 /* final_rate_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8ED63318C06679008C9D62 /* final_rate_bg@2x~ipad.png */; };
+		6B8ED63818C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8ED63718C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png */; };
 		6B9227C1180043A7004E1505 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C0180043A7004E1505 /* DataManager.m */; };
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
@@ -751,6 +754,9 @@
 		6B895EEA18BF24EF0019E2EA /* final_rate_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_rate_bg@2x.png"; sourceTree = "<group>"; };
 		6B8E4D91180D27C900CD1AC5 /* TapjoyResources.bundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TapjoyResources.bundle; sourceTree = "<group>"; };
 		6B8E4D92180D27C900CD1AC5 /* Tapjoy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Tapjoy.framework; sourceTree = "<group>"; };
+		6B8ED63118C06679008C9D62 /* rate_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rate_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		6B8ED63318C06679008C9D62 /* final_rate_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_rate_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		6B8ED63718C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_rate_done_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		6B9227BC17FEA676004E1505 /* PrizeWord 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PrizeWord 2.xcdatamodel"; sourceTree = "<group>"; };
 		6B9227BF180043A7004E1505 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataManager.h; path = DataLogic/DataManager.h; sourceTree = "<group>"; };
 		6B9227C0180043A7004E1505 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataManager.m; path = DataLogic/DataManager.m; sourceTree = "<group>"; };
@@ -1887,6 +1893,9 @@
 		F2868C8A1669F992003F0686 /* gamescreen */ = {
 			isa = PBXGroup;
 			children = (
+				6B8ED63718C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png */,
+				6B8ED63118C06679008C9D62 /* rate_btn@2x~ipad.png */,
+				6B8ED63318C06679008C9D62 /* final_rate_bg@2x~ipad.png */,
 				6B895EEA18BF24EF0019E2EA /* final_rate_bg@2x.png */,
 				6B895EE418BF21970019E2EA /* rate_btn@2x.png */,
 				6B895EE518BF21970019E2EA /* final_rate_done_bg@2x.png */,
@@ -2842,6 +2851,7 @@
 				F2B83AF0166FE7E4007C4596 /* navigationbar_bg@2x~ipad.png in Resources */,
 				F2B83AF4166FE8A2007C4596 /* PrizeWordNavigationController~ipad.xib in Resources */,
 				F2B83B1A166FEFA7007C4596 /* LoginMainViewController~ipad.xib in Resources */,
+				6B8ED63818C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png in Resources */,
 				F2B83B23167141F0007C4596 /* LoginRegisterViewController.xib in Resources */,
 				F2B83B531673945B007C4596 /* login_enter_btn_down@2x.png in Resources */,
 				F2B83B541673945B007C4596 /* login_enter_btn_down@2x~ipad.png in Resources */,
@@ -3209,6 +3219,7 @@
 				F21FCF8F16C6D1FE0022119B /* tile_arrow_northwest_right_done@2x~ipad.png in Resources */,
 				F21FCF9016C6D1FE0022119B /* tile_arrow_northeast_right_done@2x~ipad.png in Resources */,
 				F21FCF9116C6D1FE0022119B /* tile_arrow_north_left_done@2x~ipad.png in Resources */,
+				6B8ED63618C06679008C9D62 /* final_rate_bg@2x~ipad.png in Resources */,
 				F21FCF9216C6D1FE0022119B /* tile_arrow_north_up_done@2x~ipad.png in Resources */,
 				F21FCF9316C6D1FE0022119B /* tile_arrow_northwest_right_done@2x.png in Resources */,
 				F21FCF9416C6D1FE0022119B /* tile_arrow_northeast_right_done@2x.png in Resources */,
@@ -3261,6 +3272,7 @@
 				F2840C9717158E180003F1F2 /* rules_page_9~ipad.png in Resources */,
 				F2840C9817158E180003F1F2 /* rules_page_8~ipad.png in Resources */,
 				F2840C9917158E180003F1F2 /* rules_page_7~ipad.png in Resources */,
+				6B8ED63418C06679008C9D62 /* rate_btn@2x~ipad.png in Resources */,
 				F2840C9A17158E180003F1F2 /* rules_page_6~ipad.png in Resources */,
 				6B6DE1AD180339F000D3DF52 /* PuzzleSetCell~ipad.xib in Resources */,
 				F2840C9B17158E180003F1F2 /* rules_page_5~ipad.png in Resources */,
@@ -3587,7 +3599,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lsqlite3.0",
@@ -3596,7 +3608,7 @@
 				PROVISIONING_PROFILE = "822C1CD4-2690-4898-9248-FC715B603BF5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "822C1CD4-2690-4898-9248-FC715B603BF5";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3619,7 +3631,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lsqlite3.0",
@@ -3628,7 +3640,7 @@
 				PROVISIONING_PROFILE = "822C1CD4-2690-4898-9248-FC715B603BF5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "822C1CD4-2690-4898-9248-FC715B603BF5";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
