@@ -1,7 +1,10 @@
 # encoding: utf-8
-libdir = File.join(File.dirname(__FILE__), 'lib')
+
+ROOT_DIR = File.dirname(__FILE__)
+libdir = File.join(ROOT_DIR, 'lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
+require 'app_config'
 require "bundler/setup"
 
 require 'rack/contrib/static_cache'
@@ -20,7 +23,6 @@ require 'newrelic_rpm'
 require 'new_relic/rack/agent_hooks'
 require 'new_relic/rack/error_collector'
 
-
 class IndexPage
 
   def initialize(app)
@@ -32,6 +34,8 @@ class IndexPage
     @app.call(env)
   end
 end
+
+AppConfig.load!("#{ROOT_DIR}/config/app.yml", :env => ENV['RACK_ENV'])
 
 use NewRelic::Rack::AgentHooks
 use NewRelic::Rack::ErrorCollector
@@ -62,36 +66,12 @@ end
 
 use Middleware::TokenAuthStrategy
 
-facebook_options = {
-  client_id: 'FACEBOOK_CLIENT_ID',
-  client_secret: 'FACEBOOK_CLIENT_SECRET',
-  login_dialog_uri: 'https://facebook.com/dialog/oauth',
-  access_token_uri: 'https://graph.facebook.com/oauth/access_token',
-  scope: 'email,user_birthday,user_about_me,publish_stream'
-}
-facebook_provider = Middleware::OauthProviderAuthorization::Provider.new('facebook', facebook_options)
-use Middleware::OauthProviderAuthorization, facebook_provider
+AppConfig.providers.each do |provider_name, provider_options|
+  provider = Middleware::OauthProviderAuthorization::Provider.new( provider_name.to_s, provider_options)
+  use Middleware::OauthProviderAuthorization, provider
+end
 
-
-vkontakte_options = {
-  client_id: 'VKONTAKTE_CLIENT_ID',
-  client_secret: 'VKONTAKTE_CLIENT_SECRET',
-  redirect_uri: 'http://oauth.vk.com/blank.html',
-  login_dialog_uri: 'https://vkontakte.com/dialog/oauth',
-  access_token_uri: 'https://graph.vkontakte.com/oauth/access_token',
-  scope: 'offline,email,user_birthday,user_about_me,wall'
-}
-vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkontakte', vkontakte_options)
-use Middleware::OauthProviderAuthorization, vkontakte_provider
-
-pusher_params = {
-  certificate: "/path/to/cert.pem",
-  passphrase:  "",
-  gateway:     "gateway.push.apple.com",
-  port:        2195,
-  retries:     3
-}
-use Middleware::APNPusher, pusher_params
+use Middleware::APNPusher, AppConfig.ios[:pusher]
 
 use Middleware::BasicRegistration
 use Middleware::PasswordReset

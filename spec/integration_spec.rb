@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'app_config'
 require 'middleware/redis_middleware'
 require 'middleware/password_reset'
 require 'middleware/counter'
@@ -59,6 +60,7 @@ describe 'Integration spec' do
   end
 
   def app
+    AppConfig.load!("config/app.yml", :env => 'test')
     app = Rack::Builder.new do
       use Rack::Lint
       use Rack::ContentLength
@@ -82,26 +84,10 @@ describe 'Integration spec' do
 
       Middleware::OauthProviderAuthorization.settings.environment = :test
 
-      facebook_options = {
-        client_id: '390010757745933',
-        client_secret: '650d73bdb360c1e06719468b8e5eeddd',
-        login_dialog_uri: 'https://facebook.com/dialog/oauth',
-        access_token_uri: 'https://graph.facebook.com/oauth/access_token',
-        scope: 'email,user_birthday,user_about_me,publish_stream'
-      }
-      facebook_provider = Middleware::OauthProviderAuthorization::Provider.new('facebook', facebook_options)
-      use Middleware::OauthProviderAuthorization, facebook_provider
-
-      vkontakte_options = {
-        redirect_uri: 'http://oauth.vk.com/blank.html',
-        scope: 'email,user_birthday,user_about_me,wall',
-        client_id: '3392295',
-        client_secret: '9hQhk0pKNEHOt0WikSZz',
-        login_dialog_uri: 'https://oauth.vk.com/authorize',
-        access_token_uri: 'https://oauth.vk.com/access_token'
-      }
-      vkontakte_provider = Middleware::OauthProviderAuthorization::Provider.new('vkontakte', vkontakte_options)
-      use Middleware::OauthProviderAuthorization, vkontakte_provider
+      AppConfig.providers.each do |provider_name, provider_options|
+        provider = Middleware::OauthProviderAuthorization::Provider.new( provider_name.to_s, provider_options)
+        use Middleware::OauthProviderAuthorization, provider
+      end
 
       Middleware::BasicRegistration.settings.environment = :test
       use Middleware::BasicRegistration
