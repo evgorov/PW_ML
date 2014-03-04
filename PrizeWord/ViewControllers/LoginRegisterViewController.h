@@ -32,6 +32,7 @@
     UIView * activeResponder;
     UIImage * avatar;
     UIPopoverController * popoverController;
+    float scrollViewDefaultHeight;
 }
 
 @end

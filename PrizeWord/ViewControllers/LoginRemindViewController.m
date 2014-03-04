@@ -33,6 +33,7 @@
     [scrollView addGestureRecognizer:tapGestureRecognizer];
     scrollViewDefaultHeight = scrollView.frame.size.height;
     scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_dark_tile.jpg"]];
+    scrollView.contentSize = self.view.frame.size;
     /*
     if ([[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)
     {
@@ -45,7 +46,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    scrollView.contentSize = scrollView.frame.size;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -118,6 +118,7 @@
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
 {
+    scrollViewDefaultHeight = MAX(scrollViewDefaultHeight, self.view.frame.size.height);
     NSDictionary * userInfo = aNotification.userInfo;
     CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     

@@ -152,6 +152,7 @@
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
 {
+    scrollViewDefaultHeight = MAX(scrollViewDefaultHeight, self.view.frame.size.height);
     NSDictionary * userInfo = aNotification.userInfo;
     CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     

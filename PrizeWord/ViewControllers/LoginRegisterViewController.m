@@ -61,6 +61,8 @@ NSRegularExpression * EMAIL_REGEXP;
     tapGestureRecognizer.numberOfTouchesRequired = 1;
     tapGestureRecognizer.delegate = self;
     [scrollView addGestureRecognizer:tapGestureRecognizer];
+    
+    scrollViewDefaultHeight = self.view.frame.size.height;
 
     COLOR_ERROR = [UIColor colorWithRed:1 green:85/255.0f blue:85/255.0f alpha:1];
     COLOR_OK = [UIColor colorWithRed:194/255.0f green:184/255.0f blue:176/255.0f alpha:1];
@@ -283,6 +285,7 @@ NSRegularExpression * EMAIL_REGEXP;
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
 {
+    scrollViewDefaultHeight = MAX(scrollViewDefaultHeight, self.view.frame.size.height);
     NSDictionary * userInfo = aNotification.userInfo;
     CGRect endFrame = [(NSValue *)[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
@@ -308,7 +311,7 @@ NSRegularExpression * EMAIL_REGEXP;
 
         [UIView setAnimationCurve:animationCurve];
         [UIView animateWithDuration:animationDuration animations:^{
-            scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewDefaultHeight);
         }];
     }
 }
