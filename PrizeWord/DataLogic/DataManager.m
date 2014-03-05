@@ -85,7 +85,7 @@
         __block PuzzleSetPackData * localPack;
         __block NSManagedObjectContext * managedObjectContext = nil;
         
-        if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil)
+        if ([GlobalData globalData].sessionKey == nil || [GlobalData globalData].loggedInUser == nil || [GlobalData globalData].loggedInUser.user_id == nil)
         {
             if (callback != nil)
             {
@@ -105,6 +105,10 @@
             [managedObjectContext.undoManager beginUndoGrouping];
             
             localPack = [self localGetSetsForMonth:[GlobalData globalData].currentMonth year:[GlobalData globalData].currentYear];
+            if (localPack == nil)
+            {
+                return;
+            }
             NSLog(@"local pack count: %d", localPack.puzzleSets.count);
             
             request = [[APIClient sharedClient] requestWithMethod:@"GET" path:@"published_sets" parameters:parameters];
@@ -630,6 +634,10 @@
 
 - (PuzzleSetPackData *)localGetSetsForMonth:(int)month year:(int)year
 {
+    if ([GlobalData globalData].loggedInUser.user_id == nil)
+    {
+        return nil;
+    }
     PuzzleSetPackData * result = [PuzzleSetPackData puzzleSetPackWithYear:year andMonth:month andUserId:[GlobalData globalData].loggedInUser.user_id];
     return result;
 }
