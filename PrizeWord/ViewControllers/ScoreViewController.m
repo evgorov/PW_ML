@@ -57,18 +57,8 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     invitedFriends = 0;
 
     [self addFramedView:puzzlesView];
+    [self addFramedView:rateView];
     [self addFramedView:invitesView];
-}
-
-- (void)viewDidUnload
-{
-    puzzlesView = nil;
-    invitesView = nil;
-    btnInvite = nil;
-    lblInvitesScore = nil;
-    lblInvitesFriendsCount = nil;
-    lblInvitesFriendsLabel = nil;
-    [super viewDidUnload];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -83,6 +73,12 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         [self updateInvited:@"facebook"];
     }
     [[GlobalData globalData] loadMe];
+    /*
+    if ([GlobalData globalData].loggedInUser.ratedThisMonth.boolValue)
+    {
+        [lblRateScore setText:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate]];
+    }
+    */
 }
 
 -(void)viewDidDisappear:(BOOL)animated
