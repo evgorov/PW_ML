@@ -238,7 +238,7 @@ static NSRecursiveLock * dbLock = nil;
     {
         if (UIDeviceOrientationIsLandscape(targetOrientation))
         {
-            if (UIDeviceOrientationIsLandscape(viewOrientation))
+            if (UIDeviceOrientationIsLandscape(viewOrientation) || !UIDeviceOrientationIsValidInterfaceOrientation(viewOrientation))
             {
                 targetOrientation = UIDeviceOrientationPortrait;
             }

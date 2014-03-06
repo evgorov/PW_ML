@@ -202,23 +202,6 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
         }
 }
 
--(void)didReceiveMemoryWarning
-{
-    /*
-    if (_currentOverlay != rulesView)
-    {
-//        [rulesScrollView removeFromSuperview];
-//        rulesScrollView = nil;
-        
-        NSArray * subviews = [rulesScrollView subviews];
-        for (UIView * subview in subviews)
-        {
-            [subview removeFromSuperview];
-        }
-    }
-    */
-}
-
 -(void)handleEvent:(Event *)event
 {
     if (event.type == EVENT_ME_UPDATED)
@@ -817,17 +800,30 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return [navController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    NSLog(@"rootViewController shouldAutorotateToInterfaceOrientation %d", toInterfaceOrientation);
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+//    return [navController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 -(BOOL)shouldAutorotate
 {
-    return [navController shouldAutorotate];
+    NSLog(@"rootViewController shouldAutorotate");
+    return NO;
+//    return [navController shouldAutorotate];
 }
 
 -(NSUInteger)supportedInterfaceOrientations
 {
-    return [navController supportedInterfaceOrientations];
+    NSLog(@"rootViewController supportedInterfaceOrientations");
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+    //    return [navController supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    NSLog(@"rootViewController preferredInterfaceOrientationForPresentation");
+    return UIInterfaceOrientationPortrait;
+//    return [navController preferredInterfaceOrientationForPresentation];
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
