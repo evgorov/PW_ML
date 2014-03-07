@@ -30,8 +30,14 @@ end
 # Migrate sets
 UserData.storage(redis).all_in_batches do |ud|
   sets = ud['sets']
+  next unless sets
+  next unless sets.first.is_a?(Hash)
   ud['sets'] = []
+  print '|'
+  next unless sets
   sets.each do |set|
-    ud.add_set(set)
+    next unless set
+    print '*'
+    ud.add_set!(set)
   end
 end

@@ -15,8 +15,7 @@ current_year, current_month = Time.now.year, Time.now.month
 
 # fix month_score
 UserData.storage(redis).all_in_batches do |ud|
-  score = UserScore.storage(redis).scores_for(ud.id)
-    .select { |o| t = Time.parse(o['created_at']); t.year == current_year && t.month == current_month }.map {|o| o['score'] }.inject(&:+).to_i
+  score = UserScore.storage(redis).scores_for(ud.id).select { |o| t = Time.parse(o['created_at']); t.year == current_year && t.month == current_month }.map {|o| o['score'] }.inject(&:+).to_i
 
   ud.inc_month_score(score - ud['month_score'])
 end
