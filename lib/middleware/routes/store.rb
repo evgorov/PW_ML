@@ -37,8 +37,18 @@ module Middleware
     end
 
     post '/hints/buy' do
-      # need this to allow counters include hints_bought,
-      { "message" => "ok" }.to_json
+      env['token_auth'].authorize!
+      if params['receipt_data'] || params['receipt-data']
+        receipt_data = params['receipt_data'] || params['receipt-data']
+        recipe = ItunesReceiptVerifier.verify!(env['redis'], receipt_data, current_user.id)
+        hints = AppConfig.ios[:products][recipe['product_id'].to_sym]
+        if hints
+          current_user['hints'] += hints.to_i
+          current_user.save
+        end
+      end
+      
+      { me: current_user }.to_json
     end
 
     post '/sets/:id/buy' do

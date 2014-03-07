@@ -29,6 +29,21 @@ describe ItunesReceiptVerifier do
     end
   end
 
+  it "should verify reciepts without product_id" do
+    VCR.use_cassette('itunes_receipt_verifier_hints') do
+      lambda {
+        ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+      }.should_not raise_error(ItunesReceiptVerifier::ItunesReceiptError)
+    end
+  end
+  
+  it "verify reciepts should return recipe" do
+    VCR.use_cassette('itunes_receipt_verifier_hints') do
+      recipe = ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+      recipe['product_id'].should == 'com.prizeword.hints10'
+    end
+  end
+  
   it 'should verify product id' do
     VCR.use_cassette('itunes_receipt_verifier') do
       lambda {

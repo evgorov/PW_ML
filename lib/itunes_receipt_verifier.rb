@@ -8,7 +8,7 @@ module ItunesReceiptVerifier
   class ItunesInvalidUserError < Exception; end
 
   class << self
-    def verify!(redis, receipt_data, user_id, product_id)
+    def verify!(redis, receipt_data, user_id, product_id=nil)
       response = HTTParty.post('https://buy.itunes.apple.com/verifyReceipt',
                                body: { 'receipt-data' => receipt_data }.to_json,
                                timeout: 10)
@@ -25,8 +25,11 @@ module ItunesReceiptVerifier
       end
 
       raise ItunesReceiptError unless json['status'] == 0
-      raise ItunesReceiptError unless json['receipt']['product_id'] == product_id
+      raise ItunesReceiptError if product_id && json['receipt']['product_id'] != product_id
       verify_user!(redis, json['receipt']['original_transaction_id'], user_id)
+      
+      raise ItunesReceiptError unless json['receipt']['product_id']
+      json['receipt']
     end
 
     def verify_user!(redis, original_transaction_id, user_id)

@@ -838,4 +838,40 @@ describe 'Integration spec' do
       end
     end
   end
+  
+  describe "user buy hints" do
+    before :each do
+      post '/signup', valid_user_data
+      post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+      response_data = JSON.parse(last_response.body)
+      @session_key = response_data['session_key']
+      
+      get("/me", { session_key: @session_key })
+      response_data = JSON.parse(last_response.body)
+      @old_hints = response_data['me']['hints']
+    end
+    
+    it "should increase hints by 10" do 
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
+      end
+      JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 10
+    end 
+    
+    it "should increase hints for every buy" do
+      (1..5).each do
+        VCR.use_cassette('itunes_receipt_verifier_hints') do
+          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data} 
+        end
+      end
+      JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 50
+    end
+    
+    it "should not increace hints if product not found" do
+      VCR.use_cassette('itunes_receipt_verifier') do
+        post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
+      end
+      JSON.parse(last_response.body)['me']['hints'].should == @old_hints
+    end
+  end
 end
