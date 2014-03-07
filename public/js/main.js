@@ -1181,7 +1181,7 @@ var UsersView = Backbone.View.extend({
     var $el = this.$el;
     // Rendering row templates to view
     var rows = this.collection.map(function(o){
-      if(!o.email) o.email = '';
+      if(!o.get('email')) o.set('email', '');
       return this.rowTemplate(_.extend({}, this.helpers, o.toJSON()));
     }, this).join('');
     $el.find('[role="rows"]').html(rows);
