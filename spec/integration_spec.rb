@@ -47,7 +47,9 @@ describe 'Integration spec' do
       "gold-base-score" => 2000,
       "silver1-base-score" => 1500,
       "silver2-base-score" => 1500,
-      "time-bonus" => 50
+      "time-bonus" => 50,
+      "user-rated-score" => 20,
+      "user-shared-score" => 10
     }
   end
 
@@ -780,6 +782,60 @@ describe 'Integration spec' do
       put '/puzzles/123', { session_key: session_key, puzzle_data: '[1,2,3' }
       last_response.status.should == 403
     end
-
+  end
+  
+  describe "Check score adding for virallity" do
+    before :each do
+      post '/signup', valid_user_data
+      post '/login', email: valid_user_data['email'], password: valid_user_data['password']
+      response_data = JSON.parse(last_response.body)
+      @session_key = response_data['session_key']
+      
+      get("/me", { session_key: @session_key })
+      response_data = JSON.parse(last_response.body)
+      @old_month_score = response_data['me']['month_score']
+    end
+    
+    context "if user no rate before" do
+      it "should increace score for share in social neworks" do
+        post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } )
+        JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
+      end
+      
+      it "should increace score for rate in AppStore" do
+        post( '/score_app_rate', { session_key: @session_key } )
+        JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
+      end
+      
+    end
+    
+    context "if user already rate" do
+      it "should not increace score for share in social neworks" do
+        (1..3).each { post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } ) }
+          
+        JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
+      end
+      
+      it "should not increace score for rate in AppStore" do
+        (1..3).each { post( '/score_app_rate', { session_key: @session_key } ) }
+          
+        JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
+      end
+    end
+    
+    context "parameters errror for share in social networks" do
+      it "respond error if no social_network" do
+        post( '/score_set_share', { session_key: @session_key, set_id: '123456' } )
+        last_response.status.should == 403
+      end
+      it "respond error if no set_id" do
+        post( '/score_set_share', { session_key: @session_key, social_network: 'facebook' } )
+        last_response.status.should == 403
+      end
+      it "respond error if no params" do
+        post( '/score_set_share', { session_key: @session_key } )
+        last_response.status.should == 403
+      end
+    end
   end
 end
