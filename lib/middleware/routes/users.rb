@@ -12,6 +12,8 @@ require 'wall_publisher'
 module Middleware
   class Users < Sinatra::Base
 
+    class CoefficientNotExist < Exception;  end
+
     helpers do
       def current_user
         @current_user ||= env['token_auth'].user.user_data
@@ -47,6 +49,45 @@ module Middleware
       end
 
       { me: user_data }.to_json
+    end
+
+    post '/score_set_share' do
+      env['token_auth'].authorize!
+      halt(403, { 'message' => 'missing social_network'}.to_json) unless params['social_network']
+      halt(403, { 'message' => 'missing set_id'}.to_json) unless params['set_id']
+      score = Coefficients.storage(env['redis']).coefficients['user-shared-score']
+      raise CoefficientNotExist unless score
+      user = current_user
+      source = "user_share##{params['social_network']}##{params['set_id']}"
+      begin
+        UserScore.storage(env['redis']).create(user.id, score.to_i, 0, source)
+      rescue BasicModel::AlreadyExist
+        return { me: user }.to_json
+      end
+
+      user.inc_month_score(score)
+      user.save
+
+      { me: user }.to_json
+    end
+
+
+    post '/score_app_rate' do
+      env['token_auth'].authorize!
+      score = Coefficients.storage(env['redis']).coefficients['user-rated-score']
+      raise CoefficientNotExist unless score
+      user = current_user
+      source = "user_app_rate"
+      begin
+        UserScore.storage(env['redis']).create(user.id, score.to_i, 0, source)
+      rescue BasicModel::AlreadyExist
+        return { me: user }.to_json
+      end
+
+      user.inc_month_score(score)
+      user.save
+
+      { me: user }.to_json
     end
 
     post '/score' do
