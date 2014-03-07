@@ -1489,12 +1489,14 @@ var CoefficientsView = Backbone.View.extend({
     'change [role="brilliant-base-score"]' : 'updateCoefficients',
     'change [role="silver1-base-score"]'   : 'updateCoefficients',
     'change [role="silver2-base-score"]'   : 'updateCoefficients',
+    'change [role="user-shared-score"]'    : 'updateCoefficients',
+    'change [role="user-rated-score"]'     : 'updateCoefficients',
     'click [role="save-coefficients"]'     : 'saveCoefficients'
   },
 
   initialize: function(){
-    this.model.on('change', this.render, this);
     this.model.fetch();
+    this.listenTo(this.model, 'sync', _.bind(this.render, this));
   },
 
   render: function(){
@@ -1505,6 +1507,8 @@ var CoefficientsView = Backbone.View.extend({
     this.$el.find('[role="brilliant-base-score"]').val(this.model.get("brilliant-base-score") || "");
     this.$el.find('[role="silver1-base-score"]').val(this.model.get("silver1-base-score") || "");
     this.$el.find('[role="silver2-base-score"]').val(this.model.get("silver2-base-score") || "");
+    this.$el.find('[role="user-rated-score"]').val(this.model.get("user-rated-score") || "");
+    this.$el.find('[role="user-shared-score"]').val(this.model.get("user-shared-score") || "");
   },
 
   updateCoefficients: function(e){
@@ -1515,6 +1519,8 @@ var CoefficientsView = Backbone.View.extend({
     this.model.set("brilliant-base-score", this.$el.find('[role="brilliant-base-score"]').val());
     this.model.set("silver1-base-score", this.$el.find('[role="silver1-base-score"]').val());
     this.model.set("silver2-base-score", this.$el.find('[role="silver2-base-score"]').val());
+    this.model.set("user-rated-score", this.$el.find('[role="user-rated-score"]').val());
+    this.model.set("user-shared-score", this.$el.find('[role="user-shared-score"]').val());
   },
 
   saveCoefficients: function(){
