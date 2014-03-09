@@ -9,6 +9,8 @@ describe ItunesReceiptVerifier do
   include_context 'fixtures'
 
   before(:all) do
+    r = Redis.new
+    r.flushdb
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = true
       c.cassette_library_dir = 'fixtures/vcr_cassettes'
@@ -29,21 +31,38 @@ describe ItunesReceiptVerifier do
     end
   end
 
-  it "should verify reciepts without product_id" do
-    VCR.use_cassette('itunes_receipt_verifier_hints') do
-      lambda {
-        ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
-      }.should_not raise_error(ItunesReceiptVerifier::ItunesReceiptError)
+  describe "reciept without product_id" do
+    it "should verify" do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        lambda {
+          ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+        }.should_not raise_error(ItunesReceiptVerifier::ItunesReceiptError)
+      end
     end
-  end
-  
-  it "verify reciepts should return recipe" do
-    VCR.use_cassette('itunes_receipt_verifier_hints') do
-      recipe = ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
-      recipe['product_id'].should == 'com.prizeword.hints10'
+
+    it "user transaction should verify" do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        lambda {
+          ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+        }.should_not raise_error(ItunesReceiptVerifier::ItunesInvalidUserError)
+      end
     end
+
+    it "transaction for enother user should not verify" do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        lambda {
+          ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 2)
+        }.should raise_error(ItunesReceiptVerifier::ItunesInvalidUserError)
+      end
+    end
+    it "should return recipe" do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        recipe = ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+        recipe['product_id'].should == 'com.prizeword.hints10'
+      end
+    end
+
   end
-  
   it 'should verify product id' do
     VCR.use_cassette('itunes_receipt_verifier') do
       lambda {
