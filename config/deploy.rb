@@ -10,6 +10,8 @@ ask :capistrano, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/prizeword'
 
+set :unicorn_env, 'development'
+set :unicorn_config_path, 'unicorn.rb'
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -26,13 +28,19 @@ set :deploy_to, '/home/prizeword'
 set :linked_files, %w{config/app.yml config/newrelic.yml}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{log}
+set :linked_dirs, %w{log tmp}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '1.9.3-p429'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
 
 namespace :deploy do
 

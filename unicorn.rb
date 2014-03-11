@@ -14,7 +14,7 @@ else
 end
 
 
-pid APP_ROOT + "/tmp/pids/unicorn.pid"
+pid "/var/run/prizeword/unicorn.pid"
 
 stderr_path APP_ROOT + "/log/unicorn.stderr.log"
 stdout_path APP_ROOT + "/log/unicorn.stdout.log"

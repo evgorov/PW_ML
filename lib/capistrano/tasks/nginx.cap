@@ -1,0 +1,8 @@
+desc "Nginx restart"
+task :nginx_restart do
+  on roles(:app) do
+    execute("sudo /etc/init.d/nginx restart")
+  end
+end
+
+# after 'deploy:publishing', 'nginx_restart'

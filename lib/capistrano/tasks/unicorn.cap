@@ -1,0 +1,54 @@
+namespace :unicorn do
+  desc "Start unicorn server"
+  task :start do
+    on roles(:app) do |host|
+      within release_path do
+        with env: fetch(:unicorn_env) do
+          options = ["exec"]
+          options << "unicorn -D"
+          options << "-c #{fetch(:unicorn_config_path)}"
+          options << "-E #{fetch(:unicorn_env)}"
+
+          execute :bundle, options
+        end
+      end
+    end
+  end
+  
+  desc "Stop unicorn server"
+  task :stop do
+    on roles(:app) do |host|
+      within release_path do
+        with env: fetch(:unicorn_env) do
+          execute :kill, "`cat tmp/pids/unicorn.pid` 1>&2", "; true"
+        end
+      end
+    end
+  end
+  
+  # desc "Restart unicorn server"
+  # task :restart do
+  #   on roles(:app) do |host|
+  #     within release_path do
+  #       with env: fetch(:unicorn_env) do
+  #         invoke 'unicorn.stop'
+  #         invoke 'unicorn.start'
+  #       end
+  #     end
+  #   end
+  # end
+  
+  desc "Reload unicorn server"
+  task :reload do
+    on roles(:app) do |host|
+      within release_path do
+        with env: fetch(:unicorn_env) do
+          execute :kill, " -HUP `cat tmp/pids/unicorn.pid`"
+        end
+      end
+    end
+  end
+end
+
+after 'deploy:publishing', 'unicorn:stop'
+after 'deploy:publishing', 'unicorn:start'
