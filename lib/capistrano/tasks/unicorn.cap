@@ -20,7 +20,7 @@ namespace :unicorn do
     on roles(:app) do |host|
       within release_path do
         with env: fetch(:unicorn_env) do
-          execute :kill, "`cat tmp/pids/unicorn.pid` 1>&2", "; true"
+          execute :kill, "`cat #{fetch(:unicorn_pid)}` 1>&2", "; true"
         end
       end
     end

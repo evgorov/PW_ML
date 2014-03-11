@@ -5,13 +5,15 @@ set :application, 'prizeword'
 set :repo_url, 'git@github.com:aipmedia-org/prizeword-server.git'
 
 # Default branch is :master
-ask :capistrano, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+set :branch, :capistrano
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/prizeword'
 
-set :unicorn_env, 'development'
-set :unicorn_config_path, 'unicorn.rb'
+set :unicorn_env, 'production'
+set :unicorn_config_path, "#{release_path}/unicorn.rb"
+set :unicorn_pid, "/var/run/prizeword/unicorn.pid"
 # Default value for :scm is :git
 # set :scm, :git
 
