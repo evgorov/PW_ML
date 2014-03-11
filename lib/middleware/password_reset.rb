@@ -29,7 +29,7 @@ module Middleware
       token = SecureRandom.uuid
       redis.setex(token, KEY_TTL, user['email'])
       Pony.mail(to: user['email'],
-                from: 'noreply@prizeword.ru',
+                from: 'noreply@prize-word.com',
                 subject: 'Prizeword password reset',
                 html_body: generate_html_body(token, user['name']))
       content_type 'application/json'

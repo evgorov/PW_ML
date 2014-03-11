@@ -17,23 +17,12 @@ require 'middleware/oauth_provider_authorization'
 require 'middleware/password_reset'
 require 'middleware/counter'
 require 'middleware/uploader'
+require 'middleware/index_page'
 require 'middleware/routes/cascade'
 require 'middleware/etag'
 require 'newrelic_rpm'
 require 'new_relic/rack/agent_hooks'
 require 'new_relic/rack/error_collector'
-
-class IndexPage
-
-  def initialize(app)
-    @app = app
-  end
-
-  def call(env)
-    env['PATH_INFO'] = '/index.html' if env['PATH_INFO'] =~ %r{^/[0-9]*$}
-    @app.call(env)
-  end
-end
 
 AppConfig.load!("#{ROOT_DIR}/config/app.yml", :env => ENV['RACK_ENV'])
 
@@ -49,7 +38,7 @@ use Rack::StaticCache, :urls => ["/css", "/img", "/js", "/favicon.ico", "/index.
 
 use Middleware::RedisMiddleware
 
-use Middleware::Uploader, serve_from: '/img/uploads'
+use Middleware::Uploader, serve_from: AppConfig.uploader[:path]
 
 use Middleware::Counter, counter_mappings: {
   [200, %r{/login}] => 'logins',
@@ -71,6 +60,10 @@ AppConfig.providers.each do |provider_name, provider_options|
   use Middleware::OauthProviderAuthorization, provider
 end
 
+# Push notification settings
+GCM.host = AppConfig.android[:gcm_host]
+GCM.format = :json
+GCM.key = AppConfig.android[:gcm_key]
 use Middleware::APNPusher, AppConfig.ios[:pusher]
 
 use Middleware::BasicRegistration

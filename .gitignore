@@ -1,5 +1,7 @@
 dump.rdb
 public/img/uploads/*
+certificate.pem
 .#*
 tmp/*
 log/*
+config/*.yml
