@@ -10,7 +10,7 @@ timeout 30
 if ENV['ENV'] == 'development'
   listen 8080
 else
-  listen "/tmp/unicorn2.sock", :backlog => 64
+  listen "/tmp/unicorn.sock", :backlog => 64
 end
 
 
