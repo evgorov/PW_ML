@@ -178,13 +178,7 @@
     
     scoreQueriesInProgress++;
     
-    NSMutableDictionary * params = [NSMutableDictionary new];
-    [params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
-    [params setObject:[NSString stringWithFormat:@"%d", score] forKey:@"score"];
-    [params setObject:@"1" forKey:@"solved"];
-    [params setObject:key forKey:@"source"];
-    
-    [[APIClient sharedClient] postPath:@"score" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    void (^successCallback)(AFHTTPRequestOperation *operation, id responseObject) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         scoreQueriesInProgress--;
         NSLog(@"score success! %@", operation.responseString);
         
@@ -216,10 +210,47 @@
             [GlobalData globalData].loggedInUser = userData;
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_ME_UPDATED andData:userData]];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+    
+    void (^failureCallback)(AFHTTPRequestOperation *operation, NSError *error) = ^(AFHTTPRequestOperation *operation, NSError *error) {
         scoreQueriesInProgress--;
         NSLog(@"send score error: %@", error.description);
-    }];
+    };
+    
+    
+    if ([key compare:@"rateapp"] == NSOrderedSame)
+    {
+        NSMutableDictionary * params = [NSMutableDictionary new];
+        [params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        
+        [[APIClient sharedClient] postPath:@"score_app_rate" parameters:params success:successCallback failure:failureCallback];
+    }
+    else if ([key rangeOfString:@"shareset"].location == 0)
+    {
+        NSArray * parts = [key componentsSeparatedByString:@"|"];
+        if (parts.count != 3) {
+            NSLog(@"invalid key for shareset: %@", key);
+            scoreQueriesInProgress--;
+            return;
+        }
+        
+        NSMutableDictionary * params = [NSMutableDictionary new];
+        [params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [params setObject:[parts objectAtIndex:1] forKey:@"social_network"];
+        [params setObject:[parts objectAtIndex:2] forKey:@"set_id"];
+        
+        [[APIClient sharedClient] postPath:@"score_set_share" parameters:params success:successCallback failure:failureCallback];
+    }
+    else
+    {
+        NSMutableDictionary * params = [NSMutableDictionary new];
+        [params setObject:[GlobalData globalData].sessionKey forKey:@"session_key"];
+        [params setObject:[NSString stringWithFormat:@"%d", score] forKey:@"score"];
+        [params setObject:@"1" forKey:@"solved"];
+        [params setObject:key forKey:@"source"];
+        
+        [[APIClient sharedClient] postPath:@"score" parameters:params success:successCallback failure:failureCallback];
+    }
 }
 
 - (void)sendHints:(int)hints forKey:(NSString *)key

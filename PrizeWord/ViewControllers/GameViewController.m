@@ -40,10 +40,21 @@ const int TAG_FINAL_FLIPNUMBER1 = 107;
 const int TAG_FINAL_FLIPNUMBER2 = 108;
 const int TAG_FINAL_FLIPNUMBER3 = 109;
 const int TAG_FINAL_FLIPNUMBER4 = 110;
+const int TAG_FINAL_FLIPNUMBER5 = 111;
+const int TAG_FINAL_FACEBOOK_SCORE = 112;
+const int TAG_FINAL_VKONTAKTE_BONUS = 113;
+const int TAG_FINAL_SET_TYPE = 114;
+const int TAG_FINAL_MENU = 115;
+const int TAG_FINAL_NEXT = 116;
+const int TAG_FINAL_CONTINUE = 117;
 
 const int FINAL_OVERVIEW_TYPE_ORDINARY = 1;
 const int FINAL_OVERVIEW_TYPE_RATE = 2;
 const int FINAL_OVERVIEW_TYPE_RATE_DONE = 3;
+const int FINAL_OVERVIEW_TYPE_SET = 4;
+const int FINAL_OVERVIEW_TYPE_SET_VK_DONE = 5;
+const int FINAL_OVERVIEW_TYPE_SET_FB_DONE = 6;
+const int FINAL_OVERVIEW_TYPE_SET_DONE = 7;
 
 NSString *reviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=725511947";
 NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
@@ -333,6 +344,16 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)handlePauseContinue:(id)sender
+{
+    [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET];
+        [self showFinalScreenAnimated:YES];
+        [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:YES];
+    });
+}
+
 - (IBAction)handlePauseMusicSwitch:(id)sender
 {
     BOOL mute = !pauseSwtMusic.isOn;
@@ -359,8 +380,29 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 - (IBAction)handleShareClick:(id)sender
 {
     UIButton * button = sender;
-    int mins = (int)([GameLogic sharedLogic].gameTime / 60);
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал сканворд %@ за %d %@ и получил за это %d %@!", gameField.puzzle.name, mins, [NSString declesion:mins oneString:@"минуту" twoString:@"минуты" fiveString:@"минут"], gameField.puzzle.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
+    NSString * puzzleType = @"";
+    switch (puzzleData.puzzleSet.type.intValue) {
+        case PUZZLESET_BRILLIANT:
+            puzzleType = @"бриллиантовый ";
+            break;
+            
+        case PUZZLESET_FREE:
+            puzzleType = @"бесплатный ";
+            break;
+            
+        case PUZZLESET_GOLD:
+            puzzleType = @"золотой ";
+            break;
+            
+        case PUZZLESET_SILVER:
+        case PUZZLESET_SILVER2:
+            puzzleType = @"серебряный ";
+            break;
+
+        default:
+            break;
+    }
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет и получил за это %d %@!", puzzleType, puzzleData.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     // facebook
     if (button.tag == 0)
     {
@@ -407,6 +449,19 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                                  [alertView show];
                                  
                                  NSLog(@"Posted story, id: %@", postID);
+                                 [[UserDataManager sharedManager] addScore:[GlobalData globalData].scoreForShare forKey:[NSString stringWithFormat:@"shareset|facebook|%@", puzzleData.puzzleSet.set_id]];
+
+                                 [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
+                                 if (finalOverlay == finalOverlaySet)
+                                 {
+                                     [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_FB_DONE];
+                                 }
+                                 else
+                                 {
+                                     [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_DONE];
+                                 }
+                                 [self showFinalScreenAnimated:NO];
+                                 [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
                              }
                          }
                      }
@@ -454,6 +509,20 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             [[APIClient sharedClient] postPath:@"vkontakte/share" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
+
+                [[UserDataManager sharedManager] addScore:[GlobalData globalData].scoreForShare forKey:[NSString stringWithFormat:@"shareset|vkontakte|%@", puzzleData.puzzleSet.set_id]];
+                
+                [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
+                if (finalOverlay == finalOverlaySet)
+                {
+                    [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_VK_DONE];
+                }
+                else
+                {
+                    [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_DONE];
+                }
+                [self showFinalScreenAnimated:NO];
+                [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
             } failure:nil];
         }
         else
@@ -481,8 +550,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         return;
     }
     
-    NSString * rateKey = [NSString stringWithFormat:@"rated%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:rateKey];
+    NSString * ratedKey = @"apprated";
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ratedKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     double delayInSeconds = 0.1;
@@ -494,7 +563,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         [self showFinalScreenAnimated:NO];
         [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
     });
-    NSLog(@"TODO: add score");
+    
+    [[UserDataManager sharedManager] addScore:[GlobalData globalData].scoreForRate forKey:@"rateapp"];
 }
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification
@@ -594,8 +664,11 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             }
             
             NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
-            PuzzleProxy * puzzle = event.data;
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzle.puzzleSet.type.intValue != PUZZLESET_FREE && puzzle.time_left.intValue > 0) || (puzzle.puzzleSet.percent >= 0.999999 && onlyFree)))
+            NSString * ratedKey = @"apprated";
+            puzzleData = event.data;
+            // DEBUG :: set YES for test purposes
+
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:ratedKey] && ![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.time_left.intValue > 0) || (puzzleData.puzzleSet.percent >= 0.999999 && onlyFree)))
             {
                 [self prepareFinalOverlayWithType:FINAL_OVERVIEW_TYPE_RATE];
             }
@@ -705,11 +778,27 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             finalOverlay = finalOverlayRateDone;
             break;
             
+        case FINAL_OVERVIEW_TYPE_SET:
+            finalOverlay = finalOverlaySet;
+            break;
+            
+        case FINAL_OVERVIEW_TYPE_SET_FB_DONE:
+            finalOverlay = finalOverlaySetFBDone;
+            break;
+            
+        case FINAL_OVERVIEW_TYPE_SET_VK_DONE:
+            finalOverlay = finalOverlaySetVKDone;
+            break;
+            
+        case FINAL_OVERVIEW_TYPE_SET_DONE:
+            finalOverlay = finalOverlaySetDone;
+            break;
+            
         default:
             break;
     }
     
-    if (type != FINAL_OVERVIEW_TYPE_ORDINARY)
+    if (type == FINAL_OVERVIEW_TYPE_RATE)
     {
         NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:showRateKey];
@@ -718,16 +807,60 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     lblFinalBaseScore = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_BASE_SCORE];
     lblFinalTimeBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_TIME_BONUS];
     lblFinalRateBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_RATE_BONUS];
+    lblFinalFacebookBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_FACEBOOK_SCORE];
+    lblFinalVkontakteBonus = (UILabel *)[finalOverlay viewWithTag:TAG_FINAL_VKONTAKTE_BONUS];
     finalFlipNumbers = [NSMutableArray new];
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 6; ++i)
     {
-        [finalFlipNumbers addObject:[finalOverlay viewWithTag:TAG_FINAL_FLIPNUMBER0 + i]];
-        [[finalFlipNumbers objectAtIndex:i] reset];
+        FlipNumberView * view = (FlipNumberView *)[finalOverlay viewWithTag:TAG_FINAL_FLIPNUMBER0 + i];
+        if (view != nil)
+        {
+            [finalFlipNumbers addObject:view];
+            [view reset];
+        }
     }
 
     lblFinalBaseScore.text = @"0";
     lblFinalTimeBonus.text = @"0";
-    lblFinalRateBonus.text = @"0";
+    lblFinalRateBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForRate];
+    lblFinalFacebookBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
+    lblFinalVkontakteBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
+    
+    UIImage * setTypeImage = nil;
+    switch (puzzleData.puzzleSet.type.intValue) {
+        case PUZZLESET_BRILLIANT:
+            setTypeImage = [UIImage imageNamed:@"puzzles_set_br.png"];
+            break;
+
+        case PUZZLESET_FREE:
+            setTypeImage = [UIImage imageNamed:@"puzzles_set_fr.png"];
+            break;
+
+        case PUZZLESET_GOLD:
+            setTypeImage = [UIImage imageNamed:@"puzzles_set_au.png"];
+            break;
+
+        case PUZZLESET_SILVER:
+            setTypeImage = [UIImage imageNamed:@"puzzles_set_ag.png"];
+            break;
+            
+        case PUZZLESET_SILVER2:
+            setTypeImage = [UIImage imageNamed:@"puzzles_set_ag2.png"];
+            break;
+            
+        default:
+            break;
+    }
+    imgFinalSetType = (UIImageView *)[finalOverlay viewWithTag:TAG_FINAL_SET_TYPE];
+    [imgFinalSetType setImage:setTypeImage];
+    
+    btnFinalMenu = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_MENU];
+    btnFinalNext = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_NEXT];
+    btnFinalContinue = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_CONTINUE];
+    // DEBUG :: invert conditions for test purposes
+    btnFinalMenu.hidden = puzzleData.puzzleSet.percent >= 0.99999;
+    btnFinalNext.hidden = puzzleData.puzzleSet.percent >= 0.99999;
+    btnFinalContinue.hidden = puzzleData.puzzleSet.percent < 0.99999;
 }
 
 -(void)animateFinalScreenAppears:(id)sender
@@ -744,7 +877,6 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
     lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? 0 : baseScore];
     lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? [puzzleData.score unsignedIntValue] : ([puzzleData.score unsignedIntValue] - baseScore)];
-    lblFinalRateBonus.text = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate];
     lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
@@ -779,11 +911,11 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
             } completion:^(BOOL finished) {
-                uint score = [puzzleData.score unsignedIntValue];
+                uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
                 // TODO :: loop counting sound
                 [countingSound play];
                 int lastI = 0;
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < finalFlipNumbers.count; ++i)
                 {
                     if (score > 0)
                     {
@@ -799,7 +931,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             }];
         }];
         
-        if (finalOverlay != finalOverlayRate)
+        if (finalOverlay == finalOverlayRateDone)
         {
             [UIView animateWithDuration:0.25f delay:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 lblFinalRateBonus.transform = CGAffineTransformMakeScale(2.0f, 2.0f);
@@ -820,11 +952,11 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
         lblFinalRateBonus.transform = CGAffineTransformMakeScale(1, 1);
         
-        uint score = [puzzleData.score unsignedIntValue];
+        uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
         // TODO :: loop counting sound
         [countingSound play];
         int lastI = 0;
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < finalFlipNumbers.count; ++i)
         {
             if (score > 0)
             {

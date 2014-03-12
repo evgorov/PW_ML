@@ -40,11 +40,21 @@
     IBOutlet UIView *finalOverlayOrdinary;
     IBOutlet UIView *finalOverlayRate;
     IBOutlet UIView *finalOverlayRateDone;
+    IBOutlet UIView *finalOverlaySet;
+    IBOutlet UIView *finalOverlaySetFBDone;
+    IBOutlet UIView *finalOverlaySetVKDone;
+    IBOutlet UIView *finalOverlaySetDone;
     
     UILabel *lblFinalBaseScore;
     UILabel *lblFinalTimeBonus;
     UILabel *lblFinalRateBonus;
+    UILabel *lblFinalFacebookBonus;
+    UILabel *lblFinalVkontakteBonus;
+    UIImageView *imgFinalSetType;
     NSMutableArray * finalFlipNumbers;
+    UIButton *btnFinalMenu;
+    UIButton *btnFinalNext;
+    UIButton *btnFinalContinue;
 
     UIBarButtonItem * playPauseItem;
     UIBarButtonItem * hintButtonItem;

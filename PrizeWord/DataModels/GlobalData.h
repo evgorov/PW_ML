@@ -34,6 +34,7 @@
 -(int)scoreForFriend;
 -(int)scoreForTime;
 -(int)scoreForRate;
+-(int)scoreForShare;
 
 -(void)loadMonthSets;
 -(void)loadMe;

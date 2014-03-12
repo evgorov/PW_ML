@@ -445,6 +445,11 @@
     _questionsComplete++;
     [self saveSolvedQuestion:currentQuestion];
     currentQuestion = nil;
+    // DEBUG :: for test purposes
+    /*
+    [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE andData:_puzzle]];
+    return YES;
+    */
     if (_questionsComplete == _questionsTotal)
     {
         [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_COMPLETE andData:_puzzle]];

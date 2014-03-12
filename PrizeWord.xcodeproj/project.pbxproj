@@ -62,11 +62,27 @@
 		6B9227C418004DD4004E1505 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C318004DD4004E1505 /* APIClient.m */; };
 		6B9227C7180052A1004E1505 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9227C6180052A1004E1505 /* UserDataManager.m */; };
 		6B9227C918005350004E1505 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B9227C81800534F004E1505 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6B93A9E318D050D10065BE80 /* final_set_bottom_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9D518D050D10065BE80 /* final_set_bottom_bg@2x.png */; };
+		6B93A9E418D050D10065BE80 /* final_set_top_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9D618D050D10065BE80 /* final_set_top_bg@2x.png */; };
+		6B93A9E518D050D10065BE80 /* final_set_bottom_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9D718D050D10065BE80 /* final_set_bottom_bg@2x~ipad.png */; };
+		6B93A9E618D050D10065BE80 /* final_set_top_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9D818D050D10065BE80 /* final_set_top_bg@2x~ipad.png */; };
+		6B93A9E718D050D10065BE80 /* final_set_vkontakte_points@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9D918D050D10065BE80 /* final_set_vkontakte_points@2x~ipad.png */; };
+		6B93A9E818D050D10065BE80 /* final_set_facebook_points@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DA18D050D10065BE80 /* final_set_facebook_points@2x~ipad.png */; };
+		6B93A9E918D050D10065BE80 /* final_set_vkontakte_points@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DB18D050D10065BE80 /* final_set_vkontakte_points@2x.png */; };
+		6B93A9EA18D050D10065BE80 /* final_set_facebook_points@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DC18D050D10065BE80 /* final_set_facebook_points@2x.png */; };
+		6B93A9EB18D050D10065BE80 /* final_set_vkontakte_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DD18D050D10065BE80 /* final_set_vkontakte_btn@2x.png */; };
+		6B93A9EC18D050D10065BE80 /* final_set_facebook_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DE18D050D10065BE80 /* final_set_facebook_btn@2x.png */; };
+		6B93A9ED18D050D10065BE80 /* final_set_back_to_menu_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9DF18D050D10065BE80 /* final_set_back_to_menu_btn@2x.png */; };
+		6B93A9EE18D050D10065BE80 /* final_set_vkontakte_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9E018D050D10065BE80 /* final_set_vkontakte_btn@2x~ipad.png */; };
+		6B93A9EF18D050D10065BE80 /* final_set_facebook_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9E118D050D10065BE80 /* final_set_facebook_btn@2x~ipad.png */; };
+		6B93A9F018D050D10065BE80 /* final_set_back_to_menu_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B93A9E218D050D10065BE80 /* final_set_back_to_menu_btn@2x~ipad.png */; };
 		6B93CCB018963D1700DACE98 /* QuestionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCAF18963D1700DACE98 /* QuestionProxy.m */; };
 		6B93CCB318963F2B00DACE98 /* DataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB218963F2B00DACE98 /* DataProxy.m */; };
 		6B93CCB618968A6D00DACE98 /* PuzzleProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB518968A6D00DACE98 /* PuzzleProxy.m */; };
 		6B93CCB9189696D000DACE98 /* PuzzleSetProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCB8189696D000DACE98 /* PuzzleSetProxy.m */; };
 		6B93CCBC1896CC2E00DACE98 /* PuzzleSetPackProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B93CCBB1896CC2E00DACE98 /* PuzzleSetPackProxy.m */; };
+		6B947BB118D0E24B00AFDB21 /* final_continue_btn@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B947BAF18D0E24B00AFDB21 /* final_continue_btn@2x~ipad.png */; };
+		6B947BB218D0E24B00AFDB21 /* final_continue_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B947BB018D0E24B00AFDB21 /* final_continue_btn@2x.png */; };
 		6B95DEF5180FCEDD00A88F5A /* pause_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF3180FCEDD00A88F5A /* pause_bg.png */; };
 		6B95DEF6180FCEDD00A88F5A /* pause_bg~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */; };
 		6B95DF07180FCF1C00A88F5A /* switch_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */; };
@@ -769,6 +785,20 @@
 		6B9227C5180052A1004E1505 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDataManager.h; path = DataLogic/UserDataManager.h; sourceTree = "<group>"; };
 		6B9227C6180052A1004E1505 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDataManager.m; path = DataLogic/UserDataManager.m; sourceTree = "<group>"; };
 		6B9227C81800534F004E1505 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6B93A9D518D050D10065BE80 /* final_set_bottom_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_bottom_bg@2x.png"; sourceTree = "<group>"; };
+		6B93A9D618D050D10065BE80 /* final_set_top_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_top_bg@2x.png"; sourceTree = "<group>"; };
+		6B93A9D718D050D10065BE80 /* final_set_bottom_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_bottom_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9D818D050D10065BE80 /* final_set_top_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_top_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9D918D050D10065BE80 /* final_set_vkontakte_points@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_vkontakte_points@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9DA18D050D10065BE80 /* final_set_facebook_points@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_facebook_points@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9DB18D050D10065BE80 /* final_set_vkontakte_points@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_vkontakte_points@2x.png"; sourceTree = "<group>"; };
+		6B93A9DC18D050D10065BE80 /* final_set_facebook_points@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_facebook_points@2x.png"; sourceTree = "<group>"; };
+		6B93A9DD18D050D10065BE80 /* final_set_vkontakte_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_vkontakte_btn@2x.png"; sourceTree = "<group>"; };
+		6B93A9DE18D050D10065BE80 /* final_set_facebook_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_facebook_btn@2x.png"; sourceTree = "<group>"; };
+		6B93A9DF18D050D10065BE80 /* final_set_back_to_menu_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_back_to_menu_btn@2x.png"; sourceTree = "<group>"; };
+		6B93A9E018D050D10065BE80 /* final_set_vkontakte_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_vkontakte_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9E118D050D10065BE80 /* final_set_facebook_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_facebook_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		6B93A9E218D050D10065BE80 /* final_set_back_to_menu_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_set_back_to_menu_btn@2x~ipad.png"; sourceTree = "<group>"; };
 		6B93CCAE18963D1700DACE98 /* QuestionProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionProxy.h; path = DataLogic/QuestionProxy.h; sourceTree = "<group>"; };
 		6B93CCAF18963D1700DACE98 /* QuestionProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QuestionProxy.m; path = DataLogic/QuestionProxy.m; sourceTree = "<group>"; };
 		6B93CCB118963F2B00DACE98 /* DataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataProxy.h; path = DataLogic/DataProxy.h; sourceTree = "<group>"; };
@@ -779,6 +809,8 @@
 		6B93CCB8189696D000DACE98 /* PuzzleSetProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetProxy.m; path = DataLogic/PuzzleSetProxy.m; sourceTree = "<group>"; };
 		6B93CCBA1896CC2E00DACE98 /* PuzzleSetPackProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PuzzleSetPackProxy.h; path = DataLogic/PuzzleSetPackProxy.h; sourceTree = "<group>"; };
 		6B93CCBB1896CC2E00DACE98 /* PuzzleSetPackProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PuzzleSetPackProxy.m; path = DataLogic/PuzzleSetPackProxy.m; sourceTree = "<group>"; };
+		6B947BAF18D0E24B00AFDB21 /* final_continue_btn@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_continue_btn@2x~ipad.png"; sourceTree = "<group>"; };
+		6B947BB018D0E24B00AFDB21 /* final_continue_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_continue_btn@2x.png"; sourceTree = "<group>"; };
 		6B95DEF3180FCEDD00A88F5A /* pause_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause_bg.png; sourceTree = "<group>"; };
 		6B95DEF4180FCEDD00A88F5A /* pause_bg~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause_bg~ipad.png"; sourceTree = "<group>"; };
 		6B95DEF7180FCF1C00A88F5A /* switch_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_disabled.png; sourceTree = "<group>"; };
@@ -1897,6 +1929,22 @@
 		F2868C8A1669F992003F0686 /* gamescreen */ = {
 			isa = PBXGroup;
 			children = (
+				6B947BAF18D0E24B00AFDB21 /* final_continue_btn@2x~ipad.png */,
+				6B947BB018D0E24B00AFDB21 /* final_continue_btn@2x.png */,
+				6B93A9D518D050D10065BE80 /* final_set_bottom_bg@2x.png */,
+				6B93A9D618D050D10065BE80 /* final_set_top_bg@2x.png */,
+				6B93A9D718D050D10065BE80 /* final_set_bottom_bg@2x~ipad.png */,
+				6B93A9D818D050D10065BE80 /* final_set_top_bg@2x~ipad.png */,
+				6B93A9D918D050D10065BE80 /* final_set_vkontakte_points@2x~ipad.png */,
+				6B93A9DA18D050D10065BE80 /* final_set_facebook_points@2x~ipad.png */,
+				6B93A9DB18D050D10065BE80 /* final_set_vkontakte_points@2x.png */,
+				6B93A9DC18D050D10065BE80 /* final_set_facebook_points@2x.png */,
+				6B93A9DD18D050D10065BE80 /* final_set_vkontakte_btn@2x.png */,
+				6B93A9DE18D050D10065BE80 /* final_set_facebook_btn@2x.png */,
+				6B93A9DF18D050D10065BE80 /* final_set_back_to_menu_btn@2x.png */,
+				6B93A9E018D050D10065BE80 /* final_set_vkontakte_btn@2x~ipad.png */,
+				6B93A9E118D050D10065BE80 /* final_set_facebook_btn@2x~ipad.png */,
+				6B93A9E218D050D10065BE80 /* final_set_back_to_menu_btn@2x~ipad.png */,
 				6B8ED63718C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png */,
 				6B8ED63118C06679008C9D62 /* rate_btn@2x~ipad.png */,
 				6B8ED63318C06679008C9D62 /* final_rate_bg@2x~ipad.png */,
@@ -2802,6 +2850,7 @@
 				F268D53816E9013900F0FA0F /* sidebar.caf in Resources */,
 				F268D53316E9012500F0FA0F /* counting.caf in Resources */,
 				F268D53716E9013700F0FA0F /* question_answered.caf in Resources */,
+				6B93A9EF18D050D10065BE80 /* final_set_facebook_btn@2x~ipad.png in Resources */,
 				F268D53216E9012300F0FA0F /* buy_set.caf in Resources */,
 				F268D53616E9013400F0FA0F /* puzzle_solved.caf in Resources */,
 				F268D53A16E9013C00F0FA0F /* type_1.caf in Resources */,
@@ -2826,6 +2875,7 @@
 				F2868C961669F992003F0686 /* header_pause_btn_down@2x.png in Resources */,
 				F2868C971669F992003F0686 /* header_play_btn@2x.png in Resources */,
 				F2868C981669F992003F0686 /* header_play_btn_down@2x.png in Resources */,
+				6B93A9F018D050D10065BE80 /* final_set_back_to_menu_btn@2x~ipad.png in Resources */,
 				F2868C9F1669FD21003F0686 /* DINPro-Black.otf in Resources */,
 				F2868CA01669FD21003F0686 /* DINPro-Bold.otf in Resources */,
 				F2868CA11669FD21003F0686 /* DINPro-Light.otf in Resources */,
@@ -2837,6 +2887,7 @@
 				F2868CB1166A22CE003F0686 /* header_pause_btn@2x~ipad.png in Resources */,
 				F2868CB2166A22CE003F0686 /* header_play_btn_down@2x~ipad.png in Resources */,
 				F2868CB3166A22CE003F0686 /* header_play_btn@2x~ipad.png in Resources */,
+				6B93A9E518D050D10065BE80 /* final_set_bottom_bg@2x~ipad.png in Resources */,
 				F2868CBA166A6CC8003F0686 /* tile_letters_correct_brilliant@2x.png in Resources */,
 				F2868CBB166A6CC8003F0686 /* tile_letters_correct_free@2x.png in Resources */,
 				F2868CBC166A6CC8003F0686 /* tile_letters_correct_gold@2x.png in Resources */,
@@ -2860,6 +2911,7 @@
 				6B8ED63818C06FAC008C9D62 /* final_rate_done_bg@2x~ipad.png in Resources */,
 				F2B83B23167141F0007C4596 /* LoginRegisterViewController.xib in Resources */,
 				F2B83B531673945B007C4596 /* login_enter_btn_down@2x.png in Resources */,
+				6B93A9EE18D050D10065BE80 /* final_set_vkontakte_btn@2x~ipad.png in Resources */,
 				F2B83B541673945B007C4596 /* login_enter_btn_down@2x~ipad.png in Resources */,
 				F2B83B551673945B007C4596 /* login_enter_btn@2x.png in Resources */,
 				F2B83B561673945B007C4596 /* login_enter_btn@2x~ipad.png in Resources */,
@@ -2912,6 +2964,7 @@
 				6B27F737181062F9005465B2 /* puzzles_set_progressbar.png in Resources */,
 				F286E2D1167518E600FF5E83 /* login_forget_btn@2x~ipad.png in Resources */,
 				6B27F72F181062F9005465B2 /* puzzles_badge_progress.png in Resources */,
+				6B93A9EB18D050D10065BE80 /* final_set_vkontakte_btn@2x.png in Resources */,
 				F286E2D2167518E600FF5E83 /* login_enter_enter_btn_down@2x.png in Resources */,
 				F286E2D3167518E600FF5E83 /* login_enter_enter_btn@2x.png in Resources */,
 				F286E2D4167518E600FF5E83 /* login_enter_enter_btn_down@2x~ipad.png in Resources */,
@@ -2974,6 +3027,7 @@
 				F286E374167CD70400FF5E83 /* puzzles_badges_done_gold@2x.png in Resources */,
 				F286E375167CD70400FF5E83 /* puzzles_badges_done_brilliant@2x.png in Resources */,
 				6B95DF15180FCF1C00A88F5A /* switch_slider@2x~ipad.png in Resources */,
+				6B947BB218D0E24B00AFDB21 /* final_continue_btn@2x.png in Resources */,
 				F286E376167CD70400FF5E83 /* puzzles_buy_hint_btn_down@2x.png in Resources */,
 				F286E378167CD70400FF5E83 /* puzzles_news_close_btn_down@2x.png in Resources */,
 				F286E379167CD70400FF5E83 /* puzzles_archive_showmore_btn_down@2x.png in Resources */,
@@ -2993,6 +3047,7 @@
 				F286E397167CEBAE00FF5E83 /* menu_score_btn@2x.png in Resources */,
 				F286E398167CEBAE00FF5E83 /* menu_score_btn_down@2x.png in Resources */,
 				F286E399167CEBAE00FF5E83 /* menu_switch_user_btn@2x.png in Resources */,
+				6B93A9E818D050D10065BE80 /* final_set_facebook_points@2x~ipad.png in Resources */,
 				6B95DF07180FCF1C00A88F5A /* switch_disabled.png in Resources */,
 				F286E39A167CEBAE00FF5E83 /* menu_switch_user_btn_down@2x.png in Resources */,
 				F286E3A9167DB2D200FF5E83 /* score_invite_btn@2x.png in Resources */,
@@ -3022,6 +3077,7 @@
 				6BD165E418053A9600F140AD /* HintsCell~ipad.xib in Resources */,
 				F286E3F61681745200FF5E83 /* puzzles_set_timeleft_bg@2x.png in Resources */,
 				F286E3F71681745200FF5E83 /* puzzles_set_ag2@2x.png in Resources */,
+				6B93A9E318D050D10065BE80 /* final_set_bottom_bg@2x.png in Resources */,
 				F286E3F81681745200FF5E83 /* puzzles_set_fr@2x.png in Resources */,
 				F286E3F91681745200FF5E83 /* puzzles_set_ag@2x.png in Resources */,
 				6B8E4D93180D27C900CD1AC5 /* TapjoyResources.bundle in Resources */,
@@ -3036,6 +3092,7 @@
 				F286E42616859E3E00FF5E83 /* puzzles_badges_brilliant@2x~ipad.png in Resources */,
 				F286E42716859E3E00FF5E83 /* puzzles_badges_gold@2x~ipad.png in Resources */,
 				F286E42816859E3E00FF5E83 /* puzzles_badges_silver@2x~ipad.png in Resources */,
+				6B93A9EC18D050D10065BE80 /* final_set_facebook_btn@2x.png in Resources */,
 				F286E42916859E3E00FF5E83 /* puzzles_badges_done_free~ipad.png in Resources */,
 				F286E42A16859E3E00FF5E83 /* puzzles_badges_free~ipad.png in Resources */,
 				F286E42B16859E3E00FF5E83 /* puzzles_badges_done_silver~ipad.png in Resources */,
@@ -3044,6 +3101,7 @@
 				F286E42E16859E3F00FF5E83 /* puzzles_badges_done_brilliant@2x~ipad.png in Resources */,
 				F286E42F16859E3F00FF5E83 /* puzzles_badges_done_gold@2x~ipad.png in Resources */,
 				F286E43016859E3F00FF5E83 /* puzzles_badges_done_silver@2x~ipad.png in Resources */,
+				6B93A9EA18D050D10065BE80 /* final_set_facebook_points@2x.png in Resources */,
 				F286E43116859E3F00FF5E83 /* puzzles_badges_free@2x~ipad.png in Resources */,
 				F286E43216859E3F00FF5E83 /* puzzles_badges_done_free@2x~ipad.png in Resources */,
 				F286E43316859E3F00FF5E83 /* puzzles_badge_star@2x~ipad.png in Resources */,
@@ -3068,12 +3126,14 @@
 				F286E4511685A0EA00FF5E83 /* menu_rules_btn_down@2x~ipad.png in Resources */,
 				F286E4521685A0EB00FF5E83 /* menu_rules_btn@2x~ipad.png in Resources */,
 				F286E4531685A0EC00FF5E83 /* menu_invite_btn_down@2x~ipad.png in Resources */,
+				6B93A9E918D050D10065BE80 /* final_set_vkontakte_points@2x.png in Resources */,
 				F286E4541685A0ED00FF5E83 /* menu_invite_btn@2x~ipad.png in Resources */,
 				F286E4551685A0EE00FF5E83 /* menu_rating_btn_down@2x~ipad.png in Resources */,
 				F286E4561685A0EF00FF5E83 /* menu_rating_btn@2x~ipad.png in Resources */,
 				6B95DF14180FCF1C00A88F5A /* switch_slider@2x.png in Resources */,
 				F286E4571685A0EF00FF5E83 /* menu_score_btn@2x~ipad.png in Resources */,
 				F286E4581685A0EF00FF5E83 /* menu_score_btn_down@2x~ipad.png in Resources */,
+				6B93A9E618D050D10065BE80 /* final_set_top_bg@2x~ipad.png in Resources */,
 				F286E4591685A0EF00FF5E83 /* menu_switch_user_btn_down@2x~ipad.png in Resources */,
 				6B27F72B181062F9005465B2 /* puzzles_badge_progress_bg@2x.png in Resources */,
 				F286E45A1685A0EF00FF5E83 /* menu_switch_user_btn@2x~ipad.png in Resources */,
@@ -3134,6 +3194,7 @@
 				F247C3111689CD1A00A81D16 /* tile_question_input@2x~ipad.png in Resources */,
 				F247C3121689CD1A00A81D16 /* tile_arrow_north_left@2x~ipad.png in Resources */,
 				F247C3131689CD1A00A81D16 /* tile_arrow_north_up@2x~ipad.png in Resources */,
+				6B93A9E418D050D10065BE80 /* final_set_top_bg@2x.png in Resources */,
 				F247C3141689CD1A00A81D16 /* tile_arrow_northeast_right@2x~ipad.png in Resources */,
 				F247C3151689CD1A00A81D16 /* tile_arrow_northwest_right@2x~ipad.png in Resources */,
 				F247C3161689CD1A00A81D16 /* tile_letter_correct_input_overlay@2x~ipad.png in Resources */,
@@ -3172,6 +3233,7 @@
 				F25090F416B3EC3B0045621E /* rating_cell_other_place_bg@2x~ipad.png in Resources */,
 				F25090F516B3EC3B0045621E /* rating_cell_third_place@2x~ipad.png in Resources */,
 				F25090F616B3EC3B0045621E /* rating_cell_second_place@2x~ipad.png in Resources */,
+				6B947BB118D0E24B00AFDB21 /* final_continue_btn@2x~ipad.png in Resources */,
 				F25090F716B3EC3B0045621E /* rating_cell_first_place@2x~ipad.png in Resources */,
 				F25090F816B3EC3B0045621E /* rating_cell_photo_mask@2x.png in Resources */,
 				F25090F916B3EC3B0045621E /* rating_cell_other_place_bg@2x.png in Resources */,
@@ -3295,6 +3357,7 @@
 				F2840CA417158E180003F1F2 /* rules_page_7@2x~ipad.png in Resources */,
 				F2840CA517158E190003F1F2 /* rules_page_6@2x~ipad.png in Resources */,
 				F2840CA617158E190003F1F2 /* rules_page_5@2x~ipad.png in Resources */,
+				6B93A9ED18D050D10065BE80 /* final_set_back_to_menu_btn@2x.png in Resources */,
 				6B95DF16180FCF1C00A88F5A /* switch_slider~ipad.png in Resources */,
 				F2840CA717158E190003F1F2 /* rules_page_4@2x~ipad.png in Resources */,
 				F2840CA817158E190003F1F2 /* rules_page_3@2x~ipad.png in Resources */,
@@ -3310,6 +3373,7 @@
 				F2840CB217158E190003F1F2 /* rules_page_6.png in Resources */,
 				6B6DE19F1802CCA400D3DF52 /* NewsCell.xib in Resources */,
 				F2840CB317158E190003F1F2 /* rules_page_5.png in Resources */,
+				6B93A9E718D050D10065BE80 /* final_set_vkontakte_points@2x~ipad.png in Resources */,
 				F2840CB417158E190003F1F2 /* rules_page_4.png in Resources */,
 				F2840CB517158E190003F1F2 /* rules_page_3.png in Resources */,
 				F2840CB617158E190003F1F2 /* rules_page_2.png in Resources */,

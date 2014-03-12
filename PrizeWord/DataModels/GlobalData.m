@@ -172,7 +172,17 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
 
 - (int)scoreForRate
 {
-    NSNumber * value = [coefficients objectForKey:@"rate-bonus"];
+    NSNumber * value = [coefficients objectForKey:@"user-rated-score"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+- (int)scoreForShare
+{
+    NSNumber * value = [coefficients objectForKey:@"user-shared-score"];
     if (value == nil || value == (id)[NSNull null])
     {
         return 0;
