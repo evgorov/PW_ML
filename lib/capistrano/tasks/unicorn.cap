@@ -50,5 +50,5 @@ namespace :unicorn do
   end
 end
 
-after 'deploy:publishing', 'unicorn:stop'
-after 'deploy:publishing', 'unicorn:start'
+# after 'deploy:publishing', 'unicorn:stop'
+# after 'deploy:publishing', 'unicorn:start'
