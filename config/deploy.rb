@@ -6,7 +6,7 @@ set :repo_url, 'git@github.com:aipmedia-org/prizeword-server.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-set :branch, :capistrano
+# set :branch, :capistrano
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/prizeword'
@@ -30,7 +30,7 @@ set :unicorn_pid, "/var/run/prizeword/unicorn.pid"
 set :linked_files, %w{config/app.yml config/newrelic.yml}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{log tmp}
+set :linked_dirs, %w{log tmp/pids}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
