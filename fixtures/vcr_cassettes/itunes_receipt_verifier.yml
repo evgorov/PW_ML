@@ -123,7 +123,7 @@ http_interactions:
       encoding: US-ASCII
       string: |-
         {
-        "receipt":{"original_purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "purchase_date_ms":"1361646462693", "unique_identifier":"1692e5e91509354b4ba978874d428ef1494cf67a", "original_transaction_id":"1000000065999077", "bvrs":"39", "transaction_id":"1000000065999077", "quantity":"1", "unique_vendor_identifier":"FB49A4AE-D5D6-4F5B-A826-4D03403BAD35", "item_id":"605210145", "product_id":"com.prizeword.2013_2_silver2_5", "purchase_date":"2013-02-23 19:07:42 Etc/GMT", "original_purchase_date":"2013-02-23 19:07:42 Etc/GMT", "purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "bid":"com.prizeword", "original_purchase_date_ms":"1361646462693"}, "status":0}
+        "receipt":{"original_purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "purchase_date_ms":"1361646462693", "unique_identifier":"1692e5e91509354b4ba978874d428ef1494cf67a", "original_transaction_id":"1000000065999077", "bvrs":"39", "transaction_id":"1000000065999078", "quantity":"1", "unique_vendor_identifier":"FB49A4AE-D5D6-4F5B-A826-4D03403BAD35", "item_id":"605210145", "product_id":"com.prizeword.2013_2_silver2_5", "purchase_date":"2013-02-23 19:07:42 Etc/GMT", "original_purchase_date":"2013-02-23 19:07:42 Etc/GMT", "purchase_date_pst":"2013-02-23 11:07:42 America/Los_Angeles", "bid":"com.prizeword", "original_purchase_date_ms":"1361646462693"}, "status":0}
     http_version:
   recorded_at: Sat, 23 Feb 2013 20:43:01 GMT
 recorded_with: VCR 2.3.0

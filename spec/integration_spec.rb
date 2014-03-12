@@ -859,12 +859,21 @@ describe 'Integration spec' do
     end 
     
     it "should increase hints for every buy" do
-      (1..5).each do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        (1..3).each do
+          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data} 
+        end
+      end
+      JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 30
+    end
+    
+    it "should return 403 error if double transaction" do
+      (1..2).each do
         VCR.use_cassette('itunes_receipt_verifier_hints') do
           post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data} 
         end
       end
-      JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 50
+      last_response.status.should == 403
     end
     
     it "should not increace hints if product not found" do
