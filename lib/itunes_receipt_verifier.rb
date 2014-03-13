@@ -6,6 +6,7 @@ module ItunesReceiptVerifier
 
   class ItunesReceiptError < Exception; end
   class ItunesInvalidUserError < Exception; end
+  class ItunesDoubleTransactionError < Exception; end
 
   class << self
     def verify!(redis, receipt_data, user_id, product_id=false)
@@ -28,12 +29,20 @@ module ItunesReceiptVerifier
       if product_id 
         raise ItunesReceiptError unless json['receipt']['product_id'] == product_id
       end
+
+      verify_transaction!(redis, json['receipt']['transaction_id'], user_id)
       verify_user!(redis, json['receipt']['original_transaction_id'], user_id)
 
       raise ItunesReceiptError unless json['receipt']['product_id']
       json['receipt']
     end
 
+    def verify_transaction!(redis, transaction_id, user_id)
+      redis = redis.namespace('itunes_receipt_verify_transaction')
+      raise ItunesDoubleTransactionError if redis.get(transaction_id)
+      redis.set(transaction_id, user_id)
+    end
+    
     def verify_user!(redis, original_transaction_id, user_id)
       redis = redis.namespace('itunes_receipt_verifier')
       stored_user_id = redis.get(original_transaction_id)

@@ -9,8 +9,6 @@ describe ItunesReceiptVerifier do
   include_context 'fixtures'
 
   before(:all) do
-    r = Redis.new
-    r.flushdb
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = true
       c.cassette_library_dir = 'fixtures/vcr_cassettes'
@@ -23,6 +21,11 @@ describe ItunesReceiptVerifier do
     VCR.turn_off!
   end
 
+  before :each do
+    r = Redis.new
+    r.flushdb
+  end
+  
   it 'should verify reciepts' do
     VCR.use_cassette('itunes_receipt_verifier') do
       lambda {
@@ -50,19 +53,32 @@ describe ItunesReceiptVerifier do
 
     it "transaction for enother user should not verify" do
       VCR.use_cassette('itunes_receipt_verifier_hints') do
+        ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
         lambda {
           ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 2)
         }.should raise_error(ItunesReceiptVerifier::ItunesInvalidUserError)
       end
     end
+    
+    it "double transaction should raise error" do
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+      end
+      VCR.use_cassette('itunes_receipt_verifier_hints') do
+        lambda {
+          ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
+        }.should raise_error(ItunesReceiptVerifier::ItunesDoubleTransactionError)
+      end
+    end
+    
     it "should return recipe" do
       VCR.use_cassette('itunes_receipt_verifier_hints') do
         recipe = ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1)
         recipe['product_id'].should == 'com.prizeword.hints10'
       end
     end
-
   end
+  
   it 'should verify product id' do
     VCR.use_cassette('itunes_receipt_verifier') do
       lambda {
@@ -94,6 +110,17 @@ describe ItunesReceiptVerifier do
         ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1, 'com.prizeword.2013_2_silver2_5')
         ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 2, 'com.prizeword.2013_2_silver2_5')
       }.should raise_error(ItunesReceiptVerifier::ItunesInvalidUserError)
+    end
+  end
+  
+  it 'should raise error on double transaction' do
+    VCR.use_cassette('itunes_receipt_verifier') do
+      ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1, 'com.prizeword.2013_2_silver2_5')
+    end
+    VCR.use_cassette('itunes_receipt_verifier') do
+      lambda {
+        ItunesReceiptVerifier.verify!(Redis.new, receipt_data, 1, 'com.prizeword.2013_2_silver2_5')
+      }.should raise_error(ItunesReceiptVerifier::ItunesDoubleTransactionError)
     end
   end
 end

@@ -18,6 +18,7 @@ module Middleware
     end
 
     error(ItunesReceiptVerifier::ItunesInvalidUserError) { halt(403, { message: 'Этот товар куплен для другого пользователя' }.to_json) }
+    error(ItunesReceiptVerifier::ItunesDoubleTransactionError) { halt(403, { message: 'Этот товар уже был куплен ранее' }.to_json) }
     error(ItunesReceiptVerifier::ItunesReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
     error(AndroidReceiptVerifier::AndroidReceiptError) { halt(403, { message: 'Ошибка валидации чека Play store' }.to_json) }
     

@@ -141,4 +141,286 @@ http_interactions:
         "original_purchase_date_ms":"1394199268687"}, "status":0}'
     http_version: 
   recorded_at: Fri, 07 Mar 2014 16:27:38 GMT
+- request:
+    method: post
+    uri: https://buy.itunes.apple.com/verifyReceipt
+    body:
+      encoding: UTF-8
+      string: ! '{"receipt-data":"ewoJInNpZ25hdHVyZSIgPSAiQWloelE4Qm5KZmhxUCtsQkpjeVh6SzB3bWwzNGNwNm1JRWVCZHl1dUFkcTJGb040WDlNUGR5YjY4YzB3R0lmQzUxdC9JWndmbUtJTS9nc2s1NzJFMkZuaWUzbElKVmYxL1hhY2IyVGtDd3A5S3R2aUNINWJKa0VNMUt2VDBrTnBNVG9XSElMeHBDUFF6SmNxQU5qOGZwdG1SKytnVkR1YVQ1S3AyOW9CWmFBSUFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NHVVVrVTNaV0FTMU1BMEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hCc1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZWFJwYjI0Z1FYVjBhRzl5YVhSNU1CNFhEVEE1TURZeE5USXlNRFUxTmxvWERURTBNRFl4TkRJeU1EVTFObG93WkRFak1DRUdBMVVFQXd3YVVIVnlZMmhoYzJWU1pXTmxhWEIwUTJWeWRHbG1hV05oZEdVeEd6QVpCZ05WQkFzTUVrRndjR3hsSUdsVWRXNWxjeUJUZEc5eVpURVRNQkVHQTFVRUNnd0tRWEJ3YkdVZ1NXNWpMakVMTUFrR0ExVUVCaE1DVlZNd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFNclJqRjJjdDRJclNkaVRDaGFJMGc4cHd2L2NtSHM4cC9Sd1YvcnQvOTFYS1ZoTmw0WElCaW1LalFRTmZnSHNEczZ5anUrK0RyS0pFN3VLc3BoTWRkS1lmRkU1ckdYc0FkQkVqQndSSXhleFRldngzSExFRkdBdDFtb0t4NTA5ZGh4dGlJZERnSnYyWWFWczQ5QjB1SnZOZHk2U01xTk5MSHNETHpEUzlvWkhBZ01CQUFHamNqQndNQXdHQTFVZEV3RUIvd1FDTUFBd0h3WURWUjBqQkJnd0ZvQVVOaDNvNHAyQzBnRVl0VEpyRHRkREM1RllRem93RGdZRFZSMFBBUUgvQkFRREFnZUFNQjBHQTFVZERnUVdCQlNwZzRQeUdVakZQaEpYQ0JUTXphTittVjhrOVRBUUJnb3Foa2lHOTJOa0JnVUJCQUlGQURBTkJna3Foa2lHOXcwQkFRVUZBQU9DQVFFQUVhU2JQanRtTjRDL0lCM1FFcEszMlJ4YWNDRFhkVlhBZVZSZVM1RmFaeGMrdDg4cFFQOTNCaUF4dmRXLzNlVFNNR1k1RmJlQVlMM2V0cVA1Z204d3JGb2pYMGlreVZSU3RRKy9BUTBLRWp0cUIwN2tMczlRVWU4Y3pSOFVHZmRNMUV1bVYvVWd2RGQ0TndOWXhMUU1nNFdUUWZna1FRVnk4R1had1ZIZ2JFL1VDNlk3MDUzcEdYQms1MU5QTTN3b3hoZDNnU1JMdlhqK2xvSHNTdGNURXFlOXBCRHBtRzUrc2s0dHcrR0szR01lRU41LytlMVFUOW5wL0tsMW5qK2FCdzdDMHhzeTBiRm5hQWQxY1NTNnhkb3J5L0NVdk02Z3RLc21uT09kcVRlc2JwMGJzOHNuNldxczBDOWRnY3hSSHVPTVoydG04bnBMVW03YXJnT1N6UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRBekxUQTNJREExT2pNME9qSTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVkR2xtYVdWeUlpQTlJQ0prTTJJMk9USXhOemMyTlRnMFlXUTVZVFZqWkdSalpUWXlaR05rTUdJeU5HTXdPVEZtWXpBNUlqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRBd01EQXdNREV3TXpnek1qUTJPQ0k3Q2draVluWnljeUlnUFNBaU5EQWlPd29KSW5SeVlXNXpZV04wYVc5dUxXbGtJaUE5SUNJeE1EQXdNREF3TVRBek9ETXlORFk0SWpzS0NTSnhkV0Z1ZEdsMGVTSWdQU0FpTVNJN0Nna2liM0pwWjJsdVlXd3RjSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpZFc1cGNYVmxMWFpsYm1SdmNpMXBaR1Z1ZEdsbWFXVnlJaUE5SUNJelEwRkdSVGhEUmkwek5rSkZMVFJDT1VJdFFUSkROUzAyTmpWRE16RkRNRVEyTURRaU93b0pJbkJ5YjJSMVkzUXRhV1FpSUQwZ0ltTnZiUzV3Y21sNlpYZHZjbVF1YUdsdWRITXhNQ0k3Q2draWFYUmxiUzFwWkNJZ1BTQWlOekkxTlRFeU5UVXlJanNLQ1NKaWFXUWlJRDBnSW1OdmJTNXdjbWw2WlMxM2IzSmtMbUZ3Y0NJN0Nna2ljSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTSWdQU0FpTWpBeE5DMHdNeTB3TnlBeE16b3pORG95T0NCRmRHTXZSMDFVSWpzS0NTSndkWEpqYUdGelpTMWtZWFJsTFhCemRDSWdQU0FpTWpBeE5DMHdNeTB3TnlBd05Ub3pORG95T0NCQmJXVnlhV05oTDB4dmMxOUJibWRsYkdWeklqc0tDU0p2Y21sbmFXNWhiQzF3ZFhKamFHRnpaUzFrWVhSbElpQTlJQ0l5TURFMExUQXpMVEEzSURFek9qTTBPakk0SUVWMFl5OUhUVlFpT3dwOSI7CgkiZW52aXJvbm1lbnQiID0gIlNhbmRib3giOwoJInBvZCIgPSAiMTAwIjsKCSJzaWduaW5nLXN0YXR1cyIgPSAiMCI7Cn0"}'
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: Apple WebObjects
+    headers:
+      X-Apple-Jingle-Correlation-Key:
+      - KI5USY772FC7U
+      Pod:
+      - '40'
+      X-Apple-Translated-Wo-Url:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Orig-Url:
+      - http://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Application-Site:
+      - ST13
+      Edge-Control:
+      - cache-maxage=0
+      - no-store
+      Date:
+      - Wed, 12 Mar 2014 14:08:39 GMT
+      Set-Cookie:
+      - Pod=40; version="1"; expires=Sat, 12-Apr-2014 14:08:39 GMT; path=/; domain=.apple.com
+      - itspod=40; version="1"; expires=Sat, 12-Apr-2014 14:08:39 GMT; path=/; domain=.apple.com
+      - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects;
+        domain=.apple.com
+      - mzf_in=402265; version="1"; path=/WebObjects; domain=.apple.com; secure
+      - mzf_odc=ST1; version="1"; expires=Wed, 12-Mar-2014 14:38:39 GMT; path=/WebObjects;
+        domain=.apple.com
+      - ns-mzf-inst=178-247-80-150-26-8115-402265-40-st13; version=1; Max-Age=1800;
+        path=/; domain=.apple.com; httponly
+      Apple-Timing-App:
+      - 21 ms
+      Cache-Control:
+      - max-age=0
+      - must-revalidate
+      - no-cache
+      - no-store
+      - no-transform
+      - private
+      Expires:
+      - Wed, 12 Mar 2014 14:08:39 GMT
+      X-Apple-Lokamai-No-Cache:
+      - 'true'
+      X-Apple-Application-Instance:
+      - '402265'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Itspod:
+      - '40'
+      X-Webobjects-Loadaverage:
+      - '30'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '16'
+    body:
+      encoding: US-ASCII
+      string: ! '{"status":21007}'
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 14:08:39 GMT
+- request:
+    method: post
+    uri: https://sandbox.itunes.apple.com/verifyReceipt
+    body:
+      encoding: UTF-8
+      string: ! '{"receipt-data":"ewoJInNpZ25hdHVyZSIgPSAiQWloelE4Qm5KZmhxUCtsQkpjeVh6SzB3bWwzNGNwNm1JRWVCZHl1dUFkcTJGb040WDlNUGR5YjY4YzB3R0lmQzUxdC9JWndmbUtJTS9nc2s1NzJFMkZuaWUzbElKVmYxL1hhY2IyVGtDd3A5S3R2aUNINWJKa0VNMUt2VDBrTnBNVG9XSElMeHBDUFF6SmNxQU5qOGZwdG1SKytnVkR1YVQ1S3AyOW9CWmFBSUFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NHVVVrVTNaV0FTMU1BMEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hCc1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZWFJwYjI0Z1FYVjBhRzl5YVhSNU1CNFhEVEE1TURZeE5USXlNRFUxTmxvWERURTBNRFl4TkRJeU1EVTFObG93WkRFak1DRUdBMVVFQXd3YVVIVnlZMmhoYzJWU1pXTmxhWEIwUTJWeWRHbG1hV05oZEdVeEd6QVpCZ05WQkFzTUVrRndjR3hsSUdsVWRXNWxjeUJUZEc5eVpURVRNQkVHQTFVRUNnd0tRWEJ3YkdVZ1NXNWpMakVMTUFrR0ExVUVCaE1DVlZNd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFNclJqRjJjdDRJclNkaVRDaGFJMGc4cHd2L2NtSHM4cC9Sd1YvcnQvOTFYS1ZoTmw0WElCaW1LalFRTmZnSHNEczZ5anUrK0RyS0pFN3VLc3BoTWRkS1lmRkU1ckdYc0FkQkVqQndSSXhleFRldngzSExFRkdBdDFtb0t4NTA5ZGh4dGlJZERnSnYyWWFWczQ5QjB1SnZOZHk2U01xTk5MSHNETHpEUzlvWkhBZ01CQUFHamNqQndNQXdHQTFVZEV3RUIvd1FDTUFBd0h3WURWUjBqQkJnd0ZvQVVOaDNvNHAyQzBnRVl0VEpyRHRkREM1RllRem93RGdZRFZSMFBBUUgvQkFRREFnZUFNQjBHQTFVZERnUVdCQlNwZzRQeUdVakZQaEpYQ0JUTXphTittVjhrOVRBUUJnb3Foa2lHOTJOa0JnVUJCQUlGQURBTkJna3Foa2lHOXcwQkFRVUZBQU9DQVFFQUVhU2JQanRtTjRDL0lCM1FFcEszMlJ4YWNDRFhkVlhBZVZSZVM1RmFaeGMrdDg4cFFQOTNCaUF4dmRXLzNlVFNNR1k1RmJlQVlMM2V0cVA1Z204d3JGb2pYMGlreVZSU3RRKy9BUTBLRWp0cUIwN2tMczlRVWU4Y3pSOFVHZmRNMUV1bVYvVWd2RGQ0TndOWXhMUU1nNFdUUWZna1FRVnk4R1had1ZIZ2JFL1VDNlk3MDUzcEdYQms1MU5QTTN3b3hoZDNnU1JMdlhqK2xvSHNTdGNURXFlOXBCRHBtRzUrc2s0dHcrR0szR01lRU41LytlMVFUOW5wL0tsMW5qK2FCdzdDMHhzeTBiRm5hQWQxY1NTNnhkb3J5L0NVdk02Z3RLc21uT09kcVRlc2JwMGJzOHNuNldxczBDOWRnY3hSSHVPTVoydG04bnBMVW03YXJnT1N6UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRBekxUQTNJREExT2pNME9qSTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVkR2xtYVdWeUlpQTlJQ0prTTJJMk9USXhOemMyTlRnMFlXUTVZVFZqWkdSalpUWXlaR05rTUdJeU5HTXdPVEZtWXpBNUlqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRBd01EQXdNREV3TXpnek1qUTJPQ0k3Q2draVluWnljeUlnUFNBaU5EQWlPd29KSW5SeVlXNXpZV04wYVc5dUxXbGtJaUE5SUNJeE1EQXdNREF3TVRBek9ETXlORFk0SWpzS0NTSnhkV0Z1ZEdsMGVTSWdQU0FpTVNJN0Nna2liM0pwWjJsdVlXd3RjSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpZFc1cGNYVmxMWFpsYm1SdmNpMXBaR1Z1ZEdsbWFXVnlJaUE5SUNJelEwRkdSVGhEUmkwek5rSkZMVFJDT1VJdFFUSkROUzAyTmpWRE16RkRNRVEyTURRaU93b0pJbkJ5YjJSMVkzUXRhV1FpSUQwZ0ltTnZiUzV3Y21sNlpYZHZjbVF1YUdsdWRITXhNQ0k3Q2draWFYUmxiUzFwWkNJZ1BTQWlOekkxTlRFeU5UVXlJanNLQ1NKaWFXUWlJRDBnSW1OdmJTNXdjbWw2WlMxM2IzSmtMbUZ3Y0NJN0Nna2ljSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTSWdQU0FpTWpBeE5DMHdNeTB3TnlBeE16b3pORG95T0NCRmRHTXZSMDFVSWpzS0NTSndkWEpqYUdGelpTMWtZWFJsTFhCemRDSWdQU0FpTWpBeE5DMHdNeTB3TnlBd05Ub3pORG95T0NCQmJXVnlhV05oTDB4dmMxOUJibWRsYkdWeklqc0tDU0p2Y21sbmFXNWhiQzF3ZFhKamFHRnpaUzFrWVhSbElpQTlJQ0l5TURFMExUQXpMVEEzSURFek9qTTBPakk0SUVWMFl5OUhUVlFpT3dwOSI7CgkiZW52aXJvbm1lbnQiID0gIlNhbmRib3giOwoJInBvZCIgPSAiMTAwIjsKCSJzaWduaW5nLXN0YXR1cyIgPSAiMCI7Cn0"}'
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: Apple WebObjects
+    headers:
+      X-Apple-Jingle-Correlation-Key:
+      - 2TR57ZSN3O5BK
+      Pod:
+      - '100'
+      X-Apple-Translated-Wo-Url:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Orig-Url:
+      - http://sandbox.itunes.apple.com/WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Application-Site:
+      - SB
+      Edge-Control:
+      - cache-maxage=0
+      - no-store
+      Set-Cookie:
+      - Pod=100; version="1"; expires=Sat, 12-Apr-2014 14:08:40 GMT; path=/; domain=.apple.com
+      - itspod=100; version="1"; expires=Sat, 12-Apr-2014 14:08:40 GMT; path=/; domain=.apple.com
+      - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects;
+        domain=.apple.com
+      - mzf_in=990221; version="1"; path=/WebObjects; domain=.apple.com; secure
+      - mzf_odc=NK1; version="1"; expires=Wed, 12-Mar-2014 14:38:40 GMT; path=/WebObjects;
+        domain=.apple.com
+      Apple-Timing-App:
+      - 17 ms
+      Cache-Control:
+      - max-age=0
+      - must-revalidate
+      - no-cache
+      - no-store
+      - no-transform
+      - private
+      Expires:
+      - Wed, 12 Mar 2014 14:08:40 GMT
+      X-Apple-Lokamai-No-Cache:
+      - 'true'
+      X-Apple-Application-Instance:
+      - '990221'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Itspod:
+      - '100'
+      X-Webobjects-Loadaverage:
+      - '0'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '676'
+      Date:
+      - Wed, 12 Mar 2014 14:08:40 GMT
+    body:
+      encoding: US-ASCII
+      string: ! '{
+
+        "receipt":{"original_purchase_date_pst":"2014-03-07 05:34:28 America/Los_Angeles",
+        "purchase_date_ms":"1394199268687", "unique_identifier":"d3b6921776584ad9a5cddce62dcd0b24c091fc09",
+        "original_transaction_id":"1000000103832468", "bvrs":"40", "transaction_id":"1000000103832469",
+        "quantity":"1", "unique_vendor_identifier":"3CAFE8CF-36BE-4B9B-A2C5-665C31C0D604",
+        "item_id":"725512552", "product_id":"com.prizeword.hints10", "purchase_date":"2014-03-07
+        13:34:28 Etc/GMT", "original_purchase_date":"2014-03-07 13:34:28 Etc/GMT",
+        "purchase_date_pst":"2014-03-07 05:34:28 America/Los_Angeles", "bid":"com.prize-word.app",
+        "original_purchase_date_ms":"1394199268687"}, "status":0}'
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 14:08:40 GMT
+- request:
+    method: post
+    uri: https://buy.itunes.apple.com/verifyReceipt
+    body:
+      encoding: UTF-8
+      string: ! '{"receipt-data":"ewoJInNpZ25hdHVyZSIgPSAiQWloelE4Qm5KZmhxUCtsQkpjeVh6SzB3bWwzNGNwNm1JRWVCZHl1dUFkcTJGb040WDlNUGR5YjY4YzB3R0lmQzUxdC9JWndmbUtJTS9nc2s1NzJFMkZuaWUzbElKVmYxL1hhY2IyVGtDd3A5S3R2aUNINWJKa0VNMUt2VDBrTnBNVG9XSElMeHBDUFF6SmNxQU5qOGZwdG1SKytnVkR1YVQ1S3AyOW9CWmFBSUFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NHVVVrVTNaV0FTMU1BMEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hCc1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZWFJwYjI0Z1FYVjBhRzl5YVhSNU1CNFhEVEE1TURZeE5USXlNRFUxTmxvWERURTBNRFl4TkRJeU1EVTFObG93WkRFak1DRUdBMVVFQXd3YVVIVnlZMmhoYzJWU1pXTmxhWEIwUTJWeWRHbG1hV05oZEdVeEd6QVpCZ05WQkFzTUVrRndjR3hsSUdsVWRXNWxjeUJUZEc5eVpURVRNQkVHQTFVRUNnd0tRWEJ3YkdVZ1NXNWpMakVMTUFrR0ExVUVCaE1DVlZNd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFNclJqRjJjdDRJclNkaVRDaGFJMGc4cHd2L2NtSHM4cC9Sd1YvcnQvOTFYS1ZoTmw0WElCaW1LalFRTmZnSHNEczZ5anUrK0RyS0pFN3VLc3BoTWRkS1lmRkU1ckdYc0FkQkVqQndSSXhleFRldngzSExFRkdBdDFtb0t4NTA5ZGh4dGlJZERnSnYyWWFWczQ5QjB1SnZOZHk2U01xTk5MSHNETHpEUzlvWkhBZ01CQUFHamNqQndNQXdHQTFVZEV3RUIvd1FDTUFBd0h3WURWUjBqQkJnd0ZvQVVOaDNvNHAyQzBnRVl0VEpyRHRkREM1RllRem93RGdZRFZSMFBBUUgvQkFRREFnZUFNQjBHQTFVZERnUVdCQlNwZzRQeUdVakZQaEpYQ0JUTXphTittVjhrOVRBUUJnb3Foa2lHOTJOa0JnVUJCQUlGQURBTkJna3Foa2lHOXcwQkFRVUZBQU9DQVFFQUVhU2JQanRtTjRDL0lCM1FFcEszMlJ4YWNDRFhkVlhBZVZSZVM1RmFaeGMrdDg4cFFQOTNCaUF4dmRXLzNlVFNNR1k1RmJlQVlMM2V0cVA1Z204d3JGb2pYMGlreVZSU3RRKy9BUTBLRWp0cUIwN2tMczlRVWU4Y3pSOFVHZmRNMUV1bVYvVWd2RGQ0TndOWXhMUU1nNFdUUWZna1FRVnk4R1had1ZIZ2JFL1VDNlk3MDUzcEdYQms1MU5QTTN3b3hoZDNnU1JMdlhqK2xvSHNTdGNURXFlOXBCRHBtRzUrc2s0dHcrR0szR01lRU41LytlMVFUOW5wL0tsMW5qK2FCdzdDMHhzeTBiRm5hQWQxY1NTNnhkb3J5L0NVdk02Z3RLc21uT09kcVRlc2JwMGJzOHNuNldxczBDOWRnY3hSSHVPTVoydG04bnBMVW03YXJnT1N6UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRBekxUQTNJREExT2pNME9qSTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVkR2xtYVdWeUlpQTlJQ0prTTJJMk9USXhOemMyTlRnMFlXUTVZVFZqWkdSalpUWXlaR05rTUdJeU5HTXdPVEZtWXpBNUlqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRBd01EQXdNREV3TXpnek1qUTJPQ0k3Q2draVluWnljeUlnUFNBaU5EQWlPd29KSW5SeVlXNXpZV04wYVc5dUxXbGtJaUE5SUNJeE1EQXdNREF3TVRBek9ETXlORFk0SWpzS0NTSnhkV0Z1ZEdsMGVTSWdQU0FpTVNJN0Nna2liM0pwWjJsdVlXd3RjSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpZFc1cGNYVmxMWFpsYm1SdmNpMXBaR1Z1ZEdsbWFXVnlJaUE5SUNJelEwRkdSVGhEUmkwek5rSkZMVFJDT1VJdFFUSkROUzAyTmpWRE16RkRNRVEyTURRaU93b0pJbkJ5YjJSMVkzUXRhV1FpSUQwZ0ltTnZiUzV3Y21sNlpYZHZjbVF1YUdsdWRITXhNQ0k3Q2draWFYUmxiUzFwWkNJZ1BTQWlOekkxTlRFeU5UVXlJanNLQ1NKaWFXUWlJRDBnSW1OdmJTNXdjbWw2WlMxM2IzSmtMbUZ3Y0NJN0Nna2ljSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTSWdQU0FpTWpBeE5DMHdNeTB3TnlBeE16b3pORG95T0NCRmRHTXZSMDFVSWpzS0NTSndkWEpqYUdGelpTMWtZWFJsTFhCemRDSWdQU0FpTWpBeE5DMHdNeTB3TnlBd05Ub3pORG95T0NCQmJXVnlhV05oTDB4dmMxOUJibWRsYkdWeklqc0tDU0p2Y21sbmFXNWhiQzF3ZFhKamFHRnpaUzFrWVhSbElpQTlJQ0l5TURFMExUQXpMVEEzSURFek9qTTBPakk0SUVWMFl5OUhUVlFpT3dwOSI7CgkiZW52aXJvbm1lbnQiID0gIlNhbmRib3giOwoJInBvZCIgPSAiMTAwIjsKCSJzaWduaW5nLXN0YXR1cyIgPSAiMCI7Cn0"}'
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: Apple WebObjects
+    headers:
+      X-Apple-Jingle-Correlation-Key:
+      - VBUCA2G5B7WL6
+      Pod:
+      - '14'
+      X-Apple-Translated-Wo-Url:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Orig-Url:
+      - http://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Application-Site:
+      - ST11
+      Edge-Control:
+      - cache-maxage=0
+      - no-store
+      Date:
+      - Wed, 12 Mar 2014 14:09:44 GMT
+      Set-Cookie:
+      - Pod=14; version="1"; expires=Sat, 12-Apr-2014 14:09:44 GMT; path=/; domain=.apple.com
+      - itspod=14; version="1"; expires=Sat, 12-Apr-2014 14:09:44 GMT; path=/; domain=.apple.com
+      - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects;
+        domain=.apple.com
+      - mzf_in=142538; version="1"; path=/WebObjects; domain=.apple.com; secure
+      - mzf_odc=ST1; version="1"; expires=Wed, 12-Mar-2014 14:39:44 GMT; path=/WebObjects;
+        domain=.apple.com
+      - ns-mzf-inst=36-94-80-109-100-8318-142538-14-st11; version=1; Max-Age=1800;
+        path=/; domain=.apple.com; httponly
+      Apple-Timing-App:
+      - 28 ms
+      Cache-Control:
+      - max-age=0
+      - must-revalidate
+      - no-cache
+      - no-store
+      - no-transform
+      - private
+      Expires:
+      - Wed, 12 Mar 2014 14:09:44 GMT
+      X-Apple-Lokamai-No-Cache:
+      - 'true'
+      X-Apple-Application-Instance:
+      - '142538'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Itspod:
+      - '14'
+      X-Webobjects-Loadaverage:
+      - '31'
+      Content-Length:
+      - '16'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"status":21007}'
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 14:09:45 GMT
+- request:
+    method: post
+    uri: https://sandbox.itunes.apple.com/verifyReceipt
+    body:
+      encoding: UTF-8
+      string: ! '{"receipt-data":"ewoJInNpZ25hdHVyZSIgPSAiQWloelE4Qm5KZmhxUCtsQkpjeVh6SzB3bWwzNGNwNm1JRWVCZHl1dUFkcTJGb040WDlNUGR5YjY4YzB3R0lmQzUxdC9JWndmbUtJTS9nc2s1NzJFMkZuaWUzbElKVmYxL1hhY2IyVGtDd3A5S3R2aUNINWJKa0VNMUt2VDBrTnBNVG9XSElMeHBDUFF6SmNxQU5qOGZwdG1SKytnVkR1YVQ1S3AyOW9CWmFBSUFBQURWekNDQTFNd2dnSTdvQU1DQVFJQ0NHVVVrVTNaV0FTMU1BMEdDU3FHU0liM0RRRUJCUVVBTUg4eEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUtEQXBCY0hCc1pTQkpibU11TVNZd0pBWURWUVFMREIxQmNIQnNaU0JEWlhKMGFXWnBZMkYwYVc5dUlFRjFkR2h2Y21sMGVURXpNREVHQTFVRUF3d3FRWEJ3YkdVZ2FWUjFibVZ6SUZOMGIzSmxJRU5sY25ScFptbGpZWFJwYjI0Z1FYVjBhRzl5YVhSNU1CNFhEVEE1TURZeE5USXlNRFUxTmxvWERURTBNRFl4TkRJeU1EVTFObG93WkRFak1DRUdBMVVFQXd3YVVIVnlZMmhoYzJWU1pXTmxhWEIwUTJWeWRHbG1hV05oZEdVeEd6QVpCZ05WQkFzTUVrRndjR3hsSUdsVWRXNWxjeUJUZEc5eVpURVRNQkVHQTFVRUNnd0tRWEJ3YkdVZ1NXNWpMakVMTUFrR0ExVUVCaE1DVlZNd2daOHdEUVlKS29aSWh2Y05BUUVCQlFBRGdZMEFNSUdKQW9HQkFNclJqRjJjdDRJclNkaVRDaGFJMGc4cHd2L2NtSHM4cC9Sd1YvcnQvOTFYS1ZoTmw0WElCaW1LalFRTmZnSHNEczZ5anUrK0RyS0pFN3VLc3BoTWRkS1lmRkU1ckdYc0FkQkVqQndSSXhleFRldngzSExFRkdBdDFtb0t4NTA5ZGh4dGlJZERnSnYyWWFWczQ5QjB1SnZOZHk2U01xTk5MSHNETHpEUzlvWkhBZ01CQUFHamNqQndNQXdHQTFVZEV3RUIvd1FDTUFBd0h3WURWUjBqQkJnd0ZvQVVOaDNvNHAyQzBnRVl0VEpyRHRkREM1RllRem93RGdZRFZSMFBBUUgvQkFRREFnZUFNQjBHQTFVZERnUVdCQlNwZzRQeUdVakZQaEpYQ0JUTXphTittVjhrOVRBUUJnb3Foa2lHOTJOa0JnVUJCQUlGQURBTkJna3Foa2lHOXcwQkFRVUZBQU9DQVFFQUVhU2JQanRtTjRDL0lCM1FFcEszMlJ4YWNDRFhkVlhBZVZSZVM1RmFaeGMrdDg4cFFQOTNCaUF4dmRXLzNlVFNNR1k1RmJlQVlMM2V0cVA1Z204d3JGb2pYMGlreVZSU3RRKy9BUTBLRWp0cUIwN2tMczlRVWU4Y3pSOFVHZmRNMUV1bVYvVWd2RGQ0TndOWXhMUU1nNFdUUWZna1FRVnk4R1had1ZIZ2JFL1VDNlk3MDUzcEdYQms1MU5QTTN3b3hoZDNnU1JMdlhqK2xvSHNTdGNURXFlOXBCRHBtRzUrc2s0dHcrR0szR01lRU41LytlMVFUOW5wL0tsMW5qK2FCdzdDMHhzeTBiRm5hQWQxY1NTNnhkb3J5L0NVdk02Z3RLc21uT09kcVRlc2JwMGJzOHNuNldxczBDOWRnY3hSSHVPTVoydG04bnBMVW03YXJnT1N6UT09IjsKCSJwdXJjaGFzZS1pbmZvIiA9ICJld29KSW05eWFXZHBibUZzTFhCMWNtTm9ZWE5sTFdSaGRHVXRjSE4wSWlBOUlDSXlNREUwTFRBekxUQTNJREExT2pNME9qSTRJRUZ0WlhKcFkyRXZURzl6WDBGdVoyVnNaWE1pT3dvSkluVnVhWEYxWlMxcFpHVnVkR2xtYVdWeUlpQTlJQ0prTTJJMk9USXhOemMyTlRnMFlXUTVZVFZqWkdSalpUWXlaR05rTUdJeU5HTXdPVEZtWXpBNUlqc0tDU0p2Y21sbmFXNWhiQzEwY21GdWMyRmpkR2x2YmkxcFpDSWdQU0FpTVRBd01EQXdNREV3TXpnek1qUTJPQ0k3Q2draVluWnljeUlnUFNBaU5EQWlPd29KSW5SeVlXNXpZV04wYVc5dUxXbGtJaUE5SUNJeE1EQXdNREF3TVRBek9ETXlORFk0SWpzS0NTSnhkV0Z1ZEdsMGVTSWdQU0FpTVNJN0Nna2liM0pwWjJsdVlXd3RjSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpZFc1cGNYVmxMWFpsYm1SdmNpMXBaR1Z1ZEdsbWFXVnlJaUE5SUNJelEwRkdSVGhEUmkwek5rSkZMVFJDT1VJdFFUSkROUzAyTmpWRE16RkRNRVEyTURRaU93b0pJbkJ5YjJSMVkzUXRhV1FpSUQwZ0ltTnZiUzV3Y21sNlpYZHZjbVF1YUdsdWRITXhNQ0k3Q2draWFYUmxiUzFwWkNJZ1BTQWlOekkxTlRFeU5UVXlJanNLQ1NKaWFXUWlJRDBnSW1OdmJTNXdjbWw2WlMxM2IzSmtMbUZ3Y0NJN0Nna2ljSFZ5WTJoaGMyVXRaR0YwWlMxdGN5SWdQU0FpTVRNNU5ERTVPVEkyT0RZNE55STdDZ2tpY0hWeVkyaGhjMlV0WkdGMFpTSWdQU0FpTWpBeE5DMHdNeTB3TnlBeE16b3pORG95T0NCRmRHTXZSMDFVSWpzS0NTSndkWEpqYUdGelpTMWtZWFJsTFhCemRDSWdQU0FpTWpBeE5DMHdNeTB3TnlBd05Ub3pORG95T0NCQmJXVnlhV05oTDB4dmMxOUJibWRsYkdWeklqc0tDU0p2Y21sbmFXNWhiQzF3ZFhKamFHRnpaUzFrWVhSbElpQTlJQ0l5TURFMExUQXpMVEEzSURFek9qTTBPakk0SUVWMFl5OUhUVlFpT3dwOSI7CgkiZW52aXJvbm1lbnQiID0gIlNhbmRib3giOwoJInBvZCIgPSAiMTAwIjsKCSJzaWduaW5nLXN0YXR1cyIgPSAiMCI7Cn0"}'
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: Apple WebObjects
+    headers:
+      X-Apple-Jingle-Correlation-Key:
+      - LR4J7XIMLWSYU
+      Pod:
+      - '100'
+      X-Apple-Translated-Wo-Url:
+      - /WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Orig-Url:
+      - http://sandbox.itunes.apple.com/WebObjects/MZFinance.woa/wa/verifyReceipt
+      X-Apple-Application-Site:
+      - SB
+      Edge-Control:
+      - cache-maxage=0
+      - no-store
+      Set-Cookie:
+      - Pod=100; version="1"; expires=Sat, 12-Apr-2014 14:09:45 GMT; path=/; domain=.apple.com
+      - itspod=100; version="1"; expires=Sat, 12-Apr-2014 14:09:45 GMT; path=/; domain=.apple.com
+      - mzf_dr=0; version="1"; expires=Thu, 01-Jan-1970 00:00:00 GMT; path=/WebObjects;
+        domain=.apple.com
+      - mzf_in=990148; version="1"; path=/WebObjects; domain=.apple.com; secure
+      - mzf_odc=NK1; version="1"; expires=Wed, 12-Mar-2014 14:39:45 GMT; path=/WebObjects;
+        domain=.apple.com
+      Apple-Timing-App:
+      - 21 ms
+      Cache-Control:
+      - max-age=0
+      - must-revalidate
+      - no-cache
+      - no-store
+      - no-transform
+      - private
+      Expires:
+      - Wed, 12 Mar 2014 14:09:45 GMT
+      X-Apple-Lokamai-No-Cache:
+      - 'true'
+      X-Apple-Application-Instance:
+      - '990148'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Itspod:
+      - '100'
+      X-Webobjects-Loadaverage:
+      - '0'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '676'
+      Date:
+      - Wed, 12 Mar 2014 14:09:45 GMT
+    body:
+      encoding: US-ASCII
+      string: ! '{
+
+        "receipt":{"original_purchase_date_pst":"2014-03-07 05:34:28 America/Los_Angeles",
+        "purchase_date_ms":"1394199268687", "unique_identifier":"d3b6921776584ad9a5cddce62dcd0b24c091fc09",
+        "original_transaction_id":"1000000103832468", "bvrs":"40", "transaction_id":"1000000103832470",
+        "quantity":"1", "unique_vendor_identifier":"3CAFE8CF-36BE-4B9B-A2C5-665C31C0D604",
+        "item_id":"725512552", "product_id":"com.prizeword.hints10", "purchase_date":"2014-03-07
+        13:34:28 Etc/GMT", "original_purchase_date":"2014-03-07 13:34:28 Etc/GMT",
+        "purchase_date_pst":"2014-03-07 05:34:28 America/Los_Angeles", "bid":"com.prize-word.app",
+        "original_purchase_date_ms":"1394199268687"}, "status":0}'
+    http_version: 
+  recorded_at: Wed, 12 Mar 2014 14:09:46 GMT
 recorded_with: VCR 2.3.0
