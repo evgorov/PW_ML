@@ -58,6 +58,16 @@ module Middleware
       score = Coefficients.storage(env['redis']).coefficients['user-shared-score']
       raise CoefficientNotExist unless score
       user = current_user
+      
+      case params['social_network']
+      when 'facebook'
+        user['count_fb_shared'] += 1
+      when 'vkontakte'
+        user['count_vk_shared'] += 1
+      else
+        halt(403, { 'message' => 'unknown social network'}.to_json)
+      end
+
       source = "user_share##{params['social_network']}##{params['set_id']}"
       begin
         UserScore.storage(env['redis']).create(user.id, score.to_i, 0, source)
@@ -67,7 +77,6 @@ module Middleware
 
       user.inc_month_score(score)
       user.save
-
       { me: user }.to_json
     end
 

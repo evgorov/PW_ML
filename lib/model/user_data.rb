@@ -12,7 +12,7 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved last_notification_time]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated]
+    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated count_fb_shared count_vk_shared]
 
   def []=(key, value)
     case(key)
@@ -246,7 +246,9 @@ class UserData < BasicModel
                   'high_score' => 0,
                   'dynamics' => 0,
                   'role' => 'user',
-                  'hints' => 0
+                  'hints' => 0,
+                  'count_fb_shared' => 0,
+                  'count_vk_shared' => 0
                 })
   end
 
@@ -254,10 +256,15 @@ class UserData < BasicModel
     @hash['month_score'] = @storage.get("#{self['id']}#score##{current_period}").to_i
     self['solved'] = @storage.get("#{self['id']}#solved##{current_period}").to_i
     self['position'] = @storage.zrevrank("rating##{current_period}", self['id']).to_i + 1
+
+    self['count_fb_shared'] = @storage.get("#{self['id']}#count_fb_shared##{current_period}").to_i
+    self['count_vk_shared'] = @storage.get("#{self['id']}#count_vk_shared##{current_period}").to_i
   end
 
   def save_external_attributes
     @storage.set("#{self['id']}#solved##{current_period}", self['solved'])
+    @storage.set("#{self['id']}#count_fb_shared##{current_period}", self['count_fb_shared'])
+    @storage.set("#{self['id']}#count_vk_shared##{current_period}", self['count_vk_shared'])
   end
 
   def current_period

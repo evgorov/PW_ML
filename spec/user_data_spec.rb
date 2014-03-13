@@ -82,6 +82,12 @@ describe UserData do
     storage.should_receive(:get).with("2#solved##{year}##{month}").and_return(0)
     storage.should_receive(:set).with("1#score##{year}##{month}", 0)
 
+    storage.should_receive(:get).with("1#count_fb_shared##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#count_vk_shared##{year}##{month}").and_return(0)
+
+   storage.should_receive(:get).with("2#count_fb_shared##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#count_vk_shared##{year}##{month}").and_return(0)
+
     user_data1 = UserData.storage(storage).load('1')
     user_data2 = UserData.storage(storage).load('2')
     user_data1.merge!(user_data2)

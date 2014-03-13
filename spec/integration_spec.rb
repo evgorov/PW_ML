@@ -794,6 +794,7 @@ describe 'Integration spec' do
       get("/me", { session_key: @session_key })
       response_data = JSON.parse(last_response.body)
       @old_month_score = response_data['me']['month_score']
+      @me = response_data['me']
     end
     
     context "if user no rate before" do
@@ -802,6 +803,11 @@ describe 'Integration spec' do
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
       end
       
+      it "should increace counter for facebook" do
+        post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } )
+        JSON.parse(last_response.body)['me']['count_fb_shared'].should == 1
+      end
+
       it "should increace score for rate in AppStore" do
         post( '/score_app_rate', { session_key: @session_key } )
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
@@ -816,6 +822,13 @@ describe 'Integration spec' do
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
       end
       
+      it "should increace counter for facebook for each share" do
+        (1..3).each do |i|
+          post( '/score_set_share', { session_key: @session_key, set_id: "123456#{i}", social_network: 'facebook' } ) 
+        end
+        JSON.parse(last_response.body)['me']['count_fb_shared'].should == 3
+      end
+
       it "should not increace score for rate in AppStore" do
         (1..3).each { post( '/score_app_rate', { session_key: @session_key } ) }
           
@@ -825,6 +838,10 @@ describe 'Integration spec' do
     
     context "parameters errror for share in social networks" do
       it "respond error if no social_network" do
+        post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'x3' } )
+        last_response.status.should == 403
+      end
+      it "respond error if unknown social_network" do
         post( '/score_set_share', { session_key: @session_key, set_id: '123456' } )
         last_response.status.should == 403
       end
