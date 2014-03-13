@@ -2,8 +2,11 @@ require 'json'
 require 'ext/hash'
 require 'model/basic_model'
 require 'model/invited_user'
+require 'model/puzzle_set'
+require 'model/puzzle'
 require 'friends_fetcher'
 require 'digest/sha2'
+
 
 class UserData < BasicModel
 
@@ -12,7 +15,7 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved last_notification_time]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated count_fb_shared count_vk_shared]
+    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated count_fb_shared count_vk_shared] + PuzzleSet.types.map { |o| "shared_#{o}_score" }
 
   def []=(key, value)
     case(key)
@@ -259,12 +262,19 @@ class UserData < BasicModel
 
     self['count_fb_shared'] = @storage.get("#{self['id']}#count_fb_shared##{current_period}").to_i
     self['count_vk_shared'] = @storage.get("#{self['id']}#count_vk_shared##{current_period}").to_i
+
+    PuzzleSet.types.each do |type|
+      self["shared_#{type}_score"] = @storage.get("#{self['id']}#shared_#{type}_score##{current_period}").to_i
+    end
   end
 
   def save_external_attributes
     @storage.set("#{self['id']}#solved##{current_period}", self['solved'])
     @storage.set("#{self['id']}#count_fb_shared##{current_period}", self['count_fb_shared'])
     @storage.set("#{self['id']}#count_vk_shared##{current_period}", self['count_vk_shared'])
+    PuzzleSet.types.each do |type|
+      @storage.set("#{self['id']}#shared_#{type}_score##{current_period}", self["shared_#{type}_score"])
+    end
   end
 
   def current_period

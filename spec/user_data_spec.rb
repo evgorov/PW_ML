@@ -84,9 +84,18 @@ describe UserData do
 
     storage.should_receive(:get).with("1#count_fb_shared##{year}##{month}").and_return(0)
     storage.should_receive(:get).with("1#count_vk_shared##{year}##{month}").and_return(0)
-
+    storage.should_receive(:get).with("1#shared_free_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#shared_gold_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#shared_silver1_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#shared_silver2_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("1#shared_brilliant_score##{year}##{month}").and_return(0)
    storage.should_receive(:get).with("2#count_fb_shared##{year}##{month}").and_return(0)
     storage.should_receive(:get).with("2#count_vk_shared##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#shared_free_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#shared_gold_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#shared_silver1_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#shared_silver2_score##{year}##{month}").and_return(0)
+    storage.should_receive(:get).with("2#shared_brilliant_score##{year}##{month}").and_return(0)
 
     user_data1 = UserData.storage(storage).load('1')
     user_data2 = UserData.storage(storage).load('2')

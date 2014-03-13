@@ -24,7 +24,7 @@ module Middleware
       content_type 'application/json'
     end
 
-    error(BasicModel::NotFound) { halt(403, { message: 'Неправильное имя пользователя или пароль' }.to_json) }
+    error(BasicModel::NotFound) { halt(403, { message: 'Не возможно найти модель' }.to_json) }
 
     get '/me' do
       env['token_auth'].authorize!
@@ -55,10 +55,14 @@ module Middleware
       env['token_auth'].authorize!
       halt(403, { 'message' => 'missing social_network'}.to_json) unless params['social_network']
       halt(403, { 'message' => 'missing set_id'}.to_json) unless params['set_id']
-      score = Coefficients.storage(env['redis']).coefficients['user-shared-score']
+      type = PuzzleSet.storage(env['redis']).load(params['set_id'])['type']
+      score = Coefficients.storage(env['redis']).coefficients["shared-#{type}-score"]
+
       raise CoefficientNotExist unless score
       user = current_user
-      
+
+      user["shared_#{type}_score"] += score
+
       case params['social_network']
       when 'facebook'
         user['count_fb_shared'] += 1

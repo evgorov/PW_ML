@@ -8,6 +8,10 @@ require 'digest/sha2'
 
 class PuzzleSet < BasicModel
 
+  def self.types
+    %w[free gold brilliant silver1 silver2]
+  end
+
   def validate!
     %w[year month name type id].each do |field|
       raise InvalidState.new("Missing required field: #{field}") unless self[field]
