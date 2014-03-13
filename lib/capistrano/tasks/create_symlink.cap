@@ -1,0 +1,9 @@
+namespace :deploy do
+  desc "Symlinks the prizeword folder to current"
+  task :symlink_prizeword do
+    on roles(:app) do
+      execute("ln -nfs #{release_path} #{deploy_to}/prizeword")
+    end
+  end
+end
+after 'deploy:symlink:release', 'deploy:symlink_prizeword'

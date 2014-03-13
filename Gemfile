@@ -29,3 +29,9 @@ group :test do
   gem 'webmock', '>= 1.8.0', '< 1.9'
   gem 'pry'
 end
+
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv'
+end

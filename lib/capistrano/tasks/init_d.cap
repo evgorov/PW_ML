@@ -1,0 +1,14 @@
+['stop', 'start', 'restart', 'reload', 'status'].each do |action|
+  ['nginx', 'prizeword'].each do |app|
+    namespace app do
+      desc "#{app.capitalize} #{action}"
+      task "#{action}" do
+        on roles(:all) do
+          execute("sudo #{action} #{app}")
+        end
+      end
+    end
+  end
+end
+
+after 'deploy:finished', 'prizeword:restart'
