@@ -24,6 +24,8 @@ BCrypt::Engine::DEFAULT_COST = 1
 
 describe 'Integration spec' do
 
+  REDIS_DB = 3
+
   before(:all) do
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = true
@@ -37,10 +39,13 @@ describe 'Integration spec' do
     VCR.turn_off!
   end
 
+  let(:redis) do
+    Redis.new(db: REDIS_DB)
+  end
+
   before(:each) do
-    r = Redis.new
-    r.flushdb
-    Coefficients.storage(r).coefficients = {
+    redis.flushdb
+    Coefficients.storage(redis).coefficients = {
       "brilliant-base-score" => 3000,
       "free-base-score" => 1000,
       "friend-bonus" => 1000,
@@ -68,7 +73,7 @@ describe 'Integration spec' do
       use Rack::ContentLength
       use Rack::Cache
       use Etag
-      use Middleware::RedisMiddleware
+      use Middleware::RedisMiddleware, db: REDIS_DB
       use Middleware::Uploader
 
       use Middleware::Counter, counter_mappings: {
@@ -106,7 +111,7 @@ describe 'Integration spec' do
   end
 
   let(:admin_user) do
-    u = UserFactory.create_user(Redis.new, user_in_storage.merge('password' => user_in_storage_password))
+    u = UserFactory.create_user(redis, user_in_storage.merge('password' => user_in_storage_password))
     user_data = u.user_data
     user_data['role'] = 'admin'
     user_data.save
@@ -825,6 +830,7 @@ describe 'Integration spec' do
     let(:admin_set_id2) { create_admin_set }
     let(:admin_set_id3) { create_admin_set }
 
+
     context "if user no rate before" do
       it "should increace score for share in social neworks" do
         post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id, social_network: 'facebook' } )
@@ -852,7 +858,6 @@ describe 'Integration spec' do
       end
 
       it "should increace counter for facebook for each share" do
-
         post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id, social_network: 'facebook' } )
         post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id2, social_network: 'facebook' } )
         post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id3, social_network: 'facebook' } )

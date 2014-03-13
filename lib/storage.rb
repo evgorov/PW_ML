@@ -10,7 +10,7 @@ end
 class Redis
   class Namespace
     def namespace(key)
-      Redis::Namespace.new(key, self.redis)
+      Redis::Namespace.new(key, redis: self.redis)
     end
   end
 end

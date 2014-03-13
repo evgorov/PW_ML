@@ -251,7 +251,9 @@ class UserData < BasicModel
                   'role' => 'user',
                   'hints' => 0,
                   'count_fb_shared' => 0,
-                  'count_vk_shared' => 0
+                  'count_vk_shared' => 0,
+                  'last_notification_time' => Time.new(1970),
+                  'is_app_rated' => false
                 })
   end
 
