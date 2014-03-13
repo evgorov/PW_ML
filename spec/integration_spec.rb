@@ -24,6 +24,8 @@ BCrypt::Engine::DEFAULT_COST = 1
 
 describe 'Integration spec' do
 
+  REDIS_DB = 3
+
   before(:all) do
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = true
@@ -37,10 +39,13 @@ describe 'Integration spec' do
     VCR.turn_off!
   end
 
+  let(:redis) do
+    Redis.new(db: REDIS_DB)
+  end
+
   before(:each) do
-    r = Redis.new
-    r.flushdb
-    Coefficients.storage(r).coefficients = {
+    redis.flushdb
+    Coefficients.storage(redis).coefficients = {
       "brilliant-base-score" => 3000,
       "free-base-score" => 1000,
       "friend-bonus" => 1000,
@@ -68,7 +73,7 @@ describe 'Integration spec' do
       use Rack::ContentLength
       use Rack::Cache
       use Etag
-      use Middleware::RedisMiddleware
+      use Middleware::RedisMiddleware, db: REDIS_DB
       use Middleware::Uploader
 
       use Middleware::Counter, counter_mappings: {
@@ -106,7 +111,7 @@ describe 'Integration spec' do
   end
 
   let(:admin_user) do
-    u = UserFactory.create_user(Redis.new, user_in_storage.merge('password' => user_in_storage_password))
+    u = UserFactory.create_user(redis, user_in_storage.merge('password' => user_in_storage_password))
     user_data = u.user_data
     user_data['role'] = 'admin'
     user_data.save
@@ -783,26 +788,26 @@ describe 'Integration spec' do
       last_response.status.should == 403
     end
   end
-  
+
   describe "Check score adding for virallity" do
     before :each do
       post '/signup', valid_user_data
       post '/login', email: valid_user_data['email'], password: valid_user_data['password']
       response_data = JSON.parse(last_response.body)
       @session_key = response_data['session_key']
-      
+
       get("/me", { session_key: @session_key })
       response_data = JSON.parse(last_response.body)
       @old_month_score = response_data['me']['month_score']
       @me = response_data['me']
     end
-    
+
     context "if user no rate before" do
       it "should increace score for share in social neworks" do
         post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } )
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
       end
-      
+
       it "should increace counter for facebook" do
         post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } )
         JSON.parse(last_response.body)['me']['count_fb_shared'].should == 1
@@ -812,30 +817,30 @@ describe 'Integration spec' do
         post( '/score_app_rate', { session_key: @session_key } )
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
       end
-      
+
     end
-    
+
     context "if user already rate" do
       it "should not increace score for share in social neworks" do
         (1..3).each { post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'facebook' } ) }
-          
+
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 10
       end
-      
+
       it "should increace counter for facebook for each share" do
         (1..3).each do |i|
-          post( '/score_set_share', { session_key: @session_key, set_id: "123456#{i}", social_network: 'facebook' } ) 
+          post( '/score_set_share', { session_key: @session_key, set_id: "123456#{i}", social_network: 'facebook' } )
         end
         JSON.parse(last_response.body)['me']['count_fb_shared'].should == 3
       end
 
       it "should not increace score for rate in AppStore" do
         (1..3).each { post( '/score_app_rate', { session_key: @session_key } ) }
-          
+
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
       end
     end
-    
+
     context "parameters errror for share in social networks" do
       it "respond error if no social_network" do
         post( '/score_set_share', { session_key: @session_key, set_id: '123456', social_network: 'x3' } )
@@ -855,44 +860,44 @@ describe 'Integration spec' do
       end
     end
   end
-  
+
   describe "user buy hints" do
     before :each do
       post '/signup', valid_user_data
       post '/login', email: valid_user_data['email'], password: valid_user_data['password']
       response_data = JSON.parse(last_response.body)
       @session_key = response_data['session_key']
-      
+
       get("/me", { session_key: @session_key })
       response_data = JSON.parse(last_response.body)
       @old_hints = response_data['me']['hints']
     end
-    
-    it "should increase hints by 10" do 
+
+    it "should increase hints by 10" do
       VCR.use_cassette('itunes_receipt_verifier_hints') do
         post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
       end
       JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 10
-    end 
-    
+    end
+
     it "should increase hints for every buy" do
       VCR.use_cassette('itunes_receipt_verifier_hints') do
         (1..3).each do
-          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data} 
+          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
         end
       end
       JSON.parse(last_response.body)['me']['hints'].should == @old_hints + 30
     end
-    
+
     it "should return 403 error if double transaction" do
       (1..2).each do
         VCR.use_cassette('itunes_receipt_verifier_hints') do
-          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data} 
+          post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
         end
       end
       last_response.status.should == 403
     end
-    
+
     it "should not increace hints if product not found" do
       VCR.use_cassette('itunes_receipt_verifier') do
         post '/hints/buy', { session_key: @session_key, receipt_data: receipt_data}
