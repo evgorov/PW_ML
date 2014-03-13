@@ -50,6 +50,13 @@
 		6B79A77E18C617DD00DC6082 /* score_rate_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B79A77C18C617DD00DC6082 /* score_rate_bg@2x.png */; };
 		6B79A77F18C617DD00DC6082 /* score_rate_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B79A77D18C617DD00DC6082 /* score_rate_bg@2x~ipad.png */; };
 		6B852002180C3851002354B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B852001180C3851002354B0 /* Images.xcassets */; };
+		6B8932EF18D1C54100D8AF15 /* score_share_cell_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932ED18D1C54100D8AF15 /* score_share_cell_bg@2x~ipad.png */; };
+		6B8932F018D1C54100D8AF15 /* score_share_cell_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932EE18D1C54100D8AF15 /* score_share_cell_bg@2x.png */; };
+		6B8932F518D1C74700D8AF15 /* ScoreShareCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8932F218D1C74700D8AF15 /* ScoreShareCellView.m */; };
+		6B8932F618D1C74700D8AF15 /* ScoreShareCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932F318D1C74700D8AF15 /* ScoreShareCellView.xib */; };
+		6B8932F718D1C74700D8AF15 /* ScoreShareCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932F418D1C74700D8AF15 /* ScoreShareCellView~ipad.xib */; };
+		6B8932FA18D1C99E00D8AF15 /* score_share_bg@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932F818D1C99E00D8AF15 /* score_share_bg@2x~ipad.png */; };
+		6B8932FB18D1C99E00D8AF15 /* score_share_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8932F918D1C99E00D8AF15 /* score_share_bg@2x.png */; };
 		6B895EE718BF21970019E2EA /* rate_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B895EE418BF21970019E2EA /* rate_btn@2x.png */; };
 		6B895EE818BF21970019E2EA /* final_rate_done_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B895EE518BF21970019E2EA /* final_rate_done_bg@2x.png */; };
 		6B895EEB18BF24EF0019E2EA /* final_rate_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B895EEA18BF24EF0019E2EA /* final_rate_bg@2x.png */; };
@@ -769,6 +776,14 @@
 		6B79A77C18C617DD00DC6082 /* score_rate_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_rate_bg@2x.png"; sourceTree = "<group>"; };
 		6B79A77D18C617DD00DC6082 /* score_rate_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_rate_bg@2x~ipad.png"; sourceTree = "<group>"; };
 		6B852001180C3851002354B0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6B8932ED18D1C54100D8AF15 /* score_share_cell_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_share_cell_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		6B8932EE18D1C54100D8AF15 /* score_share_cell_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_share_cell_bg@2x.png"; sourceTree = "<group>"; };
+		6B8932F118D1C74700D8AF15 /* ScoreShareCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreShareCellView.h; path = Views/ScoreShareCellView.h; sourceTree = "<group>"; };
+		6B8932F218D1C74700D8AF15 /* ScoreShareCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoreShareCellView.m; path = Views/ScoreShareCellView.m; sourceTree = "<group>"; };
+		6B8932F318D1C74700D8AF15 /* ScoreShareCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreShareCellView.xib; path = Views/ScoreShareCellView.xib; sourceTree = "<group>"; };
+		6B8932F418D1C74700D8AF15 /* ScoreShareCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ScoreShareCellView~ipad.xib"; path = "Views/ScoreShareCellView~ipad.xib"; sourceTree = "<group>"; };
+		6B8932F818D1C99E00D8AF15 /* score_share_bg@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_share_bg@2x~ipad.png"; sourceTree = "<group>"; };
+		6B8932F918D1C99E00D8AF15 /* score_share_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "score_share_bg@2x.png"; sourceTree = "<group>"; };
 		6B895EE418BF21970019E2EA /* rate_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rate_btn@2x.png"; sourceTree = "<group>"; };
 		6B895EE518BF21970019E2EA /* final_rate_done_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_rate_done_bg@2x.png"; sourceTree = "<group>"; };
 		6B895EEA18BF24EF0019E2EA /* final_rate_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "final_rate_bg@2x.png"; sourceTree = "<group>"; };
@@ -2220,6 +2235,10 @@
 		F286E3A4167DB2D200FF5E83 /* score */ = {
 			isa = PBXGroup;
 			children = (
+				6B8932ED18D1C54100D8AF15 /* score_share_cell_bg@2x~ipad.png */,
+				6B8932EE18D1C54100D8AF15 /* score_share_cell_bg@2x.png */,
+				6B8932F818D1C99E00D8AF15 /* score_share_bg@2x~ipad.png */,
+				6B8932F918D1C99E00D8AF15 /* score_share_bg@2x.png */,
 				6B79A77C18C617DD00DC6082 /* score_rate_bg@2x.png */,
 				6B79A77D18C617DD00DC6082 /* score_rate_bg@2x~ipad.png */,
 				F235D09516BD62410066664F /* score_invites_cell_bg@2x.png */,
@@ -2397,6 +2416,10 @@
 		F29502451662036E00DACFBA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6B8932F118D1C74700D8AF15 /* ScoreShareCellView.h */,
+				6B8932F218D1C74700D8AF15 /* ScoreShareCellView.m */,
+				6B8932F318D1C74700D8AF15 /* ScoreShareCellView.xib */,
+				6B8932F418D1C74700D8AF15 /* ScoreShareCellView~ipad.xib */,
 				F2950251166316AD00DACFBA /* GameFieldView.h */,
 				F2950252166316AD00DACFBA /* GameFieldView.m */,
 				F2868CC0166B6964003F0686 /* TileImageHelper.h */,
@@ -2847,6 +2870,7 @@
 				F2F2075917021F2900351B8A /* open_set.caf in Resources */,
 				F2F2075817021F2600351B8A /* close_set.caf in Resources */,
 				F268D53416E9012700F0FA0F /* interface_button.caf in Resources */,
+				6B8932FB18D1C99E00D8AF15 /* score_share_bg@2x.png in Resources */,
 				F268D53816E9013900F0FA0F /* sidebar.caf in Resources */,
 				F268D53316E9012500F0FA0F /* counting.caf in Resources */,
 				F268D53716E9013700F0FA0F /* question_answered.caf in Resources */,
@@ -2925,6 +2949,7 @@
 				6B95DF0D180FCF1C00A88F5A /* switch_off_bg@2x~ipad.png in Resources */,
 				6B27F72A181062F9005465B2 /* puzzles_badge_progress_bg.png in Resources */,
 				F2B83B5E1673945B007C4596 /* login_register_ava_btn_down@2x~ipad.png in Resources */,
+				6B8932F618D1C74700D8AF15 /* ScoreShareCellView.xib in Resources */,
 				F2B83B5F1673945B007C4596 /* login_register_ava_btn@2x.png in Resources */,
 				F2B83B601673945B007C4596 /* login_register_ava_btn@2x~ipad.png in Resources */,
 				F2B83B611673945B007C4596 /* login_register_bg@2x.jpg in Resources */,
@@ -2951,6 +2976,7 @@
 				F2B83B731673945B007C4596 /* login_vk_btn_down@2x~ipad.png in Resources */,
 				F2B83B741673945B007C4596 /* login_vk_btn@2x.png in Resources */,
 				F2B83B751673945B007C4596 /* login_vk_btn@2x~ipad.png in Resources */,
+				6B8932F018D1C54100D8AF15 /* score_share_cell_bg@2x.png in Resources */,
 				F2B83B771673958C007C4596 /* LoginRegisterViewController~ipad.xib in Resources */,
 				F2B83B7B167399E0007C4596 /* login_register_datepicker_done_btn_down@2x~ipad.png in Resources */,
 				F2B83B7C167399E0007C4596 /* login_register_datepicker_done_btn@2x~ipad.png in Resources */,
@@ -3009,6 +3035,7 @@
 				F286E343167C8FAA00FF5E83 /* puzzles_buy_btn@2x.png in Resources */,
 				F286E345167C8FAA00FF5E83 /* puzzles_news_bg@2x.png in Resources */,
 				F286E346167C8FAA00FF5E83 /* puzzles_news_close_btn@2x.png in Resources */,
+				6B8932EF18D1C54100D8AF15 /* score_share_cell_bg@2x~ipad.png in Resources */,
 				F286E34B167CA3D400FF5E83 /* puzzles_badges_brilliant.png in Resources */,
 				F286E34C167CA3D400FF5E83 /* puzzles_badges_free.png in Resources */,
 				F286E34D167CA3D400FF5E83 /* puzzles_badges_gold.png in Resources */,
@@ -3086,6 +3113,7 @@
 				F286E4011681814F00FF5E83 /* puzzles_current_puzzles_header_bg@2x.png in Resources */,
 				F286E42216859E3E00FF5E83 /* puzzles_set_timeleft_bg@2x~ipad.png in Resources */,
 				F286E42316859E3E00FF5E83 /* puzzles_badges_silver~ipad.png in Resources */,
+				6B8932FA18D1C99E00D8AF15 /* score_share_bg@2x~ipad.png in Resources */,
 				F286E42416859E3E00FF5E83 /* puzzles_badges_gold~ipad.png in Resources */,
 				F286E42516859E3E00FF5E83 /* puzzles_badges_brilliant~ipad.png in Resources */,
 				6BD165EE1805651D00F140AD /* LoadingCell.xib in Resources */,
@@ -3226,6 +3254,7 @@
 				F25090DB16AF3AAD0045621E /* menu_avatar_border@2x.png in Resources */,
 				F25090DC16AF3AAD0045621E /* menu_avatar_border@2x~ipad.png in Resources */,
 				F25090EF16B3EC3B0045621E /* rating_cell_photo_mask@2x~ipad.png in Resources */,
+				6B8932F718D1C74700D8AF15 /* ScoreShareCellView~ipad.xib in Resources */,
 				F25090F016B3EC3B0045621E /* rating_cell_bg@2x~ipad.png in Resources */,
 				F25090F116B3EC3B0045621E /* rating_cell_move_none@2x~ipad.png in Resources */,
 				F25090F216B3EC3B0045621E /* rating_cell_move_down@2x~ipad.png in Resources */,
@@ -3514,6 +3543,7 @@
 				6BBF057A186B2C7900177C19 /* NSString+SPURLEncoding.m in Sources */,
 				F286E3C3167DCD1700FF5E83 /* InviteViewController.m in Sources */,
 				F286E3EB167E378700FF5E83 /* RatingViewController.m in Sources */,
+				6B8932F518D1C74700D8AF15 /* ScoreShareCellView.m in Sources */,
 				6BBF0580186B2C7900177C19 /* SPMockTPNAdapter.m in Sources */,
 				6B93CCB618968A6D00DACE98 /* PuzzleProxy.m in Sources */,
 				6BBF058A186B2C7900177C19 /* SPAdvertiserManager.m in Sources */,

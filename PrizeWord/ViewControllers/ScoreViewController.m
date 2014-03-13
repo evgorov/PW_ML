@@ -18,12 +18,15 @@
 #import "UserData.h"
 #import "SBJsonParser.h"
 #import "ScoreInviteCellView.h"
+#import "ScoreShareCellView.h"
 
 NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"апреле", @"мае", @"июне", @"июле", @"августе", @"сентябре", @"октябре", @"ноябрь", @"декабрь"};
 
 @interface ScoreViewController (private)
 
 -(void)updateInvited:(NSString *)providerName;
+-(void)updateRate;
+-(void)updateShare;
 
 @end
 
@@ -57,8 +60,9 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
     invitedFriends = 0;
 
     [self addFramedView:puzzlesView];
-    [self addFramedView:rateView];
     [self addFramedView:invitesView];
+    [self addFramedView:rateView];
+    [self addFramedView:shareView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -73,6 +77,8 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         [self updateInvited:@"facebook"];
     }
     [[GlobalData globalData] loadMe];
+    [self updateRate];
+    [self updateShare];
     /*
     if ([GlobalData globalData].loggedInUser.ratedThisMonth.boolValue)
     {
@@ -146,6 +152,72 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
         [updateInProgress removeObjectForKey:providerName];
         NSLog(@"error: %@", error.description);
     }];
+}
+
+- (void)updateShare
+{
+    BOOL hasShared = YES;
+    // TODO :: check hasShared
+    if (hasShared)
+    {
+        /*
+        float yOffset = shareView.frame.size.height;
+        SBJsonParser * parser = [SBJsonParser new];
+        for (NSDictionary * friendData in friendsData)
+        {
+            ScoreShareCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
+            userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
+            userView.lblScore.text = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend];
+            [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
+            userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
+            [invitesView insertSubview:userView atIndex:0];
+            yOffset += userView.frame.size.height;
+            invitedFriends++;
+        }
+        
+        [self resizeView:invitesView newHeight:(yOffset + ([AppDelegate currentDelegate].isIPad ? 110 : 75)) animated:YES];
+        [UIView animateWithDuration:0.3 animations:^{
+            btnInvite.frame = CGRectMake(btnInvite.frame.origin.x, yOffset, btnInvite.frame.size.width, btnInvite.frame.size.height);
+        }];
+        lblInvitesFriendsCount.text = [NSString stringWithFormat:@"%d ", invitedFriends];
+        lblInvitesFriendsCount.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x, lblInvitesFriendsCount.frame.origin.y, [lblInvitesFriendsCount.text sizeWithFont:lblInvitesFriendsCount.font].width, lblInvitesFriendsCount.frame.size.height);
+        lblInvitesFriendsLabel.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x + lblInvitesFriendsCount.frame.size.width, lblInvitesFriendsLabel.frame.origin.y, lblInvitesFriendsLabel.frame.size.width, lblInvitesFriendsLabel.frame.size.height);
+        lblInvitesScore.text = [NSString stringWithFormat:@"%d", invitedFriends * [GlobalData globalData].scoreForFriend];
+        
+         */
+        if (shareView.superview == nil)
+        {
+            [self addFramedView:shareView];
+        }
+    }
+    else
+    {
+        if (shareView.superview != nil)
+        {
+            [self removeFramedView:shareView];
+        }
+    }
+}
+
+- (void)updateRate
+{
+    BOOL hasRate = YES;
+    // TODO :: check hasRate
+    if (hasRate)
+    {
+        [lblRateScore setText:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate]];
+        if (rateView.superview == nil)
+        {
+            [self addFramedView:rateView];
+        }
+    }
+    else
+    {
+        if (rateView.superview != nil)
+        {
+            [self removeFramedView:rateView];
+        }
+    }
 }
 
 @end

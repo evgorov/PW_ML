@@ -7,16 +7,16 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="3" customClass="ScoreInviteCellView">
+        <view contentMode="scaleToFill" id="3" customClass="ScoreShareCellView">
             <rect key="frame" x="0.0" y="0.0" width="443" height="97"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="score_invites_cell_bg.png" id="7">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="score_share_cell_bg.png" id="7">
                     <rect key="frame" x="0.0" y="0.0" width="443" height="97"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="6" customClass="ExternalImage">
-                    <rect key="frame" x="26" y="8" width="66" height="66"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" image="puzzles_set_ag.png" id="6">
+                    <rect key="frame" x="30" y="27" width="61" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="400" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5">
@@ -43,13 +43,14 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="imgAvatar" destination="6" id="8"/>
-                <outlet property="lblName" destination="4" id="10"/>
+                <outlet property="imgSetType" destination="6" id="Zi3-sB-Jmh"/>
+                <outlet property="lblNetworkName" destination="4" id="TfX-tE-Odz"/>
                 <outlet property="lblScore" destination="5" id="9"/>
             </connections>
         </view>
     </objects>
     <resources>
-        <image name="score_invites_cell_bg.png" width="443" height="97"/>
+        <image name="puzzles_set_ag.png" width="61" height="31"/>
+        <image name="score_share_cell_bg.png" width="443" height="97"/>
     </resources>
 </document>

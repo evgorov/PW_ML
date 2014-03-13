@@ -22,6 +22,11 @@
     IBOutlet UIView *rateView;
     IBOutlet UILabel *lblRateScore;
     
+    IBOutlet UIView *shareView;
+    IBOutlet UILabel *lblShareScore;
+    IBOutlet UILabel *lblShareCount;
+    IBOutlet UILabel *lblShareLabel;
+    
     NSMutableDictionary * updateInProgress;
     int invitedFriends;
 }
