@@ -880,6 +880,23 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
+    __block uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
+    if (finalOverlay == finalOverlayRateDone)
+    {
+        score += [GlobalData globalData].scoreForRate;
+    }
+    if (finalOverlay == finalOverlaySetDone)
+    {
+        score += [GlobalData globalData].scoreForShare * 2;
+    }
+    if (finalOverlay == finalOverlaySetVKDone)
+    {
+        score += [GlobalData globalData].scoreForShare;
+    }
+    if (finalOverlay == finalOverlaySetFBDone)
+    {
+        score += [GlobalData globalData].scoreForShare;
+    }
     if (animated)
     {
         lblFinalBaseScore.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
@@ -911,7 +928,6 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
             } completion:^(BOOL finished) {
-                uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
                 // TODO :: loop counting sound
                 [countingSound play];
                 int lastI = 0;
@@ -952,7 +968,6 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         lblFinalTimeBonus.transform = CGAffineTransformMakeScale(1, 1);
         lblFinalRateBonus.transform = CGAffineTransformMakeScale(1, 1);
         
-        uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
         // TODO :: loop counting sound
         [countingSound play];
         int lastI = 0;
