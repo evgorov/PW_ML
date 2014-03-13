@@ -794,6 +794,7 @@ describe 'Integration spec' do
       get("/me", { session_key: @session_key })
       response_data = JSON.parse(last_response.body)
       @old_month_score = response_data['me']['month_score']
+      @old_silver1_share_score = response_data['me']['shared_silver1_score']
       @me = response_data['me']
     end
 
@@ -842,6 +843,16 @@ describe 'Integration spec' do
         JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
       end
 
+      it "should increase shared set score" do
+        post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id, social_network: 'facebook' } )
+        JSON.parse(last_response.body)['me']['shared_silver1_score'].should == @old_silver1_share_score + 10
+      end
+
+      it "should increase score for same set for different networks" do
+        post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id, social_network: 'facebook' } )
+        post( '/score_set_share', { session_key: @session_key, set_id: admin_set_id, social_network: 'vkontakte' } )
+        JSON.parse(last_response.body)['me']['month_score'].should == @old_month_score + 20
+      end
     end
 
     context "if user already rate" do
