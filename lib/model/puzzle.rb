@@ -10,7 +10,7 @@ class Puzzle < BasicModel
 
   def after_save
     super
-    if self['set_id']
+    if self['set_id'] && self['set_id'] != ''
       @storage.zrem("free", self.id)
     else
       @storage.zadd("free", Time.now.to_i, self.id)
