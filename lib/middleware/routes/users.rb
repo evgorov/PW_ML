@@ -58,7 +58,7 @@ module Middleware
       score = Coefficients.storage(env['redis']).coefficients['user-shared-score']
       raise CoefficientNotExist unless score
       user = current_user
-      
+
       case params['social_network']
       when 'facebook'
         user['count_fb_shared'] += 1
