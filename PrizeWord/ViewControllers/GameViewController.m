@@ -820,8 +820,15 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         }
     }
 
-    lblFinalBaseScore.text = @"0";
-    lblFinalTimeBonus.text = @"0";
+    int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
+    int fullScore = [puzzleData.score unsignedIntValue];
+    if (finalOverlay != finalOverlayOrdinary && finalOverlay != finalOverlayRateDone && finalOverlay != finalOverlayRate)
+    {
+        baseScore *= puzzleData.puzzleSet.total;
+        fullScore = puzzleData.puzzleSet.score;
+    }
+    lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", fullScore < baseScore ? 0 : baseScore];
+    lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", fullScore < baseScore ? fullScore : (fullScore - baseScore)];
     lblFinalRateBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForRate];
     lblFinalFacebookBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
     lblFinalVkontakteBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
@@ -874,9 +881,6 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 
 - (void)showFinalScreenAnimated:(BOOL)animated
 {
-    int baseScore = [[GlobalData globalData] baseScoreForType:puzzleData.puzzleSet.type.intValue];
-    lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? 0 : baseScore];
-    lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", [puzzleData.score unsignedIntValue] < baseScore ? [puzzleData.score unsignedIntValue] : ([puzzleData.score unsignedIntValue] - baseScore)];
     lblFinalBaseScore.frame = CGRectMake(lblFinalBaseScore.frame.origin.x, lblFinalBaseScore.frame.origin.y, [lblFinalBaseScore.text sizeWithFont:lblFinalBaseScore.font].width, lblFinalBaseScore.frame.size.height);
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
