@@ -275,13 +275,13 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 
 - (IBAction)handleHintClick:(id)sender
 {
-    if ([GameLogic sharedLogic].gameField.activeQuestion != nil)
+    int hints = [GlobalData globalData].loggedInUser.hints;
+    if ([GameLogic sharedLogic].gameField.activeQuestion != nil || hints == 0)
     {
-        int hints = [GlobalData globalData].loggedInUser.hints;
+        [textField resignFirstResponder];
+
         if (hints > 0)
         {
-            [textField resignFirstResponder];
-            
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_USE_HINT", nil) message:NSLocalizedString(@"QUESTION_USE_HINT", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_USE_HINT", nil), nil];
             alertView.tag = TAG_USEHINT;
             [alertView show];
@@ -290,6 +290,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_BUY_HINTS", nil) message:NSLocalizedString(@"QUESTION_BUY_HINTS", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"BUTTON_CANCEL", nil) otherButtonTitles:NSLocalizedString(@"BUTTON_BUY_HINTS", nil), nil];
             alertView.tag = TAG_BUYHINTS;
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_PAUSE]];
             [alertView show];
         }
     }
@@ -550,10 +551,6 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         return;
     }
     
-    NSString * ratedKey = @"apprated";
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ratedKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -664,11 +661,10 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             }
             
             NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
-            NSString * ratedKey = @"apprated";
             puzzleData = event.data;
             // DEBUG :: set YES for test purposes
 
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:ratedKey] && ![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.time_left.intValue > 0) || (puzzleData.puzzleSet.percent >= 0.999999 && onlyFree)))
+            if (![GlobalData globalData].loggedInUser.is_app_rated && ![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.time_left.intValue > 0) || (puzzleData.puzzleSet.percent >= 0.999999 && onlyFree)))
             {
                 [self prepareFinalOverlayWithType:FINAL_OVERVIEW_TYPE_RATE];
             }
@@ -692,15 +688,19 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     {
         [self hideActivityIndicator];
         [textField becomeFirstResponder];
+        if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
+        {
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+        }
     }
     else if (event.type == EVENT_PRODUCT_BOUGHT)
     {
         SKPaymentTransaction * paymentTransaction = event.data;
         NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
-        
-        if ([paymentTransaction.payment.productIdentifier compare:PRODUCTID_HINTS10] == NSOrderedSame)
+        [self hideActivityIndicator];
+        if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
         {
-            [[UserDataManager sharedManager] addHints:10 withKey:paymentTransaction.transactionReceipt.base64Encoding];
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
         }
     }
     else if (event.type == EVENT_ME_UPDATED)
@@ -747,6 +747,10 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 {
     if (alertView.cancelButtonIndex == buttonIndex) {
         [textField becomeFirstResponder];
+        if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
+        {
+            [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
+        }
         return;
     }
     if (alertView.tag == TAG_USEHINT)

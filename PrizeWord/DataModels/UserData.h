@@ -26,6 +26,16 @@
 @property (nonatomic, strong) NSDictionary * vkProvider;
 @property (nonatomic, strong) NSDictionary * fbProvider;
 
+@property () int count_fb_shared;
+@property () int count_vk_shared;
+@property () int shared_free_score;
+@property () int shared_gold_score;
+@property () int shared_brilliant_score;
+@property () int shared_silver1_score;
+@property () int shared_silver2_score;
+@property () BOOL is_app_rated;
+@property (nonatomic, strong) NSDate *last_notification_time;
+
 @property () int position;
 @property () int solved;
 @property () int month_score;

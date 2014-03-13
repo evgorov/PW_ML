@@ -119,6 +119,21 @@
         _dynamics = [(NSNumber *)[dict objectForKey:@"dynamics"] intValue];
         _hints = [(NSNumber *)[dict objectForKey:@"hints"] intValue];
         _invited = [(NSNumber *)[dict objectForKey:@"invite_sent"] boolValue];
+        
+        _count_fb_shared = [(NSNumber *)[dict objectForKey:@"count_fb_shared"] intValue];
+        _count_vk_shared = [(NSNumber *)[dict objectForKey:@"count_vk_shared"] intValue];
+        _shared_free_score = [(NSNumber *)[dict objectForKey:@"shared_free_score"] intValue];
+        _shared_gold_score = [(NSNumber *)[dict objectForKey:@"shared_gold_score"] intValue];
+        _shared_brilliant_score = [(NSNumber *)[dict objectForKey:@"shared_brilliant_score"] intValue];
+        _shared_silver1_score = [(NSNumber *)[dict objectForKey:@"shared_silver1_score"] intValue];
+        _shared_silver2_score = [(NSNumber *)[dict objectForKey:@"shared_silver2_score"] intValue];
+        _is_app_rated = [(NSNumber *)[dict objectForKey:@"is_app_rated"] boolValue];
+        id lastDate = [dict objectForKey:@"last_notification_time"];
+        NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [dateFormatter setLocale:enUSPOSIXLocale];
+        [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd' 'HH':'mm':'ss' 'ZZZZZ"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        _last_notification_time = [dateFormatter dateFromString:(NSString *)lastDate];
     }
     return self;
 }
@@ -190,6 +205,14 @@
     if (createdAtString != nil)
     {
         [dict setObject:createdAtString forKey:@"created_at"];
+    }
+    if (_last_notification_time != nil) {
+        NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        NSDateFormatter * dateFormatter = [NSDateFormatter new];
+        [dateFormatter setLocale:enUSPOSIXLocale];
+        [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd' 'HH':'mm':'ss' 'ZZZZZ"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        [dict setObject:[dateFormatter stringFromDate:_last_notification_time] forKey:@"last_notification_time"];
     }
         
     return dict;

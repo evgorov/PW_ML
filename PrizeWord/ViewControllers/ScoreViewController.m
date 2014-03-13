@@ -22,6 +22,8 @@
 
 NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"апреле", @"мае", @"июне", @"июле", @"августе", @"сентябре", @"октябре", @"ноябрь", @"декабрь"};
 
+int const TAG_SHARE_CELL = 4235;
+
 @interface ScoreViewController (private)
 
 -(void)updateInvited:(NSString *)providerName;
@@ -156,35 +158,87 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
 - (void)updateShare
 {
-    BOOL hasShared = YES;
-    // TODO :: check hasShared
+    float newHeight = shareView.frame.size.height;
+    while ([shareView viewWithTag:TAG_SHARE_CELL] != nil) {
+        UIView * subview = [shareView viewWithTag:TAG_SHARE_CELL];
+        newHeight -= subview.frame.size.height;
+        [subview removeFromSuperview];
+    }
+    if (newHeight != shareView.frame.size.height)
+    {
+        CGRect frame = shareView.frame;
+        frame.size = CGSizeMake(frame.size.width, newHeight);
+        shareView.frame = frame;
+    }
+    
+    UserData *user = [GlobalData globalData].loggedInUser;
+    BOOL hasShared = (user.count_fb_shared + user.count_vk_shared != 0);
     if (hasShared)
     {
-        /*
-        float yOffset = shareView.frame.size.height;
-        SBJsonParser * parser = [SBJsonParser new];
-        for (NSDictionary * friendData in friendsData)
-        {
-            ScoreShareCellView * userView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreInviteCellView" owner:self options:nil] objectAtIndex:0];
-            userView.lblName.text = [NSString stringWithFormat:@"%@ %@", [friendData objectForKey:@"first_name"], [friendData objectForKey:@"last_name"]];
-            userView.lblScore.text = [NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForFriend];
-            [userView.imgAvatar loadImageFromURL:[NSURL URLWithString:[friendData objectForKey:@"userpic"]]];
-            userView.frame = CGRectMake(0, yOffset, userView.frame.size.width, userView.frame.size.height);
-            [invitesView insertSubview:userView atIndex:0];
-            yOffset += userView.frame.size.height;
-            invitedFriends++;
+        __block float yOffset = shareView.frame.size.height;
+        __block int sumScore = 0;
+        void (^createShareViewCell)(PuzzleSetType type) = ^(PuzzleSetType type) {
+            NSString * setTypeName = @"";
+            int score = 0;
+            UIImage * setTypeImage = nil;
+            switch (type) {
+                case PUZZLESET_BRILLIANT:
+                    setTypeName = @"БРИЛЛИАНТОВЫЙ";
+                    score = user.shared_brilliant_score;
+                    setTypeImage = [UIImage imageNamed:@"puzzles_set_br"];
+                    break;
+                    
+                case PUZZLESET_FREE:
+                    setTypeName = @"БЕСПЛАТНЫЙ";
+                    score = user.shared_free_score;
+                    setTypeImage = [UIImage imageNamed:@"puzzles_set_fr"];
+                    break;
+                    
+                case PUZZLESET_GOLD:
+                    setTypeName = @"ЗОЛОТОЙ";
+                    score = user.shared_gold_score;
+                    setTypeImage = [UIImage imageNamed:@"puzzles_set_au"];
+                    break;
+                    
+                case PUZZLESET_SILVER:
+                    setTypeName = @"СЕРЕБРЯНЫЙ";
+                    score = user.shared_silver1_score;
+                    setTypeImage = [UIImage imageNamed:@"puzzles_set_ag"];
+                    break;
+                    
+                case PUZZLESET_SILVER2:
+                    setTypeName = @"СЕРЕБРЯНЫЙ-2";
+                    score = user.shared_silver2_score;
+                    setTypeImage = [UIImage imageNamed:@"puzzles_set_ag2"];
+                    break;
+                    
+                default:
+                    break;
+            }
+            if (score != 0)
+            {
+                ScoreShareCellView * shareCellView = [[[NSBundle mainBundle] loadNibNamed:@"ScoreShareCellView" owner:self options:nil] objectAtIndex:0];
+                shareCellView.tag = TAG_SHARE_CELL;
+                shareCellView.lblNetworkName.text = setTypeName;
+                shareCellView.lblScore.text = [NSString stringWithFormat:@"%d", score];
+                shareCellView.imgSetType.image = setTypeImage;
+                shareCellView.frame = CGRectMake(0, yOffset, shareCellView.frame.size.width, shareCellView.frame.size.height);
+                [shareView insertSubview:shareCellView atIndex:0];
+                yOffset += shareCellView.frame.size.height;
+                sumScore += score;
+            }
+        };
+        
+        for (int type = PUZZLESET_BRILLIANT; type <= PUZZLESET_FREE; ++type) {
+            createShareViewCell(type);
         }
         
-        [self resizeView:invitesView newHeight:(yOffset + ([AppDelegate currentDelegate].isIPad ? 110 : 75)) animated:YES];
-        [UIView animateWithDuration:0.3 animations:^{
-            btnInvite.frame = CGRectMake(btnInvite.frame.origin.x, yOffset, btnInvite.frame.size.width, btnInvite.frame.size.height);
-        }];
-        lblInvitesFriendsCount.text = [NSString stringWithFormat:@"%d ", invitedFriends];
-        lblInvitesFriendsCount.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x, lblInvitesFriendsCount.frame.origin.y, [lblInvitesFriendsCount.text sizeWithFont:lblInvitesFriendsCount.font].width, lblInvitesFriendsCount.frame.size.height);
-        lblInvitesFriendsLabel.frame = CGRectMake(lblInvitesFriendsCount.frame.origin.x + lblInvitesFriendsCount.frame.size.width, lblInvitesFriendsLabel.frame.origin.y, lblInvitesFriendsLabel.frame.size.width, lblInvitesFriendsLabel.frame.size.height);
-        lblInvitesScore.text = [NSString stringWithFormat:@"%d", invitedFriends * [GlobalData globalData].scoreForFriend];
-        
-         */
+        [self resizeView:invitesView newHeight:yOffset animated:YES];
+
+        lblShareCount.text = [NSString stringWithFormat:@"%d ", user.count_fb_shared + user.count_vk_shared];
+        lblShareCount.frame = CGRectMake(lblShareCount.frame.origin.x, lblShareCount.frame.origin.y, [lblShareCount.text sizeWithFont:lblShareCount.font].width, lblShareCount.frame.size.height);
+        lblShareLabel.frame = CGRectMake(lblShareCount.frame.origin.x + lblShareCount.frame.size.width, lblShareLabel.frame.origin.y, lblShareLabel.frame.size.width, lblShareLabel.frame.size.height);
+        lblShareScore.text = [NSString stringWithFormat:@"%d", sumScore];
         if (shareView.superview == nil)
         {
             [self addFramedView:shareView];
@@ -201,9 +255,8 @@ NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"�
 
 - (void)updateRate
 {
-    BOOL hasRate = YES;
-    // TODO :: check hasRate
-    if (hasRate)
+    BOOL hasRated = [GlobalData globalData].loggedInUser.is_app_rated;
+    if (hasRated)
     {
         [lblRateScore setText:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate]];
         if (rateView.superview == nil)
