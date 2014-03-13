@@ -3671,7 +3671,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lsqlite3.0",
@@ -3703,7 +3703,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PrizeWord/PrizeWord-Prefix.pch";
 				INFOPLIST_FILE = "PrizeWord/PrizeWord-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lsqlite3.0",

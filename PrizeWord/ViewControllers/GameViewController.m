@@ -402,7 +402,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         default:
             break;
     }
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет и получил за это %d %@!", puzzleType, puzzleData.score.intValue, [NSString declesion:gameField.puzzle.score.intValue oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет и получил за это %d %@!", puzzleType, puzzleData.puzzleSet.score, [NSString declesion:puzzleData.puzzleSet.score oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     // facebook
     if (button.tag == 0)
     {
