@@ -858,9 +858,9 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     btnFinalNext = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_NEXT];
     btnFinalContinue = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_CONTINUE];
     // DEBUG :: invert conditions for test purposes
-    btnFinalMenu.hidden = puzzleData.puzzleSet.percent >= 0.99999;
-    btnFinalNext.hidden = puzzleData.puzzleSet.percent >= 0.99999;
-    btnFinalContinue.hidden = puzzleData.puzzleSet.percent < 0.99999;
+    btnFinalMenu.hidden = puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.puzzleSet.percent >= 0.99999;
+    btnFinalNext.hidden = btnFinalMenu.hidden;
+    btnFinalContinue.hidden = !btnFinalMenu.hidden;
 }
 
 -(void)animateFinalScreenAppears:(id)sender
