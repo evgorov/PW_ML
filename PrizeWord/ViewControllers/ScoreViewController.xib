@@ -15,6 +15,7 @@
                 <outlet property="lblRateScore" destination="UCg-Cx-vcS" id="VaZ-2U-4cl"/>
                 <outlet property="lblShareCount" destination="vHR-bi-smf" id="GPh-iS-hFL"/>
                 <outlet property="lblShareLabel" destination="8Ve-EU-BwK" id="G1y-aT-lD3"/>
+                <outlet property="lblShareScore" destination="z85-dG-frm" id="SCw-Y4-Gkm"/>
                 <outlet property="puzzlesView" destination="8" id="10"/>
                 <outlet property="rateView" destination="Uhr-kx-quI" id="XtD-jq-Ewn"/>
                 <outlet property="shareView" destination="JZn-EB-WxM" id="5rB-Qb-3D5"/>
@@ -140,7 +141,7 @@
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="друзей" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Ve-EU-BwK">
-                    <rect key="frame" x="28" y="39" width="53" height="21"/>
+                    <rect key="frame" x="28" y="39" width="146" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>

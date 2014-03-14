@@ -19,6 +19,7 @@
 #import "SBJsonParser.h"
 #import "ScoreInviteCellView.h"
 #import "ScoreShareCellView.h"
+#import "NSString+Utils.h"
 
 NSString * MONTHS_IN[] = {@"январе", @"феврале", @"марте", @"апреле", @"мае", @"июне", @"июле", @"августе", @"сентябре", @"октябре", @"ноябрь", @"декабрь"};
 
@@ -183,31 +184,31 @@ int const TAG_SHARE_CELL = 4235;
             UIImage * setTypeImage = nil;
             switch (type) {
                 case PUZZLESET_BRILLIANT:
-                    setTypeName = @"БРИЛЛИАНТОВЫЙ";
+                    setTypeName = @"Бриллиантовый";
                     score = user.shared_brilliant_score;
                     setTypeImage = [UIImage imageNamed:@"puzzles_set_br"];
                     break;
                     
                 case PUZZLESET_FREE:
-                    setTypeName = @"БЕСПЛАТНЫЙ";
+                    setTypeName = @"Бесплатный";
                     score = user.shared_free_score;
                     setTypeImage = [UIImage imageNamed:@"puzzles_set_fr"];
                     break;
                     
                 case PUZZLESET_GOLD:
-                    setTypeName = @"ЗОЛОТОЙ";
+                    setTypeName = @"Золотой";
                     score = user.shared_gold_score;
                     setTypeImage = [UIImage imageNamed:@"puzzles_set_au"];
                     break;
                     
                 case PUZZLESET_SILVER:
-                    setTypeName = @"СЕРЕБРЯНЫЙ";
+                    setTypeName = @"Серебряный";
                     score = user.shared_silver1_score;
                     setTypeImage = [UIImage imageNamed:@"puzzles_set_ag"];
                     break;
                     
                 case PUZZLESET_SILVER2:
-                    setTypeName = @"СЕРЕБРЯНЫЙ-2";
+                    setTypeName = @"2-й Серебряный";
                     score = user.shared_silver2_score;
                     setTypeImage = [UIImage imageNamed:@"puzzles_set_ag2"];
                     break;
@@ -233,10 +234,11 @@ int const TAG_SHARE_CELL = 4235;
             createShareViewCell(type);
         }
         
-        [self resizeView:invitesView newHeight:yOffset animated:YES];
+        [self resizeView:shareView newHeight:yOffset animated:YES];
 
         lblShareCount.text = [NSString stringWithFormat:@"%d ", user.count_fb_shared + user.count_vk_shared];
         lblShareCount.frame = CGRectMake(lblShareCount.frame.origin.x, lblShareCount.frame.origin.y, [lblShareCount.text sizeWithFont:lblShareCount.font].width, lblShareCount.frame.size.height);
+        lblShareLabel.text = [NSString declesion:user.count_fb_shared + user.count_vk_shared oneString:@"победа отправлена" twoString:@"победы отправлено" fiveString:@"побед отправлено"];
         lblShareLabel.frame = CGRectMake(lblShareCount.frame.origin.x + lblShareCount.frame.size.width, lblShareLabel.frame.origin.y, lblShareLabel.frame.size.width, lblShareLabel.frame.size.height);
         lblShareScore.text = [NSString stringWithFormat:@"%d", sumScore];
         if (shareView.superview == nil)
