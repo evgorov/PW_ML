@@ -660,7 +660,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                 }
             }
             
-            NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+            NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%d%d", [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
             puzzleData = event.data;
             // DEBUG :: set YES for test purposes
 
@@ -804,7 +804,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     
     if (type == FINAL_OVERVIEW_TYPE_RATE)
     {
-        NSString * showRateKey = [NSString stringWithFormat:@"showRate%d%d", [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+        NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%d%d", [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:showRateKey];
     }
 
