@@ -205,8 +205,13 @@ class UserData < BasicModel
       puzzle_data = JSON.parse(PuzzleData.storage(@storage).for(self.id, score['source'])['data'])
       return "Score in PuzzleData do not match UserScore for #{score.id}" if puzzle_data['score'].to_i != score['score'].to_i
 
-      puzzle = Puzzle.storage(@storage).load(score['source'])
-      set_type = PuzzleSet.storage(@storage).load(puzzle['set_id'])['type']
+      begin
+        puzzle = Puzzle.storage(@storage).load(score['source'])
+        set_type = PuzzleSet.storage(@storage).load(puzzle['set_id'])['type']
+      rescue => BasicModel::NotFound
+        return "Cannot find solved puzzle"
+      end
+
       set_type = "silver1" if set_type == "silver"
       base_score = coefficients["#{set_type}-base-score"]
       time_bonus =  coefficients["time-bonus"]
