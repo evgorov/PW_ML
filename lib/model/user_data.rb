@@ -208,7 +208,7 @@ class UserData < BasicModel
       begin
         puzzle = Puzzle.storage(@storage).load(score['source'])
         set_type = PuzzleSet.storage(@storage).load(puzzle['set_id'])['type']
-      rescue => BasicModel::NotFound
+      rescue BasicModel::NotFound
         return "Cannot find solved puzzle"
       end
 
