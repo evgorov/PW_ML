@@ -1482,16 +1482,20 @@ var CoefficientsView = Backbone.View.extend({
   tagName: 'div',
 
   events: {
-    'change [role="time-bonus"]'           : 'updateCoefficients',
-    'change [role="friend-bonus"]'         : 'updateCoefficients',
-    'change [role="free-base-score"]'      : 'updateCoefficients',
-    'change [role="gold-base-score"]'      : 'updateCoefficients',
-    'change [role="brilliant-base-score"]' : 'updateCoefficients',
-    'change [role="silver1-base-score"]'   : 'updateCoefficients',
-    'change [role="silver2-base-score"]'   : 'updateCoefficients',
-    'change [role="user-shared-score"]'    : 'updateCoefficients',
-    'change [role="user-rated-score"]'     : 'updateCoefficients',
-    'click [role="save-coefficients"]'     : 'saveCoefficients'
+    'change [role="time-bonus"]'             : 'updateCoefficients',
+    'change [role="friend-bonus"]'           : 'updateCoefficients',
+    'change [role="free-base-score"]'        : 'updateCoefficients',
+    'change [role="gold-base-score"]'        : 'updateCoefficients',
+    'change [role="brilliant-base-score"]'   : 'updateCoefficients',
+    'change [role="silver1-base-score"]'     : 'updateCoefficients',
+    'change [role="silver2-base-score"]'     : 'updateCoefficients',
+    'change [role="shared-free-score"]'      : 'updateCoefficients',
+    'change [role="shared-gold-score"]'      : 'updateCoefficients',
+    'change [role="shared-silver1-score"]'   : 'updateCoefficients',
+    'change [role="shared-silver2-score"]'   : 'updateCoefficients',
+    'change [role="shared-brilliant-score"]' : 'updateCoefficients',
+    'change [role="user-rated-score"]'       : 'updateCoefficients',
+    'click [role="save-coefficients"]'       : 'saveCoefficients'
   },
 
   initialize: function(){
@@ -1508,7 +1512,11 @@ var CoefficientsView = Backbone.View.extend({
     this.$el.find('[role="silver1-base-score"]').val(this.model.get("silver1-base-score") || "");
     this.$el.find('[role="silver2-base-score"]').val(this.model.get("silver2-base-score") || "");
     this.$el.find('[role="user-rated-score"]').val(this.model.get("user-rated-score") || "");
-    this.$el.find('[role="user-shared-score"]').val(this.model.get("user-shared-score") || "");
+    this.$el.find('[role="shared-free-score"]').val(this.model.get("shared-free-score") || "");
+    this.$el.find('[role="shared-gold-score"]').val(this.model.get("shared-gold-score") || "");
+    this.$el.find('[role="shared-silver1-score"]').val(this.model.get("shared-silver1-score") || "");
+    this.$el.find('[role="shared-silver2-score"]').val(this.model.get("shared-silver2-score") || "");
+    this.$el.find('[role="shared-brilliant-score"]').val(this.model.get("shared-brilliant-score") || "");
   },
 
   updateCoefficients: function(e){
@@ -1520,7 +1528,11 @@ var CoefficientsView = Backbone.View.extend({
     this.model.set("silver1-base-score", this.$el.find('[role="silver1-base-score"]').val());
     this.model.set("silver2-base-score", this.$el.find('[role="silver2-base-score"]').val());
     this.model.set("user-rated-score", this.$el.find('[role="user-rated-score"]').val());
-    this.model.set("user-shared-score", this.$el.find('[role="user-shared-score"]').val());
+    this.model.set("shared-free-score", this.$el.find('[role="shared-free-score"]').val());
+    this.model.set("shared-gold-score", this.$el.find('[role="shared-gold-score"]').val());
+    this.model.set("shared-silver1-score", this.$el.find('[role="shared-silver1-score"]').val());
+    this.model.set("shared-silver2-score", this.$el.find('[role="shared-silver2-score"]').val());
+    this.model.set("shared-brilliant-score", this.$el.find('[role="shared-brilliant-score"]').val());
   },
 
   saveCoefficients: function(){
