@@ -34,7 +34,12 @@
 -(int)scoreForFriend;
 -(int)scoreForTime;
 -(int)scoreForRate;
--(int)scoreForShare;
+-(int)scoreForFreeShare;
+-(int)scoreForBrilliantShare;
+-(int)scoreForSilverShare;
+-(int)scoreForSilver2Share;
+-(int)scoreForGoldShare;
+-(int)scoreForShareSetType:(PuzzleSetType)setType;
 
 -(void)loadMonthSets;
 -(void)loadMe;

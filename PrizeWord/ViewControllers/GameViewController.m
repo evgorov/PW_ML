@@ -450,7 +450,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                                  [alertView show];
                                  
                                  NSLog(@"Posted story, id: %@", postID);
-                                 [[UserDataManager sharedManager] addScore:[GlobalData globalData].scoreForShare forKey:[NSString stringWithFormat:@"shareset|facebook|%@", puzzleData.puzzleSet.set_id]];
+                                 [[UserDataManager sharedManager] addScore:[[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue] forKey:[NSString stringWithFormat:@"shareset|facebook|%@", puzzleData.puzzleSet.set_id]];
 
                                  [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
                                  if (finalOverlay == finalOverlaySet)
@@ -511,7 +511,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
 
-                [[UserDataManager sharedManager] addScore:[GlobalData globalData].scoreForShare forKey:[NSString stringWithFormat:@"shareset|vkontakte|%@", puzzleData.puzzleSet.set_id]];
+                [[UserDataManager sharedManager] addScore:[[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue] forKey:[NSString stringWithFormat:@"shareset|vkontakte|%@", puzzleData.puzzleSet.set_id]];
                 
                 [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
                 if (finalOverlay == finalOverlaySet)
@@ -831,11 +831,12 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         baseScore *= puzzleData.puzzleSet.total;
         fullScore = puzzleData.puzzleSet.score;
     }
+    int shareScore = [[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue];
     lblFinalBaseScore.text = [NSString stringWithFormat:@"%d", fullScore < baseScore ? 0 : baseScore];
     lblFinalTimeBonus.text = [NSString stringWithFormat:@"%d", fullScore < baseScore ? fullScore : (fullScore - baseScore)];
     lblFinalRateBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForRate];
-    lblFinalFacebookBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
-    lblFinalVkontakteBonus.text = [NSString stringWithFormat:@"+%d", [GlobalData globalData].scoreForShare];
+    lblFinalFacebookBonus.text = [NSString stringWithFormat:@"+%d", shareScore];
+    lblFinalVkontakteBonus.text = [NSString stringWithFormat:@"+%d", shareScore];
     
     UIImage * setTypeImage = nil;
     switch (puzzleData.puzzleSet.type.intValue) {
@@ -889,21 +890,22 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     lblFinalTimeBonus.frame = CGRectMake(lblFinalTimeBonus.frame.origin.x, lblFinalTimeBonus.frame.origin.y, [lblFinalTimeBonus.text sizeWithFont:lblFinalTimeBonus.font].width, lblFinalTimeBonus.frame.size.height);
     
     __block uint score = finalFlipNumbers.count == 5 ? [puzzleData.score unsignedIntValue] : puzzleData.puzzleSet.score;
+    int shareScore = [[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue];
     if (finalOverlay == finalOverlayRateDone)
     {
         score += [GlobalData globalData].scoreForRate;
     }
     if (finalOverlay == finalOverlaySetDone)
     {
-        score += [GlobalData globalData].scoreForShare * 2;
+        score += shareScore * 2;
     }
     if (finalOverlay == finalOverlaySetVKDone)
     {
-        score += [GlobalData globalData].scoreForShare;
+        score += shareScore;
     }
     if (finalOverlay == finalOverlaySetFBDone)
     {
-        score += [GlobalData globalData].scoreForShare;
+        score += shareScore;
     }
     if (animated)
     {

@@ -180,14 +180,85 @@ NSString * COEFFICIENTS_KEY = @"coefficients";
     return value.intValue;
 }
 
-- (int)scoreForShare
+- (int)scoreForFreeShare
 {
-    NSNumber * value = [coefficients objectForKey:@"user-shared-score"];
+    NSNumber * value = [coefficients objectForKey:@"shared-free-score"];
     if (value == nil || value == (id)[NSNull null])
     {
         return 0;
     }
     return value.intValue;
+}
+
+- (int)scoreForBrilliantShare
+{
+    NSNumber * value = [coefficients objectForKey:@"shared-brilliant-score"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+- (int)scoreForSilverShare
+{
+    NSNumber * value = [coefficients objectForKey:@"shared-silver1-score"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+- (int)scoreForSilver2Share
+{
+    NSNumber * value = [coefficients objectForKey:@"shared-silver2-score"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+- (int)scoreForGoldShare
+{
+    NSNumber * value = [coefficients objectForKey:@"shared-gold-score"];
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return 0;
+    }
+    return value.intValue;
+}
+
+- (int)scoreForShareSetType:(PuzzleSetType)setType
+{
+    int score = 0;
+    switch (setType) {
+        case PUZZLESET_FREE:
+            score = [self scoreForFreeShare];
+            break;
+            
+        case PUZZLESET_BRILLIANT:
+            score = [self scoreForBrilliantShare];
+            break;
+            
+        case PUZZLESET_GOLD:
+            score = [self scoreForGoldShare];
+            break;
+            
+        case PUZZLESET_SILVER:
+            score = [self scoreForSilverShare];
+            break;
+            
+        case PUZZLESET_SILVER2:
+            score = [self scoreForSilver2Share];
+            break;
+            
+        default:
+            break;
+    }
+    
+    return score;
 }
 
 #pragma mark public methods
