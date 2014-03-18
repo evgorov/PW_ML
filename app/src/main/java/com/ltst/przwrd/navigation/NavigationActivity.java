@@ -1,6 +1,7 @@
 package com.ltst.przwrd.navigation;
 
 import com.tapjoy.TapjoyConnect;
+import com.flurry.android.FlurryAgent;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -346,6 +347,7 @@ public class NavigationActivity extends BillingV3Activity
     @Override
     protected void onStop()
     {
+        FlurryAgent.onEndSession(this);
         mGcmHelper.onStop();
         SoundsWork.releaseMPALL();
         super.onStop();
@@ -379,6 +381,9 @@ public class NavigationActivity extends BillingV3Activity
     protected void onStart()
     {
         super.onStart();
+
+        FlurryAgent.onStartSession(this, "ZFQC4HYJGXYTSGQMYXX7");
+
         // Если запуск первый, то стартуем обучалку;
         boolean firstLaunch = SharedPreferencesValues.getFirstLaunchFlag(mContext);
         if (firstLaunch)

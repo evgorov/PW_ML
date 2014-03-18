@@ -26,6 +26,7 @@ dependencies {
     compile project(':libs:project-bcops')
     compile project(':libs:project-lists')
     compile project(':libs:project-sherlock')
+    compile files('libs/flurryAnalytics_3.4.0.jar')
 }
 
 android {
