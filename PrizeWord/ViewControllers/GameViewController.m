@@ -660,8 +660,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                 }
             }
             
-            NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%d%d", [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
             puzzleData = event.data;
+            NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%@%d%d", puzzleData.puzzleSet.set_id, [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
             // DEBUG :: set YES for test purposes
 
             if (![GlobalData globalData].loggedInUser.is_app_rated && ![[NSUserDefaults standardUserDefaults] boolForKey:showRateKey] && ((puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.time_left.intValue > 0) || (puzzleData.puzzleSet.percent >= 0.999999 && onlyFree)))
@@ -804,7 +804,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     
     if (type == FINAL_OVERVIEW_TYPE_RATE)
     {
-        NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%d%d", [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
+        NSString * showRateKey = [NSString stringWithFormat:@"showRate%@%@%d%d", puzzleData.puzzleSet.set_id, [GlobalData globalData].loggedInUser.user_id, [GlobalData globalData].currentYear, [GlobalData globalData].currentMonth];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:showRateKey];
     }
 
