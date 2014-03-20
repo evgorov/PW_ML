@@ -9,6 +9,8 @@
 #import "BadgeView.h"
 #import "AppDelegate.h"
 #import "PuzzleSetProxy.h"
+#import "GlobalData.h"
+#import "UserData.h"
 
 @interface BadgeView (private)
 
@@ -64,7 +66,7 @@
         {
             lblScore.hidden = YES;
             imgStar.hidden = YES;
-            imgFlag.hidden = ![[[NSUserDefaults standardUserDefaults] stringForKey:@"puzzleInProgress"] isEqualToString:puzzle.puzzle_id];
+            imgFlag.hidden = ![[[NSUserDefaults standardUserDefaults] stringForKey:[NSString stringWithFormat:@"puzzleInProgress%@", [GlobalData globalData].loggedInUser.user_id]] isEqualToString:puzzle.puzzle_id];
             
             lblPercent.hidden = NO;
             imgProgress.hidden = NO;

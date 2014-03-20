@@ -15,6 +15,8 @@
 #import "PuzzleSetProxy.h"
 #import "PrizeWordNavigationController.h"
 #import "RootViewController.h"
+#import "GlobalData.h"
+#import "UserData.h"
 
 @interface GameLogic (private)
 
@@ -91,7 +93,7 @@
             NSLog(@"start game. time given: %d, time left: %d", puzzle.time_given.intValue, puzzle.time_left.intValue);
             _gameTime = puzzle.time_given.intValue - puzzle.time_left.intValue;
             
-            [[NSUserDefaults standardUserDefaults] setObject:puzzle.puzzle_id forKey:@"puzzleInProgress"];
+            [[NSUserDefaults standardUserDefaults] setObject:puzzle.puzzle_id forKey:[NSString stringWithFormat:@"puzzleInProgress%@", [GlobalData globalData].loggedInUser.user_id]];
         }
             break;
 
