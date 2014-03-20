@@ -12,12 +12,24 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SBJsonParser.h"
 #import "UserData.h"
+#import "AppDelegate.h"
+#import "RootViewController.h"
 
-@interface SocialNetworks (private)
+const int TAG_FACEBOOK_RETRY = 0;
+
+const int TAG_VKWEBVIEW_LOGIN_AND_AUTORIZE = 7;
+const int TAG_VKWEBVIEW_LOGIN_ONLY = 8;
+
+@interface SocialNetworks ()
+
+@property () NSURLRequest * requestToLoad;
 
 -(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
 -(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
+-(void)loginVkontakteOnlyWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)(NSString * accessToken))callback;
 -(void)logout;
+-(void)shareFacebook:(NSString *)message callback:(void (^)(BOOL success))callback;
+-(void)shareVkontakte:(NSString *)message callback:(void (^)(BOOL success))callback;
 -(NSDictionary*)parseURLParams:(NSString *)query;
 -(void)finalizeAuthorizationWithToken:(NSString *)accessToken forProvider:(NSString *)provider andViewController:(PrizeWordViewController *)viewController;
 
@@ -50,7 +62,15 @@
     [[SocialNetworks socialNetworks] logout];
 }
 
++(void)shareFacebook:(NSString *)message callback:(void (^)(BOOL success))callback
+{
+    [[SocialNetworks socialNetworks] shareFacebook:message callback:callback];
+}
 
++(void)shareVkontakte:(NSString *)message callback:(void (^)(BOOL success))callback
+{
+    [[SocialNetworks socialNetworks] shareVkontakte:message callback:callback];
+}
 
 #pragma mark private
 
@@ -78,7 +98,7 @@
         if (error != nil && error.code != 2) // Cancel
         {
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"Отмена" otherButtonTitles:@"Повторить", nil];
-            alert.tag = 0;
+            alert.tag = TAG_FACEBOOK_RETRY;
             [alert show];
         }
         if (successCallback != nil)
@@ -100,8 +120,38 @@
     NSLog(@"request: %@", request.URL.path);
     vkWebView.delegate = self;
     vkWebView.hidden = YES;
+    vkWebView.tag = TAG_VKWEBVIEW_LOGIN_AND_AUTORIZE;
     [vkWebView loadRequest:request];
+}
+
+-(void)loginVkontakteOnlyWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)(NSString *))callback
+{
+    __block UIWebView * vkWebView = [[UIWebView alloc] initWithFrame:viewController.view.frame];
+    __block typeof(self) blockSelf = self;
+    lastViewController = viewController;
+    successCallback = ^(){
+        NSString * urlString = blockSelf.requestToLoad.URL.absoluteString;
+        NSString * query = blockSelf.requestToLoad.URL.query;
+        if ([urlString rangeOfString:@"html#"].location != NSNotFound)
+        {
+            query = [urlString substringFromIndex:[urlString rangeOfString:@"html#"].location + 5];
+        }
+        NSDictionary * params = [blockSelf parseURLParams:query];
+        if ([params objectForKey:@"access_token"]) {
+            callback([params objectForKey:@"access_token"]);
+        }
+        else {
+            callback(nil);
+        }
+    };
     
+    [viewController.view addSubview:vkWebView];
+    NSURLRequest * request = [NSURLRequest requestWithURL:[[APIClient sharedClient].baseURL URLByAppendingPathComponent:@"vkontakte/login"] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:20];
+    NSLog(@"request: %@", request.URL.path);
+    vkWebView.delegate = self;
+    vkWebView.hidden = YES;
+    vkWebView.tag = TAG_VKWEBVIEW_LOGIN_ONLY;
+    [vkWebView loadRequest:request];
 }
 
 -(void)logout
@@ -123,6 +173,125 @@
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+-(void)shareFacebook:(NSString *)message callback:(void (^)(BOOL))callback
+{
+    // Put together the dialog parameters
+    NSMutableDictionary *params =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     @"PrizeWord", @"name",
+     message, @"caption",
+     @"http://prize-word.com", @"link",
+     nil];
+    
+    void (^publishHandler)(FBSession *session, NSError *error) = ^(FBSession *session, NSError *error) {
+        if (error == nil)
+        {
+            NSLog(@"reauthorizeWithPublishPermissions success");
+            // Invoke the dialog
+            [FBWebDialogs presentFeedDialogModallyWithSession:session
+                                                   parameters:params
+                                                      handler:
+             ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                 if (error) {
+                     // Case A: Error launching the dialog or publishing story.
+                     NSLog(@"Error publishing story.");
+                     callback(NO);
+                 } else {
+                     if (result == FBWebDialogResultDialogNotCompleted) {
+                         // Case B: User clicked the "x" icon
+                         NSLog(@"User canceled story publishing.");
+                         UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при публикации" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                         [alertView show];
+                         callback(NO);
+                     } else {
+                         // Case C: Dialog shown and the user clicks Cancel or Share
+                         NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                         if (![urlParams valueForKey:@"post_id"]) {
+                             // User clicked the Cancel button
+                             NSLog(@"User canceled story publishing.");
+                             callback(NO);
+                         } else {
+                             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                             [alertView show];
+                             
+                             callback(YES);
+                         }
+                     }
+                 }
+             }];
+        }
+        else
+        {
+            NSLog(@"facebook publish stream openning error: %@", error);
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            callback(NO);
+        }
+    };
+    
+    void (^loginHandler)(FBSession *session, FBSessionState state, NSError *error) = ^(FBSession *session, FBSessionState state, NSError *error) {
+        if (error == nil && (state == FBSessionStateOpen || state == FBSessionStateOpenTokenExtended))
+        {
+            publishHandler(session, error);
+            return;
+        }
+        if (error != nil)
+        {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        callback(NO);
+    };
+    
+    if ([[FBSession activeSession] isOpen])
+    {
+        [[FBSession activeSession] requestNewPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:publishHandler];
+    }
+    else
+    {
+        [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:loginHandler];
+    }
+}
+
+-(void)shareVkontakte:(NSString *)message callback:(void (^)(BOOL))callback
+{
+    if ([GlobalData globalData].loggedInUser.vkProvider != nil)
+    {
+        NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
+                                  , @"message": message};
+        [[APIClient sharedClient] postPath:@"vkontakte/share" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            
+            callback(YES);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            callback(NO);
+        }];
+    }
+    else
+    {
+        [self loginVkontakteOnlyWithViewController:[AppDelegate currentDelegate].rootViewController andCallback:^(NSString *accessToken) {
+            if (accessToken != nil) {
+                NSDictionary * params = @{@"access_token": accessToken
+                                          , @"message": message};
+                [[APIClient sharedClient] postPath:@"vkontakte/share" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                    
+                    callback(YES);
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    callback(NO);
+                }];
+            }
+            else {
+                callback(NO);
+            }
+        }];
+    }
+}
+
+#pragma mark utils
 
 -(NSDictionary*)parseURLParams:(NSString *)query
 {
@@ -159,7 +328,9 @@
         {
             [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
             [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-            successCallback();
+            if (successCallback != nil) {
+                successCallback();
+            }
         }
         else
         {
@@ -170,15 +341,23 @@
             [[APIClient sharedClient] postPath:@"link_accounts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"link account success: %d %@", operation.response.statusCode, operation.responseString);
                 [viewController hideActivityIndicator];
-                successCallback();
+                if (successCallback != nil) {
+                    successCallback();
+                }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [viewController hideActivityIndicator];
                 NSLog(@"link accounts failed: %@", error.localizedDescription);
                 [[GlobalData globalData] loadMe];
+                if (failCallback != nil) {
+                    failCallback();
+                }
             }];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [viewController hideActivityIndicator];
+        if (failCallback != nil) {
+            failCallback();
+        }
     }];
 }
 
@@ -188,7 +367,7 @@
 {
     if (buttonIndex != alertView.cancelButtonIndex)
     {
-        if (alertView.tag == 0)
+        if (alertView.tag == TAG_FACEBOOK_RETRY)
         {
             [self loginFacebookWithViewController:lastViewController andCallback:successCallback];
         }
@@ -203,6 +382,7 @@
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    _requestToLoad = request;
     NSLog(@"vkontakte: %@", request.description);
     NSString * urlString = request.URL.absoluteString;
     NSString * query = request.URL.query;
@@ -215,15 +395,20 @@
     if ([params objectForKey:@"access_token"])
     {
         [webView removeFromSuperview];
-        [self finalizeAuthorizationWithToken:[params objectForKey:@"access_token"] forProvider:@"vkontakte" andViewController:lastViewController];
+        if (webView.tag == TAG_VKWEBVIEW_LOGIN_AND_AUTORIZE) {
+            [self finalizeAuthorizationWithToken:[params objectForKey:@"access_token"] forProvider:@"vkontakte" andViewController:lastViewController];
+        } else {
+            if (successCallback != nil) {
+                successCallback();
+            }
+        }
         return NO;
     }
     else if ([params objectForKey:@"act"] != nil && [params objectForKey:@"cancel"] != nil && [(NSString *)[params objectForKey:@"act"] compare:@"grant_access"] == NSOrderedSame && [(NSString *)[params objectForKey:@"cancel"] compare:@"1"] == NSOrderedSame)
     {
         [lastViewController hideActivityIndicator];
         [webView removeFromSuperview];
-        if (successCallback != nil)
-        {
+        if (successCallback != nil) {
             successCallback();
         }
         return NO;
@@ -247,11 +432,21 @@
                 NSDictionary * data = [parser objectWithData:operation.responseData];
                 [GlobalData globalData].sessionKey = [data objectForKey:@"session_key"];
                 [GlobalData globalData].loggedInUser = [UserData userDataWithDictionary:[data objectForKey:@"me"]];
-                successCallback();
+                if (successCallback != nil) {
+                    successCallback();
+                }
+            }
+            else {
+                if (failCallback != nil) {
+                    failCallback();
+                }
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [lastViewController hideActivityIndicator];
             NSLog(@"vk error: %@", error.description);
+            if (failCallback != nil) {
+                failCallback();
+            }
         }];
         
         return NO;
@@ -269,6 +464,9 @@
     [lastViewController hideActivityIndicator];
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    if (failCallback != nil) {
+        failCallback();
+    }
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView

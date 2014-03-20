@@ -404,113 +404,32 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
             break;
     }
     NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет и получил за это %d %@!", puzzleType, puzzleData.puzzleSet.score, [NSString declesion:puzzleData.puzzleSet.score oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
-    // facebook
-    if (button.tag == 0)
-    {
-        // Put together the dialog parameters
-        NSMutableDictionary *params =
-        [NSMutableDictionary dictionaryWithObjectsAndKeys:
-         @"PrizeWord", @"name",
-         message, @"caption",
-         @"http://prize-word.com", @"link",
-         nil];
-        
-        void (^publishHandler)(FBSession *session, NSError *error) = ^(FBSession *session, NSError *error) {
+    
+    [self showActivityIndicator];
+    if (button.tag == 0) {
+        [SocialNetworks shareFacebook:message callback:^(BOOL success) {
             [self hideActivityIndicator];
-            if (error == nil)
-            {
-                NSLog(@"reauthorizeWithPublishPermissions success");
-                // Invoke the dialog
-                [FBWebDialogs presentFeedDialogModallyWithSession:session
-                                                       parameters:params
-                                                          handler:
-                 ^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-                     [self hideActivityIndicator];
-                     
-                     if (error) {
-                         // Case A: Error launching the dialog or publishing story.
-                         NSLog(@"Error publishing story.");
-                     } else {
-                         if (result == FBWebDialogResultDialogNotCompleted) {
-                             // Case B: User clicked the "x" icon
-                             NSLog(@"User canceled story publishing.");
-                             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:@"Ошибка при публикации" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                             [alertView show];
-                         } else {
-                             // Case C: Dialog shown and the user clicks Cancel or Share
-                             NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
-                             if (![urlParams valueForKey:@"post_id"]) {
-                                 // User clicked the Cancel button
-                                 NSLog(@"User canceled story publishing.");
-                             } else {
-                                 // User clicked the Share button
-                                 NSString *postID = [urlParams valueForKey:@"post_id"];
-                                 
-                                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                 [alertView show];
-                                 
-                                 NSLog(@"Posted story, id: %@", postID);
-                                 [[UserDataManager sharedManager] addScore:[[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue] forKey:[NSString stringWithFormat:@"shareset|facebook|%@", puzzleData.puzzleSet.set_id]];
-
-                                 [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
-                                 if (finalOverlay == finalOverlaySet)
-                                 {
-                                     [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_FB_DONE];
-                                 }
-                                 else
-                                 {
-                                     [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_DONE];
-                                 }
-                                 [self showFinalScreenAnimated:NO];
-                                 [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
-                             }
-                         }
-                     }
-                 }];
+            if (success) {
+                [[UserDataManager sharedManager] addScore:[[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue] forKey:[NSString stringWithFormat:@"shareset|facebook|%@", puzzleData.puzzleSet.set_id]];
+                
+                [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
+                if (finalOverlay == finalOverlaySet)
+                {
+                    [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_FB_DONE];
+                }
+                else
+                {
+                    [self prepareFinalOverlayWithType: FINAL_OVERVIEW_TYPE_SET_DONE];
+                }
+                [self showFinalScreenAnimated:NO];
+                [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
             }
-            else
-            {
-                NSLog(@"facebook publish stream openning error: %@", error);
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-            }
-        };
-        
-        void (^loginHandler)(FBSession *session, FBSessionState state, NSError *error) = ^(FBSession *session, FBSessionState state, NSError *error) {
-            [self hideActivityIndicator];
-            if (error == nil && (state == FBSessionStateOpen || state == FBSessionStateOpenTokenExtended))
-            {
-                publishHandler(session, error);
-                return;
-            }
-            if (error != nil)
-            {
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Ошибка facebook" message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-            }
-        };
-        
-        [self showActivityIndicator];
-        if ([[FBSession activeSession] isOpen])
-        {
-            [[FBSession activeSession] requestNewPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:publishHandler];
-        }
-        else
-        {
-            [FBSession openActiveSessionWithPublishPermissions:[NSArray arrayWithObjects:@"publish_actions", @"publish_stream", nil] defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:loginHandler];
-        }
+        }];
     }
-    // vkontakte
-    else
-    {
-        if ([GlobalData globalData].loggedInUser.vkProvider != nil)
-        {
-            NSDictionary * params = @{@"session_key": [GlobalData globalData].sessionKey
-                                      , @"message": message};
-            [[APIClient sharedClient] postPath:@"vkontakte/share" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"PrizeWord" message:@"Ваш результат опубликован!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-
+    else {
+        [SocialNetworks shareVkontakte:message callback:^(BOOL success) {
+            [self hideActivityIndicator];
+            if (success) {
                 [[UserDataManager sharedManager] addScore:[[GlobalData globalData] scoreForShareSetType:puzzleData.puzzleSet.type.intValue] forKey:[NSString stringWithFormat:@"shareset|vkontakte|%@", puzzleData.puzzleSet.set_id]];
                 
                 [[AppDelegate currentDelegate].rootViewController hideOverlayAnimated:NO];
@@ -524,21 +443,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
                 }
                 [self showFinalScreenAnimated:NO];
                 [[AppDelegate currentDelegate].rootViewController showFullscreenOverlay:finalOverlay animated:NO];
-            } failure:nil];
-        }
-        else
-        {
-            [SocialNetworks loginVkontakteWithViewController:[AppDelegate currentDelegate].rootViewController andCallback:^{
-                if ([GlobalData globalData].loggedInUser.vkProvider != nil)
-                {
-                    [self handleShareClick:sender];
-                }
-                else
-                {
-                    NSLog(@"Error while vkontakte login");
-                }
-            }];
-        }
+            }
+        }];
     }
 }
 
@@ -870,7 +776,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     btnFinalNext = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_NEXT];
     btnFinalContinue = (UIButton *)[finalOverlay viewWithTag:TAG_FINAL_CONTINUE];
     // DEBUG :: invert conditions for test purposes
-    btnFinalMenu.hidden = puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.puzzleSet.percent >= 0.99999;
+    btnFinalMenu.hidden = (puzzleData.puzzleSet.type.intValue != PUZZLESET_FREE && puzzleData.puzzleSet.percent >= 0.99999);
     btnFinalNext.hidden = btnFinalMenu.hidden;
     btnFinalContinue.hidden = !btnFinalMenu.hidden;
 }

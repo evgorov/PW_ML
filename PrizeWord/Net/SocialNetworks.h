@@ -18,6 +18,7 @@
     NSString * lastProvider;
     
     void (^successCallback)();
+    void (^failCallback)();
 }
 
 +(SocialNetworks *)socialNetworks;
@@ -25,5 +26,7 @@
 +(void)loginFacebookWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
 +(void)loginVkontakteWithViewController:(PrizeWordViewController *)viewController andCallback:(void (^)())callback;
 +(void)logout;
++(void)shareFacebook:(NSString *)message callback:(void (^)(BOOL success))callback;
++(void)shareVkontakte:(NSString *)message callback:(void (^)(BOOL success))callback;
 
 @end
