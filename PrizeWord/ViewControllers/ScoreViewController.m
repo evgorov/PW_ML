@@ -257,7 +257,7 @@ int const TAG_SHARE_CELL = 4235;
 
 - (void)updateRate
 {
-    BOOL hasRated = [GlobalData globalData].loggedInUser.is_app_rated;
+    BOOL hasRated = [GlobalData globalData].loggedInUser.is_app_rated_this_month;
     if (hasRated)
     {
         [lblRateScore setText:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate]];

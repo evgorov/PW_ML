@@ -34,6 +34,7 @@
 @property () int shared_silver1_score;
 @property () int shared_silver2_score;
 @property () BOOL is_app_rated;
+@property () BOOL is_app_rated_this_month;
 @property (nonatomic, strong) NSDate *last_notification_time;
 
 @property () int position;

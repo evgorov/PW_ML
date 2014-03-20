@@ -8,6 +8,7 @@
 
 #import "UserData.h"
 #import "NSData+Base64.h"
+#import "GlobalData.h"
 
 @implementation UserData
 
@@ -128,12 +129,29 @@
         _shared_silver1_score = [(NSNumber *)[dict objectForKey:@"shared_silver1_score"] intValue];
         _shared_silver2_score = [(NSNumber *)[dict objectForKey:@"shared_silver2_score"] intValue];
         _is_app_rated = [(NSNumber *)[dict objectForKey:@"is_app_rated"] boolValue];
-        id lastDate = [dict objectForKey:@"last_notification_time"];
+        _is_app_rated_this_month = _is_app_rated;
+        
         NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         [dateFormatter setLocale:enUSPOSIXLocale];
         [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd' 'HH':'mm':'ss' 'ZZZZZ"];
         [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-        _last_notification_time = [dateFormatter dateFromString:(NSString *)lastDate];
+        
+        NSString *lastDate = [dict objectForKey:@"last_notification_time"];
+        _last_notification_time = [dateFormatter dateFromString:lastDate];
+        NSString *rateDateString = [dict objectForKey:@"rate_date"];
+        if (rateDateString != nil && _is_app_rated_this_month)
+        {
+            NSDate *rateDate = [dateFormatter dateFromString:rateDateString];
+            if (rateDate != nil)
+            {
+                NSCalendar * calendar = [NSCalendar currentCalendar];
+                NSDateComponents * components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:rateDate];
+                if (components.month != [GlobalData globalData].currentMonth || components.year != [GlobalData globalData].currentYear)
+                {
+                    _is_app_rated_this_month = NO;
+                }
+            }
+        }
     }
     return self;
 }
