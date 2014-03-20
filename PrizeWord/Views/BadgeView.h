@@ -21,6 +21,7 @@
     IBOutlet UIImageView *imgProgress;
     IBOutlet UIImageView *imgStar;
     IBOutlet UIView *imgOverlay;
+    IBOutlet UIImageView *imgFlag;
 }
 
 +(BadgeView *)badgeForPuzzle:(PuzzleProxy *)puzzle andNumber:(int)number;

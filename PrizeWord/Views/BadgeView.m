@@ -64,6 +64,7 @@
         {
             lblScore.hidden = YES;
             imgStar.hidden = YES;
+            imgFlag.hidden = ![[[NSUserDefaults standardUserDefaults] stringForKey:@"puzzleInProgress"] isEqualToString:puzzle.puzzle_id];
             
             lblPercent.hidden = NO;
             imgProgress.hidden = NO;
@@ -88,6 +89,7 @@
         {
             lblScore.hidden = NO;
             imgStar.hidden = NO;
+            imgFlag.hidden = YES;
             
             lblPercent.hidden = YES;
             imgProgress.hidden = YES;

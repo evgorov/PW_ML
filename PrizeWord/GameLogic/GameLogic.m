@@ -90,6 +90,8 @@
             gameState = GAMESTATE_PLAYING;
             NSLog(@"start game. time given: %d, time left: %d", puzzle.time_given.intValue, puzzle.time_left.intValue);
             _gameTime = puzzle.time_given.intValue - puzzle.time_left.intValue;
+            
+            [[NSUserDefaults standardUserDefaults] setObject:puzzle.puzzle_id forKey:@"puzzleInProgress"];
         }
             break;
 
