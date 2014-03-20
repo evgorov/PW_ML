@@ -90,6 +90,8 @@ module Middleware
       score = Coefficients.storage(env['redis']).coefficients['user-rated-score']
       raise CoefficientNotExist unless score
       user = current_user
+      return { me: user }.to_json if user['is_app_rated'] == true
+      
       source = "user_app_rate"
       begin
         UserScore.storage(env['redis']).create(user.id, score.to_i, 0, source)
@@ -98,6 +100,7 @@ module Middleware
       end
 
       user.inc_month_score(score)
+      user['is_app_rated'] = true
       user.save
 
       { me: user }.to_json
@@ -162,13 +165,12 @@ module Middleware
     end
 
     post '/vkontakte/share' do
-      unless token = params['access_token']
-        env['token_auth'].authorize!
-        token = current_user['access_token']
+      token = params['access_token']
+      
+        token ||= current_user['vkontakte_access_token'] if env['token_auth'].authorize?
       end
-
       message = params['message'] || 'Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!'
-      WallPublisher.post(token, message, params['attachmments']).to_json
+      WallPublisher.post(current_user['vkontakte_access_token'], message, params['attachmments']).to_json
     end
 
     post '/link_accounts' do
