@@ -162,8 +162,10 @@ module Middleware
     end
 
     post '/vkontakte/share' do
-      token = params['access_token']
-      token ||= current_user['vkontakte_access_token'] if env['token_auth'].authorize?
+      unless token = params['access_token']
+        env['token_auth'].authorize!
+        token = current_user['access_token']
+      end
 
       message = params['message'] || 'Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!'
       WallPublisher.post(token, message, params['attachmments']).to_json
