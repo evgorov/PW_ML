@@ -5,8 +5,7 @@ libdir = File.join(ROOT_DIR, 'lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
 require 'app_config'
-require "bundler/setup"
-
+require 'bundler/setup'
 require 'rack/contrib/static_cache'
 require 'rack/cache'
 require 'middleware/apn_pusher'
@@ -20,9 +19,12 @@ require 'middleware/uploader'
 require 'middleware/index_page'
 require 'middleware/routes/cascade'
 require 'middleware/etag'
+require 'middleware/logger'
 require 'newrelic_rpm'
 require 'new_relic/rack/agent_hooks'
 require 'new_relic/rack/error_collector'
+
+use Logger
 
 AppConfig.load!("#{ROOT_DIR}/config/app.yml", :env => ENV['RACK_ENV'])
 
