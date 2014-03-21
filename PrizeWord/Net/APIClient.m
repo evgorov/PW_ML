@@ -26,11 +26,11 @@
 
 - (id)init
 {
-//    self = [super initWithBaseURL:[NSURL URLWithString:@"https://api.prize-word.com/"]];
-    self = [super initWithBaseURL:[NSURL URLWithString:@"http://ec2-54-229-233-34.eu-west-1.compute.amazonaws.com/"]];
+    self = [super initWithBaseURL:[NSURL URLWithString:@"https://api.prize-word.com/"]];
+//    self = [super initWithBaseURL:[NSURL URLWithString:@"http://ec2-54-229-233-34.eu-west-1.compute.amazonaws.com/"]];
     if (self) {
         // DEBUG :: YES only for test purposes
-        [self setAllowsInvalidSSLCertificate:YES];
+        [self setAllowsInvalidSSLCertificate:NO];
         [AFHTTPRequestOperation addAcceptableStatusCodes:[NSIndexSet indexSetWithIndex:304]];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     }
