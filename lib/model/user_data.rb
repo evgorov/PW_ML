@@ -15,7 +15,7 @@ class UserData < BasicModel
   REQUIRED_FIELDS_FOR_REGISTRATION = %w[email name surname password]
   FIELDS_USER_CAN_CHANGE = REQUIRED_FIELDS_FOR_REGISTRATION + %w[birthdate userpic city solved last_notification_time]
   FIELDS_USER_CAN_SEE = FIELDS_USER_CAN_CHANGE - ['password'] +
-    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated count_fb_shared count_vk_shared] + PuzzleSet.types.map { |o| "shared_#{o}_score" }
+    %w[role id position month_score high_score dynamics hints created_at providers is_app_rated count_fb_shared count_vk_shared rate_date] + PuzzleSet.types.map { |o| "shared_#{o}_score" }
 
   def []=(key, value)
     case(key)
