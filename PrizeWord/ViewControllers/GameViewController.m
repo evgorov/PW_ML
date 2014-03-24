@@ -59,7 +59,10 @@ const int FINAL_OVERVIEW_TYPE_SET_DONE = 7;
 NSString *reviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=725511947";
 NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 
-@interface GameViewController (private)
+@interface GameViewController ()
+{
+    BOOL writingInProgress;
+}
 
 -(void)handleKeyboardWillShow:(NSNotification *)aNotification;
 -(void)handleKeyboardWillHide:(NSNotification *)aNotification;
@@ -83,6 +86,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         typeSounds = [NSArray arrayWithObjects:[se soundNamed:@"type_1.caf" error:nil], [se soundNamed:@"type_2.caf" error:nil], [se soundNamed:@"type_3.caf" error:nil], nil];
         countingSound = [se soundNamed:@"counting.caf" error:nil];
         secondaryDingSound = [se soundNamed:@"secondary_ding.caf" error:nil];
+        writingInProgress = NO;
     }
     return self;
 }
@@ -513,10 +517,12 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     {
         textField.text = @"";
         [textField becomeFirstResponder];
+        writingInProgress = YES;
     }
     else if (event.type == EVENT_FINISH_INPUT)
     {
         [textField resignFirstResponder];
+        writingInProgress = NO;
     }
     else if (event.type == EVENT_GAME_TIME_CHANGED)
     {
@@ -593,7 +599,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     else if (event.type == EVENT_PRODUCT_ERROR || event.type == EVENT_PRODUCT_FAILED)
     {
         [self hideActivityIndicator];
-        [textField becomeFirstResponder];
+        if (writingInProgress)
+            [textField becomeFirstResponder];
         if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
         {
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
@@ -604,6 +611,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         SKPaymentTransaction * paymentTransaction = event.data;
         NSLog(@"EVENT_PRODUCT_BOUGHT: %@", paymentTransaction.payment.productIdentifier);
         [self hideActivityIndicator];
+        if (writingInProgress)
+            [textField becomeFirstResponder];
         if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
         {
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
@@ -652,7 +661,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (alertView.cancelButtonIndex == buttonIndex) {
-        [textField becomeFirstResponder];
+        if (writingInProgress)
+            [textField becomeFirstResponder];
         if ([AppDelegate currentDelegate].rootViewController.currentOverlay != nil)
         {
             [[EventManager sharedManager] dispatchEvent:[Event eventWithType:EVENT_GAME_REQUEST_RESUME]];
@@ -927,7 +937,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
     [self hideActivityIndicator];
-    [textField becomeFirstResponder];
+    if (writingInProgress)
+        [textField becomeFirstResponder];
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Connection error", @"Connection error") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
@@ -940,7 +951,8 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
     else
     {
         [self hideActivityIndicator];
-        [textField becomeFirstResponder];
+        if (writingInProgress)
+            [textField becomeFirstResponder];
     }
 }
 
