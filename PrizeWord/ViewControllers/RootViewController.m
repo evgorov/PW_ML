@@ -784,7 +784,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 
 -(void)handleSwipeLeft:(id)sender
 {
-    if (![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && !_isMenuHidden)
+    if (_currentOverlay == nil && ![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && !_isMenuHidden)
     {
         [self hideMenuAnimated:YES];
     }
@@ -792,7 +792,7 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 
 -(void)handleSwipeRight:(id)sender
 {
-    if (![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && _isMenuHidden)
+    if (_currentOverlay == nil && ![AppDelegate currentDelegate].isIPad && [navController.topViewController isKindOfClass:[BlockedViewController class]] && _isMenuHidden)
     {
         [self showMenuAnimated:YES];
     }
