@@ -82,12 +82,6 @@ int const TAG_SHARE_CELL = 4235;
     [[GlobalData globalData] loadMe];
     [self updateRate];
     [self updateShare];
-    /*
-    if ([GlobalData globalData].loggedInUser.ratedThisMonth.boolValue)
-    {
-        [lblRateScore setText:[NSString stringWithFormat:@"%d", [GlobalData globalData].scoreForRate]];
-    }
-    */
 }
 
 -(void)viewDidDisappear:(BOOL)animated

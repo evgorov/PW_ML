@@ -77,23 +77,26 @@
     {
         case EVENT_GAME_REQUEST_START:
         {
-            PuzzleProxy * puzzle = (PuzzleProxy *)event.data;
-            currentGameField = [[GameField alloc] initWithData:puzzle];
-            [[AppDelegate currentDelegate].rootViewController hideMenuAnimated:YES];
-            if ([[AppDelegate currentDelegate].navController.topViewController isKindOfClass:[GameViewController class]])
+            if (gameState != GAMESTATE_PLAYING)
             {
-                [[AppDelegate currentDelegate].navController popViewControllerAnimated:NO];
-                [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:NO];
+                PuzzleProxy * puzzle = (PuzzleProxy *)event.data;
+                currentGameField = [[GameField alloc] initWithData:puzzle];
+                [[AppDelegate currentDelegate].rootViewController hideMenuAnimated:YES];
+                if ([[AppDelegate currentDelegate].navController.topViewController isKindOfClass:[GameViewController class]])
+                {
+                    [[AppDelegate currentDelegate].navController popViewControllerAnimated:NO];
+                    [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:NO];
+                }
+                else
+                {
+                    [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
+                }
+                gameState = GAMESTATE_PLAYING;
+                NSLog(@"start game. time given: %d, time left: %d", puzzle.time_given.intValue, puzzle.time_left.intValue);
+                _gameTime = puzzle.time_given.intValue - puzzle.time_left.intValue;
+                
+                [[NSUserDefaults standardUserDefaults] setObject:puzzle.puzzle_id forKey:[NSString stringWithFormat:@"puzzleInProgress%@", [GlobalData globalData].loggedInUser.user_id]];
             }
-            else
-            {
-                [[AppDelegate currentDelegate].navController pushViewController:[[GameViewController alloc] initWithGameField:currentGameField] animated:YES];
-            }
-            gameState = GAMESTATE_PLAYING;
-            NSLog(@"start game. time given: %d, time left: %d", puzzle.time_given.intValue, puzzle.time_left.intValue);
-            _gameTime = puzzle.time_given.intValue - puzzle.time_left.intValue;
-            
-            [[NSUserDefaults standardUserDefaults] setObject:puzzle.puzzle_id forKey:[NSString stringWithFormat:@"puzzleInProgress%@", [GlobalData globalData].loggedInUser.user_id]];
         }
             break;
 
