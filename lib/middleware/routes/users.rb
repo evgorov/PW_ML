@@ -56,6 +56,7 @@ module Middleware
       halt(403, { 'message' => 'missing social_network'}.to_json) unless params['social_network']
       halt(403, { 'message' => 'missing set_id'}.to_json) unless params['set_id']
       type = PuzzleSet.storage(env['redis']).load(params['set_id'])['type']
+      type = 'silver1' if type == silver
       score = Coefficients.storage(env['redis']).coefficients["shared-#{type}-score"]
 
       raise CoefficientNotExist unless score
