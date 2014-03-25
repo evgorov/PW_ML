@@ -169,7 +169,7 @@ module Middleware
     post '/vkontakte/share' do
       unless token = params['access_token']
         env['token_auth'].authorize!
-        token = current_user['access_token']
+        token = current_user['vkontakte_access_token']
       end
 
       message = params['message'] || 'Приглашаю тебя поиграть в PrizeWord – увлекательную и полезную игру! Разгадывай сканворды, участвуй в рейтинге, побеждай!'
