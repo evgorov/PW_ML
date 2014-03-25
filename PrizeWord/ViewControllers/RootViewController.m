@@ -801,29 +801,25 @@ NSString * RULES_TEXTS[RULES_PAGES] = {@"Разгадывайте и участ�
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     NSLog(@"rootViewController shouldAutorotateToInterfaceOrientation %d", toInterfaceOrientation);
-    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
-//    return [navController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+    return [navController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 -(BOOL)shouldAutorotate
 {
     NSLog(@"rootViewController shouldAutorotate");
-    return NO;
-//    return [navController shouldAutorotate];
+    return [navController shouldAutorotate];
 }
 
 -(NSUInteger)supportedInterfaceOrientations
 {
     NSLog(@"rootViewController supportedInterfaceOrientations");
-    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-    //    return [navController supportedInterfaceOrientations];
+    return [navController supportedInterfaceOrientations];
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     NSLog(@"rootViewController preferredInterfaceOrientationForPresentation");
-    return UIInterfaceOrientationPortrait;
-//    return [navController preferredInterfaceOrientationForPresentation];
+    return [navController preferredInterfaceOrientationForPresentation];
 }
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
