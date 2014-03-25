@@ -18,10 +18,10 @@ module Middleware
     end
 
     error(ItunesReceiptVerifier::ItunesInvalidUserError) { halt(403, { message: 'Этот товар куплен для другого пользователя' }.to_json) }
-    error(ItunesReceiptVerifier::ItunesDoubleTransactionError) { halt(403, { message: 'Этот товар уже был куплен ранее' }.to_json) }
+    error(ItunesReceiptVerifier::ItunesDoubleTransactionError) { halt(200, { me: current_user }.to_json) }
     error(ItunesReceiptVerifier::ItunesReceiptError) { halt(403, { message: 'Ошибка валидации чека Itunes' }.to_json) }
     error(AndroidReceiptVerifier::AndroidReceiptError) { halt(403, { message: 'Ошибка валидации чека Play store' }.to_json) }
-    
+
     get '/user_puzzles' do
       env['token_auth'].authorize!
       user_sets = current_user
@@ -48,7 +48,7 @@ module Middleware
           current_user.save
         end
       end
-      
+
       { me: current_user }.to_json
     end
 
@@ -69,7 +69,7 @@ module Middleware
       current_user.add_set!(result)
       result.to_json
     end
-    
+
   private
     def android_public_key
       AppConfig.android[:public_key]
