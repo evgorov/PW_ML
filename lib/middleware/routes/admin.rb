@@ -174,6 +174,7 @@ module Middleware
 
       {
         total_pages: (size.to_f / Puzzle::PER_PAGE).ceil,
+        current_page: page,
         puzzles: puzzles
       }.to_json
     end
