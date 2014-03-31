@@ -795,7 +795,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="final_set_vkontakte_points.png" id="39t-TP-gsG">
-                    <rect key="frame" x="39" y="155" width="92" height="26"/>
+                    <rect key="frame" x="39" y="155" width="94" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" tag="114" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puzzles_set_ag.png" id="rUn-kb-VtF">
@@ -922,7 +922,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="final_set_vkontakte_points.png" id="6E4-fk-Cdo">
-                    <rect key="frame" x="160" y="185" width="92" height="26"/>
+                    <rect key="frame" x="160" y="185" width="94" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" tag="114" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puzzles_set_ag.png" id="His-oG-o0e">
@@ -1032,7 +1032,7 @@
         <image name="final_set_facebook_points.png" width="85" height="26"/>
         <image name="final_set_top_bg.png" width="320" height="270"/>
         <image name="final_set_vkontakte_btn.png" width="244" height="54"/>
-        <image name="final_set_vkontakte_points.png" width="92" height="26"/>
+        <image name="final_set_vkontakte_points.png" width="94" height="26"/>
         <image name="header_hint_btn.png" width="69" height="38"/>
         <image name="header_hint_btn_down.png" width="69" height="38"/>
         <image name="header_pause_btn.png" width="69" height="38"/>
