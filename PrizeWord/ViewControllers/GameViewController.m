@@ -407,7 +407,7 @@ NSString *reviewURLiOS7 = @"itms-apps://itunes.apple.com/app/id725511947";
         default:
             break;
     }
-    NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет и получил за это %d %@!", puzzleType, puzzleData.puzzleSet.score, [NSString declesion:puzzleData.puzzleSet.score oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
+    NSString * message = [NSString stringWithFormat:@"Я только что разгадал %@сет в приложении PrizeWord и получил за это %d %@! http://prize-word.com", puzzleType, puzzleData.puzzleSet.score, [NSString declesion:puzzleData.puzzleSet.score oneString:@"очко" twoString:@"очка" fiveString:@"очков"]];
     
     [self showActivityIndicator];
     if (button.tag == 0) {
