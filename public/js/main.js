@@ -770,7 +770,7 @@ var PuzzlesView = Backbone.View.extend({
     var currentPage = this.collection.currentPage,
         totalPages = this.collection.totalPages,
         $result = $('<ul>');
-    if(totalPages < 2) return;
+    if(totalPages < 2) return this.$el.find('[role="pagination"]').empty();
     for(var i = 1; i <= totalPages; i++){
       var $li = $('<li>');
       $li.append($('<a>').attr('href', '#').text(i));
