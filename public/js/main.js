@@ -638,7 +638,7 @@ var PuzzleView = Backbone.View.extend({
 
   getWordsList: function(e){
     if(e && e.preventDefault) e.preventDefault();
-      var blob = _(this.model.get('questions')).map(function(o){ return [o.answer, o.question_text].join(';'); }).join("\n"),
+      var blob = _(this.model.get('questions')).map(function(o){ return [o.answer, o.question_text].join(';'); }).join("\r\n"),
           a = document.createElement('a');
       a.href        = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(blob);
       a.target      = '_blank';
@@ -1232,7 +1232,7 @@ var UsersView = Backbone.View.extend({
   showScore: function(e){
     if(e && e.preventDefault) e.preventDefault();
     var user = this.collection.get($(e.target).attr('data-id'));
-    var scores = _(user.get('scores')).map(function(o){ o = JSON.parse(o); return [o.source, o.score].join(':') }).join("\r\n");
+    var scores = _(user.get('scores')).map(function(o){ o = JSON.parse(o); return [o.source, o.score].join(':') }).join("\n");
     $('[role="modal-body"]').text(scores);
     $('[role="scores-modal"]').modal();
   },
