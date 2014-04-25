@@ -403,6 +403,7 @@ var PuzzleView = Backbone.View.extend({
 
   events: {
     'click [role="print-set"]': 'printSet',
+    'click [role="get-words-list"]': 'getWordsList',
     'click [role="add_question"]': 'addQuestion',
     'click [role="delete_question"]': 'deleteQuestion',
     'keyup .question *': 'changeQuestion',
@@ -633,6 +634,18 @@ var PuzzleView = Backbone.View.extend({
                     window.open(canvas.toDataURL("image/png"));
                   }
                 });
+  },
+
+  getWordsList: function(e){
+    if(e && e.preventDefault) e.preventDefault();
+      var blob = _(this.model.get('questions')).map(function(o){ return [o.answer, o.question_text].join(';'); }).join("\n"),
+          a = document.createElement('a');
+      a.href        = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(blob);
+      a.target      = '_blank';
+      a.download    = 'words.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
   }
 });
 
