@@ -202,7 +202,12 @@ class UserData < BasicModel
         return false
       end
 
-      puzzle_data = JSON.parse(PuzzleData.storage(@storage).for(self.id, score['source'])['data'])
+      begin
+        puzzle_data = JSON.parse(PuzzleData.storage(@storage).for(self.id, score['source'])['data'])
+      rescue BasicModel::NotFound
+        return "Cannot find PuzzleData for #{score['source'].inspect}"
+      end
+
       return "Score in PuzzleData do not match UserScore for #{score.id}" if puzzle_data['score'].to_i != score['score'].to_i
 
       begin
